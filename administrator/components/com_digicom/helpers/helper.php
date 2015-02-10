@@ -120,6 +120,10 @@ class DigiComAdminHelper {
 			$vName == 'about'
 		);
 		
+		JHtmlSidebar::addEntry(
+			JText::_('COM_DIGICOM_TOGGLE_SIDEBAR'),
+			'#togglesidebar'
+		);
 		
 	}
 	

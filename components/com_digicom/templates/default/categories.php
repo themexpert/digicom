@@ -48,7 +48,7 @@ JHtml::script(JURI::root()."media/digicom/assets/js/category_layout.js", true);
 					<div class="description">
 						<?php echo $item->description; ?>
 					</div>
-					<a href="#" class="btn btn-mini">Details</a>
+					<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=products&cid='.$item->catid.'&pid='.$item->id);?>" class="btn btn-mini">Details</a>
 				</div>
 				<div class="pull-right" style="width:20%">
 					<p class="price text-success"><?php echo $item->price; ?></p>
