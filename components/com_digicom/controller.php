@@ -23,7 +23,6 @@ class DigiComController extends JControllerLegacy
 		$this->_customer = new DigiComSessionHelper();
 		$document = JFactory::getDocument();
 		$document->addStyleSheet(JURI::root()."media/digicom/assets/css/digicom.css");
-		$document->addStyleSheet(JURI::root().'media/digicom/assets/css/digicom_cart_lic_orders.css');
 	}
 
 	function display($cachable = false, $urlparams = false){

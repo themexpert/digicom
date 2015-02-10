@@ -257,27 +257,14 @@ class DigiComModelProduct extends DigiComModel
 		}
 	}
 
-	function getCategoryName(){
+	function getCategory(){
 		$db = JFactory::getDBO();
-		$id = JRequest::getVar("cid", "0");
-		if(is_array($id)){
-			$id = $id["0"]; 
-		}
+		$id = JFactory::getApplication()->input->get('cid',0);
 
-		if(intval($id) == 0){//for producs menu item
-			$itemid = JRequest::getVar("Itemid", "0");
-			$sql = "select `params` from #__menu where id=".intval($itemid);
-			$db->setQuery($sql);
-			$db->query();
-			$params = $db->loadResult();
-			$params = json_decode($params);
-			$id = intval($params->category_id);
-		}
-
-		$sql = "select name from #__digicom_categories where id=".intval($id);
+		$sql = "select * from #__digicom_categories where id=".intval($id);
 		$db->setQuery($sql);
 		$db->query();
-		$result = $db->loadResult();
+		$result = $db->loadObject();
 		return $result;
 	}
 	
