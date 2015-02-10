@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="DIGICOM PROFILE EDIT" hidden="true">
+		<message>
+			<![CDATA[DIGICOM PROFILE EDIT TIP]]>
+		</message>
+	</layout>
+	<state>
+		<name>DIGICOM PROFILE EDIT</name>
+		<description>DIGICOM PROFILE EDIT DESC</description>
+		<params>
+		</params>
+	</state>
+</metadata>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="2.5.0" method="upgrade">
+	<name>COM_DIGICOM</name>
+	<creationDate>Nov 2014</creationDate>
+	<author>themexpert.com</author>
+	<authorEmail>info@themexpert.com</authorEmail>
+	<authorUrl>www.themexpert.com</authorUrl>
+	<copyright>Copyright (C) 2013 themexpert.com.</copyright>
+	<license>GPL/GNU</license>
+	<version>3.1.1b16</version>
+	<install folder="admin">
+		<sql>
+			<file charset="utf8" driver="mysql">sql/install.sql</file>
+		</sql>
+	</install>
+
+	<uninstall folder="admin">
+		<sql>
+			<file charset="utf8" driver="mysql">sql/uninstall.sql</file>
+		</sql>
+	</uninstall>
+
+	<files folder="site">
+		<filename>index.html</filename>
+		<filename>router.php</filename>
+		<filename>controller.php</filename>
+		<filename>digicom.php</filename>
+		<folder>assets</folder>
+		<folder>controllers</folder>
+		<folder>download</folder>
+		<folder>helpers</folder>
+		<folder>models</folder>
+		<folder>views</folder>
+		<folder>tables</folder>
+	</files>
+
+	<languages>
+		<language tag="en-GB">en-GB.com_digicom.ini</language>
+	</languages>
+
+	<administration>
+		<menu img="components/com_digicom/assets/images/icons/small/digicom_logo.png">COM_DIGICOM</menu>
+		<files folder="admin">
+			<folder>assets</folder>
+			<folder>controllers</folder>
+			<folder>elements</folder>
+			<folder>extras</folder>
+			<folder>helpers</folder>
+			<folder>html</folder>
+			<folder>libs</folder>
+			<folder>models</folder>
+			<folder>sql</folder>
+			<folder>tables</folder>
+			<folder>upgrade</folder>
+			<folder>views</folder>
+			<filename>config.xml</filename>
+			<filename>digicom.php</filename>
+			<filename>controller.php</filename>
+			<filename>index.html</filename>
+		</files>
+		<languages folder="admin">
+			<language tag="en-GB">en-GB.com_digicom.ini</language>
+			<language tag="en-GB">en-GB.com_digicom.sys.ini</language>
+		</languages>
+	</administration>
+
+	<scriptfile>script.php</scriptfile>
+	
+	<updateservers>
+		<server type="extension" priority="2" name="DigiCom Updates">http://themexpert.com/updates/digicom.xml</server>
+	</updateservers>
+</extension>

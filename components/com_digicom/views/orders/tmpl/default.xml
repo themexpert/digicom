@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="DIGICOM_ORDERS">
+		<message>
+			<![CDATA[DIGICOM_ORDERS TIP]]>
+		</message>
+	</layout>
+	<state>
+		<name>DIGICOM_ORDERS</name>
+		<description>DIGICOM_ORDERS DESC</description>
+		<params>
+		</params>
+	</state>
+</metadata>

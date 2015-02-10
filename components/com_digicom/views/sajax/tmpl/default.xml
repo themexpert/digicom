@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="DIGICOM SAJAX">
+		<message>
+			<![CDATA[DIGICOM SAJAX TIP]]>
+		</message>
+	</layout>
+	<state>
+		<name>DIGICOM SAJAX</name>
+		<description>DIGICOM SAJAX DESC</description>
+		<params>
+		</params>
+	</state>
+</metadata>

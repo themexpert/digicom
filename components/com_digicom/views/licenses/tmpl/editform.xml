@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="DIGICOM LICENSES EDIT FORM" hidden="true">
+		<message>
+			<![CDATA[DIGICOM LICENSES EDIT FORM TIP]]>
+		</message>
+	</layout>
+	<state>
+		<name>DIGICOM LICENSES EDIT FORM</name>
+		<description>DIGICOM LICENSES EDIT FORM DESC</description>
+		<params>
+		</params>
+	</state>
+</metadata>

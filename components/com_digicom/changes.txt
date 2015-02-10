@@ -1,0 +1,2 @@
+removed: breadcrumb option from core component, from main file: still exist in helperfile
+

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" filter="rules" component="com_digicom" section="component">
+			<action name="core.manage" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
+			<action name="digicom.settings" title="VIEWDSADMINSETTINGS" description="JACTION_SETTINGS_DESC" />
+			<action name="digicom.categories" title="VIEWDSADMINCATEGORIES" description="JACTION_CATEGORIES_DESC" />
+			<action name="digicom.products" title="VIEWDSADMINPRODUCTS" description="JACTION_PRODUCTS_DESC" />
+			<action name="digicom.customers" title="VIEWDSADMINCUSTOMERS" description="JACTION_CUSTOMERS_DESC" />
+			<action name="digicom.orders" title="VIEWDSADMINORDERS" description="JACTION_ORDERS_DESC" />
+			<action name="digicom.licenses" title="VIEWDSADMINLICENCES" description="JACTION_LICENSES_DESC" />
+			<action name="digicom.languages" title="VIEWTREELANGUAGES" description="JACTION_LANGUAGES_DESC" />
+			<action name="digicom.promocodes" title="VIEWTREEPROMO" description="JACTION_PROMOCODES_DESC" />
+			<action name="digicom.plans" title="VIEWTREEPLANS" description="JACTION_PLANS_DESC" />
+			<action name="digicom.autoresponders" title="VIEWTREEEMAILREMINDER" description="JACTION_AUTORESPONDERS_DESC" />
+			<action name="digicom.logs" title="VIEWTREELOGS" description="JACTION_LOGS_DESC" />
+			<action name="digicom.taxes" title="VIEWCONFIGTAX" description="JACTION_TAXES_DESC" />
+			<action name="digicom.stats" title="VIEWDSADMINSTATS" description="JACTION_STATS_DESC" />
+		</field>
+	</fieldset>
+</config>

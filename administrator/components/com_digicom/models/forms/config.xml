@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields>
+		<fieldset name="GENERAL">
+			<field
+				name="general_spacer"
+				type="spacer"
+				class="title"
+				label="VIEWTREEGENERAL"
+				/>
+			<field
+				name="showpowered"
+				type="radio"
+				class="btn-group"
+				label="DS_SHOW_POWERED"
+				default="1"
+				description="COM_DIGICOM_POWERED_TIP">
+					<option value="0">DSNO</option>
+					<option value="1">DSYES</option>
+			</field>
+			<field
+				name="catalogue"
+				type="radio"
+				class="btn-group"
+				label="DS_CATALOGUEMODE"
+				default="0"
+				description="COM_DIGICOM_CATALOGUEMODE_TIP">
+					<option value="0">DSNO</option>
+					<option value="1">DSYES</option>
+			</field>
+			<field
+				name="time_format"
+				type="list"
+				label="VIEWCONFIGTIMEFORMAT"
+				default="d-m-Y"
+				description="COM_DIGICOM_DATE_TIP">
+					<option value="d-m-Y">DD-MM-YYYY</option>
+					<option value="m-d-Y">MM-DD-YYYY</option>
+					<option value="Y-m-d">YYYY-MM-DD</option>
+					<option value="Y-d-m">YYYY-DD-MM</option>
+			</field>
+			
+			<field
+				name="hour24format"
+				type="radio"
+				class="btn-group"
+				label="VIEWCONFIGHOUR24FORMAT"
+				default="0"
+				description="COM_DIGICOM_HOUR_TIP">
+					<option value="0">12-hour clock (AM/PM)</option>
+					<option value="1">24-hour clock</option>
+			</field>
+			
+			<field
+				name="ftp_source_path"
+				type="folderlist"
+				label="VIEWCONFIGFTPPATH"
+				default="digicom"
+				description="COM_DIGICOM_FTP_TIP" />
+			
+			<field
+				name="directfilelink"
+				type="radio"
+				class="btn-group"
+				label="VIEWCONFIGDIRECTLINK"
+				default="0"
+				description="COM_DIGICOM_DIRECT_TIP">
+					<option value="0">VIEWCONFIGCOPYTOADMINYESNO</option>
+					<option value="1">VIEWCONFIGCOPYTOADMINYES</option>
+			</field>
+			<field
+				name="registration_spacer"
+				type="spacer"
+				class="title"
+				label="DIGI_REGISTRATION"
+				/>
+			<field
+				name="askforbilling"
+				type="radio"
+				class="btn-group"
+				label="DIGI_ASK_FOR_BILLING_DETAILS"
+				default="1"
+				description="COM_DIGICOM_ASKFORBILLING_TIP">
+					<option value="0">DSNO</option>
+					<option value="1">DSYES</option>
+			</field>
+			<field
+				name="askforcompany"
+				type="radio"
+				class="btn-group"
+				label="DIGI_ASK_FOR_COMPANY_NAME"
+				default="1"
+				description="COM_DIGICOM_ASKFORCOMPANY_TIP">
+					<option value="0">DSNO</option>
+					<option value="1">DSYES</option>
+			</field>
+			<field
+				name="topcountries"
+				type="sql"
+				query="SELECT distinct country FROM #__digicom_states order by country"
+				key_field="country"
+				value_field="country"
+				class="btn-group"
+				label="VIEWCONFIGTOPCOUNTRIES"
+				default=""
+				multiple="true"
+				description="COM_DIGICOM_COUNTRY_TIP" 
+			/>
+			<field
+				name="askterms"
+				type="radio"
+				class="btn-group"
+				label="VIEWCONFIGTERMSANDCOND"
+				default="0"
+				description="VIEWCONFIGTERMSANDCOND_TIP">
+					<option value="0">DSNO</option>
+					<option value="1">DSYES</option>
+			</field>
+			<field 
+				name="myfield" 
+				type="sql" 
+				default="10" 
+				label="VIEWCONFIGTERMSANDCONDID" 
+				description="COM_DIGICOM_TERMSID_TIP" 
+				query="SELECT id, title FROM #__content" 
+				key_field="id" 
+				value_field="title">
+			</field>
+			
+			<field
+				name="buyprocess_spacer"
+				type="spacer"
+				class="title"
+				label="DIGI_BUIYNG_PROCESS"
+				/>
+			<field
+				name="afteradditem"
+				type="list"
+				class="btn-group"
+				label="VIEWCONFIGAFTERADDING"
+				default="0"
+				description="COM_DIGICOM_AFTERADDITEM_TIP">
+					<option value="0">VIEWCONFIGAFTERADDINGTOCART</option>
+					<option value="1">VIEWCONFIGAFTERADDINGSTAYONPROD</option>
+					<option value="2">VIEWCONFIGAFTERADDINGOPENGRAY</option>
+			</field>
+			<field
+				name="continue_shopping_url"
+				type="menuitem"
+				label="VIEWCONFIG_CONTINUE_SHOPPING_URL"
+				default="0"
+				description="COM_DIGICOM_CONTINUE_SHOPPING_TIP"
+				>
+				<option value="0">VIEWCONFIG_CONTINUE_SHOPPING_URL_DESC</option>
+			</field>
+			<field
+				name="default_payment"
+				type="sql" 
+				query="SELECT extension_id as id,name,element,enabled as published FROM #__extensions WHERE folder in ('payment') AND enabled=1" 
+				key_field="element" 
+				value_field="name" 
+				class="btn-group"
+				label="DEFAULT_PAYMENT"
+				description="DEFAULT_PAYMENT_TIP">
+					<option value="">Select payment gateway</option>
+			</field>
+			<field
+				name="checkout_spacer"
+				type="spacer"
+				class="title"
+				label="DIGI_CHECKOUT"
+				/>
+			<field
+				name="show_steps"
+				type="radio"
+				class="btn-group"
+				label="DIGI_SHOW_STEPS"
+				default="1"
+				description="DIGI_SHOW_STEPS_TIP">
+					<option value="0">DSNO</option>
+					<option value="1">DSYES</option>
+			</field>
+			<field
+				name="afterpurchase"
+				type="radio"
+				class="btn-group"
+				label="VIEWCONFIGAFTERBUYING"
+				default="1"
+				description="COM_DIGICOM_AFTERPURCHASE_TIP">
+					<option value="0">VIEWCONFIGAFTERBUYINGTOLICENSE</option>
+					<option value="1">VIEWCONFIGAFTERBUYINGTOORDER</option>
+			</field>
+
+		</fieldset>
+		<fieldset name="CURRENCY" addfieldpath="/administrator/components/com_digicom/models/fields">
+			<field
+				name="decimaldigits"
+				type="list"
+				class="btn-group"
+				label="VIEWCONFIGPRICEFORMAT"
+				default="2"
+				description="COM_DIGICOM_PRICEFORMAT_TIP">
+					<option value="1">X</option>
+					<option value="2">XX</option>
+					<option value="3">XXX</option>
+					<option value="4">XXXX</option>
+					<option value="5">XXXXX</option>
+			</field>
+			<field 
+				name="currency"
+				type="sql" 
+				query="select distinct currency_name, currency_full from #__digicom_currencies" 
+				key_field="currency_name" 
+				value_field="currency_full" 
+				class="btn-group"
+				label="VIEWCONFIGCURRENCY"
+				default="1"
+				description="COM_DIGICOM_CURRENCY_TIP" />
+			
+			<field 
+				name="currency_position"
+				type="currencysupport"
+				class="btn-group"
+				label="DIGICOM_CURRENCY_DISPLAY_POSITION"
+				default="1"
+				description="COM_DIGICOM_POSITION_TIP">
+					<option value="0">DIGICOM_CURRENCY_DISPLAY_POSITION_BEFORE</option>
+					<option value="1">DIGICOM_CURRENCY_DISPLAY_POSITION_AFTER</option>
+			</field>
+			
+			<field 
+				name="usecimg"
+				type="hidden"
+				class="btn-group"
+				label="VIEWCONFIGIMGFORCUR"
+				default="0"
+				description="" />
+			<field 
+				name="thousands_group_symbol"
+				type="text"
+				class="btn-group"
+				label="COM_DIGICOM_THOUSANDS_GROUP_SYMBOL"
+				default=","
+				description="COM_DIGICOM_THOUSANDS_GROUP_SYMBOL_DESC" />
+			
+		</fieldset>
+		<fieldset name="CONTENTS">
+			<field
+				name="content_spacer"
+				type="spacer"
+				class="title"
+				label="HEADER_CONTENT_SETTINGS"
+				/>
+			
+			<field 
+				name="thankshtml" 
+				label ="VIEWCONFIGSUCCTRANS" 
+				description ="COM_DIGICOM_TRANSACTIONTEMP_TIP" 
+				type="editor" 
+				width="100%" 
+				buttons="true"
+				height="200px" 
+				filter="safehtml" />
+			<field 
+				name="ftranshtml" 
+				label ="VIEWCONFIGERRTEMPLATE" 
+				description ="COM_DIGICOM_FAILEDTRANSACTION_TIP" 
+				type="editor" 
+				width="100%" 
+				buttons="true"
+				height="200px" 
+				filter="safehtml" />
+			<field 
+				name="pendinghtml" 
+				label ="VIEWCONFIGPENDINGTEMPLATE" 
+				description ="COM_DIGICOM_PENDINGTRANSACTION_TIP" 
+				type="editor" 
+				width="100%" 
+				buttons="true"
+				height="200px" 
+				filter="safehtml" />
+			
+		</fieldset>
+		<fieldset name="STORE">
+			<field
+				name="store_spacer"
+				type="spacer"
+				class="title"
+				label="HEADER_STORE_SETTINGS"
+				/>
+			<field 
+				name="store_name"
+				type="text"
+				class="btn-group"
+				label="VIEWCONFIGCATSTORE"
+				default="DigiCom Store"
+				description="COM_DIGICOM_STORENAME_TIP" />
+				
+			<field 
+				name="store_url"
+				type="text"
+				class="btn-group"
+				label="VIEWCONFIGCATSTOREURL"
+				default="DigiCom Store"
+				description="COM_DIGICOM_STOREURL_TIP" />
+			<field 
+				name="store_email"
+				type="text"
+				class="btn-group"
+				label="VIEWCONFIGCATSTOREEMAIL"
+				description="COM_DIGICOM_STOREEMAIL_TIP" />
+			
+			<field 
+				name="usestoremail"
+				type="checkbox"
+				label="VIEWCONFIGUSESTOREMAIL"
+				description="COM_DIGICOM_USESTOREMAIL_TIP" />
+			<field 
+				name="sendmailtoadmin"
+				type="list"
+				class="btn-group"
+				label="VIEWCONFIGCOPYTOADMIN"
+				description="COM_DIGICOM_STORESENDEMAIL_TIP">
+					<option value="0">VIEWCONFIGCOPYTOADMINYESNO</option>
+					<option value="1">VIEWCONFIGCOPYTOADMINYES</option>
+			</field>
+			
+			<field 
+				name="country"
+				type="countryoption"
+				class="btn-group"
+				label="VIEWCONFIGSELECTCOUNTRY"
+				onchange="changeProvince();"
+				description="COM_DIGICOM_STORECOUNTRY_TIP" />
+			<!--
+			<field 
+				name="state"
+				type="stateoption"
+				class="btn-group"
+				wrapper="province"
+				id="sel_province"
+				label="VIEWCONFIGSTORESTATE"
+				description="COM_DIGICOM_STORESTATE_TIP" />
+			-->
+			<field 
+				name="state"
+				type="text"
+				class="btn-group"
+				label="VIEWCONFIGSTORESTATE"
+				description="COM_DIGICOM_STORESTATE_TIP" />
+			
+			<field 
+				name="city"
+				type="text"
+				class="btn-group"
+				label="VIEWCONFIGCITY"
+				description="COM_DIGICOM_STORECITY_TIP" />
+
+			<field 
+				name="zip"
+				type="text"
+				class="btn-group"
+				label="VIEWCONFIGZIP"
+				description="COM_DIGICOM_STOREZIP_TIP" />
+			
+			<field 
+				name="address"
+				type="text"
+				class="btn-group"
+				label="VIEWCONFIGADDRESS"
+				description="COM_DIGICOM_STOREADDRESS_TIP" />
+			<field 
+				name="phone"
+				type="text"
+				class="btn-group"
+				label="VIEWCONFIGPHONE"
+				description="COM_DIGICOM_STOREPHONE_TIP" />
+			<field 
+				name="fax"
+				type="text"
+				class="btn-group"
+				label="VIEWCONFIGFAX"
+				description="COM_DIGICOM_STOREFAX_TIP" />
+			<field 
+				name="store_logo"
+				type="media"
+				class="btn-group"
+				label="DIGI_STORE_LOGO"
+				description="COM_DIGICOM_STOREIMAGE_TIP" />
+			
+			<field 
+				name="displaystoredesc"
+				type="radio"
+				class="btn-group"
+				label="VIEWCONFIGDISPLAYSTOREDESC"
+				default="1"
+				description="COM_DIGICOM_STOREDISPLAY_TIP">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+			</field>
+			
+			<field 
+				name="storedesc"
+				type="textarea"
+				class="btn-group"
+				label="VIEWCONFIGSTOREDESC"
+				description="COM_DIGICOM_STOREDESC_TIP" />
+		</fieldset>
+		<fieldset name="THEME" addfieldpath="/administrator/components/com_digicom/models/fields">
+			<field
+				name="theme_spacer"
+				type="spacer"
+				class="title"
+				label="DIGICOM_THEME_SETTINGS"
+				/>
+			<field
+				name="template"
+				type="themelayout"
+				class="title"
+				label="DIGICOM_TEMPLATE_TITLE"
+				description="DIGICOM_TEMPLATE_TIP"
+				/>
+		</fieldset>
+	</fields>
+			
+</form>

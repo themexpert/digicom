@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="DIGICOM ORDER SHOW" hidden="true">
+		<message>
+			<![CDATA[DIGICOM ORDER SHOW TIP]]>
+		</message>
+	</layout>
+	<state>
+		<name>DIGICOM ORDER SHOW</name>
+		<description>DIGICOM ORDER SHOW DESC</description>
+		<params>
+		</params>
+	</state>
+</metadata>

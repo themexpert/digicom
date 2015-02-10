@@ -1,0 +1,45 @@
+/*
+// JoomlaWorks "AllVideos" Plugin for Joomla! 1.5.x - Version 3.3
+// Copyright (c) 2006 - 2010 JoomlaWorks Ltd. All rights reserved.
+// Released under the GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+// More info at http://www.joomlaworks.gr
+// Designed and developed by the JoomlaWorks team
+// *** Last update: February 18th, 2010 ***
+*/
+
+/* Layout */
+span.avPlayerContainer {display:block;text-align:center;position:relative;z-index:999;}
+span.avPlayerContainer span.avPlayerSubContainer {display:block;padding:12px;margin:4px 8px;border:none;background:#010101 url(../images/videoplayer-bg.gif) repeat-x bottom;text-align:right;}
+span.avPlayerContainer span.avPlayerSubContainerClean {display:block;padding:0;margin:0 auto;border:none;background:none;text-align:center;}
+span.avPlayerContainer span.avPlayerSubContainer span.avPlayerBlock {display:block;}
+
+/* Font styling */
+span.avPlayerContainer span.avPlayerSubContainer,
+span.avPlayerContainer span.avPlayerSubContainer span,
+span.avPlayerContainer span.avPlayerSubContainer input {color:#bbb;font-family:Tahoma, Geneva, sans-serif;font-size:10px;}
+span.avPlayerContainer span.avPlayerSubContainer a {color:#bbb;font-family:Tahoma, Geneva, sans-serif;font-size:10px;font-weight:bold;outline:0;}
+span.avPlayerContainer span.avPlayerSubContainer a:hover {color:#eee;text-decoration:none;}
+
+/* AllVideos LightBox */
+a.avLightbox,
+a.avLightbox:hover {padding:0 8px 0 0;margin:0 4px 0 0;border-right:1px solid #1F1F1F;}
+
+div#AVLBOverlay {position:absolute;margin:0;padding:0;top:0;left:0;width:100%;height:100%;z-index:1000100;}
+div#AVLBOverlay div#AVLBExternalContainer {position:fixed;z-index:1000110;top:0;left:0;width:100%;height:100%;background:#000;opacity:0.8;filter:alpha(opacity=80);}
+div#AVLBOverlay div#AVLBExternalContainer a#AVLBExternalContainerClose,
+div#AVLBOverlay div#AVLBExternalContainer a#AVLBExternalContainerClose:hover {display:block;width:100%;height:100%;background:none;text-decoration:none;margin:0;padding:0;border:none;}
+
+div#AVLBOverlay div#AVLBContainer {position:fixed;z-index:1000120;top:50%;left:50%;padding:8px;background:#000;border:12px solid #202020;}
+div#AVLBOverlay div#AVLBContainer a#AVLBContainerClose,
+div#AVLBOverlay div#AVLBContainer a#AVLBContainerClose:hover {}
+
+/* AllVideos Download */
+a.avDownload,
+a.avDownload:hover {padding:0 8px 0 0;margin:0 4px 0 0;border-right:1px solid #1F1F1F;}
+
+/* AllVideos Embed */
+span.avEmbed input.embedInput {width:150px;height:14px;line-height:14px;font-size:10px;margin:0 0 0 4px;padding:1px;height:12px;background:#222;border:1px solid #1F1F1F;}
+span.avEmbed input.embedInput b {display:none;}
+
+
+/* End */

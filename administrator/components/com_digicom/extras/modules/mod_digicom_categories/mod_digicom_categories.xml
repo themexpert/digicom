@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="2.5" client="site" method="upgrade">
+	<name>DigiCom Categories</name>
+	<author>themexpert.com</author>
+	<creationDate>Oct 2013</creationDate>
+	<copyright>Copyright (C) 2013 themexpert.com</copyright>
+	<license>GNU/GPLv3</license>
+	<authorEmail>info@themexpert.com</authorEmail>
+	<authorUrl>www.themexpert.com</authorUrl>
+	<version>3.1.1b1</version>
+	<description>DigiCom Categories Module</description>
+	<files>
+		<filename module="mod_digicom_categories">mod_digicom_categories.php</filename>
+		<folder>language</folder>
+		<folder>tmpl</folder>
+		<filename>helper.php</filename>
+		<filename>index.html</filename>
+	</files>
+	<languages folder="language">
+			<language tag="en-GB">en-GB/en-GB.mod_digicom_categories.ini</language>
+	</languages>
+	
+	<config>
+		<fields name="params">
+			<fieldset name="basic" label="COM_MENUS_BASIC_FIELDSET_LABEL">
+				<field name="itemid" type="text" default="" label="Menu Itemid" description="" />
+				
+				<field name="moduleclass_sfx" type="text" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>

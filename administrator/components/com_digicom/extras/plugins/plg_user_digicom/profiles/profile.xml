@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="digicom">
+		<fieldset name="shopper_info" label="PLG_USER_DIGICOM_SHOPPER_INFO_LABEL">
+			<field name="firstname"
+				type="text"
+				required="true"
+				class="form-control"
+				description="PLG_USER_DIGICOM_FIELD_FIRSTNAME_DESC"
+				filter="string"
+				label="PLG_USER_DIGICOM_FIELD_FIRSTNAME_LABEL"
+				size="30"
+				
+			/>
+
+			<field name="lastname"
+				type="text"
+				required="true"
+				class="form-control"
+				description="PLG_USER_DIGICOM_FIELD_LASTNAME_DESC"
+				filter="string"
+				label="PLG_USER_DIGICOM_FIELD_LASTNAME_LABEL"
+				size="30"
+				
+			/>
+
+			<field
+				name="company"
+				type="text"
+				class="form-control"
+				description="PLG_USER_DIGICOM_FIELD_COMPANY_DESC"
+				filter="string"
+				label="PLG_USER_DIGICOM_FIELD_COMPANY_LABEL"
+				size="30"
+				
+			/>
+
+			<field
+				name="address"
+				type="text"
+				class="form-control"
+				description="PLG_USER_DIGICOM_FIELD_ADDRESS_DESC"
+				filter="string"
+				label="PLG_USER_DIGICOM_FIELD_ADDRESS_LABEL"
+				size="30"
+				
+			/>
+
+			<field
+				name="city"
+				type="text"
+				class="form-control"
+				description="PLG_USER_DIGICOM_FIELD_CITY_DESC"
+				filter="string"
+				label="PLG_USER_DIGICOM_FIELD_CITY_LABEL"
+				size="30"
+				
+			/>
+
+			<field 
+				name="state"
+				type="text"
+				class="form-control"
+				description="PLG_USER_DIGICOM_FIELD_STATE_DESC"
+				filter="string"
+				label="PLG_USER_DIGICOM_FIELD_STATE_LABEL"
+				size="30"
+				
+			/>
+			
+			<field 
+				name="province"
+				type="text"
+				class="form-control"
+				description="PLG_USER_DIGICOM_FIELD_PROVINCE_DESC"
+				filter="string"
+				label="PLG_USER_DIGICOM_FIELD_PROVINCE_LABEL"
+				size="30"
+				
+			/>
+			
+			<field
+				name="zipcode"
+				type="text"
+				class="form-control"
+				description="PLG_USER_DIGICOM_FIELD_ZIPCODE_DESC"
+				filter="string"
+				label="PLG_USER_DIGICOM_FIELD_ZIPCODE_LABEL"
+				size="30"
+				
+			/>
+
+			<field addfieldpath="plugins/user/digicom"
+				name="country"
+				type="country"
+				class="form-control"
+				default=""
+				description="PLG_USER_DIGICOM_FIELD_COUNTRY_DESC"
+				filter="string"
+				label="PLG_USER_DIGICOM_FIELD_COUNTRY_LABEL"
+				
+			/>
+
+			<field
+				name="payment_type"
+				type="text"
+				class="form-control"
+				description="PLG_USER_DIGICOM_FIELD_PAYMENT_TYPE_DESC"
+				filter="string"
+				label="PLG_USER_DIGICOM_FIELD_PAYMENT_TYPE_LABEL"
+				size="30"
+				
+			/>
+
+
+			<field
+				name="phone"
+				type="tel"
+				class="form-control"
+				description="PLG_USER_DIGICOM_FIELD_PHONE_DESC"
+				filter="string"
+				label="PLG_USER_DIGICOM_FIELD_PHONE_LABEL"
+				size="30"
+				
+			/>
+		
+		</fieldset>
+		<fieldset name="shipping_info" label="PLG_USER_DIGICOM_SHIPPING_INFO_LABEL">
+			<field name="person"
+				type="checkbox"
+				class="form-control"
+				onchange="onPersonChange(this.checked)"
+				description="PLG_USER_DIGICOM_FIELD_SHIPPERSON_DESC"
+				filter="string"
+				label="PLG_USER_DIGICOM_FIELD_SHIPPERSON_LABEL"
+				default="0"
+				size="30"/>
+
+			
+			<field name="shipfirstname"
+				type="text"
+				required="true"
+				class="form-control"
+				description="PLG_USER_DIGICOM_FIELD_SHIPFIRSTNAME_DESC"
+				filter="string"
+				label="PLG_USER_DIGICOM_FIELD_SHIPFIRSTNAME_LABEL"
+				size="30"
+			/>
+
+			<field name="shiplastname"
+				type="text"
+				required="true"
+				class="form-control"
+				description="PLG_USER_DIGICOM_FIELD_SHIPLASTNAME_DESC"
+				filter="string"
+				label="PLG_USER_DIGICOM_FIELD_SHIPLASTNAME_LABEL"
+				size="30"
+			/>
+
+			<field
+				name="shipaddress"
+				type="text"
+				class="form-control"
+				description="PLG_USER_DIGICOM_FIELD_SHIPADDRESS_DESC"
+				filter="string"
+				label="PLG_USER_DIGICOM_FIELD_WEB_SHIPADDRESS_LABEL"
+				size="30"
+			/>
+			
+			<field
+				name="shipcity"
+				type="text"
+				class="form-control"
+				description="PLG_USER_DIGICOM_FIELD_SHIPCITY_DESC"
+				filter="string"
+				label="PLG_USER_DIGICOM_FIELD_SHIPCITY_LABEL"
+				size="30"
+			/>
+
+			<field 
+				name="shipstate"
+				type="text"
+				class="form-control"
+				description="PLG_USER_DIGICOM_FIELD_SHIPSTATE_DESC"
+				filter="string"
+				label="PLG_USER_DIGICOM_FIELD_SHIPSTATE_LABEL"
+				size="30"
+			/>
+			
+			<field 
+				name="shipprovince"
+				type="text"
+				class="form-control"
+				description="PLG_USER_DIGICOM_FIELD_SHIPPROVINCE_DESC"
+				filter="string"
+				label="PLG_USER_DIGICOM_FIELD_SHIPPROVINCE_LABEL"
+				size="30"
+			/>
+			
+			<field
+				name="shipzipcode"
+				type="text"
+				class="form-control"
+				description="PLG_USER_DIGICOM_FIELD_SHIPZIPCODE_DESC"
+				filter="string"
+				label="PLG_USER_DIGICOM_FIELD_SHIPZIPCODE_LABEL"
+				size="30"
+			/>
+
+			<field addfieldpath="plugins/user/digicom"
+				name="shipcountry"
+				type="country"
+				class="form-control"
+				default=""
+				description="PLG_USER_DIGICOM_FIELD_SHIPCOUNTRY_DESC"
+				filter="string"
+				label="PLG_USER_DIGICOM_FIELD_SHIPCOUNTRY_LABEL"
+			/>
+
+			<field
+				name="shipphone"
+				type="tel"
+				class="form-control"
+				description="PLG_USER_DIGICOM_FIELD_SHIPPHONE_DESC"
+				filter="string"
+				label="PLG_USER_DIGICOM_FIELD_SHIPPHONE_LABEL"
+				size="30"
+			/>
+		</fieldset>
+	</fields>
+</form>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="DIGICOM_PROFILE">
+		<message>
+			<![CDATA[DIGICOM_PROFILE TIP]]>
+		</message>
+	</layout>
+	<state>
+		<name>DIGICOM_PROFILE</name>
+		<description>DIGICOM_PROFILE DESC</description>
+		<params>
+		</params>
+	</state>
+</metadata>

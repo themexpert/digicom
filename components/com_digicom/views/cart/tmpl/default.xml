@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="DIGICOM_CART">
+		<message>
+			<![CDATA[DIGICOM_CART TIP]]>
+		</message>
+	</layout>
+	<state>
+		<name>DIGICOM_CART</name>
+		<description>DIGICOM_CART DESC</description>
+		<params>
+		</params>
+	</state>
+</metadata>

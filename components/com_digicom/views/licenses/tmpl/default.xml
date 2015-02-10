@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="DIGICOM_LICENSES">
+		<message>
+			<![CDATA[DIGICOM_LICENSES TIP]]>
+		</message>
+	</layout>
+	<state>
+		<name>DIGICOM_LICENSES</name>
+		<description>DIGICOM_LICENSES DESC</description>
+		<params>
+		</params>
+	</state>
+</metadata>

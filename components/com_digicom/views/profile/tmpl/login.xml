@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="DIGICOM_PROFILE_LOGIN">
+		<message>
+			<![CDATA[DIGICOM_PROFILE_LOGIN TIP]]>
+		</message>
+	</layout>
+	<state>
+		<name>DIGICOM_PROFILE_LOGIN</name>
+		<description>DIGICOM_PROFILE_LOGIN DESC</description>
+		<params>
+		</params>
+	</state>
+</metadata>

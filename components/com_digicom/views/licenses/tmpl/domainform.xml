@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="DIGICOM LICENSES DOMAIN" hidden="true">
+		<message>
+			<![CDATA[DIGICOM LICENSES DOMAIN TIP]]>
+		</message>
+	</layout>
+	<state>
+		<name>DIGICOM LICENSES DOMAIN</name>
+		<description>DIGICOM LICENSES DOMAIN DESC</description>
+		<params>
+		</params>
+	</state>
+</metadata>
