@@ -61,18 +61,6 @@ class TableProduct extends JTable {
 		$sql = "SELECT catid FROM #__digicom_product_categories WHERE productid='".$this->id."'";
 		$db->setQuery($sql);
 		$this->selection = $db->loadColumn();
-
-		$where = array();
-		$where1[] = " f.published=1 ";
-		$sql = "SELECT f.name, f.id, fp.publishing, fp.mandatory, f.options, f.size FROM #__digicom_customfields f LEFT JOIN 
-			#__digicom_prodfields fp ON (f.id=fp.fieldid and fp.productid=".$this->id." )"
-			.(count ($where1)>0? " WHERE ".implode (" and ", $where1):"");
-		$db->setQuery($sql);
-		$fields = $db->loadObjectList();
-		$this->productfields = $fields;
-
-
-
 	}
 
 	function store () {
@@ -139,7 +127,4 @@ class TableProduct extends JTable {
 		return true;
 	}
 
-};
-
-
-?>
+}

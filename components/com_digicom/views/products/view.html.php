@@ -14,7 +14,8 @@ jimport ("joomla.application.component.view");
 
 class DigiComViewProducts extends DigiComView {
 
-	function display ($tpl =  null ) {
+	function displayCat ($tpl =  null ) {
+	//function display ($tpl =  null ) {
 		$catid =  JRequest::getVar('cid', array(), 'request', 'array');
 		$totalprods = 0;
 
@@ -51,7 +52,7 @@ class DigiComViewProducts extends DigiComView {
 			$prods = $items["items"];
 		}
         
-		$category_name = $this->_models['product']->getCategoryName();
+		$category_name = $this->_models['product']->getCategory();
 		$this->assign("category_name", $category_name);
 		$this->assign("totalprods", $totalprods);
 		$this->assign("catid", $catid);
@@ -250,13 +251,15 @@ class DigiComViewProducts extends DigiComView {
 		$this->assignRef('limitstart', $items['limitstart']);
 		$this->assignRef('pagination',	$pagination);
 		
-		DigiComTemplateHelper::rander('products');
+		$template = new DigiComTemplateHelper($this);
+		$template->rander('products');
 		
 		parent::display($tpl);
 	}
 
 
-	function showProduct($tpl = null) {
+	function display($tpl = null) {
+	//function showProduct($tpl = null) {
 		global $isJ25;
 		$catid =  JRequest::getVar('cid', array(0), 'request', 'array');
 		if (is_array($catid))	$catid = intval($catid[0]);
@@ -271,8 +274,6 @@ class DigiComViewProducts extends DigiComView {
 
 		$this->assign("catid", $catid);
 		$prod = $this->_models['product']->getProduct($pid);
-
-		$prod->plans = $this->_models['product']->getPlansForProduct($pid);
 
 		$app = JFactory::getApplication("site");
 		$document	   = JFactory::getDocument();
@@ -293,155 +294,11 @@ class DigiComViewProducts extends DigiComView {
 		$results = $dispatcher->trigger('onPrepareContent', array (& $article, & $params, $limitstart));
 		$prod->fulldescription = $article->text;
 
-		$db = JFactory::getDBO();
-
-		$price = null;
-
-		switch ($prod->priceformat) {
-
-			case '2': // Don't show price
-				$price = null;
-				break;
-
-			case '3': // Price and up
-				$sql = "SELECT pp.product_id, min(pp.price) as price FROM #__digicom_plans dp
-					LEFT JOIN #__digicom_products_plans pp on (dp.id = pp.plan_id)
-					WHERE pp.product_id = ".$prod->id."
-					GROUP BY pp.product_id";
-				$db->setQuery($sql);	$prodprice = $db->loadObject();
-				if (!empty($prodprice)) $price = DigiComHelper::format_price2($prodprice->price,$conf->get('currency','USD'), true, $conf);
-				break;
-
-			case '4': // Price range
-				$sql = "SELECT pp.product_id, min(pp.price) as price_min, max(pp.price) as price_max FROM #__digicom_plans dp
-					LEFT JOIN #__digicom_products_plans pp on (dp.id = pp.plan_id)
-					WHERE pp.product_id = 1
-					GROUP BY pp.product_id";
-				$db->setQuery($sql);	$prodprice = $db->loadObject();
-				if (!empty($prodprice)) $price = DigiComHelper::format_price2($prodprice->price_min,$conf->get('currency','USD'), true, $conf) . " - " . DigiComHelper::format_price($prodprice->price_max,$conf->get('currency','USD'), true, $conf);
-				break;
-
-			case '5': // Minimal price
-				$sql = "SELECT pp.product_id, min(pp.price) as price FROM #__digicom_plans dp
-					LEFT JOIN #__digicom_products_plans pp on (dp.id = pp.plan_id)
-					WHERE pp.product_id = ".$prod->id."
-					GROUP BY pp.product_id";
-				$db->setQuery($sql);	$prodprice = $db->loadObject();
-				if (!empty($prodprice)) $price = DigiComHelper::format_price($prodprice->price,$conf->get('currency','USD'), true, $conf);
-				break;
-
-			case '1': // Default price
-			default:
-				$sql = "SELECT pp.product_id, pp.price as price FROM #__digicom_plans dp
-					LEFT JOIN #__digicom_products_plans pp on (dp.id = pp.plan_id)
-					WHERE pp.default = 1 and pp.product_id = ".$prod->id;
-				$db->setQuery($sql);	$prodprice = $db->loadObject();
-				if (!empty($prodprice)) $price = DigiComHelper::format_price2($prodprice->price,$conf->get('currency','USD'), true, $conf);
-				break;
-		}
-		$prod->price = $price;
-
 		$this->assignRef('prod', $prod);
-
-		$qty = array();
-		if ($prod->usestock > 0) {
-			$lim = ($prod->stock - $prod->used) + 1;
-		} else {
-			$lim = 26;
-		}
-
-		// Used Stock to "Display as Normal" if stock = 0
-		if ( $prod->usestock && ($prod->stock==0) ) {
-			$lim = 26;
-		}
-
-		for ( $i = 1; $i < $lim; $i++ ) {
-			$qty[] = JHTML::_('select.option',  $i );
-		}
-		$active = 1;
-		$qty_name = "qty";
-		$multi = 0;
-		$lists['qty'] = JHTML::_('select.genericlist',  $qty, $qty_name, 'class="inputbox" ', 'value', 'text', "/");
-
-		$pp = array();
-		$prod_plans_len = count($prod->plans);
-		$this->assign("prod_plans_len", $prod_plans_len);
-		for ($i=0; $i < $prod_plans_len; $i++) {
-			if ($prod_plans_len == 1) {
-				$pp[] = JHTML::_('select.option',
-						$prod->plans[$i]->id,
-						DigiComHelper::format_price2 ($prod->plans[$i]->price, $conf->get('currency','USD'), $add_sym = true, $conf)
-						);
-			}
-			else{
-				$pp[] = JHTML::_('select.option',
-						$prod->plans[$i]->id,
-						$prod->plans[$i]->name . " - " . DigiComHelper::format_price2($prod->plans[$i]->price, $conf->get('currency','USD'), $add_sym = true, $conf)
-						);
-			}
-
-		}
-
-		if(count($pp) && (count($pp)>1) ){
-			$lists['pp'] = JHTML::_('select.genericlist',  $pp, 'plan_id', 'class="inputbox" style="width:auto;"', 'value', 'text', "/");
-		}
-		elseif(count($pp)){
-			$lists['pp'] = '<span style="color:green;">'.$pp[0]->text.'</span>';
-		}
-		else{
-			$lists['pp'] = NULL;
-		}
-
-		$maxfields = 0;
-		$i = 1;
-		$this->assign("i", $i);
-		$maxfields = DigiComHelper::check_fields($prod->productfields, $totalfields, $optlen, $select_only, $maxfields, $prod->id);
-		$lists['attribs'] = DigiComHelper::add_selector_new( $prod->productfields, $prod->id, $optlen, $select_only, $i, $conf, $multi);
-
-		$this->assign("lists", $lists);
-
-		// Featured products
-		$featured_prods = array();
-		$catids = DigiComHelper::getCategoryByProductID( $prod->id );
-		if ($catids)
-			$featured_prods = DigiComHelper::getFeaturedProductByCategoryID($catids[0]);
-		$this->assign( "featured_prods", $featured_prods );
-
-		// Related Products
-		$related_prods = DigiComHelper::getRelatedItems($pid);
-		$this->assign( "related_prods", $related_prods );
-
-		// add gallery script to head
-		if(!empty($prod->prodimages)){
-			$zpath = JPATH_ROOT.DS.'images'.DS.'stories'.DS.'digicom'.DS.'products'.DS.'fly'.DS.$prod->defprodimage;
-			if(is_file($zpath)){
-				$definfo = getimagesize($zpath);
-			}
-			$image_size = $conf->get('prodlayoutthumbnails');
-			$image_type = $conf->get('prodlayoutthumbnailstype'); //0-high  1-wide
-
-			$width_old = @$definfo["0"];
-			$height_old = @$definfo["1"];
-
-			$width_th = "165";
-			$height_th = "235";
-
-			if($width_old > $image_size && $image_size > 0){
-				if($image_type == 1){ //proportional by wide
-					$width_th = $image_size + 75;
-					$height_th = $width_th + 115;
-				}
-				else{
-					$height_th = $image_size + 75;
-					$width_th = $height_th - 150;
-				}
-			}
-			else{
-				$width_th = $width_old;
-				$height_th = $height_old;
-			}
-		}
-		$this->setLayout("viewProduct");
+		
+		$template = new DigiComTemplateHelper($this);
+		$template->rander('products');
+		
 		parent::display();
 	}
 

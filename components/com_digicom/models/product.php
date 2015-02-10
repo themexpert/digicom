@@ -82,32 +82,9 @@ class DigiComModelProduct extends DigiComModel
 			if ($id) $this->_id = $id;
 			$this->_product->load($this->_id);
 		}
-		$this->_products[0] = $this->_product;
-		$this->_addProductTax();
-		$this->_product = $this->_products[0];
-		if($this->_product->usestock){
-			if($this->_product->used >= $this->_product->stock){
-				if($this->_product->emptystockact == 1){
-				}
-				elseif($this->_product->emptystockact == 2){
-					$this->_product = null;
-				}
-			}
-		}
-
-		$db = JFactory::getDBO();
-		$sql = "select `path` from #__digicom_products_images where `product_id`=".intval($this->_product->id)." order by `order` asc";
-		$db->setquery($sql);
-		$db->query();
-		$all_path = $db->loadColumn();
-		$this->_product->prodimages = implode(",\\n", $all_path);
-
-		$sql = "select `path` from #__digicom_products_images where `product_id`=".intval($this->_product->id)." and `default`=1";
-		$db->setquery($sql);
-		$db->query();
-		$default_path = $db->loadResult();
-		$this->_product->defprodimage = $default_path;
-
+		
+		$this->_products = $this->_product;
+		
 		return $this->_product;
 	}
 

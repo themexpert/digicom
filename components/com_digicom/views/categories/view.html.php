@@ -37,7 +37,6 @@ class DigiComViewCategories extends DigiComView {
 		
 		$this->assign("category", $category);
 		$this->assign("totalprods", $totalprods);
-		$this->assign("catid", $catid);
 
 		$app = JFactory::getApplication("site");
 		$document	   = JFactory::getDocument();
@@ -49,46 +48,14 @@ class DigiComViewCategories extends DigiComView {
 		
 		$lists = array();
 		if (count($prods) > 0) {
-			foreach ($prods as $z => $proditem) {
-				$prod = $prods[$z];
-
+			foreach ($prods as $key=>$prod) {
 				$article->text = $prod->description;
 				$article->fulltext = $prod->description;
-				$results = $dispatcher->trigger('onPrepareContent', array (& $article, & $params, $limitstart));
-				$prod->description = $article->text;
-				$qty = array();
-				if ($prod->usestock > 0) {
-					$lim = ($prod->stock - $prod->used) + 1;
-				} else {
-					$lim = 26;
-				}
-
-				// Used Stock to "Display as Normal" if stock = 0
-				if ( $prod->usestock && ($prod->stock==0) ) {
-					$lim = 26;
-				}
-				$lim = 26;
-				for ( $i = 1; $i < $lim; $i++ ) {
-					$qty[] = JHTML::_('select.option',  $i );
-				}
-
-				$active = 1;
-				if ($this->_layout == "listMulti") {
-					$qty_name = "quantity[]";
-					$multi = 1;
-				} else {
-					$qty_name = "qty";
-					$multi = 0;
-				}
-				$lists['qty'][$prod->id] = JHTML::_('select.genericlist',  $qty, $qty_name, 'class="inputbox" onchange="document.getElementById(\'product_qty_id_'.$prod->id.'\').value=this.value"', 'value', 'text', "/");
-
+				$dispatcher->trigger('onPrepareContent', array (& $article, & $params, $limitstart));
 			}
 		}
 		
 		$this->assignRef('prods', $prods);
-
-		$this->assign("lists", $lists);
-		$this->assign("pids", $pids);
 
 		jimport('joomla.html.pagination');
 		$pagination = new JPagination($items["total"], $items['limitstart'], $items['limit']);
