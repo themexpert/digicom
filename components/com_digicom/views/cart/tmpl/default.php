@@ -314,12 +314,9 @@ if($from == "ajax"){
 			url += promocode_query;
 	
 			var qty = document.getElementById('quantity'+item_id);
+			var qty_value = qty.value;
 			var qty_query = '';
-			if ( qty.selectedIndex != -1)
-			{
-				var qty_value = qty.options[qty.selectedIndex].value;
-				qty_query += '&quantity'+item_id+'='+qty_value;
-			}
+			qty_query += '&quantity'+item_id+'='+qty_value;
 			url += qty_query;
 	
 			var attrs_query = '';
@@ -413,7 +410,7 @@ if($from == "ajax"){
 	?>
 
 <?php
-	if($configs->show_steps == 0){
+	if($configs->get('show_steps',1) == 1){
 ?>
 		<div class="bar">
 			<span class="active-step">
@@ -525,31 +522,7 @@ if($from == "ajax"){
 				<!-- Product name -->
 				<td>
 					<?php 
-					$item_link = '';
-					if( $item->articlelinkuse && $item->articlelinkid ) {
-						require_once JPATH_SITE . '/components/com_content/helpers/route.php';
-						$db = JFactory::getDbo();
-						$sql = "SELECT 
-									co.id,
-									concat(co.id, ':', co.alias) AS `slug`,
-									concat(ca.id, ':', ca.alias) AS `catslug`
-								FROM
-									#__content AS co
-										INNER JOIN
-									#__categories AS ca ON co.catid = ca.id
-								WHERE
-									co.id =".$item->articlelinkid;
-						$db->setQuery($sql);
-						$res = $db->loadObject();
-						if($res){
-							$item_link = JRoute::_(ContentHelperRoute::getArticleRoute($res->slug, $res->catslug));
-						}
-					} elseif( $item->articlelink ){
-						$item_link = JURI::root().$item->articlelink;
-					}
-					if( !$item_link ) {
-						$item_link = JRoute::_('index.php?option=com_digicom&controller=products&task=view&cid='.$item->catid.'&pid='.$item->id);
-					}
+					$item_link = JRoute::_('index.php?option=com_digicom&view=products&cid='.$item->catid.'&pid='.$item->id);
 					echo '<a href="'.$item_link.'" target="blank">'.$item->name.$renew.'</a>';
 					?>
 				</td>
@@ -563,9 +536,11 @@ if($from == "ajax"){
 				<td align="center" <?php if ($configs->get('showcam',1) == 0) echo $invisible;?> nowrap="nowrap">
 							<span class="digicom_details">
 								<strong>
-									<?php  if ( !isset( $item->noupdate) ) {
-										echo $lists[$item->cid]['quantity'];
-									} else {
+									<?php  if ( !isset( $item->noupdate) ) { ?>
+										<?php // echo $lists[$item->cid]['quantity']; ?>
+										
+										<input id="quantity<?php echo $item->cid; ?>" type="number" onchange="update_cart(<?php echo $item->cid; ?>);" name="quantity[<?php echo $item->cid; ?>]" min="1" class="input-small" value="1" size="2" placeholder="<?php echo JText::_('DSQUANTITY'); ?>">
+									<?php } else {
 										echo $item->quantity;
 									}?>
 								</strong>
@@ -657,7 +632,7 @@ if($from == "ajax"){
 			
 			<td nowrap="nowrap" style="text-align: center; <?php echo $border_bottom; ?> padding-top:15px;">
 				<ul style="margin: 0; padding: 0;list-style-type: none;">
-					<?php if ($configs->tax_summary == 1) { ?>
+					<?php if ($configs->get('tax_summary',0) == 1) { ?>
 	
 					<?php if ($tax['promo'] > 0 && $tax['promoaftertax'] == '0'): ?>
 					<li class="digi_cart_total"><?php echo JText::_("DSPROMODISCOUNT"); ?></li>
@@ -678,7 +653,7 @@ if($from == "ajax"){
 					<?php }	?>
 				</ul>
 			</td>
-			<?php if ($configs->tax_summary == 1) { ?>
+			<?php if ($configs->get('tax_summary',0) == 1) { ?>
 			<td nowrap="nowrap" style="text-align: center; <?php echo $border_bottom; ?> padding-top:15px;">
 				<ul style="margin: 0; padding: 0;list-style-type: none;" >
 					<?php if ($tax['promo'] > 0 && $tax['promoaftertax'] == '0') : ?>
@@ -745,7 +720,7 @@ if($from == "ajax"){
 		</div>
 	<?php endif;?>
 
-	<?php if($configs->showccont == 0){ ?>
+	<?php if($configs->get('showccont',0) == 0){ ?>
 		<div id="digicomcartcontinue" class="row-fluid">
 			<div class="span6">
 				<?php

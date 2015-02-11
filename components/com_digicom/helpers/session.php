@@ -22,58 +22,64 @@ class DigiComSessionHelper {
 
 		$db = JFactory::getDBO();
 		$my = JFactory::getUser();
-		$reg = JSession::getInstance("none", array());//new JSession();
+		$reg = JFactory::getSession();
 		$time = time();
-		$digisid = 'digisid';
-		$sid = $reg->get($digisid, 0);//JRequest::getVar($digisid, 0, 'cookie');//$my->getParam("sid", 0);
-//  		$sid = @intval($_COOKIE['dssid']);
-//echo "sid=".$sid;
+		$digicomid = 'digicomid';
+		$sid = $reg->get($digicomid, 0);
+		
 		$sql = "delete from #__digicom_session where create_time<'".($time - 3600*24)."'";
 		$db->setQuery($sql);
 		$db->query();
+		
 		if (!$sid) {
-
-			$sql = "INSERT INTO #__digicom_session (`create_time`, `cart_details`, `transaction_details`, `shipping_details`)
-				VALUES
-				('".$time."', '', '', '')
-				 ";
+			$sql = "select * from #__digicom_session where uid='".$my->id."'";
 			$db->setQuery($sql);
-			$db->query();
-			$sid = $db->insertId();
-
-//			JRequest::setVar($digisid, $sid, 'cookie', true);
-//			setcookie($digisid, $sid);
-			$reg->set($digisid, $sid);
-//			setcookie('dssid', $sid);
-//			$my->setParam('sid', $sid);
-
-		} else {
-			$sql = "select create_time from #__digicom_session where sid='".$sid."'";
-			$db->setQuery($sql);
-			$sid_time = $db->loadResult();
-			if (!$sid_time || ($sid_time + 3600*24) < $time) {
-				$sql = "delete from #__digicom_session where sid='".$sid."'";
+			$digisession = $db->loadObject();
+			if(isset($digisession->sid)){
+				$sql = "UPDATE #__digicom_session SET `create_time`='".time()."'";
 				$db->setQuery($sql);
 				$db->query();
-
-				$sql = "insert into #__digicom_session (`create_time`, `cart_details`, `transaction_details`, `shipping_details`)
-						values
-					('".$time."', '', '', '')
+				$reg->set($digicomid, $digisession->sid);
+			}else{
+				$sql = "INSERT INTO #__digicom_session (`uid`,`create_time`, `cart_details`, `transaction_details`, `shipping_details`)
+					VALUES
+					('".$my->id."','".$time."', '', '', '')
 					 ";
 				$db->setQuery($sql);
 				$db->query();
 				$sid = $db->insertId();
-
-//				JRequest::setVar($digisid, $sid, 'cookie', true);
-				$reg->set($digisid, $sid);
-//				setcookie('dssid', $sid);
-//				setcookie($digisid, $sid);
+				$reg->set($digicomid, $sid);
+			}
+		} else {
+			//check if has userid
+			$sql = "select * from #__digicom_session where sid='".$sid."'";
+			$db->setQuery($sql);
+			$digisession = $db->loadObject();
+			if($digisession->uid == 0 && $my->id != 0){
+				$sql = "UPDATE #__digicom_session SET `uid`='".$my->id."'";
+				$db->setQuery($sql);
+				$db->query();
+			}
+			
+			$sid_time = $digisession->create_time;
+			if (!$sid_time || ($sid_time + 3600*24) < $time) {
+				$sql = "delete from #__digicom_session where sid='".$sid."'";
+				$db->setQuery($sql);
+				$db->query();
+				$sql = "INSERT INTO #__digicom_session (`uid`,`create_time`, `cart_details`, `transaction_details`, `shipping_details`)
+					VALUES
+					('".$my->id."','".$time."', '', '', '')
+					 ";
+				$db->setQuery($sql);
+				$db->query();
+				$sid = $db->insertId();
+				$reg->set($digicomid, $sid);
 			}
 		}
 
 		$this->_sid = $sid;
 		$this->_Itemid = $Itemid;
-		$this->_user = $my;//JUser::getInstance();
+		$this->_user = $my;
 		if ($this->_user->id > 0) {
 			$sql ="select * from #__digicom_customers where id='".$this->_user->id."'";
 			$db->setQuery($sql);
@@ -119,8 +125,7 @@ class DigiComSessionHelper {
 		if (is_object($data) || !isset($data['cart']['orderid']) || empty($data['cart']['orderid'])){
 			$data = array();
 			$data['cart']['orderid'] = -1;
-			//$data = base64_encode(serialize($data));
 		}
-		return $data;//unserialize(base64_decode($data));
+		return $data;
 	}
 }

@@ -96,7 +96,6 @@ class DigiComModelCart extends DigiComModel
 		}
 		$qty = JRequest::getVar( 'qty', 1, 'request' ); //product quantity
 		//check if item already in the cart
-		//there can be multiple items
 		$sql = "select cid, item_id, quantity from #__digicom_cart where sid='".intval($sid)."' AND item_id='".intval($pid)."' AND plan_id = '".intval($plan_id)."'";
 		$db->setQuery($sql);
 		$data = $db->loadObjectList();
@@ -430,7 +429,7 @@ class DigiComModelCart extends DigiComModel
 		}
 		$db = JFactory::getDBO();
 		$user = JFactory::getUser();
-		$tax_handler = $this->getInstance( "Tax", "digicomModel" );
+		//$tax_handler = $this->getInstance( "Tax", "digicomModel" );
 		if (is_object($cust_info))	$sid = $cust_info->_sid;
 		if (is_array($cust_info))	$sid = $cust_info['sid'];
 		$customer = $cust_info;
@@ -485,7 +484,7 @@ class DigiComModelCart extends DigiComModel
 			}
 		}
 
-		$tax_handler->getShipping($tax, $items, $configs, $cust_info);
+		//$tax_handler->getShipping($tax, $items, $configs, $cust_info);
 
 		if ($promo->id > 0) {
 			//$promo = "";
@@ -616,9 +615,9 @@ class DigiComModelCart extends DigiComModel
 
 		$customer = $tmp_customer;
 
-		$tax_handler->getTax($tax, $items, $configs, $customer);
+		//$tax_handler->getTax($tax, $items, $configs, $customer);
 		//tax calculations end here
-
+		if(!isset($tax['value'])) $tax['value'] = 0;
 		$sum_tax = $total + $tax['value']; //$vat_tax + $state_tax;//total tax
 		//now lets apply promo discounts if there are any
 		if ( $promo_applied == 0 )

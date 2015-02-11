@@ -9,12 +9,11 @@
 */
 
 defined ('_JEXEC') or die ("Go away.");
-//error_reporting(E_ALL); ini_set("display_errors", 1);
+error_reporting(E_ALL); ini_set("display_errors", 1);
 $cart_itemid = DigiComHelper::getCartItemid();
 $conf = $this->configs;
 $prod = $this->prod;
 $date_today = time();
-$k = 0;
 ?>
 <div class="digicom-wrapper com_digicom products">
 
@@ -48,76 +47,22 @@ $addtocart = '<input type="submit" value="'.(JText::_("DSADDTOCART")).'" class="
 
 <div id="dslayout-viewproduct">
 
-<form name="prod" id="product-form" action="<?php echo JRoute::_('index.php?option=com_digicom&view=cart');?>" method="post" style="width:100%;" onsubmit="return prodformsubmitA<?php echo $prod->id; ?>()">
+<form name="prod" id="product-form" action="<?php echo JRoute::_('index.php?option=com_digicom&view=cart');?>" method="post" style="width:100%;">
 
 	<div class="ijd-box ijd-rounded row-fluid">
-		<?php if(isset($prodimages) && count($prodimages) > 0) : ?>
-		<!-- Images Showcase -->
-		<div class="span4">
-			<div id="total_slide">
-				<?php
-					if (isset($prodimages["0"])) {
-						$src = ImageHelper::GetProductThumbImageURL($prodimages["0"], "prev");
-						$size = @getimagesize($src);
-						$style = "";
-						if (isset($size)) {
-							$style .= "min-height:".($size["1"]+10)."px;";
-						}
-					} else {
-						$style = '';
-					}
-				?>
-				<div id="slide" style="<?php echo $style; ?>">
-					<?php
-						if(isset($prodimages["0"])){
-							$src = ImageHelper::GetProductThumbImageURLBySize($prodimages["0"], $gray_size);
-							$size = @getimagesize($src);
-							if(isset($size)){
-								//$gray_size_w = $size["0"]+100;
-								//$gray_size_h = $size["1"]+100;
-							}
-						}
-					?>
-					<?php
-						if(isset($prodimages["0"])){
-					?>
-							<a onclick="javascript:grayBoxiJoomla('index.php?option=com_digicom&controller=Products&task=previwimage&tmpl=component&position=0&pid=<?php echo intval($prod->id); ?>', <?php echo $gray_size_w; ?>, <?php echo $gray_size_h; ?>)">
-								<img class="product_image_gallery" src="<?php echo ImageHelper::GetProductThumbImageURL($prodimages["0"], "prev"); ?>"/>
-							</a>
-					<?php
-						}
-					?>
-				</div>
-				<div id="count" style="margin-bottom: 10px; margin-top: 10px; color:#CCCCCC; <?php echo $conf->gallery_style == 1 ? 'display:none;' : ""; ?>">
-					<?php
-						if(count($prodimages) > 0 && trim($prodimages["0"]) != ""){
-							echo "1/".count($prodimages);
-						}
-					?>
-				</div>
-				<?php
-					if(count($prodimages) > 1){
-						if($conf->gallery_style == 0){
-							echo DigiComHelper::getGalleryScroller($prod, $prodimages, $conf);
-						}
-						else{
-							echo DigiComHelper::getGallerySimple($prod, $prodimages, $conf);
-						}
-					}
-				?>
-				<input type="hidden" name="prev_pos" value="0" />
-				<input type="hidden" name="next_pos" value="1" />
+		<?php if(!empty($prod->images)): ?>
+		<div class="span4">	
+			<div class="pull-left">
+				<img src="<?php echo $prod->images; ?>" class="img-responsive img-rounded"/>
 			</div>
 		</div>
-		
-		<!-- Details & Cart -->
 		<div class="span8">
 		<?php else: ?>
-		
 		<!-- Details & Cart -->
 		<div class="span12">
 		<?php endif; ?>
-			<?php
+
+		<?php
 				$url = $this->getPageURL();
 			?>
 				<table align="right" width="100%">
@@ -158,22 +103,18 @@ $addtocart = '<input type="submit" value="'.(JText::_("DSADDTOCART")).'" class="
 			<div class="ijd-add-to-cart ijd-row">
 
 				<div class="ijd-addtocartbutton ijd-pad5">
-					<?php if (isset($prod->showqtydropdown) && ($prod->showqtydropdown > 0) && ($prod->domainrequired != 3)) { ?>
-						<label for="quantity23" class="quantity_box"><?php echo JText::_('DSQUANTITY'); ?>:&nbsp;</label>
-						<?php echo JHTML::_('select.integerlist', 0, 25, 1, 'qty', 'class="inputbox"', 1); ?>
-						<br />
-					<?php
-							$qb = "quantity_box";
-						} else {
-							$qb = "";
-						}
-					 ?>
+					<br />
+					
+					<label for="quantity23" class="quantity_box">
+						<?php echo JText::_('DSPRICE'); ?>:&nbsp;
+						<span class="label"><?php echo $prod->price; ?> <?php echo $conf->get('currency','USD'); ?> </span>
+					</label>
+					
+					<label for="quantity23" class="quantity_box">
+						<?php echo JText::_('DSQUANTITY'); ?>:&nbsp;
+						<input id="quantity_<?php echo $prod->id; ?>" type="number" name="qty" min="1" class="input-small" value="1" size="2" placeholder="<?php echo JText::_('DSQUANTITY'); ?>">
+					</label>
 						
-						<label for="quantity23" class="<?php echo $qb; ?>">
-							<?php echo JText::_('DSPRICE'); ?>:&nbsp;
-						
-							<span class="label"><?php echo $prod->price; ?> <?php echo $conf->get('currency','USD'); ?> </span>
-						</label>
 						
 						<?php
 							

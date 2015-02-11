@@ -183,26 +183,12 @@ class DigiComViewCart extends JViewLegacy
 			if (isset($item->discounted_price) && $item->discounted_price && $item->discount > 0) $disc = 1;
 
 			if($task != 'summary'){
-				$qty = array();
-				if($item->usestock){
-					$lim = $item->stock - $item->used + 1;
-				}
-				else{
-					$lim = 26;
-					if ($item->quantity > $lim) $lim = $item->quantity + 5;
-				}
-
-				for($i = 1; $i < $lim; $i++){
-					$qty[] = JHTML::_('select.option',  $i );
-				}
-
-				$active = 1;
-				$lists[$item->cid]['quantity'] = JHTML::_('select.genericlist',  $qty, 'quantity['.$item->cid.']', 'size="1" class="inputbox" onchange="update_cart('.$item->cid.')" ', 'value', 'text', $item->quantity);
+				//$lists[$item->cid]['quantity'] = JHTML::_('select.genericlist',  $qty, 'quantity['.$item->cid.']', 'size="1" class="inputbox" onchange="update_cart('.$item->cid.')" ', 'value', 'text', $item->quantity);
 				$lists[$item->cid]['attribs'] = DigiComHelper::add_selector_to_cart($item, $optlen, $select_only, $i, $configs, $configs);
 			}
 			else{
 				$lists[$item->cid]['attribs'] = DigiComHelper::add_selector_to_summary ( $item, $optlen, $select_only, $i, $configs, $configs);
-				$lists[$item->cid]['quantity'] = $item->quantity;//JHTML::_('select.genericlist',  $qty, 'quantity['.$item->cid.']', 'class="inputbox" ', 'value', 'text', $item->quantity);
+				//$lists[$item->cid]['quantity'] = $item->quantity;//JHTML::_('select.genericlist',  $qty, 'quantity['.$item->cid.']', 'class="inputbox" ', 'value', 'text', $item->quantity);
 			}
 		}
 
