@@ -9,81 +9,42 @@
 */
 
 defined ('_JEXEC') or die ("Go away.");
-
-echo '<div class="digicom">';
-
-$k = 0;
-$lists = $this->lists;
-$prod = $this->prod;
-?>
-<h1><?php echo $prod->name ?></h1>
-<?php
-$Itemid = JRequest::getInt("Itemid", "0");
-
-$date_today = time();
-if(($prod->publish_up > $date_today) || ($prod->publish_down != 0 && $prod->publish_down < $date_today)){
-	return true;
-}
-
-if($prod->published == 0){//if product is unpublished
-	echo '<span class="redirect_message">'.JText::_("DIGI_PRODUCT_UNPUBLISHED")." ".'<a href="'.JRoute::_("index.php?option=com_digicom&controller=Categories&Itemid=".$Itemid).'">'.JText::_("DIGI_HOME_PAGE").'</a></span>';
-	return true;
-}
-
-$prodimages = explode(',\n', $prod->prodimages);
-if(isset($prodimages) && count($prodimages) > 0)
-{
-	$temp = array();
-	if(isset($prod->defprodimage))
-	{
-		$temp[] = $prod->defprodimage;
-	}
-	foreach($prodimages as $key=>$value)
-	{
-		if($value != $prod->defprodimage)
-		{
-			$temp[] = $value;
-		}
-	}
-	$prodimages = $temp;
-}
-
-if(trim($prod->metatitle) == "")
-{
-	$prod->metatitle = $prod->name; 
-}
-if(trim($prod->metadescription) == "")
-{
-	if(strlen($prod->fulldescription) <= "265")
-	{
-		$prod->metadescription = trim($prod->fulldescription);
-	}
-	else
-	{
-		$prod->metadescription = substr(strip_tags($prod->fulldescription), 0, 265);
-	}
-}
-
-$document = JFactory::getDocument();
-$document->setTitle($prod->metatitle);
-$document->setMetaData('keywords', $prod->metakeywords); 
-$document->setMetaData('description', $prod->metadescription);
-$conf = $this->configs;
-if (!$prod->id)
-{
-	echo "<div style='padding:20px;text-align:center;'>".JText::_("DSPRODNOTAVAILABLE")."<br/><br/><a href='".JRoute::_("index.php?option=com_digicom")."'>".JText::_('DSCONTINUESHOPING')."</a></div>";
-	return;
-}
-
 $cart_itemid = DigiComHelper::getCartItemid();
-$andItemid = "";
-if($cart_itemid != "0")
-{
-	$andItemid = "&Itemid=".$cart_itemid;
-}
+$conf = $this->configs;
+$prod = $this->prod;
+$date_today = time();
+$k = 0;
+?>
+<div class="digicom-wrapper com_digicom products">
 
+	<?php if(!$prod->id): ?>
+	<div class="alert alert-warning">
+		<p><?php echo JText::_('DSPRODNOTAVAILABLE'); ?></p>
+		<p><a href="<?php echo JRoute::_("index.php?option=com_digicom&view=categories&id=0"); ?>"><?php echo JText::_("DSCONTINUESHOPING"); ?></a></p>
+	</div>
+	<?php return true; ?>
+	<?php endif; ?>
+	
+	<?php if(($prod->publish_up > $date_today) || ($prod->publish_down != 0 && $prod->publish_down < $date_today)): ?>
+	<div class="alert alert-warning">
+		<?php echo JText::_('COM_DIGICOM_PRODUCT_PUBLISH_DOWN'); ?>
+	</div>
+	<?php return true; ?>
+	<?php endif; ?>
+
+	<?php if($prod->published == 0): ?>
+	<div class="alert alert-warning">
+		<p><?php echo JText::_('DIGI_PRODUCT_UNPUBLISHED'); ?></p>
+		<p><a href="<?php echo JRoute::_("index.php?option=com_digicom&view=categories&id=0"); ?>"><?php echo JText::_("DIGI_HOME_PAGE"); ?></a></p>
+	</div>
+	<?php return true; ?>
+	<?php endif; ?>
+
+<?php
+
+echo $r;
 $addtocart = '<input type="submit" value="'.(JText::_("DSADDTOCART")).'" class="btn"/> ';
-$price =  $prod->price;
+//$price =  $prod->price;
 $i = $this->i;
 $validation_js_script = DigiComHelper::addValidation($prod->productfields, $i);
 $doc = JFactory::getDocument();

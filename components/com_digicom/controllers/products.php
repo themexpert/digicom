@@ -21,9 +21,7 @@ class DigiComControllerProducts extends DigiComController {
 
 	function __construct () {
 		parent::__construct();
-		$this->registerTask ("", "listProducts");
-		$this->registerTask ("list", "listProducts");
-		$this->registerTask ("view", "showProduct");
+		$this->registerTask ("", "showProduct");
 		$this->_model = $this->getModel("Product");
 		$this->_config = $this->getModel("Config");
 		$this->_category = $this->getModel("Category");
@@ -84,7 +82,7 @@ class DigiComControllerProducts extends DigiComController {
 		$view->setModel( $this->_model, true );
 		$view->setModel( $this->_config );
 		$view->setModel( $this->_category );
-		$view->showProduct( );
+		$view->display();
 	}
 
 	function getImageList(){

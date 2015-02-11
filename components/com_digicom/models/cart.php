@@ -70,65 +70,20 @@ class DigiComModelCart extends DigiComModel
 		return false;
 	}
 
-	function addToCart($customer, &$productname){
+	function addToCart($customer){
 		$db = JFactory::getDBO();
 		$sid = $customer->_sid; //digicom session id
 		$uid = $customer->_user->id; //joomla user id
-		$pid = JRequest::getVar('pid');
-		$pid = is_array($pid)?$pid[0]:$pid;
+		$pid = JFactory::getApplication()->input->get('pid',0);
 		$my = JFactory::getUser($uid);
-
-		$cid = JRequest::getVar('cid', array(0), 'request', 'array');
-		$cid = intval($cid[0]); //product category id
+		$cid = JFactory::getApplication()->input->get('cid',0);
 
 		if($pid < 1){//bad product id
 			return (-1);
 		}
 
-//		$plan_id = (JRequest::getVar('plan_id', '') != '') ? JRequest::getVar('plan_id', '') : -1;
 		$plan_id = JRequest::getVar('plan_id', -1);
-
-		$renewlicid = JRequest::getVar('renewlicid', '');
-
-		if( trim($renewlicid) != "" ) {
-			$sql = "select `offerplans` from #__digicom_products where id=".intval($pid);
-			$db->setQuery($sql);
-			$offerplans = intval($db->loadResult());
-
-			$sql = "select `expires` from #__digicom_licenses where id=".intval($renewlicid);
-			$db->setQuery($sql);
-			$expires = $db->loadResult();
-			$expires = strtotime($expires);
-			$date_today = time();
-
-			if($offerplans == 1){//Offer renewals plans only before expiration = checked
-				if($expires < $date_today){//license expired
-					$plan_id = "-1";
-					JRequest::setVar('renewlicid', '');
-					JRequest::setVar('renew', '');
-					JRequest::setVar('gotocart', 'gotocart');
-				}
-			}
-		}
-
-		if($plan_id == "-1"){
-			$sql = "select `plan_id` from #__digicom_products_plans where product_id=".intval($pid)." and `default`=1";
-			$db->setQuery($sql);
-			$plan_id = intval($db->loadResult());
-		} else {
-			$sql = 'SELECT `plan_id`, `default` FROM `#__digicom_products_plans` WHERE `product_id`='.intval($pid);
-			$db->setQuery($sql);
-			$plans = $db->loadObjectList(`plan_id`);
-			if( !isset($plans[$plan_id]) ) {
-				foreach ( $plans as $key => $plan ) {
-					if( $plan->default == 1 ) {
-						$plan_id = $key;
-						break;
-					}
-				}
-			}
-		}
-
+		
 		$sql = "select name, access from #__digicom_products where id=".(int)($pid);
 		$db->setQuery( $sql );
 		$res = $db->loadObject();
@@ -149,15 +104,6 @@ class DigiComModelCart extends DigiComModel
 		$item_qty = @$data["0"]->quantity;
 		$cid = @$data["0"]->cid;
 
-		//getting fields set for product being added
-		$where1 = array();
-		$where1[] = " f.published=1 ";
-		$where1[] = " fp.productid=".intval($pid);
-		$sql = "select f.name, f.options, f.id, fp.publishing, fp.mandatory from #__digicom_customfields f left join
-			#__digicom_prodfields fp on (f.id=fp.fieldid)"
-		. (count( $where1 ) > 0 ? " where " . implode( " and ", $where1 ) : "");
-		$db->setQuery( $sql );
-		$fields = $db->loadObjectList();
 
 		if(!$item_id){//no such item in cart- inserting new row
 			$renew = (JRequest::getVar('renew', '') != '') ? JRequest::getVar('renew', '') : '0';
@@ -168,83 +114,10 @@ class DigiComModelCart extends DigiComModel
 			$db->query();
 			$cid = $db->insertid(); //cart id of the item inserted
 		}
-		else{
-			foreach($data as $dat){ //for all items of the same product in the cart
-				//check if attributes of existing item match ones of the item to be inserted
-				//get selected attributes for existing product
-				$sql = "select fieldid, optionid from #__digicom_cartfields where cid='".intval($cid). "' and sid='".intval($sid)."' and productid='".intval($pid). "'";
-				$db->setQuery($sql);
-				$attr = $db->loadObjectList();
-				$differ = 0;
-				$update_done = 0;
-
-				foreach($fields as $field){//getting value from request
-					if(isset($_REQUEST["field".$field->id])){
-						$value = (int)$_REQUEST["field".$field->id];
-					}
-					else{
-						$value = -1;
-					}
-
-					foreach($attr as $i => $v){//searching in the attributes of the existing items
-						if($field->id == $v->fieldid && $value != $v->optionid){//we found difference
-							$differ = 1;
-							break; //no need to search further
-						}
-					}
-					if($differ == 1){
-						break; //no need to look in the other fields - difference was spotted
-					}
-				}
-
-				if($differ == 0){//we found item with the same set of attributes
-					$update_done = 1; //no need for further processing
-					break;
-				}
-			} //end foreach (data)
-			if($update_done != 1){//no matching record found
-				$sql = "insert into #__digicom_cart (quantity,item_id,sid,userid) "
-				. " values ('{$qty}','{$pid}','$sid','{$customer->_user->id}') ";
-				$db->setQuery($sql);
-				$db->query();
-				$cid = $db->insertid(); //cart id of the item inserted
-			}
-		}
-
-		foreach($fields as $field){//now we've to update dependency entries
-			$value = JRequest::getVar( "field" . $field->id . "", '-1', 'request' );
-			$sql = "delete from #__digicom_cartfields where sid='".intval($sid)."' and productid='".intval($pid)."' and fieldid='".intval($field->id)."' and cid='" . $cid . "'";
-			$db->setQuery($sql);
-			$db->query(); //remove old one regardless of they existence
-			$sql = "insert into #__digicom_cartfields(cid, sid, productid, fieldid, optionid) values ('".intval($cid)."','".intval($sid)."','".intval($pid)."','". $field->id."', '".$value."')";
-			$db->setQuery( $sql );
-			$db->query(); //and create new corresponding to cid obtained during processing
-		}
-
-		//now we've to check that number of items in the cart is not greater than stock available for the current product
-		$sql = "select usestock as res from #__digicom_products where id='".intval($pid)."'";
-		$db->setQuery($sql);
-		$usestock = $db->loadResult();
-
-		$sql = "select (stock-used) as res from #__digicom_products where id='".intval($pid)."'";
-		$db->setQuery($sql);
-		$stock = $db->loadResult();
-
+				
 		$sql = "select quantity from #__digicom_cart where item_id='".intval($pid)."' and sid='".intval($sid)."' and userid='".@$my->id."' and cid='".intval($cid). "'";
 		$db->setQuery( $sql );
 		$quant = $db->loadResult();
-
-		if($stock < $quant && $usestock > 0 && $stock > 0){
-			$sql = "update #__digicom_cart set quantity = ".$stock . ""
-			. " where sid='".$sid."' AND item_id='".$item_id."' and cid='".intval($cid)."'";
-			$db->setQuery($sql);
-			$db->query(); //updating quantity
-		}
-		elseif($stock <= 0 && $usestock > 0){
-			$sql = "delete from #__digicom_cart where cid='".intval($cid)."' and sid='".intval($sid)."' and item_id='".intval($pid)."'";
-			$db->setQuery($sql);
-			$db->query();
-		}
 
 		return $cid;
 	}

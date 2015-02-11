@@ -125,8 +125,7 @@ class DigiComControllerCart extends DigiComController
 	function add()
 	{
 		$db = JFactory::getDBO();
-		$pid = JRequest::getVar('pid',0);
-		$pid = is_array($pid)?$pid[0]:$pid;
+		$pid = JFactory::getApplication()->input->get('pid',0);
 
 		//check if this product is unpublished
 		$sql = "select count(*)
@@ -135,65 +134,50 @@ class DigiComControllerCart extends DigiComController
 		$db->setQuery($sql);
 		$db->query();
 		$result = $db->loadResult();
-		if($result == 0)
-		{// expired or not published
-			$renew = JRequest::getVar("renew", "");
-			$this->showCart();
-			return true;
-		}
-
+		
 		//check if this product is unpublished
-		$cid = JRequest::getVar('cid', array(0), 'request', 'array');
-		$cid = intval($cid[0]); //product category id
-
-		$layout = JRequest::getVar('layout', '');
-		if(!empty($layout)){
-			$layout = "&layout=".$layout;
-		}
-
-		$productname = "";
-		$res = $this->_model->addToCart($this->_customer, $productname);
+		$cid = JFactory::getApplication()->input->get('cid',0);
+		$res = $this->_model->addToCart($this->_customer);
 		$configs = $this->_config->getConfigs();
 
-		$from = JRequest::getVar("from", "");
+		$from = JFactory::getApplication()->input->get('from','');
 
 		if($from == "ajax"){
 			$renew = JRequest::getVar("renew", "");
 			$this->showCart();
 		}
-
 		global $Itemid;
 		$cart_itemid = DigiComHelper::getCartItemid();
 
 		if(JRequest::getVar('status', '-1') == 'change'){
-			$url = JRoute::_("index.php?option=com_digicom&controller=cart&task=showCart&Itemid=".$cart_itemid, false);
+			$url = JRoute::_("index.php?option=com_digicom&view=cart&task=showCart&Itemid=".$cart_itemid, false);
 			$this->setRedirect($url);
 		}
 		else{
 			if($res < 0) {
 				$msg = JText::_("DSWRONGPRODID");
-				$link = "index.php?option=com_digicom&controller=products&task=list&cid=" . $cid . $layout . "&Itemid=" . $Itemid;
+				$link = "index.php?option=com_digicom&view=categories&cid=" . $cid . "&Itemid=" . $Itemid;
 				$this->setRedirect(JRoute::_($link, false), $msg);
 			}
 			elseif($res == 0){
 				$msg = JText::_("DSERRORUPDCARD");
-				$link = "index.php?option=com_digicom&controller=products&task=list&cid=" . $cid . $layout . "&Itemid=" . $Itemid;
+				$link = "index.php?option=com_digicom&view=categories&cid=" . $cid . "&Itemid=" . $Itemid;
 				$this->setRedirect(JRoute::_($link, false), $msg);
 			}
 
 			$from_add_plugin = JRequest::getVar("from_add_plugin", "0");
 			if($from_add_plugin == 1){
-				$configs->get('afteradditem',0) = 0;
+				$afteradditem = 0;
 			}
 
-			$type_afteradd = $configs->get('afteradditem','1');
+			$type_afteradd = $afteradditem;
 			$gotocart = JRequest::getVar("gotocart", "");
 			if($gotocart != ""){
 				$type_afteradd = 0;
 			}
 
 			if($type_afteradd == 0){// Take to cart
-				$url = JRoute::_("index.php?option=com_digicom&controller=cart&task=showCart&Itemid=".$cart_itemid, false);
+				$url = JRoute::_("index.php?option=com_digicom&view=cart&task=showCart&Itemid=".$cart_itemid, false);
 				$this->setRedirect($url);
 			}
 			elseif($type_afteradd == 1){//Stay on product list

@@ -186,6 +186,11 @@ class TableProduct extends JTable {
 			}
 			$this->metakeywords = implode(", ", $clean_keys); // put array back together delimited by ", "
 		}
+		//set meta title
+		if (trim($this->metatitle) == '')
+		{
+			$this->metatitle = $this->name;
+		}
 
 		return true;
 	}
