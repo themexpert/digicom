@@ -1,0 +1,86 @@
+/*!
+ * com digicom
+ * Licensed under a 3 clauses BSD license
+ */
+
+.com_digicom.categories .products_list ul.list li {
+  background: #F7F7F7;
+  border-bottom: 1px dotted #CCC;
+  margin-bottom: 50px;
+  padding-right: 20px;
+  height: 250px;
+}
+.com_digicom.categories .products_list ul.list li img {
+  float: left;
+  margin-right: 10px;
+  padding-bottom: 0;
+  border-bottom: 2px solid transparent;
+}
+.com_digicom.categories .products_list ul.list li p {
+  overflow: hidden;
+  word-wrap: break-word;
+  width: 250px;
+}
+.com_digicom.categories .products_list ul.list li .title {
+  overflow: hidden;
+  word-wrap: break-word;
+  font-size: 24px;
+}
+.com_digicom.categories .products_list ul.list li .list-left {
+  width: 300px;
+  position: absolute;
+  padding-left: 260px;
+}
+.com_digicom.categories .products_list ul.list li .list-right {
+  width: 150px;
+  float: right;
+}
+.com_digicom.categories .products_list ul.list li .price {
+  float: right;
+  font-size: 56px;
+  display: block;
+  margin-right: 10px;
+  text-align: right;
+  width: 100%;
+  color: #4FAFC2;
+  line-height: 100%;
+}
+.com_digicom.categories .products_list ul.list li .detail {
+  float: right;
+  display: block;
+}
+.com_digicom.categories .products_list ul.grid li {
+  float: left;
+  width: 265px;
+  height: 275px;
+  border-right: 1px dotted #CCC;
+  border-bottom: 1px dotted #CCC;
+  margin: 20px;
+  background: #F7F7F7;
+}
+.com_digicom.categories .products_list ul.grid li img {
+  text-align: center;
+  width: 100%;
+}
+.com_digicom.categories .products_list ul.grid li .description{
+  display: none;
+}
+.com_digicom.categories .products_list ul.grid li .list-left {
+  text-align: left;
+  font-size: 24px;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+.com_digicom.categories .products_list ul.grid li .icon-group-btn {
+  font-size: 14px;
+}
+.com_digicom.categories .products_list ul.grid li .list-right {
+  display: block;
+  width: 100px;
+  margin-left: 10px;
+}
+.com_digicom.categories .products_list ul.grid li .list-right .price {
+  font-size: 24px;
+  display: block;
+  color: #4FAFC2;
+}

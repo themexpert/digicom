@@ -53,7 +53,7 @@
 /libraries/*
 /logs/*
 /media/*
-!/media/digicom/*
+!/media/digicom/
 /modules/*
 !/modules/mod_digicom_cart/*
 !/modules/mod_digicom_categories/*
