@@ -27,6 +27,11 @@ class DigiComSessionHelper {
 		$digicomid = 'digicomid';
 		$sid = $reg->get($digicomid, 0);
 		
+		//$sql = "SELECT GROUP_CONCAT(sid) from #__digicom_session where create_time<'".($time - 3600*24)."'";
+		$sql = "SELECT GROUP_CONCAT(sid) from #__digicom_session";
+		$db->setQuery($sql);
+		$oldsids = $db->loadObject();
+		print_r($oldsids);die;
 		$sql = "delete from #__digicom_session where create_time<'".($time - 3600*24)."'";
 		$db->setQuery($sql);
 		$db->query();
@@ -52,13 +57,28 @@ class DigiComSessionHelper {
 			}
 		} else {
 			//check if has userid
-			$sql = "select * from #__digicom_session where sid='".$sid."'";
-			$db->setQuery($sql);
-			$digisession = $db->loadObject();
-			if($digisession->uid == 0 && $my->id != 0){
-				$sql = "UPDATE #__digicom_session SET `uid`='".$my->id."'";
+			if($my->id != 0){ //i'm loged in
+				$sql = "select * from #__digicom_session where sid='".$sid."'";
 				$db->setQuery($sql);
-				$db->query();
+				$digisession = $db->loadObject();
+				
+				
+				
+				if($digisession->uid == 0){
+					
+					$sql = "delete from #__digicom_session where uid='".$my->id."'";
+					$db->setQuery($sql);
+					$db->query();
+					
+					$sql = "UPDATE #__digicom_session SET `uid`='".$my->id."' WHERE sid='".$sid."'";
+					$db->setQuery($sql);
+					$db->query();
+				}
+				
+			}else{
+				$sql = "select * from #__digicom_session where uid='".$my->id."'";
+				$db->setQuery($sql);
+				$digisession = $db->loadObject();				
 			}
 			
 			$sid_time = $digisession->create_time;

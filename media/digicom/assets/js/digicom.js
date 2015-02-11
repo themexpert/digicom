@@ -7,13 +7,6 @@
  */
 imgpath = "";
 // Media manager
-/*
-jQuery('ul#submenu').toggle(function () {
-	$("#user_button").addClass("active");
-}, function () {
-	$("#user_button").removeClass("active");
-});
-*/
 function elFinderUpdate(fieldID, value) {
 	jQuery('#' + fieldID).val(value);
 	if (typeof SqueezeBox !== 'undefined' && jQuery.isFunction(SqueezeBox)) {
