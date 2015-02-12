@@ -27,14 +27,18 @@ class DigiComSessionHelper {
 		$digicomid = 'digicomid';
 		$sid = $reg->get($digicomid, 0);
 		
-		//$sql = "SELECT GROUP_CONCAT(sid) from #__digicom_session where create_time<'".($time - 3600*24)."'";
-		$sql = "SELECT GROUP_CONCAT(sid) from #__digicom_session";
+		$sql = "SELECT GROUP_CONCAT(sid) as sid from #__digicom_session where create_time<'".($time - 3600*24)."'";
 		$db->setQuery($sql);
 		$oldsids = $db->loadObject();
-		print_r($oldsids);die;
-		$sql = "delete from #__digicom_session where create_time<'".($time - 3600*24)."'";
-		$db->setQuery($sql);
-		$db->query();
+		if(!empty($oldsids->sid)){
+			$sql = "delete from #__digicom_cart where `sid` in (".$oldsids->sid.")";
+			$db->setQuery($sql);
+			$db->query();
+		
+			$sql = "delete from #__digicom_session where `sid` in (".$oldsids->sid.")";
+			$db->setQuery($sql);
+			$db->query();
+		}
 		
 		if (!$sid) {
 			$sql = "select * from #__digicom_session where uid='".$my->id."'";
@@ -113,25 +117,34 @@ class DigiComSessionHelper {
 		} else {
 			$this->_customer = new stdClass();
 		}
-
-		if (!isset($this->_customer->shipcountry)) $this->_customer->shipcountry = '';
-		if (!isset($this->_customer->shipstate)) $this->_customer->shipstate = '';
-		if (!isset($this->_customer->shipzipcode)) $this->_customer->shipzipcode = '';
-		if (!isset($this->_customer->id)&&$my->id) $this->_customer->id = $my->id;
-		$name_array = explode(" ", $my->name);
-		$first_name = "";
-		$last_name = "";
-		if(count($name_array) == 1){
-			$name = $my->name;
-			$first_name = $name;
-			$last_name = $name;
-		} else {
-			$last_name = $name_array[count($name_array)-1];
-			unset($name_array[count($name_array)-1]);
-			$first_name = implode(" ", $name_array);
+		
+		if (!isset($this->_customer->firstname)) $this->_customer->firstname = '';
+		if (!isset($this->_customer->lastname)) $this->_customer->lastname = '';
+		if (!isset($this->_customer->country)) $this->_customer->country = '';
+		if (!isset($this->_customer->state)) $this->_customer->state = '';
+		if (!isset($this->_customer->zipcode)) $this->_customer->zipcode = '';
+		
+		if (!isset($this->_customer->id) && $my->id ) $this->_customer->id = $my->id;
+		
+		if($my->id > 0){
+			$name_array = explode(" ", $my->name);
+			$first_name = "";
+			$last_name = "";
+			if(count($name_array) == 1){
+				$name = $my->name;
+				$first_name = $name;
+				$last_name = $name;
+			} else {
+				$last_name = $name_array[count($name_array)-1];
+				unset($name_array[count($name_array)-1]);
+				$first_name = implode(" ", $name_array);
+			}
+			if (empty( $this->_customer->firstname )&& $my->id ) $this->_customer->firstname 	= $first_name;
+			if (empty( $this->_customer->lastname )&& $my->id ) $this->_customer->lastname 	= $last_name;
+		
 		}
-		if (!isset( $this->_customer->firstname )&& $my->id ) $this->_customer->firstname 	= $first_name;
-		if (!isset( $this->_customer->lastname )&& $my->id ) $this->_customer->lastname 	= $last_name;
+		
+		return true;
 	}
 
 	function getTransactionData() {

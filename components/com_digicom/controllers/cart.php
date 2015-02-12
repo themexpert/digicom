@@ -238,7 +238,7 @@ class DigiComControllerCart extends DigiComController
 		$from = JRequest::getVar("from", "");
 		if($from == "ajax")
 		{
-			$url = JRoute::_("index.php?option=com_digicom&controller=cart&task=showCart&from=ajax&tmpl=component", false);
+			$url = JRoute::_("index.php?option=com_digicom&view=cart&task=showCart&from=ajax&tmpl=component", false);
 			$this->setRedirect($url);
 		}
 		else
@@ -266,7 +266,7 @@ class DigiComControllerCart extends DigiComController
 			if(strlen($rp) < 1)
 			{
 				$cart_itemid = DigiComHelper::getCartItemid();
-				$this->setRedirect(JRoute::_("index.php?option=com_digicom&controller=cart&task=showCart&Itemid=".$cart_itemid."&processor=".$processor."&agreeterms=".$agreeterms, false));
+				$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&task=showCart&Itemid=".$cart_itemid."&processor=".$processor."&agreeterms=".$agreeterms, false));
 			}
 			else
 			{
@@ -280,15 +280,7 @@ class DigiComControllerCart extends DigiComController
 					return true;
 				}
 				else{
-					$this->setRedirect(JRoute::_("index.php?option=com_digicom&controller=cart&task=checkout&processor=".$processor."&agreeterms=".$agreeterms, false, ($processor=='authorizenet' ? true : false)));
-					$configs = $this->_config->getConfigs();
-					/*if($configs->takecheckout == 1){
-						$this->showSummary();
-					}
-					else{
-						$this->checkout();
-					}*/
-					//$this->checkout();
+					$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&task=checkout&processor=".$processor."&agreeterms=".$agreeterms, false, ($processor=='authorizenet' ? true : false)));
 				}
 			}
 		}
@@ -353,30 +345,30 @@ class DigiComControllerCart extends DigiComController
 		$_Itemid = $Itemid;
 		$user = JFactory::getUser();
 		$cart = $this->_model;
-		//$plugins_enabled = $cart->getPluginList();
+		$plugins_enabled = $cart->getPluginList();
 
 		// Check Login
 		if(!$user->id){
 			$uri = JURI::getInstance();
-			$return = base64_encode($uri->toString());
-			$this->setRedirect('index.php?option=com_users&view=login&return='.$return);
-// 			$this->setRedirect("index.php?option=com_digicom&controller=profile&task=login_register&returnpage=login_register&Itemid=".$Itemid."&processor=".$processor);
+			//$return = base64_encode($uri->toString());
+			//$this->setRedirect('index.php?option=com_users&view=login&return='.$return);
+ 			$this->setRedirect("index.php?option=com_digicom&view=profile&task=login_register&returnpage=login_register&Itemid=".$Itemid."&processor=".$processor);
 			return true;
 		}
 		if($this->_customer->_user->id < 1){
 			$uri = JURI::getInstance();
-			$return = base64_encode($uri->toString());
-			$this->setRedirect('index.php?option=com_users&view=profile&layout=edit&return='.$return);
-// 			$this->setRedirect("index.php?option=com_digicom&controller=profile&task=login_register&returnpage=login_register&Itemid=".$Itemid."&processor=".$processor);
+			//$return = base64_encode($uri->toString());
+			//$this->setRedirect('index.php?option=com_users&view=profile&layout=edit&return='.$return);
+ 			$this->setRedirect("index.php?option=com_digicom&view=profile&task=login_register&returnpage=login_register&Itemid=".$Itemid."&processor=".$processor);
 			return true;
 		}
 
 		// Check Payment Plugin installed
-		/*if (empty($plugins_enabled)) {
+		if (empty($plugins_enabled)) {
 			$msg = JText::_('Payment plugins not installed');
-			$this->setRedirect(JRoute::_("index.php?option=com_digicom&controller=cart"), $msg);
+			$this->setRedirect("index.php?option=com_digicom&view=cart", $msg);
 			return;
-		}*/
+		}
 
 		$customer = $this->_customer;
 		$configs = $this->_config->getConfigs();
@@ -386,7 +378,7 @@ class DigiComControllerCart extends DigiComController
 		if( $res < 1 ) {
 			if($configs->get('askforship','0') != 0 || $configs->get('askforbilling','0') != 0)
 			{
-				$this->setRedirect("index.php?option=com_digicom&controller=profile&task=edit&returnpage=checkout&Itemid=".$_Itemid."&processor=".$processor);
+				$this->setRedirect("index.php?option=com_digicom&view=profile&task=edit&returnpage=checkout&Itemid=".$_Itemid."&processor=".$processor);
 			}
 			else 
 			{
@@ -428,7 +420,7 @@ class DigiComControllerCart extends DigiComController
 		$tax 		= $cart->calc_price($items, $customer, $configs);
 		$total 		= $tax['taxed'];
 		$now 		= time();
-
+		
 		if( (double)$total == 0 ) {
 			if(count($items) != "0"){
 				$cart->addFreeProduct($items, $customer, $tax);

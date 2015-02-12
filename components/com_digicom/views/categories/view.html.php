@@ -87,9 +87,8 @@ class DigiComViewCategories extends DigiComView {
 		}
 		elseif($result == 0){
 			$sql = "select count(*)
-					from #__digicom_product_categories pc, #__digicom_products p
-					where pc.catid=".intval($cat_id)."
-					  and pc.productid=p.id
+					from #__digicom_products p
+					where p.catid=".intval($cat_id)."
 					  and p.published=1
 					  and p.hide_public=0";
 			$db->setQuery($sql);

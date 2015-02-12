@@ -668,7 +668,7 @@ class DigiComHelper {
 
 	}
 
-	public static function get_store_province( $configs, $ship = 0 ) {
+	public static function get_store_province( $custommer, $ship = 0 ) {
 		$db            = JFactory::getDBO();
 		$province_word = "province";
 		$state_word    = "state";
@@ -678,8 +678,8 @@ class DigiComHelper {
 			$shipword      = "ship";
 			$state_word    = "ship" . $state_word;
 		}
-		if ($configs->get('state','') ) {
-			$query = "SELECT state FROM #__digicom_states WHERE country='" . $configs->get('country','') . "' order by `state`";
+		if ($custommer->state) {
+			$query = "SELECT state FROM #__digicom_states WHERE country='" . $custommer->country . "' order by `state`";
 			$db->setQuery( $query );
 			$res    = $db->loadObjectList();
 			$output = '
@@ -687,7 +687,7 @@ class DigiComHelper {
 							<select name="' . $state_word . '" id="' . $shipword . 'sel_province" style="width:15.5em;">';
 			foreach ( $res as $i => $v ) {
 				$output .= '<option value="' . $v->state . '" ';
-				if ( $v->state == $configs->get('state','') ) {
+				if ( $v->state == $custommer->state ) {
 					$output .= 'selected';
 				}
 				$output .= '>' . $v->state . '</option>';

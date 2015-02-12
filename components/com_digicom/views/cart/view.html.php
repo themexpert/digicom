@@ -33,104 +33,10 @@ class DigiComViewCart extends JViewLegacy
 		
 		$this->assign("customer", $customer);
 
-		$items = $this->_models['cart']->getCartItems($customer, $configs);
-		foreach($items as $key => $item)
-		{
-			if ($key < 0)
-				continue;
-			// Plans
-			if($item->renew == 0) {
-				$sql = "SELECT pl.id AS value, pl.name AS text, pp.price, pp.default FROM #__digicom_products_plans pp LEFT JOIN #__digicom_plans pl ON ( pp.plan_id = pl.id ) WHERE pp.product_id = ".$item->id." AND pl.published=1";
-			} else {
-				$sql = "SELECT pl.id AS value, pl.name AS text, pp.price, pp.default FROM #__digicom_products_renewals pp LEFT JOIN #__digicom_plans pl ON ( pp.plan_id = pl.id ) WHERE pp.product_id = ".$item->id." AND pl.published=1";
-			}
-			$db->setQuery($sql);
-			$item_plains = $db->loadObjectList();
-			
-//			if(!isset($item_plains) || count($item_plains) <= 0)
-			if(empty($item_plains))
-			{
-				$sql = "SELECT pl.id AS value, pl.name AS text, pp.price, pp.default FROM #__digicom_products_plans pp LEFT JOIN #__digicom_plans pl ON ( pp.plan_id = pl.id ) WHERE pp.product_id = ".$item->id." AND pl.published=1";
-				$db->setQuery($sql);
-				$item_plains = $db->loadObjectList();
-			}
-
-			$plans = array();
-			$plans[] = JHTML::_('select.option',  "-1", "Select a Subscription");
-
-			$plan_default_value = 0;
-			$plan_price_format = "";
-			foreach($item_plains as $plan_key => $plan_item)
-			{
-				if($plan_item->default == 1 )
-				{
-					$plan_default_value =& $item_plains[$plan_key];
-				}
-				$plan_price_format = DigiComHelper::format_price2($plan_item->price, $configs->get('currency','USD'), true, $configs);
-				$plans[] = JHTML::_('select.option',  $plan_item->value,  $plan_item->text . " - " . $plan_price_format);
-			}
-
-			$selected_plain = $item->plan_id;
-			if($item->renew == 1) {
-				$selected_plain = $plan_default_value->value;
-				$items[$key]->plan_id = $plan_default_value->value;
-				$item->price = $plan_default_value->price;
-				$items[$key]->price = $plan_default_value->price;
-				$item->subtotal = $plan_default_value->price;
-				$items[$key]->subtotal = $plan_default_value->price;
-				$item->taxed = $plan_default_value->price;
-				$items[$key]->taxed = $plan_default_value->price;
-			}
-			
-			if ($item->plan_id <= 0 ) {
-				$selected_plain = $plan_default_value->value;
-				$item->price 	= $plan_default_value->price;
-			}
-
-			$items[$key]->plans_select = '';
-			if ($item->domainrequired <> 3 && count($plans) > 2) {
-				$items[$key]->plans_select = JHTML::_('select.genericlist',  $plans, 'plan_id['.$item->cid.']', 'size="1" class="inputbox" onchange="update_cart('.$item->cid.')" ', 'value', 'text', $selected_plain);
-			} elseif(count($plans) <= 2) {
-				$items[$key]->plans_select .= '<select name="plan_id['.$item->cid.']" id="plan_id'.$item->cid.'" style="display:none">';
-				$items[$key]->plans_select .= 	'<option value="'.$selected_plain.'" selected="selected">&nbsp;</option>';
-				$items[$key]->plans_select .= '</select>';
-				if ( $item->domainrequired <> 3 ) {
-					if ($item->domainrequired == 0 || $item->domainrequired == 1) {
-						$items[$key]->plans_select .= $plans["1"]->text;
-					} else {
-						$temp_price = explode("-", $plans["1"]->text);
-						$price_text = trim($temp_price["1"]);
-						$items[$key]->plans_select .= $price_text;
-					}
-				} else {
-					$temp_price = explode("-", $plans["1"]->text);
-					$price_text = trim($temp_price["1"]);
-					$items[$key]->plans_select .= $price_text;
-				}
-			} else {
-				$items[$key]->plans_select = JHTML::_('select.genericlist',  $plans, 'plan_id['.$item->cid.']', 'style="display:none;" size="1" class="inputbox" onchange="update_cart('.$item->cid.')" ', 'value', 'text', $selected_plain);
-
-				$featureds = $item->featured;
-
-				if(isset($featureds) && count($featureds) > 0){
-					$items[$key]->plans_select .= '<div style="margin:auto !important;">This package includes the following products: </div>';
-				}
-
-				$items[$key]->plans_select .= '<ul class="features">';
-				foreach( $featureds as $key2 => $featured ) {
-					$items[$key]->plans_select .= '<li>' . $featured->name.' <nobr>( Plan: '.$featured->planname.' )</nobr></li>';
-				}
-				$items[$key]->plans_select .= "</ul>";
-			}
-
-			$items[$key]->plans_select .= "<input type='hidden' name='renew' value='".( ($item->renew == 1)?'1':'0' )."'/>";
-			$items[$key]->plans_select .= "<input type='hidden' name='renewlicid' value='".( ($item->renewlicid != -1)? $item->renewlicid : '-1' )."'/>";
-
-		}
-		//dsdebug($items);
+		$items = $this->_models['cart']->getCartItems($customer, $configs);		
 
 		$this->assignRef("items", $items);
-
+		
 		// Plugins
 		$plugin_items = $this->get('PluginList');
 		$plugins = array();
@@ -162,9 +68,9 @@ class DigiComViewCart extends JViewLegacy
 			$sql = "select id from #__digicom_categories where title like '".$categ_digicom."' or name like '".$categ_digicom."'";
 			$database->setQuery($sql);
 			$id = $database->loadResult();
-			$cat_url = JRoute::_("index.php?option=com_digicom&controller=products&task=listProducts&cid=" . $id."&Itemid=".$Itemid);
+			$cat_url = JRoute::_("index.php?option=com_digicom&view=categories&cid=" . $id."&Itemid=".$Itemid);
 		} else {
-			$cat_url = JRoute::_("index.php?option=com_digicom&controller=categories&task=listCategories"."&Itemid=".$Itemid);
+			$cat_url = JRoute::_("index.php?option=com_digicom&view=categories&cid=0"."&Itemid=".$Itemid);
 		}
 		$this->assign ("cat_url", $cat_url);
 		$maxfields = 0;
@@ -204,13 +110,56 @@ class DigiComViewCart extends JViewLegacy
 		$this->assign("promocode", $promo->code);
 		$this->assign("promoerror", $promo->error);
 		$this->assign("lists", $lists);
-
+		
+		$template = new DigiComTemplateHelper($this);
+		$from = JRequest::getVar("from", "");
+		if($from == "ajax"){
+			$template->rander('cart_popup');			
+		}else{
+			$template->rander('cart');			
+		}
+		
 		parent::display($tpl);
 	}
 
 	function paymentwait($tpl = null)
 	{
 		parent::display($tpl);
+	}
+	
+	public function MostraFormPagamento($configs){
+		
+		$db = JFactory::getDBO();
+
+		$condtion = array(0 => '\'payment\'');
+		$condtionatype = join(',',$condtion);
+		if(JVERSION >= '1.6.0')
+		{
+			$query = "SELECT extension_id as id,name,element,enabled as published
+					  FROM #__extensions
+					  WHERE folder in ($condtionatype) AND enabled=1";
+		}
+		else
+		{
+			$query = "SELECT id,name,element,published
+					  FROM #__plugins
+					  WHERE folder in ($condtionatype) AND published=1";
+		}
+		$db->setQuery($query);
+		$gatewayplugin = $db->loadobjectList();
+
+		$lang = JFactory::getLanguage();
+		$options = array();
+		$options[] = JHTML::_('select.option', '', 'Select payment gateway');
+		foreach($gatewayplugin as $gateway)
+		{
+			$gatewayname = strtoupper(str_replace('plugpayment', '',$gateway->element));
+			$lang->load('plg_payment_' . strtolower($gatewayname), JPATH_ADMINISTRATOR);
+			$options[] = JHTML::_('select.option',$gateway->element, JText::_($gatewayname));
+		}
+
+		return JHTML::_('select.genericlist', $options, 'processor', 'class="inputbox required" style="float:right;"', 'value', 'text', $configs->get('default_payment','bycheck'), 'processor' );
+
 	}
 
 }

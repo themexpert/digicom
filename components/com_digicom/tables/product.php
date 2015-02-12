@@ -57,10 +57,13 @@ class TableProduct extends JTable {
 
 	function load ($id = 0) {
 		parent::load($id);
-		$db = JFactory::getDBO();
+		
+		/*$db = JFactory::getDBO();
 		$sql = "SELECT catid FROM #__digicom_product_categories WHERE productid='".$this->id."'";
 		$db->setQuery($sql);
 		$this->selection = $db->loadColumn();
+		*/
+		$this->selection = $this->catid;
 	}
 
 	function store () {

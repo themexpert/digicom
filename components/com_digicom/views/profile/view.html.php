@@ -29,39 +29,39 @@ class DigiComViewProfile extends DigiComView {
 	}
 
 	function loginRegister($tpl = null)
-	{
-		$db = JFactory::getDBO();
-		$sql = "select `askforship`, `askforbilling`, `askforcompany` from #__digicom_settings";
-		$db->setQuery($sql);
-		$db->query();
-		$result_settings = $db->loadAssocList();
-		$this->askforship = $result_settings["0"]["askforship"];
-		$this->askforbilling = $result_settings["0"]["askforbilling"];
-		$this->askforcompany = $result_settings["0"]["askforcompany"];
+	{	
 
+		$db = JFactory::getDBO();
+		
 		require_once(JPATH_SITE.DS."components".DS."com_digicom".DS."models".DS."config.php");
 		$conf_model = new DigiComModelConfig();
 		$configs = $conf_model->getConfigs();
-
+	
+		$this->askforbilling = $configs->get('askforbilling',1);
+		$this->askforcompany = $configs->get('askforcompany',1);
+		
 		$customer = new DigiComSessionHelper();
-		require_once(JPATH_SITE.DS."components".DS."com_digicom".DS."models".DS."customer.php");
-		$customer_model = new DigiComModelCustomer();
-		$customer = $customer_model->getCustomer($customer->_user->id);
-
+		
+		if($customer->_user->id > 0){
+			require_once(JPATH_SITE.DS."components".DS."com_digicom".DS."models".DS."customer.php");
+			$customer_model = new DigiComModelCustomer();
+			$customer = $customer_model->getCustomer($customer->_user->id);
+		}
+		
 		$country_option = DigiComHelper::get_country_options($customer, false, $configs);
 		$lists['country_option'] = $country_option;
 
 		$profile = new StdClass();
-		$profile->country = @$customer->shipcountry;
+		$profile->country = @$customer->country;
 		$profile->state = @$customer->state;
-		$shipcountry_option = DigiComHelper::get_country_options($customer, true, $configs);
+		$shipcountry_option = DigiComHelper::get_country_options($profile, true, $configs);
 		$lists['shipcountry_options'] = $shipcountry_option;
 
-		$lists['customerlocation'] = DigiComHelper::get_store_province($customer, false);
+		$lists['customerlocation'] = DigiComHelper::get_store_province($profile, false);
 
 		$profile = new StdClass();
-		$profile->country = @$customer->shipcountry;
-		$profile->state = @$customer->shipstate;
+		$profile->country = @$customer->country;
+		$profile->state = @$customer->state;
 		$lists['customershippinglocation'] = DigiComHelper::get_store_province($profile, true);
 
 		$sql = "select * from #__digicom_states where eumember='1'";
@@ -91,13 +91,8 @@ class DigiComViewProfile extends DigiComView {
 
 		$this->assign("lists", $lists);
 
-		$this->assign("cust", $customer);
+		$this->assign("customer", $customer);
 		$this->assign("configs", $configs);
-
-		if($configs->get('shopping_cart_style','') == "1")
-		{
-			JRequest::setVar("tmpl", "component");
-		}
 
 		parent::display($tpl);
 	}

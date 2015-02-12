@@ -1225,17 +1225,15 @@ class DigiComAdminHelper {
 		$db = JFactory::getDBO();
 		$sql = '
 			SELECT
-				DISTINCT p.id,p.name, p.description, p.publish_up,
-				c.title AS category, pc.catid AS catid
+				DISTINCT p.id,p.name,p.catid, p.description, p.publish_up,
+				c.title AS category
 			FROM
 				#__digicom_products p,
-				#__digicom_categories c,
-				#__digicom_product_categories pc
+				#__digicom_categories c
 			WHERE
 				p.published = 1 AND
 				c.published = 1 AND
-				pc.productid = p.id AND
-				pc.catid = c.id
+				p.catid = c.id
 			ORDER BY p.id DESC
 			LIMIT '.$limit.'
 		';

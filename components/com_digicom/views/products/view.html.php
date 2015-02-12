@@ -29,8 +29,8 @@ class DigiComViewProducts extends DigiComView {
 		$this->triggerPlugin($prod);
 		$this->setMetaData($prod);
 		
-		//$template = new DigiComTemplateHelper($this);
-		//$template->rander('products');
+		$template = new DigiComTemplateHelper($this);
+		$template->rander('products');
 		
 		parent::display();
 	}

@@ -41,9 +41,6 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'log.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'config.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
 
-// Update Licences
-DigiComAdminHelper::updateLicenses();
-
 // load core script
 $document = JFactory::getDocument();
 $document->addScript(JURI::root(true).'/media/digicom/assets/js/digicom.js?v=1.0.0&amp;sitepath='.JURI::root(true).'/');

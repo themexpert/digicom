@@ -20,11 +20,9 @@ class DigiComAdminControllerProducts extends DigiComAdminController {
 	function __construct () {
 		parent::__construct();
 		$this->registerTask ('save2new', 'save');
-// 		$this->registerTask ('save2copy', 'save');
 		$this->registerTask ("", "listProducts");
 		$this->registerTask ('apply', 'save');
 		$this->registerDefaultTask('listProducts');
-
 		$this->registerTask ('unpublish', 'publish');
 		$this->registerTask ('orderup', 'shiftorder');
 		$this->registerTask ("orderdown", "shiftorder");

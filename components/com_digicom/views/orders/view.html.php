@@ -55,11 +55,11 @@ class DigiComViewOrders extends DigiComView {
 			$sql = "select id from #__digicom_categories where title like '".$categ_digicom."' or name like '".$categ_digicom."'";
 			$database->setQuery($sql);
 			$id = $database->loadResult();
-			$cat_url = JRoute::_("index.php?option=com_digicom&controller=products&task=list&cid=" . $id."&Itemid=".$Itemid);
+			$cat_url = JRoute::_("index.php?option=com_digicom&view=categories&cid=" . $id."&Itemid=".$Itemid);
 		}
 		else
 		{
-			$cat_url = JRoute::_("index.php?option=com_digicom&controller=categories&task=listCategories"."&Itemid=".$Itemid);
+			$cat_url = JRoute::_("index.php?option=com_digicom&view=categories&cid=0"."&Itemid=".$Itemid);
 		}
 
 		$this->assignRef('orders', $orders);

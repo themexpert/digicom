@@ -74,7 +74,7 @@ class DigiComAdminModelProduct extends JModelList {
 		$where = " 1=1 ";
 
 		if($prc > 0){
-			$where .= " and id IN (SELECT productid FROM #__digicom_product_categories WHERE catid='".$prc."' ) ";
+			//$where .= " and id IN (SELECT productid FROM #__digicom_product_categories WHERE catid='".$prc."' ) ";
 		}
 		if($state_filter != "-1"){
 			$where .= " and published=".$state_filter;
@@ -121,11 +121,12 @@ class DigiComAdminModelProduct extends JModelList {
 		$db->query();
 		$result	= $db->loadObjectList();
 
+		
 		foreach($result as $i => $v)
 		{
 			$sql = "SELECT id,name
 					FROM #__digicom_categories
-					WHERE id in "." (SELECT catid FROM #__digicom_product_categories WHERE productid='".$v->id."')";
+					WHERE id='".$v->catid."'";
 			$db->setQuery($sql);
 			$result[$i]->cats = $db->loadObjectList();
 		}
@@ -194,10 +195,11 @@ class DigiComAdminModelProduct extends JModelList {
 		}
 		$db = JFactory::getDBO();
 		
-		$filesTable = JTable::getInstance('Files', 'Table');
-		$fileList = $filesTable->getList('product_id',$this->_product->id);
-		$this->_product->file = $filesTable->getList('product_id',$this->_product->id);
-		
+		if($this->_product->id){
+			$filesTable = JTable::getInstance('Files', 'Table');
+			$fileList = $filesTable->getList('product_id',$this->_product->id);
+			$this->_product->file = $filesTable->getList('product_id',$this->_product->id);
+		}
 		return $this->_product;
 	}
 
@@ -208,17 +210,6 @@ class DigiComAdminModelProduct extends JModelList {
 		$featured_products = $db->loadObjectList();
 		return $featured_products;
 	}
-
-
-	function getFeatured2 ( $product_id ) {
-		if(!$product_id) return;
-		$db = JFactory::getDBO();
-		$sql = "select f.featuredid as id, p.name as name, f.planid from #__digicom_featuredproducts f, #__digicom_products p where f.featuredid=p.id and f.productid=".$product_id;
-		$db->setQuery($sql);
-		$featured_list = $db->loadObjectList();
-		return $featured_list;
-	}
-
 
 	function _storeFile($file, $pid){
 		jimport('joomla.filesystem.folder');
@@ -393,9 +384,6 @@ class DigiComAdminModelProduct extends JModelList {
 		
 		$product_id = $item->id;
 		
-		/* Featured Products */
-		$this->storeFeaturedProducts($product_id);
-
 		/* */
 		$table = $this->getTable();
 		$table->reorder();
@@ -466,29 +454,6 @@ class DigiComAdminModelProduct extends JModelList {
 			$db->setQuery($sql);
 			$db->query();
 		}
-	}
-
-	function storeFeaturedProducts($product_id) {
-
-		$db = JFactory::getDBO();
-
-		$product_include_ids = JRequest::getVar('product_include_id',array(0));
-		$plan_include_ids = JRequest::getVar('plan_include_id',array(0));
-
-		// Clear previos
-		$sql = "DELETE FROM #__digicom_featuredproducts WHERE productid = '".$product_id."';\n";
-		$db->setQuery($sql);
-		$db->query();
-//		dsdebug($sql);
-
-		// Store
-		foreach($product_include_ids as $key => $product_include_id) {
-			$sql = "INSERT INTO #__digicom_featuredproducts ( productid, featuredid, planid ) VALUES ('".$product_id."', '".$product_include_id."','".$plan_include_ids[$key]."'); \n";
-			$db->setQuery($sql);
-			$db->query();
-//			dsdebug($sql);
-		}
-
 	}
 
 	function delete () {

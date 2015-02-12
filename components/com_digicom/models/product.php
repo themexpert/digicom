@@ -127,8 +127,8 @@ class DigiComModelProduct extends DigiComModel
 
 		$sql = "select id
 				from #__digicom_products p
-				where p.id in (select productid from #__digicom_product_categories
-				where catid='".intval($catid)."')".
+				where p.catid = '".intval($catid)."' " .
+//				where p.id in (select productid from #__digicom_product_categories where catid='".intval($catid)."')".
 				(count($where) > 0 ? " and ": "") .
 				implode (" and ", $where);
 
@@ -165,7 +165,6 @@ class DigiComModelProduct extends DigiComModel
 		
 		$limit = $configs->get('prodlayoutrow',3)*$configs->get('prodlayoutcol',3);
 		$pids = $this->_getList($sql.$order , $limitstart, $limit);
-
 		if(isset($pids) && count($pids) > 0){
 			foreach ($pids as $pid) {
 				$this->_products[$pid->id] = $this->getAttributes($pid->id);
@@ -190,14 +189,6 @@ class DigiComModelProduct extends DigiComModel
 		$this->_id = $pid;
 		$this->_product = $this->getTable("Product");
 		$this->_product->load($this->_id);
-
-		$sql = "select price from #__digicom_products_plans where `product_id`=".intval($this->_id)." and `default`=1";
-		$db->setQuery($sql);
-		$db->query();
-		$price = $db->loadResult();
-		if(trim($price) != ""){
-			$this->_product->price = trim($price);
-		}
 		return $this->_product;
 	}
 

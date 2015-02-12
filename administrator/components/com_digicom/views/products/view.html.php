@@ -228,7 +228,7 @@ class DigiComAdminViewProducts extends DigiComView
 
 		JToolBarHelper::title( JText::_( 'Products Manager: select product type' ), 'generic.png' );
 		JToolBarHelper::cancel();
-
+		
 		parent::display( $tpl );
 	}
 
@@ -349,45 +349,7 @@ class DigiComAdminViewProducts extends DigiComView
 		$this->assign( "configs", $configs );
 
 		/* Include */
-
-		$include_products = $this->_models["product"]->getFeatured2( $product->id );
-
-		$include_products_out = array();
-
-		if(isset($include_products) && is_array($include_products) && count($include_products) > 0){
-			foreach( $include_products as $key => $fproduct ) {
-				$sql = "SELECT `plan_id`, `price`, `default` FROM #__digicom_products_plans WHERE product_id=" . $fproduct->id;
-				$db->setQuery( $sql );
-				$plainstoproduct = $isNew?array():$db->loadObjectList();
-
-				$include_products_out[$key]['id'] = $fproduct->id;
-				$include_products_out[$key]['name'] = $fproduct->name;
-
-				// get plains for include product tab
-				$include_plans = array(); $include_plain_default = 0;
-
-				foreach ($plainstoproduct as $plain_value ) {
-					$sql = "select * from #__digicom_plans where id=".$plain_value->plan_id;
-					$db->setQuery($sql);
-					$db->query();
-					$plain = $db->loadAssocList();
-
-					$price = $plain_value->price;
-					$include_plans[] = JHTML::_('select.option',  $plain["0"]["id"],  $plain["0"]["name"] . ' - ' . DigiComAdminHelper::format_price( $price, $configs->get('currency','USD'), true, $configs ) );
-					if ( $fproduct->planid == 0 ) {
-						if ( $plain_value->default == 1 ) {
-							$include_plain_default = $plain_value->plan_id;
-						}
-					} else {
-						$include_plain_default = $fproduct->planid;
-					}
-				}
-
-
-				$include_products_out[$key]['plans'] = JHTML::_('select.genericlist',  $include_plans, 'plan_include_id['.$key.']', 'class="inputbox" size="1" ', 'value', 'text', $include_plain_default);
-			}
-		}
-		$this->assign( "include_products", $include_products_out );
+		//$include_products = $this->_models["product"]->getFeatured2( $product->id );
 		
 		//set toolber
 		$this->addToolbarEdit($product);

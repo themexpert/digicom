@@ -39,7 +39,7 @@ class DigiComModelCart extends DigiComModel
 			return $this->plugins;
 		}
 
-		$plugins = JPluginHelper::getPlugin( 'digicompayment' );
+		$plugins = JPluginHelper::getPlugin( 'payment' );
 
 		return $plugins;
 
@@ -1068,7 +1068,6 @@ class DigiComModelCart extends DigiComModel
 		$taxa = $tax['value'];
 		$shipping = $tax['shipping'];
 		$orderid = $this->addOrder($items, $customer, $now, 'free');
-		$this->addLicenses($items, $orderid, $now, $customer);
 		$this->goToSuccessURL($customer->_sid, '', $orderid);
 		return true;
 	}
@@ -2044,6 +2043,7 @@ class DigiComModelCart extends DigiComModel
 
 							$sql = "insert into #__digicom_licenses(userid, productid, orderid, amount_paid, published, purchase_date, expires, plan_id, download_count, renew, renewlicid) "
 										. "values ('{$user_id}', '{$item->item_id}', '".$orderid."', '{$price}', ".$published.", '".$license_date."', '".$expire_string."', ".$plan_id.", 0, '{$item->renew}', '{$item->renewlicid}')";
+							echo $sql;die;
 							$database->setQuery($sql);
 							$database->query();
 
@@ -2064,12 +2064,6 @@ class DigiComModelCart extends DigiComModel
 							$database->setQuery($sql);
 							$database->query();
 						}
-
-						$sql = "update #__digicom_products_emailreminders
-								set `send`=0
-								where product_id=".intval($item->item_id);
-						$database->setQuery($sql);
-						$database->query();
 
 						$license_index++;
 						$license[$license_index] = new stdClass;
@@ -2106,7 +2100,7 @@ class DigiComModelCart extends DigiComModel
 					$database->setQuery($sql);
 					$database->query();
 				}
-				$this->addUserToList($user_id, $item->item_id);
+				//$this->addUserToList($user_id, $item->item_id);
 
 				for($i = 0; $i < count($item->featured); $i++)
 				{
@@ -2169,6 +2163,7 @@ class DigiComModelCart extends DigiComModel
 
 						$sql = "insert into #__digicom_licenses (`userid`, `productid`, `orderid`, `amount_paid`, `published`, `ltype`, `package_id`, `purchase_date`, `expires`, `plan_id`, `download_count`, `renew`, `renewlicid`) "
 						. "values ('".$user_id."','".$item->featured[$i]->id."', '".$orderid."', '".$amount_paid."', ".$published.", 'package_item', ".$item->item_id.", '".$license_date."', '".$expire_date."', '".$item->featured[$i]->planid."', 0, '".$item->renew."', '".$item->renewlicid."')";
+						
 						$database->setQuery($sql);
 						$database->query();
 

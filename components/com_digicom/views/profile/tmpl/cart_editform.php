@@ -428,48 +428,4 @@ function populateShipping () {
 		</tr>
 <?php
 	}
-	else{
-		$this->askforship = 0;
-	}
-?>
-
-<?php
-	if($this->askforship == 1){
-		$cust = $this->cust;
-?>
-		<tr>
-		<td colspan="2"><h2><?php echo JText::_("DSSHIPADDR"); ?></h2>
-		<input type="checkbox" name="same_as_bil" onclick="populateShipping();" /><?php echo JText::_("DSSAMEASBILLING"); ?></td>
-		</tr>
-		<tr>
-		<td><?php echo JText::_("DSSHIPINGCOUNTRY"); ?>&nbsp;<span class="error">*</span></td>
-		<td><?php echo $this->lists['shipcountry_options']; ?></td>
-		</tr>
-		<tr>
-		<td><?php echo JText::_("DSSHIPINGPROVINCE"); ?>&nbsp;<span class="error">*</span></td>
-		<td><?php echo $this->lists['customershippinglocation']; ?>
-		</td>
-		</tr>
-				<tr>
-					<td><?php echo JText::_("DSSHIPINGCITY"); ?>&nbsp;<span class="error">*</span></td>
-					<td>
-						<div >
-							<input id="shipcity" type="text" value="<?php echo $cust->shipcity; ?>" name="shipcity"   size="30" class="digi_textbox" />
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td width="250"><?php echo JText::_("DSSHIPPINGADDRESS"); ?>&nbsp;<span class="error">*</span></td>
-					<td width="69%"><input name="shipaddress" type="text" id="shipaddress"   size="30" class="digi_textbox" value="<?php echo $cust->shipaddress; ?>"><b>&nbsp;</b></td>
-				</tr>
-				<tr>
-					<td><?php echo JText::_("DSSHIPPINGZIP"); ?>&nbsp;<span class="error">*</span></td>
-					<td><input name="shipzipcode" type="text" id="shipzipcode"   size="30" class="digi_textbox" value="<?php echo $cust->shipzipcode; ?>"><b>&nbsp;</b></td>
-						</tr>
-						<tr>
-							<td></td>
-							<td>&nbsp;</td>
-						</tr>
-<?php
-	}
 ?>
