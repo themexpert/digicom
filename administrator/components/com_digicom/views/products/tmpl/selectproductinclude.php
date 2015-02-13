@@ -50,7 +50,13 @@ $search = JRequest::getVar('search', '');
 
 		<table>
 			<tr>
-				<td colspan="9" nowrap align="left">Search: <input type="text" name="search" value="<?php echo $search; ?>"/><input type="submit" value="Go"/></td>
+				<td colspan="9" nowrap align="left">
+					Search: 
+					<div class="input-append">
+						<input type="text" name="search" value="<?php echo $search; ?>"/>
+						<input type="submit" value="Go" class="btn"/>
+					</div>
+				</td>
 				<td colspan="9" nowrap align="right"><?php echo JText::_("DSCATEGORY").": ".$this->csel; ?></td>
 			</tr>
 		</table>
@@ -65,7 +71,7 @@ $search = JRequest::getVar('search', '');
 					<th width="1%">#</th>
 					<th width="1%"></th>
 					<th width="10%">
-							<span style="white-space:nowrap;"><nobr><?php echo JText::_('VIEWPRODSKU');?> / <?php echo JText::_('VIEWPRODID');?></nobr></span>
+							<span style="white-space:nowrap;"><?php echo JText::_('VIEWPRODID');?></nobr></span>
 					</th>
 					<th>
 							<?php echo JText::_('VIEWPRODNAME');?>
@@ -96,7 +102,7 @@ $search = JRequest::getVar('search', '');
 					</td>
 
 					<td align="center">
-								<?php echo $prod->sku. " / ". $id;?>
+								<?php echo $id;?>
 					</td>
 
 					<td>

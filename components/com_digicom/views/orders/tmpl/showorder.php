@@ -10,157 +10,89 @@
 
 defined ('_JEXEC') or die ("Go away.");
 
-$invisible = 'style="display:none;"';
-
-$k = 0;
 $n = count ($this->order->products);
 $configs = $this->configs;
 $order = $this->order;
-if ($this->order->id < 1):
+
+$date = date( $configs->get('time_format','d M Y'), $order->order_date);
+if ($this->order->id < 1){
 	echo JText::_('DSEMPTYORDER');
-	global $Itemid;
+}
 ?>
 
-	<form action="<?php echo JRoute::_("index.php?option=com_digicom&controller=orders&task=list"."&Itemid=".$Itemid); ?>" name="adminForm" method="post">
-	  	<input type="hidden" name="option" value="com_digicom" />
-		<input type="submit" value="<?php echo JText::_("DSVIEWORDERS");?>" />
-	</form>
+<h2><?php echo JText::_('COM_DIGICOM_ORDER_DETAILS'); ?></h2>
+<p class="alert alert-info">
+	<?php echo JText::sprintf('COM_DIGICOM_ORDER_DETAILS_NOTICE',$order->id,$date,$order->status); ?>
+</p>
 
-<?php
-
-
-	else:
-?>
-<form action="index.php" name="adminForm" method="post">
-<div id="contentpane" >
-<table class="adminlist" width="100%"  border="1" cellpadding="3" cellspacing="0" bordercolor="#cccccc" style="border-collapse: collapse">
-<caption class="componentheading"><?php echo JText::_("DSMYORDER")." #".$order->id; ?></caption>
-</table>
-<span align="left"><b><?php echo JText::_("DSDATE")." ".date( $configs->get('time_format','d-m-Y'), $order->order_date);?></b></span>
-<br /><br />
-<table class="adminlist" width="100%"  border="0" cellpadding="3" cellspacing="0" bordercolor="#cccccc" style="border-collapse: collapse">
-<thead>
-
-	<tr>
-		<th class="sectiontableheader"></th>
-		<th class="sectiontableheader"  >
-			<?php echo JText::_('DSPROD');?>
-		</th>
-
-		<th class="sectiontableheader"  <?php if ($configs->showolics == 0) echo $invisible;?> >
-			<?php echo JText::_('DSLICENSEID');?>
-		</th>
-
-		<th class="sectiontableheader"  >
-			<?php echo JText::_('DSQUANTITY');?>
-		</th>
-
-
-		<th class="sectiontableheader">
-			<?php echo JText::_('DSPRICE');?>
-		</th>
-
-
-		<th class="sectiontableheader"  >
-			<?php echo JText::_('DSDISCOUNT');?>
-		</th>
-
-		<th class="sectiontableheader" >
-			<?php echo JText::_('DSTOTAL');?>
-		</th>
-
-	</tr>
-</thead>
-
-<tbody>
-
-<?php
-	for ($i = 0; $i < $n; $i++):
-		$prod = $order->products[$i];
-		$id = $order->id;
-//		$checked = JHTML::_('grid.id', $i, $id);
-		if (count ($prod->orig_fields) > 0)
-		foreach ($prod->orig_fields as $j => $z) {
-			$val = explode(",", $z->optioname);
-			if (isset($val[1]) && strlen (trim($val[1])) > 0) {
-				$prod->price += floatval(trim($val[1]));
-				$prod->amount_paid += floatval(trim($val[1]));
-			}
-		}
+<table id="edd_purchase_receipt" class="table table-striped table-hover table-bordered">
+	<thead>
 		
-		if (!isset($prod->currency)) {$prod->currency = $configs->get('currency','USD');}
+		<tr>
+			<th><?php echo JText::_('COM_DIGICOM_ORDER_ID'); ?></th>
+			<th><?php echo $order->id; ?></th>
+		</tr>
+	</thead>
 
-?>
-	<tr class="row<?php echo $k;?> sectiontableentry<?php echo ($i%2 + 1);?>">
-		<td><?php echo $i+1; ?></td>
-		 	<td >
-		 			<?php echo $prod->name;?>
-					<?php if (!empty($prod->orig_fields)) {
-						foreach($prod->orig_fields as $attr){
-							echo "<br/>".$attr->fieldname.":".$attr->optioname;
-						}
-					} ?>
-		</td>
+	<tbody>
 
-		 	<td <?php if ($configs->showolics == 0) echo $invisible;?>>
-		 			<?php echo $prod->licenseid;?>
-		</td>
+		<tr>
+			<td><strong><?php echo JText::_('COM_DIGICOM_STATUS'); ?></strong></td>
+			<td class="<?php echo strtolower($order->status); ?>"><?php echo $order->status; ?></td>
+		</tr>
 
-		 	<td>
-		 			<?php echo 1;//$prod->count;?>
-		</td>
+		
+		<tr>
+			<td><strong><?php echo JText::_('COM_DIGICOM_PAYMENT_METHOD'); ?></strong></td>
+			<td><?php echo ucfirst( $order->processor ); ?></td>
+		</tr>
+		<tr>
+			<td><strong><?php echo JText::_('COM_DIGICOM_DATE'); ?></strong></td>
+			<td><?php echo $date; ?></td>
+		</tr>
+		
+		<tr>
+			<td><strong><?php echo JText::_('COM_DIGICOM_DISCOUNT'); ?></strong></td>
+			<td><?php echo DigiComHelper::format_price($order->promocodediscount, $configs->get('currency','USD'), true, $configs);?></td>
+		</tr>
 
-		<td>
-			<?php echo DigiComHelper::format_price($prod->price, $prod->currency, true, $configs);?>
-		</td>
+		<tr>
+			<td><strong><?php echo JText::_('COM_DIGICOM_AMOUNT_PAID'); ?></strong></td>
+			<td><?php echo DigiComHelper::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs);?></td>
+		</tr>
 
-		<td>
-			<?php echo DigiComHelper::format_price($prod->price - $prod->amount_paid, $prod->currency, true, $configs);?>
-		</td>
-
-		<td>
-			<?php echo DigiComHelper::format_price($prod->amount_paid, $prod->currency, true, $configs);?>
-		</td>
-
-
-
-<?php
-		$k = 1 - $k;
-	endfor;
-
-	$colspan=5;
-	if ($configs->showolics == 0) $colspan--;
-
-?>
-<tr style="border-style:none;"><td style="border-style:none;" colspan="7"><hr /></td></tr>
-<tr><td colspan="<?php echo $colspan; ?>" ></td>
-	<td style="font-weight:bold"><?php echo JText::_("DSSUBTOTAL");?></td>
-	<td><?php echo DigiComHelper::format_price($order->amount - $order->tax - $order->shipping, $prod->currency, true, $configs);?></td></tr>
-<?php if ($order->shipping > 0):?>
-<tr><td colspan="<?php echo $colspan; ?>"></td>
-	<td style="font-weight:bold"><?php echo JText::_("DSSHIPPING");?></td>
-	<td><?php echo DigiComHelper::format_price($order->shipping, $prod->currency, true, $configs);?></td></tr>
-<?php endif; ?>
-<tr><td colspan="<?php echo $colspan; ?>"></td>
-	<td style="font-weight:bold"><?php echo JText::_("DSTAX");?></td>
-	<td><?php echo DigiComHelper::format_price($order->tax, $prod->currency, true, $configs);?></td></tr>
-<tr><td colspan="<?php echo $colspan; ?>"></td>
-	   	<td style="font-weight:bold"><?php echo JText::_("DSTOTAL");?></td>
-	<td><?php echo DigiComHelper::format_price($order->amount, $prod->currency, true, $configs);?></td></tr>
-</tbody>
-
-
+	</tbody>
 </table>
 
-</div>
+<h3><?php echo JText::_('COM_DIGICOM_PRODUCTS'); ?></h3>
+<table id="edd_purchase_receipt" class="table table-striped table-hover table-bordered">
+	<thead>
+		<tr>
+			<th><?php echo JText::_('COM_DIGICOM_PRODUCTS_NAME'); ?></th>
+			<th><?php echo JText::_('COM_DIGICOM_PRODUCTS_TYPE'); ?></th>
+		</tr>
+	</thead>
 
-<input type="hidden" name="option" value="com_digicom" />
-<input type="hidden" name="task" value="" />
-<input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="controller" value="Orders" />
-</form>
-<?php
+	<tbody>
+		<?php 
+		foreach($order->products as $key=>$product): 
+			$productlink = JRoute::_("index.php?option=com_digicom&view=products&cid=".$product->catid."&pid=".$product->id);
+		?>
+		<tr>
+			<td><strong><a href="<?php echo $productlink; ?>" target="_blank"><?php echo $product->name; ?></a></strong></td>
+			<td><?php echo ucfirst( $product->package_type ); ?></td>
+		</tr>
+		<?php endforeach; ?>
+	</tbody>
+</table>
 
-endif;
 
-echo DigiComHelper::powered_by(); 
+<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=download"); ?>" class="btn btn-success">
+	<?php echo JText::_('COM_DIGICOM_GO_DOWNLOAD'); ?>
+</a>
+
+<a class="btn btn-info" target="_blank" href="<?php echo JRoute::_("index.php?option=com_digicom&view=orders&task=showrec&orderid=".$order->id."&tmpl=component"); ?>">
+	<?php echo JText::_('DSVIEWANDPRINT'); ?>
+</a>
+
+<?php echo DigiComHelper::powered_by(); ?>

@@ -216,9 +216,9 @@ $formlink = JRoute::_("index.php?option=com_digicom&view=cart");
 	   if(AJAX.status == 200)
 	   {
 		// debug info
+		//console.log(AJAX.responseText);
 		//document.getElementById(DivId).innerHTML = AJAX.responseText;
 		var myObject = eval("(" + AJAX.responseText + ")");
-
 		var cid = myObject.cid;
 		var cart_item_price = eval('myObject.cart_item_price'+cid);
 		var cart_item_total = eval('myObject.cart_item_total'+cid);
@@ -246,19 +246,7 @@ $formlink = JRoute::_("index.php?option=com_digicom&view=cart");
 	}
 
 	function update_cart(item_id) {
-		var url = "<?php JUri::root();?>index.php?option=com_digicom&controller=cart&task=getCartItem&cid="+item_id;
-
-		var plan_id = document.getElementById('plan_id'+item_id);
-		var plan_query = '';
-		if ( plan_id.selectedIndex != -1)
-		{
-			var plan_value = plan_id.options[plan_id.selectedIndex].value;
-			plan_query += '&plan_id='+plan_value;
-		} else {
-			return false;
-		}
-		url += plan_query;
-
+		var url = "<?php JUri::root();?>index.php?option=com_digicom&view=cart&task=getCartItem&cid="+item_id;
 		var promocode = document.getElementById('promocode');
 		var promocode_query = '&promocode='+promocode.value;
 		url += promocode_query;
@@ -268,23 +256,7 @@ $formlink = JRoute::_("index.php?option=com_digicom&view=cart");
 		var qty_query = '';
 		qty_query += '&quantity'+item_id+'='+qty_value;
 		url += qty_query;
-
-		var attrs_query = '';
-		for (var i = 1; i < 11; i++) {
-			if ( document.getElementById('attributes'+item_id+''+i) ) {
-
-				var attr = document.getElementById('attributes'+item_id+''+i);
-
-				if ( attr.selectedIndex != -1)
-				{
-					var value = attr.options[attr.selectedIndex].value;
-					attrs_query += '&attributes['+item_id+']['+i+']='+value;
-				}
-
-			} else break;
-		}
-		url += attrs_query;
-
+		//console.log(url);
 		ajaxRequest(url, 'debugid');
 	}
 
@@ -356,7 +328,7 @@ $formlink = JRoute::_("index.php?option=com_digicom&view=cart");
 			$tax = $this->tax; ?>
 		</div>
 
-			<table id="digicomcarttable" class="table table-striped table-bordered" width="100%">
+		<table id="digicomcarttable" class="table table-striped table-bordered" width="100%">
 			<thead>
 			<tr valign="top">
 				<th width="30%">
@@ -394,10 +366,6 @@ $formlink = JRoute::_("index.php?option=com_digicom&view=cart");
 		<?php
 		} else {
 			foreach($items as $itemnum => $item ){
-				$renew = "";
-				if(isset($item) && isset($item->renew) && $item->renew == "1"){
-					$renew = "&nbsp;&nbsp;&nbsp;(".JText::_("DIGI_RENEWAL").")";
-				}
 				if($itemnum < 0){
 					continue;
 				}
@@ -407,7 +375,7 @@ $formlink = JRoute::_("index.php?option=com_digicom&view=cart");
 					<td>
 						<?php 
 						$item_link = JRoute::_('index.php?option=com_digicom&view=products&cid='.$item->catid.'&pid='.$item->id);
-						echo '<a href="'.$item_link.'" target="blank">'.$item->name.$renew.'</a>';
+						echo '<a href="'.$item_link.'" target="blank">'.$item->name.'</a>';
 						?>
 					</td>
 					<!-- /End Product name -->
@@ -421,7 +389,7 @@ $formlink = JRoute::_("index.php?option=com_digicom&view=cart");
 						<span class="digicom_details">
 							<strong>
 								<?php  if ( !isset( $item->noupdate) ) { ?>									
-									<input id="quantity<?php echo $item->cid; ?>" type="number" onchange="update_cart(<?php echo $item->cid; ?>);" name="quantity[<?php echo $item->cid; ?>]" min="1" class="input-small" value="1" size="2" placeholder="<?php echo JText::_('DSQUANTITY'); ?>">
+									<input id="quantity<?php echo $item->cid; ?>" type="number" onchange="update_cart(<?php echo $item->cid; ?>);" name="quantity[<?php echo $item->cid; ?>]" min="1" class="input-small" value="<?php echo $item->quantity; ?>" size="2" placeholder="<?php echo JText::_('DSQUANTITY'); ?>">
 								<?php } else {
 									echo $item->quantity;
 								} ?>

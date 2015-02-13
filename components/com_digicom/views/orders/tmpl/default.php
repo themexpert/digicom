@@ -36,24 +36,13 @@ $gacc = DCConfig::get('google_account','');
 //echo '<pre>'.print_r($gacc,true).'</pre>';
 $database = JFactory::getDBO();
 
-$sql = "select `in_trans` from #__digicom_settings";
-$database->setQuery($sql);
-$database->query();
-$in_trans = $database->loadResult();
-//echo '<hr/>';
-//var_dump(isset($in_trans) && $in_trans > 0);
-//echo '<hr/>';
 
 if(isset($in_trans) && $in_trans > 0)
 {
-	$sql = "update #__digicom_settings set `in_trans`=0";
-	$database->setQuery($sql);
-	$database->query();
 	$_SESSION['in_trans'] = 0;
-	$db = JFactory::getDBO();
-	$sql = "select transaction_details from #__digicom_session";
+	
 	if($success == 1){
-		echo urldecode($mosmsg)."<br />".$configs->thankshtml."<br />";
+		echo urldecode($mosmsg)."<br />".$configs->get('thankshtml','')."<br />";
 		$non_taxed = $details['nontaxed'];
 		$orderid = $details["cart"]["orderid"];
 
@@ -71,7 +60,7 @@ if(isset($in_trans) && $in_trans > 0)
 		}
 	}
 	elseif($success == 0){
-		echo $configs->ftranshtml."<br />";
+		echo $configs->get('ftranshtml','')."<br />";
 		$mainframe->setPageTitle(JText::_("DSFAILEDPAYMENT"));
 	}
 }
@@ -163,91 +152,45 @@ else:
 					<table class="table table-bordered table-striped">
 						<thead>
 						<tr>
-							<th><?php echo JText::_("DIGI_ORDER_DETAILS"); ?></th>
+							<th><?php echo JText::_("COM_DIGICOM_ORDER_ID"); ?></th>
+							<th><?php echo JText::_("COM_DIGICOM_DATE"); ?></th>
+							<th><?php echo JText::_("COM_DIGICOM_STATUS"); ?></th>
+							<th><?php echo JText::_("COM_DIGICOM_AMOUNT_PAID"); ?></th>
+							<th><?php echo JText::_("COM_DIGICOM_ORDER_ACTION"); ?></th>
 						</tr>
 						</thead>
 						<tbody>
 					<?php
 							$i = 0;
 							foreach($this->orders as $key=>$order){
+								//print_r($order);die;
 								$id = $order->id;
 
-								$order_link = JRoute::_("index.php?option=com_digicom&controller=orders&task=view&orderid=".$id."&Itemid=".$Itemid);
-								$order_link = '<a href="'.$order_link.'">'.(JText::_("DSVIEWORDER")).'</a>';
+								$order_link = JRoute::_("index.php?option=com_digicom&view=orders&task=details&orderid=".$id."&Itemid=".$Itemid);
+								$order_link = '<a class="btn btn-primary" href="'.$order_link.'">'.JText::_('COM_DIGICOM_ORDER_DETAILS').'</a>';
 
-								$l_link = JRoute::_("index.php?option=com_digicom&controller=licenses&task=list&licid=".$id."&Itemid=".$Itemid);
-								$l_link = '<a href="'.$l_link.'">'.$order->lcount.'</a>';
-
-								$order_link = JRoute::_("index.php?option=com_digicom&controller=orders&task=view&orderid=".$id."&Itemid=".$Itemid);
-								$order_link = '<a href="'.$order_link.'">'.$id.'</a>';
-
-								$rec_link = JRoute::_("index.php?option=com_digicom&controller=orders&task=showrec&orderid=".$id."&tmpl=component&Itemid=".$Itemid);
+								$rec_link = JRoute::_("index.php?option=com_digicom&view=orders&task=showrec&orderid=".$id."&tmpl=component&Itemid=".$Itemid);
 								$rec_link = '<a class="btn" href="'.$rec_link.'" target="_blank">'.JText::_('DSVIEWANDPRINT').'</a>';
 
 								// Price
-								$order_price = DigiComHelper::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs);
+								$order_price = DigiComHelper::format_price($order->amount_paid, $order->currency, true, $configs);
 						?>
 						<!-- Order -->
 						<tr>
 							<td>
-								<ul>
-									<?php
-									if(is_array($order->products)){
-										foreach($order->products as $prod)
-										{
-											$p_link = '';
-											$db = JFactory::getDbo();
-											$sql = "SELECT `articlelink`, `articlelinkid`, `articlelinkuse`, `id`
-														FROM `#__digicom_products`
- 													WHERE `id`=".$prod->id;
-											$db->setQuery($sql);
-											$pro_item = $db->loadObject();
-											if( $pro_item->articlelinkuse==1 && $pro_item->articlelinkid ) {
-												require_once JPATH_SITE . '/components/com_content/helpers/route.php';
-												$sql = "SELECT
-															co.id,
-															concat(co.id, ':', co.alias) AS `slug`,
-															concat(ca.id, ':', ca.alias) AS `catslug`
-														FROM
-															#__content AS co
-																INNER JOIN
-															#__categories AS ca ON co.catid = ca.id
-														WHERE
-															co.id =".$pro_item->articlelinkid;
-												$db->setQuery($sql);
-												$res = $db->loadObject();
-												if( $res ){
-													$p_link = JRoute::_(ContentHelperRoute::getArticleRoute($res->slug, $res->catslug));
-												}
-											} elseif ($pro_item->articlelink ){
-												$p_link = JURI::root().$pro_item->articlelink;
-											}
-											
-											if(!$p_link )
-												$p_link = JRoute::_("index.php?option=com_digicom&controller=products&task=view&cid=".$prod->catid."&pid=".$prod->id.$andProdItem);
-											if ($prod->hide_public)
-											{
-												echo '<li class="general_text_larger">'.$prod->name.' (#'.$order->id.')</li>';
-											}
-											else
-											{
-												echo '<li class="general_text_larger"><a href="'.$p_link.'">'.$prod->name.'</a> (#'.$order->id.')</li>';
-											}
-										}
-									}
-									?>
-									<li class="general_text_larger"><strong><?php echo JText::_("DIGI_PURCHASED_ON"); ?>:</strong> <?php echo date($configs->get('time_format','d-m-Y'), $order->order_date);?> </li>
-								</ul>
-								<span class="digicom_invoice">
-									<?php
-									if($order->status == "Pending"){
-										echo JText::_("DIGI_PENDING_PAYMENT");
-									}
-									else{
-										echo $rec_link;
-									}
-									?>
-								</span>
+								#<?php echo $order->id; ?>
+							</td>
+							<td>
+								<?php echo date($configs->get('time_format','d-M-Y'), $order->order_date);?>
+							</td>
+							<td>
+								<?php echo $order->status; ?>
+							</td>
+							<td>
+								<?php echo $order_price; ?>
+							</td>
+							<td>
+								<?php echo $order_link . ' ' .$rec_link; ?>
 							</td>
 						</tr>
 						<!-- /End Order -->
@@ -270,17 +213,6 @@ else:
 
 <?php
 endif;
-
-if( $this->ga && isset($in_trans) && $in_trans > 0 ){
-	
-	if( !isset($orderid) || !$orderid ){
-		$orderid = $details["cart"]["orderid"];
-	}
- 	if(DCConfig::get('conversion_id','') != '' && DCConfig::get('conversion_label','') != ''){
-		echo GoogleHelper::trackingOrder($orderid);
-	}
-
-}
 ?>
 
 <?php echo DigiComHelper::powered_by(); ?>

@@ -27,7 +27,7 @@ class DigiComAdminViewOrders extends DigiComView
 
 		$orders = $this->get('Items');
 		$pagination = $this->get('Pagination');
-
+		
 		$this->orders = $orders;
 		$this->pagination = $pagination;
 

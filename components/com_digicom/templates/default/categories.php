@@ -9,6 +9,7 @@
 */
 
 defined ('_JEXEC') or die ("Go away.");
+
 JHtml::script(JURI::root()."media/digicom/assets/js/category_layout.js", true);
 ?>
 <div class="digicom-wrapper com_digicom categories">

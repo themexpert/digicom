@@ -774,12 +774,6 @@ class DigiComAdminModelOrder extends JModelList{
 		$db->query();
 		$result	= $db->loadObjectList();
 
-		foreach($result as $i => $v){
-			$sql = "select count(*) from #__digicom_licenses where orderid=".$v->id;
-			$db->setQuery($sql);
-			$result[$i]->licensenum = $db->loadResult();
-		}
-
 		return $result;
 	}
 
@@ -881,9 +875,9 @@ class DigiComAdminModelOrder extends JModelList{
 			else{
 				$id = $this->_id;
 			}
-			$sql = "select o.*, count(l.id) as lcount, u.username "
-			. " from #__digicom_licenses l, #__digicom_orders o, #__users u "
-			. " where l.orderid=o.id and o.userid=u.id and o.id='" . $id . "' group by o.id order by o.order_date desc";
+			$sql = "select o.*, u.username "
+			. " from #__digicom_orders o, #__users u "
+			. " where o.userid=u.id and o.id='" . $id . "' group by o.id order by o.order_date desc";
 			$this->_order = $this->_getList($sql);
 			if(isset($this->_order) && isset($this->_order["0"])){
 				$this->_order = $this->_order["0"];
@@ -891,9 +885,9 @@ class DigiComAdminModelOrder extends JModelList{
 
 			//check on old orders
 			if(!isset($this->_order) || count($this->_order) <= 0){
-				$sql = "select o.*, count(l.id) as lcount, u.username "
-					. " from #__digicom_licenses l, #__digicom_orders o, #__users u "
-					. " where (l.old_orders like '".$id."|%' or l.old_orders like '%|".$id."|%') and o.userid=u.id and o.id='".$id."' group by o.id order by o.order_date desc";
+				$sql = "select o.*,u.username "
+					. " from #__digicom_orders o, #__users u "
+					. " where o.userid=u.id and o.id='".$id."' group by o.id order by o.order_date desc";
 				$this->_order = $this->_getList($sql);
 			}
 			//check on old orders

@@ -147,6 +147,7 @@ class DigiComAdminControllerProducts extends DigiComAdminController {
 	}
 
 	function selectProductInclude(){
+		
 		$view = $this->getView("Products", "html");
 		$view->setModel($this->_model, true);
 

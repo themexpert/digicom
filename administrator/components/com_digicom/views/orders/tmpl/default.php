@@ -148,11 +148,14 @@ Joomla.submitbutton = function (pressbutton) {
 						</td>
 						<td align="center">
 							<?php 
+								
 								if ($order->amount_paid == "-1") $order->amount_paid = $order->amount;
-								$refunds = DigiComAdminModelOrder::getRefunds($order->id);
-								$chargebacks = DigiComAdminModelOrder::getChargebacks($order->id);
-								$order->amount_paid = $order->amount_paid - $refunds - $chargebacks;
+								//$refunds = DigiComAdminModelOrder::getRefunds($order->id);
+								//$chargebacks = DigiComAdminModelOrder::getChargebacks($order->id);
+								//$order->amount_paid = $order->amount_paid - $refunds - $chargebacks;
+								$order->amount_paid = $order->amount_paid;
 								echo DigiComAdminHelper::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs); 
+								
 							?>
 						</td>
 						<td align="center">

@@ -48,7 +48,7 @@ class DigiComControllerLicenses extends DigiComController
 		// Set customer groups
 		require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'helper.php' );
 		$my = JFactory::getUser();
-		DigiComAdminHelper::expireUserProduct($my->id);
+		//DigiComAdminHelper::expireUserProduct($my->id);
 
 		if($this->_customer->_user->id < 1){
 			$this->setRedirect($this->log_link);

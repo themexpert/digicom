@@ -421,16 +421,6 @@ class DigiComHelper {
 	}
 
 	public static function powered_by() {
-		$db  = JFactory::getDBO();
-		$sql = "SELECT showpowered FROM `#__digicom_settings` LIMIT 1";
-		$db->setQuery( $sql );
-		$showable = $db->loadResult();
-
-		$no_html = JRequest::getVar( 'no_html', 0, 'get' );
-
-		if ( ! $showable || $no_html != 0 ) {
-			return '';
-		}
 		$html = '<div style="margin: 0 auto; width: 250px; text-align: center;" class="small">';
 		$html .= '<span>Powered by ';
 		$html .= '<a target="_blank" title="Joomla Digital Download eCommerce" href="http://www.themexpert.com">';
@@ -981,33 +971,10 @@ class DigiComHelper {
 		return $result;
 	}
 
-	public static function format_price( $amount, $ccode, $add_sym = true, $configs ) {
-		$db = JFactory::getDBO();
-
+	public static function format_price( $amount, $ccode, $add_sym = false, $configs ) {
 		$code         = 0;
 		$price_format = '%' . $configs->get('totaldigits','') . '.' . $configs->get('decimaldigits','2') . 'f';
 		$res          = sprintf( $price_format, $amount );
-		// $res = number_format($res,$configs->get('decimaldigits','2'),'.',$configs->get('thousands_group_symbol',''));
-		$sql = "select id, csym from #__digicom_currency_symbols where ccode='" . strtoupper( $ccode ) . "'";
-		$db->setQuery( $sql );
-		$codea = $db->loadObjectList();
-
-		if ( count( $codea ) > 0 ) {
-			$code = $codea[0]->id;
-		} else {
-			$code = 0;
-		}
-		if ( $code > 0 ) {
-			$ccode = $codea[0]->csym;
-			$ccode = explode( ",", $ccode );
-			foreach ( $ccode as $i => $code ) {
-				$ccode[ $i ] = "&#" . trim( $code ) . ";";
-			}
-			$ccode = implode( "", $ccode );
-		} else {
-			$ccode = "";
-		}
-
 		if ( $add_sym ) {
 			if ( $configs->get('currency_position','1') ) {
 				$res = $res . " " . $ccode;
@@ -1019,32 +986,11 @@ class DigiComHelper {
 		return $res;
 	}
 
-	public static function format_price2( $amount, $ccode, $add_sym = true, $configs ) {
-		$db           = JFactory::getDBO();
+	public static function format_price2( $amount, $ccode, $add_sym = false, $configs ) {
 		$code         = 0;
 		$price_format = '%' . $configs->get('totaldigits','') . '.' . $configs->get('decimaldigits','2') . 'f';
 		$res          = sprintf( $price_format, $amount );
 		$res          = number_format( $res, $configs->get('decimaldigits','2'), '.', $configs->get('thousands_group_symbol','') );
-		$sql          = "select id, csym from #__digicom_currency_symbols where ccode='" . strtoupper( $ccode ) . "'";
-		$db->setQuery( $sql );
-		$codea = $db->loadObjectList();
-
-		if ( count( $codea ) > 0 ) {
-			$code = $codea[0]->id;
-		} else {
-			$code = 0;
-		}
-		if ( $code > 0 ) {
-			$ccode = $codea[0]->csym;
-			$ccode = explode( ",", $ccode );
-			foreach ( $ccode as $i => $code ) {
-				$ccode[ $i ] = "&#" . trim( $code ) . ";";
-			}
-			$ccode = implode( "", $ccode );
-		} else {
-			$ccode = "";
-		}
-
 		if ( $add_sym ) {
 			if ( $configs->get('currency_position','1') ) {
 				$res = $res . " " . $ccode;

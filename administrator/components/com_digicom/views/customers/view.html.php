@@ -98,18 +98,6 @@ class DigiComAdminViewCustomers extends DigiComView {
 		$lists['customershippinglocation'] = DigiComAdminHelper::get_store_province($profile, true, $configs);
 
 		$cclasses = explode("\n", $customer->taxclass);
-		$data = $this->get('listCustomerClasses');
-		$select = '<select name="taxclass" >';
-		if (count($data) > 0)
-		foreach($data as $i => $v) {
-			$select .= '<option value="'.$v->id.'" ';
-			if (in_array($v->id, $cclasses)) {
-				$select .= ' selected ' ;
-			}
-			$select .= ' > '.$v->name.'</option>';
-		}
-		$select .= '</select>';
-		$lists['customer_class'] = $select;
 
 		$this->assign("lists", $lists);
 		$keyword = JRequest::getVar("keyword", "", "request");

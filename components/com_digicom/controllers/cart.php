@@ -299,7 +299,7 @@ class DigiComControllerCart extends DigiComController
 		}
 		else{
 			//$this->showCart();
-			$this->setRedirect("index.php?option=com_digicom&controller=cart&task=showCart&Itemid=".$itemid."&processor=".$processor."&agreeterms=".$agreeterms);
+			$this->setRedirect("index.php?option=com_digicom&view=cart&task=showCart&Itemid=".$itemid."&processor=".$processor."&agreeterms=".$agreeterms);
 		}
 	}
 
@@ -350,15 +350,11 @@ class DigiComControllerCart extends DigiComController
 		// Check Login
 		if(!$user->id){
 			$uri = JURI::getInstance();
-			//$return = base64_encode($uri->toString());
-			//$this->setRedirect('index.php?option=com_users&view=login&return='.$return);
  			$this->setRedirect("index.php?option=com_digicom&view=profile&task=login_register&returnpage=login_register&Itemid=".$Itemid."&processor=".$processor);
 			return true;
 		}
 		if($this->_customer->_user->id < 1){
 			$uri = JURI::getInstance();
-			//$return = base64_encode($uri->toString());
-			//$this->setRedirect('index.php?option=com_users&view=profile&layout=edit&return='.$return);
  			$this->setRedirect("index.php?option=com_digicom&view=profile&task=login_register&returnpage=login_register&Itemid=".$Itemid."&processor=".$processor);
 			return true;
 		}
@@ -421,6 +417,9 @@ class DigiComControllerCart extends DigiComController
 		$total 		= $tax['taxed'];
 		$now 		= time();
 		
+		
+		//print_r($items);die;
+		
 		if( (double)$total == 0 ) {
 			if(count($items) != "0"){
 				$cart->addFreeProduct($items, $customer, $tax);
@@ -431,6 +430,7 @@ class DigiComControllerCart extends DigiComController
 		}
 		else 
 		{
+			echo 'add nonfree p';die;
 			$db = JFactory::getDBO();
 			$profile = "";
 			$sql = "update #__digicom_session set transaction_details='" . base64_encode(serialize($customer)) . "' where sid=" . $customer->_sid;
@@ -656,48 +656,23 @@ class DigiComControllerCart extends DigiComController
 	function getCartItem() {
 
 		$cid = JRequest::getVar('cid', -1);
-		$plan_id = JRequest::getVar('plan_id', -1);
 		$qty = JRequest::getVar('quantity'.$cid, 1);
-
 		$db = JFactory::getDBO();
-
-		if ( ($cid > 0) && ($plan_id > 0) ) { //  && ($qty > 0)
+		if ($cid > 0) {
 
 			$cart = $this->_model;
 			$customer = $this->_customer;
 			$configs = $this->_config->getConfigs();
 
 			$sid = $this->_customer->_sid;
-			$sql = "UPDATE #__digicom_cart SET plan_id = " . $plan_id . ", quantity = ".$qty." where cid=" . $cid; // sid = " . $sid . " and
+			$sql = "UPDATE #__digicom_cart SET quantity = ".$qty." where cid=" . $cid; // sid = " . $sid . " and
 			$db->setQuery( $sql );
 			$db->query();
-
-			//Update Attributes
 
 			// get product id
 			$sql = "select item_id from #__digicom_cart where cid = " . $cid . " and sid = " . $sid;
 			$db->setQuery( $sql );
 			$pid = (int)$db->loadResult();
-
-			$where1 = array();
-			$where1[] = " f.published=1 ";
-			$where1[] = " fp.productid=" . $pid;
-			$sql = "select f.name, f.options, f.id, fp.publishing, fp.mandatory from #__digicom_customfields f left join
-				#__digicom_prodfields fp on (f.id=fp.fieldid)" . (count( $where1 ) > 0 ? " where " . implode( " and ", $where1 ) : "");
-			$db->setQuery( $sql );
-			$fields = $db->loadObjectList();
-
-			foreach ( $fields as $field ) {
-				//$value = JRequest::getVar( "attributes" . $field->id . "", '-1', 'request' );
-				$value = $_REQUEST['attributes'][$cid][$field->id];
-				$sql = "delete from #__digicom_cartfields where sid='" . $sid . "' and productid='" . $pid . "' and fieldid='" . $field->id . "' and cid='" . $cid . "'";
-				$db->setQuery( $sql );
-				$db->query(); //remove old one regardless of they existence
-				$sql = "insert into #__digicom_cartfields(cid, sid, productid, fieldid, optionid) values ('" . $cid . "','" . $sid . "','" . $pid . "','" . $field->id . "', '" . $value . "')";
-				$db->setQuery( $sql );
-				$db->query(); //and create new corresponding to cid obtained during processing
-			}
-			// END Attributes
 
 			$items = $cart->getCartItems($customer, $configs);
 			$result = array();

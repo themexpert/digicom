@@ -715,27 +715,6 @@ class DigiComAdminHelper {
 
 		$price_format = '%'.$configs->get('totaldigits','5').'.'.$configs->get('decimaldigits','2').'f';
 		$res =  sprintf($price_format,$amount) ;//. " " . $tax['currency'] . '<br>';
-		$sql = "select id, csym from #__digicom_currency_symbols where ccode='".strtoupper($ccode)."'";
-		$db->setQuery($sql);
-		$codea = $db->loadObjectList();
-		if (count($codea) > 0) {
-			$code = $codea[0]->id;
-		} else { 
-			$code = 0;
-		}
-		if ($code > 0 && $configs->get('usecimg','0') == '1') {
-			$ccode = '<img height="14px" src="index.php?option=com_digicom&task=get_cursym&tmpl=component&no_html=1&symid='.$code.'" />';
-		} else if ($code > 0) { 
-			$ccode = $codea[0]->csym;
-			$ccode = explode (",", $ccode);
-			foreach ($ccode as $i => $code) {
-				$ccode[$i] = "&#".trim($code).";";
-
-			}
-			$ccode = implode("", $ccode);
-		} else {
-			$ccode = "";
-		}
 
 		if ($add_sym) {
 			if ($configs->get('currency_position','1'))

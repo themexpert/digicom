@@ -199,6 +199,11 @@ class DigiComAdminModelProduct extends JModelList {
 			$filesTable = JTable::getInstance('Files', 'Table');
 			$fileList = $filesTable->getList('product_id',$this->_product->id);
 			$this->_product->file = $filesTable->getList('product_id',$this->_product->id);
+			
+			$filesTable = JTable::getInstance('Bundle', 'Table');
+			$fileList = $filesTable->getList('product_id',$this->_product->id);
+			$this->_product->bundle = $filesTable->getList('product_id',$this->_product->id);
+			
 		}
 		return $this->_product;
 	}
@@ -326,10 +331,8 @@ class DigiComAdminModelProduct extends JModelList {
 		$dbprefix = $jconf->get('dbprefix');//$jconf->_registry['config']['data']->dbprefix;
 		//file processing
 		$data = JRequest::get('post');
-		$conf = $this->getInstance ("config", "DigiComAdminModel");
+		$conf = $this->getInstance ("Config", "DigiComAdminModel");
 		$configs = $conf->getConfigs();
-		//$data["publish_up"] = DigiComAdminHelper::parseDate ($configs->get('time_format','DD-MM-YYYY'), $data['publish_up']);
-		//$data["publish_down"] = DigiComAdminHelper::parseDate ($configs->get('time_format','DD-MM-YYYY'), $data['publish_down']);
 
 		if(!$item->bind($data)){
 		   	$this->setError($item->getErrorMsg());
@@ -348,7 +351,8 @@ class DigiComAdminModelProduct extends JModelList {
 			return false;
 		}else{
 			//hook the files here
-            //-------------------------------------
+            
+			//-------------------------------------
             if (isset($data['file']) && is_array($data['file']))
             {
                 $files = $data['file'];
@@ -362,6 +366,23 @@ class DigiComAdminModelProduct extends JModelList {
                 if (isset($data['files_remove_id']) && !empty($data['files_remove_id'])){
                     $filesTable = JTable::getInstance('Files', 'Table');
                     $filesTable->removeUnmatch($data['files_remove_id'],$item->id);
+                }
+            }
+			//print_r($data);die;
+			// hook bundle item
+			if (isset($data['products_bundle']) && is_array($data['products_bundle']))
+            {
+                $products_bundle = $data['products_bundle'];
+                foreach($products_bundle as $key => $bundle){
+                    $filesTable = $this->getTable('Bundle');
+                    $filesTable->product_id = $item->id;
+                    $filesTable->bundle_id = $bundle;
+                    $filesTable->store();
+                }
+				
+                if (isset($data['bundle_remove_id']) && !empty($data['bundle_remove_id'])){
+                    $filesTable = JTable::getInstance('Bundle', 'Table');
+                    $filesTable->removeUnmatch($data['bundle_remove_id'],$item->id);
                 }
             }
             
@@ -382,7 +403,7 @@ class DigiComAdminModelProduct extends JModelList {
 			$pid = $item->id;
 		}
 		
-		$product_id = $item->id;
+		$product_id = $pid;
 		
 		/* */
 		$table = $this->getTable();

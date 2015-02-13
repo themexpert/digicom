@@ -127,17 +127,7 @@ $document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 			});
 		})
 	});
-/*###################################################################*/
-	
-	function changeImageList(data) {
-		var lists = new Array();
-<?php
-foreach ($this->lists['imagelists'] as $folder => $list) {
-	echo 'lists["'.$folder.'"]="'.$list.'";';
-}
-?>
-		document.getElementById('srcimageselector').innerHTML = unescape(lists[data.value]);
-	}
+
 
 	function changeShownImg(imgtype) {
 		var subpath = document.getElementById('folders').options[document.getElementById('folders').selectedIndex].value;
@@ -833,6 +823,20 @@ if (!in_array('package',$hidetab)) {
 		
 					function remove_product_include( box_id ) {
 		
+						var product_include_id = document.getElementById('product_include_id' + box_id).value;
+						//console.log(product_include_id);
+						var bundle_remove_id = document.getElementById('jform_bundle_remove_id').value;
+						//console.log(bundle_remove_id);
+						if(product_include_id){
+							if(bundle_remove_id){
+								document.getElementById('jform_bundle_remove_id').value = bundle_remove_id + ',' + product_include_id; 
+								//bundle_remove_id.val(bundle_remove_id + ',' + product_include_id); 
+							}else{
+								//bundle_remove_id.val(product_include_id); 
+								document.getElementById('jform_bundle_remove_id').value = product_include_id; 
+							}
+						}
+						
 						var box = document.getElementById('product_include_box_' + box_id);
 						//var box = box.parentNode;
 						while (box.firstChild) {
@@ -842,6 +846,9 @@ if (!in_array('package',$hidetab)) {
 						// remove wrapper div to include item
 						var parent_box = document.getElementById('productincludes');
 						parent_box.removeChild(box);
+						
+						
+						
 					}
 		
 		
@@ -864,7 +871,7 @@ if (!in_array('package',$hidetab)) {
 	
 				<div id="productincludes">
 		
-					<?php foreach($this->include_products as $key => $include) { ?>
+					<?php foreach($this->prod->bundle as $key => $include) {  ?>
 					
 					<div id="product_include_box_<?php echo $key; ?>" style="border-bottom:1px solid #ccc;margin:15px;padding:10px;">
 						<table width="100%">
@@ -872,8 +879,8 @@ if (!in_array('package',$hidetab)) {
 								<td style="" width="30%"><?php echo JText::_( 'DSPROD' ); ?></td>
 								<td style="">
 									<div style="float:left">
-										<span id="product_include_name_text_<?php echo $key; ?>" style="line-height: 17px;padding: 0.2em; border: 1px solid rgb(204, 204, 204); display: block; width: 250px;"><?php echo $include['name']; ?></span>
-										<input type="hidden" value="<?php echo $include['id']; ?>" id="product_include_id<?php echo $key; ?>" name="product_include_id[<?php echo $key; ?>]"/>
+										<span id="product_include_name_text_<?php echo $key; ?>" style="line-height: 17px;padding: 0.2em; border: 1px solid rgb(204, 204, 204); display: block; width: 250px;"><?php echo $include->name; ?></span>
+										<input type="hidden" value="<?php echo $include->bundle_id; ?>" id="product_include_id<?php echo $key; ?>" name="products_bundle[<?php echo $key; ?>]"/>
 									</div>
 									<div class="button2-left">
 										<div class="blank input-append" style="padding:0">
@@ -894,6 +901,7 @@ if (!in_array('package',$hidetab)) {
 	
 				<div style="margin:15px;padding:10px;">
 					<a id="buttonaddincludeproduct" class="btn btn-small" href="#"><?php echo JText::_('VIEWPRODADDPRODUCT'); ?></a>
+					<input type="hidden" name="bundle_remove_id" value="" id="jform_bundle_remove_id"/>
 				</div>
 				
 			</div>

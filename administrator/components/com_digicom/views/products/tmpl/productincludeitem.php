@@ -22,7 +22,7 @@ $include = $this->newinclude;
 			<td style="">
 				<div style="float:left">
 					<span id="product_include_name_text_<?php echo $include['id']; ?>" style="line-height: 17px;padding: 0.2em; border: 1px solid rgb(204, 204, 204); display: block; width: 250px;"><?php echo $include['name']; ?></span>
-					<input type="hidden" value="" id="product_include_id<?php echo $include['id']; ?>" name="product_include_id[<?php echo $include['id']; ?>]"/>
+					<input type="hidden" value="" id="product_include_id<?php echo $include['id']; ?>" name="products_bundle[<?php echo $include['id']; ?>]"/>
 				</div>
 				<div class="button2-left">
 					<div class="blank input-append" style="margin-left: -1px;">

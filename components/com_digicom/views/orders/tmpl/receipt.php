@@ -11,13 +11,11 @@
 defined ('_JEXEC') or die ("Go away.");
 
 $invisible = 'style="display:none;"';
-
 $k = 0;
 $n = count ($this->order->products);
 $configs = $this->configs;
 $order = $this->order;
 $user = $this->customer->_customer;
-
 global $Itemid;
 
 if ($this->order->id < 1):
@@ -43,7 +41,7 @@ if ($this->order->id < 1):
 				$store_logo = $configs->get('store_logo','');
 				if(trim($store_logo) != ""){
 			?>
-					<img src="<?php echo JURI::root()."images/stories/digicom/store_logo/".trim($store_logo); ?>" alt="store_logo" border="0">
+					<img src="<?php echo JRoute::_($store_logo); ?>" alt="store_logo" border="0">
 			<?php
 				}
 			?>
@@ -69,11 +67,11 @@ if ($this->order->id < 1):
 		<?php echo trim($configs->get('store_url','') != "") ? "&nbsp;&nbsp;URL: ".$configs->get('store_url','') : ""; ?><br />
 		<table>
 			<?php
-			if(trim($configs->address) != ""){
+			if(trim($configs->get('address')) != ""){
 			?>
 			<tr>
 				<td>
-					<?php echo JText::_('DSADDRESS');?>:</td><td> <?php echo $configs->address;?>
+					<?php echo JText::_('DSADDRESS');?>:</td><td> <?php echo $configs->get('address','');?>
 				</td>
 			</tr>
 			<?php
@@ -108,8 +106,8 @@ if ($this->order->id < 1):
 			}
 			?>
 		</table>
-		<?php echo trim($configs->phone) != "" ? JText::_("PHONE").":".$configs->phone : ""; ?><br />
-		<?php echo trim($configs->fax) != "" ? JText::_("FAX").":".$configs->fax : ""; ?><br />
+		<?php echo trim($configs->get('phone')) != "" ? JText::_("PHONE").":".$configs->get('phone') : ""; ?><br />
+		<?php echo trim($configs->get('fax')) != "" ? JText::_("FAX").":".$configs->get('fax') : ""; ?><br />
 	</td>
 
 	<td></td>
@@ -123,9 +121,7 @@ if ($this->order->id < 1):
 	</th>
 
 	<th align="right">
-<?php if ($order->shipping > 0):?>
-		<?php echo JText::_("DSSHIPPEDTO");?>
-<?php endif; ?>
+
 	</th>
 <tr><tr>
 	<td align="left">
@@ -144,13 +140,7 @@ if ($this->order->id < 1):
 	</td>
 
 	<td>
-<?php if ($order->shipping > 0):?>
-		<?php echo $user->firstname?>&nbsp;<?php echo $user->lastname;?> <br />
-		<?php echo $user->shipaddress?><br />
-		<?php echo $user->shipcity?>,&nbsp;<?php echo $user->shipstate?> <br />
-		<?php echo $user->shipzipcode;?>,&nbsp;<?php echo $user->shipcountry?> <br />
 
-<?php endif;?>
 	</td>
 </tr>
 
@@ -165,27 +155,8 @@ if ($this->order->id < 1):
 		<th class="sectiontableheader"  <?php //if ($configs->showoipurch == 0) echo $invisible;?> >
 			<?php echo JText::_('DSPROD');?>
 		</th>
-
-		<th class="sectiontableheader" <?php if ($configs->showolics == 0) echo $invisible;?>>
-			<?php echo JText::_('DSLICENSEID');?>
-		</th>
-
-		<th class="sectiontableheader"  <?php if ($configs->showopaid == 0) echo $invisible;?> >
-			<?php echo JText::_('DSPAID');?>
-		</th>
-
-
-		<th class="sectiontableheader digi_header">
-			<?php echo JText::_('DSPRICE');?>
-		</th>
-
-
-		<th class="sectiontableheader digi_header">
-			<?php echo JText::_('DSDISCOUNT');?>
-		</th>
-
-		<th class="sectiontableheader digi_header">
-			<?php echo JText::_('DSTOTAL');?>
+		<th class="sectiontableheader"  <?php //if ($configs->showoipurch == 0) echo $invisible;?> >
+			<?php echo JText::_('COM_DIGICOM_PRODUCTS_TYPE'); ?>
 		</th>
 
 	</tr>
@@ -199,15 +170,6 @@ if ($this->order->id < 1):
 	for ($i = 0; $i < $n; $i++):
 		$prod = $order->products[$i];
 		$id = $order->id;
-
-		if (count ($prod->orig_fields) > 0)
-		foreach ($prod->orig_fields as $j => $z) {
-			$val = explode(",", $z->optioname);
-			if (isset($val[1]) && strlen (trim($val[1])) > 0) {
-				$prod->price += floatval(trim($val[1]));
-				$prod->amount_paid += floatval(trim($val[1]));
-			}
-		}
 		if (!isset($prod->currency)) $prod->currency = $configs->get('currency','USD');
 ?>
 	<tr class="row<?php echo $k;?> sectiontableentry<?php echo ($i%2 + 1);?>">
@@ -221,37 +183,16 @@ if ($this->order->id < 1):
 		 	<?php echo $prod->name;?>
 		</td>
 
-		 	<td <?php if ($configs->showolics == 0) echo $invisible;?> >
-		 			<?php echo $prod->licenseid;?>
+		<td <?php //if($configs->showoipurch == 0) echo $invisible;?>>
+		 	<td><?php echo ucfirst( $prod->package_type ); ?></td>
 		</td>
-
-		 	<td  <?php if ($configs->showopaid == 0) echo $invisible;?>>
-		 			<?php echo 1;//$prod->count;?>
-		</td>
-
-		<td>
-			<span style="white-space:nowrap;"><?php echo DigiComHelper::format_price($prod->price, $prod->currency, true, $configs);?></span>
-		</td>
-
-		<td>
-			<span style="white-space:nowrap;"><?php echo DigiComHelper::format_price($prod->price - $prod->amount_paid, $prod->currency, true, $configs);?></span>
-		</td>
-
-		<td>
-			<?php
-				$total += $prod->amount_paid;
-			?>
-			<span style="white-space:nowrap;"><?php echo DigiComHelper::format_price($prod->amount_paid, $prod->currency, true, $configs);?></span>
-		</td>
-
-
 
 <?php
 		$k = 1 - $k;
 	endfor;
 
 	$colspan=5;
-	if ($configs->showolics == 0) $colspan--;
+	$colspan--;
 ?>
 	<tr style="border-style:none;">
 		<td style="border-style:none;" colspan="7"><hr /></td>
@@ -262,18 +203,6 @@ if ($this->order->id < 1):
 		<td style="font-weight:bold"><?php echo JText::_("DSSUBTOTAL");?></td>
 		<td><span style="white-space:nowrap;"><?php echo DigiComHelper::format_price($order->amount, $prod->currency, true, $configs);?></span></td>
 	</tr>
-
-<?php 
-	if($order->shipping > 0){
-?>
-	<tr>
-		<td colspan="<?php echo $colspan; ?>"></td>
-		<td style="font-weight:bold"><?php echo JText::_("DSSHIPPING");?></td>
-		<td><span style="white-space:nowrap;"><?php echo DigiComHelper::format_price($order->shipping, $prod->currency, true, $configs);?></span></td>
-	</tr>
-<?php
-	}
-?>
 
 <?php
 	if($order->promocodediscount > 0){
@@ -287,12 +216,6 @@ if ($this->order->id < 1):
 <?php
 	}
 ?>
-
-	<tr>
-		<td colspan="<?php echo $colspan; ?>"></td>
-		<td style="font-weight:bold"><?php echo JText::_("DSTAX");?></td>
-		<td><span style="white-space:nowrap;"><?php echo DigiComHelper::format_price($order->tax, $prod->currency, true, $configs);?></span></td>
-	</tr>
 
 	<tr>
 		<td colspan="<?php echo $colspan; ?>"></td>

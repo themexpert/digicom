@@ -60,7 +60,6 @@ class DigiComViewCategories extends DigiComView {
 		jimport('joomla.html.pagination');
 		$pagination = new JPagination($items["total"], $items['limitstart'], $items['limit']);
 
-		$this->assign( "featured_prods", $featured_prods );
 		$this->assignRef('total', $items['total']);
 		$this->assignRef('limit', $items['limit']);
 		$this->assignRef('limitstart', $items['limitstart']);
