@@ -56,10 +56,10 @@ class DigiComAdminControllerTools extends DigiComAdminController
 		$db->setQuery($sql);
 		$res = $db->loadObject();
 		$sql = '';
-		if($res->domainrequired==3){
+		if($res->product_type=='bundle'){
 			$sql = 'SELECT `p`.`id` as `productid` ,
 						`pp`.`price` , 
-						`p`.`domainrequired` , 
+						`p`.`product_type` , 
 						`pl`.`duration_count`, 
 						`pl`.`duration_type`,
 						`pl`.`id` AS `plan_id`
@@ -74,7 +74,7 @@ class DigiComAdminControllerTools extends DigiComAdminController
 			if(!$planid) { return null; }
 			$sql = 'SELECT `p`.`id` as `productid` ,
 						`pp`.`price` , 
-						`p`.`domainrequired` , 
+						`p`.`product_type` , 
 						`pl`.`duration_count`, 
 						`pl`.`duration_type`,
 						`pl`.`id` AS `plan_id`
@@ -109,7 +109,7 @@ class DigiComAdminControllerTools extends DigiComAdminController
 	 * Create license for product or package
 	 */
 	public function createLicense( $order_id, $product4sell, $user_id=null, $package_item=0 ) {
-		if( $product4sell->domainrequired==3 ) {
+		if( $product4sell->product_type=='bundle' ) {
 			$items = $this->getSubProduct($product4sell->productid);
 			if( $items && count($items) ) {
 				foreach( $items as $item ) {
@@ -159,7 +159,7 @@ class DigiComAdminControllerTools extends DigiComAdminController
 			$sql = 'SELECT  
 						`f`.`featuredid` AS `productid` , 
 						`pp`.`price` , 
-						`p`.`domainrequired` , 
+						`p`.`product_type` , 
 						`pl`.`duration_count`, 
 						`pl`.`duration_type`,
 						`pl`.`id` AS `plan_id`

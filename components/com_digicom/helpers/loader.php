@@ -61,6 +61,7 @@ if(strlen(trim($view)) > 0 && strlen(trim($controller)) < 1){
 			"orders" => "orders",
 			"categories" => "categories",
 			"products" => "products",
+			"downloads" => "downloads",
 			"profile" => "profile");
 	$layout_to_task = array("");
 	$controller = @$view_to_controller[strtolower($view)];

@@ -23,7 +23,7 @@ $document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 		<div class="media">
 			<a class="pull-left" 
 				href="#" 
-				onclick="window.parent.location.href='<?php echo JURI::root().'administrator/index.php?option=com_digicom&controller=products&task=add&producttype=0'; ?>'"
+				onclick="window.parent.location.href='<?php echo JURI::root().'administrator/index.php?option=com_digicom&controller=products&task=add&product_type=0'; ?>'"
 				>
 				<i class="digicom_icon_big icon-download"></i>
 			</a>
@@ -31,7 +31,7 @@ $document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 				<h4 class="media-heading">
 					<a 
 						href="#" 
-						onclick="window.parent.location.href='<?php echo JURI::root().'administrator/index.php?option=com_digicom&controller=products&task=add&producttype=0'; ?>'"
+						onclick="window.parent.location.href='<?php echo JURI::root().'administrator/index.php?option=com_digicom&controller=products&task=add&product_type=0'; ?>'"
 						>
 						<?php echo JText::_("DIGI_DONWNLOADABLE"); ?>
 					</a>
@@ -43,7 +43,7 @@ $document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 		<div class="media">
 			<a class="pull-left" 
 				href="#" 
-				onclick="window.parent.location.href='<?php echo JURI::root().'administrator/index.php?option=com_digicom&controller=products&task=add&producttype=3'; ?>'"
+				onclick="window.parent.location.href='<?php echo JURI::root().'administrator/index.php?option=com_digicom&controller=products&task=add&product_type=3'; ?>'"
 				>
 				<i class="digicom_icon_big icon-box-add"></i>
 			</a>
@@ -51,7 +51,7 @@ $document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 				<h4 class="media-heading">
 					<a 
 						href="#" 
-						onclick="window.parent.location.href='<?php echo JURI::root().'administrator/index.php?option=com_digicom&controller=products&task=add&producttype=3'; ?>'"
+						onclick="window.parent.location.href='<?php echo JURI::root().'administrator/index.php?option=com_digicom&controller=products&task=add&product_type=3'; ?>'"
 						>
 						<?php echo JText::_("DIGI_PACKAGE_NO_UPLOAD"); ?>
 					</a>

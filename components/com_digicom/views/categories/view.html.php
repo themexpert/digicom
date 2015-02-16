@@ -20,18 +20,9 @@ class DigiComViewCategories extends DigiComView {
 		$conf = $this->_models['config']->getConfigs();
 		$this->assignRef("configs", $conf);
 		
-		$items = array();
-		if(!$catid){
-			$prods = array();
-			$items["totalprods"] = null;
-			$items["total"] = null;
-			$items["limitstart"] = null;
-			$items["limit"] = null;
-		}
-		else{
-			$items = $this->_models['product']->getCategoryProducts($catid, $totalprods);
-			$prods = $items["items"];
-		}
+		$items = $this->_models['product']->getCategoryProducts($catid, $totalprods);
+		$prods = $items["items"];
+	
 		
 		$category = $this->_models['product']->getCategory();
 		

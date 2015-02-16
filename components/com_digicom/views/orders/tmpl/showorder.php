@@ -87,7 +87,7 @@ if ($this->order->id < 1){
 </table>
 
 
-<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=download"); ?>" class="btn btn-success">
+<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=downloads"); ?>" class="btn btn-success">
 	<?php echo JText::_('COM_DIGICOM_GO_DOWNLOAD'); ?>
 </a>
 

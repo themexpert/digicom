@@ -291,27 +291,27 @@ $document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 	?>
 	<?php
 
-		if ( $license->domainrequired == 4) {
+		if ( $license->product_type == 4) {
 
-		} else if  ($license->domainrequired == 2 || $license->domainrequired == 3) {
+		} else if  ($license->product_type == 2 || $license->product_type == 3) {
 			echo JText::_("DSPRODUCT_NOT_DOWNLOADABLE");
-	   } else if ($license->domainrequired == 0) {
+	   } else if ($license->product_type == 0) {
 				echo JText::_("DSNO_DOMAIN_REQUIRED")."" ;
-		} else if ($license->domainrequired == 1 && !$license->domain) {
+		} else if ($license->product_type == 1 && !$license->domain) {
 				echo $regdomain_link."<br />";
-		} else if ($license->domainrequired == 1 && $license->domain) {
+		} else if ($license->product_type == 1 && $license->domain) {
 				echo JText::_("DSLIVE").": ".$regdomain_link."";
 		} else {
 		if ( $license->domain ){
 				echo JText::_("DSLIVE").": ".$regdomain_link."<br>";
-			}else if (trim($license->main_zip_file) == '' && $license->domainrequired == 0) {
+			}else if (trim($license->main_zip_file) == '' && $license->product_type == 0) {
 				echo JText::_("NO_DOMAIN_REQUIRED")."<br />" ;
 			} else  {
 				echo $regdomain_link."<br />";
 			}
 			if ( $license->dev_domain ){
 				echo JText::_("DSDEV").": ".$regdevdomain_link;
-		}else if ($license->domainrequired == 0) {
+		}else if ($license->product_type == 0) {
 				echo  JText::_("DSNO_DOMAIN_REQUIRED");
 			} else {
 				echo $regdevdomain_link."";
@@ -321,24 +321,24 @@ $document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 			</td><td align="center">
 	<?php
 
-			if  ($license->domainrequired == 2 || $license->domainrequired == 3) {
+			if  ($license->product_type == 2 || $license->product_type == 3) {
 			echo JText::_("DSPRODUCT_NOT_DOWNLOADABLE");
-		   } else if ($license->domainrequired == 0) {
+		   } else if ($license->product_type == 0) {
 			echo $download_link;
-		} else if ($license->domainrequired == 1 && $license->domain) {
+		} else if ($license->product_type == 1 && $license->domain) {
 			echo $download_link;
-		}else if ($license->domainrequired == 1 && !$license->domain) {
+		}else if ($license->product_type == 1 && !$license->domain) {
 
 		} else {
-			if ( $license->domain || $license->domainrequired == 0) {
+			if ( $license->domain || $license->product_type == 0) {
 				echo $download_link;
-			} else if ( ($license->domain) || ($license->domain && $license->domainrequired == 1 )){
+			} else if ( ($license->domain) || ($license->domain && $license->product_type == 1 )){
 				echo $download_link;
 			}
 
-			if ( $license->dev_domain || $license->domainrequired == 0) {
+			if ( $license->dev_domain || $license->product_type == 0) {
 				echo "<br />".$devdownload_link;
-			} else if ($license->dev_domain || ($license->dev_domain && $license->domainrequired == 1)) {
+			} else if ($license->dev_domain || ($license->dev_domain && $license->product_type == 1)) {
 				echo "<br />".$devdownload_link;
 			}
 		}

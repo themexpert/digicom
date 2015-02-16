@@ -10,7 +10,7 @@
 
 defined ('_JEXEC') or die ("Go away.");
 
-class DigiComAdminModelProduct extends JModelForm {
+class DigiComAdminModelProducts extends JModelList {
 
 	protected $_context = 'com_digicom.Product';
 	var $_products;
@@ -190,17 +190,6 @@ class DigiComAdminModelProduct extends JModelForm {
 			$this->_product = $this->getTable("Product");
 			$this->_product->load($this->_id);
 		}
-		
-		if(empty($this->_product->product_type)){
-			$this->_product->product_type = JFactory::getApplication()->input->get('product_type','reguler');
-		}
-		if(empty($this->_product->file)){
-			$this->_product->file = null;
-		}
-		if(empty($this->_product->bundle)){
-			$this->_product->bundle = null;
-		}
-		
 		$db = JFactory::getDBO();
 		
 		if($this->_product->id){
@@ -337,28 +326,30 @@ class DigiComAdminModelProduct extends JModelForm {
 		$jconf = JFactory::getConfig();
 		$dbprefix = $jconf->get('dbprefix');//$jconf->_registry['config']['data']->dbprefix;
 		//file processing
-		$data = JRequest::get('post');
+		$data = JFactory::getApplication()->input->get('jform', array(), 'ARRAY');
+		//print_r($data);die;
 		$conf = $this->getInstance ("Config", "DigiComAdminModel");
 		$configs = $conf->getConfigs();
-
+		
 		if(!$item->bind($data)){
-		   	$this->setError($item->getErrorMsg());
+		   	$this->setError($item->getError());
 			$return["return"] = false;
 			$return["id"] = "";
 			return $return;
 		}
-
+		//print_r($item);die;
 		if (!$item->check()) {
-			$this->setError($item->getErrorMsg());
+			//echo 'failed in checcking';die;
+			$this->setError($item->getError());
 			$return["return"] = false;
 			$return["id"] = "";
 			return $return;
 		}
+		
 		if (!$item->store()){
 			return false;
 		}else{
 			//hook the files here
-            
 			//-------------------------------------
             if (isset($data['file']) && is_array($data['file']))
             {
@@ -375,32 +366,56 @@ class DigiComAdminModelProduct extends JModelForm {
                     $filesTable->removeUnmatch($data['files_remove_id'],$item->id);
                 }
             }
-			//print_r($data);die;
+			
 			// hook bundle item
-			if (isset($data['products_bundle']) && is_array($data['products_bundle']))
+			//print_r($data['bundle']);die;
+			if (isset($data['bundle']) && is_array($data['bundle'])){
+				$filesTable = JTable::getInstance('Bundle', 'Table');
+				$filesTable->removeSameTypes('product',$item->id);
+				$filesTable->removeSameTypes('category',$item->id);
+			}
+			
+			if (isset($data['bundle']['product']) && is_array($data['bundle']['product']))
             {
-                $products_bundle = $data['products_bundle'];
+				$products_bundle = $data['bundle']['product'];
                 foreach($products_bundle as $key => $bundle){
+					
                     $filesTable = $this->getTable('Bundle');
                     $filesTable->product_id = $item->id;
                     $filesTable->bundle_id = $bundle;
+                    $filesTable->bundle_type = 'product';
                     $filesTable->store();
                 }
-				
-                if (isset($data['bundle_remove_id']) && !empty($data['bundle_remove_id'])){
-                    $filesTable = JTable::getInstance('Bundle', 'Table');
-                    $filesTable->removeUnmatch($data['bundle_remove_id'],$item->id);
+            }
+			
+			if (isset($data['bundle']['category']) && is_array($data['bundle']['category']))
+            {
+				$category_bundle = $data['bundle']['category'];
+                foreach($category_bundle as $key2 => $bundle2){
+					
+                    $filesTable = $this->getTable('Bundle');
+                    $filesTable->product_id = $item->id;
+                    $filesTable->bundle_id = $bundle2;
+                    $filesTable->bundle_type = 'category';
+                    $filesTable->store();
                 }
             }
+			/*
+			$bundle_remove_id = JFactory::getApplication()->input->get('bundle_remove_id','');
+			if (isset($bundle_remove_id) && !empty($bundle_remove_id)){
+				$filesTable = JTable::getInstance('Bundle', 'Table');
+				$filesTable->removeUnmatch($bundle_remove_id,$item->id);
+			}
+			*/
             
 		}
-
+		
 		if(!$item->id) {
 			$query = "show table status";
 			$db->setQuery($query);
 			$suggested_id = $db->loadObjectList();
 			foreach ($suggested_id as $res) {
-				if ($res->Name == $dbprefix.'digicom_products') {
+				if ($res->Name == $dbprefix.'_digicom_products') {
 					$pid = $res->Auto_increment;
 					break;
 				}
@@ -411,12 +426,6 @@ class DigiComAdminModelProduct extends JModelForm {
 		}
 		
 		$product_id = $pid;
-		
-		/* */
-		$table = $this->getTable();
-		$table->reorder();
-		/* */
-
 		$return["return"] = true;
 		$return["id"] = $product_id;
 		// trigger plugin evens
@@ -856,7 +865,7 @@ class DigiComAdminModelProduct extends JModelForm {
 		{
 			return false;
 		}
-		
+
 		return $form;
 	}
 }

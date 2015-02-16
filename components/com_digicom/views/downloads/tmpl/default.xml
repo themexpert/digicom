@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_DIGICOM_DOWNLOADS">
+		<message>
+			<![CDATA[COM_DIGICOM_DOWNLOADS_DESC]]>
+		</message>
+	</layout>
+	<state>
+		<name>COM_DIGICOM_DOWNLOADS</name>
+		<description>COM_DIGICOM_DOWNLOADS_DESC</description>
+		<params>
+		</params>
+	</state>
+</metadata>

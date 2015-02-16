@@ -21,6 +21,7 @@ class DigiComAdminControllerProducts extends DigiComAdminController {
 		parent::__construct();
 		$this->registerTask ('save2new', 'save');
 		$this->registerTask ("", "listProducts");
+		$this->registerTask ('edit', 'edit');
 		$this->registerTask ('apply', 'save');
 		$this->registerDefaultTask('listProducts');
 		$this->registerTask ('unpublish', 'publish');
@@ -32,7 +33,7 @@ class DigiComAdminControllerProducts extends DigiComAdminController {
 		$this->registerTask ("delete_all", "deleteImages");
 		$this->registerTask ("copy", "copyProduct");
 
-		$this->_model = $this->getModel("Product");
+		$this->_model = $this->getModel("products");
 
 		$prc = JRequest::getVar("catid");
 		$state_filter = JRequest::getVar("state_filter", "-1", "request");
@@ -163,15 +164,8 @@ class DigiComAdminControllerProducts extends DigiComAdminController {
 	}
 
 	function add() {
-		$producttype = JRequest::getVar('producttype',-1);
-		if ( $producttype == -1 ) {
-			JRequest::setVar ("hidemainmenu", 1);
-			$view = $this->getView("Products", "html");
-			$view->setLayout("addproduct");
-			$view->addProduct();
-		} else {
-			$this->edit();
-		}
+		$product_type = JRequest::getVar('product_type','reguler');
+		$this->edit();
 	}
 
 	function edit () {
@@ -180,7 +174,8 @@ class DigiComAdminControllerProducts extends DigiComAdminController {
 		$view = $this->getView("Products", "html");
 
 		$view->setLayout("editForm");
-		$view->setModel($this->_model, true);
+		$model = $this->getModel("Product");
+		$view->setModel($model, true);
 
 		$model = $this->getModel("Category");
 		$view->setModel($model);
@@ -228,8 +223,8 @@ class DigiComAdminControllerProducts extends DigiComAdminController {
 				$this->setRedirect($apply_url, $msg);
 				break;
 			case 'save2new':
-				$producttype = JRequest::getVar('domainrequired',0);
-				$redirect_url = 'index.php?option=com_digicom&controller=products&task=add&producttype='.$producttype;
+				$product_type = JRequest::getVar('product_type','reguler');
+				$redirect_url = 'index.php?option=com_digicom&controller=products&task=add&product_type='.$product_type;
 				$this->setRedirect($redirect_url);
 				break;
 			default:
@@ -250,7 +245,7 @@ class DigiComAdminControllerProducts extends DigiComAdminController {
 			$this->setRedirect($apply_url, $msg);
 		}
 		
-// 		http://localhost/obexts/j30/administrator/index.php?option=com_digicom&controller=products&task=add&producttype=0
+// 		http://localhost/obexts/j30/administrator/index.php?option=com_digicom&controller=products&task=add&product_type=0
 	}
 
 	function remove () {
@@ -361,6 +356,4 @@ class DigiComAdminControllerProducts extends DigiComAdminController {
 		$this->listProducts();
 	}
 
-};
-
-?>
+}

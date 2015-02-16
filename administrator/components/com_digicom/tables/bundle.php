@@ -41,7 +41,7 @@ class TableBundle extends JTable
 		// Verify that the bundle is added once per product
 		$table = JTable::getInstance('Bundle', 'Table');
 
-		if ($table->load(array('product_id' => $this->product_id, 'bundle_id' => $this->bundle_id)) && ($table->id != $this->id || $this->id == 0))
+		if ($table->load(array('product_id' => $this->product_id, 'bundle_id' => $this->bundle_id,'bundle_type'=>$this->bundle_type)) && ($table->id != $this->id || $this->id == 0))
 		{
 			return true;
 		}
@@ -57,11 +57,19 @@ class TableBundle extends JTable
     * this way only new item will be stored and old will be removed
     */
     
-    public function removeUnmatch($files_id,$product_id){
+    public function removeUnmatch($files_id,$product_id,$bundle_type){
         $db = $this->getDbo();
         //DELETE from tablename WHERE id IN (1,2,3,...,254);
-        $query = 'DELETE from '.$db->quoteName('#__digicom_products_bundle').' WHERE '.$db->quoteName('product_id') . '="'.$product_id .'" and '.$db->quoteName('bundle_id') . ' in ('.$files_id.')';
+        $query = "DELETE from ".$db->quoteName('#__digicom_products_bundle')." WHERE ".$db->quoteName('product_id') . "='".$product_id ."' and ".$db->quoteName('bundle_type') . "='".$bundle_type ."' and ".$db->quoteName('bundle_id') . " in ('".$files_id."')";
         //echo $query;die;
+		$db->setQuery($query);
+        return $db->Query();
+    }
+     
+    public function removeSameTypes($bundle_type,$product_id){
+        $db = $this->getDbo();
+        //DELETE from tablename WHERE id IN (1,2,3,...,254);
+        $query = "DELETE from #__digicom_products_bundle WHERE ".$db->quoteName('product_id') . "='".$product_id ."' and ".$db->quoteName('bundle_type') . "='".$bundle_type ."'";
 		$db->setQuery($query);
         return $db->Query();
     }
@@ -74,8 +82,8 @@ class TableBundle extends JTable
     public function getList($field = 'product_id',$value){
         $db = $this->getDbo();
         $query = $db->getQuery(true)
-            ->select('b.id')
-            ->select('b.bundle_id')
+            ->select('b.bundle_id as bundle_id')
+            ->select('b.bundle_type')
             ->select('p.name')
             ->from($db->quoteName('#__digicom_products_bundle').' as b')
             ->from($db->quoteName('#__digicom_products').' as p')

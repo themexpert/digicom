@@ -464,7 +464,7 @@ $document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 
 			<!-- Licence -->
 			<?php
-		   	if(intval($license->domainrequired) != "0"){
+		   	if(intval($license->product_type) != "0"){
 			?>
 			<tr>
 				<td colspan="2">

@@ -372,7 +372,7 @@ class DigiComControllerCart extends DigiComController
 		$res = DigiComHelper::checkProfileCompletion($customer);
 
 		if( $res < 1 ) {
-			if($configs->get('askforship','0') != 0 || $configs->get('askforbilling','0') != 0)
+			if($configs->get('askforbilling','0') != 0)
 			{
 				$this->setRedirect("index.php?option=com_digicom&view=profile&task=edit&returnpage=checkout&Itemid=".$_Itemid."&processor=".$processor);
 			}
@@ -416,21 +416,16 @@ class DigiComControllerCart extends DigiComController
 		$tax 		= $cart->calc_price($items, $customer, $configs);
 		$total 		= $tax['taxed'];
 		$now 		= time();
-		
-		
-		//print_r($items);die;
-		
 		if( (double)$total == 0 ) {
 			if(count($items) != "0"){
 				$cart->addFreeProduct($items, $customer, $tax);
 				$itemid = JRequest::getVar("Itemid", "0");
-				$link = JRoute::_("index.php?option=com_digicom&view=licenses&Itemid=".$itemid);
+				$link = JRoute::_("index.php?option=com_digicom&view=orders&Itemid=".$itemid);
 				$this->setRedirect($link, JText::_("DSSUCCESSFULPAYMENT"));
 			}
 		}
-		else 
+		else
 		{
-			echo 'add nonfree p';die;
 			$db = JFactory::getDBO();
 			$profile = "";
 			$sql = "update #__digicom_session set transaction_details='" . base64_encode(serialize($customer)) . "' where sid=" . $customer->_sid;
@@ -443,20 +438,20 @@ class DigiComControllerCart extends DigiComController
 			if(!isset($prosessor) || trim($prosessor) == ""){
 				$prosessor = $_SESSION["processor"];
 			}
-
+			
 			if($prosessor == "payauthorize"){
 				$page_url = $this->getPageURL();
 				$reqhttps = "1";
 
-				if(is_file(JPATH_SITE.DS."plugins".DS."digicompayment".DS."payauthorize".DS."install")){
-					$content = JFile::read(JPATH_SITE.DS."plugins".DS."digicompayment".DS."payauthorize".DS."install");
+				if(is_file(JPATH_SITE.DS."plugins".DS."payment".DS."payauthorize".DS."install")){
+					$content = JFile::read(JPATH_SITE.DS."plugins".DS."payment".DS."payauthorize".DS."install");
 					$reqhttps = $this->getReqhttps($content);
 
 					if($reqhttps == "1"){//https
 						if(strpos($page_url, "https") === FALSE){
 							$site = JURI::root();
 							$site = str_replace("http", "https", $site);
-							$page_url = $site."index.php?option=com_digicom&controller=cart&task=checkout";
+							$page_url = $site."index.php?option=com_digicom&view=cart&task=checkout";
 							$app = JFactory::getApplication("site");
 							$app->redirect(JRoute::_($page_url));
 							//$this->setRedirect(JRoute::_($page_url));
@@ -466,6 +461,7 @@ class DigiComControllerCart extends DigiComController
 			}
 
 			$dispatcher = JDispatcher::getInstance();
+			$params = array();
 			$params['user_id'] = $this->_customer->_user->id;
 
 			if(isset($this->_customer) && isset($this->_customer->_customer)){
@@ -479,7 +475,7 @@ class DigiComControllerCart extends DigiComController
 			$params['products'] = $items; // array of products
 			$params['config'] = $this->_config->getConfigs();
 			$params['processor'] = $prosessor;//JRequest::getVar('processor'); //'payauthorize';
-			$gataways = JPluginHelper::getPlugin('digicompayment', $params['processor']);
+			$gataways = JPluginHelper::getPlugin('payment', $params['processor']);
 
 			if(is_array($gataways)){
 				foreach($gataways as $gw) {
@@ -496,7 +492,7 @@ class DigiComControllerCart extends DigiComController
 			$params['order_id'] = $this->_customer->_sid;
 			$params['sid'] = $this->_customer->_sid;
 			$params['option'] = 'com_digicom';
-			$params['controller'] = 'digicomCart';
+			$params['controller'] = 'cart';
 			$params['task'] = 'payment';
 			$params['order_amount'] = $items[-2]['taxed'];
 			$params['order_currency'] = $items[-2]['currency'];
@@ -508,11 +504,13 @@ class DigiComControllerCart extends DigiComController
 				JRequest::setVar("tmpl", "component");
 			}
 
-			//$result = $dispatcher->trigger('onSendPayment', array(& $params));
-// 			echo '<pre>'.print_r( $this->_customer, true ).'</pre>';
-// 			exit();
+			$result = $dispatcher->trigger('onSendPayment', array(& $params));
+			// 			echo '<pre>'.print_r( $this->_customer, true ).'</pre>';
+			// 			exit();
 			$this->getHTML();
 		}
+		
+		return true;
 	}
 
 	function wait()
@@ -757,7 +755,7 @@ class DigiComControllerCart extends DigiComController
 				echo '</div></div>';
 			}
 		} else {
-			// echo '<h2>' . JText::_("PAYMENT_DETAILS_PAGE") . '</h2>';
+			echo '<h2>' . JText::_("PAYMENT_DETAILS_PAGE") . '</h2>';
 		}
 
 		/*
@@ -773,13 +771,14 @@ class DigiComControllerCart extends DigiComController
 		$vars = new stdClass();
 
 
+		$vars->order_id = $this->_customer->_sid;
 		$vars->custom = $this->_customer->_customer->id;
 		$vars->user_firstname = $this->_customer->_customer->firstname;
 		$vars->user_lastname = $this->_customer->_customer->lastname;
 		$vars->user_id = JFactory::getUser()->id;
 		$vars->user_email = $this->_customer->_user->email;
 		$vars->item_name = '';
-
+		//print_r($items);die;
 		for($i=0; $i<count($items)-2; $i++)
 		{
 			$vars->item_name.= $items[$i]->name . ', ';
@@ -789,12 +788,12 @@ class DigiComControllerCart extends DigiComController
 		// downloads page
 		if ($configs->get('afterpurchase') == 0)
 		{
-			$vars->return = JRoute::_(JURI::root()."index.php?option=com_digicom&view=licenses&ga=1&orderid=".$this->_customer->_customer->id, true, 0);
+			$vars->return = JRoute::_(JURI::root()."index.php?option=com_digicom&view=orders&orderid=".$this->_customer->_customer->id, true, 0);
 		}
 		// orders page
 		else
 		{
-			$vars->return = JRoute::_(JURI::root()."index.php?option=com_digicom&view=orders&ga=1&orderid=".$this->_customer->_customer->id, true, 0);
+			$vars->return = JRoute::_(JURI::root()."index.php?option=com_digicom&view=orders&orderid=".$this->_customer->_customer->id, true, 0);
 		}
 		
 		
@@ -803,6 +802,7 @@ class DigiComControllerCart extends DigiComController
 		$vars->url = $vars->notify_url = JRoute::_(JURI::root()."index.php?option=com_digicom&controller=cart&task=processPayment&processor={$pg_plugin}&order_id=".$this->_customer->_customer->id."&sid=".$this->_customer->_sid, true, false);
 		$vars->currency_code = $items[-2]['currency'];
 		$vars->amount = $items[-2]['taxed'];//+$items[-2]['shipping'];
+		
 		$html = $dispatcher->trigger('onTP_GetHTML', array($vars));
 		if (!isset($html[0])) {
 			$html[0] = '';
@@ -816,6 +816,8 @@ class DigiComControllerCart extends DigiComController
 		$html[0] = $html[0] . '</script>';
 
 		echo $html[0];
+		
+		return true;
 	}
 
 	function processPayment()

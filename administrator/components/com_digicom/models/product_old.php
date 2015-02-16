@@ -10,7 +10,10 @@
 
 defined ('_JEXEC') or die ("Go away.");
 
-class DigiComAdminModelProduct extends JModelForm {
+jimport('joomla.application.component.modellist');
+jimport('joomla.utilities.date');
+
+class DigiComAdminModelProduct extends JModelList {
 
 	protected $_context = 'com_digicom.Product';
 	var $_products;
@@ -190,17 +193,6 @@ class DigiComAdminModelProduct extends JModelForm {
 			$this->_product = $this->getTable("Product");
 			$this->_product->load($this->_id);
 		}
-		
-		if(empty($this->_product->product_type)){
-			$this->_product->product_type = JFactory::getApplication()->input->get('product_type','reguler');
-		}
-		if(empty($this->_product->file)){
-			$this->_product->file = null;
-		}
-		if(empty($this->_product->bundle)){
-			$this->_product->bundle = null;
-		}
-		
 		$db = JFactory::getDBO();
 		
 		if($this->_product->id){
@@ -268,6 +260,7 @@ class DigiComAdminModelProduct extends JModelForm {
 
 		return true;
 	}
+
 
 	function _getFile ($pid = 0) {
 		
@@ -375,7 +368,7 @@ class DigiComAdminModelProduct extends JModelForm {
                     $filesTable->removeUnmatch($data['files_remove_id'],$item->id);
                 }
             }
-			//print_r($data);die;
+			print_r($data);die;
 			// hook bundle item
 			if (isset($data['products_bundle']) && is_array($data['products_bundle']))
             {
@@ -523,6 +516,7 @@ class DigiComAdminModelProduct extends JModelForm {
 		return true;
 	}
 
+
 	function publish () {
 		$db = JFactory::getDBO();
 		$cids = JRequest::getVar('cid', array(0), 'post', 'array');
@@ -574,7 +568,8 @@ class DigiComAdminModelProduct extends JModelForm {
 		return true;
 	}
 
-	/* NEW function */
+/* NEW function */
+
 	function orderField( $uid, $inc )
 	{
 		// Initialize variables
@@ -586,6 +581,7 @@ class DigiComAdminModelProduct extends JModelForm {
 
 		return true;
 	}
+
 
 	function saveorder() {
 
@@ -627,7 +623,8 @@ class DigiComAdminModelProduct extends JModelForm {
 		$msg = JText::_('New ordering saved');
 	}
 
-	/* /END NEW function */
+/* /END NEW function */
+
 	function getlistProductTaxClasses () {
 		$sql = "select * from #__digicom_tax_productclass order by ordering asc";
 		$db = JFactory::getDBO();
@@ -838,25 +835,5 @@ class DigiComAdminModelProduct extends JModelForm {
 		return $this->_plains;
 	}
 
-	/**
-	 * Method to get a form object.
-	 *
-	 * @param   array    $data      Data for the form.
-	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
-	 *
-	 * @return  mixed  A JForm object on success, false on failure
-	 *
-	 * @since	3.2
-	 */
-	public function getForm($data = array(), $loadData = true)
-	{
-		$form = $this->loadForm('com_digicom.product', 'product', array('control' => 'jform', 'load_data' => $loadData));
-		
-		if (empty($form))
-		{
-			return false;
-		}
-		
-		return $form;
-	}
-}
+};
+?>

@@ -178,24 +178,121 @@ class DigiComAdminViewProducts extends DigiComView
 	function editForm( $tpl = null )
 	{
 		$db = JFactory::getDBO();
-		
-		$form = $this->get('Form');
 		$product = $this->get('product');
-		
-		// Bind the form to the data.
-		if ($form && $product)
-		{
-			$form->bind($product);
-		}
-		$cats = $this->get("listCategories");
-		
-		$this->assign( "form", $form );
-		$this->assign( "item", $product );
-		$this->assign( "cats", $cats );
-		
 		$configs = $this->_models['config']->getConfigs();
+		$isNew = ($product->id < 1);
 		
+		$prc = JRequest::getVar( "prc", 0, "request" );
+		$this->assign( "prc", $prc );
+		$this->assign( "prod", $product );
+
+		$directory = "images";
+		$imageFolders = array();
+		$imageFolders[] = myDC; //$directory;
+		$imageFolders = DigiComAdminHelper::cleanUpImageFolders( $directory, DigiComAdminHelper::getImageFolderList( $directory, $imageFolders ) );
+
+		//var_dump($imageFolders);
+		$folders = array();
+		foreach ( $imageFolders as $folder ) {
+			$folders[] = JHTML::_( 'select.option', $folder );
+		}
+
+		$images = DigiComAdminHelper::getFolderImageList( $directory, $imageFolders );
+		//var_dump($images);
+
+		$active = 1;
+
+		$srcname = "srcimg";
+		$dstname = "prodimg[]";
+
+		$folderjs = 'onchange="changeImageList(this);"';
+		$lists['folders'] = JHTML::_( 'select.genericlist', $folders, 'folders', 'class="inputbox" size="1" ' . $folderjs, 'value', 'text', "/" );
+		
+		
+		$lists['published'] = JHTML::_( 'select.booleanlist', 'published', '', $product->published );
+
+		// build the html select list for ordering
+		$query = 'SELECT ordering AS value, name AS text'
+		. ' FROM #__digicom_products'
+		. ' ORDER BY ordering'
+		;
+		
+		if ( $isNew ) {
+			$lists['ordering'] = JHtml::_('list.ordering','ordering', $query, '');
+		} else {
+			$lists['ordering'] = JHtml::_('list.ordering','ordering', $query, '', $product->id);
+		}
+
+		$directory = $configs->get('ftp_source_path','DigiCom');
+		if ( file_exists( JPATH_SITE . DS . $directory ) ) {
+			$ftpFiles = JFolder::files( JPATH_SITE . DS . $directory );
+		} else {
+			$ftpFiles = array();
+		}
+		$files = array();
+		$files[] = JHTML::_( "select.option", "", 'Select ftp file' );
+		foreach ( $ftpFiles as $file ) {
+			$files[] = JHTML::_( 'select.option', $file );
+		}
+
+		$lists['ftpfilelist'] = JHTML::_( 'select.genericlist', $files, 'ftpfile', 'class="inputbox" size="1" ', 'value', 'text', "" );
+
+		$files = array();
+		$cats = $this->get("listCategories");
+		$this->assign( "cats", $cats );
+		$lists['catid'] = DigiComAdminHelper::getCatListProd2($product, $cats);
+		$lists['access'] = JHTML::_('access.assetgrouplist','access', $product->access );
+
+	
+		if (isset($product->product_type) && !empty($product->product_type)) {
+		// Edit
+			$product_type = $product->product_type;
+			$lists['product_type'] = "<input type='hidden' name='product_type' value='{$product->product_type}'/>";
+
+		} else {
+			// New
+			$product_type = JRequest::getVar('product_type',0);
+			$lists['product_type'] = "<input type='hidden' name='product_type' value='{$product_type}'/>";
+		}
+
+		switch($product_type){
+			case 1:
+				$lists['hidetab'] = array('shipping', 'stock', 'attribute', 'package');
+				//$lists['product_type'] .= JText::_('VIEWPRODPRODTYPEDR');
+			break;
+
+			case 2:
+				$lists['hidetab'] = array('file', 'package');
+				//$lists['product_type'] .= JText::_('VIEWPRODPRODTYPESP');
+			break;
+
+			case 3:
+				$lists['hidetab'] = array('shipping', 'stock', 'attribute', 'file');
+				//$lists['product_type'] .= JText::_('VIEWPRODPRODTYPEPAK');
+			break;
+
+			case 4:
+				$lists['hidetab'] = array('shipping', 'stock', 'attribute', 'file', 'package');
+				//$lists['product_type'] .= JText::_('VIEWPRODPRODTYPESERV');
+			break;
+
+			case 0:
+			default:
+				$lists['hidetab'] = array('shipping', 'stock', 'attribute', 'package');
+				//$lists['product_type'] .= JText::_('VIEWPRODPRODTYPEDNR');
+			break;
+		}
+
+		
+		$this->assign( "plains", '<input type="text" name="price" value="'.$product->price.'" style="text-align:center;" />');
+		$this->assign( "product_type", $product_type );
+
+		
+		$this->assign( "lists", $lists );
 		$this->assign( "configs", $configs );
+
+		/* Include */
+		//$include_products = $this->_models["product"]->getFeatured2( $product->id );
 		
 		//set toolber
 		$this->addToolbarEdit($product);

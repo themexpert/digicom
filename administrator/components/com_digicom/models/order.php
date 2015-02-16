@@ -316,11 +316,11 @@ class DigiComAdminModelOrder extends JModelList{
 			$this->_db->setQuery($sql);
 			$this->_db->query();
 
-			$sql = "SELECT domainrequired FROM `#__digicom_products` WHERE id = ".$product_id;
+			$sql = "SELECT product_type FROM `#__digicom_products` WHERE id = ".$product_id;
 			$this->_db->setQuery( $sql );
-			$producttype = $this->_db->loadResult();
+			$product_type = $this->_db->loadResult();
 
-			if($producttype == 3){
+			if($product_type == 3){
 				$sql = "select f.featuredid as id, p.name as name, f.planid as plan_id from #__digicom_featuredproducts f, #__digicom_products p where f.featuredid=p.id and f.productid=".$product_id;
 				$this->_db->setQuery($sql);
 				$prodincludes = $this->_db->loadObjectList();
@@ -422,7 +422,7 @@ class DigiComAdminModelOrder extends JModelList{
 			$license['expires'] = $expires_date;
 			$license['old_orders'] = $old_orders;
 
-			if($producttype == 3){
+			if($product_type == 3){
 				$license['ltype'] = 'package';
 			}
 			else{
@@ -568,27 +568,7 @@ class DigiComAdminModelOrder extends JModelList{
 		$db->setQuery($sql);
 		$cust = $db->loadObject();
 
-		if ($item->domainrequired == 2){
-			if ($configs->get('tax_classes','0') > 0){
-				$itemtax = 0;
-				$ptc = $configs->get('tax_classes','0');
-				$pc = $item->class > 0 ? $item->class : $pclass[0]->id;
-				$rate = $this->_getRate($ptc, $pc, $cust);
-
-				if($configs->get('tax_catalog','0') == 0){
-					$itemtax = $price * $rate/100;
-				}
-				else{
-					$itemtax = $price /(1 + $rate/100);
-				}
-				$taxvalue = $itemtax;
-			}
-			else{
-				$itemtax = 0;
-				$taxvalue = $itemtax;
-			}
-		}
-		else{
+		
 			$itemtax = 0;
 			//product tax class
 			$ptc = $item->taxclass > 0 ? $item->taxclass : $taxpclass[0]->id;
@@ -603,7 +583,7 @@ class DigiComAdminModelOrder extends JModelList{
 				$itemtax = $price /(1 + $rate/100);		
 			}
 			$taxvalue = $itemtax;
-		}
+		
 		$price = $price - $taxvalue;
 		return $taxvalue;
 	}

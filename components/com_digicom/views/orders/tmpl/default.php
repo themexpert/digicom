@@ -73,7 +73,7 @@ $invisible = 'style="display:none;"';
 		<div class="navbar-inner hidden-phone">
 			<ul class="nav hidden-phone">
 				<li>
-					<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=licenses&Itemid=".$Itemid); ?>"><i class="ico-download"></i> <?php echo JText::_("DIGI_MY_DOWNLOADS"); ?></a>
+					<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=downloads&Itemid=".$Itemid); ?>"><i class="ico-download"></i> <?php echo JText::_("DIGI_MY_DOWNLOADS"); ?></a>
 				</li>
 				<li class="divider-vertical"></li>
 				<li class="active">
@@ -81,13 +81,13 @@ $invisible = 'style="display:none;"';
 				</li>
 				<li class="divider-vertical"></li>
 				<li>
-					<a href="<?php echo JRoute::_("index.php?option=com_digicom&controller=cart&task=showCart".$and_itemid); ?>"><i class="ico-shopping-cart"></i> <?php echo JText::_("DIGI_MY_CART"); ?></a>
+					<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=cart&task=showCart".$and_itemid); ?>"><i class="ico-shopping-cart"></i> <?php echo JText::_("DIGI_MY_CART"); ?></a>
 				</li>
 			</ul>
 		</div>
 		<ul class="nav nav-pills hidden-desktop">
 			<li>
-				<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=licenses&Itemid=".$Itemid); ?>"><i class="ico-download hidden-phone"></i> <?php echo JText::_("DIGI_MY_DOWNLOADS"); ?></a>
+				<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=downloads&Itemid=".$Itemid); ?>"><i class="ico-download hidden-phone"></i> <?php echo JText::_("DIGI_MY_DOWNLOADS"); ?></a>
 			</li>
 			<li class="divider-vertical"></li>
 			<li class="active">
@@ -95,7 +95,7 @@ $invisible = 'style="display:none;"';
 			</li>
 			<li class="divider-vertical"></li>
 			<li>
-				<a href="<?php echo JRoute::_("index.php?option=com_digicom&controller=cart&task=showCart".$and_itemid); ?>"><i class="ico-shopping-cart hidden-phone"></i> <?php echo JText::_("DIGI_MY_CART"); ?></a>
+				<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=cart&task=showCart".$and_itemid); ?>"><i class="ico-shopping-cart hidden-phone"></i> <?php echo JText::_("DIGI_MY_CART"); ?></a>
 			</li>
 		</ul>
 	</div>

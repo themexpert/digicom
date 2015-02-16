@@ -65,7 +65,7 @@ if($returnpage != "cart") :
 				</div>
 			
 				<input type="hidden" name="option" value="com_digicom" />
-				<input type="hidden" name="controller" value="Profile" />
+				<input type="hidden" name="controller" value="profile" />
 				<input type="hidden" name="Itemid" value="<?php echo $Itemid;?>" />
 				<input type="hidden" name="task" value="logCustomerIn" />
 				<input type="hidden" name="pid" value="<?php echo (JRequest::getVar("pid", "", 'request'));?>" />
@@ -82,7 +82,7 @@ if($returnpage != "cart") :
 			<h3><?php echo JText::_("DIGI_REGISTER_NOW");?></h3>
 			<form name="register" method="post" action="index.php">
 				<input type="hidden" name="option" value="com_digicom" />
-				<input type="hidden" name="controller" value="Profile" />
+				<input type="hidden" name="controller" value="profile" />
 				<input type="hidden" name="Itemid" value="<?php echo $Itemid;?>" />
 				<input type="hidden" name="task" value="register" />
 				<input type="hidden" name="pid" value="<?php echo (JRequest::getVar("pid", "", 'request'));?>" />
@@ -147,7 +147,7 @@ if($returnpage != "cart") :
 					</div>
 
 					<input type="hidden" name="option" value="com_digicom" />
-					<input type="hidden" name="controller" value="Profile" />
+					<input type="hidden" name="controller" value="profile" />
 					<input type="hidden" name="Itemid" value="<?php echo $Itemid;?>" />
 					<input type="hidden" name="task" value="logCustomerIn" />
 					<input type="hidden" name="pid" value="<?php echo (JRequest::getVar("pid", "", 'request'));?>" />

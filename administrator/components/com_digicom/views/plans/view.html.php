@@ -152,12 +152,12 @@ class DigiComAdminViewPlans extends DigiComView {
 
 		$pid = JRequest::getVar("pid", "0");
 		$db = JFactory::getDBO();
-		$sql = "select `domainrequired` from #__digicom_products where id=".intval($pid);
+		$sql = "select `product_type` from #__digicom_products where id=".intval($pid);
 		$db->setQuery($sql);
 		$db->query();
-		$domainrequired = $db->loadResult();
+		$product_type = $db->loadResult();
 		$style = "";
-		if($domainrequired == 3){// package
+		if($product_type == 3){// package
 			$style = 'style="display:none;"';
 		}
 

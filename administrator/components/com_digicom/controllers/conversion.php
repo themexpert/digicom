@@ -302,7 +302,7 @@ function convert_products(){
 	$pdata['passphrase'] = null;
 	$pdata['main_zip_file'] = null;
 	$pdata['encoding_files'] = null;
-	$pdata['domainrequired'] = null;
+	$pdata['product_type'] = 'reguler';
 	$pdata['articlelink'] = null;
 	$pdata['articlelinkid'] = null;
 	$pdata['articlelinkuse'] = null;
@@ -356,7 +356,7 @@ function convert_products(){
 		$pdata['passphrase'] = mysql_escape_string($v->passphrase);
 		$pdata['main_zip_file'] = mysql_escape_string($v->main_zip_file);
 		$pdata['encoding_files'] = mysql_escape_string($v->encoding_files);
-		$pdata['domainrequired'] = mysql_escape_string($v->domainrequired);
+		$pdata['product_type'] = mysql_escape_string($v->product_type);
 		$pdata['articlelink'] = mysql_escape_string($v->articlelink);
 		$pdata['articlelinkid'] = mysql_escape_string($v->articlelinkid);
 		$pdata['articlelinkuse'] = mysql_escape_string($v->articlelinkuse);

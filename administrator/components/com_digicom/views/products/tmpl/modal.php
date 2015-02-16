@@ -135,25 +135,16 @@ $limistart = $this->pagination->limitstart;
 					</td>
 					<td>
 						<?php
-							switch ( $prod->domainrequired )
-							{
-								case 1:
-									echo JText::_('VIEWPRODPRODTYPEDR');
-								break;
-								case 2:
-									echo JText::_('VIEWPRODPRODTYPESP');
-								break;
-								case 3:
-									echo JText::_('VIEWPRODPRODTYPEPAK');
-								break;
-								case 4:
-									echo JText::_('VIEWPRODPRODTYPESERV');
-								break;
-								case 0:
-								default:
-									echo JText::_('VIEWPRODPRODTYPEDNR');
-								break;
-							}
+							switch ( $prod->product_type )
+								{
+									case 'bundle':
+										echo JText::_('VIEWPRODPRODTYPEPAK');
+										break;
+									case 'reguler':
+									default:
+										echo JText::_('VIEWPRODPRODTYPEDNR');
+										break;
+								}
 						?>
 					</td>
 					<td align="center">
