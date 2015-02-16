@@ -67,6 +67,16 @@ class DigiComAdminViewCustomers extends DigiComView {
 		$text = $isNew?JText::_('New'):JText::_('Edit');
 
 		JToolBarHelper::title(JText::_('Customer').":<small>[".$text."]</small>");
+
+		$bar = JToolBar::getInstance('toolbar');
+		$layout = new JLayoutFile('toolbar.title');
+		$title=array(
+			'title' => JText::_('Customer').":<small>[".$text."]</small>",
+			'class' => 'title'
+		);
+		$bar->appendButton('Custom', $layout->render($title), 'title');
+
+
 		JToolBarHelper::save();
 		if ($isNew) {
 			JToolBarHelper::divider();
@@ -115,6 +125,9 @@ class DigiComAdminViewCustomers extends DigiComView {
 		$keyword = JRequest::getVar("keyword", "", "request");
 		$this->assign ("keyword", $keyword);
 		
+		DigiComAdminHelper::addSubmenu('customers');
+		$this->sidebar = JHtmlSidebar::render();
+
 		parent::display($tpl);
 	}
 	
@@ -127,6 +140,16 @@ class DigiComAdminViewCustomers extends DigiComView {
 	protected function addToolbar()
 	{
 		JToolBarHelper::title(JText::_('VIEWDSADMINCUSTOMERS'), 'generic.png');
+
+		$bar = JToolBar::getInstance('toolbar');
+		// Instantiate a new JLayoutFile instance and render the layout
+		$layout = new JLayoutFile('toolbar.title');
+		$title=array(
+			'title' => JText::_( 'VIEWDSADMINCUSTOMERS' ),
+			'class' => 'title'
+		);
+		$bar->appendButton('Custom', $layout->render($title), 'title');
+		
 		JToolBarHelper::addNew();
 		JToolBarHelper::editList();
 		JToolBarHelper::divider();

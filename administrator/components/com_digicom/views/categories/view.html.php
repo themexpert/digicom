@@ -51,6 +51,17 @@ class DigiComAdminViewCategories extends DigiComView {
 		$text = $isNew?JText::_('New'):JText::_('Edit');
 
 		JToolBarHelper::title(JText::_('DSCATEGORY').":<small>[".$text."]</small>");
+
+		// 		$title = JText::_('VIEWPRODPRODTYPEDR');
+		$bar = JToolBar::getInstance('toolbar');
+		$layout = new JLayoutFile('toolbar.title');
+		$title=array(
+			'title' => JText::_('DSCATEGORY').":<small>[".$text."]</small>",
+			'class' => 'product'
+		);
+		$bar->appendButton('Custom', $layout->render($title), 'title');
+
+
 		JToolBarHelper::save();
 		if ($isNew) {
 			JToolBarHelper::divider();
@@ -92,6 +103,10 @@ class DigiComAdminViewCategories extends DigiComView {
 		#$lists['parent'] = DigiComAdminHelper::getParent($category);
 		$lists['parent'] = $this->getParentCategory($category);
 		$this->assign("lists", $lists);
+
+		DigiComAdminHelper::addSubmenu('categories');
+		$this->sidebar = JHtmlSidebar::render();
+
 		parent::display($tpl);
 
 	}
@@ -142,6 +157,16 @@ class DigiComAdminViewCategories extends DigiComView {
 	protected function addToolbar()
 	{
 		JToolBarHelper::title(JText::_('VIEWDSADMINCATEGORIES'), 'generic.png');
+
+		$bar = JToolBar::getInstance('toolbar');
+		// Instantiate a new JLayoutFile instance and render the layout
+		$layout = new JLayoutFile('toolbar.title');
+		$title=array(
+			'title' => JText::_( 'VIEWDSADMINCATEGORIES' ),
+			'class' => 'title'
+		);
+		$bar->appendButton('Custom', $layout->render($title), 'title');
+
 		JToolBarHelper::addNew();
 		JToolBarHelper::editList();
 		JToolBarHelper::divider();

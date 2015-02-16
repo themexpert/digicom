@@ -68,6 +68,14 @@ $doc->addScriptDeclaration( $upload_script );
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data" class="form-horizontal">
+<?php if (!empty( $this->sidebar)) : ?>
+		<div id="j-sidebar-container" class="">
+			<?php echo $this->sidebar; ?>
+		</div>
+		<div id="j-main-container" class="">
+	<?php else : ?>
+		<div id="j-main-container" class="">
+	<?php endif;?>
 <?php
 
 	$options = array(
@@ -270,4 +278,5 @@ $doc->addScriptDeclaration( $upload_script );
 			<input type="hidden" name="task" value="" />
 		<input type="hidden" name="controller" value="Categories" />
 		<input type="hidden" name="oldtitle" value="<?php echo $this->cat->name;?>" />
+		</div>
 </form>

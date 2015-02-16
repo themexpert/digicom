@@ -334,7 +334,16 @@ foreach ($this->lists['imagelists'] as $folder => $list) {
 	}
 </script>
 <form action="index.php" method="post" name="adminForm" enctype="multipart/form-data" id="adminForm" class="form-validate">
-	<div class="form-inline form-inline-header">
+	<?php if (!empty( $this->sidebar)) : ?>
+		<div id="j-sidebar-container" class="">
+			<?php echo $this->sidebar; ?>
+		</div>
+		<div id="j-main-container" class="">
+	<?php else : ?>
+		<div id="j-main-container" class="">
+	<?php endif;?>
+
+<div class="form-inline form-inline-header">
 		<div class="control-group ">
 			<div class="control-label">
 				<label id="jform_title-lbl" for="jform_title" class="hasTooltip required" 
@@ -1015,4 +1024,6 @@ echo JHtml::_( 'dctabs.end' );
 	<input type="hidden" name="forchange" value="" />
 	<input type="hidden" name="tab" value="" />
 	<input type="hidden" name="state_filter" value="<?php echo JRequest::getVar("state_filter", "-1"); ?>" />
+
+	</div>
 </form>

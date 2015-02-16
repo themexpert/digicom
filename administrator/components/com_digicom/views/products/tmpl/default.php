@@ -36,12 +36,12 @@ $limistart = $this->pagination->limitstart;
 ?>
 <form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&controller=products'); ?>" method="post" name="adminForm" autocomplete="off" class="form-horizontal">
 	<?php if (!empty( $this->sidebar)) : ?>
-	<div id="j-sidebar-container" class="span2">
+	<div id="j-sidebar-container" class="">
 		<?php echo $this->sidebar; ?>
 	</div>
-	<div id="j-main-container" class="span10">
+	<div id="j-main-container" class="">
 <?php else : ?>
-	<div id="j-main-container" class="span12">
+	<div id="j-main-container" class="">
 <?php endif;?>
 		
 		<div class="js-stools">
@@ -70,13 +70,13 @@ $limistart = $this->pagination->limitstart;
 		</div>
 		<div id="editcell" >
 
-			<table class="adminlist table table-striped">
+			<table class="adminlist table table-striped table-hover">
 
 				<thead>
 
 					<tr>
 						<th width="1%">
-							<?php echo JHtml::_('grid.checkall'); ?>
+							<span><?php echo JHtml::_('grid.checkall'); ?></span>
 						</th>
 						<th width="1%">
 							<?php echo JHtml::_('grid.sort', 'VIEWPRODSKU', 'id', $listDirn, $listOrder); ?>

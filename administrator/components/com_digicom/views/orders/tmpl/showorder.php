@@ -35,7 +35,16 @@ if(isset($order->id) & $order->id < 1):
 <?php
 else:
 ?>
+<?php if (!empty( $this->sidebar)) : ?>
+<div id="j-sidebar-container" class="">
+	<?php echo $this->sidebar; ?>
+</div>
+<div id="j-main-container" class="">
+<?php else : ?>
+<div id="j-main-container" class="">
+<?php endif;?>
 <form id="adminForm" action="index.php" name="adminForm" method="post">
+
 	<div id="contentpane" >
 		<table class="adminlist" width="100%"  border="1" cellpadding="3" cellspacing="0" bordercolor="#cccccc" style="border-collapse: collapse">
 			<caption class="componentheading"><?php echo JText::_("DSMYORDER")." #".$order->id; ?>: <?php echo $order->status; ?></caption>
@@ -206,6 +215,7 @@ else:
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="controller" value="Orders" />
 	</form>
+	</div>
 <?php
 
 endif;

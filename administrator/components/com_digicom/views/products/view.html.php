@@ -391,7 +391,10 @@ class DigiComAdminViewProducts extends DigiComView
 		
 		//set toolber
 		$this->addToolbarEdit($product);
-		
+		DigiComAdminHelper::addSubmenu('products');
+		$this->sidebar = JHtmlSidebar::render();
+
+
 		parent::display( $tpl );
 	}
 
@@ -423,9 +426,9 @@ class DigiComAdminViewProducts extends DigiComView
 		// Instantiate a new JLayoutFile instance and render the layout
 		$layout = new JLayoutFile('toolbar.title');
 		$title=array(
-				'title' => JText::_( 'VIEWDSADMINPRODUCTS' ),
-				'class' => 'product'
-			);
+			'title' => JText::_( 'VIEWDSADMINPRODUCTS' ),
+			'class' => 'product'
+		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
 		
 		$layout = new JLayoutFile('toolbar.products');
@@ -514,35 +517,44 @@ class DigiComAdminViewProducts extends DigiComView
 	protected function addToolbarEdit($product)
 	{
 		$isNew = ($product->id < 1);
-		$text = $isNew ? JText::_( 'New' ) : JText::_( 'JACTION_EDIT' );
+		$text = $isNew ? JText::_( 'New' ) : JText::_( 'JACTION_EDIT' ) . ' : ' . $product->name;
 		
-		if (isset($product->domainrequired) && !empty($product->domainrequired)) {
-			$producttype = $product->domainrequired;
-		} else {
-			$producttype = JRequest::getVar('producttype',0);
-		}
+		// if (isset($product->domainrequired) && !empty($product->domainrequired)) {
+		// 	$producttype = $product->domainrequired;
+		// } else {
+		// 	$producttype = JRequest::getVar('producttype',0);
+		// }
 
 		
-		switch($producttype){
-			case 1:
-				$title = JText::_('VIEWPRODPRODTYPEDR');
-				break;
-			case 2:
-				$title = JText::_('VIEWPRODPRODTYPESP');
-				break;
-			case 3:
-				$title = JText::_('VIEWPRODPRODTYPEPAK');
-				break;
-			case 4:
-				$title = JText::_('VIEWPRODPRODTYPESERV');
-				break;
-			case 0:
-			default:
-				$title = JText::_('VIEWPRODPRODTYPEDNR');
-			break;
-		}
+		// switch($producttype){
+		// 	case 1:
+		// 		$title = JText::_('VIEWPRODPRODTYPEDR');
+		// 		break;
+		// 	case 2:
+		// 		$title = JText::_('VIEWPRODPRODTYPESP');
+		// 		break;
+		// 	case 3:
+		// 		$title = JText::_('VIEWPRODPRODTYPEPAK');
+		// 		break;
+		// 	case 4:
+		// 		$title = JText::_('VIEWPRODPRODTYPESERV');
+		// 		break;
+		// 	case 0:
+		// 	default:
+		// 		$title = JText::_('VIEWPRODPRODTYPEDNR');
+		// 	break;
+		// }
 		
-		JToolBarHelper::title($title . ' ' . JText::_( 'DSPROD' ) . " : " . $text);
+		// JToolBarHelper::title($title . ' ' . JText::_( 'DSPROD' ) . " : " . $text);
+
+		// Instantiate a new JLayoutFile instance and render the layout
+		$bar = JToolBar::getInstance('toolbar');
+		$layout = new JLayoutFile('toolbar.title');
+		$title=array(
+			'title' => $text,
+			'class' => 'product'
+		);
+		$bar->appendButton('Custom', $layout->render($title), 'title');
 
 		JToolBarHelper::save();
 		JToolBarHelper::save2new();

@@ -1,0 +1,266 @@
+/* Joomla 2.5 FIX */
+.pull-left {
+  float: left;
+}
+.media {
+  clear: both;
+}
+dt.acl-groups {
+  font-size: inherit;
+}
+/* Joomla 3.0 FIX */
+td.order input {
+  width: 30px;
+  text-align: right;
+}
+/* General FIX */
+#content [class^="icon-"],
+#content [class*=" icon-"] {
+  color: #B44CDB;
+}
+#content .btn [class^="icon-"],
+#content .btn [class*=" icon-"] {
+  color: inherit;
+}
+span.label-ds,
+span.badge-ds {
+  background-color: #B44CDB;
+}
+span.label-ds a,
+span.badge-ds a {
+  color: white;
+}
+.header_zone,
+adminlist.header_zone {
+  background-color: #E8F8FF !important;
+  border: 1px solid #999999 !important;
+  padding: 5px !important;
+  text-align: left !important;
+  vertical-align: top !important;
+  font-weight: bold !important;
+}
+.icon-32-export {
+  background-image: url("../images/export.png") !important;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.hasTip img {
+  float: none;
+}
+div.current input,
+fieldset input {
+  float: none !important;
+  margin: 0px !important;
+}
+#published0,
+#published1,
+fieldset img {
+  float: none !important;
+  margin: 1px !important;
+}
+#published0-lbl,
+#published1-lbl {
+  float: none !important;
+  display: inline !important;
+}
+.digi_video {
+  font-size: 14px;
+  font-weight: bold;
+}
+.submenu-box,
+div.m {
+  background-color: #FFFFFF !important;
+}
+tr.row1 {
+  background-color: #FFFFFF !important;
+}
+div.current input,
+div.current textarea,
+div.current select {
+  clear: none !important;
+  float: none !important;
+  margin: 3px 0 0 2px !important;
+}
+fieldset ul.checklist input {
+  clear: left;
+  float: left !important;
+}
+/* User groups tweaks */
+ul.usergroups label {
+  display: inline;
+}
+div.current ul.usergroups input,
+fieldset ul.usergroups input,
+ul.usergroups input {
+  display: inline;
+  margin-top: -4px;
+  clear: left !important;
+  float: left !important;
+  margin: 11px 0 0 2px !important;
+}
+ul.usergroups {
+  margin: 5px 0 10px 0;
+}
+ul.usergroups li {
+  line-height: 20px;
+  list-style: none;
+}
+.digicom_icon_big {
+  font-size: 45px;
+  margin-right: 52px;
+  margin-top: 18px;
+}
+/* Layout Styling */
+body.com_digicom {
+  overflow-x: hidden;
+  background: #fafafa;
+  /* Table Styles */
+}
+body.com_digicom header.header {
+  display: none;
+}
+body.com_digicom .subhead {
+  margin-bottom: 0;
+  background: #fff;
+  box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2);
+  padding: 10px 0;
+  border-bottom: 0;
+}
+body.com_digicom .btn-toolbar {
+  text-align: right;
+  margin: 0;
+}
+body.com_digicom .btn-toolbar .btn-wrapper {
+  margin: 0 0 0 5px;
+}
+body.com_digicom .btn-toolbar #toolbar-title {
+  float: left;
+  margin-left: 0;
+}
+body.com_digicom .btn-toolbar #toolbar-title h3 {
+  margin: 0;
+  line-height: 26px;
+}
+body.com_digicom .btn-toolbar #toolbar-title h3 [class^="icon-"],
+body.com_digicom .btn-toolbar #toolbar-title h3 [class*=" icon-"] {
+  margin-right: 15px;
+}
+body.com_digicom .btn-toolbar .btn {
+  background: #ddd;
+  box-shadow: none;
+  border-radius: 0;
+  text-shadow: none;
+}
+body.com_digicom .btn-toolbar .btn-primary {
+  background: #1d6cb0;
+}
+body.com_digicom .btn-toolbar .btn-success {
+  background: #5bb75b;
+}
+body.com_digicom .btn-toolbar .btn-mini .caret,
+body.com_digicom .btn-toolbar .btn-small .caret {
+  margin-top: 7px;
+}
+body.com_digicom .container-main {
+  padding: 44px 0 0;
+}
+body.com_digicom #j-sidebar-container {
+  height: 100vh;
+  background: #1D232B;
+  margin-left: 0;
+  width: 200px;
+  float: left;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.5);
+}
+body.com_digicom #j-sidebar-container #sidebar {
+  padding: 15px 0;
+}
+body.com_digicom #j-sidebar-container #sidebar #submenu {
+  width: 200px;
+}
+body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a {
+  padding: 5px 12px;
+  color: rgba(255, 255, 255, 0.5);
+  text-shadow: none;
+}
+body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a > span + span {
+  display: inline-block;
+}
+body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a:hover,
+body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a:focus {
+  background: inherit;
+  color: rgba(255, 255, 255, 0.8);
+}
+body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a:hover [class^="icon-"],
+body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a:focus [class^="icon-"],
+body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a:hover [class*=" icon-"],
+body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a:focus [class*=" icon-"] {
+  color: rgba(255, 255, 255, 0.6);
+}
+body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list [class^="icon-"],
+body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list [class*=" icon-"] {
+  color: rgba(255, 255, 255, 0.3);
+  margin-right: 15px;
+  width: auto;
+  height: auto;
+}
+body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li.active > a {
+  background: #080a0d;
+  color: rgba(255, 255, 255, 0.8);
+}
+body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li.active > a > [class^="icon-"],
+body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li.active > a > [class*=" icon-"] {
+  color: rgba(255, 255, 255, 0.8);
+}
+body.com_digicom #j-main-container {
+  padding: 20px;
+  width: auto;
+  position: absolute;
+  margin-left: 200px;
+  box-sizing: border-box;
+  margin-right: 0;
+}
+body.com_digicom #j-sidebar-container,
+body.com_digicom #j-main-container {
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+body.com_digicom.sidebar-collapse #j-sidebar-container,
+body.com_digicom.task-edit #j-sidebar-container {
+  width: 38px;
+}
+body.com_digicom.sidebar-collapse #j-main-container,
+body.com_digicom.task-edit #j-main-container {
+  margin-left: 38px;
+}
+body.com_digicom .table > thead > tr > th,
+body.com_digicom .table > tbody > tr > th,
+body.com_digicom .table > tfoot > tr > th,
+body.com_digicom .table > thead > tr > td,
+body.com_digicom .table > tbody > tr > td,
+body.com_digicom .table > tfoot > tr > td {
+  padding: 12px 15px;
+  line-height: 1.3;
+  border: 1px solid #ebedf0;
+}
+body.com_digicom .table caption + thead tr:first-child th,
+body.com_digicom .table caption + thead tr:first-child td,
+body.com_digicom .table colgroup + thead tr:first-child th,
+body.com_digicom .table colgroup + thead tr:first-child td,
+body.com_digicom .table thead:first-child tr:first-child th,
+body.com_digicom .table thead:first-child tr:first-child td {
+  border-top: 1px solid #ebedf0;
+}
+body.com_digicom .table .pagination-toolbar {
+  margin-top: 10px;
+}
+body.com_digicom .table-striped > tbody > tr:nth-child(2n+1) > td,
+body.com_digicom .table-striped > tbody > tr:nth-child(2n+1) > th {
+  background-color: #fafafa;
+}
+body.com_digicom #status {
+  box-shadow: none;
+}

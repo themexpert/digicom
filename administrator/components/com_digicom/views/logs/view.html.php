@@ -27,13 +27,43 @@ class DigiComAdminViewLogs extends DigiComView
 		$document = JFactory::getDocument();
 		$task = JRequest::getVar("task", "purchases");
 		if($task == "systememails"){
-			JToolBarHelper::title(JText::_('Emails Log'), 'generic.png');
+			JToolBarHelper::title(JText::_('COM_DIGICOM_EMAILS_LOG'), 'generic.png');
+
+			$bar = JToolBar::getInstance('toolbar');
+			// Instantiate a new JLayoutFile instance and render the layout
+			$layout = new JLayoutFile('toolbar.title');
+			$title=array(
+				'title' => JText::_( 'COM_DIGICOM_EMAILS_LOG' ),
+				'class' => 'title'
+			);
+			$bar->appendButton('Custom', $layout->render($title), 'title');
+
 		}
 		elseif($task == "download"){
-			JToolBarHelper::title(JText::_('Downloads Log'), 'generic.png');
+			JToolBarHelper::title(JText::_('COM_DIGICOM_DOWNLOADS_LOG'), 'generic.png');
+
+			$bar = JToolBar::getInstance('toolbar');
+			// Instantiate a new JLayoutFile instance and render the layout
+			$layout = new JLayoutFile('toolbar.title');
+			$title=array(
+				'title' => JText::_( 'COM_DIGICOM_DOWNLOADS_LOG' ),
+				'class' => 'title'
+			);
+			$bar->appendButton('Custom', $layout->render($title), 'title');
+
 		}
 		elseif($task == "purchases"){
-			JToolBarHelper::title(JText::_('Purchases Log'), 'generic.png');
+			JToolBarHelper::title(JText::_('COM_DIGICOM_PURCHASES_LOG'), 'generic.png');
+
+			$bar = JToolBar::getInstance('toolbar');
+			// Instantiate a new JLayoutFile instance and render the layout
+			$layout = new JLayoutFile('toolbar.title');
+			$title=array(
+				'title' => JText::_( 'COM_DIGICOM_PURCHASES_LOG' ),
+				'class' => 'title'
+			);
+			$bar->appendButton('Custom', $layout->render($title), 'title');
+			
 		}
 		
 		$emails = $this->get('Items');

@@ -18,12 +18,12 @@ $k = 0;
 $n = count ($this->custs);
 ?>
 <?php if (!empty( $this->sidebar)) : ?>
-<div id="j-sidebar-container" class="span2">
+<div id="j-sidebar-container" class="">
 	<?php echo $this->sidebar; ?>
 </div>
-<div id="j-main-container" class="span10">
+<div id="j-main-container" class="">
 <?php else : ?>
-<div id="j-main-container" class="span12">
+<div id="j-main-container" class="">
 <?php endif;?>
 	<form id="adminForm" action="index.php" name="adminForm" method="post">
 
