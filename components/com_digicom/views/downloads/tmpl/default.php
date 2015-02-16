@@ -63,14 +63,16 @@ if($product_itemid != "0"){
 				<span class="pull-right"><i class="icon-download"></i></span>
 			</a>
 		</div>
-		<div id="product<?php echo $item->productid; ?>" class="accordion-body collapse" style="height: 0px;">
+		<div id="product<?php echo $item->productid; ?>" class="accordion-body<?php echo ($key==0 ? ' in' : ''); ?> collapse">
 			<div class="accordion-inner">
-				<?php // dsdebug($item->files); ?>
+				<?php //dsdebug($item->files); ?>
 				<table class="table table-bordered">
 					<thead>
 						<tr>
 							<th>#</th>
 							<th><?php echo JText::_('COM_DIGICOM_FILE_NAME'); ?></th>
+							<th><?php echo JText::_('COM_DIGICOM_FILE_SIZE'); ?></th>
+							<th><?php echo JText::_('COM_DIGICOM_FILE_UPDATES'); ?></th>
 							<th><?php echo JText::_('COM_DIGICOM_FILE_HITS'); ?></th>
 							<th><?php echo JText::_('COM_DIGICOM_FILE_DOWNLOAD_ACTION'); ?></th>
 						</tr>
@@ -80,9 +82,11 @@ if($product_itemid != "0"){
 							<tr>
 								<td><?php echo $key2; ?></td>
 								<td><?php echo $file->name; ?></td>
+								<td><?php echo $file->filesize; ?></td>
+								<td><?php echo $file->filemtime; ?></td>
 								<td><?php echo $file->hits; ?></td>
 								<td>
-									<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=downloads&task=makeDownload&fileid='.$file->id.$andProdItem);?>" class="btn btn-download btn-mini"><?php echo JText::_('COM_DIGICOM_FILE_DOWNLOAD'); ?></a>
+									<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=downloads&task=makeDownload&downloadid='.$file->downloadid.'&Itemid='.$Itemid);?>" class="btn btn-download btn-mini"><?php echo JText::_('COM_DIGICOM_FILE_DOWNLOAD'); ?></a>
 								</td>
 							</tr>
 						<?php endforeach; ?>

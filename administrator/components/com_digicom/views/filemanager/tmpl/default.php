@@ -33,7 +33,7 @@ $mosConfig_absolute_path = JPATH_ROOT;
 								<?php endif; ?>
 								<?php if($this->fieldID): ?>
 								getFileCallback : function(path) {
-									value = path.replace(basePath, '');
+									value = path.replace(basePath + '/', '');
 									parent.elFinderUpdate('<?php echo $this->fieldID; ?>', value);
 								}
 								<?php else: ?>

@@ -23,7 +23,7 @@ class DigiComControllerDownloads extends DigiComController
 		global $Itemid;
 		parent::__construct();
 		$this->registerTask ("", "listDownloads");
-		$this->registerTask ("download", "makeDownload");
+		$this->registerTask ("makeDownload", "makeDownload");
 		
 		$this->_model = $this->getModel("Downloads");
 		$this->_config = $this->getModel("Config");
@@ -53,5 +53,38 @@ class DigiComControllerDownloads extends DigiComController
 		$conf = $this->_config->getConfigs();
 		$view->display();
 	}
-
+	
+	function makeDownload()
+	{
+		require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'downloadfileclass.inc' );
+		$fileInfo = $this->_model->getfileinfo();
+		if(empty($fileInfo->url)){
+			$itemid = JFactory::getApplication()->input->get('itemid',0);
+			$msg = JText::sprintf('COM_DIGICOM_FILE_DONT_EXIST_DETAILS',$fileInfo->name);
+			JFactory::getApplication()->redirect('index.php?option=com_digicom&view=downloads&Itemid='.$itemid,$msg);
+		}
+		
+		$parsed = parse_url($fileInfo->url);
+		if (empty($parsed['scheme'])) {
+			$fileLink = JPATH_BASE.DS.$fileInfo->url;
+		}else{
+			$fileLink = $fileInfo->url;
+		}
+		
+		//update hits
+		$files =   JTable::getInstance('Files', 'Table');
+		$files->load($fileInfo->id);
+		$files->hits = $files->hits+1;
+		$files->store();
+		
+		$downloadfile = new DOWNLOADFILE($fileLink);
+		if (!$downloadfile->df_download()){
+			$itemid = JFactory::getApplication()->input->get('itemid',0);
+			$msg = JText::_sprintf("COM_DIGICOM_FILE_DOWNLOAD_FAILED",$fileInfo->name);
+			//$msg = JText::sprintf('COM_DIGICOM_FILE_DONT_EXIST_DETAILS',$fileInfo->name);
+			JFactory::getApplication()->redirect('index.php?option=com_digicom&view=downloads&Itemid='.$itemid,$msg);
+		}			
+		die;
+	}
+	
 }

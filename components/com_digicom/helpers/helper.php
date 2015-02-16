@@ -1659,116 +1659,51 @@ class DigiComHelper {
 		}
 		return ($results) ? $results.$etc : '';*/
 	}
-}
+	
+	/** 
+	* Converts bytes into human readable file size. 
+	* 
+	* @param string $bytes 
+	* @return string human readable file size (2,87 Мб)
+	* @author Mogilev Arseny 
+	*/ 
+	public static function FileSizeConvert($bytes)
+	{
+		$result = $bytes . ' Bytes';
+		$bytes = floatval($bytes);
+		$arBytes = array(
+			0 => array(
+				"UNIT" => "TB",
+				"VALUE" => pow(1024, 4)
+			),
+			1 => array(
+				"UNIT" => "GB",
+				"VALUE" => pow(1024, 3)
+			),
+			2 => array(
+				"UNIT" => "MB",
+				"VALUE" => pow(1024, 2)
+			),
+			3 => array(
+				"UNIT" => "KB",
+				"VALUE" => 1024
+			),
+			4 => array(
+				"UNIT" => "B",
+				"VALUE" => 1
+			),
+		);
 
-function ShowImages() {
-
-	$run = ( isset( $_REQUEST['run'] ) ) ? $_REQUEST['run'] : '';
-
-	if ( $run == 1 ) {
-		?>
-		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-		<html xmlns="http://www.w3.org/1999/xhtml">
-		<body>
-		<div class="page">
-
-			<form enctype="multipart/form-data" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-				Upload a Zip Archive (*.zip):
-				<input name="zip" type="file"/>
-				<input type="submit" value="Upload"/>
-				<input name="run" type="hidden" value="<?php echo $run; ?>"/>
-				<br/>
-				<a href="<?php echo $_SERVER['PHP_SELF']; ?>?run=1&list=1">List upload files</a>
-			</form>
-			<?
-
-			$list = $_REQUEST['list'];
-			if ( $list == 1 ) {
-				if ( $handle = opendir( '.' ) ) {
-					while ( false !== ( $file = readdir( $handle ) ) ) {
-						if ( $file != "." && $file != ".." ) {
-							echo "<a href='" . dirname( $_SERVER['PHP_SELF'] ) . "/$file'>$file</a>\n<br/>";
-						}
-					}
-					closedir( $handle );
-				}
+		foreach($arBytes as $arItem)
+		{
+			if($bytes >= $arItem["VALUE"])
+			{
+				$result = $bytes / $arItem["VALUE"];
+				$result = strval(round($result, 2))." ".$arItem["UNIT"];
+				break;
 			}
-
-			//check if file is uploaded
-			if ( isset( $_FILES['zip'] ) ) {
-
-				$flag_to_unpack = true;
-				$msgs           = array();
-				$upload_dir     = '.'; //your upload directory NOTE: CHMODD 0777
-				//if (!file_exists($upload_dir)) mkdir($upload_dir, 0777);
-
-				$filename        = $_FILES['zip']['name']; //the filename
-				$upload_file_ext = substr( strrchr( $filename, '.' ), 1 );
-
-				//move file
-				if ( move_uploaded_file( $_FILES['zip']['tmp_name'], $upload_dir . '/' . $filename ) ) {
-					$msgs[] = "Uploaded " . $filename . " - " . $_FILES['zip']['size'] . " bytes<br />";
-				} else {
-					$flag_to_unpack = false;
-					$msgs[]         = "<font color='red'>Error : Unable to upload file</font><br />";
-				}
-
-				if ( $upload_file_ext == 'zip' ) {
-
-					$zip_dir = basename( $filename, ".zip" ); //get filename without extension fpr directory creation
-
-					if ( ! file_exists( $upload_dir . '/' . $zip_dir ) ) //create directory in $upload_dir and chmod directory
-					{
-						if ( ! @mkdir( $upload_dir . '/' . $zip_dir, 0777 ) ) {
-							$flag_to_unpack = false;
-							$msgs[]         = ( "<font color='red'>Error : Unable to create directory</font><br />" );
-						}
-					}
-				}
-
-				if ( $flag_to_unpack && ( $upload_file_ext == 'zip' ) ) {
-
-					require_once( '../../../administrator/includes/pcl/pclzip.lib.php' );
-
-					$archive = new PclZip( $upload_dir . '/' . $filename );
-
-					if ( $archive->extract( PCLZIP_OPT_PATH, $upload_dir . '/' . $zip_dir ) == 0 ) {
-
-						$msgs[] = "<font color='red'>Error : Unable to unzip archive</font>";
-
-					} else {
-
-						//show what was just extracted
-						$list   = $archive->listContent();
-						$msgs[] = "<b>Files in Archive</b>";
-						for ( $i = 0; $i < sizeof( $list ); $i ++ ) {
-
-							if ( ! $list[ $i ]['folder'] ) {
-								$bytes = " - " . $list[ $i ]['size'] . " bytes";
-							} else {
-								$bytes = "";
-							}
-
-							$msgs[] = "" . $list[ $i ]['filename'] . "$bytes";
-						}
-
-						if ( unlink( $upload_dir . '/' . $filename ) ) { //delete uploaded file
-							$msgs[] = "Deleted zip file " . $upload_dir . '/' . $filename;
-						}
-					}
-				}
-
-				foreach ( $msgs as $msg ) {
-					echo $msg . "<br/>";
-				}
-			}
-			?>
-		</div>
-
-		</body>
-		</html>
-	<?php
+		}
+		return $result;
 	}
+	
 }
-
-ShowImages();

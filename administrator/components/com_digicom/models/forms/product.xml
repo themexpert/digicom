@@ -17,7 +17,7 @@
 		
 		<field name="description" type="textarea" label="COM_DIGICOM_FIELD_ARTICLETEXT_LABEL" description="COM_DIGICOM_FIELD_ARTICLETEXT_DESC" class="useredactor" />
 		
-		<field name="fulldescription" type="editor" label="COM_DIGICOM_FIELD_ARTICLETEXT_LABEL" description="COM_DIGICOM_FIELD_ARTICLETEXT_DESC" filter="JComponentHelper::filterText" buttons="true" />
+		<field name="fulldescription" type="editor" label="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_LABEL" description="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_DESC" filter="JComponentHelper::filterText" buttons="true" />
 			
 		<field id="published" name="published" type="list" label="JSTATUS" description="JFIELD_PUBLISHED_DESC" class="chzn-color-state" size="1" default="1" >
 			<option value="1"> JPUBLISHED</option>
@@ -55,9 +55,9 @@
 		
 		<field name="ordering" type="dgordering" label="JFIELD_ORDERING_LABEL" description="JFIELD_ORDERING_DESC" content_type="com_digicom.product" />
 
-		<field name="publish_up" type="calendar" label="COM_CONTACT_FIELD_PUBLISH_UP_LABEL" description="COM_CONTACT_FIELD_PUBLISH_UP_DESC" format="%Y-%m-%d %H:%M:%S" size="22" filter="user_utc" />
+		<field name="publish_up" type="calendar" label="COM_DIGICOM_FIELD_PUBLISH_UP_LABEL" description="COM_DIGICOM_FIELD_PUBLISH_UP_DESC" format="%Y-%m-%d %H:%M:%S" size="22" filter="user_utc" />
 
-		<field name="publish_down" type="calendar" label="COM_CONTACT_FIELD_PUBLISH_DOWN_LABEL" description="COM_CONTACT_FIELD_PUBLISH_DOWN_DESC" format="%Y-%m-%d %H:%M:%S" size="22" filter="user_utc" />
+		<field name="publish_down" type="calendar" label="COM_DIGICOM_FIELD_PUBLISH_DOWN_LABEL" description="COM_DIGICOM_FIELD_PUBLISH_DOWN_DESC" format="%Y-%m-%d %H:%M:%S" size="22" filter="user_utc" />
 		
 		<field name="metatitle" type="text" label="JFIELD_META_TITLE_LABEL" description="JFIELD_META_TITLE_DESC" size="40" />
 		

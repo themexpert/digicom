@@ -11,7 +11,7 @@
 defined ('_JEXEC') or die ("Go away.");
 
 jimport ("joomla.aplication.component.model");
-
+jimport('joomla.filesystem.file');
 class DigiComModelDownloads extends DigiComModel
 {
 	var $_products;
@@ -36,8 +36,7 @@ class DigiComModelDownloads extends DigiComModel
 		$db->setQuery($sql);
 		$db->query();
 	}
-
-
+	
 	function getlistDownloads(){
 		$user = new DigiComSessionHelper();
 		//dsdebug($user->_customer->id);die;
@@ -80,13 +79,39 @@ class DigiComModelDownloads extends DigiComModel
 			
 			foreach($products as $key=>$product){
 				$query = $db->getQuery(true);
-				$query->select($db->quoteName(array('id', 'name','hits')));
+				$query->select($db->quoteName(array('id', 'name', 'url', 'hits')));
 				$query->from($db->quoteName('#__digicom_products_files'));
 				$query->where($db->quoteName('product_id') . ' = '. $db->quote($product->productid));
 				$query->order('id DESC');
 				// Reset the query using our newly populated query object.
 				$db->setQuery($query);
 				$files = $db->loadObjectList();
+				
+				if(count($files) >0){
+					foreach($files as $key2=>$item){
+						$downloadid = array(
+							'fileid' => $item->id
+						);
+						$downloadcode = json_encode($downloadid);
+						$item->downloadid = base64_encode($downloadcode);
+						
+						$parsed = parse_url($item->url);
+						if (empty($parsed['scheme'])) {
+							$fileLink = JPATH_BASE.DS.$item->url;
+						}else{
+							$fileLink = $item->url;
+						}
+						if (JFile::exists($fileLink)) {
+							$filesize = filesize ($fileLink);
+							$item->filesize = DigiComHelper::FileSizeConvert($filesize);
+							$item->filemtime = date("d F Y", filemtime($fileLink));
+						}else{
+							$item->filesize = JText::_('COM_DIGICOM_FILE_DONT_EXIST');
+							$item->filemtime = JText::_('COM_DIGICOM_FILE_DONT_EXIST');
+						}
+						
+					}
+				}
 				
 				$product->files = $files;
 			}
@@ -97,71 +122,27 @@ class DigiComModelDownloads extends DigiComModel
 		return $this->_products;
 	}
 
-	function prepareDownload($product, $uid) {
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
-		$resdir = JPATH_ROOT.DS."administrator".DS."components".DS."digicom_product_uploads".DS.$product->id.DS;
-		$resdir_orig = $resdir."original".DS;
-		$resdir_encoded = $resdir."encoded".DS;
-		$srcFile = $resdir_orig.$product->file;
+	function getfileinfo(){
 		
-		if(!is_file($srcFile)){
-			echo '<script> alert("'.JText::_("DIGI_NOT_FILE").'"); history.go(-1); </script>';
-			die();
-		}
-			   
-		$usermainDir = JPATH_ROOT.DS."components/com_digicom/download/";
-		$prepDir = $usermainDir . $uid."/";  
+		$jinput = JFactory::getApplication()->input;
+		$fileid = $jinput->get('downloadid', '0');
+		//echo $fileid;die;
+		if($fileid == '0') return false;
+		$fileid = base64_decode($fileid);
+		$fileid = json_decode($fileid);
 		
-		if (file_exists($prepDir) ) {
-			JFolder::delete ($prepDir);
-		} 
-		JFolder::create($prepDir);		
-
-		DigiComHelper::CreateIndexFile($usermainDir);
-		DigiComHelper::CreateIndexFile($prepDir);		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName(array('id', 'name', 'url', 'hits')));
+		$query->from($db->quoteName('#__digicom_products_files'));
+		$query->where($db->quoteName('id') . ' = '. $db->quote($fileid->fileid));
+		$query->order('id DESC');
+		// Reset the query using our newly populated query object.
+		$db->setQuery($query);
+		return $db->loadObject();		
 		
-		if (!JFile::copy ($srcFile, $prepDir.$product->file)) return false;//die ($srcFile." ".$prepDir.$product->file);;
-		return true;
 	}
-
-	function prepareEncodedFile ($product, $license, $uid, $dev = 0, $method) {
-
-			$phpVer = JRequest::getVar ('phpVersions', "", "request");
-			$platform = JRequest::getVar ('platforms', "", "request");
-			$platform = implode (" ", $platform);
-			$hoster = JRequest::getVar ('hosting_service_name', "", "request");
-			$panel = JRequest::getVar ('control_panel', "", "request");
-			$db = JFactory::getDBO();
-
-			$subdomains = JRequest::getVar( 'subdomains' , "", "request") ;
-			if (trim( $subdomains ) != "" ) $subdomains = explode( "\n", $subdomains );
-			if ( $dev)  
-				$domain = $license->domain;
-			else
-				$domain = $license->dev_domain;
-		
-			$domain = $license->domain;
-			$devdomain = $license->dev_domain;
-		
-		//remove the existing files
-		$license_file = "license.txt";
-		$srcFile = JPATH_ROOT."/administrator/components/digicom_product_uploads/".$product->id."/encoded/".$method."/".$phpVer[0]."/".$product->file;
-		if (!file_exists ($srcFile)) $srcFile = JPATH_ROOT."/administrator/components/digicom_product_uploads/".$product->id."/original/".$product->file;
-		
-			$prepDir = JPATH_ROOT."/components/com_digicom/download/".$uid."/";
-
-		if (file_exists($prepDir) ) {
-			JFolder::delete ($prepDir);
-		} 
-
-		JFolder::create($prepDir);
-		
-		JFile::copy ($srcFile, $prepDir.$product->file);
-	   
-		return true;
-	}
-
+	
 	function getPackageContents($license, $product) {
 
 		jimport("joomla.filesystem.file");
