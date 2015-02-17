@@ -24,7 +24,7 @@ $search_session = $session->get('digicom.product.search');
 $state_filter = JRequest::getVar("state_filter", "-1");
 
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 $limistart = $this->pagination->limitstart;
 
 ?>

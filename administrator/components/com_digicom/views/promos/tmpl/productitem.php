@@ -16,7 +16,7 @@ $user_id = JRequest::getVar('userid',0);
 $type = JRequest::getVar('type','items');
 
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 
 ?>
 <div id="product_<?php echo substr($type,0,strlen($type)-1); ?>_<?php echo $id_rand; ?>">

@@ -13,12 +13,12 @@ defined ('_JEXEC') or die ("Go away.");
 $mosConfig_absolute_path = JPATH_ROOT;
 ?>
 <?php if (!empty( $this->sidebar)) : ?>
-	<div id="j-sidebar-container" class="span2">
+	<div id="j-sidebar-container" class="">
 		<?php echo $this->sidebar; ?>
 	</div>
-	<div id="j-main-container" class="span10">
+	<div id="j-main-container" class="">
 <?php else : ?>
-	<div id="j-main-container" class="span12">
+	<div id="j-main-container" class="">
 <?php endif;?>
 		<table class="adminform table">
 			<tr>
@@ -33,7 +33,7 @@ $mosConfig_absolute_path = JPATH_ROOT;
 								<?php endif; ?>
 								<?php if($this->fieldID): ?>
 								getFileCallback : function(path) {
-									value = path.replace(basePath + '/', '');
+									value = path.replace(basePath, '');
 									parent.elFinderUpdate('<?php echo $this->fieldID; ?>', value);
 								}
 								<?php else: ?>

@@ -27,14 +27,24 @@ class DigiComAdminViewLogs extends DigiComView
 		$document = JFactory::getDocument();
 		$task = JRequest::getVar("task", "purchases");
 		if($task == "systememails"){
-			JToolBarHelper::title(JText::_('Emails Log'), 'generic.png');
+			$title = JText::_('COM_DIGICOM_EMAILS_LOG');
 		}
 		elseif($task == "download"){
-			JToolBarHelper::title(JText::_('Downloads Log'), 'generic.png');
+			$title = JText::_('COM_DIGICOM_DOWNLOADS_LOG');
 		}
 		elseif($task == "purchases"){
-			JToolBarHelper::title(JText::_('Purchases Log'), 'generic.png');
+			$title = JText::_('COM_DIGICOM_PURCHASES_LOG');
 		}
+		
+		$bar = JToolBar::getInstance('toolbar');
+		// Instantiate a new JLayoutFile instance and render the layout
+		$layout = new JLayoutFile('toolbar.title');
+		$title=array(
+			'title' => $title,
+			'class' => 'title'
+		);
+		$bar->appendButton('Custom', $layout->render($title), 'title');
+		
 		
 		$emails = $this->get('Items');
 		$pagination = $this->get('Pagination');

@@ -18,7 +18,7 @@ $configs = $this->configs;
 $status = $this->status;
 
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 
 ?>
 

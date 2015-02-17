@@ -9,8 +9,12 @@
 */
 
 defined ('_JEXEC') or die ("Go away.");
-
-JHtml::script(JURI::root()."media/digicom/assets/js/category_layout.js", true);
+JHtml::_('jquery.framework');
+if($this->configs->get('afteradditem',0) == "2"){
+	JHTML::_('behavior.modal');
+	JFactory::getDocument()->addScript(JURI::base()."media/digicom/assets/js/createpopup.js");
+}
+$cart_itemid = DigiComHelper::getCartItemid();
 ?>
 <div class="digicom-wrapper com_digicom categories">
 	<h2 class="page-title category-title"><?php echo $this->category->name; ?></h2>
@@ -24,42 +28,53 @@ JHtml::script(JURI::root()."media/digicom/assets/js/category_layout.js", true);
 	</div>
 	
 	<div class="products_list clearfix">
-		<div id="viewcontrols" class="well">
-			<a href="javascript::" class="gridview">
-				<i class="fa fa-th"></i>Grid
-			</a>
-			<a href="javascript::" class="listview active">
-				<i class="fa fa-list">List</i>
-			</a>
-		</div>
-		
-		<ul class="list unstyled">
-		<?php foreach($this->prods as $key=>$item): ?>
-			<li>
-				<?php if(!empty($item->images)): ?>
-				<div class="pull-left">
-					<img src="<?php echo $item->images; ?>" class="img-responsive img-rounded" width="200px" height="200px"/>
-				</div>
-				<?php endif; ?>
-				<div class="pull-left" style="width:49%">
-					<h2><?php echo $item->name; ?></h2>
-					<div class="text-muted">
-						<span class="label label-info">Category</span>
-					</div>
-					<div class="description">
-						<?php echo $item->description; ?>
-					</div>
-					<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=products&cid='.$item->catid.'&pid='.$item->id);?>" class="btn btn-mini">Details</a>
-				</div>
-				<div class="pull-right" style="width:20%">
-					<p class="price text-success"><?php echo $item->price; ?></p>
-					<a href="#" class="btn btn-success">Add</a>
-				</div>
-			</li>
-		<?php endforeach; ?>
-		</ul>
+		<div class="row-fluid">
+            <ul class="thumbnails">
+              <?php 
+			  $i=0;
+			  foreach($this->prods as $key=>$item): 
+			  if($i%3 == 0) echo '</ul></div><div class="row-fluid"><ul class="thumbnails">';
+			  ?>
+			  <li class="span4">
+                <div class="thumbnail">
+                  <?php if(!empty($item->images)): ?>
+				  <img alt="300x200" src="<?php echo $item->images; ?>" style="width: 300px; height: 200px;">
+                  <?php endif; ?>
+				  
+				  <div class="caption">
+                    <h3 class="center"><?php echo $item->name; ?></h3>
+					<p class="center price"><span class="label label-success"><?php echo DigiComHelper::format_price2($item->price, $this->configs->get('currency','USD'), true, $this->configs); ?></span></p>
+                    <p class="description"><?php echo $item->description; ?></p>
+					
+					
+					<form name="prod" class="input-append" id="product-form" action="<?php echo JRoute::_('index.php?option=com_digicom&view=cart');?>" method="post" style="width:100%;">
+						<input id="quantity_<?php echo $item->id; ?>" type="number" name="qty" min="1" class="input-small" value="1" size="2" placeholder="<?php echo JText::_('DSQUANTITY'); ?>">	
+						<input type="hidden" name="option" value="com_digicom"/>
+						<input type="hidden" name="view" value="cart"/>
+						<input type="hidden" name="task" value="add"/>
+						
+						<input type="hidden" name="pid" value="<?php echo $item->id; ?>"/>
+						<input type="hidden" name="cid" value="<?php echo $item->catid; ?>"/>
+						<input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>"/>
+									
+						<?php if($this->configs->get('afteradditem',0) == "2"){ ?>
+							<button type="button" class="btn btn-warning" onclick="javascript:createPopUp(<?php echo $item->id; ?>, <?php echo $item->catid; ?>, '<?php echo JURI::root(); ?>', '', '', <?php echo $cart_itemid; ?>, '<?php echo JRoute::_("index.php?option=com_digicom&viewcart&Itemid=".$cart_itemid) ?>');"><i class="ico-shopping-cart"></i> <?php echo JText::_("DSADDTOCART");?></button>
+						<?php } else{ ?>
+							<button type="submit" class="btn btn-warning"><i class="ico-shopping-cart"></i> <?php echo JText::_("DSADDTOCART");?></button>
+						<?php } ?>
+					</form>
 
-
+					
+                    <p class="center"><a href="<?php echo JRoute::_('index.php?option=com_digicom&view=products&cid='.$item->catid.'&pid='.$item->id);?>" class="btn btn-primary"><?php echo JText::_('COM_DIGICOM_PRODUCT_DETAILS'); ?></a></p>
+                  </div>
+                </div>
+              </li>
+			  <?php 
+			  $i++;
+			  endforeach; 
+			  ?>
+            </ul>
+          </div>
 	</div>
 	<div class="pagination"><?php echo $this->pagination->getPagesLinks(); ?> </div>
 </div>

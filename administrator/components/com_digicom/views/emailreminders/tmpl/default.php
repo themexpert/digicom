@@ -16,7 +16,7 @@ $page = $this->pagination;
 $configs = $this->configs;
 
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=emailreminders'); ?>" id="adminForm" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
 	<?php if (!empty( $this->sidebar)) : ?>

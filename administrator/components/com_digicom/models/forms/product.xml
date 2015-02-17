@@ -26,7 +26,7 @@
 			<option value="-2"> JTRASHED</option>
 		</field>
 		
-		<field name="catid" type="digicategory" extension="com_contact" label="JCATEGORY" description="JFIELD_CATEGORY_DESC" required="true" />
+		<field name="catid" type="digicategory" label="JCATEGORY" description="JFIELD_CATEGORY_DESC" required="true" />
 
 		<field name="featured" type="radio" class="btn-group btn-group-yesno" label="JFEATURED" description="COM_DIGICOM_FIELD_FEATURED_DESC" default="0" >
 			<option value="1">JYES</option>
@@ -53,7 +53,7 @@
 
 		<field name="checked_out_time" type="hidden" filter="unset" />
 		
-		<field name="ordering" type="dgordering" label="JFIELD_ORDERING_LABEL" description="JFIELD_ORDERING_DESC" content_type="com_digicom.product" />
+		<field name="ordering" type="digiordering" label="JFIELD_ORDERING_LABEL" description="JFIELD_ORDERING_DESC" content_type="com_digicom.product" />
 
 		<field name="publish_up" type="calendar" label="COM_DIGICOM_FIELD_PUBLISH_UP_LABEL" description="COM_DIGICOM_FIELD_PUBLISH_UP_DESC" format="%Y-%m-%d %H:%M:%S" size="22" filter="user_utc" />
 

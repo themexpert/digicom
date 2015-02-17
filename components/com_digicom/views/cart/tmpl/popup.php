@@ -16,30 +16,16 @@ global $Itemid;
 $customer = $this->customer;
 $items = $this->items;
 
-$total = 0;//$this->total;//0;
-$totalfields = $this->totalfields;//0;
+$total = 0;
 $optlen = $this->optlen;//array();
-
 $discount = $this->discount;//0;
-
 $lists = $this->lists;
 $cat_url = $this->cat_url;
 $totalfields = 0;
 $shippingexists = 0;
-
 foreach($items as $itemnum => $item){
 	if($itemnum < 0){
 		continue;
-	}
-
-	if($item->domainrequired == 2){
-		$shippingexists++;
-	}
-
-	if(!empty($item->productfields)){
-		foreach ($item->productfields as $field){
-			$totalfields += count($field);
-		}
 	}
 }
 
@@ -51,8 +37,7 @@ if(count($items) == 0){
 	return;
 }
 
-$login_link = JRoute::_("index.php?option=com_digicom&controller=profile&task=login&returnpage=cart"."&Itemid=".$Itemid);
-
+$login_link = JRoute::_("index.php?option=com_digicom&view=profile&task=login&returnpage=cart"."&Itemid=".$Itemid);
 ?>
 
 <style type="text/css">
@@ -62,58 +47,11 @@ $login_link = JRoute::_("index.php?option=com_digicom&controller=profile&task=lo
 </style>
 
 <script language="javascript" type="text/javascript">
-
-		function cartformsubmit () {
-
-			if (!checkSelectedPlain()) return false;
-
-			var mandatory = new Object();
-			var i,j;
 <?php
 foreach ($items as $j => $v) {
 	if ($j < 0 ) continue;
-	echo "mandatory[".$v->cid."] = new Object();";
-	if (!empty($v->productfields))
-		foreach ($v->productfields as $ii => $field) {
-			echo "mandatory[".$v->cid."][".$ii."] = new Object();";
-			echo "mandatory[".$v->cid."][".$ii."]['fld'] = '".$field->id."';\n";
-			echo ($field->mandatory == 1)?"mandatory[".$v->cid."][".$ii."]['req']=1;\n":"mandatory[".$v->cid."][".$ii."]['req']=0;\n";
-		}
 }
 ?>
-		for (i in mandatory) {
-			for (j in mandatory[i]){
-				if (mandatory[i][j]['req'] == 1) {
-					var el = document.getElementById("attributes[" + i + "][" +mandatory[i][j]['fld'] +"]");
-					if (el.selectedIndex < 1) {
-						alert ("<?php echo JText::_("DSSELECTALLREQ"); ?>");
-						return false;
-					}
-				}
-			}
-		}
-
-		return true;
-	}
-
-	function checkSelectedPlain() {
-
-<?php
-		foreach ($items as $key => $item) :
-			if ($key < 0 ) continue;
-?>
-		plan_id<?php echo $item->cid;?> = document.getElementById('plan_id<?php echo $item->cid;?>');
-		if (plan_id<?php echo $item->cid;?>.value == -1) {
-			alert('Please select plan for <?php echo $item->name; ?>');
-			plan_id<?php echo $item->cid;?>.focus();
-			return false;
-		}
-<?php
-		endforeach;
-?>
-		return true;
-	}
-
 	function ajaxRequest(Url,DivId)
 	{
 	 var AJAX;
@@ -173,19 +111,7 @@ foreach ($items as $j => $v) {
 
 	function update_cart(item_id) {
 		var url = "index.php?option=com_digicom&controller=cart&task=getCartItem&cid="+item_id;
-
-		var plan_id = document.getElementById('plan_id'+item_id);
-		var plan_query = '';
-		if ( plan_id.selectedIndex != -1)
-		{
-			var plan_value = plan_id.options[plan_id.selectedIndex].value;
-			plan_query += '&plan_id='+plan_value;
-		} else {
-			return false;
-		}
-
-		url += plan_query;
-
+		
 		var qty = document.getElementById('quantity'+item_id);
 		var qty_query = '';
 		if ( qty.selectedIndex != -1)
@@ -196,23 +122,6 @@ foreach ($items as $j => $v) {
 
 		url += qty_query;
 
-		var attrs_query = '';
-		for (var i = 1; i < 11; i++) {
-			if ( document.getElementById('attributes'+item_id+''+i) ) {
-
-				var attr = document.getElementById('attributes'+item_id+''+i);
-
-				if ( attr.selectedIndex != -1)
-				{
-					var value = attr.options[attr.selectedIndex].value;
-					attrs_query += '&attributes['+item_id+']['+i+']='+value;
-				}
-
-			} else break;
-		}
-
-		url += attrs_query;
-
 		ajaxRequest(url, 'debugid');
 	}
 
@@ -220,7 +129,7 @@ foreach ($items as $j => $v) {
 
 <?php 
 	$formlink = JRoute::_("index.php?option=com_digicom&controller=cart");
-	$currency = "";
+	$currency = $configs->get('currency','USD');
 ?>
 
 <form name="cart_form" method="post" action="<?php echo $formlink?>" onSubmit="return cartformsubmit();">
@@ -235,29 +144,14 @@ foreach ($items as $j => $v) {
 		<tr>
 			<!-- Product image -->
 			<td width="70">
-				<?php
-					if(isset($item->defprodimage) && $item->defprodimage != ""){
-						$title = $item->image_title;
-						$title = str_replace('"', "&quot;", $title);
-						if(trim($title) != ""){
-							$title = 'title="'.$title.'"';
-						}
-				?>
-						<img <?php echo $title; ?> src="<?php echo ImageHelper::GetProductImageURL($item->defprodimage, "popup"); ?>" alt="<?php echo $item->name; ?>"/>
-				<?php
-					}
-				?>
+				<img height="100" width="200" title="<?php echo $item->name; ?>" src="<?php echo $item->images; ?>" alt="<?php echo $item->name; ?>"/>
 			</td>
 			<!-- /End Product image -->
 
 			<!-- Product name -->
 			<td style="text-align:left;" class="digicom_product_name">
 				<?php 
-					$renew = "";
-					if($item->renew == "1"){
-						$renew = "&nbsp;&nbsp;&nbsp;(".JText::_("DIGI_RENEWAL").")";
-					}
-					echo $item->name.$renew; 
+					echo $item->name; 
 				?>
 			</td>
 			<!-- /End Product name -->
@@ -284,7 +178,7 @@ foreach ($items as $j => $v) {
 	?>
 		</tbody>
 		<tfoot>
-		<tr style="background:#ccc;">
+		<tr class="info">
 			<td></td>
 			<td style="color:#fff;font-weight:bold;">
 				<b><?php

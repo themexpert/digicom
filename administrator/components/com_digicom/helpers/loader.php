@@ -44,3 +44,4 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
 // load core script
 $document = JFactory::getDocument();
 $document->addScript(JURI::root(true).'/media/digicom/assets/js/digicom.js?v=1.0.0&amp;sitepath='.JURI::root(true).'/');
+$document->addStyleSheet(JURI::root(true).'/media/digicom/assets/css/digicom-admin.css');

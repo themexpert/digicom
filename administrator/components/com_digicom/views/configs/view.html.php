@@ -71,6 +71,15 @@ class DigiComAdminViewConfigs extends DigiComView
 	{
 		JToolBarHelper::title(JText::_('VIEWDSADMINSETTINGS'));
 
+		$bar = JToolBar::getInstance('toolbar');
+		// Instantiate a new JLayoutFile instance and render the layout
+		$layout = new JLayoutFile('toolbar.title');
+		$title=array(
+			'title' => JText::_( 'VIEWDSADMINSETTINGS' ),
+			'class' => 'title'
+		);
+		$bar->appendButton('Custom', $layout->render($title), 'title');
+
 		JToolBarHelper::save();
 		JToolBarHelper::apply();
 		JToolBarHelper::divider();

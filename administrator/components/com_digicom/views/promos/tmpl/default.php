@@ -18,15 +18,15 @@ $k = 0;
 $n = count ($this->promos);
 $configs = $this->configs;
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 ?>
 <?php if (!empty( $this->sidebar)) : ?>
-<div id="j-sidebar-container" class="span2">
+<div id="j-sidebar-container" class="">
 	<?php echo $this->sidebar; ?>
 </div>
-<div id="j-main-container" class="span10">
+<div id="j-main-container" class="">
 <?php else : ?>
-<div id="j-main-container" class="span12">
+<div id="j-main-container" class="">
 <?php endif;?>
 	<div class="js-stools">
 		<div class="clearfix">

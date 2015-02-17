@@ -33,13 +33,6 @@ class TableProduct extends JTable {
 	 */
 	public function bind($array, $ignore = '')
 	{
-		if (isset($array['bundle_cat']) && is_array($array['bundle_cat']))
-		{
-			$registry = new JRegistry;
-			$registry->loadArray($array['bundle_cat']);
-			$array['bundle_cat'] = (string) $registry;
-		}
-
 		return parent::bind($array, $ignore);
 	}
 

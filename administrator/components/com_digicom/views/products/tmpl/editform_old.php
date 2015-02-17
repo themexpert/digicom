@@ -25,7 +25,7 @@ $f = str_replace ("-", "-%", $f);
 $f = "%".$f;
 $hidetab = $this->lists['hidetab'];
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 
 ?>
 <script language="javascript" type="text/javascript">

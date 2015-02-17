@@ -15,7 +15,16 @@ jimport ("joomla.application.component.view");
 class DigiComAdminViewFileManager extends DigiComView {
 
 	function display($tpl =  null){
-		JToolBarHelper::title(JText::_('File Manager DigiCom'), 'generic.png');
+		JToolBarHelper::title(JText::_('COM_DIGICOM_FILE_MANAGER'), 'generic.png');
+		
+		$bar = JToolBar::getInstance('toolbar');
+		// Instantiate a new JLayoutFile instance and render the layout
+		$layout = new JLayoutFile('toolbar.title');
+		$title=array(
+			'title' => JText::_( 'COM_DIGICOM_FILE_MANAGER' ),
+			'class' => 'title'
+		);
+		$bar->appendButton('Custom', $layout->render($title), 'title');
 		
 		$mainframe = JFactory::getApplication();
         $user = JFactory::getUser();

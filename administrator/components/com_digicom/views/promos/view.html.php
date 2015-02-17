@@ -111,6 +111,16 @@ class DigiComAdminViewPromos extends DigiComView
 	protected function addToolbar()
 	{
 		JToolBarHelper::title(JText::_('COM_DIGICOM_VIDEO_PROMO_MANAGER'), 'generic.png');
+
+		$bar = JToolBar::getInstance('toolbar');
+		// Instantiate a new JLayoutFile instance and render the layout
+		$layout = new JLayoutFile('toolbar.title');
+		$title=array(
+			'title' => JText::_( 'COM_DIGICOM_VIDEO_PROMO_MANAGER' ),
+			'class' => 'title'
+		);
+		$bar->appendButton('Custom', $layout->render($title), 'title');
+		
 		JToolBarHelper::addNew();
 		JToolBarHelper::editList();
 		JToolBarHelper::divider();

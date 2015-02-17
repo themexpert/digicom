@@ -47,6 +47,15 @@ class DigiComAdminViewDigiComAdmin extends DigiComView {
 		
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout
+		// Instantiate a new JLayoutFile instance and render the layout
+		$layout = new JLayoutFile('toolbar.title');
+		$title=array(
+			'title' => JText::_( 'DIGICOM_DASHBOARD' ),
+			'class' => 'title'
+		);
+		$bar->appendButton('Custom', $layout->render($title), 'title');
+		
+
 		
 		$layout = new JLayoutFile('toolbar.title');
 		$title = array(

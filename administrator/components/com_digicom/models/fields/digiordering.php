@@ -16,7 +16,7 @@ defined('JPATH_PLATFORM') or die;
  * @subpackage  Form
  * @since       3.2
  */
-class JFormFieldDGOrdering extends JFormField
+class JFormFieldDiGiOrdering extends JFormField
 {
 	/**
 	 * The form field type.
@@ -24,7 +24,7 @@ class JFormFieldDGOrdering extends JFormField
 	 * @var		string
 	 * @since   3.2
 	 */
-	protected $type = 'DGOrdering';
+	protected $type = 'DiGiOrdering';
 
 	/**
 	 * The form field content type.

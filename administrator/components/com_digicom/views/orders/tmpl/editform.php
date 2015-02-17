@@ -11,15 +11,22 @@
 defined ('_JEXEC') or die ("Go away.");
 
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 
 ?>
 <div id="returnJSON"></div>
-
 <fieldset class="adminform">
 
 	<legend><?php echo JText::_( 'Edit Order' ); ?></legend>
 
+<?php if (!empty( $this->sidebar)) : ?>
+<div id="j-sidebar-container" class="">
+	<?php echo $this->sidebar; ?>
+</div>
+<div id="j-main-container" class="">
+<?php else : ?>
+<div id="j-main-container" class="">
+<?php endif;?>
 <form id="adminForm" action="index.php" method="post" name="adminForm">
 	<table width="100%">
 		<tr>
@@ -144,4 +151,5 @@ $document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 	<input onclick="javascript: submitbutton('save')" type="button" name="task" value="Save"/>
 </div>
 
+</div>
 </fieldset>

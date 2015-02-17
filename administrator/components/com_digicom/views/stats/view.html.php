@@ -33,7 +33,17 @@ class DigiComAdminViewStats extends DigiComView {
 			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
 
-		JToolBarHelper::title(JText::_('Statistics'), 'generic.png');
+		JToolBarHelper::title(JText::_('VIEWDSADMINSTATS'), 'generic.png');
+
+		$bar = JToolBar::getInstance('toolbar');
+		// Instantiate a new JLayoutFile instance and render the layout
+		$layout = new JLayoutFile('toolbar.title');
+		$title=array(
+			'title' => JText::_( 'VIEWDSADMINSTATS' ),
+			'class' => 'title'
+		);
+		$bar->appendButton('Custom', $layout->render($title), 'title');
+		
 		$configs = $this->_models['config']->getConfigs();
 		$this->assign("configs", $configs);
 		

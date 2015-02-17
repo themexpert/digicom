@@ -16,7 +16,7 @@ JHTML::_('behavior.tooltip');
 
 $document= JFactory::getDocument();
 $document->addScript(JURI::root()."administrator/components/com_digicom/assets/js/digicom.js");
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 
 ?>
 

@@ -13,7 +13,7 @@ defined ('_JEXEC') or die ("Go away.");
 $app = JFactory::getApplication();
 $template = $app->getTemplate();
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 // Load the tooltip behavior.
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.formvalidation');
@@ -30,12 +30,12 @@ JHtml::_('formbehavior.chosen', 'select');
 </script>
 <form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=configs'); ?>" id="component-form" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
 	<?php if (!empty( $this->sidebar)) : ?>
-	<div id="j-sidebar-container" class="span2">
+	<div id="j-sidebar-container" class="">
 		<?php echo $this->sidebar; ?>
 	</div>
-	<div id="j-main-container" class="span10">
+	<div id="j-main-container" class="">
 <?php else : ?>
-	<div id="j-main-container" class="span12">
+	<div id="j-main-container" class="">
 <?php endif;?>
 
 		<div class="row-fluid">

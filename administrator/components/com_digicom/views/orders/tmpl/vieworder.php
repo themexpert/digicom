@@ -11,7 +11,7 @@
 defined ('_JEXEC') or die ("Go away.");
 
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 
 $k = 0;
 $n = count ($this->order->products);

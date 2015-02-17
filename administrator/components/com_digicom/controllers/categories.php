@@ -27,7 +27,7 @@ class DigiComAdminControllerCategories extends DigiComAdminController {
 		$this->registerTask ("orderup", "orderup");
 		$this->registerTask ("saveorder", "saveorder");
 
-		$this->_model = $this->getModel("Category");
+		$this->_model = $this->getModel("Categories");
 	}
 
 	function listCategories() {
@@ -39,10 +39,11 @@ class DigiComAdminControllerCategories extends DigiComAdminController {
 
 
 	function edit () {
+		$model = $this->getModel("Category");
 		JRequest::setVar ("hidemainmenu", 1);
 		$view = $this->getView("Categories", "html");
 		$view->setLayout("editForm");
-		$view->setModel($this->_model, true);
+		$view->setModel($model, true);
 		$view->editForm();
 
 	}
@@ -97,7 +98,8 @@ class DigiComAdminControllerCategories extends DigiComAdminController {
 			$save_url =  "index.php?option=com_digicom&controller=categories";
 			$this->setRedirect($save_url, $msg);
 		} else {
-			$category_id = JRequest::getVar('id','');
+			$data = JFactory::getApplication()->input->get('jform', array(), 'ARRAY');
+			$category_id = $data['id'];
 			$apply_url = "index.php?option=com_digicom&controller=categories&task=edit&cid[]=" . $category_id;
 			$this->setRedirect($apply_url, $msg);
 		}

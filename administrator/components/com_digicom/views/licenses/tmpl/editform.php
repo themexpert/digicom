@@ -29,7 +29,7 @@ $cid = JRequest::getVar("cid", array(), "array");
 $cid = intval($cid["0"]);
 
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 
 ?>
 

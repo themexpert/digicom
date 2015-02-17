@@ -12,6 +12,7 @@ defined ('_JEXEC') or die ("Go away.");
 
 JHTML::_('behavior.modal');
 $include = $this->newinclude;
+
 ?>
 
 <div id="product_include_box_<?php echo $include['id']; ?>" style="border-bottom:1px solid #ccc;margin:15px;padding:10px;">

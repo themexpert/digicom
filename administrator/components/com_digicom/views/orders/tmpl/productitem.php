@@ -15,7 +15,7 @@ JHtml::_('behavior.tooltip');
 		$user_id = JRequest::getVar('userid',0);
 
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 
 ?>
 <div id="product_item_<?php echo $id_rand; ?>">

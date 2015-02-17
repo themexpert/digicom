@@ -45,12 +45,32 @@ class DigiComAdminViewCategories extends DigiComView {
 
 	function editForm($tpl = null)
 	{
-		$db = JFactory::getDBO();
+		$form = $this->get('Form');
 		$category = $this->get('category');
+		
+		// Bind the form to the data.
+		if ($form && $category)
+		{
+			$form->bind($category);
+		}
+		
+		$this->assign( "form", $form );
+		$this->assign( "item", $category );
+		
 		$isNew = ($category->id < 1);
 		$text = $isNew?JText::_('New'):JText::_('Edit');
 
 		JToolBarHelper::title(JText::_('DSCATEGORY').":<small>[".$text."]</small>");
+		// 		$title = JText::_('VIEWPRODPRODTYPEDR');
+		$bar = JToolBar::getInstance('toolbar');
+		$layout = new JLayoutFile('toolbar.title');
+		$title=array(
+			'title' => JText::_('DSCATEGORY').":<small>[".$text."]</small>",
+			'class' => 'product'
+		);
+		$bar->appendButton('Custom', $layout->render($title), 'title');
+
+		
 		JToolBarHelper::save();
 		if ($isNew) {
 			JToolBarHelper::divider();
@@ -61,37 +81,11 @@ class DigiComAdminViewCategories extends DigiComView {
 			JToolBarHelper::divider();
 			JToolBarHelper::cancel ('cancel', 'Close');
 
-		}
+		}		
 
-		$this->assign("cat", $category);
-		$lists['access'] = JHTML::_('access.assetgrouplist','access', $category->access );
+		DigiComAdminHelper::addSubmenu('categories');
+		$this->sidebar = JHtmlSidebar::render();
 
-		if ($isNew){
-			$lists['published'] = JHTML::_('select.booleanlist',  'published', '', "1" );
-		}
-		else{
-			$lists['published'] = JHTML::_('select.booleanlist',  'published', '', $category->published );
-		}
-
-		// build the html select list for ordering
-		$query = 'SELECT ordering AS value, name AS text'
-		. ' FROM #__digicom_categories'
-		. ' ORDER BY ordering'
-		;
-
-		if ($isNew) {
-			$lists['ordering'] = JHtml::_('list.ordering','ordering', $query, '');
-		} else {
-			$lists['ordering'] = JHtml::_('list.ordering','ordering', $query, '', $category->id);
-		}
-
-		
-		$query = 'SELECT s.id AS value, s.name AS text FROM #__digicom_categories AS s  ORDER BY s.ordering';
-		$db->setQuery( $query );
-		$categories = $db->loadObjectList();
-		#$lists['parent'] = DigiComAdminHelper::getParent($category);
-		$lists['parent'] = $this->getParentCategory($category);
-		$this->assign("lists", $lists);
 		parent::display($tpl);
 
 	}
@@ -142,6 +136,16 @@ class DigiComAdminViewCategories extends DigiComView {
 	protected function addToolbar()
 	{
 		JToolBarHelper::title(JText::_('VIEWDSADMINCATEGORIES'), 'generic.png');
+
+		$bar = JToolBar::getInstance('toolbar');
+		// Instantiate a new JLayoutFile instance and render the layout
+		$layout = new JLayoutFile('toolbar.title');
+		$title=array(
+			'title' => JText::_( 'VIEWDSADMINCATEGORIES' ),
+			'class' => 'title'
+		);
+		$bar->appendButton('Custom', $layout->render($title), 'title');
+
 		JToolBarHelper::addNew();
 		JToolBarHelper::editList();
 		JToolBarHelper::divider();

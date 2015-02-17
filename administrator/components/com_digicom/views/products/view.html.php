@@ -199,6 +199,9 @@ class DigiComAdminViewProducts extends DigiComView
 		
 		//set toolber
 		$this->addToolbarEdit($product);
+		DigiComAdminHelper::addSubmenu('products');
+		$this->sidebar = JHtmlSidebar::render();
+
 		
 		parent::display( $tpl );
 	}
@@ -322,12 +325,12 @@ class DigiComAdminViewProducts extends DigiComView
 	protected function addToolbarEdit($product)
 	{
 		$isNew = ($product->id < 1);
-		$text = $isNew ? JText::_( 'New' ) : JText::_( 'JACTION_EDIT' );
+		$text = $isNew ? JText::_( 'New' ) : JText::_( 'JACTION_EDIT' ) . ' : ' . $product->name;
 		
 		if (isset($product->product_type) && !empty($product->product_type)) {
 			$product_type = $product->product_type;
 		} else {
-			$product_type = JRequest::getVar('product_type',0);
+			$product_type = JRequest::getVar('product_type','reguler');
 		}
 
 		
@@ -351,6 +354,14 @@ class DigiComAdminViewProducts extends DigiComView
 		}
 		
 		JToolBarHelper::title($title . ' ' . JText::_( 'DSPROD' ) . " : " . $text);
+		// Instantiate a new JLayoutFile instance and render the layout
+		$bar = JToolBar::getInstance('toolbar');
+		$layout = new JLayoutFile('toolbar.title');
+		$title=array(
+			'title' => $text,
+			'class' => 'product'
+		);
+		$bar->appendButton('Custom', $layout->render($title), 'title');
 
 		JToolBarHelper::save();
 		JToolBarHelper::save2new();

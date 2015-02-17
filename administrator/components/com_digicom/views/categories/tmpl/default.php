@@ -11,25 +11,25 @@
 defined ('_JEXEC') or die ("Go away.");
 
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 
 $k = 0;
 $n = count ($this->cats);
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=categories'); ?>" id="adminForm" method="post" name="adminForm" class="form-horizontal">
 	<?php if (!empty( $this->sidebar)) : ?>
-	<div id="j-sidebar-container" class="span2">
+	<div id="j-sidebar-container" class="">
 		<?php echo $this->sidebar; ?>
 	</div>
-	<div id="j-main-container" class="span10">
+	<div id="j-main-container" class="">
 <?php else : ?>
-	<div id="j-main-container" class="span12">
+	<div id="j-main-container" class="">
 <?php endif;?>
 
 		<div class="alert alert-info"> <?php echo JText::_("HEADER_CATEGORIES"); ?> </div>
 
 		<div id="editcell">
-			<table class="adminlist table">
+			<table class="adminlist table table-striped table-hover">
 				<thead>
 					<tr>
 						<th width="5">

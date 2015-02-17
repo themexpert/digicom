@@ -19,10 +19,11 @@ function openModal(a){
   fileInput = jQuery(a).prev();
   SqueezeBox.open('index.php?option=com_digicom&controller=filemanager&tmpl=component&folder='+imgpath+'&layout=modal&fieldID='+fileInput.attr('id'),{handler:'iframe',size:{x:800,y:600}});
 }
+
 jQuery(document).ready(function() {
-	jQuery("a[href*=#togglesidebar]").toggle(function () {
-		jQuery("ul#submenu").addClass("submenu-collapse");
-	}, function () {
-		jQuery("ul#submenu").removeClass("submenu-collapse");
-	});
+ jQuery("a[href*=#togglesidebar]").toggle(function () {
+  jQuery("body").addClass("sidebar-collapse");
+ }, function () {
+  jQuery("body").removeClass("sidebar-collapse");
+ });
 });

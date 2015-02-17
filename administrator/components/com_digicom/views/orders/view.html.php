@@ -296,6 +296,15 @@ class DigiComAdminViewOrders extends DigiComView
 		$text = $isNew ? JText::_('New') : JText::_('Edit');
 
 		JToolBarHelper::title( JText::_( 'Order' ) . ":<small>[" . $text . "]</small>" );
+
+		$bar = JToolBar::getInstance('toolbar');
+		$layout = new JLayoutFile('toolbar.title');
+		$title=array(
+			'title' => JText::_( 'Order' ) . ":<small>[" . $text . "]</small>",
+			'class' => 'title'
+		);
+		$bar->appendButton('Custom', $layout->render($title), 'title');
+
 //		JToolBarHelper::save();
 		if ( $isNew ) {
 			JToolBarHelper::cancel();
@@ -370,6 +379,9 @@ class DigiComAdminViewOrders extends DigiComView
 		$this->assign( "total", $order->amount );
 		$this->assign( "tax", '0' );
 
+		DigiComAdminHelper::addSubmenu('orders');
+		$this->sidebar = JHtmlSidebar::render();
+
 		parent::display( $tpl );
 	}
 
@@ -380,7 +392,17 @@ class DigiComAdminViewOrders extends DigiComView
 	 */
 	protected function addToolbar()
 	{
-		JToolBarHelper::title( JText::_( 'Orders Manager' ), 'generic.png' );
+		JToolBarHelper::title( JText::_( 'VIEWDSADMINORDERS' ), 'generic.png' );
+
+		$bar = JToolBar::getInstance('toolbar');
+		// Instantiate a new JLayoutFile instance and render the layout
+		$layout = new JLayoutFile('toolbar.title');
+		$title=array(
+			'title' => JText::_( 'VIEWDSADMINORDERS' ),
+			'class' => 'title'
+		);
+		$bar->appendButton('Custom', $layout->render($title), 'title');
+		
 		JToolBarHelper::addNew();
 		JToolBarHelper::divider();
 		JToolBarHelper::deleteList();

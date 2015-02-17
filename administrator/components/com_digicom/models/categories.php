@@ -13,7 +13,7 @@ defined ('_JEXEC') or die ("Go away.");
 jimport('joomla.application.component.modellist');
 jimport('joomla.utilities.date');
 
-class DigiComAdminModelCategory extends JModelForm {
+class DigiComAdminModelCategories extends JModelList {
 	
 	protected $_context = 'com_digicom.Category';
 	private $total=0;
@@ -129,32 +129,24 @@ class DigiComAdminModelCategory extends JModelForm {
 	}
 
 	function store(){
+		
 		$item = $this->getTable('Category');
-		$data = JRequest::get('post');
-
+		//file processing
+		$data = JFactory::getApplication()->input->get('jform', array(), 'ARRAY');
 		if(!$item->bind($data)){
-			$this->setError($item->getErrorMsg());
+			$this->setError($item->getError());
 			return false;
 		}
 
 		if(!$item->check()){
-			$this->setError($item->getErrorMsg());
+			$this->setError($item->getError());
 			return false;
 		}
-
-		$item_old = $this->getTable('Category');
-		if($item->id > 0){
-			$item_old->load($item->id);
-		}
-
-		if(!$item->store()){
-			$this->setError($item->getErrorMsg());
+		if (!$item->store()){
 			return false;
 		}
 		// Reorder categories
-		$item->reorder('`parent_id` = ' . (int) $item->parent_id);
-
-		
+		$item->reorder('`parent_id` = ' . (int) $item->parent_id);		
 		return true;
 	}
 

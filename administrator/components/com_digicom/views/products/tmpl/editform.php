@@ -43,7 +43,14 @@ $document->addScript("components/com_digicom/assets/js/redactor.min.js");
 </script>
 
 <form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=products&task=edit&cid[]=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
-
+<?php if (!empty( $this->sidebar)) : ?>
+		<div id="j-sidebar-container" class="">
+			<?php echo $this->sidebar; ?>
+		</div>
+		<div id="j-main-container" class="">
+	<?php else : ?>
+		<div id="j-main-container" class="">
+	<?php endif;?>
 	<?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
 	
 	<div class="form-inline form-inline-header">
@@ -99,4 +106,5 @@ $document->addScript("components/com_digicom/assets/js/redactor.min.js");
 
 
 	</div>
+</div>
 </form>

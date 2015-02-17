@@ -15,7 +15,7 @@ $cust = $this->cust;
 $user = $this->user["0"];
 
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 ?>
 
 <script language="javascript" type="text/javascript">
@@ -43,6 +43,14 @@ $document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
+<?php if (!empty( $this->sidebar)) : ?>
+		<div id="j-sidebar-container" class="">
+			<?php echo $this->sidebar; ?>
+		</div>
+		<div id="j-main-container" class="">
+	<?php else : ?>
+		<div id="j-main-container" class="">
+	<?php endif;?>
 	<fieldset class="adminform">
 		<legend><?php echo JText::_( 'CUSTOMER_DETAILS' ); ?></legend>
 		<table class="admintable">
@@ -188,6 +196,7 @@ $document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 		</table>
 
 	</fieldset>
+	</div>
 
 	<input type="hidden" name="images" value="" />
 	<input type="hidden" name="option" value="com_digicom" />

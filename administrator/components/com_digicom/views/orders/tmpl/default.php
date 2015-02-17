@@ -17,7 +17,7 @@ JHtml::_('formbehavior.chosen', 'select');
 $invisible = 'style="display:none;"';
 
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 
 $k = 0;
 $n = count( $this->orders );
@@ -43,14 +43,14 @@ Joomla.submitbutton = function (pressbutton) {
 </script>
 
 <?php if (!empty( $this->sidebar)) : ?>
-<div id="j-sidebar-container" class="span2">
+<div id="j-sidebar-container" class="">
 	<?php echo $this->sidebar; ?>
 </div>
-<div id="j-main-container" class="span10">
+<div id="j-main-container" class="">
 <?php else : ?>
-<div id="j-main-container" class="span12">
+<div id="j-main-container" class="">
 <?php endif;?>
-	<form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=orders'); ?>" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
+	<form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&controller=orders'); ?>" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
 		<div class="js-stools">
 			<div class="clearfix">
 				<div class="btn-wrapper input-append">

@@ -15,7 +15,7 @@ $n = count ($this->languages);
 $mn = count ($this->mlanguages);
 
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 
 if ($n < 1): 
 //		echo JText::_('VIEWLANGNOLANG');
