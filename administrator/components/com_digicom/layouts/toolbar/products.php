@@ -12,10 +12,10 @@ defined('_JEXEC') or die;
 JHtml::_('bootstrap.popover');
 ?>
 <div class="btn-group">
-  <button type="button" class="newproduct btn btn-small btn-primary">
+  <a href="<?php echo JURI::root().'administrator/index.php?option=com_digicom&controller=products&task=add&product_type=reguler'; ?>" class="newproduct btn btn-small btn-primary">
 	<span class="icon-cart"></span>
 	<?php echo JText::_('DIGICOM_ADDNEWPRODUCT'); ?>
-  </button>
+  </a>
   <button type="button" class="newproduct btn btn-small btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
     <span class="caret"></span>
     <span class="sr-only"></span>

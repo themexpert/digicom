@@ -61,13 +61,13 @@ class DigiComModelOrder extends DigiComModel
 			$db->setQuery($sql);
 			$this->_order = $db->loadObject();
 			
-			$sql = "SELECT p.id, p.name, p.catid, od.package_type FROM #__digicom_products as p, #__digicom_orders_details as od WHERE p.id=od.productid AND od.orderid='". $this->_order->id ."'";
+			$sql = "SELECT p.id, p.name, p.catid, od.package_type, od.amount_paid as price FROM #__digicom_products as p, #__digicom_orders_details as od WHERE p.id=od.productid AND od.orderid='". $this->_order->id ."'";
 			$db->setQuery($sql);
 			$prods = $db->loadObjectList();
 			
 			$this->_order->products = $prods;
 		}
-		
+		//print_r($this->_order);die;
 		return $this->_order;
 	}
 

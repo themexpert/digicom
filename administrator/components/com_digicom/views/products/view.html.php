@@ -70,64 +70,6 @@ class DigiComAdminViewProducts extends DigiComView
 		$session->set('dsproducategory', $prc, 'digicom');
 		$products = $this->get('Items');
 
-		$db = JFactory::getDBO();
-		foreach ( $products as $key => $prod ) {
-			$price = 0;
-
-			switch ( $prod->priceformat )
-			{
-
-				case '2': // Don't show price
-					$price = '';
-					break;
-
-				case '3': // Price and up
-					$sql = "SELECT pp.product_id, min(pp.price) as price FROM #__digicom_plans dp
-					LEFT JOIN #__digicom_products_plans pp on (dp.id = pp.plan_id)
-					WHERE pp.product_id = " . $prod->id . "
-					GROUP BY pp.product_id";
-					$db->setQuery( $sql );
-					$prodprice = $db->loadObject();
-					if ( !empty( $prodprice ) )
-						$price = DigiComAdminHelper::format_price( $prodprice->price, $configs->get('currency','USD'), true, $configs ) . " and up";
-					break;
-
-				case '4': // Price range
-					$sql = "SELECT pp.product_id, min(pp.price) as price_min, max(pp.price) as price_max FROM #__digicom_plans dp
-					LEFT JOIN #__digicom_products_plans pp on (dp.id = pp.plan_id)
-					WHERE pp.product_id = 1
-					GROUP BY pp.product_id";
-					$db->setQuery( $sql );
-					$prodprice = $db->loadObject();
-					if ( !empty( $prodprice ) )
-						$price = DigiComAdminHelper::format_price( $prodprice->price_min, $configs->get('currency','USD'), true, $configs ) . " - " . DigiComAdminHelper::format_price( $prodprice->price_max, $configs->get('currency','USD'), true, $configs );
-					break;
-
-				case '5': // Minimal price
-					$sql = "SELECT pp.product_id, min(pp.price) as price FROM #__digicom_plans dp
-					LEFT JOIN #__digicom_products_plans pp on (dp.id = pp.plan_id)
-					WHERE pp.product_id = " . $prod->id . "
-					GROUP BY pp.product_id";
-					$db->setQuery( $sql );
-					$prodprice = $db->loadObject();
-					if ( !empty( $prodprice ) )
-						$price = DigiComAdminHelper::format_price( $prodprice->price, $configs->get('currency','USD'), true, $configs );
-					break;
-
-				case '1': // Default price
-				default:
-					$sql = "SELECT pp.product_id, pp.price as price FROM #__digicom_plans dp
-					LEFT JOIN #__digicom_products_plans pp on (dp.id = pp.plan_id)
-					WHERE pp.default = 1 and pp.product_id = " . $prod->id;
-					$db->setQuery( $sql );
-					$prodprice = $db->loadObject();
-					if ( !empty( $prodprice ) )
-						$price = DigiComAdminHelper::format_price( $prodprice->price, $configs->get('currency','USD'), true, $configs );
-					break;
-			}
-
-			$products[$key]->price = $price;
-		}
 		$this->assignRef( 'prods', $products );
 
 		$pagination = $this->get( 'Pagination' );

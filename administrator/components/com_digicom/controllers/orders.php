@@ -29,7 +29,6 @@ class DigiComAdminControllerOrders extends DigiComAdminController
 		$this->registerTask( "unpublish", "publish" );
 		$this->_model = $this->getModel( "Order" );
 		$this->_config = $this->getModel( "Config" );
-		$this->_license = $this->getModel( "License" );
 	}
 
 	function showOrder()
@@ -37,7 +36,6 @@ class DigiComAdminControllerOrders extends DigiComAdminController
 		$view = $this->getView( "Orders", "html" );
 		$view->setModel( $this->_model, true );
 		$view->setModel( $this->_config );
-		$view->setModel( $this->_license );
 		$view->setLayout( "showorder" );
 		$view->showOrder();
 
@@ -214,12 +212,6 @@ class DigiComAdminControllerOrders extends DigiComAdminController
 		$model = $this->getModel( "Product" );
 		$view->setModel( $model );
 
-		$model = $this->getModel( "License" );
-		$view->setModel( $model );
-
-		$model = $this->getModel( "Plain" );
-		$view->setModel( $model );
-
 		$view->setLayout( "editForm" );
 
 		$view->editForm();
@@ -305,6 +297,3 @@ class DigiComAdminControllerOrders extends DigiComAdminController
 
 
 }
-
-
-?>

@@ -56,6 +56,8 @@ class DigiComControllerDownloads extends DigiComController
 	
 	function makeDownload()
 	{
+		DigiComHelper::checkUserAccessToFile();
+		
 		require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'downloadfileclass.inc' );
 		$fileInfo = $this->_model->getfileinfo();
 		if(empty($fileInfo->url)){

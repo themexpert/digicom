@@ -40,3 +40,5 @@ $classname = "DigiComAdminController".$controller;
 $controller = new $classname();
 $controller->execute ($task);
 $controller->redirect();
+
+DigiComAdminHelper::setSidebarRight();

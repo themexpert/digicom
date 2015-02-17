@@ -36,6 +36,4 @@ class DigiComAdminControllerStats extends DigiComAdminController {
 		$view->display();
 
 	}
-};
-
-?>
+}

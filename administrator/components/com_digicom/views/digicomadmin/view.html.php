@@ -45,16 +45,11 @@ class DigiComAdminViewDigiComAdmin extends DigiComView {
 	{
 		JToolBarHelper::title(JText::_('DIGICOM_DASHBOARD'), 'generic.png');
 		
-		$bar = JToolBar::getInstance('toolbar');
-		// Instantiate a new JLayoutFile instance and render the layout
-		// Instantiate a new JLayoutFile instance and render the layout
-		$layout = new JLayoutFile('toolbar.title');
-		$title=array(
-			'title' => JText::_( 'DIGICOM_DASHBOARD' ),
-			'class' => 'title'
-		);
-		$bar->appendButton('Custom', $layout->render($title), 'title');
+		$bar = JToolBar::getInstance('toolbar');		
 		
+		
+		$layout = new JLayoutFile('toolbar.settings');
+		$bar->appendButton('Custom', $layout->render(array()), 'settings');
 
 		
 		$layout = new JLayoutFile('toolbar.title');
@@ -62,7 +57,7 @@ class DigiComAdminViewDigiComAdmin extends DigiComView {
 			'title' => JText::_( 'DIGICOM_DASHBOARD' ),
 			'class' => 'product'
 		);
-		$bar->getName($layout->render($title));
+		$bar->appendButton('Custom', $layout->render($title), 'title');		
 		
 		$layout = new JLayoutFile('toolbar.products');
 		$bar->appendButton('Custom', $layout->render(array()), 'products');

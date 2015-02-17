@@ -198,15 +198,15 @@ class DigiComDiagram {
 
 		$and = "";
 		if(trim($start_date) != ""){
-			$and .= " and l.purchase_date >= '".trim($start_date)."' ";
+			$and .= " and od.purchase_date >= '".trim($start_date)."' ";
 		}
 		if(trim($end_date) != ""){
-			$and .= " and l.purchase_date < '".trim($end_date)."' ";
+			$and .= " and od.purchase_date < '".trim($end_date)."' ";
 		}
 
-		$sql = "SELECT l.`productid`, p.name, count(*) total
-				FROM `#__digicom_licenses` l, #__digicom_products p
-				where l.productid=p.id and l.cancelled=0 ".$and."
+		$sql = "SELECT od.`productid`, p.name, count(*) total
+				FROM `#__digicom_orders_details` od, #__digicom_products p
+				where od.productid=p.id and od.cancelled=0 ".$and."
 				group by `productid`
 				order by total desc limit 0,10";
 		$db->setQuery($sql);

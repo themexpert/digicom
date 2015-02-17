@@ -148,6 +148,7 @@ class DigiComAdminModelStat extends DigiComModel
 	}
 
 	function getreportTotal($type = ''){
+		//purchase_date
 		$db = JFactory::getDBO();
 		$report = JRequest::getVar("report", "daily");
 		$start_date = "";
@@ -198,13 +199,13 @@ class DigiComAdminModelStat extends DigiComModel
 		$and_licenses = "";
 		if(trim($start_date) != ""){
 			$start_date = date("Y-m-d H:i:s", $start_date);
-			$and_licenses .= " and l.purchase_date >= '".$start_date."'";
+			$and_licenses .= " and od.purchase_date >= '".$start_date."'";
 			$start_date = strtotime($start_date);
 			$and .= " and o.order_date >= ".$start_date;
 		}
 		if(trim($end_date) != ""){
 			$end_date = date("Y-m-d H:i:s", $end_date);
-			$and_licenses .= " and l.purchase_date < '".$end_date."'";
+			$and_licenses .= " and od.purchase_date < '".$end_date."'";
 			$end_date = strtotime($end_date);
 			$and .= " and o.order_date < ".$end_date;
 		}
@@ -215,23 +216,23 @@ class DigiComAdminModelStat extends DigiComModel
 		$db->query();
 		$total = $db->loadResult();
 		// Get chargebacks total
-		$sql = "SELECT SUM(l.`cancelled_amount`) as total
-				FROM #__digicom_licenses AS l
-				WHERE 1=1 AND l.cancelled=1 ".$and_licenses;
+		$sql = "SELECT SUM(od.`cancelled_amount`) as total
+				FROM #__digicom_orders_details AS od
+				WHERE 1=1 AND od.cancelled=1 ".$and_licenses;
 		$db->setQuery($sql);
 		$db->query();
 		$chargebacks = $db->loadResult();
 		// Get chargebacks total
-		$sql = "SELECT SUM(l.`cancelled_amount`) as total
-				FROM #__digicom_licenses AS l
-				WHERE 1=1 AND l.cancelled=2 ".$and_licenses;
+		$sql = "SELECT SUM(od.`cancelled_amount`) as total
+				FROM #__digicom_orders_details AS od
+				WHERE 1=1 AND od.cancelled=2 ".$and_licenses;
 		$db->setQuery($sql);
 		$db->query();
 		$refunds = $db->loadResult();
 		// Get deleted total
-		$sql = "SELECT SUM(l.`cancelled_amount`) as total
-				FROM #__digicom_licenses AS l
-				WHERE 1=1 AND l.cancelled=3 ".$and_licenses;
+		$sql = "SELECT SUM(od.`cancelled_amount`) as total
+				FROM #__digicom_orders_details AS od
+				WHERE 1=1 AND od.cancelled=3 ".$and_licenses;
 		$db->setQuery($sql);
 		$db->query();
 		$deleted = $db->loadResult();
@@ -373,35 +374,35 @@ class DigiComAdminModelStat extends DigiComModel
 
 		$and = "";
 		if(trim($start_date) != ""){
-			$and .= " and l.purchase_date >= '".$start_date."'";
+			$and .= " and od.purchase_date >= '".$start_date."'";
 		}
 		if(trim($end_date) != ""){
-			$and .= " and l.purchase_date < '".$end_date."'";
+			$and .= " and od.purchase_date < '".$end_date."'";
 		}
 		$sql = "select count(*)
-				from #__digicom_licenses l
-				where 1=1 and l.published=1 ".$and;
+				from #__digicom_orders_details od
+				where 1=1 and od.published=1 ".$and;
 		$db->setQuery($sql);
 		$db->query();
 		$total = $db->loadResult();
 		// Get chargebacks total
 		$sql = "SELECT count(*)
-				FROM #__digicom_licenses AS l
-				WHERE 1=1 AND l.cancelled=1 ".$and;
+				FROM #__digicom_orders_details AS od
+				WHERE 1=1 AND od.cancelled=1 ".$and;
 		$db->setQuery($sql);
 		$db->query();
 		$chargebacks = $db->loadResult();
 		// Get chargebacks total
 		$sql = "SELECT count(*)
-				FROM #__digicom_licenses AS l
-				WHERE 1=1 AND l.cancelled=2 ".$and;
+				FROM #__digicom_orders_details AS od
+				WHERE 1=1 AND od.cancelled=2 ".$and;
 		$db->setQuery($sql);
 		$db->query();
 		$refunds = $db->loadResult();
 		// Get deleted total
 		$sql = "SELECT count(*)
-				FROM #__digicom_licenses AS l
-				WHERE 1=1 AND l.cancelled=3 ".$and;
+				FROM #__digicom_orders_details AS od
+				WHERE 1=1 AND od.cancelled=3 ".$and;
 		$db->setQuery($sql);
 		$db->query();
 		$deleted = $db->loadResult();

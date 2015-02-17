@@ -130,7 +130,7 @@ class DigiComAdminModelProduct extends JModelForm {
 		return $result;
 	}
 
-	/*function getListProducts ($sort = "ordering") {
+	function getListProducts ($sort = "ordering") {
 		$session = JFactory::getSession();
 
 		if (empty ($this->_products)) {
@@ -142,9 +142,11 @@ class DigiComAdminModelProduct extends JModelForm {
 
 			$where = "WHERE 1=1 ";
 
+			/*
 			if($prc > 0){
 				$where .= " and id IN (SELECT productid FROM #__digicom_product_categories WHERE catid='".$prc."' ) ";
 			}
+			*/
 			if($state_filter != "-1"){
 				$where .= " and published=".$state_filter;
 			}
@@ -164,14 +166,16 @@ class DigiComAdminModelProduct extends JModelForm {
 
 			if ($this->getState('limitstart') > $this->_total) $this->setState('limitstart', 0);
 			if ($this->getState('limitstart') > 0 & $this->getState('limit') == 0)  $this->setState('limitstart', 0);
-			if ($this->controller == "digicomProducts")
-				$this->_products = $this->_getList($sql, $this->getState('limitstart'), $this->getState('limit'));
-			else
-				$this->_products = $this->_getList($sql);
+			
+			//if ($this->controller == "products")
+			//	$this->_products = $this->_getList($sql, $this->getState('limitstart'), $this->getState('limit'));
+			//else
+			
+			$this->_products = $this->_getList($sql);
 
 			foreach ($this->_products as $i => $v) {
 				$sql = "SELECT id,name FROM #__digicom_categories WHERE id in "
-						." (SELECT catid FROM #__digicom_product_categories WHERE productid='".$v->id."') "
+						." (SELECT catid FROM #__digicom_products WHERE catid='".$v->id."') "
 				;
 
 				$db->setQuery($sql);
@@ -180,7 +184,7 @@ class DigiComAdminModelProduct extends JModelForm {
 
 		}
 		return $this->_products;
-	}*/
+	}
 
 	function getProduct($pid = 0) {
 		if ($pid > 0 ) {

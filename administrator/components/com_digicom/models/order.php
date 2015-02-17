@@ -757,24 +757,24 @@ class DigiComAdminModelOrder extends JModelList{
 		return $result;
 	}
 
-	public static function getChargebacks($order, $license=0)
+	public static function getChargebacks($order)
 	{
 		$db = JFactory::getDBO();
 		$sql = "SELECT SUM(`cancelled_amount`)
-				FROM `#__digicom_licenses`
+				FROM `#__digicom_orders_details`
 				WHERE `cancelled`=1
-				  AND `orderid`=" . (int) $order . ($license ? " AND `licenseid`='".$license."'" : '');
+				  AND `orderid`=" . (int) $order;
 		$db->setQuery($sql);
 		return $db->loadResult();
 	}
 
-	public static function getRefunds($order, $license=0)
+	public static function getRefunds($order)
 	{
 		$db = JFactory::getDBO();
 		$sql = "SELECT SUM(`cancelled_amount`)
-				FROM `#__digicom_licenses`
+				FROM `#__digicom_orders_details`
 				WHERE `cancelled`=2
-				  AND `orderid`=" . (int) $order . ($license ? " AND `licenseid`='".$license."'" : '');
+				  AND `orderid`=" . (int) $order;
 		$db->setQuery($sql);
 		return $db->loadResult();
 	}
@@ -783,9 +783,9 @@ class DigiComAdminModelOrder extends JModelList{
 	{
 		$db = JFactory::getDBO();
 		$sql = "SELECT SUM(`amount_paid`)
-				FROM `#__digicom_licenses`
+				FROM `#__digicom_orders_details`
 				WHERE `cancelled`=3
-				  AND `orderid`=" . (int) $order . ($license ? " AND `licenseid`='".$license."'" : '');
+				  AND `orderid`=" . (int) $order;
 		$db->setQuery($sql);
 		return $db->loadResult();
 	}
@@ -794,8 +794,8 @@ class DigiComAdminModelOrder extends JModelList{
 	{
 		$db = JFactory::getDBO();
 		$sql = "SELECT `cancelled`
-				FROM `#__digicom_licenses`
-				WHERE `licenseid`='" . $id . "'";
+				FROM `#__digicom_orders_details`
+				WHERE `id`='" . $id . "'";
 		$db->setQuery($sql);
 		return $db->loadResult();
 	}
@@ -848,93 +848,23 @@ class DigiComAdminModelOrder extends JModelList{
 
 	function getOrder($id = 0){
 		if(empty($this->_order)){
+			
 			$db = JFactory::getDBO();
-			if($id > 0){
-				$this->_id = $id;
-			}
-			else{
-				$id = $this->_id;
-			}
-			$sql = "select o.*, u.username "
-			. " from #__digicom_orders o, #__users u "
-			. " where o.userid=u.id and o.id='" . $id . "' group by o.id order by o.order_date desc";
-			$this->_order = $this->_getList($sql);
-			if(isset($this->_order) && isset($this->_order["0"])){
-				$this->_order = $this->_order["0"];
-			}
-
-			//check on old orders
-			if(!isset($this->_order) || count($this->_order) <= 0){
-				$sql = "select o.*,u.username "
-					. " from #__digicom_orders o, #__users u "
-					. " where o.userid=u.id and o.id='".$id."' group by o.id order by o.order_date desc";
-				$this->_order = $this->_getList($sql);
-			}
-			//check on old orders
-
-			//search default product
-			$sql = "select p.*, l.licenseid, l.amount_paid as price, l.id as lid, l.amount_paid from #__digicom_products p, #__digicom_licenses l "
-			. " where p.id=l.productid and l.ltype <> 'package_item' and (l.orderid='" . $id . "' or (l.old_orders like '".$id."|%' or l.old_orders like '%|".$id."|%'))";
+			if ($id > 0) $this->_id = $id;
+			else $id = $this->_id;
+			
+			$sql = "SELECT o.*"
+					." FROM #__digicom_orders o"
+					." WHERE o.id='".intval($id)."' AND o.published='1'"
+			;
+			$db->setQuery($sql);
+			$this->_order = $db->loadObject();
+			
+			$sql = "SELECT p.id, p.name, p.catid, od.package_type, od.amount_paid, od.price FROM #__digicom_products as p, #__digicom_orders_details as od WHERE p.id=od.productid AND od.orderid='". $this->_order->id ."'";
 			$db->setQuery($sql);
 			$prods = $db->loadObjectList();
-			//search default product
-
-			//search license packages
-			$sql = "select p.* from #__digicom_products p where id in (SELECT package_id FROM `#__digicom_licenses` WHERE `orderid`=".$id." and `ltype`='package_item' group by package_id)";
-			$db->setQuery($sql);
-			$prods2 = $db->loadObjectList();
-			if(isset($prods2)){
-				foreach($prods2 as $key=>$product){
-					$sql = "select p.price as total, GROUP_CONCAT(l.licenseid) as licenses from #__digicom_licenses l, #__digicom_products_plans p where l.`orderid`=".$id." and l.package_id=".intval($product->id)." and l.package_id=p.product_id";
-					$db->setQuery($sql);
-					$db->query();
-					$result = $db->loadAssocList();
-					if(isset($result)){
-						$prods2[$key]->licenseid = $result["0"]["licenses"];
-						$prods2[$key]->amount_paid = $result["0"]["total"];
-						$prods2[$key]->price = $result["0"]["total"];
-					}
-				}
-			}
-			//search license packages
-			$prods = array_merge($prods, $prods2);
-
-			//check on old orders
-			if(!isset($prods) || count($prods) <= "0"){
-				$sql = "select p.*, l.licenseid, l.amount_paid as price, l.id as lid, l.amount_paid from #__digicom_products p, #__digicom_licenses l "
-					. " where p.id=l.productid and (l.old_orders like '".$id."|%' or l.old_orders like '%|".$id."|%')";
-				$db->setQuery( $sql );
-				$prods = $db->loadObjectList();
-			}
-			//check on old orders
-
-			$distinct	= array();
-			$prods1		= array();
-//echo '<pre>'.print_r($prods, true).'</pre>';
-			foreach($prods as $i => $v){
-				if(!in_array( $v->id, $distinct)){
-					$distinct[] = $v->id;
-					$prods1[$v->id] = $v;
-					$prods1[$v->id]->count = 1;
-				}
-				else{
-					$prods1[$v->id]->count++;
-				}
-			}
-
-			foreach($prods1 as $i => $v){
-//				echo '<pre>'.print_r($v,true).'</pre>';
-				if(isset($v->lid)){
-					$sql = "select * from #__digicom_licensefields where licenseid=".$v->lid;
-					$db->setQuery($sql);
-					@$prods[$i]->orig_fields = $db->loadObjectList();
-				}
-			}
+			
 			$this->_order->products = $prods;
-			if(is_array($this->_order)){
-				$this->_order["0"]->products = $prods;
-				$this->_order = $this->_order["0"];
-			}
 		}
 		return $this->_order;
 	}
@@ -946,17 +876,17 @@ class DigiComAdminModelOrder extends JModelList{
 		$item = $this->getTable( 'Order' );
 		$data = JRequest::get( 'post' );
 		if ( !$item->bind( $data ) ) {
-//			$this->setError($item->getErrorMsg());
+		//$this->setError($item->getErrorMsg());
 			return false;
 		}
 
 		if ( !$item->check() ) {
-//			$this->setError($item->getErrorMsg());
+		//			$this->setError($item->getErrorMsg());
 			return false;
 		}
 
 		if ( !$item->store() ) {
-//			$this->setError($item->getErrorMsg());
+			//			$this->setError($item->getErrorMsg());
 			return false;
 		}
 		return true;
@@ -1331,8 +1261,3 @@ class DigiComAdminModelOrder extends JModelList{
 	}
 
 }
-
-;
-
-
-?>

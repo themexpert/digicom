@@ -1706,4 +1706,27 @@ class DigiComHelper {
 		return $result;
 	}
 	
+	public static function checkUserAccessToFile(){
+		
+		$user = JFactory::getUser();
+		$customer = new DigiComSessionHelper();
+		
+		// Make operation to check users access
+		/*$user = JFactory::getUser();
+		// Implement View Level Access
+		if (!$user->authorise('core.admin'))
+		{
+			$groups = implode(',', $user->getAuthorisedViewLevels());
+			$query->where('a.access IN (' . $groups . ')');
+		}
+
+
+
+		// Join over the asset groups.
+		$query->select('ag.title AS access_level')
+			->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
+		*/
+		
+	}
+	
 }

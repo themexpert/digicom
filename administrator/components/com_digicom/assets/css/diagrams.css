@@ -1,0 +1,34 @@
+#image_diagram{
+	text-align:center;
+}
+
+#diagram_element{
+	width: 15px;
+	height:270px;
+	float:right;
+	background-color:#66CC00;
+	/*margin-left:27px;*/
+}
+
+#td_lines{
+	border-bottom:1px solid #000000;
+	border-left:1px solid #000000;
+}
+
+#sum_line{
+	height: 270px;
+	margin: 2px;
+	width: -moz-max-content;
+}
+
+#image_diagram_products{
+	float: left;
+	width: 500px;
+	height:25px;
+}
+
+#all_element{
+	/*width:45px;*/
+	height:270px;
+	float:right;
+}

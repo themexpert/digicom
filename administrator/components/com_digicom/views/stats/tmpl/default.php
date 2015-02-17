@@ -181,7 +181,7 @@ $document->addStyleSheet("components/com_digicom/assets/css/diagrams.css");
 			<tr>
 				<td valign="top" style="color:#666666; font-family:Georgia, 'Times New Roman', Times, serif; width:15%">
 					<?php
-						$total = $this->getTotal('');
+						$total = $this->getTotal();
 						$chargebacks = $this->getTotal('chargebacks');
 						$refunds = $this->getTotal('refunds');
 						echo '<p style="margin-bottom:5px;"><b>'.JText::_("DSTOTAL").": ".DigiComAdminHelper::format_price($total, $configs->get('currency','USD'), true, $configs) . '</b></p>';
@@ -200,7 +200,8 @@ $document->addStyleSheet("components/com_digicom/assets/css/diagrams.css");
 						$nr_licenses = $this->getNrLicenses('');
 						$chargebacks = $this->getNrLicenses('chargebacks');
 						$refunds = $this->getNrLicenses('refunds');
-						echo '<p style="margin-bottom:5px;"><b>'.JText::_("VIEWTREELICENCES").": ".'<a href="index.php?option=com_digicom&controller=licenses&startdate='.$link_start_date.'&enddate='.$link_end_date.'&ltype=common">'.$nr_licenses.'</a></b></p>';
+						//echo '<p style="margin-bottom:5px;"><b>'.JText::_("VIEWTREELICENCES").": ".'<a href="index.php?option=com_digicom&controller=licenses&startdate='.$link_start_date.'&enddate='.$link_end_date.'&ltype=common">'.$nr_licenses.'</a></b></p>';
+						echo '<p style="margin-bottom:5px;"><b>'.JText::_("COM_DIGICOM_NUM_OF_PRODUCT_SALE").": ".$nr_licenses.'</b></p>';
 						echo '<p style="margin-bottom:5px;">'.JText::_("LICENSE_CHARGEBACKS").': <span style="color:#ff0000;">'.$chargebacks . '</span></p>';
 						echo '<p style="margin-bottom:5px;">'.JText::_("LICENSE_REFUNDS").': <span style="color:#ff0000;">'.$refunds.'</span></p>';
 					?>

@@ -25,7 +25,7 @@ class DigiComControllerProfile extends DigiComController
 		parent::__construct();
 
 		$this->registerTask("add", "edit");
-		$this->registerTask("", "edit");
+		$this->registerTask("", "login");
 		$this->registerTask("register", "edit");
 		$this->registerTask("saveCustomer", "save");
 		$this->registerTask ("login_register", "loginRegister");

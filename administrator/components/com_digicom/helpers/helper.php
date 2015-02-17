@@ -1205,7 +1205,7 @@ class DigiComAdminHelper {
 		$sql = '
 			SELECT
 				DISTINCT p.id,p.name,p.catid, p.description, p.publish_up,
-				c.title AS category
+				c.name AS category
 			FROM
 				#__digicom_products p,
 				#__digicom_categories c
@@ -1270,5 +1270,17 @@ class DigiComAdminHelper {
 				}
 			}
 		}
+	}
+	
+	
+	public static function setSidebarRight(){
+		
+		$input = JFactory::getApplication()->input;
+		$tmpl = $input->get('tmpl','');
+		$ajax = $input->get('ajax','');
+		if($tmpl == 'component' or $ajax =='1') return;
+		
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'layouts'.DS.'toolbar'.DS.'sidebar-right.php');
+		return true;
 	}
 }

@@ -145,6 +145,7 @@ class DigiComAdminControllerProducts extends DigiComAdminController {
 		$view->setLayout("select");
 
 		$view->select();
+		
 	}
 
 	function selectProductInclude(){
