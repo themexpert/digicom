@@ -103,7 +103,7 @@ class DigiComAdminModelLicense extends JModelList
 			$cancelled_where = " and l.cancelled=".$cancelled." ";
 		}
 
-		$sql = "select l.*, p.name as productname, p.domainrequired, u.username, c.lastname, c.firstname, pl.duration_count, pl.duration_type, l.orderid "
+		$sql = "select l.*, p.name as productname, p.product_type, u.username, c.lastname, c.firstname, pl.duration_count, pl.duration_type, l.orderid "
 			." from #__digicom_licenses l "
 			." left join #__digicom_products p on (l.productid=p.id) "
 			." left join #__users u on (l.userid=u.id) "
@@ -184,7 +184,7 @@ class DigiComAdminModelLicense extends JModelList
 		$db  = JFactory::getDBO();
 		//if (empty ($this->_license)) {
 //			$this->_license = $this->getTable("License");
-			$sql = "select l.*,p.name as productname, p.main_zip_file, p.domainrequired, u.username from #__digicom_licenses l, #__digicom_products p, #__users u where l.productid=p.id and l.userid=u.id and l.id=".$this->_id;
+			$sql = "select l.*,p.name as productname, p.main_zip_file, p.product_type, u.username from #__digicom_licenses l, #__digicom_products p, #__users u where l.productid=p.id and l.userid=u.id and l.id=".$this->_id;
 			$this->_total = $this->_getListCount($sql);
 
 			$this->_license = $this->_getList($sql);//->load($this->_id);

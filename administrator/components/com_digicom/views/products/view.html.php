@@ -70,64 +70,6 @@ class DigiComAdminViewProducts extends DigiComView
 		$session->set('dsproducategory', $prc, 'digicom');
 		$products = $this->get('Items');
 
-		$db = JFactory::getDBO();
-		foreach ( $products as $key => $prod ) {
-			$price = 0;
-
-			switch ( $prod->priceformat )
-			{
-
-				case '2': // Don't show price
-					$price = '';
-					break;
-
-				case '3': // Price and up
-					$sql = "SELECT pp.product_id, min(pp.price) as price FROM #__digicom_plans dp
-					LEFT JOIN #__digicom_products_plans pp on (dp.id = pp.plan_id)
-					WHERE pp.product_id = " . $prod->id . "
-					GROUP BY pp.product_id";
-					$db->setQuery( $sql );
-					$prodprice = $db->loadObject();
-					if ( !empty( $prodprice ) )
-						$price = DigiComAdminHelper::format_price( $prodprice->price, $configs->get('currency','USD'), true, $configs ) . " and up";
-					break;
-
-				case '4': // Price range
-					$sql = "SELECT pp.product_id, min(pp.price) as price_min, max(pp.price) as price_max FROM #__digicom_plans dp
-					LEFT JOIN #__digicom_products_plans pp on (dp.id = pp.plan_id)
-					WHERE pp.product_id = 1
-					GROUP BY pp.product_id";
-					$db->setQuery( $sql );
-					$prodprice = $db->loadObject();
-					if ( !empty( $prodprice ) )
-						$price = DigiComAdminHelper::format_price( $prodprice->price_min, $configs->get('currency','USD'), true, $configs ) . " - " . DigiComAdminHelper::format_price( $prodprice->price_max, $configs->get('currency','USD'), true, $configs );
-					break;
-
-				case '5': // Minimal price
-					$sql = "SELECT pp.product_id, min(pp.price) as price FROM #__digicom_plans dp
-					LEFT JOIN #__digicom_products_plans pp on (dp.id = pp.plan_id)
-					WHERE pp.product_id = " . $prod->id . "
-					GROUP BY pp.product_id";
-					$db->setQuery( $sql );
-					$prodprice = $db->loadObject();
-					if ( !empty( $prodprice ) )
-						$price = DigiComAdminHelper::format_price( $prodprice->price, $configs->get('currency','USD'), true, $configs );
-					break;
-
-				case '1': // Default price
-				default:
-					$sql = "SELECT pp.product_id, pp.price as price FROM #__digicom_plans dp
-					LEFT JOIN #__digicom_products_plans pp on (dp.id = pp.plan_id)
-					WHERE pp.default = 1 and pp.product_id = " . $prod->id;
-					$db->setQuery( $sql );
-					$prodprice = $db->loadObject();
-					if ( !empty( $prodprice ) )
-						$price = DigiComAdminHelper::format_price( $prodprice->price, $configs->get('currency','USD'), true, $configs );
-					break;
-			}
-
-			$products[$key]->price = $price;
-		}
 		$this->assignRef( 'prods', $products );
 
 		$pagination = $this->get( 'Pagination' );
@@ -144,68 +86,11 @@ class DigiComAdminViewProducts extends DigiComView
 	}
 
 	function selectproductinclude($tpl = null){
+		
 		$configs = $this->_models['config']->getConfigs();
 		$this->assign( "configs", $configs );
 
 		$products = $this->get('Items');
-
-		$db = JFactory::getDBO();
-		foreach ( $products as $key => $prod ) {
-			$price = 0;
-
-			switch ( $prod->priceformat )
-			{
-				case '2': // Don't show price
-					$price = '';
-					break;
-
-				case '3': // Price and up
-					$sql = "SELECT pp.product_id, min(pp.price) as price FROM #__digicom_plans dp
-					LEFT JOIN #__digicom_products_plans pp on (dp.id = pp.plan_id)
-					WHERE pp.product_id = " . $prod->id . "
-					GROUP BY pp.product_id";
-					$db->setQuery( $sql );
-					$prodprice = $db->loadObject();
-					if ( !empty( $prodprice ) )
-						$price = DigiComAdminHelper::format_price( $prodprice->price, $configs->get('currency','USD'), true, $configs ) . " and up";
-					break;
-
-				case '4': // Price range
-					$sql = "SELECT pp.product_id, min(pp.price) as price_min, max(pp.price) as price_max FROM #__digicom_plans dp
-					LEFT JOIN #__digicom_products_plans pp on (dp.id = pp.plan_id)
-					WHERE pp.product_id = 1
-					GROUP BY pp.product_id";
-					$db->setQuery( $sql );
-					$prodprice = $db->loadObject();
-					if ( !empty( $prodprice ) )
-						$price = DigiComAdminHelper::format_price( $prodprice->price_min, $configs->get('currency','USD'), true, $configs ) . " - " . DigiComAdminHelper::format_price( $prodprice->price_max, $configs->get('currency','USD'), true, $configs );
-					break;
-
-				case '5': // Minimal price
-					$sql = "SELECT pp.product_id, min(pp.price) as price FROM #__digicom_plans dp
-					LEFT JOIN #__digicom_products_plans pp on (dp.id = pp.plan_id)
-					WHERE pp.product_id = " . $prod->id . "
-					GROUP BY pp.product_id";
-					$db->setQuery( $sql );
-					$prodprice = $db->loadObject();
-					if ( !empty( $prodprice ) )
-						$price = DigiComAdminHelper::format_price( $prodprice->price, $configs->get('currency','USD'), true, $configs );
-					break;
-
-				case '1': // Default price
-				default:
-					$sql = "SELECT pp.product_id, pp.price as price FROM #__digicom_plans dp
-					LEFT JOIN #__digicom_products_plans pp on (dp.id = pp.plan_id)
-					WHERE pp.default = 1 and pp.product_id = " . $prod->id;
-					$db->setQuery( $sql );
-					$prodprice = $db->loadObject();
-					if ( !empty( $prodprice ) )
-						$price = DigiComAdminHelper::format_price( $prodprice->price, $configs->get('currency','USD'), true, $configs );
-					break;
-			}
-
-			$products[$key]->price = $price;
-		}
 		$this->assignRef( 'prods', $products );
 
 		$pagination = $this->get('Pagination');
@@ -228,173 +113,38 @@ class DigiComAdminViewProducts extends DigiComView
 
 		JToolBarHelper::title( JText::_( 'Products Manager: select product type' ), 'generic.png' );
 		JToolBarHelper::cancel();
-
+		
 		parent::display( $tpl );
 	}
 
 	function editForm( $tpl = null )
 	{
 		$db = JFactory::getDBO();
+		
+		$form = $this->get('Form');
 		$product = $this->get('product');
-		$configs = $this->_models['config']->getConfigs();
-		$isNew = ($product->id < 1);
 		
-		$prc = JRequest::getVar( "prc", 0, "request" );
-		$this->assign( "prc", $prc );
-		$this->assign( "prod", $product );
-
-		$directory = "images";
-		$imageFolders = array();
-		$imageFolders[] = myDC; //$directory;
-		$imageFolders = DigiComAdminHelper::cleanUpImageFolders( $directory, DigiComAdminHelper::getImageFolderList( $directory, $imageFolders ) );
-
-		//var_dump($imageFolders);
-		$folders = array();
-		foreach ( $imageFolders as $folder ) {
-			$folders[] = JHTML::_( 'select.option', $folder );
+		// Bind the form to the data.
+		if ($form && $product)
+		{
+			$form->bind($product);
 		}
-
-		$images = DigiComAdminHelper::getFolderImageList( $directory, $imageFolders );
-		//var_dump($images);
-
-		$active = 1;
-
-		$srcname = "srcimg";
-		$dstname = "prodimg[]";
-
-		$folderjs = 'onchange="changeImageList(this);"';
-		$lists['folders'] = JHTML::_( 'select.genericlist', $folders, 'folders', 'class="inputbox" size="1" ' . $folderjs, 'value', 'text', "/" );
-		
-		
-		$lists['published'] = JHTML::_( 'select.booleanlist', 'published', '', $product->published );
-
-		// build the html select list for ordering
-		$query = 'SELECT ordering AS value, name AS text'
-		. ' FROM #__digicom_products'
-		. ' ORDER BY ordering'
-		;
-		
-		if ( $isNew ) {
-			$lists['ordering'] = JHtml::_('list.ordering','ordering', $query, '');
-		} else {
-			$lists['ordering'] = JHtml::_('list.ordering','ordering', $query, '', $product->id);
-		}
-
-		$directory = $configs->get('ftp_source_path','DigiCom');
-		if ( file_exists( JPATH_SITE . DS . $directory ) ) {
-			$ftpFiles = JFolder::files( JPATH_SITE . DS . $directory );
-		} else {
-			$ftpFiles = array();
-		}
-		$files = array();
-		$files[] = JHTML::_( "select.option", "", 'Select ftp file' );
-		foreach ( $ftpFiles as $file ) {
-			$files[] = JHTML::_( 'select.option', $file );
-		}
-
-		$lists['ftpfilelist'] = JHTML::_( 'select.genericlist', $files, 'ftpfile', 'class="inputbox" size="1" ', 'value', 'text', "" );
-
-		$files = array();
 		$cats = $this->get("listCategories");
+		
+		$this->assign( "form", $form );
+		$this->assign( "item", $product );
 		$this->assign( "cats", $cats );
-		$lists['catid'] = DigiComAdminHelper::getCatListProd2($product, $cats);
-		$lists['access'] = JHTML::_('access.assetgrouplist','access', $product->access );
-
-	
-		if (isset($product->domainrequired) && !empty($product->domainrequired)) {
-		// Edit
-			$producttype = $product->domainrequired;
-			$lists['domainrequired'] = "<input type='hidden' name='domainrequired' value='{$product->domainrequired}'/>";
-
-		} else {
-			// New
-			$producttype = JRequest::getVar('producttype',0);
-			$lists['domainrequired'] = "<input type='hidden' name='domainrequired' value='{$producttype}'/>";
-		}
-
-		switch($producttype){
-			case 1:
-				$lists['hidetab'] = array('shipping', 'stock', 'attribute', 'package');
-				//$lists['domainrequired'] .= JText::_('VIEWPRODPRODTYPEDR');
-			break;
-
-			case 2:
-				$lists['hidetab'] = array('file', 'package');
-				//$lists['domainrequired'] .= JText::_('VIEWPRODPRODTYPESP');
-			break;
-
-			case 3:
-				$lists['hidetab'] = array('shipping', 'stock', 'attribute', 'file');
-				//$lists['domainrequired'] .= JText::_('VIEWPRODPRODTYPEPAK');
-			break;
-
-			case 4:
-				$lists['hidetab'] = array('shipping', 'stock', 'attribute', 'file', 'package');
-				//$lists['domainrequired'] .= JText::_('VIEWPRODPRODTYPESERV');
-			break;
-
-			case 0:
-			default:
-				$lists['hidetab'] = array('shipping', 'stock', 'attribute', 'package');
-				//$lists['domainrequired'] .= JText::_('VIEWPRODPRODTYPEDNR');
-			break;
-		}
-
 		
-		$this->assign( "plains", '<input type="text" name="price" value="'.$product->price.'" style="text-align:center;" />');
-		$this->assign( "producttype", $producttype );
-
+		$configs = $this->_models['config']->getConfigs();
 		
-		$this->assign( "lists", $lists );
 		$this->assign( "configs", $configs );
-
-		/* Include */
-
-		$include_products = $this->_models["product"]->getFeatured2( $product->id );
-
-		$include_products_out = array();
-
-		if(isset($include_products) && is_array($include_products) && count($include_products) > 0){
-			foreach( $include_products as $key => $fproduct ) {
-				$sql = "SELECT `plan_id`, `price`, `default` FROM #__digicom_products_plans WHERE product_id=" . $fproduct->id;
-				$db->setQuery( $sql );
-				$plainstoproduct = $isNew?array():$db->loadObjectList();
-
-				$include_products_out[$key]['id'] = $fproduct->id;
-				$include_products_out[$key]['name'] = $fproduct->name;
-
-				// get plains for include product tab
-				$include_plans = array(); $include_plain_default = 0;
-
-				foreach ($plainstoproduct as $plain_value ) {
-					$sql = "select * from #__digicom_plans where id=".$plain_value->plan_id;
-					$db->setQuery($sql);
-					$db->query();
-					$plain = $db->loadAssocList();
-
-					$price = $plain_value->price;
-					$include_plans[] = JHTML::_('select.option',  $plain["0"]["id"],  $plain["0"]["name"] . ' - ' . DigiComAdminHelper::format_price( $price, $configs->get('currency','USD'), true, $configs ) );
-					if ( $fproduct->planid == 0 ) {
-						if ( $plain_value->default == 1 ) {
-							$include_plain_default = $plain_value->plan_id;
-						}
-					} else {
-						$include_plain_default = $fproduct->planid;
-					}
-				}
-
-
-				$include_products_out[$key]['plans'] = JHTML::_('select.genericlist',  $include_plans, 'plan_include_id['.$key.']', 'class="inputbox" size="1" ', 'value', 'text', $include_plain_default);
-			}
-		}
-		$this->assign( "include_products", $include_products_out );
 		
 		//set toolber
 		$this->addToolbarEdit($product);
 		DigiComAdminHelper::addSubmenu('products');
 		$this->sidebar = JHtmlSidebar::render();
 
-
+		
 		parent::display( $tpl );
 	}
 
@@ -426,9 +176,9 @@ class DigiComAdminViewProducts extends DigiComView
 		// Instantiate a new JLayoutFile instance and render the layout
 		$layout = new JLayoutFile('toolbar.title');
 		$title=array(
-			'title' => JText::_( 'VIEWDSADMINPRODUCTS' ),
-			'class' => 'product'
-		);
+				'title' => JText::_( 'VIEWDSADMINPRODUCTS' ),
+				'class' => 'product'
+			);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
 		
 		$layout = new JLayoutFile('toolbar.products');
@@ -519,34 +269,33 @@ class DigiComAdminViewProducts extends DigiComView
 		$isNew = ($product->id < 1);
 		$text = $isNew ? JText::_( 'New' ) : JText::_( 'JACTION_EDIT' ) . ' : ' . $product->name;
 		
-		// if (isset($product->domainrequired) && !empty($product->domainrequired)) {
-		// 	$producttype = $product->domainrequired;
-		// } else {
-		// 	$producttype = JRequest::getVar('producttype',0);
-		// }
+		if (isset($product->product_type) && !empty($product->product_type)) {
+			$product_type = $product->product_type;
+		} else {
+			$product_type = JRequest::getVar('product_type','reguler');
+		}
 
 		
-		// switch($producttype){
-		// 	case 1:
-		// 		$title = JText::_('VIEWPRODPRODTYPEDR');
-		// 		break;
-		// 	case 2:
-		// 		$title = JText::_('VIEWPRODPRODTYPESP');
-		// 		break;
-		// 	case 3:
-		// 		$title = JText::_('VIEWPRODPRODTYPEPAK');
-		// 		break;
-		// 	case 4:
-		// 		$title = JText::_('VIEWPRODPRODTYPESERV');
-		// 		break;
-		// 	case 0:
-		// 	default:
-		// 		$title = JText::_('VIEWPRODPRODTYPEDNR');
-		// 	break;
-		// }
+		switch($product_type){
+			case 1:
+				$title = JText::_('VIEWPRODPRODTYPEDR');
+				break;
+			case 2:
+				$title = JText::_('VIEWPRODPRODTYPESP');
+				break;
+			case 3:
+				$title = JText::_('VIEWPRODPRODTYPEPAK');
+				break;
+			case 4:
+				$title = JText::_('VIEWPRODPRODTYPESERV');
+				break;
+			case 0:
+			default:
+				$title = JText::_('VIEWPRODPRODTYPEDNR');
+			break;
+		}
 		
-		// JToolBarHelper::title($title . ' ' . JText::_( 'DSPROD' ) . " : " . $text);
-
+		JToolBarHelper::title($title . ' ' . JText::_( 'DSPROD' ) . " : " . $text);
 		// Instantiate a new JLayoutFile instance and render the layout
 		$bar = JToolBar::getInstance('toolbar');
 		$layout = new JLayoutFile('toolbar.title');

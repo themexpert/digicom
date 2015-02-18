@@ -1,3 +1,17 @@
+// Color Variables
+@body-background: #f1eeff;
+@sidebar-background: #3f3955;
+@sidebar-active-background: #463f5b;
+@sidebar-active-border: #edd70c; 
+@sidebar-text-color: #6c667c;
+@sidebar-active-text-color: #fbfbfb;
+
+// Utility Classes
+.panel-box {
+	background: #fff;
+	padding: 15px;
+}
+
 /* Joomla 2.5 FIX */
 .pull-left {
 	float: left;
@@ -115,7 +129,7 @@ ul.usergroups li {
 /* Layout Styling */
 body.com_digicom {
 	overflow-x: hidden;
-	background: #fafafa;
+	background: @body-background;
 	header.header {display: none;}
 	.subhead {
 		margin-bottom: 0;
@@ -123,32 +137,32 @@ body.com_digicom {
 		box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2);
 		padding: 10px 0;
 		border-bottom: 0;
-	}
-	.btn-toolbar {
-		text-align: right;
-		margin: 0;
-		.btn-wrapper {margin: 0 0 0 5px;}
-		#toolbar-title {
-			float: left;
-			margin-left: 0;
-			h3 {
-				margin: 0;
-				line-height: 26px;
-				[class^="icon-"], 
-				[class*=" icon-"] {margin-right: 15px;}
+		.btn-toolbar {
+			text-align: right;
+			margin: 0;
+			.btn-wrapper {margin: 0 0 0 5px;}
+			#toolbar-title {
+				float: left;
+				margin-left: 0;
+				h3 {
+					margin: 0;
+					line-height: 26px;
+					[class^="icon-"], 
+					[class*=" icon-"] {margin-right: 15px;}
+				}
 			}
+			.btn {
+				background: #ddd;
+				box-shadow: none;
+				border-radius: 0;
+				text-shadow: none;
+			}
+			.btn-primary {
+				background: #1d6cb0;
+			}
+			.btn-success {background: #5bb75b;}
+			.btn-mini .caret, .btn-small .caret {margin-top: 7px;}
 		}
-		.btn {
-			background: #ddd;
-			box-shadow: none;
-			border-radius: 0;
-			text-shadow: none;
-		}
-		.btn-primary {
-			background: #1d6cb0;
-		}
-		.btn-success {background: #5bb75b;}
-		.btn-mini .caret, .btn-small .caret {margin-top: 7px;}
 	}
 
 	.container-main {
@@ -156,13 +170,15 @@ body.com_digicom {
 	}
 
 	#j-sidebar-container {
-		height: 100vh;
-		background: #1D232B;
+		background: @sidebar-background;
 		margin-left: 0;
 		width: 200px;
-		float: left;
 		overflow: hidden;
-		color: rgba(255, 255, 255, 0.5);
+		color: @sidebar-text-color;
+		position: fixed;
+		top: 76px;
+		bottom: 28px;
+		left: 0;
 
 		#sidebar {
 			padding: 15px 0;
@@ -173,26 +189,29 @@ body.com_digicom {
 			.sidebar-nav .nav-list {
 				> li > a {
 					padding: 5px 12px;
-					color: rgba(255, 255, 255, 0.5);
+					color: @sidebar-text-color;
+					font-size: 14px;
+					line-height: 24px;
 					text-shadow: none;
 					> span + span {display: inline-block;}
 					&:hover,&:focus {
 						background: inherit;
-						color: rgba(255, 255, 255, 0.8);
-						[class^="icon-"], [class*=" icon-"] {color: rgba(255, 255, 255, 0.6);}
+						color: @sidebar-active-text-color;
+						[class^="icon-"], [class*=" icon-"] {color: @sidebar-active-text-color;}
 					}
 				}
 				[class^="icon-"], [class*=" icon-"] {
-					color: rgba(255, 255, 255, 0.3);
+					color: @sidebar-text-color;
 					margin-right: 15px;
 					width: auto;
 					height: auto;
 				}
 				> li.active > a {
-					background: darken(#1D232B, 10%);
-					color: rgba(255, 255, 255, 0.8);
+					background: @sidebar-active-background;
+					color: @sidebar-active-text-color;
+					border-left: 4px solid @sidebar-active-border;
 					> [class^="icon-"], 
-					> [class*=" icon-"] {color: rgba(255, 255, 255, 0.8);}
+					> [class*=" icon-"] {color: @sidebar-active-text-color;}
 				} 
 			}
 		}
@@ -201,7 +220,6 @@ body.com_digicom {
 	#j-main-container {
 		padding: 20px;
 		width: auto;
-		position: absolute;
 		margin-left: 200px;
 		box-sizing: border-box;
 		margin-right: 0;	
@@ -214,11 +232,24 @@ body.com_digicom {
 	    -o-transition: all 0.3s ease-in-out;
 	    transition: all 0.3s ease-in-out;
 	}
+	
+	div#system-debug,
+	div#system-message-container {
+		margin: 15px 15px 15px 215px;
+	}
 
 	&.sidebar-collapse,
 	&.task-edit {
-		#j-sidebar-container{ width: 38px; }
-		#j-main-container{ margin-left: 38px; }	
+		#j-sidebar-container{ 
+			width: 38px; 
+			#sidebar {
+				.sidebar-nav .nav-list > li.active > a {border: 0;background: @sidebar-active-border;}
+			}
+		}
+		#j-main-container { margin-left: 38px; }
+		div#system-debug,
+		div#system-message-container {margin-left: 53px;}
+
 	}
 
 	/* Table Styles */
@@ -245,5 +276,76 @@ body.com_digicom {
 
 	#status {
 		box-shadow: none;
+	}
+
+	/* elFinder File manager style */
+	.elfinder {
+		border-radius: 0;
+		.elfinder-navbar {background: #f4f5f7;}
+	}
+
+	.elfinder-toolbar {
+		background: #f4f5f7;
+		border-style: solid;
+		border-radius: 0;
+		border-width: 0 0 1px;
+		border-color: #ddd;
+		padding: 10px 5px;
+		
+		.ui-state-default {background: none;}
+
+		input[type="text"] {
+			margin: 0;
+			height: auto;
+			line-height: 1;
+		}
+	}
+
+	.elfinder-buttonset {
+		border-radius: 0;
+	}
+
+	
+
+
+
+
+}
+
+/* Layout Dgform Styling */
+body.layout-dgform {
+	
+	#j-main-container {
+
+		.form-inline .controls {
+			margin-left: 0;
+		}
+
+		.nav-tabs {
+			margin-bottom: 0;
+			border: 0;
+			background: @sidebar-background;
+			> li {
+				> a {
+					border: 0;
+					border-radius: 0;
+					padding: 15px;
+					color: lighten(@sidebar-text-color, 15%);
+
+					&:hover {color: @sidebar-active-text-color;background: none;}
+				}
+			}
+			.active a,
+			.active a:hover {
+				border-top: 4px solid @sidebar-active-border; 
+				color: @sidebar-text-color;
+				background: #fff;
+			}
+		}
+		.tab-content {
+			padding: 15px;
+			background: #fff;
+		}
+
 	}
 }

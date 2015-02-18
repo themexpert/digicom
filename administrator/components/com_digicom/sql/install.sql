@@ -518,7 +518,7 @@ CREATE TABLE IF NOT EXISTS `#__digicom_products` (
   `passphrase` varchar(150) NOT NULL default '',
   `main_zip_file` mediumtext NOT NULL,
   `encoding_files` text NOT NULL,
-  `domainrequired` int(11) NOT NULL default '0',
+  `product_type` int(11) NOT NULL default '0',
   `articlelink` text NOT NULL,
   `articlelinkid` int(11) NOT NULL default '0',
   `articlelinkuse` int(3) NOT NULL default '0',

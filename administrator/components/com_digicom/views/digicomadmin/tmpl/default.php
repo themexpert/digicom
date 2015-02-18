@@ -10,7 +10,7 @@
 
 defined ('_JEXEC') or die ("Go away.");
 $document = JFactory::getDocument();
-//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+////$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_digicom'); ?>" class="clearfix" method="post" name="adminForm" id="adminForm">
 <?php if (!empty( $this->sidebar)) : ?>
@@ -24,7 +24,7 @@ $document = JFactory::getDocument();
 		
 		<div class="row-fluid">
 			<div class="span5">
-				<!-- <img src="components/com_digicom/assets/images/logo.png" /> -->
+				<img src="components/com_digicom/assets/images/logo.png" />
 			</div>
 			<div class="span7">
 				<div class="alert alert-warning pull-right">

@@ -13,7 +13,7 @@ defined ('_JEXEC') or die ("Go away.");
 $k = 0;
 $n = count ($this->attrs);
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 ?>
 	<table>
 		<tr>

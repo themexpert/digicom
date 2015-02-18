@@ -12,7 +12,7 @@ defined ('_JEXEC') or die ("Go away.");
 $url = JUri::getInstance();
 $function = JRequest::getCmd('function');
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 
 $k = 0;
 $n = count ($this->cats);

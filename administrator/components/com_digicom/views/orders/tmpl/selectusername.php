@@ -11,7 +11,7 @@
 defined ('_JEXEC') or die ("Go away.");
 
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 
 ?>
 <form id="adminForm" name="adminForm" action="index.php" method="post">

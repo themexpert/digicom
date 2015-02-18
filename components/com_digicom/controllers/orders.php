@@ -23,18 +23,19 @@ class DigiComControllerOrders extends DigiComController {
 		parent::__construct();
 		$this->registerTask ("", "listOrders");
 		$this->registerTask ("list", "listOrders");
-		$this->registerTask ("view", "showOrder");
+		$this->registerTask ("details", "showOrder");
 		$this->registerTask ("showrec", "showOrderReceipt");
 		$this->registerTask ("wait", "waitipn");
+		
 		$this->_model = $this->getModel("Order");
 		$this->_config = $this->getModel("Config");
 		$this->_license = $this->getModel("License");
 		$this->_cart = $this->getModel("Cart");
 		$this->_customers_model = $this->getModel("Customer");
 
-		$this->log_link = JRoute::_("index.php?option=com_digicom&controller=profile&task=login&returnpage=orders&Itemid=".$Itemid, false);
-		$this->prof_link = JRoute::_("index.php?option=com_digicom&controller=profile&task=edit&returnpage=orders&Itemid=".$Itemid, false);
-		$this->order_link = JRoute::_("index.php?option=com_digicom&controller=orders&Itemid=".$Itemid, false);
+		$this->log_link = JRoute::_("index.php?option=com_digicom&view=profile&task=login&returnpage=orders&Itemid=".$Itemid, false);
+		$this->prof_link = JRoute::_("index.php?option=com_digicom&view=profile&task=edit&returnpage=orders&Itemid=".$Itemid, false);
+		$this->order_link = JRoute::_("index.php?option=com_digicom&view=orders&Itemid=".$Itemid, false);
 	}
 
 	function listOrders()
@@ -74,7 +75,6 @@ class DigiComControllerOrders extends DigiComController {
 		if ($res < 1)
 		{
 			$this->setRedirect( $this->prof_link );
-
 		}
 
 		$view = $this->getView("Orders", "html");

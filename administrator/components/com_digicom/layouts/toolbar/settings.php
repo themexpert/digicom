@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 ?>
-<a href="index.php?option=com_digicom&controller=configs&task2=general" class="btn btn-small">
+<a id="toggle_settings" href="javascript::" class="btn btn-small">
 	<span class="icon-options"></span>
 	<?php echo JText::_('SETTINGS'); ?>
 </a>

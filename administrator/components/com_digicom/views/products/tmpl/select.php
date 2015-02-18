@@ -123,7 +123,7 @@ $type = ($type == 'order' ? 'orders' : $type);
 					</td>
 
 					<td align="center">
-						 <?php echo $prod->sku. " / ". $id;?>
+						 <?php echo $prod->id. " / ". $id;?>
 					</td>
 
 					<td>

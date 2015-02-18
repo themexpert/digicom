@@ -39,7 +39,6 @@ require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'template.php' );
 //get the var value
 $controller = JRequest::getCmd('controller');
 $view = JRequest::getWord('view');
-$layout = JRequest::getWord('layout');
 $task = JRequest::getCmd('task');
 $cronparam = JRequest::getVar('cron','');
 
@@ -56,32 +55,14 @@ if($task=='get_cursym'){
 	die();
 }
 
-
-//msg removed from here
-// ----------------------------
-
-//marge task and layout
-switch($layout){
-	case "viewproduct" :
-		$task = 'view';
-		break;
-	case "summary" :
-		$task = 'summary';
-		break;
-	case "login" :
-		$task = 'login';
-		break;
-	default:
-		break;
-}
-
 if(strlen(trim($view)) > 0 && strlen(trim($controller)) < 1){
-	$view_to_controller = array("cart" => "Cart",
-			"licenses" => "Licenses",
-			"orders" => "Orders",
-			"categories" => "Categories",
-			"products" => "Products",
-			"profile" => "Profile");
+	$view_to_controller = array("cart" => "cart",
+			"licenses" => "licenses",
+			"orders" => "orders",
+			"categories" => "categories",
+			"products" => "products",
+			"downloads" => "downloads",
+			"profile" => "profile");
 	$layout_to_task = array("");
 	$controller = @$view_to_controller[strtolower($view)];
 }

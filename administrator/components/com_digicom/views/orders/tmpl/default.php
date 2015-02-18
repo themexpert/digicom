@@ -17,7 +17,7 @@ JHtml::_('formbehavior.chosen', 'select');
 $invisible = 'style="display:none;"';
 
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 
 $k = 0;
 $n = count( $this->orders );
@@ -50,7 +50,7 @@ Joomla.submitbutton = function (pressbutton) {
 <?php else : ?>
 <div id="j-main-container" class="">
 <?php endif;?>
-	<form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=orders'); ?>" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
+	<form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&controller=orders'); ?>" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
 		<div class="js-stools">
 			<div class="clearfix">
 				<div class="btn-wrapper input-append">
@@ -148,11 +148,14 @@ Joomla.submitbutton = function (pressbutton) {
 						</td>
 						<td align="center">
 							<?php 
+								
 								if ($order->amount_paid == "-1") $order->amount_paid = $order->amount;
-								$refunds = DigiComAdminModelOrder::getRefunds($order->id);
-								$chargebacks = DigiComAdminModelOrder::getChargebacks($order->id);
-								$order->amount_paid = $order->amount_paid - $refunds - $chargebacks;
+								//$refunds = DigiComAdminModelOrder::getRefunds($order->id);
+								//$chargebacks = DigiComAdminModelOrder::getChargebacks($order->id);
+								//$order->amount_paid = $order->amount_paid - $refunds - $chargebacks;
+								$order->amount_paid = $order->amount_paid;
 								echo DigiComAdminHelper::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs); 
+								
 							?>
 						</td>
 						<td align="center">
@@ -182,7 +185,7 @@ Joomla.submitbutton = function (pressbutton) {
 				<?php else: ?>
 					<tr>
 						<td colspan="9">
-							<?php echo  JText::_('COM_DIGICOM_NO_ORDER_FOUND'); ?>
+							<?php echo  JText::_('VIEWORDERSEXIST'); ?>
 						</td>
 					</tr>
 				<?php endif; ?>

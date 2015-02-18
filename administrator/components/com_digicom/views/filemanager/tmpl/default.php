@@ -20,9 +20,7 @@ $mosConfig_absolute_path = JPATH_ROOT;
 <?php else : ?>
 	<div id="j-main-container" class="">
 <?php endif;?>
-		<table class="adminform table">
-			<tr>
-				<td>
+		
 					<script type="text/javascript">
 						jQuery(document).ready(function() {
 							var basePath = '<?php echo JURI::root(true); ?>';
@@ -42,18 +40,16 @@ $mosConfig_absolute_path = JPATH_ROOT;
 							}).elfinder('instance');
 						});
 					</script>
-					<form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=filemanager&no_html=1'); ?>" method="post" class="clearfix" name="adminForm" id="adminForm">
-						
-						<div id="j-main-container">
-							<!--// Start Elfinder-->
-							<div id="elfinder"></div>
-							
-							<input type="hidden" name="task" value="" />
-							<input type="hidden" name="boxchecked" value="0" />
-							<?php echo JHtml::_('form.token'); ?>
-						</div>
-					</form>
-				</td>
-			</tr>
-		</table>
+		<form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=filemanager&no_html=1'); ?>" method="post" class="clearfix" name="adminForm" id="adminForm">
+			
+			<div id="">
+				<!--// Start Elfinder-->
+				<div id="elfinder"></div>
+				
+				<input type="hidden" name="task" value="" />
+				<input type="hidden" name="boxchecked" value="0" />
+				<?php echo JHtml::_('form.token'); ?>
+			</div>
+		</form>
+				
 	</div>

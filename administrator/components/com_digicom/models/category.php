@@ -13,7 +13,7 @@ defined ('_JEXEC') or die ("Go away.");
 jimport('joomla.application.component.modellist');
 jimport('joomla.utilities.date');
 
-class DigiComAdminModelCategory extends JModelList {
+class DigiComAdminModelCategory extends JModelForm {
 	
 	protected $_context = 'com_digicom.Category';
 	private $total=0;
@@ -154,133 +154,7 @@ class DigiComAdminModelCategory extends JModelList {
 		// Reorder categories
 		$item->reorder('`parent_id` = ' . (int) $item->parent_id);
 
-# create menu for categories
-/*
-		$database = JFactory::getDBO();
-		$row = $item;
-
-		// get parent id
-		$parent_link = 'index.php?option=com_digicom&controller=products&task=list&cid[]='.$row->parent_id;
-		$parent_link2 = 'index.php?option=com_digicom&controller=categories&task=view&cid[]=' . $row->parent_id;
-
-		$sql = "select `id`, `level` from #__menu where menutype='digicats' and link='" . $parent_link . "'";
-		$database->setQuery($sql);
-		$res = $database->loadObject();
-		if($res){
-			$parent_id = $res->id;
-			$parent_level = $res->level;
-		}
-	   
-		if(!$parent_id){
-			$sql = "select `id`, `level` from #__menu where menutype='digicats' and link='".$parent_link2."'";
-			$database->setQuery($sql);
-			$res = $database->loadObject();
-			if($res){
-				$parent_id = $res->id;
-				$parent_level = $res->level;
-			}
-		}
-		if(!$parent_id){
-			$parent_id = 1;
-			$parent_level = 1;
-		}
 		
-		// get component id
-		$com = JComponentHelper::getComponent('com_digicom');
-		$component_id = $com->id;
-
-		$oldtitle = JRequest::getVar("oldtitle", $row->name, "request" );
-		if($oldtitle != $row->name && $row->published == '1') { //name changed - lets update menu
-			$link = 'index.php?option=com_digicom&controller=products&task=list&cid[]=' . $row->id;
-			$link2 = 'index.php?option=com_digicom&controller=categories&task=view&cid[]=' . $row->id;
-
-			$sql = "select count(*) from #__menu" . "\n WHERE (title = '$oldtitle' or title='" . $row->name . "')" . "\n AND menutype = 'digicats' " . "\n and (link='" . $link . "' or link='" . $link2 . "')";
-			$database->setQuery($sql);
-			$menuentry = $database->loadResult();
-			if($menuentry > 0){
-				$sql = "update #__menu set published='1', title='" . $row->name . "',
-							parent_id='" . $parent_id . "', access='" . $row->access . "', `level`='".$parent_level."' 
-							where menutype='digicats' and
-							(title = '$oldtitle' or title='" . $row->name . "') and
-							(link='" . $link . "' or link='" . $link2 . "')";
-				$database->setQuery($sql);
-				$database->query();
-			}
-			else{
-				$sql = "select count(*) from #__digicom_categories where parent_id='" . $row->id . "' and published='1'";
-				$database->setQuery($sql);
-				$sibs = $database->loadResult();
-				
-				if($sibs > 0){
-					$link = $link2;
-				}
-				$sql = "INSERT INTO `#__menu` (`menutype`, `title`, `alias`, `note`, `path`, `link`, `type`, `published`, `parent_id`, `level`, `component_id`, `access`)
-						VALUES ('digicats', '".$row->name."', '".JFilterOutput::stringURLSafe($row->name)."', '', '".JFilterOutput::stringURLSafe($row->name)."', '".$link."', 'url', 1, '".$parent_id."', '".$parent_level."', ".$component_id.", 1)";
-
-				$database->setQuery($sql);
-				$database->query();
-			}
-		}
-		elseif($row->published == '1'){ //category is published, lets add entry to menu
-			$link = 'index.php?option=com_digicom&controller=products&task=list&cid[]=' . $row->id;
-			$link2 = 'index.php?option=com_digicom&controller=categories&task=view&cid[]=' . $row->id;
-
-			$sql = "select count(*) from #__menu" . "\n WHERE title = '$oldtitle' " . "\n AND menutype = 'digicats' " . "\n and (link='" . $link . "' or link='" . $link2 . "')";
-			$database->setQuery($sql);
-			$menuentry = $database->loadResult();
-			if($menuentry > 0){
-				$sql = "update #__menu set published='1', title='" . $row->name . "',
-				parent_id='" . $parent_id . "', access='" . $row->access . "', `level`='".$parent_level."' 
-				where menutype='digicats' and
-				title='" . $row->name . "' and
-				(link='" . $link . "' or link='" . $link2 . "')";
-				$database->setQuery($sql);
-				$database->query();
-			}
-			else{
-				$sql = "select count(*) from #__digicom_categories where parent_id='" . $row->id . "' and published='1'";
-				$database->setQuery($sql);
-				$sibs = $database->loadResult();
-				if ($sibs > 0) {
-					$link = $link2;
-				}
-
-				$sql = "INSERT INTO `#__menu` (`menutype`, `title`, `alias`, `note`, `path`, `link`, `type`, `published`, `parent_id`, `level`, `component_id`, `access`) VALUES ('digicats', '".$row->name."', '".JFilterOutput::stringURLSafe($row->name)."', '', '".JFilterOutput::stringURLSafe($row->name)."', '".$link."', 'url', 1, '".$parent_id."', '".$parent_level."', ".$component_id.", 1)";
-				$database->setQuery($sql);
-				$database->query();
-			}
-		}
-		elseif($row->published != '1' && $row->published != '-2'){ //category is unpublished, lets remove entry to menu
-			$link = 'index.php?option=com_digicom&controller=products&task=list&cid[]=' . $row->id;
-			$link2 = 'index.php?option=com_digicom&controller=categories&task=view&cid[]=' . $row->id;
-
-			$sql = "select count(*) from #__menu" . "\n WHERE title = '$oldtitle' " . "\n AND menutype = 'digicats' " . "\n and (link='" . $link . "' or link='" . $link2 . "')";
-			$database->setQuery($sql);
-			$menuentry = $database->loadResult();
-			if($menuentry > 0){
-				$sql = "update #__menu set published='0', title='" . $row->name . "',
-					parent_id='" . $parent_id . "', access='" . $row->access . "', `level`='".$parent_level."' 
-					where menutype='digicats' and
-					title='" . $row->name . "' and
-					(link='" . $link . "' or link='" . $link2 . "')";
-				$database->setQuery($sql);
-				$database->query();
-			}
-			else{
-				$sql = "select count(*) from #__digicom_categories where parent_id='" . $row->id . "' and published='1'";
-				$database->setQuery($sql);
-				$sibs = $database->loadResult();
-				if ($sibs > 0){
-					$link = $link2;
-				}
-
-				$sql = "INSERT INTO `#__menu` (`menutype`, `title`, `alias`, `note`, `path`, `link`, `type`, `published`, `parent_id`, `level`, `component_id`, `access`)
-						VALUES ('digicats', '".$row->name."', '".JFilterOutput::stringURLSafe($row->name)."', '', '".JFilterOutput::stringURLSafe($row->name)."', '".$link."', 'url', 1, '".$parent_id."', '".$parent_level."', ".$component_id.", 1)";
-				$database->setQuery($sql);
-				$database->query();
-			}
-		}
-*/
 		return true;
 	}
 
@@ -494,54 +368,30 @@ class DigiComAdminModelCategory extends JModelList {
 		return $list;
 	}
 
-	/*function getCatAndProductToLisenceIdHtml($options, $selected) {
-		$categories = $this->getlistCategories2();
-		$children = array();
-		$citems = $categories;
-
-		if ( $citems ) {
-			// first pass - collect children
-			foreach ( $citems as $v ) {
-				$pt 	= $v->parent_id;
-				$list 	= @$children[$pt] ? $children[$pt] : array();
-				array_push( $list, $v );
-				$children[$pt] = $list;
-			}
-		}
-
-		foreach ($children as $i => $v) {
-			foreach ($children[$i] as $j => $vv) {
-				$children[$i][$j]->parent = $vv->parent_id;
-			}
-		}
-
-		$this->_db->setQuery("
-			SELECT productid, catid, name
-			FROM #__digicom_product_categories pc
-				INNER JOIN #__digicom_products p ON ( p.id = pc.productid )
-			ORDER BY pc.catid		
-		");
-
-		$products = $this->_db->loadObjectList();
-		$catprod = array();
-		foreach($products as $key => $prod) {
-			$catprod[$prod->catid][$prod->productid] = $prod->name;
-		}
-
-		$html = "";
-		$catresult = $this->getCatAndProductLisenceId( 0, "", array(), $children, $catprod, $html, $selected );
-
-		$cathtml = "";
-		$cathtml .= "<select ".$options.">"; // id='productid' name='productid' class='inputbox' size='1'
-		$cathtml .= "<option value='0'>".JText::_("DSSELECTPRODUCT")."</option>";
-		$cathtml .= $html;
-		$cathtml .= "</select>";
-
-		return $cathtml;
-	}*/
-
 	function getConfigs() {
 		$comInfo = JComponentHelper::getComponent('com_digicom');
 		return $comInfo->params;
+	}
+
+	/**
+	 * Method to get a form object.
+	 *
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 *
+	 * @return  mixed  A JForm object on success, false on failure
+	 *
+	 * @since	3.2
+	 */
+	public function getForm($data = array(), $loadData = true)
+	{
+		$form = $this->loadForm('com_digicom.category', 'category', array('control' => 'jform', 'load_data' => $loadData));
+		
+		if (empty($form))
+		{
+			return false;
+		}
+
+		return $form;
 	}
 }

@@ -18,7 +18,7 @@ $k = 0;
 $n = count ($this->promos);
 $configs = $this->configs;
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 ?>
 <?php if (!empty( $this->sidebar)) : ?>
 <div id="j-sidebar-container" class="">

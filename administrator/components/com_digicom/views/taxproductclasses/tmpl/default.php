@@ -15,7 +15,7 @@ $n = count ($this->pclasses);
 $page = $this->pagination;
 
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 
 ?>
 

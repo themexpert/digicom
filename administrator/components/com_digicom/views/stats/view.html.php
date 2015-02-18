@@ -14,17 +14,6 @@ jimport ("joomla.application.component.view");
 
 class DigiComAdminViewStats extends DigiComView {
 
-	function prepereJoomlaDataFormat($format = '%m-%d-%Y') {
-
-		$result = $format;
-		if ( strpos($result,'%') === false) {
-			$r = array('m' => '%m', 'd' => '%d', 'Y' => '%Y');
-			$result = str_replace(array_keys($r),array_values($r),$format);
-		} 
-
-		return $result;
-	}
-
 	function display ($tpl =  null )
 	{
 		// Access check.
@@ -53,7 +42,7 @@ class DigiComAdminViewStats extends DigiComView {
 		parent::display($tpl);
 	}
 
-	function getTotal($type){
+	function getTotal($type=''){
 		$total = $this->_models['stat']->getreportTotal($type);
 		return $total;
 	}
@@ -76,4 +65,16 @@ class DigiComAdminViewStats extends DigiComView {
 	function getPaginationDate($configs){
 		$this->_models['stat']->getPaginationDate($configs);
 	}
+	
+	function prepereJoomlaDataFormat($format = '%m-%d-%Y') {
+
+		$result = $format;
+		if ( strpos($result,'%') === false) {
+			$r = array('m' => '%m', 'd' => '%d', 'Y' => '%Y');
+			$result = str_replace(array_keys($r),array_values($r),$format);
+		} 
+
+		return $result;
+	}
+
 }

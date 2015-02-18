@@ -13,7 +13,7 @@ defined ('_JEXEC') or die ("Go away.");
 JHTML::_('behavior.tooltip');
 
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 
 ?>
 <fieldset class="adminform">

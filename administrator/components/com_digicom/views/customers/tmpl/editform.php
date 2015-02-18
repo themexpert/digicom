@@ -13,9 +13,13 @@ JHtml::_('formbehavior.chosen', 'select');
 
 $cust = $this->cust;
 $user = $this->user["0"];
+$app = JFactory::getApplication();
+$input = $app->input;
 
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+$input->set('layout', 'dgform');
+
 ?>
 
 <script language="javascript" type="text/javascript">
@@ -51,76 +55,109 @@ $document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 	<?php else : ?>
 		<div id="j-main-container" class="">
 	<?php endif;?>
-	<fieldset class="adminform">
-		<legend><?php echo JText::_( 'CUSTOMER_DETAILS' ); ?></legend>
-		<table class="admintable">
+			<div class="row-fluid">
+				<div class="span12">
+					<?php echo JHtml::_('bootstrap.startTabSet', 'digicomTab', array('active' => 'details')); ?>
 
-			<tr>
-				<td width="250">
-					<?php echo JText::_( 'VIEWCUSTOMERUSERNAME' ); ?><span class="error">*</span>
-				</td>
+					<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'details', JText::_('COM_DIGICOM_CUSTOMERS_DETAILS', true)); ?>
+				
+					<div class="form-horizontal">
+						<div class="row-fluid">
+							<div class="span6">
+								<h3><?php echo JText::_( 'CUSTOMER_DETAILS' ); ?></h3>
+								<div class="control-group">
+									<label class="control-label"><?php echo JText::_( 'VIEWCUSTOMERUSERID' ); ?><span class="error">*</span></label>
+									<div class="controls">
+										<?php echo $cust->id; ?>
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label"><?php echo JText::_( 'VIEWCUSTOMERUSERNAME' ); ?><span class="error">*</span></label>
+									<div class="controls">
+										<?php echo $user["username"]; ?>
+									</div>
+								</div>
 
-				<td width="69%"><input name="username" <?php if(isset($user) && isset($user["id"])){ ?> disabled <?php } ?> type="text" id="username" size="30" value="<?php echo $user["username"]; ?>"><b>&nbsp;</b></td>
+								<div class="control-group">
+									<label class="control-label"><?php echo JText::_( "VIEWCUSTOMERNAME" ); ?><span class="error">*</span></label>
+									<div class="controls">
+										<?php echo $cust->firstname . ' ' . $cust->lastname ?>
+									</div>
+								</div>
 
-			</tr>
-			<?php 
-				if(!isset($user) && !$user["id"]){
- 			?>
-				<tr>
-					<td ><?php echo JText::_( "VIEWCUSTOMERPASSWORD" ); ?><span class="error">*</span></td>
-					<td><input name="password" type="password" id="password" size="30" ><b>&nbsp;</b></td>
-				</tr>
-				<tr>
-					<td><?php echo JText::_( "VIEWCUSTOMERPASSWORDCONFIRM" ); ?><span class="error">*</span></td>
-					<td><input name="password_confirm" type="password" id="password_confirm" size="30"><b>&nbsp;</b></td>
-				</tr>
-			<?php 
-				}
-			?>
-			<tr>
-				<td width="31%"><?php echo JText::_( "VIEWCUSTOMERFIRSTNAME" ); ?><span class="error">*</span></td>
-				<td width="69%"><input name="firstname" type="text" id="firstname" size="30" value="<?php echo $cust->firstname ?>"><b>&nbsp;</b></td>
-			</tr>
-			<tr>
-				<td><?php echo JText::_( "VIEWCUSTOMERLASTNAME" ); ?><span class="error">*</span></td>
-				<td><input name="lastname" type="text" id="lastname" size="30" value="<?php echo $cust->lastname; ?>"><b>&nbsp;</b></td>
-			</tr>
-			<tr>
-				<td><?php echo JText::_( "VIEWCUSTOMERCOMPANY" ); ?><b></b></td>
-				<td><input name="company" type="text" id="company" size="30" value="<?php echo $cust->company; ?>"></td>
-			</tr>
-			<tr>
-				<td width="31%">
-					<?php 
-						echo JText::_( 'VIEWCUSTOMEREMAIL' );
-					?>
-					<span class="error">*</span>
-				</td>
-				<td width="69%">
-					<input name="email" type="text" <?php if(isset($user) && isset($user["id"])){ ?> disabled <?php } ?>
-									   id="email" size="30" value="<?php echo $user["email"]; ?>"><b>&nbsp;</b>
-				</td>
-			</tr>
+								<div class="control-group">
+									<label class="control-label"><?php echo JText::_( "VIEWCUSTOMERREGISTERED" ); ?><span class="error">*</span></label>
+									<div class="controls">
+										Registration date
+									</div>
+								</div>
 
-			<tr>
-				<td><?php echo JText::_( "VIEWCUSTOMERPOC" ); ?><span class="error">*</span></td>
-				<td>
-					<select name="person" >
-						<option value="1" <?php echo (($cust->person != 0) ? "selected" : ""); ?> ><?php echo JText::_( "VIEWCUSTOMERIMPERSON" ); ?></option>
-						<option value="0" <?php echo (($cust->person == 0) ? "selected" : ""); ?>><?php echo JText::_( "VIEWCUSTOMERIMCOMPANY" ); ?></option>
-					</select>
-				</td>
-			</tr>
-		</table>
-		<br>
-		<table width="100%"  border="0">
-			<tr>
-				<td colspan="2"><h2><?php echo JText::_( "VIEWCUSTOMERBILLING" ); ?></h2></td>
-			</tr>
-			<tr>
-				<td width="250"><?php echo Jtext::_( "VIEWCONFIGADDRESS" ); ?><span class="error">*</span></td>
-				<td width="69%"><input name="address" type="text" id="address" size="30" value="<?php echo $cust->address; ?>"><b>&nbsp;</b></td>
-			</tr>
+								
+
+								<div class="control-group">
+									<label class="control-label">
+										<?php echo JText::_( 'VIEWCUSTOMEREMAIL' );?><span class="error">*</span>
+									</label>
+									<div class="controls">
+										<?php echo $user["email"]; ?>
+									</div>
+								</div>
+
+								
+							</div>
+
+							<div class="span6">
+
+								<h3><?php echo JText::_( "VIEWCUSTOMERBILLING" ); ?></h3>
+								<div class="control-group">
+									<label class="control-label">
+										<?php echo JText::_( "VIEWCUSTOMERPOC" ); ?><span class="error">*</span>
+									</label>
+									<div class="controls">
+										<div class="radio btn-group btn-group-yesno">
+											<input type="radio" value="1" checked="<?php echo (($cust->person != 0) ? "checked" : ""); ?>">
+											<label class="btn"><?php echo JText::_( "VIEWCUSTOMERIMPERSON" ); ?></label>
+											<input type="radio" value="0" checked="<?php echo (($cust->person == 0) ? "checked" : ""); ?>">
+											<label class="btn"><?php echo JText::_( "VIEWCUSTOMERIMCOMPANY" ); ?></label>
+										</div>
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label class="control-label"><?php echo JText::_( "VIEWCUSTOMERCOMPANY" ); ?><b></b></label>
+									<div class="controls">
+										<input name="company" type="text" id="company" size="30" value="<?php echo $cust->company; ?>">
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label for="" class="control-label"><?php echo Jtext::_( "VIEWCONFIGADDRESS" ); ?><span class="error">*</span></label>
+									<div class="controls">
+										<textarea><?php echo $cust->address; ?></textarea>
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label for="" class="control-label"><?php echo JText::_( "VIEWCUSTOMERCOUNTRY" ); ?><span class="error">*</span></label>
+									<div class="controls">
+										<?php echo $this->lists['country_option']; ?>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						
+
+
+					</div>
+
+					<?php echo JHtml::_('bootstrap.endTab'); ?>
+
+					<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+				</div>
+			</div>
+	
+		
 			<script>
 <?php
 					sajax_show_javascript();
@@ -162,40 +199,6 @@ $document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 				}
 			</script>
 
-			<tr>
-				<td><?php echo JText::_( "VIEWCUSTOMERCOUNTRY" ); ?><span class="error">*</span></td>
-				<td><?php echo $this->lists['country_option']; ?></td>
-			</tr>
-			<tr>
-				<td><?php echo JText::_( "VIEWCUSTOMERSTATE" ); ?><span class="error">*</span></td>
-				<td> <?php
-					echo $this->lists['customerlocation'];
-
-
-?>
-				</td>
-			</tr>
-			<tr>
-				<td><?php echo JText::_( "VIEWCUSTOMERCITY" ); ?><span class="error">*</span></td>
-				<td>
-					<div >
-						<input id="city" type="text" value="<?php echo $cust->city; ?>" name="city" size="40" />
-					</div>
-				</td>
-			</tr>
-
-			<tr>
-				<td><?php echo JText::_( "VIEWCUSTOMERZIP" ); ?><span class="error">*</span></td>
-				<td><input name="zipcode" type="text" id="zipcode" size="30" value="<?php echo $cust->zipcode; ?>"><b>&nbsp;</b></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td>&nbsp;</td>
-			</tr>
-			
-		</table>
-
-	</fieldset>
 	</div>
 
 	<input type="hidden" name="images" value="" />

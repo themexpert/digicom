@@ -56,7 +56,15 @@ class DigiComAdminViewPromos extends DigiComView
 		$text = $isNew?JText::_('New'):JText::_('Edit');
 		JHtml::_( 'behavior.modal' );
 
-		JToolBarHelper::title(JText::_('Promo').":<small>[".$text."]</small>");
+		JToolBarHelper::title(JText::_('COM_DIGICOM_VIDEO_PROMO_MANAGER').":<small>[".$text."]</small>");
+		$bar = JToolBar::getInstance('toolbar');
+		// Instantiate a new JLayoutFile instance and render the layout
+		$layout = new JLayoutFile('toolbar.title');
+		$title=array(
+			'title' => JText::_( 'COM_DIGICOM_VIDEO_PROMO_MANAGER' ),
+			'class' => 'title'
+		);
+		$bar->appendButton('Custom', $layout->render($title), 'title');
 		JToolBarHelper::save();
 		if ($isNew) {
 			JToolBarHelper::spacer();
@@ -79,6 +87,10 @@ class DigiComAdminViewPromos extends DigiComView
 
 		$this->assign("configs", $configs);
 		$this->assign("lists", $lists);
+		
+		DigiComAdminHelper::addSubmenu('promos');
+		$this->sidebar = JHtmlSidebar::render();
+		
 		parent::display($tpl);
 
 	}

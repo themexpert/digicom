@@ -180,7 +180,7 @@ function populateShipping () {
 			</div>
 		</div>
 	</div>
-	<?php if($configs->askforcompany == 1) { ?>
+	<?php if($configs->get('askforcompany',1) == 1) { ?>
 	<div class="row-fluid">
 		<div class="control-group">
 			<label class="control-label" for="company"><?php echo JText::_("DSCOMPANY"); ?></label>
@@ -224,65 +224,53 @@ function populateShipping () {
 			</div>
 		</div>
 	</div>
-	<?php if ($configs->allowcustomerchoseclass == '1'): ?>
-	<div class="row-fluid">
-		<div class="control-group">
-			<label class="control-label" for="customer_class"><?php echo JText::_("VIEWCUSTOMERTAXCLASS"); ?></label>
-			<div class="controls" style="display:inherit;">
-				<?php echo $this->lists['customer_class']; ?>
-			</div>
-		</div>
-	</div>
-	<?php endif; ?>
 		
 
 	<?php if($configs->get('askforbilling','0') == 1){ ?>
-	<h2><?php echo JText::_('DSBILLINGADR'); ?></h2>
-	<div class="row-fluid">
-		<div class="control-group">
-			<label class="control-label" for="country_option"><?php echo JText::_("DSCOUNTRY"); ?> <span class="error">*</span></label>
-			<div class="controls" style="display:inherit;">
-				<?php echo $this->lists['country_option']; ?>
+		<h2><?php echo JText::_('DSBILLINGADR'); ?></h2>
+		<div class="row-fluid">
+			<div class="control-group">
+				<label class="control-label" for="country_option"><?php echo JText::_("DSCOUNTRY"); ?> <span class="error">*</span></label>
+				<div class="controls" style="display:inherit;">
+					<?php echo $this->lists['country_option']; ?>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="row-fluid">
-		<div class="control-group">
-			<label class="control-label" for="address"><?php echo JText::_("DSBILLING"); ?> <span class="error">*</span></label>
-			<div class="controls" style="display:inherit;">
-				<input name="address" type="text" id="address" value="<?php echo $cust->address; ?>" />
+		<div class="row-fluid">
+			<div class="control-group">
+				<label class="control-label" for="address"><?php echo JText::_("DSBILLING"); ?> <span class="error">*</span></label>
+				<div class="controls" style="display:inherit;">
+					<input name="address" type="text" id="address" value="<?php echo $cust->address; ?>" />
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="row-fluid">
-		<div class="control-group">
-			<label class="control-label" for="city"><?php echo JText::_("DSCITY"); ?> <span class="error">*</span></label>
-			<div class="controls" style="display:inherit;">
-				<input name="city" type="text" id="city" value="<?php echo $cust->city; ?>" />
+		<div class="row-fluid">
+			<div class="control-group">
+				<label class="control-label" for="city"><?php echo JText::_("DSCITY"); ?> <span class="error">*</span></label>
+				<div class="controls" style="display:inherit;">
+					<input name="city" type="text" id="city" value="<?php echo $cust->city; ?>" />
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="row-fluid">
-		<div class="control-group">
-			<label class="control-label" for="customerlocation"><?php echo JText::_("DSSTATE"); ?> <span class="error">*</span></label>
-			<div class="controls" style="display:inherit;">
-				<?php echo $this->lists['customerlocation']; ?>
+		<div class="row-fluid">
+			<div class="control-group">
+				<label class="control-label" for="customerlocation"><?php echo JText::_("DSSTATE"); ?> <span class="error">*</span></label>
+				<div class="controls" style="display:inherit;">
+					<?php echo $this->lists['customerlocation']; ?>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="row-fluid">
-		<div class="control-group">
-			<label class="control-label" for="customerlocation"><?php echo JText::_("DSZIP"); ?> <span class="error">*</span></label>
-			<div class="controls" style="display:inherit;">
-				<input name="zipcode" type="text" id="zipcode" value="<?php echo $cust->zipcode; ?>" />
+		<div class="row-fluid">
+			<div class="control-group">
+				<label class="control-label" for="customerlocation"><?php echo JText::_("DSZIP"); ?> <span class="error">*</span></label>
+				<div class="controls" style="display:inherit;">
+					<input name="zipcode" type="text" id="zipcode" value="<?php echo $cust->zipcode; ?>" />
+				</div>
 			</div>
 		</div>
-	</div><?php
+	<?php
 	}
-	else
-	{
-		$configs->get('askforship','0') = 0;
-	} ?>
+	?>
 
 <?php if ($configs->get('askforship','0') == 1): ?>
 	<h2><?php echo JText::_('DSSHIPADDR'); ?></h2>

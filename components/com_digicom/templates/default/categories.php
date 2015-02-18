@@ -9,10 +9,10 @@
 */
 
 defined ('_JEXEC') or die ("Go away.");
+
 JHtml::script(JURI::root()."media/digicom/assets/js/category_layout.js", true);
 ?>
 <div class="digicom-wrapper com_digicom categories">
-	
 	<h2 class="page-title category-title"><?php echo $this->category->name; ?></h2>
 	<div class="category_info media">
 		<div class="pull-left">
@@ -22,55 +22,46 @@ JHtml::script(JURI::root()."media/digicom/assets/js/category_layout.js", true);
 			<?php echo $this->category->description; ?>
 		</div>
 	</div>
-
-	<div class="products_list">
-		<div id="viewcontrols">
-			<a class="gridview">
-				<i class="fa fa-th fa-2x"></i>Grid
+	
+	<div class="products_list clearfix">
+		<div id="viewcontrols" class="well">
+			<a href="javascript::" class="gridview">
+				<i class="fa fa-th"></i>Grid
 			</a>
-			<a class="listview active">
-				<i class="fa fa-list fa-2x">List</i>
+			<a href="javascript::" class="listview active">
+				<i class="fa fa-list">List</i>
 			</a>
 		</div>
-		<ul class="list">
+		
+		<ul class="list unstyled">
+		<?php foreach($this->prods as $key=>$item): ?>
 			<li>
-				<img src="images/barbie_8.jpg" height="250px" width="250px"/>
-				<section class="list-left">
-				<span class="title">PRODUCT NAME</span>
-				<p>Product description goes here. Aliquam tincidunt diam varius 
-				ultricies auctor. Vivamus faucibus risus tempus, 
-				adipiscing justo
-				</p>
-				<div class="icon-group-btn">           
-				<a title="Add to Cart" href="javascript:void(0);" class="btn-cart"> 
-				<span class="icon-cart"></span>
-				<span class="icon-cart-text">
-				Add To Cart      
-				</span>
-				</a>
-				<a title="Add to wishlist" href="#" class="btn-wishlist">
-				<span class="icon-wishlist"></span>
-				<span class="icon-wishlist-text">
-				Add To Wishlist      
-				</span>
-				</a>
-				<a title="Add to Compare" href="#" class="btn-compare">
-				<span class="icon-compare"></span>
-				<span class="compare-text">
-				Add To Compare      
-				</span>
-				</a>
-				</div>  
-				</section>
-				<section class="list-right">
-				<span class="price">$50</span>
-				<span class="detail"><a class="button">Details</a></span>
-				</section>
+				<?php if(!empty($item->images)): ?>
+				<div class="pull-left">
+					<img src="<?php echo $item->images; ?>" class="img-responsive img-rounded" width="200px" height="200px"/>
+				</div>
+				<?php endif; ?>
+				<div class="pull-left" style="width:49%">
+					<h2><?php echo $item->name; ?></h2>
+					<div class="text-muted">
+						<span class="label label-info">Category</span>
+					</div>
+					<div class="description">
+						<?php echo $item->description; ?>
+					</div>
+					<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=products&cid='.$item->catid.'&pid='.$item->id);?>" class="btn btn-mini">Details</a>
+				</div>
+				<div class="pull-right" style="width:20%">
+					<p class="price text-success"><?php echo $item->price; ?></p>
+					<a href="#" class="btn btn-success">Add</a>
+				</div>
 			</li>
+		<?php endforeach; ?>
 		</ul>
 
 
 	</div>
+	<div class="pagination"><?php echo $this->pagination->getPagesLinks(); ?> </div>
 </div>
 <?php
 echo DigiComHelper::powered_by();

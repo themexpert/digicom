@@ -117,7 +117,7 @@
 					<option value="1">DSYES</option>
 			</field>
 			<field 
-				name="myfield" 
+				name="termsid" 
 				type="sql" 
 				default="10" 
 				label="VIEWCONFIGTERMSANDCONDID" 

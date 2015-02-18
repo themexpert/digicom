@@ -13,7 +13,7 @@ defined ('_JEXEC') or die ("Go away.");
 $app = JFactory::getApplication();
 $template = $app->getTemplate();
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 // Load the tooltip behavior.
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.formvalidation');

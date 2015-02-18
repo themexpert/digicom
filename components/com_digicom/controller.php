@@ -95,7 +95,7 @@ class DigiComController extends JControllerLegacy
 		}
 
 		if($c == "Cart"){
-			$link = JRoute::_("index.php?option=com_digicom&controller=cart&task=showCart&Itemid=" . $Itemid);
+			$link = JRoute::_("index.php?option=com_digicom&view=cart&task=showCart&Itemid=" . $Itemid);
 			$name = "Cart";
 			$pw->addItem($name, $link);
 			if($t == "checkout"){

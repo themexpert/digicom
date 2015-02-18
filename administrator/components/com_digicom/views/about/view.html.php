@@ -15,7 +15,7 @@ jimport ("joomla.application.component.view");
 class DigiComAdminViewAbout extends DigiComView {
 
 	function display($tpl =  null){
-		JToolBarHelper::title(JText::_('About DigiCom'), 'generic.png');
+		JToolBarHelper::title(JText::_('VIEWDSADMINABOUT'), 'generic.png');
 		
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout

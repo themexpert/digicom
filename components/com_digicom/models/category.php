@@ -62,6 +62,7 @@ class DigiComModelCategory extends DigiComModel
 	}
 
 	function getlistCategories(){
+		
 		$where = array();
 
 		if(empty ($this->_categories)){

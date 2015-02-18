@@ -11,34 +11,7 @@
 defined ('_JEXEC') or die ("Go away.");
 
 class TableProduct extends JTable {
-	var $id = null;
-	var $name = null;
-	var $catid = null;
-	var $images = null;
-	var $price = null;
-	var $ordering = null;
-	var $bundle_source = null;
-	var $bundle_cat = null;
-	var $file = null;
-	var $description = null;
-	var $publish_up = null;
-	var $publish_down = null;
-	var $checked_out = null;
-	var $checked_out_time = null;
-	var $published = null;
-	var $domainrequired = null;
-	var $used = null;
-	var $fulldescription = null;
-	var $metatitle = null;
-	var $metakeywords = null;
-	var $metadescription = null;
-	var $access = null;
-	var $featured = null;
-	var $shortdesc = null;
-	var $fulldesc = null;
-
-	var $hide_public = 0;
-
+	
 	function TableProduct (&$db) {
 		parent::__construct('#__digicom_products', 'id', $db);
 	}
@@ -60,13 +33,6 @@ class TableProduct extends JTable {
 	 */
 	public function bind($array, $ignore = '')
 	{
-		if (isset($array['bundle_cat']) && is_array($array['bundle_cat']))
-		{
-			$registry = new JRegistry;
-			$registry->loadArray($array['bundle_cat']);
-			$array['bundle_cat'] = (string) $registry;
-		}
-
 		return parent::bind($array, $ignore);
 	}
 
@@ -126,14 +92,13 @@ class TableProduct extends JTable {
 	 */
 	public function check()
 	{
-		
 		// check for valid name
 		if (trim($this->name) == '')
 		{
 			$this->setError(JText::_('COM_DIGICOM_ERR_TABLES_TITLE'));
 			return false;
 		}
-
+		
 		// Check for existing name
 		$query = $this->_db->getQuery(true)
 			->select($this->_db->quoteName('id'))
@@ -185,6 +150,11 @@ class TableProduct extends JTable {
 				}
 			}
 			$this->metakeywords = implode(", ", $clean_keys); // put array back together delimited by ", "
+		}
+		//set meta title
+		if (trim($this->metatitle) == '')
+		{
+			$this->metatitle = $this->name;
 		}
 
 		return true;

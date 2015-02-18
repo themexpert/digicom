@@ -29,35 +29,21 @@ $Itemid = JRequest::getInt("Itemid", 0);
 	}
 </script>
 
-<div class="digicom" style="<?php echo $this->configs->shopping_cart_style ? 'width: 70%;margin-left: auto;margin-right: auto;padding: 20px;background: #fff;' : ''; ?>">
-
-<?php if($this->configs->shopping_cart_style) { 
-		echo '<a href="' . JURI::root() . '">
-			<img src="' . JURI::root() . 'images/stories/digicom/store_logo/' . trim($this->configs->store_logo) . '" alt="store_logo" border="0">
-		</a>';
- } ?>
+<div class="digicom">
+<a href="<?php echo JURI::root();?>">
+	<img src="<?php echo Jroute::_($this->configs->get('store_logo')); ?>" alt="store_logo" border="0">
+</a>
 
 <?php
-	if($this->configs->show_steps == 0){
+	if($this->configs->get('show_steps',0) == 0){
 ?>
-		<div class="bar">
-			<span class="inactive-step">
-			<?php
-				echo JText::_("DIGI_STEP_ONE");
-			?>
-			</span>
-	
-			<span class="active-step">
-			<?php
-				echo JText::_("DIGI_STEP_TWO");
-			?>
-			</span>
-			<span class="inactive-step">
-			<?php
-				echo JText::_("DIGI_STEP_THREE");
-			?>
-			</span>
- 		</div>
+		<div class="pagination pagination-centered">
+			<ul>
+				<li><span><?php echo JText::_("DIGI_STEP_ONE"); ?></span></li>
+				<li class="active"><span><?php echo JText::_("DIGI_STEP_TWO"); ?></span></li>
+				<li><span><?php echo JText::_("DIGI_STEP_THREE"); ?></span></li>
+			</ul>
+		</div>
 <?php
 	}
 ?>
@@ -129,7 +115,7 @@ endif;
 		<table style="border-collapse:separate !important;">
 	<?php
 			require_once( JPATH_COMPONENT.DS.'helpers'.DS.'sajax.php' );
-			require_once(JPATH_SITE.DS."components".DS."com_digicom".DS."views".DS."digicomprofile".DS."tmpl".DS."cart_editform.php"); 
+			require_once(JPATH_SITE.DS."components".DS."com_digicom".DS."views".DS."profile".DS."tmpl".DS."cart_editform.php"); 
 	?>
 		</table>
 
@@ -138,7 +124,7 @@ endif;
 		<input type="hidden" value="saveCustomer" name="task">
 		<input type="hidden" name="processor" value="<?php echo JRequest::getVar("processor", ""); ?>" />
 		<input type="hidden" name="returnpage" value="<?php echo JRequest::getVar("returnpage", ""); ?>" />
-		<input type="hidden" value="Profile" name="controller">
+		<input type="hidden" value="profile" name="view">
 		<table width="100%">
 			<tr>
 				<td align="left">

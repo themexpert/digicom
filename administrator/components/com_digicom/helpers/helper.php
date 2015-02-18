@@ -715,27 +715,6 @@ class DigiComAdminHelper {
 
 		$price_format = '%'.$configs->get('totaldigits','5').'.'.$configs->get('decimaldigits','2').'f';
 		$res =  sprintf($price_format,$amount) ;//. " " . $tax['currency'] . '<br>';
-		$sql = "select id, csym from #__digicom_currency_symbols where ccode='".strtoupper($ccode)."'";
-		$db->setQuery($sql);
-		$codea = $db->loadObjectList();
-		if (count($codea) > 0) {
-			$code = $codea[0]->id;
-		} else { 
-			$code = 0;
-		}
-		if ($code > 0 && $configs->get('usecimg','0') == '1') {
-			$ccode = '<img height="14px" src="index.php?option=com_digicom&task=get_cursym&tmpl=component&no_html=1&symid='.$code.'" />';
-		} else if ($code > 0) { 
-			$ccode = $codea[0]->csym;
-			$ccode = explode (",", $ccode);
-			foreach ($ccode as $i => $code) {
-				$ccode[$i] = "&#".trim($code).";";
-
-			}
-			$ccode = implode("", $ccode);
-		} else {
-			$ccode = "";
-		}
 
 		if ($add_sym) {
 			if ($configs->get('currency_position','1'))
@@ -1225,17 +1204,15 @@ class DigiComAdminHelper {
 		$db = JFactory::getDBO();
 		$sql = '
 			SELECT
-				DISTINCT p.id,p.name, p.description, p.publish_up,
-				c.title AS category, pc.catid AS catid
+				DISTINCT p.id,p.name,p.catid, p.description, p.publish_up,
+				c.name AS category
 			FROM
 				#__digicom_products p,
-				#__digicom_categories c,
-				#__digicom_product_categories pc
+				#__digicom_categories c
 			WHERE
 				p.published = 1 AND
 				c.published = 1 AND
-				pc.productid = p.id AND
-				pc.catid = c.id
+				p.catid = c.id
 			ORDER BY p.id DESC
 			LIMIT '.$limit.'
 		';
@@ -1293,5 +1270,17 @@ class DigiComAdminHelper {
 				}
 			}
 		}
+	}
+	
+	
+	public static function setSidebarRight(){
+		
+		$input = JFactory::getApplication()->input;
+		$tmpl = $input->get('tmpl','');
+		$ajax = $input->get('ajax','');
+		if($tmpl == 'component' or $ajax =='1') return;
+		
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'layouts'.DS.'toolbar'.DS.'sidebar-right.php');
+		return true;
 	}
 }

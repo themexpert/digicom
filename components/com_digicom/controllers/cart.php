@@ -125,8 +125,7 @@ class DigiComControllerCart extends DigiComController
 	function add()
 	{
 		$db = JFactory::getDBO();
-		$pid = JRequest::getVar('pid',0);
-		$pid = is_array($pid)?$pid[0]:$pid;
+		$pid = JFactory::getApplication()->input->get('pid',0);
 
 		//check if this product is unpublished
 		$sql = "select count(*)
@@ -135,65 +134,50 @@ class DigiComControllerCart extends DigiComController
 		$db->setQuery($sql);
 		$db->query();
 		$result = $db->loadResult();
-		if($result == 0)
-		{// expired or not published
-			$renew = JRequest::getVar("renew", "");
-			$this->showCart();
-			return true;
-		}
-
+		
 		//check if this product is unpublished
-		$cid = JRequest::getVar('cid', array(0), 'request', 'array');
-		$cid = intval($cid[0]); //product category id
-
-		$layout = JRequest::getVar('layout', '');
-		if(!empty($layout)){
-			$layout = "&layout=".$layout;
-		}
-
-		$productname = "";
-		$res = $this->_model->addToCart($this->_customer, $productname);
+		$cid = JFactory::getApplication()->input->get('cid',0);
+		$res = $this->_model->addToCart($this->_customer);
 		$configs = $this->_config->getConfigs();
 
-		$from = JRequest::getVar("from", "");
+		$from = JFactory::getApplication()->input->get('from','');
 
 		if($from == "ajax"){
 			$renew = JRequest::getVar("renew", "");
 			$this->showCart();
 		}
-
 		global $Itemid;
 		$cart_itemid = DigiComHelper::getCartItemid();
 
 		if(JRequest::getVar('status', '-1') == 'change'){
-			$url = JRoute::_("index.php?option=com_digicom&controller=cart&task=showCart&Itemid=".$cart_itemid, false);
+			$url = JRoute::_("index.php?option=com_digicom&view=cart&task=showCart&Itemid=".$cart_itemid, false);
 			$this->setRedirect($url);
 		}
 		else{
 			if($res < 0) {
 				$msg = JText::_("DSWRONGPRODID");
-				$link = "index.php?option=com_digicom&controller=products&task=list&cid=" . $cid . $layout . "&Itemid=" . $Itemid;
+				$link = "index.php?option=com_digicom&view=categories&cid=" . $cid . "&Itemid=" . $Itemid;
 				$this->setRedirect(JRoute::_($link, false), $msg);
 			}
 			elseif($res == 0){
 				$msg = JText::_("DSERRORUPDCARD");
-				$link = "index.php?option=com_digicom&controller=products&task=list&cid=" . $cid . $layout . "&Itemid=" . $Itemid;
+				$link = "index.php?option=com_digicom&view=categories&cid=" . $cid . "&Itemid=" . $Itemid;
 				$this->setRedirect(JRoute::_($link, false), $msg);
 			}
 
 			$from_add_plugin = JRequest::getVar("from_add_plugin", "0");
 			if($from_add_plugin == 1){
-				$configs->get('afteradditem',0) = 0;
+				$afteradditem = 0;
 			}
 
-			$type_afteradd = $configs->get('afteradditem','1');
+			$type_afteradd = $afteradditem;
 			$gotocart = JRequest::getVar("gotocart", "");
 			if($gotocart != ""){
 				$type_afteradd = 0;
 			}
 
 			if($type_afteradd == 0){// Take to cart
-				$url = JRoute::_("index.php?option=com_digicom&controller=cart&task=showCart&Itemid=".$cart_itemid, false);
+				$url = JRoute::_("index.php?option=com_digicom&view=cart&task=showCart&Itemid=".$cart_itemid, false);
 				$this->setRedirect($url);
 			}
 			elseif($type_afteradd == 1){//Stay on product list
@@ -254,7 +238,7 @@ class DigiComControllerCart extends DigiComController
 		$from = JRequest::getVar("from", "");
 		if($from == "ajax")
 		{
-			$url = JRoute::_("index.php?option=com_digicom&controller=cart&task=showCart&from=ajax&tmpl=component", false);
+			$url = JRoute::_("index.php?option=com_digicom&view=cart&task=showCart&from=ajax&tmpl=component", false);
 			$this->setRedirect($url);
 		}
 		else
@@ -282,7 +266,7 @@ class DigiComControllerCart extends DigiComController
 			if(strlen($rp) < 1)
 			{
 				$cart_itemid = DigiComHelper::getCartItemid();
-				$this->setRedirect(JRoute::_("index.php?option=com_digicom&controller=cart&task=showCart&Itemid=".$cart_itemid."&processor=".$processor."&agreeterms=".$agreeterms, false));
+				$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&task=showCart&Itemid=".$cart_itemid."&processor=".$processor."&agreeterms=".$agreeterms, false));
 			}
 			else
 			{
@@ -296,15 +280,7 @@ class DigiComControllerCart extends DigiComController
 					return true;
 				}
 				else{
-					$this->setRedirect(JRoute::_("index.php?option=com_digicom&controller=cart&task=checkout&processor=".$processor."&agreeterms=".$agreeterms, false, ($processor=='authorizenet' ? true : false)));
-					$configs = $this->_config->getConfigs();
-					/*if($configs->takecheckout == 1){
-						$this->showSummary();
-					}
-					else{
-						$this->checkout();
-					}*/
-					//$this->checkout();
+					$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&task=checkout&processor=".$processor."&agreeterms=".$agreeterms, false, ($processor=='authorizenet' ? true : false)));
 				}
 			}
 		}
@@ -323,7 +299,7 @@ class DigiComControllerCart extends DigiComController
 		}
 		else{
 			//$this->showCart();
-			$this->setRedirect("index.php?option=com_digicom&controller=cart&task=showCart&Itemid=".$itemid."&processor=".$processor."&agreeterms=".$agreeterms);
+			$this->setRedirect("index.php?option=com_digicom&view=cart&task=showCart&Itemid=".$itemid."&processor=".$processor."&agreeterms=".$agreeterms);
 		}
 	}
 
@@ -369,30 +345,26 @@ class DigiComControllerCart extends DigiComController
 		$_Itemid = $Itemid;
 		$user = JFactory::getUser();
 		$cart = $this->_model;
-		//$plugins_enabled = $cart->getPluginList();
+		$plugins_enabled = $cart->getPluginList();
 
 		// Check Login
 		if(!$user->id){
 			$uri = JURI::getInstance();
-			$return = base64_encode($uri->toString());
-			$this->setRedirect('index.php?option=com_users&view=login&return='.$return);
-// 			$this->setRedirect("index.php?option=com_digicom&controller=profile&task=login_register&returnpage=login_register&Itemid=".$Itemid."&processor=".$processor);
+ 			$this->setRedirect("index.php?option=com_digicom&view=profile&task=login_register&returnpage=login_register&Itemid=".$Itemid."&processor=".$processor);
 			return true;
 		}
 		if($this->_customer->_user->id < 1){
 			$uri = JURI::getInstance();
-			$return = base64_encode($uri->toString());
-			$this->setRedirect('index.php?option=com_users&view=profile&layout=edit&return='.$return);
-// 			$this->setRedirect("index.php?option=com_digicom&controller=profile&task=login_register&returnpage=login_register&Itemid=".$Itemid."&processor=".$processor);
+ 			$this->setRedirect("index.php?option=com_digicom&view=profile&task=login_register&returnpage=login_register&Itemid=".$Itemid."&processor=".$processor);
 			return true;
 		}
 
 		// Check Payment Plugin installed
-		/*if (empty($plugins_enabled)) {
+		if (empty($plugins_enabled)) {
 			$msg = JText::_('Payment plugins not installed');
-			$this->setRedirect(JRoute::_("index.php?option=com_digicom&controller=cart"), $msg);
+			$this->setRedirect("index.php?option=com_digicom&view=cart", $msg);
 			return;
-		}*/
+		}
 
 		$customer = $this->_customer;
 		$configs = $this->_config->getConfigs();
@@ -400,9 +372,9 @@ class DigiComControllerCart extends DigiComController
 		$res = DigiComHelper::checkProfileCompletion($customer);
 
 		if( $res < 1 ) {
-			if($configs->get('askforship','0') != 0 || $configs->get('askforbilling','0') != 0)
+			if($configs->get('askforbilling','0') != 0)
 			{
-				$this->setRedirect("index.php?option=com_digicom&controller=profile&task=edit&returnpage=checkout&Itemid=".$_Itemid."&processor=".$processor);
+				$this->setRedirect("index.php?option=com_digicom&view=profile&task=edit&returnpage=checkout&Itemid=".$_Itemid."&processor=".$processor);
 			}
 			else 
 			{
@@ -444,16 +416,15 @@ class DigiComControllerCart extends DigiComController
 		$tax 		= $cart->calc_price($items, $customer, $configs);
 		$total 		= $tax['taxed'];
 		$now 		= time();
-
 		if( (double)$total == 0 ) {
 			if(count($items) != "0"){
 				$cart->addFreeProduct($items, $customer, $tax);
 				$itemid = JRequest::getVar("Itemid", "0");
-				$link = JRoute::_("index.php?option=com_digicom&view=licenses&Itemid=".$itemid);
+				$link = JRoute::_("index.php?option=com_digicom&view=orders&Itemid=".$itemid);
 				$this->setRedirect($link, JText::_("DSSUCCESSFULPAYMENT"));
 			}
 		}
-		else 
+		else
 		{
 			$db = JFactory::getDBO();
 			$profile = "";
@@ -467,20 +438,20 @@ class DigiComControllerCart extends DigiComController
 			if(!isset($prosessor) || trim($prosessor) == ""){
 				$prosessor = $_SESSION["processor"];
 			}
-
+			
 			if($prosessor == "payauthorize"){
 				$page_url = $this->getPageURL();
 				$reqhttps = "1";
 
-				if(is_file(JPATH_SITE.DS."plugins".DS."digicompayment".DS."payauthorize".DS."install")){
-					$content = JFile::read(JPATH_SITE.DS."plugins".DS."digicompayment".DS."payauthorize".DS."install");
+				if(is_file(JPATH_SITE.DS."plugins".DS."payment".DS."payauthorize".DS."install")){
+					$content = JFile::read(JPATH_SITE.DS."plugins".DS."payment".DS."payauthorize".DS."install");
 					$reqhttps = $this->getReqhttps($content);
 
 					if($reqhttps == "1"){//https
 						if(strpos($page_url, "https") === FALSE){
 							$site = JURI::root();
 							$site = str_replace("http", "https", $site);
-							$page_url = $site."index.php?option=com_digicom&controller=cart&task=checkout";
+							$page_url = $site."index.php?option=com_digicom&view=cart&task=checkout";
 							$app = JFactory::getApplication("site");
 							$app->redirect(JRoute::_($page_url));
 							//$this->setRedirect(JRoute::_($page_url));
@@ -490,6 +461,7 @@ class DigiComControllerCart extends DigiComController
 			}
 
 			$dispatcher = JDispatcher::getInstance();
+			$params = array();
 			$params['user_id'] = $this->_customer->_user->id;
 
 			if(isset($this->_customer) && isset($this->_customer->_customer)){
@@ -503,7 +475,7 @@ class DigiComControllerCart extends DigiComController
 			$params['products'] = $items; // array of products
 			$params['config'] = $this->_config->getConfigs();
 			$params['processor'] = $prosessor;//JRequest::getVar('processor'); //'payauthorize';
-			$gataways = JPluginHelper::getPlugin('digicompayment', $params['processor']);
+			$gataways = JPluginHelper::getPlugin('payment', $params['processor']);
 
 			if(is_array($gataways)){
 				foreach($gataways as $gw) {
@@ -520,7 +492,7 @@ class DigiComControllerCart extends DigiComController
 			$params['order_id'] = $this->_customer->_sid;
 			$params['sid'] = $this->_customer->_sid;
 			$params['option'] = 'com_digicom';
-			$params['controller'] = 'digicomCart';
+			$params['controller'] = 'cart';
 			$params['task'] = 'payment';
 			$params['order_amount'] = $items[-2]['taxed'];
 			$params['order_currency'] = $items[-2]['currency'];
@@ -532,11 +504,13 @@ class DigiComControllerCart extends DigiComController
 				JRequest::setVar("tmpl", "component");
 			}
 
-			//$result = $dispatcher->trigger('onSendPayment', array(& $params));
-// 			echo '<pre>'.print_r( $this->_customer, true ).'</pre>';
-// 			exit();
+			$result = $dispatcher->trigger('onSendPayment', array(& $params));
+			// 			echo '<pre>'.print_r( $this->_customer, true ).'</pre>';
+			// 			exit();
 			$this->getHTML();
 		}
+		
+		return true;
 	}
 
 	function wait()
@@ -680,48 +654,23 @@ class DigiComControllerCart extends DigiComController
 	function getCartItem() {
 
 		$cid = JRequest::getVar('cid', -1);
-		$plan_id = JRequest::getVar('plan_id', -1);
 		$qty = JRequest::getVar('quantity'.$cid, 1);
-
 		$db = JFactory::getDBO();
-
-		if ( ($cid > 0) && ($plan_id > 0) ) { //  && ($qty > 0)
+		if ($cid > 0) {
 
 			$cart = $this->_model;
 			$customer = $this->_customer;
 			$configs = $this->_config->getConfigs();
 
 			$sid = $this->_customer->_sid;
-			$sql = "UPDATE #__digicom_cart SET plan_id = " . $plan_id . ", quantity = ".$qty." where cid=" . $cid; // sid = " . $sid . " and
+			$sql = "UPDATE #__digicom_cart SET quantity = ".$qty." where cid=" . $cid; // sid = " . $sid . " and
 			$db->setQuery( $sql );
 			$db->query();
-
-			//Update Attributes
 
 			// get product id
 			$sql = "select item_id from #__digicom_cart where cid = " . $cid . " and sid = " . $sid;
 			$db->setQuery( $sql );
 			$pid = (int)$db->loadResult();
-
-			$where1 = array();
-			$where1[] = " f.published=1 ";
-			$where1[] = " fp.productid=" . $pid;
-			$sql = "select f.name, f.options, f.id, fp.publishing, fp.mandatory from #__digicom_customfields f left join
-				#__digicom_prodfields fp on (f.id=fp.fieldid)" . (count( $where1 ) > 0 ? " where " . implode( " and ", $where1 ) : "");
-			$db->setQuery( $sql );
-			$fields = $db->loadObjectList();
-
-			foreach ( $fields as $field ) {
-				//$value = JRequest::getVar( "attributes" . $field->id . "", '-1', 'request' );
-				$value = $_REQUEST['attributes'][$cid][$field->id];
-				$sql = "delete from #__digicom_cartfields where sid='" . $sid . "' and productid='" . $pid . "' and fieldid='" . $field->id . "' and cid='" . $cid . "'";
-				$db->setQuery( $sql );
-				$db->query(); //remove old one regardless of they existence
-				$sql = "insert into #__digicom_cartfields(cid, sid, productid, fieldid, optionid) values ('" . $cid . "','" . $sid . "','" . $pid . "','" . $field->id . "', '" . $value . "')";
-				$db->setQuery( $sql );
-				$db->query(); //and create new corresponding to cid obtained during processing
-			}
-			// END Attributes
 
 			$items = $cart->getCartItems($customer, $configs);
 			$result = array();
@@ -806,7 +755,7 @@ class DigiComControllerCart extends DigiComController
 				echo '</div></div>';
 			}
 		} else {
-			// echo '<h2>' . JText::_("PAYMENT_DETAILS_PAGE") . '</h2>';
+			echo '<h2>' . JText::_("PAYMENT_DETAILS_PAGE") . '</h2>';
 		}
 
 		/*
@@ -822,13 +771,14 @@ class DigiComControllerCart extends DigiComController
 		$vars = new stdClass();
 
 
+		$vars->order_id = $this->_customer->_sid;
 		$vars->custom = $this->_customer->_customer->id;
 		$vars->user_firstname = $this->_customer->_customer->firstname;
 		$vars->user_lastname = $this->_customer->_customer->lastname;
 		$vars->user_id = JFactory::getUser()->id;
 		$vars->user_email = $this->_customer->_user->email;
 		$vars->item_name = '';
-
+		//print_r($items);die;
 		for($i=0; $i<count($items)-2; $i++)
 		{
 			$vars->item_name.= $items[$i]->name . ', ';
@@ -838,12 +788,12 @@ class DigiComControllerCart extends DigiComController
 		// downloads page
 		if ($configs->get('afterpurchase') == 0)
 		{
-			$vars->return = JRoute::_(JURI::root()."index.php?option=com_digicom&view=licenses&ga=1&orderid=".$this->_customer->_customer->id, true, 0);
+			$vars->return = JRoute::_(JURI::root()."index.php?option=com_digicom&view=orders&orderid=".$this->_customer->_customer->id, true, 0);
 		}
 		// orders page
 		else
 		{
-			$vars->return = JRoute::_(JURI::root()."index.php?option=com_digicom&view=orders&ga=1&orderid=".$this->_customer->_customer->id, true, 0);
+			$vars->return = JRoute::_(JURI::root()."index.php?option=com_digicom&view=orders&orderid=".$this->_customer->_customer->id, true, 0);
 		}
 		
 		
@@ -852,6 +802,7 @@ class DigiComControllerCart extends DigiComController
 		$vars->url = $vars->notify_url = JRoute::_(JURI::root()."index.php?option=com_digicom&controller=cart&task=processPayment&processor={$pg_plugin}&order_id=".$this->_customer->_customer->id."&sid=".$this->_customer->_sid, true, false);
 		$vars->currency_code = $items[-2]['currency'];
 		$vars->amount = $items[-2]['taxed'];//+$items[-2]['shipping'];
+		
 		$html = $dispatcher->trigger('onTP_GetHTML', array($vars));
 		if (!isset($html[0])) {
 			$html[0] = '';
@@ -865,6 +816,8 @@ class DigiComControllerCart extends DigiComController
 		$html[0] = $html[0] . '</script>';
 
 		echo $html[0];
+		
+		return true;
 	}
 
 	function processPayment()

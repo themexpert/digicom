@@ -27,7 +27,7 @@ class DigiComAdminViewOrders extends DigiComView
 
 		$orders = $this->get('Items');
 		$pagination = $this->get('Pagination');
-
+		
 		$this->orders = $orders;
 		$this->pagination = $pagination;
 
@@ -57,13 +57,27 @@ class DigiComAdminViewOrders extends DigiComView
 
 	function showOrder( $tpl = null )
 	{
-		JToolBarHelper::title( JText::_( 'Orders Manager' ), 'generic.png' );
+		JToolBarHelper::title( JText::_( 'VIEWDSADMINORDERS' ), 'generic.png' );
+		$bar = JToolBar::getInstance('toolbar');
+		// Instantiate a new JLayoutFile instance and render the layout
+		$layout = new JLayoutFile('toolbar.title');
+		$title=array(
+			'title' => JText::_( 'VIEWDSADMINORDERS' ),
+			'class' => 'title'
+		);
+		$bar->appendButton('Custom', $layout->render($title), 'title');
+		
 		JToolBarHelper::Cancel();
 		$db = JFactory::getDBO();
 		$order =  $this->_models['order']->getOrder();
+		
 		$this->assign( "order", $order );
 		$configs =  $this->_models['config']->getConfigs();
 		$this->assign( "configs", $configs );
+		
+		DigiComAdminHelper::addSubmenu('orders');
+		$this->sidebar = JHtmlSidebar::render();
+		
 		parent::display( $tpl );
 	}
 
@@ -317,7 +331,7 @@ class DigiComAdminViewOrders extends DigiComView
 
 		$configs =  $this->_models['config']->getConfigs();
 		$lists = array();
-
+		
 		$prods =  $this->_models['product']->getListProducts();
 		$opts = array();
 		$opts[] = JHTML::_( 'select.option', "", JText::_( "Select product" ) );
@@ -343,14 +357,18 @@ class DigiComAdminViewOrders extends DigiComView
 		$this->assign( "promocode", $order->promocode );
 
 		// products
+		
 		$products = array();
 		if ( $order->products ) {
 
 			$products = $order->products;
 
 			foreach( $products as $key => $product) {
-
+				//print_r($product);die;
+				
 				// get Plain
+				//orderDetails
+				/*
 				$license = $this->_models['license']->getLicense( $product->lid );
 				$products[$key]->license = $license;
 
@@ -368,10 +386,11 @@ class DigiComAdminViewOrders extends DigiComView
 				} else {
 					$products[$key]->renewlicense = null;
 				}
+				*/
 			}
 		}
-
-//dsdebug($products);die;
+		
+		//dsdebug($products);die;
 
 		$this->assign( "products", $products );
 

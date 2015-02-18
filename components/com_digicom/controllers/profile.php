@@ -37,7 +37,8 @@ class DigiComControllerProfile extends DigiComController
 		$app = JFactory::getApplication();
 		//$this->setRedirect(JRoute::_('index.php?option=com_users&view=profile&layout=edit'));
 		if(!$user->id) {
-			$app->redirect(JRoute::_('index.php?option=com_digicom&controller=profile&task=login&returnpage=licenses'));
+			$redirect = "index.php?option=com_digicom&view=orders";
+			$app->redirect('index.php?option=com_users&view=registration&redirect='.base64_encode($redirect));
 		}
 		$view = $this->getView("Profile", "html");
 		$view->setLayout("editForm");
@@ -57,8 +58,7 @@ class DigiComControllerProfile extends DigiComController
 
 	function login() {
 		if(!$this->_customer->_user->id){
-			$returnpage = JRequest::getVar("returnpage", "");
-			$this->setRedirect('index.php?option=com_users&view=login'.($returnpage ? '&return='.base64_encode('index.php?option=com_digicom&controller='.$returnpage) : ''));
+			$returnpage = JRequest::getVar("returnpage", "orders");
 			$view = $this->getView("Profile", "html");
 			$view->setLayout("login");
 			$view->setModel($this->_model, true);
@@ -66,7 +66,6 @@ class DigiComControllerProfile extends DigiComController
 			$view->setModel($model);
 			$view->login();
 		} else {
-			//$link = "index.php?option=com_digicom&controller=cart&task=checkout";
 			$link = $this->getLink();
 			$this->setRedirect(JRoute::_($link, false));
 		}
@@ -135,15 +134,14 @@ class DigiComControllerProfile extends DigiComController
 			// Set customer groups
 			require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'helper.php' );
 			$my = JFactory::getUser();
-			DigiComAdminHelper::expireUserProduct($my->id);
-
+			//DigiComAdminHelper::expireUserProduct($my->id);
 			$this->setRedirect($link);
 		}
 		else
 		{
 			$cid = JRequest::getInt('cid', 0);
 			$pid = JRequest::getInt('pid', 0);
-			$this->setRedirect(JRoute::_("index.php?option=com_digicom&controller=profile&task=login&returnpage=checkout&cid=" . $cid . "&pid=" . $pid . "&Itemid=" . $Itemid . "&processor=" . $processor));
+			$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=profile&task=login&returnpage=checkout&cid=" . $cid . "&pid=" . $pid . "&Itemid=" . $Itemid . "&processor=" . $processor));
 		}
 	}
 
@@ -228,32 +226,32 @@ class DigiComControllerProfile extends DigiComController
 		{
 			case "licensesreg":
 				$licid = JRequest::getVar("licid", "0");
-				$link = "index.php?option=com_digicom&controller=licenses&task=register&licid=".$licid."&no_html=1&tmpl=component&Itemid=" . $Itemid . "&processor=" . $processor;
+				$link = "index.php?option=com_digicom&view=downloads&task=register&licid=".$licid."&no_html=1&tmpl=component&Itemid=" . $Itemid . "&processor=" . $processor;
 				break;
 
 			case "digicomLicenses":
 			case "licenses":
-				$link = "index.php?option=com_digicom&controller=licenses" . "&Itemid=" . $Itemid . "&processor=" . $processor;
+				$link = "index.php?option=com_digicom&view=downloads" . "&Itemid=" . $Itemid . "&processor=" . $processor;
 				break;
 
 			case "checkout":
-				$link = "index.php?option=com_digicom&controller=cart&task=checkout" . "&Itemid=" . $Itemid . "&processor=" . $processor;
+				$link = "index.php?option=com_digicom&view=cart&task=checkout" . "&Itemid=" . $Itemid . "&processor=" . $processor;
 				break;
 
 			case "cart":
-				$link = "index.php?option=com_digicom&controller=cart&task=view"."&Itemid=".$Itemid . "&processor=" . $processor;
+				$link = "index.php?option=com_digicom&view=cart&task=view"."&Itemid=".$Itemid . "&processor=" . $processor;
 				break;
 
 			case "orders":
-				$link = "index.php?option=com_digicom&controller=orders&task=list" . "&Itemid=" . $Itemid . "&processor=" . $processor;
+				$link = "index.php?option=com_digicom&view=orders&task=list" . "&Itemid=" . $Itemid . "&processor=" . $processor;
 				break;
 
 			case "login_register":
-				$link = "index.php?option=com_digicom&controller=profile&task=login_register&returnpage=login_register&Itemid=" . $Itemid . "&processor=" . $processor;
+				$link = "index.php?option=com_digicom&view=profile&task=login_register&returnpage=login_register&Itemid=" . $Itemid . "&processor=" . $processor;
 				break;
 
 			default:
-				$link = "index.php?option=com_digicom&controller=profile&task=edit&Itemid=" . $Itemid . "&processor=" . $processor;
+				$link = "index.php?option=com_digicom&view=profile&task=edit&Itemid=" . $Itemid . "&processor=" . $processor;
 				break;
 		}
 		return $link;

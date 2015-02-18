@@ -18,7 +18,7 @@ $configs = $this->configs;
 $document = JFactory::getDocument();
 $document->addScript(JURI::root() . 'components/com_digicom/assets/js/jquery.digicom.js');
 $document->addScript(JURI::root() . 'components/com_digicom/assets/js/jquery.noconflict.digicom.js');
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 
 $document->addScriptDeclaration("
 	jQuery(function() {

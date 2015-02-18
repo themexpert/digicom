@@ -14,7 +14,7 @@ $k = 0;
 $n = count ($this->rates);
 $page = $this->pagination;
 $document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
+//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 
 
 ?>

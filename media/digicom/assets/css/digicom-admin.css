@@ -1,3 +1,7 @@
+.panel-box {
+  background: #fff;
+  padding: 15px;
+}
 /* Joomla 2.5 FIX */
 .pull-left {
   float: left;
@@ -113,8 +117,9 @@ ul.usergroups li {
 /* Layout Styling */
 body.com_digicom {
   overflow-x: hidden;
-  background: #fafafa;
+  background: #f1eeff;
   /* Table Styles */
+  /* elFinder File manager style */
 }
 body.com_digicom header.header {
   display: none;
@@ -126,52 +131,54 @@ body.com_digicom .subhead {
   padding: 10px 0;
   border-bottom: 0;
 }
-body.com_digicom .btn-toolbar {
+body.com_digicom .subhead .btn-toolbar {
   text-align: right;
   margin: 0;
 }
-body.com_digicom .btn-toolbar .btn-wrapper {
+body.com_digicom .subhead .btn-toolbar .btn-wrapper {
   margin: 0 0 0 5px;
 }
-body.com_digicom .btn-toolbar #toolbar-title {
+body.com_digicom .subhead .btn-toolbar #toolbar-title {
   float: left;
   margin-left: 0;
 }
-body.com_digicom .btn-toolbar #toolbar-title h3 {
+body.com_digicom .subhead .btn-toolbar #toolbar-title h3 {
   margin: 0;
   line-height: 26px;
 }
-body.com_digicom .btn-toolbar #toolbar-title h3 [class^="icon-"],
-body.com_digicom .btn-toolbar #toolbar-title h3 [class*=" icon-"] {
+body.com_digicom .subhead .btn-toolbar #toolbar-title h3 [class^="icon-"],
+body.com_digicom .subhead .btn-toolbar #toolbar-title h3 [class*=" icon-"] {
   margin-right: 15px;
 }
-body.com_digicom .btn-toolbar .btn {
+body.com_digicom .subhead .btn-toolbar .btn {
   background: #ddd;
   box-shadow: none;
   border-radius: 0;
   text-shadow: none;
 }
-body.com_digicom .btn-toolbar .btn-primary {
+body.com_digicom .subhead .btn-toolbar .btn-primary {
   background: #1d6cb0;
 }
-body.com_digicom .btn-toolbar .btn-success {
+body.com_digicom .subhead .btn-toolbar .btn-success {
   background: #5bb75b;
 }
-body.com_digicom .btn-toolbar .btn-mini .caret,
-body.com_digicom .btn-toolbar .btn-small .caret {
+body.com_digicom .subhead .btn-toolbar .btn-mini .caret,
+body.com_digicom .subhead .btn-toolbar .btn-small .caret {
   margin-top: 7px;
 }
 body.com_digicom .container-main {
   padding: 44px 0 0;
 }
 body.com_digicom #j-sidebar-container {
-  height: 100vh;
-  background: #1D232B;
+  background: #3f3955;
   margin-left: 0;
   width: 200px;
-  float: left;
   overflow: hidden;
-  color: rgba(255, 255, 255, 0.5);
+  color: #6c667c;
+  position: fixed;
+  top: 76px;
+  bottom: 28px;
+  left: 0;
 }
 body.com_digicom #j-sidebar-container #sidebar {
   padding: 15px 0;
@@ -181,7 +188,9 @@ body.com_digicom #j-sidebar-container #sidebar #submenu {
 }
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a {
   padding: 5px 12px;
-  color: rgba(255, 255, 255, 0.5);
+  color: #6c667c;
+  font-size: 14px;
+  line-height: 24px;
   text-shadow: none;
 }
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a > span + span {
@@ -190,33 +199,33 @@ body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a >
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a:hover,
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a:focus {
   background: inherit;
-  color: rgba(255, 255, 255, 0.8);
+  color: #fbfbfb;
 }
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a:hover [class^="icon-"],
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a:focus [class^="icon-"],
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a:hover [class*=" icon-"],
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a:focus [class*=" icon-"] {
-  color: rgba(255, 255, 255, 0.6);
+  color: #fbfbfb;
 }
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list [class^="icon-"],
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list [class*=" icon-"] {
-  color: rgba(255, 255, 255, 0.3);
+  color: #6c667c;
   margin-right: 15px;
   width: auto;
   height: auto;
 }
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li.active > a {
-  background: #080a0d;
-  color: rgba(255, 255, 255, 0.8);
+  background: #463f5b;
+  color: #fbfbfb;
+  border-left: 4px solid #edd70c;
 }
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li.active > a > [class^="icon-"],
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li.active > a > [class*=" icon-"] {
-  color: rgba(255, 255, 255, 0.8);
+  color: #fbfbfb;
 }
 body.com_digicom #j-main-container {
   padding: 20px;
   width: auto;
-  position: absolute;
   margin-left: 200px;
   box-sizing: border-box;
   margin-right: 0;
@@ -228,13 +237,28 @@ body.com_digicom #j-main-container {
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
+body.com_digicom div#system-debug,
+body.com_digicom div#system-message-container {
+  margin: 15px 15px 15px 215px;
+}
 body.com_digicom.sidebar-collapse #j-sidebar-container,
 body.com_digicom.task-edit #j-sidebar-container {
   width: 38px;
 }
+body.com_digicom.sidebar-collapse #j-sidebar-container #sidebar .sidebar-nav .nav-list > li.active > a,
+body.com_digicom.task-edit #j-sidebar-container #sidebar .sidebar-nav .nav-list > li.active > a {
+  border: 0;
+  background: #edd70c;
+}
 body.com_digicom.sidebar-collapse #j-main-container,
 body.com_digicom.task-edit #j-main-container {
   margin-left: 38px;
+}
+body.com_digicom.sidebar-collapse div#system-debug,
+body.com_digicom.task-edit div#system-debug,
+body.com_digicom.sidebar-collapse div#system-message-container,
+body.com_digicom.task-edit div#system-message-container {
+  margin-left: 53px;
 }
 body.com_digicom .table > thead > tr > th,
 body.com_digicom .table > tbody > tr > th,
@@ -263,4 +287,58 @@ body.com_digicom .table-striped > tbody > tr:nth-child(2n+1) > th {
 }
 body.com_digicom #status {
   box-shadow: none;
+}
+body.com_digicom .elfinder {
+  border-radius: 0;
+}
+body.com_digicom .elfinder .elfinder-navbar {
+  background: #f4f5f7;
+}
+body.com_digicom .elfinder-toolbar {
+  background: #f4f5f7;
+  border-style: solid;
+  border-radius: 0;
+  border-width: 0 0 1px;
+  border-color: #ddd;
+  padding: 10px 5px;
+}
+body.com_digicom .elfinder-toolbar .ui-state-default {
+  background: none;
+}
+body.com_digicom .elfinder-toolbar input[type="text"] {
+  margin: 0;
+  height: auto;
+  line-height: 1;
+}
+body.com_digicom .elfinder-buttonset {
+  border-radius: 0;
+}
+/* Layout Dgform Styling */
+body.layout-dgform #j-main-container .form-inline .controls {
+  margin-left: 0;
+}
+body.layout-dgform #j-main-container .nav-tabs {
+  margin-bottom: 0;
+  border: 0;
+  background: #3f3955;
+}
+body.layout-dgform #j-main-container .nav-tabs > li > a {
+  border: 0;
+  border-radius: 0;
+  padding: 15px;
+  color: #938da1;
+}
+body.layout-dgform #j-main-container .nav-tabs > li > a:hover {
+  color: #fbfbfb;
+  background: none;
+}
+body.layout-dgform #j-main-container .nav-tabs .active a,
+body.layout-dgform #j-main-container .nav-tabs .active a:hover {
+  border-top: 4px solid #edd70c;
+  color: #6c667c;
+  background: #fff;
+}
+body.layout-dgform #j-main-container .tab-content {
+  padding: 15px;
+  background: #fff;
 }

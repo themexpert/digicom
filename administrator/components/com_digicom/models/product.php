@@ -10,10 +10,7 @@
 
 defined ('_JEXEC') or die ("Go away.");
 
-jimport('joomla.application.component.modellist');
-jimport('joomla.utilities.date');
-
-class DigiComAdminModelProduct extends JModelList {
+class DigiComAdminModelProduct extends JModelForm {
 
 	protected $_context = 'com_digicom.Product';
 	var $_products;
@@ -74,7 +71,7 @@ class DigiComAdminModelProduct extends JModelList {
 		$where = " 1=1 ";
 
 		if($prc > 0){
-			$where .= " and id IN (SELECT productid FROM #__digicom_product_categories WHERE catid='".$prc."' ) ";
+			//$where .= " and id IN (SELECT productid FROM #__digicom_product_categories WHERE catid='".$prc."' ) ";
 		}
 		if($state_filter != "-1"){
 			$where .= " and published=".$state_filter;
@@ -121,18 +118,19 @@ class DigiComAdminModelProduct extends JModelList {
 		$db->query();
 		$result	= $db->loadObjectList();
 
+		
 		foreach($result as $i => $v)
 		{
 			$sql = "SELECT id,name
 					FROM #__digicom_categories
-					WHERE id in "." (SELECT catid FROM #__digicom_product_categories WHERE productid='".$v->id."')";
+					WHERE id='".$v->catid."'";
 			$db->setQuery($sql);
 			$result[$i]->cats = $db->loadObjectList();
 		}
 		return $result;
 	}
 
-	/*function getListProducts ($sort = "ordering") {
+	function getListProducts ($sort = "ordering") {
 		$session = JFactory::getSession();
 
 		if (empty ($this->_products)) {
@@ -144,9 +142,11 @@ class DigiComAdminModelProduct extends JModelList {
 
 			$where = "WHERE 1=1 ";
 
+			/*
 			if($prc > 0){
 				$where .= " and id IN (SELECT productid FROM #__digicom_product_categories WHERE catid='".$prc."' ) ";
 			}
+			*/
 			if($state_filter != "-1"){
 				$where .= " and published=".$state_filter;
 			}
@@ -166,14 +166,16 @@ class DigiComAdminModelProduct extends JModelList {
 
 			if ($this->getState('limitstart') > $this->_total) $this->setState('limitstart', 0);
 			if ($this->getState('limitstart') > 0 & $this->getState('limit') == 0)  $this->setState('limitstart', 0);
-			if ($this->controller == "digicomProducts")
-				$this->_products = $this->_getList($sql, $this->getState('limitstart'), $this->getState('limit'));
-			else
-				$this->_products = $this->_getList($sql);
+			
+			//if ($this->controller == "products")
+			//	$this->_products = $this->_getList($sql, $this->getState('limitstart'), $this->getState('limit'));
+			//else
+			
+			$this->_products = $this->_getList($sql);
 
 			foreach ($this->_products as $i => $v) {
 				$sql = "SELECT id,name FROM #__digicom_categories WHERE id in "
-						." (SELECT catid FROM #__digicom_product_categories WHERE productid='".$v->id."') "
+						." (SELECT catid FROM #__digicom_products WHERE catid='".$v->id."') "
 				;
 
 				$db->setQuery($sql);
@@ -182,7 +184,7 @@ class DigiComAdminModelProduct extends JModelList {
 
 		}
 		return $this->_products;
-	}*/
+	}
 
 	function getProduct($pid = 0) {
 		if ($pid > 0 ) {
@@ -192,12 +194,29 @@ class DigiComAdminModelProduct extends JModelList {
 			$this->_product = $this->getTable("Product");
 			$this->_product->load($this->_id);
 		}
+		
+		if(empty($this->_product->product_type)){
+			$this->_product->product_type = JFactory::getApplication()->input->get('product_type','reguler');
+		}
+		if(empty($this->_product->file)){
+			$this->_product->file = null;
+		}
+		if(empty($this->_product->bundle)){
+			$this->_product->bundle = null;
+		}
+		
 		$db = JFactory::getDBO();
 		
-		$filesTable = JTable::getInstance('Files', 'Table');
-		$fileList = $filesTable->getList('product_id',$this->_product->id);
-		$this->_product->file = $filesTable->getList('product_id',$this->_product->id);
-		
+		if($this->_product->id){
+			$filesTable = JTable::getInstance('Files', 'Table');
+			$fileList = $filesTable->getList('product_id',$this->_product->id);
+			$this->_product->file = $filesTable->getList('product_id',$this->_product->id);
+			
+			$filesTable = JTable::getInstance('Bundle', 'Table');
+			$fileList = $filesTable->getList('product_id',$this->_product->id);
+			$this->_product->bundle = $filesTable->getList('product_id',$this->_product->id);
+			
+		}
 		return $this->_product;
 	}
 
@@ -208,17 +227,6 @@ class DigiComAdminModelProduct extends JModelList {
 		$featured_products = $db->loadObjectList();
 		return $featured_products;
 	}
-
-
-	function getFeatured2 ( $product_id ) {
-		if(!$product_id) return;
-		$db = JFactory::getDBO();
-		$sql = "select f.featuredid as id, p.name as name, f.planid from #__digicom_featuredproducts f, #__digicom_products p where f.featuredid=p.id and f.productid=".$product_id;
-		$db->setQuery($sql);
-		$featured_list = $db->loadObjectList();
-		return $featured_list;
-	}
-
 
 	function _storeFile($file, $pid){
 		jimport('joomla.filesystem.folder');
@@ -264,7 +272,6 @@ class DigiComAdminModelProduct extends JModelList {
 
 		return true;
 	}
-
 
 	function _getFile ($pid = 0) {
 		
@@ -335,10 +342,8 @@ class DigiComAdminModelProduct extends JModelList {
 		$dbprefix = $jconf->get('dbprefix');//$jconf->_registry['config']['data']->dbprefix;
 		//file processing
 		$data = JRequest::get('post');
-		$conf = $this->getInstance ("config", "DigiComAdminModel");
+		$conf = $this->getInstance ("Config", "DigiComAdminModel");
 		$configs = $conf->getConfigs();
-		//$data["publish_up"] = DigiComAdminHelper::parseDate ($configs->get('time_format','DD-MM-YYYY'), $data['publish_up']);
-		//$data["publish_down"] = DigiComAdminHelper::parseDate ($configs->get('time_format','DD-MM-YYYY'), $data['publish_down']);
 
 		if(!$item->bind($data)){
 		   	$this->setError($item->getErrorMsg());
@@ -357,7 +362,8 @@ class DigiComAdminModelProduct extends JModelList {
 			return false;
 		}else{
 			//hook the files here
-            //-------------------------------------
+            
+			//-------------------------------------
             if (isset($data['file']) && is_array($data['file']))
             {
                 $files = $data['file'];
@@ -371,6 +377,23 @@ class DigiComAdminModelProduct extends JModelList {
                 if (isset($data['files_remove_id']) && !empty($data['files_remove_id'])){
                     $filesTable = JTable::getInstance('Files', 'Table');
                     $filesTable->removeUnmatch($data['files_remove_id'],$item->id);
+                }
+            }
+			//print_r($data);die;
+			// hook bundle item
+			if (isset($data['products_bundle']) && is_array($data['products_bundle']))
+            {
+                $products_bundle = $data['products_bundle'];
+                foreach($products_bundle as $key => $bundle){
+                    $filesTable = $this->getTable('Bundle');
+                    $filesTable->product_id = $item->id;
+                    $filesTable->bundle_id = $bundle;
+                    $filesTable->store();
+                }
+				
+                if (isset($data['bundle_remove_id']) && !empty($data['bundle_remove_id'])){
+                    $filesTable = JTable::getInstance('Bundle', 'Table');
+                    $filesTable->removeUnmatch($data['bundle_remove_id'],$item->id);
                 }
             }
             
@@ -391,11 +414,8 @@ class DigiComAdminModelProduct extends JModelList {
 			$pid = $item->id;
 		}
 		
-		$product_id = $item->id;
+		$product_id = $pid;
 		
-		/* Featured Products */
-		$this->storeFeaturedProducts($product_id);
-
 		/* */
 		$table = $this->getTable();
 		$table->reorder();
@@ -468,29 +488,6 @@ class DigiComAdminModelProduct extends JModelList {
 		}
 	}
 
-	function storeFeaturedProducts($product_id) {
-
-		$db = JFactory::getDBO();
-
-		$product_include_ids = JRequest::getVar('product_include_id',array(0));
-		$plan_include_ids = JRequest::getVar('plan_include_id',array(0));
-
-		// Clear previos
-		$sql = "DELETE FROM #__digicom_featuredproducts WHERE productid = '".$product_id."';\n";
-		$db->setQuery($sql);
-		$db->query();
-//		dsdebug($sql);
-
-		// Store
-		foreach($product_include_ids as $key => $product_include_id) {
-			$sql = "INSERT INTO #__digicom_featuredproducts ( productid, featuredid, planid ) VALUES ('".$product_id."', '".$product_include_id."','".$plan_include_ids[$key]."'); \n";
-			$db->setQuery($sql);
-			$db->query();
-//			dsdebug($sql);
-		}
-
-	}
-
 	function delete () {
 		$cids = JRequest::getVar('cid', array(0), 'post', 'array');
 		$item = $this->getTable('Product');
@@ -529,7 +526,6 @@ class DigiComAdminModelProduct extends JModelList {
 
 		return true;
 	}
-
 
 	function publish () {
 		$db = JFactory::getDBO();
@@ -582,8 +578,7 @@ class DigiComAdminModelProduct extends JModelList {
 		return true;
 	}
 
-/* NEW function */
-
+	/* NEW function */
 	function orderField( $uid, $inc )
 	{
 		// Initialize variables
@@ -595,7 +590,6 @@ class DigiComAdminModelProduct extends JModelList {
 
 		return true;
 	}
-
 
 	function saveorder() {
 
@@ -637,8 +631,7 @@ class DigiComAdminModelProduct extends JModelList {
 		$msg = JText::_('New ordering saved');
 	}
 
-/* /END NEW function */
-
+	/* /END NEW function */
 	function getlistProductTaxClasses () {
 		$sql = "select * from #__digicom_tax_productclass order by ordering asc";
 		$db = JFactory::getDBO();
@@ -706,8 +699,8 @@ class DigiComAdminModelProduct extends JModelList {
 				$db->query();
 				$product = $db->loadAssocList();
 				if(isset($product)){
-					$sql = "INSERT INTO `#__digicom_products` (`name`, `images`, `discount`, `ordering`, `file`, `description`, `publish_up`, `publish_down`, `checked_out`, `checked_out_time`, `published`, `passphrase`, `main_zip_file`, `encoding_files`, `domainrequired`, `articlelink`, `articlelinkid`, `articlelinkuse`, `shippingtype`, `shippingvalue0`, `shippingvalue1`, `shippingvalue2`, `productemailsubject`, `productemail`, `sendmail`, `popupwidth`, `popupheight`, `stock`, `used`, `usestock`, `emptystockact`, `showstockleft`, `fulldescription`, `metatitle`, `metakeywords`, `metadescription`, `access`, `prodtypeforplugin`, `taxclass`, `class`, `sku`, `showqtydropdown`, `priceformat`, `featured`, `prodimages`, `defprodimage`, `mailchimplistid`, `subtitle`, `mailchimpapi`, `mailchimplist`, `mailchimpregister`, `mailchimpgroupid`, `video_url`, `video_width`, `video_height`) VALUES 
-					('Copy ".addslashes(trim($product["0"]["name"]))."', '".trim($product["0"]["images"])."', ".$product["0"]["discount"].", ".$product["0"]["ordering"].", '".$product["0"]["file"]."', '".addslashes(trim($product["0"]["description"]))."', ".$product["0"]["publish_up"].", ".$product["0"]["publish_down"].", ".$product["0"]["checked_out"].", '".$product["0"]["checked_out_time"]."', 0, '".$product["0"]["passphrase"]."', '".$product["0"]["main_zip_file"]."', '".$product["0"]["encoding_files"]."', ".$product["0"]["domainrequired"].", '".$product["0"]["articlelink"]."', ".$product["0"]["articlelinkid"].", ".$product["0"]["articlelinkuse"].", ".$product["0"]["shippingtype"].", ".$product["0"]["shippingvalue0"].", ".$product["0"]["shippingvalue1"].", ".$product["0"]["shippingvalue2"].", '".addslashes(trim($product["0"]["productemailsubject"]))."', '".addslashes($product["0"]["productemail"])."', ".$product["0"]["sendmail"].", ".$product["0"]["popupwidth"].", ".$product["0"]["popupheight"].", ".$product["0"]["stock"].", ".$product["0"]["used"].", ".$product["0"]["usestock"].", ".$product["0"]["emptystockact"].", ".$product["0"]["showstockleft"].", '".addslashes(trim($product["0"]["fulldescription"]))."', '".addslashes(trim($product["0"]["metatitle"]))."', '".addslashes(trim($product["0"]["metakeywords"]))."', '".addslashes(trim($product["0"]["metadescription"]))."', ".$product["0"]["access"].", '".$product["0"]["prodtypeforplugin"]."', ".$product["0"]["taxclass"].", ".$product["0"]["class"].", '".$product["0"]["sku"]."', ".$product["0"]["showqtydropdown"].", ".$product["0"]["priceformat"].", ".$product["0"]["featured"].", '".$product["0"]["prodimages"]."', '".$product["0"]["defprodimage"]."', '".$product["0"]["mailchimplistid"]."', '".addslashes(trim($product["0"]["subtitle"]))."', '".$product["0"]["mailchimpapi"]."', '".$product["0"]["mailchimplist"]."', ".$product["0"]["mailchimpregister"].", '".$product["0"]["mailchimpgroupid"]."', '".$product["0"]["video_url"]."', ".$product["0"]["video_width"].", ".$product["0"]["video_height"].")";
+					$sql = "INSERT INTO `#__digicom_products` (`name`, `images`, `discount`, `ordering`, `file`, `description`, `publish_up`, `publish_down`, `checked_out`, `checked_out_time`, `published`, `passphrase`, `main_zip_file`, `encoding_files`, `product_type`, `articlelink`, `articlelinkid`, `articlelinkuse`, `shippingtype`, `shippingvalue0`, `shippingvalue1`, `shippingvalue2`, `productemailsubject`, `productemail`, `sendmail`, `popupwidth`, `popupheight`, `stock`, `used`, `usestock`, `emptystockact`, `showstockleft`, `fulldescription`, `metatitle`, `metakeywords`, `metadescription`, `access`, `prodtypeforplugin`, `taxclass`, `class`, `sku`, `showqtydropdown`, `priceformat`, `featured`, `prodimages`, `defprodimage`, `mailchimplistid`, `subtitle`, `mailchimpapi`, `mailchimplist`, `mailchimpregister`, `mailchimpgroupid`, `video_url`, `video_width`, `video_height`) VALUES 
+					('Copy ".addslashes(trim($product["0"]["name"]))."', '".trim($product["0"]["images"])."', ".$product["0"]["discount"].", ".$product["0"]["ordering"].", '".$product["0"]["file"]."', '".addslashes(trim($product["0"]["description"]))."', ".$product["0"]["publish_up"].", ".$product["0"]["publish_down"].", ".$product["0"]["checked_out"].", '".$product["0"]["checked_out_time"]."', 0, '".$product["0"]["passphrase"]."', '".$product["0"]["main_zip_file"]."', '".$product["0"]["encoding_files"]."', ".$product["0"]["product_type"].", '".$product["0"]["articlelink"]."', ".$product["0"]["articlelinkid"].", ".$product["0"]["articlelinkuse"].", ".$product["0"]["shippingtype"].", ".$product["0"]["shippingvalue0"].", ".$product["0"]["shippingvalue1"].", ".$product["0"]["shippingvalue2"].", '".addslashes(trim($product["0"]["productemailsubject"]))."', '".addslashes($product["0"]["productemail"])."', ".$product["0"]["sendmail"].", ".$product["0"]["popupwidth"].", ".$product["0"]["popupheight"].", ".$product["0"]["stock"].", ".$product["0"]["used"].", ".$product["0"]["usestock"].", ".$product["0"]["emptystockact"].", ".$product["0"]["showstockleft"].", '".addslashes(trim($product["0"]["fulldescription"]))."', '".addslashes(trim($product["0"]["metatitle"]))."', '".addslashes(trim($product["0"]["metakeywords"]))."', '".addslashes(trim($product["0"]["metadescription"]))."', ".$product["0"]["access"].", '".$product["0"]["prodtypeforplugin"]."', ".$product["0"]["taxclass"].", ".$product["0"]["class"].", '".$product["0"]["sku"]."', ".$product["0"]["showqtydropdown"].", ".$product["0"]["priceformat"].", ".$product["0"]["featured"].", '".$product["0"]["prodimages"]."', '".$product["0"]["defprodimage"]."', '".$product["0"]["mailchimplistid"]."', '".addslashes(trim($product["0"]["subtitle"]))."', '".$product["0"]["mailchimpapi"]."', '".$product["0"]["mailchimplist"]."', ".$product["0"]["mailchimpregister"].", '".$product["0"]["mailchimpgroupid"]."', '".$product["0"]["video_url"]."', ".$product["0"]["video_width"].", ".$product["0"]["video_height"].")";
 					$db->setQuery($sql);
 					if(!$db->query()){
 						return false;
@@ -849,5 +842,25 @@ class DigiComAdminModelProduct extends JModelList {
 		return $this->_plains;
 	}
 
-};
-?>
+	/**
+	 * Method to get a form object.
+	 *
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 *
+	 * @return  mixed  A JForm object on success, false on failure
+	 *
+	 * @since	3.2
+	 */
+	public function getForm($data = array(), $loadData = true)
+	{
+		$form = $this->loadForm('com_digicom.product', 'product', array('control' => 'jform', 'load_data' => $loadData));
+		
+		if (empty($form))
+		{
+			return false;
+		}
+		
+		return $form;
+	}
+}
