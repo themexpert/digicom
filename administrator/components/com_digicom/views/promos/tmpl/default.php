@@ -78,9 +78,11 @@ $document = JFactory::getDocument();
 						<th width="5">
 							<input type="checkbox" onclick="checkAll(<?php echo $n; ?>)" name="toggle" value="" />
 						</th>
-							<th width="20">
-							<?php echo JText::_('VIEWPROMOID');?>
+						
+						<th>
+							<?php echo JText::_("VIEWPROMOPUBLISHED");?>
 						</th>
+
 						<th>
 							<?php echo JText::_('VIEWPROMOTITLE');?>
 						</th>
@@ -88,18 +90,25 @@ $document = JFactory::getDocument();
 						<th>
 							<?php echo JText::_('VIEWPROMOCODE');?>
 						</th>
+
 						<th>
 							<?php echo JText::_('VIEWPROMODISCAMOUNT');?>
 						</th>
-						<th><?php echo JText::_("VIEWPROMOPUBLISHED");?>
+
+						<th>
+							<?php echo JText::_("VIEWORDERSSTATUS");?>
 						</th>
-						<th><?php echo JText::_("VIEWORDERSSTATUS");?></th>
+
 						<th>
 							<?php echo JText::_('VIEWPROMOTIMEUSED');?>
 						</th>
 
 						<th>
 							<?php echo JText::_('VIEWPROMOUSAGESLIST');?>
+						</th>
+
+						<th width="20">
+							<?php echo JText::_('VIEWPROMOID');?>
 						</th>
 
 					</tr>
@@ -125,9 +134,10 @@ $document = JFactory::getDocument();
 							<?php echo $checked;?>
 						</td>
 
-						<td>
-							<?php echo $id;?>
+						<td align="center">
+							<?php echo $published; ?>
 						</td>
+
 						<td>
 							<a href="<?php echo $link;?>" ><?php echo $promo->title;?></a>
 						</td>
@@ -135,23 +145,27 @@ $document = JFactory::getDocument();
 						<td>
 							<a href="<?php echo $link;?>" ><?php echo $promo->code;?></a>
 						</td>
+
 						<td align="center">
 							<?php echo ($promo->promotype == '0' ? DigiComAdminHelper::format_price($promo->amount, $configs->get('currency','USD'), true, $configs) : $promo->amount . ' %');?>
 						</td>
-						<td align="center">
-							<?php echo $published; ?>
-						</td>
+
 						<td align="center">
 							<?php
 							echo $status;
 							?>
 						</td>
+
 						<td align="center">
 							<?php echo ($promo->used);?>
 						</td>
 
 						<td align="center">
 									<?php echo $promo->codelimit>0?($promo->codelimit - $promo->used):JText::_("DS_UNLIMITED");?>
+						</td>
+
+						<td>
+							<?php echo $id;?>
 						</td>
 
 					</tr>

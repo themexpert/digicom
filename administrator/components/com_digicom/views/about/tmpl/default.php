@@ -13,6 +13,10 @@ defined ('_JEXEC') or die ("Go away.");
 $mosConfig_absolute_path = JPATH_ROOT;
 
 $document = JFactory::getDocument();
+
+$app = JFactory::getApplication();
+$input = $app->input;
+$input->set('layout', 'dgform');
 //$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=about'); ?>" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
@@ -24,17 +28,17 @@ $document = JFactory::getDocument();
 <?php else : ?>
 	<div id="j-main-container" class="">
 <?php endif;?>
+		
+		<?php echo JHtml::_('bootstrap.startTabSet', 'digicomTab', array('active' => 'about')); ?>
+
+			<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'about', JText::_('COM_DIGICOM_ABOUT_ABOUT', true)); ?>
+
 		<table class="adminform table">
 			<tr>
 				<td>
-					<table>
-						<tr>
-							<td colspan="4">
+					<table class="table table-striped">
+						
 			<?php
-			//echo LM_ABOUT_HEADING;
-			echo "			</td>
-						</tr>
-			";
 
 			//angek: magazine-66 : start: lets do this dynamically
 			$installed_parts	= array();
@@ -109,5 +113,24 @@ $document = JFactory::getDocument();
 
 			</td></tr>
 		</table>
+
+			<?php echo JHtml::_('bootstrap.endTab'); ?>
+
+			<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'system', JText::_('COM_DIGICOM_ABOUT_SYSTEM', true)); ?>
+
+				<div class="alert alert-info">
+					<p>Need to show System info here!!!</p>
+				</div>
+
+			<?php echo JHtml::_('bootstrap.endTab'); ?>
+
+			<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'support', JText::_('COM_DIGICOM_ABOUT_SUPPORT', true)); ?>
+
+
+			<?php echo JHtml::_('bootstrap.endTab'); ?>
+
+		<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+
+		
 	</div>
 </form>

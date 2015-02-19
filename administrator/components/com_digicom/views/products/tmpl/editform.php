@@ -23,7 +23,7 @@ $input = $app->input;
 $document = JFactory::getDocument();
 $document->addStyleSheet("components/com_digicom/assets/css/redactor.css");
 $document->addScript("components/com_digicom/assets/js/redactor.min.js");
-
+$input->set('layout', 'dgform');
 ?>
 <script type="text/javascript">
 	
@@ -51,11 +51,7 @@ $document->addScript("components/com_digicom/assets/js/redactor.min.js");
 	<?php else : ?>
 		<div id="j-main-container" class="">
 	<?php endif;?>
-	<?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
 	
-	<div class="form-inline">
-		<?php echo $this->form->getControlGroup('price'); ?>
-	</div>
 	
 	<div class="form-horizontal">
 		<div class="row-fluid">
@@ -64,6 +60,11 @@ $document->addScript("components/com_digicom/assets/js/redactor.min.js");
 
 				<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'general', JText::_('COM_DIGICOM_PRODUCT_CONTENT', true)); ?>
 				
+				<?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
+				
+				<div class="form-inline form-inline-header">
+					<?php echo $this->form->getControlGroup('price'); ?>
+				</div>
 				<?php echo $this->form->getControlGroup('images'); ?>
 				
 				<div class="control-group ">

@@ -20,9 +20,7 @@ $mosConfig_absolute_path = JPATH_ROOT;
 <?php else : ?>
 	<div id="j-main-container" class="">
 <?php endif;?>
-		<table class="adminform table">
-			<tr>
-				<td>
+		
 					<script type="text/javascript">
 						jQuery(document).ready(function() {
 							var basePath = '<?php echo JURI::root(true); ?>';
@@ -44,7 +42,7 @@ $mosConfig_absolute_path = JPATH_ROOT;
 					</script>
 					<form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=filemanager&no_html=1'); ?>" method="post" class="clearfix" name="adminForm" id="adminForm">
 						
-						<div id="j-main-container">
+			<div id="">
 							<!--// Start Elfinder-->
 							<div id="elfinder"></div>
 							
@@ -53,7 +51,5 @@ $mosConfig_absolute_path = JPATH_ROOT;
 							<?php echo JHtml::_('form.token'); ?>
 						</div>
 					</form>
-				</td>
-			</tr>
-		</table>
+				
 	</div>

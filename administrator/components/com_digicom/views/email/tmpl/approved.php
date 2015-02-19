@@ -13,6 +13,9 @@ defined ('_JEXEC') or die ("Go away.");
 $mosConfig_absolute_path = JPATH_ROOT;
 
 $document = JFactory::getDocument();
+$app = JFactory::getApplication();
+$input = $app->input;
+$input->set('layout', 'dgform');
 //$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=email'); ?>" id="adminForm" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
@@ -29,17 +32,18 @@ $document = JFactory::getDocument();
 				<div class="alert alert-info">
 					<?php echo JText::_( "HEADER_EMAIL_SETTINGS" ); ?>
 				</div>
-				<ul class="nav nav-pills">
+				<ul class="nav nav-tabs">
 				  <li role="presentation"><a href="<?php echo JRoute::_('index.php?option=com_digicom&controller=email'); ?>">Register</a></li>
 				  <li role="presentation"><a href="<?php echo JRoute::_('index.php?option=com_digicom&controller=email&type=order'); ?>">Order</a></li>
 				  <li role="presentation" class="active"><a href="<?php echo JRoute::_('index.php?option=com_digicom&controller=email&type=approved'); ?>">Approved</a></li>
 				</ul>
-				<hr/>
+				
+				<div class="tab-content">
+					<div class="tab-pane active">
 				<div class="alert alert-info">
 					<?php echo JText::_('COM_DIGICOM_OFFLINE_ORDEREMAIL_TIP'); ?>
 				</div>
-			</div>
-		</div>
+
 		<div class="row-fluid">
 			<div class="span8">
 				<fieldset class="adminform">
@@ -56,11 +60,12 @@ $document = JFactory::getDocument();
 						</div>
 					</div>
 					<div class="control-group ">
-						<textarea id="approved_editor" name="body" class="useredactor" style="width:100%;height:550px;"><?php echo $this->template->body; ?></textarea>
+										<textarea id="approved_editor" name="body" class="useredactor" style="width:90%;height:550px;"><?php echo $this->template->body; ?></textarea>
 					</div>
 					
 				</fieldset>
 			</div>
+
 			<div class="span4">
 				<div class="hasAffix" data-spy="affix" data-offset-top="100" data-offset-bottom="200" style="top: 80px;">
 					<h3><?php echo( JText::_( 'VIEWCONFIGTEMPLATEVARS' ) ); ?></h3>
@@ -123,9 +128,16 @@ $document = JFactory::getDocument();
 							<td width=200><span class="label label-info">[CUSTOMER_COMPANY_NAME]</span></td>
 						</tr>
 					</table>
+
+								</div>
 				</div>
 			</div>
 		</div>
+				</div>
+				
+			</div>
+		</div>
+		
 		
 		
 		

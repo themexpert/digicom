@@ -68,8 +68,6 @@ $search = JRequest::getVar('search', '');
 			<thead>
 
 				<tr>
-					<th width="1%">#</th>
-					<th width="1%"></th>
 					<th width="10%">
 							<span style="white-space:nowrap;"><?php echo JText::_('VIEWPRODID');?></nobr></span>
 					</th>
@@ -82,6 +80,7 @@ $search = JRequest::getVar('search', '');
 					<th align="left">
 							<?php echo JText::_('VIEWPRODCATEGORY');?>
 					</th>
+					<th width="1%"></th>
 				</tr>
 
 			</thead>
@@ -96,10 +95,6 @@ $search = JRequest::getVar('search', '');
 			$name = $prod->name;
 ?>
 				<tr class="row<?php echo $k;?>">
-					<td align="right"><?php echo $i+1;?></td>
-					<td>
-						<input id="<?php echo $id; ?>_id_product" type="radio" name="product_id" value="<?php echo $name; ?>" onclick="selectProductID()"/>
-					</td>
 
 					<td align="center">
 								<?php echo $id;?>
@@ -121,6 +116,10 @@ $search = JRequest::getVar('search', '');
 						}
 						echo implode(', ',$categories);
 ?>
+					</td>
+
+					<td>
+						<button id="<?php echo $id; ?>_id_product" name="product_id" value="<?php echo $name; ?>" onclick="selectProductID()" class="btn btn-success"><?php echo JText::_('COM_DIGICOM_PRODUCT_SELECT');?></button>
 					</td>
 
 				</tr>

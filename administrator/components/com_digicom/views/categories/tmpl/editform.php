@@ -20,6 +20,7 @@ JHtml::_('formbehavior.chosen', 'select');
 
 $app = JFactory::getApplication();
 $input = $app->input;
+$input->set('layout', 'dgform');
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
@@ -40,12 +41,12 @@ $input = $app->input;
 	<?php else : ?>
 		<div id="j-main-container" class="">
 	<?php endif;?>
-			<?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
 			
 			<div class="form-horizontal">
 				<div class="row-fluid">
 					<div class="span9">
-					
+						<div class="panel-box">
+							<?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
 						<?php echo $this->form->getControlGroup('image'); ?>
 						
 						<div class="control-group ">
@@ -57,6 +58,7 @@ $input = $app->input;
 							<?php echo $this->form->getInput('fulldescription'); ?>
 						</div>
 						<?php // Do not show the publishing options if the edit form is configured not to. ?>
+						</div>
 						
 					</div>
 					<div class="span3">

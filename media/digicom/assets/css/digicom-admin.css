@@ -20,7 +20,7 @@ td.order input {
 /* General FIX */
 #content [class^="icon-"],
 #content [class*=" icon-"] {
-  color: #B44CDB;
+  color: #edd70c;
 }
 #content .btn [class^="icon-"],
 #content .btn [class*=" icon-"] {
@@ -118,8 +118,13 @@ ul.usergroups li {
 body.com_digicom {
   overflow-x: hidden;
   background: #f1eeff;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   /* Table Styles */
   /* elFinder File manager style */
+  /* Form elements Styling */
 }
 body.com_digicom header.header {
   display: none;
@@ -151,16 +156,19 @@ body.com_digicom .subhead .btn-toolbar #toolbar-title h3 [class*=" icon-"] {
   margin-right: 15px;
 }
 body.com_digicom .subhead .btn-toolbar .btn {
-  background: #ddd;
+  background: #f5f5f5;
+  border-color: #ddd;
   box-shadow: none;
   border-radius: 0;
   text-shadow: none;
 }
 body.com_digicom .subhead .btn-toolbar .btn-primary {
   background: #1d6cb0;
+  border-color: #888;
 }
 body.com_digicom .subhead .btn-toolbar .btn-success {
   background: #5bb75b;
+  border-color: #888;
 }
 body.com_digicom .subhead .btn-toolbar .btn-mini .caret,
 body.com_digicom .subhead .btn-toolbar .btn-small .caret {
@@ -289,11 +297,13 @@ body.com_digicom #status {
   box-shadow: none;
 }
 body.com_digicom .elfinder {
-  margin: -15px -20px;
   border-radius: 0;
 }
+body.com_digicom .elfinder .elfinder-navbar {
+  background: #f4f5f7;
+}
 body.com_digicom .elfinder-toolbar {
-  background: none;
+  background: #f4f5f7;
   border-style: solid;
   border-radius: 0;
   border-width: 0 0 1px;
@@ -310,6 +320,98 @@ body.com_digicom .elfinder-toolbar input[type="text"] {
 }
 body.com_digicom .elfinder-buttonset {
   border-radius: 0;
+}
+body.com_digicom textarea,
+body.com_digicom input[type="text"],
+body.com_digicom input[type="password"],
+body.com_digicom input[type="datetime"],
+body.com_digicom input[type="datetime-local"],
+body.com_digicom input[type="date"],
+body.com_digicom input[type="month"],
+body.com_digicom input[type="time"],
+body.com_digicom input[type="week"],
+body.com_digicom input[type="number"],
+body.com_digicom input[type="email"],
+body.com_digicom input[type="url"],
+body.com_digicom input[type="search"],
+body.com_digicom input[type="tel"],
+body.com_digicom input[type="color"],
+body.com_digicom .uneditable-input {
+  background: #edf0f6;
+  padding: 10px;
+  color: #646b7e;
+  border-radius: 2px;
+  border: 0;
+}
+body.com_digicom textarea:focus,
+body.com_digicom input[type="text"]:focus,
+body.com_digicom input[type="password"]:focus,
+body.com_digicom input[type="datetime"]:focus,
+body.com_digicom input[type="datetime-local"]:focus,
+body.com_digicom input[type="date"]:focus,
+body.com_digicom input[type="month"]:focus,
+body.com_digicom input[type="time"]:focus,
+body.com_digicom input[type="week"]:focus,
+body.com_digicom input[type="number"]:focus,
+body.com_digicom input[type="email"]:focus,
+body.com_digicom input[type="url"]:focus,
+body.com_digicom input[type="search"]:focus,
+body.com_digicom input[type="tel"]:focus,
+body.com_digicom input[type="color"]:focus,
+body.com_digicom .uneditable-input:focus,
+body.com_digicom textarea:active,
+body.com_digicom input[type="text"]:active,
+body.com_digicom input[type="password"]:active,
+body.com_digicom input[type="datetime"]:active,
+body.com_digicom input[type="datetime-local"]:active,
+body.com_digicom input[type="date"]:active,
+body.com_digicom input[type="month"]:active,
+body.com_digicom input[type="time"]:active,
+body.com_digicom input[type="week"]:active,
+body.com_digicom input[type="number"]:active,
+body.com_digicom input[type="email"]:active,
+body.com_digicom input[type="url"]:active,
+body.com_digicom input[type="search"]:active,
+body.com_digicom input[type="tel"]:active,
+body.com_digicom input[type="color"]:active,
+body.com_digicom .uneditable-input:active {
+  background: #fff;
+  box-shadow: 0 0 3px #bbb inset;
+}
+body.com_digicom .input-append textarea,
+body.com_digicom .input-prepend textarea,
+body.com_digicom .input-append input[type="text"],
+body.com_digicom .input-prepend input[type="text"],
+body.com_digicom .input-append input[type="password"],
+body.com_digicom .input-prepend input[type="password"],
+body.com_digicom .input-append input[type="datetime"],
+body.com_digicom .input-prepend input[type="datetime"],
+body.com_digicom .input-append input[type="datetime-local"],
+body.com_digicom .input-prepend input[type="datetime-local"],
+body.com_digicom .input-append input[type="date"],
+body.com_digicom .input-prepend input[type="date"],
+body.com_digicom .input-append input[type="month"],
+body.com_digicom .input-prepend input[type="month"],
+body.com_digicom .input-append input[type="time"],
+body.com_digicom .input-prepend input[type="time"],
+body.com_digicom .input-append input[type="week"],
+body.com_digicom .input-prepend input[type="week"],
+body.com_digicom .input-append input[type="number"],
+body.com_digicom .input-prepend input[type="number"],
+body.com_digicom .input-append input[type="email"],
+body.com_digicom .input-prepend input[type="email"],
+body.com_digicom .input-append input[type="url"],
+body.com_digicom .input-prepend input[type="url"],
+body.com_digicom .input-append input[type="search"],
+body.com_digicom .input-prepend input[type="search"],
+body.com_digicom .input-append input[type="tel"],
+body.com_digicom .input-prepend input[type="tel"],
+body.com_digicom .input-append input[type="color"],
+body.com_digicom .input-prepend input[type="color"],
+body.com_digicom .input-append .uneditable-input,
+body.com_digicom .input-prepend .uneditable-input {
+  padding: 4px 5px;
+  border: 1px solid #b6b6b6;
 }
 /* Layout Dgform Styling */
 body.layout-dgform #j-main-container .form-inline .controls {
@@ -339,4 +441,115 @@ body.layout-dgform #j-main-container .nav-tabs .active a:hover {
 body.layout-dgform #j-main-container .tab-content {
   padding: 15px;
   background: #fff;
+}
+/* Sidebar right styling */
+#toggle_settings_wrap {
+  background: #3f3955;
+  color: #6c667c;
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: -200px;
+  z-index: 9999;
+  width: 200px;
+  box-sizing: border-box;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+#toggle_settings_wrap h3 {
+  color: #fbfbfb;
+  font-size: 12px;
+  text-transform: uppercase;
+  border-bottom: 1px solid #342f46;
+  box-shadow: 0 1px 0px #4a4364;
+  padding-bottom: 5px;
+  margin: 10px 0 5px;
+}
+#toggle_settings_wrap ul {
+  list-style: none;
+  margin-left: 0px;
+}
+#toggle_settings_wrap ul li a {
+  color: #6c667c;
+  line-height: 30px;
+  font-size: 14px;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+#toggle_settings_wrap ul li a:hover {
+  color: #edd70c;
+  text-decoration: none;
+  padding-left: 5px;
+}
+body.sidebar-right-collapse {
+  -o-transform: translateX(-200px);
+  -moz-transform: translateX(-200px);
+  -webkit-transform: translateX(-200px);
+  transform: translateX(-200px);
+}
+/* Dashboard Styling */
+.sales-overview {
+  margin-bottom: 15px;
+}
+.sales-overview .panel-box {
+  box-shadow: 0 0 3px #ccc;
+}
+.sales-overview [class*=" icon-"],
+.sales-overview [class^="icon-"] {
+  font-size: 40px;
+  line-height: 1;
+  float: left;
+  margin-right: 15px;
+  height: auto;
+  width: auto;
+}
+.sales-overview p {
+  margin: 0;
+  color: #bbb;
+}
+.sales-overview strong {
+  font-size: 24px;
+  line-height: 1.3;
+  color: #444;
+}
+.panel {
+  border: 1px solid #e1e1e1;
+}
+.panel .panel-header {
+  background: #f5f5f5;
+  padding: 10px;
+}
+.panel .panel-header .panel-title {
+  margin: 0;
+  float: left;
+  line-height: 26px;
+}
+.panel .panel-header .panel-title span {
+  margin-right: 7px;
+}
+.panel .panel-content {
+  background: #fff;
+  padding: 20px;
+}
+.nav-charts {
+  border: 1px solid #eee;
+}
+.nav-charts li {
+  float: left;
+}
+.nav-charts li a {
+  display: block;
+  padding: 10px 15px;
+}
+.nav-charts li + li {
+  border-left: 1px solid #eee;
+}
+.nav-charts li.active a {
+  background: #edd70c;
+  color: #fff;
 }
