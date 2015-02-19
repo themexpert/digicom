@@ -79,19 +79,22 @@ $limistart = $this->pagination->limitstart;
 							<span><?php echo JHtml::_('grid.checkall'); ?></span>
 						</th>
 						<th width="1%">
-							<?php echo JHtml::_('grid.sort', 'VIEWPRODSKU', 'id', $listDirn, $listOrder); ?>
+							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_STATUS', 'published', $listDirn, $listOrder); ?>
+						</th>
+						<th width="1%">
+							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_IMG', 'id', $listDirn, $listOrder); ?>
 						</th>
 						<th>
 							<?php echo JHtml::_('grid.sort', 'VIEWPRODNAME', 'name', $listDirn, $listOrder); ?>
 						</th>
 						<th>
-							<?php echo JHtml::_('grid.sort', 'VIEWPRODTYPE', 'product_type', $listDirn, $listOrder); ?>
+							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_TYPE', 'product_type', $listDirn, $listOrder); ?>
+						</th>
+						<th width="10%">
+							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_PRICE', 'hide_public', $listDirn, $listOrder); ?>
 						</th>
 						<th width="10%">
 							<?php echo JHtml::_('grid.sort', 'PRODUCT_IS_VISIBLE', 'hide_public', $listDirn, $listOrder); ?>
-						</th>
-						<th width="10%">
-							<?php echo JHtml::_('grid.sort', 'VIEWPRODPUBLISHING', 'published', $listDirn, $listOrder); ?>
 						</th>
 						<th>
 							<?php echo JText::_('VIEWPRODCATEGORY'); ?>
@@ -126,7 +129,10 @@ $limistart = $this->pagination->limitstart;
 							<?php echo $checked; ?>
 						</td>
 						<td align="center">
-							<?php echo $prod->id; ?>
+							<?php echo $published; ?>
+						</td>
+						<td align="center">
+							<img src="<?php echo '../'. $prod->images; ?>" height="48" width="48">
 						</td>
 						<td>
 							<a href="<?php echo $link;?>" ><?php echo $prod->name;?></a>
@@ -146,11 +152,12 @@ $limistart = $this->pagination->limitstart;
 							?>
 						</td>
 						<td align="center">
-							<?php echo ($prod->hide_public ? '<span style="color:#ff0000;">' . JText::_("DSNO") . '</span>' : JText::_("DSYES")); ?>
+							<?php echo $prod->price; ?>
 						</td>
-						<td align="center">
-							<?php echo $published; ?>
+						<td align="center" style="text-align: center; ">
+							<?php echo ($prod->hide_public ? '<span class="label label-important">' . JText::_("DSNO") . '</span>' : '<span class="label label-success">' . JText::_("DSYES") . '</span>' ); ?>
 						</td>
+						
 						<td align="center">
 									<?php foreach( $prod->cats as $j => $z) {
 										$clink = JRoute::_("index.php?option=com_digicom&controller=categories&task=edit&cid[]=".$z->id);
