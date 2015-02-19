@@ -26,4 +26,10 @@ jQuery(document).ready(function() {
  }, function () {
   jQuery("body").removeClass("sidebar-collapse");
  });
+
+ jQuery("#toggle_settings").toggle(function () {
+  jQuery("body").addClass("sidebar-right-collapse");
+ }, function () {
+  jQuery("body").removeClass("sidebar-right-collapse");
+ });
 });

@@ -10,6 +10,8 @@
 
 defined ('_JEXEC') or die ("Go away.");
 $document = JFactory::getDocument();
+
+$document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 ////$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_digicom'); ?>" class="clearfix" method="post" name="adminForm" id="adminForm">
@@ -22,97 +24,85 @@ $document = JFactory::getDocument();
 	<div id="j-main-container" class="">
 <?php endif;?>
 		
-		<div class="row-fluid">
-			<div class="span5">
-				<img src="components/com_digicom/assets/images/logo.png" />
-			</div>
-			<div class="span7">
-				<div class="alert alert-warning pull-right">
-					<?php echo $this->versionNotify(); ?>
-				</div>
-			</div>
+		<div class="row-fluid sales-overview">
+			 <div class="span3">
+			 	<div class="panel-box">			 		
+				 	<span class="icon-briefcase"></span>
+				 	<p><strong>$20000.89</strong><br>Total Sale</p>
+			 	</div>
+			 </div>
+
+			 <div class="span3">
+			 	<div class="panel-box">			 		
+				 	<span class="icon-cart"></span>
+				 	<p><strong>200</strong><br>Total Orders</p>
+			 	</div>
+			 </div>
+
+			 <div class="span3">
+			 	<div class="panel-box">
+			 		<span class="icon-warning"></span>
+				 	<p><strong>200</strong><br>Pending Orders</p>
+			 	</div>			 	
+			 </div>
+
+			 <div class="span3">
+			 	<div class="panel-box">			 		
+				 	<span class="icon-users"></span>
+				 	<p><strong>200</strong><br>Total Customers</p>
+			 	</div>
+			 </div>
 		</div>
-		
-		<!-- LATEST ORDERS -->
-		<div class="well well-small">
-			<div class="module-title nav-header"><a href="index.php?option=com_digicom&controller=orders"><?php echo JText::_('DIGICOM_LATESTORDERS'); ?></a></div>
-			<div class="row-striped">
-				<?php
-				foreach($this->latest_orders AS $order) :
-				?>
-				<div class="row-fluid">
-					<div class="span7">
-						<span class="label label-ds hasTip" title="" data-original-title="Order ID"><a href="index.php?option=com_digicom&controller=orders&task=show&cid[]=<?php echo $order->id; ?>"><?php echo JText::_('VIEWLICLICORDERID').$order->id; ?></a></span>
-						<strong class="row-title">
-							<a href="index.php?option=com_digicom&controller=customers&task=edit&cid[]=<?php echo $order->userid;?>">
-								<?php echo $order->firstname.' '.$order->lastname;?></a>
-						</strong>
-					</div>
-					<div class="span2">
-						<span class="small pull-right"><?php echo $order->amount. ' '.$order->currency; ?></span>
-					</div>
-					<div class="span3">
-						<span class="small"><i class="icon-calendar"></i> <?php echo date("Y-m-d", $order->order_date); ?></span>
+
+		<div class="panel">
+			<div class="panel-header clearfix">
+				<h3 class="panel-title"><span class="icon-bars"></span> Sales Analytics</h3>
+				<div class="pull-right">
+					<div class="btn-group">
+						<a href="#" class="btn">Day</a>
+						<a href="#" class="btn">Month</a>
+						<a href="#" class="btn">Year</a>
 					</div>
 				</div>
-				<?php
-				endforeach;
-				?>
 			</div>
-		</div>
-		
-		<!-- LATEST PRODUCTS -->
-		<div class="well well-small">
-			<div class="module-title nav-header"><a href="index.php?option=com_digicom&controller=products"><?php echo JText::_('DIGICOM_RECENTPROD'); ?></a></div>
-			<div class="row-striped">
-				<?php
-				foreach($this->latest_products AS $product) :
-				?>
-				<div class="row-fluid">
-					<div class="span7">
-						<span class="label label-ds hasTip" title="" data-original-title="Order ID"><?php echo JText::_('ID');?># <?php echo $product->id; ?></span>
-						<strong class="row-title">
-							<a href="index.php?option=com_digicom&controller=products&task=edit&cid[]=<?php echo $product->id;?>">
-								<?php echo $product->name;?></a>
-						</strong>
-					</div>
-					<div class="span2">
-						<span class="small pull-right"><a href="index.php?option=com_digicom&controller=categories&task=edit&cid[]=<?php echo $product->catid; ?>"><?php echo $product->category; ?></a></span>
-					</div>
-					<div class="span3">
-						<span class="small"><i class="icon-calendar"></i> <?php echo date("Y-m-d", $product->publish_up); ?></span>
-					</div>
+			<div class="panel-content">
+				<ul class="nav nav-charts clearfix" id="myTab">
+				  <li class="active"><a href="#sales">Sales</a></li>
+				  <li><a href="#profile">Profile</a></li>
+				  <li><a href="#messages">Messages</a></li>
+				  <li><a href="#settings">Settings</a></li>
+				</ul>
+ 
+				<div class="tab-content">
+				  <div class="tab-pane active" id="sales">
+				  	<canvas id="myChart" width="945" height="200"></canvas>
+				  	<script type="text/javascript">
+				  		var data = {
+						    labels: ["January", "February", "March", "April", "May", "June", "July"],
+						    datasets: [
+
+						        {
+						            label: "My Second dataset",
+						            fillColor: "rgba(151,187,205,0.2)",
+						            strokeColor: "rgba(151,187,205,1)",
+						            pointColor: "rgba(151,187,205,1)",
+						            pointStrokeColor: "#fff",
+						            pointHighlightFill: "#fff",
+						            pointHighlightStroke: "rgba(151,187,205,1)",
+						            data: [28, 48, 40, 19, 86, 27, 90]
+						        }
+						    ]
+						};
+						var ctx = document.getElementById("myChart").getContext("2d");
+						var myLineChart = new Chart(ctx).Line(data);
+				  	</script>
+				  </div>
+				  <div class="tab-pane" id="profile">
+				  	
+				  </div>
+				  <div class="tab-pane" id="messages"></div>
+				  <div class="tab-pane" id="settings"></div>
 				</div>
-				<?php
-				endforeach;
-				?>
-			</div>
-		</div>
-		
-		<!-- TOP CUSTOMERS -->
-		<div class="well well-small">
-			<div class="module-title nav-header"><a href="index.php?option=com_digicom&controller=customers"><?php echo JText::_('DIGICOM_TOPCUSTOMERS'); ?></a></div>
-			<div class="row-striped">
-				<?php
-				foreach($this->top_customers AS $customer) :
-				?>
-				<div class="row-fluid">
-					<div class="span7">
-						<strong class="row-title">
-							<a href="index.php?option=com_digicom&controller=customers&task=edit&cid[]=<?php echo $customer->userid;?>">
-								<?php echo $customer->firstname.' '.$customer->lastname;?></a>
-						</strong>
-					</div>
-					<div class="span2">
-						<span class="small pull-right"><?php echo $customer->amount_paid. ' '.$customer->currency; ?></span>
-					</div>
-					<div class="span3">
-						<span class="small"><i class="icon-calendar"></i> <?php echo date("Y-m-d", $customer->order_date); ?></span>
-					</div>
-				</div>
-				<?php
-				endforeach;
-				?>
 			</div>
 		</div>
 		

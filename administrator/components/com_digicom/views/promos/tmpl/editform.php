@@ -145,9 +145,13 @@ function submitbutton(pressbutton) {
 							<label for="" class="control-label"><?php echo JText::_("VIEWPROMODISCAMOUNT");?></label>
 							<div class="controls">
 								<input type="text" style="width:50px" name="amount" value="<?php echo $promo->amount;?>" />
-								
-								<input type="radio" name="promotype" value="0" <?php echo ($promo->promotype == 0)?"checked":""; ?> /><?php echo $configs->get('currency','USD');?>
-								<input type="radio" name="promotype" value="1" <?php echo ($promo->promotype == 1 || $promo->promotype !== '0')?"checked":""; ?> /> %
+
+								<div class="radio btn-group btn-group-yesno">
+									<input type="radio" name="promotype" value="0" checked="<?php echo ($promo->promotype == 0)?"checked":""; ?>">
+									<label class="btn"><?php echo JText::_("COM_DIGICOM_DISCOUNT_TYPE_FIXED");?></label>
+									<input type="radio" name="promotype" value="1" checked="<?php echo ($promo->promotype == 1 || $promo->promotype !== '0')?"checked":""; ?>">
+									<label class="btn"><?php echo JText::_("COM_DIGICOM_DISCOUNT_TYPE_PERCENTAGE");?></label>
+								</div>
 								
 								&nbsp;
 								<?php

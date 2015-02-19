@@ -132,7 +132,9 @@ $limistart = $this->pagination->limitstart;
 							<?php echo $published; ?>
 						</td>
 						<td align="center">
+							<?php if(!empty($prod->images)): ?>
 							<img src="<?php echo '../'. $prod->images; ?>" height="48" width="48">
+							<?php endif; ?>
 						</td>
 						<td>
 							<a href="<?php echo $link;?>" ><?php echo $prod->name;?></a>

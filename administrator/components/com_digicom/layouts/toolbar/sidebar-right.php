@@ -11,6 +11,19 @@
 defined ('_JEXEC') or die ("Go away.");
 ?>
 
-<div id="toggle_settings_wrap" class="hide">
-	<h1>Sidebar Right</h1>
+<div id="toggle_settings_wrap" class="">
+	<h3>Global Settings</h3>
+	<ul>
+		<li><a href="#">Email</a></li>
+		<li><a href="#">File & Folders</a></li>
+		<li><a href="#">Theme</a></li>
+	</ul>
+
+	<h3>Add-ons Settings</h3>
+	<ul>
+		<li><a href="#">Mailchimp</a></li>
+		<li><a href="#">2CO Payment</a></li>
+		<li><a href="#">Tax</a></li>
+	</ul>
+
 </div>
