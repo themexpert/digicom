@@ -30,9 +30,7 @@ class DigiComControllerDownloads extends DigiComController
 		$this->_order = $this->getModel("Order");
 		$this->_customers_model = $this->getModel("Customer");
 
-		$this->log_link = JRoute::_("index.php?option=com_digicom&view=profile&task=login&returnpage=orders&Itemid=".$Itemid, false);
-		$this->prof_link = JRoute::_("index.php?option=com_digicom&view=profile&task=edit&returnpage=orders&Itemid=".$Itemid, false);
-		$this->order_link = JRoute::_("index.php?option=com_digicom&view=orders&Itemid=".$Itemid, false);
+		$this->log_link = JRoute::_("index.php?option=com_digicom&view=profile&task=login&returnpage=downloads&Itemid=".$Itemid, false);
 	}
 	
 	function listDownloads()
@@ -43,7 +41,7 @@ class DigiComControllerDownloads extends DigiComController
 			$this->setRedirect(JRoute::_($this->log_link, false));
 			return;
 		}
-
+		
 		JRequest::setVar ("view", "Downloads");
 		$view = $this->getView("Downloads", "html");
 		$view->setModel($this->_model, true);
@@ -56,10 +54,18 @@ class DigiComControllerDownloads extends DigiComController
 	
 	function makeDownload()
 	{
-		DigiComHelper::checkUserAccessToFile();
+		global $Itemid;
+		if($this->_customer->_user->id < 1)
+		{
+			$this->setRedirect(JRoute::_($this->log_link, false));
+			return;
+		}
 		
 		require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'downloadfileclass.inc' );
 		$fileInfo = $this->_model->getfileinfo();
+		
+		DigiComHelper::checkUserAccessToFile($fileInfo,$this->_customer->_user->id);
+		
 		if(empty($fileInfo->url)){
 			$itemid = JFactory::getApplication()->input->get('itemid',0);
 			$msg = JText::sprintf('COM_DIGICOM_FILE_DONT_EXIST_DETAILS',$fileInfo->name);

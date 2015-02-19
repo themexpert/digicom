@@ -110,8 +110,14 @@ class DigiComAdminModelCategory extends JModelForm {
 	}
 
 	function getlistCategories(){
+		$input = JFactory::getApplication()->input;
+		$search = $input->get('search','');
+		$catids = $input->get('catid','');
 		if (empty ($this->_categories)) {
-			$sql = "select * from #__digicom_categories order by parent_id, ordering asc";
+			$sql = "select *,name as title from #__digicom_categories";
+			$sql .= " WHERE `published` = 1";
+			$sql .= " order by parent_id, ordering asc";
+			
 			$this->_total = $this->_getListCount($sql);
 			if ($this->getState('limitstart') > $this->_total) $this->setState('limitstart', 0);
 			if ($this->getState('limitstart') > 0 & $this->getState('limit') == 0)  $this->setState('limitstart', 0);

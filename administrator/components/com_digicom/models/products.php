@@ -60,6 +60,9 @@ class DigiComAdminModelProducts extends JModelList {
 
 	protected function getListQuery($sort = "ordering") {
 		$db = JFactory::getDBO();
+		$input = JFactory::getApplication()->input;
+		$catids = $input->get('catid','');
+		
 		$session	= JFactory::getSession();
 		$category	= $session->get('dsproducategory', 0, 'digicom');
 		$prc		= JRequest::getVar("prc", $category, "request");
@@ -69,9 +72,9 @@ class DigiComAdminModelProducts extends JModelList {
 		$state_filter	= JRequest::getVar("state_filter", '-1');
 
 		$where = " 1=1 ";
-
+		
 		if($prc > 0){
-			//$where .= " and id IN (SELECT productid FROM #__digicom_product_categories WHERE catid='".$prc."' ) ";
+			$where .= " and catid='".$prc."' ";
 		}
 		if($state_filter != "-1"){
 			$where .= " and published=".$state_filter;
@@ -98,6 +101,7 @@ class DigiComAdminModelProducts extends JModelList {
 
 	function getItems()
 	{
+		
 		$config = JFactory::getConfig();
 		$app	= JFactory::getApplication('administrator');
 		$listOrder		= $app->getUserStateFromRequest('digicom.product.list.ordering',	'filter_order',		'ordering','tring');

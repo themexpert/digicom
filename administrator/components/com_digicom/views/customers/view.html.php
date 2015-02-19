@@ -22,6 +22,11 @@ class DigiComAdminViewCustomers extends DigiComView {
 			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
 
+		$layout = JRequest::getVar('layout','');
+		if($layout){
+			$this->setLayout($layout);
+		}
+		
 		$customers = $this->get('Items');
 		$pagination = $this->get('Pagination');
 
@@ -108,6 +113,7 @@ class DigiComAdminViewCustomers extends DigiComView {
 		$lists['customershippinglocation'] = DigiComAdminHelper::get_store_province($profile, true, $configs);
 
 		$cclasses = explode("\n", $customer->taxclass);
+		/*
 		$data = $this->get('listCustomerClasses');
 		$select = '<select name="taxclass" >';
 		if (count($data) > 0)
@@ -120,7 +126,7 @@ class DigiComAdminViewCustomers extends DigiComView {
 		}
 		$select .= '</select>';
 		$lists['customer_class'] = $select;
-
+		*/
 		$this->assign("lists", $lists);
 		$keyword = JRequest::getVar("keyword", "", "request");
 		$this->assign ("keyword", $keyword);

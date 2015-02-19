@@ -44,7 +44,7 @@ $search = JRequest::getVar('search', '');
 
 <fieldset class="adminform">
 	<legend><?php echo JText::_( 'Select Product for Include' ); ?></legend>
-<form id="adminForm" action="index.php" name="adminForm" method="post">
+<form id="adminForm" action="index.php?option=com_digicom&controller=products" name="adminForm" method="post">
 
 	<div id="editcell" >
 
@@ -141,7 +141,7 @@ $search = JRequest::getVar('search', '');
 	<input type="hidden" name="prc" value="<?php echo $this->prc; ?>" />
 	<input type="hidden" name="option" value="com_digicom" />
 	<input type="hidden" name="task" value="selectProductInclude" />
-	<input type="hidden" name="controller" value="Products" />
+	<input type="hidden" name="controller" value="products" />
 	<input type="hidden" name="tmpl" value="component" />
 	<input type="hidden" name="id" value="<?php echo JRequest::getVar('id',0); ?>" />
 

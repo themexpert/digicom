@@ -14,7 +14,7 @@ defined( '_JEXEC' ) or die( "Go away." );
 jimport('joomla.application.component.modellist');
 jimport('joomla.utilities.date');
 
-class DigiComAdminModelOrder extends JModelForm{
+class DigiComAdminModelOrders extends JModelList{
 
 	protected $_context = 'com_digicom.Order';
 	var $_orders;
@@ -51,54 +51,7 @@ class DigiComAdminModelOrder extends JModelForm{
 		$pagination->set('pages.stop',$nr_pages);
 		return $pagination;
 	}
-	
-	function getPromoCode(){
-		$db = JFactory::getDBO();
-		// Promocode
-		$sql = 'SELECT *, TRIM(code) AS alphabetical FROM #__digicom_promocodes WHERE published=1 ORDER BY alphabetical ASC';
-		$db->setQuery($sql);
-		$promocodes = $db->loadObjectList();
-		//echo "<pre>";var_dump($promocodes);die();
 
-		$promocode_valid[] = (object) array('text' => 'none', 'value' => 'none');
-		$nullDate = 0;
-
-		foreach($promocodes as $promo)
-		{
-			$timestart = $promo->codestart;
-			$timeend = $promo->codeend;
-			$limit = $promo->codelimit;
-			$used = $promo->used;
-			$now = time();
-
-			$promo_status = false;
-
-			if ( $timeend == 0)
-			{
-				$promo_status = true;
-			}
-			else
-			{
-				if ( $now < $timestart && ( $now <= $timeend || $timeend == $nullDate ) )
-				{
-					$promo_status = true;
-				}
-			}
-			if ($limit > 0 && $limit == $used)
-			{
-				$promo_status = false;
-			}
-
-			if ($promo_status)
-				$promocode_valid[] = (object) array( 'text' => $promo->code, 'value' => $promo->code );
-		}
-
-		return JHTML::_('select.genericlist',  $promocode_valid, 'promocode', 'class="inputbox" size="1" onchange="changePlain();" ', 'value', 'text', 'none');
-		
-
-		
-	}
-	
 	function getPromocodeByCode($code){
 		$sql = "SELECT id FROM #__digicom_promocodes WHERE code = '" . $code . "'";
 		$this->_db->setQuery( $sql );
@@ -148,11 +101,12 @@ class DigiComAdminModelOrder extends JModelForm{
 
 	function saveorder(){
 		$post = JRequest::get('post');
+		//print_r($post);die;
 		$config = JFactory::getConfig();
 		$tzoffset = $config->get('offset');
 		
-		if(isset($post['purchase_date'])&& $post['purchase_date']){
-			$date = JFactory::getDate($post['purchase_date']);
+		if(isset($post['order_date'])&& $post['order_date']){
+			$date = JFactory::getDate($post['order_date']);
 			$purchase_date = $date->toSql();
 			$order_date = $date->toUNIX();
 		} else{
@@ -169,16 +123,15 @@ class DigiComAdminModelOrder extends JModelForm{
 		$order['promocode'] = $post['promocode'];
 		$order['promocodediscount'] = $post['discount'];
 		$order['promocodeid'] = $this->getPromocodeByCode( $order['promocode'] );
-		$order['number_of_licenses'] = count( $post['product_id'] );
+		$order['number_of_products'] = count( $post['product_id'] );
 		$order['currency'] = $post['currency'];
 		$order['status'] = $post['status'];
-		$order['tax'] = $post['tax'];
+		//$order['tax'] = $post['tax'];
 		$order['discount'] = $post['discount'];
-		$order['shipping'] = $post['shipping'];
 		$order['amount'] = $post['amount'];
 		$order['amount_paid'] = trim($post['amount_paid']) != "" ? trim($post['amount_paid']) : '-1';
 		$order['published'] = '1';
-
+		//print_r($order);die;
 		$order_table = $this->getTable( 'Order' );
 
 		if(!$order_table->bind($order)){
@@ -192,172 +145,17 @@ class DigiComAdminModelOrder extends JModelForm{
 		if(!$order_table->store()){
 			return false;
 		}
-
+		$now = time();
+		//we have to add orderdetails now;
+		$this->addOrderDetails($post['product_id'], $order_table->id, $now, $post['userid'], $post['status']);
 		// Licenses
-		$license_table = $this->getTable( 'License' );
-		$sql = "select id from #__digicom_plans where `duration_count` = -1";
-		$this->_db->setQuery($sql);
-		$this->_db->query();
-		$unlimited_plan_id = intval($this->_db->loadResult());
-
-		
+		//$license_table = $this->getTable( 'License' );
+		/*
 		$date_today = date('Y-m-d H:i:s', time() + $tzoffset);
 		// exit();
 
 		foreach($post['product_id'] as $key => $product_id){
-			$lic_id = "0";
-			//$purchase_date = date('Y-m-d H:i:s');
-			//$date_today = date('Y-m-d H:i:s');
 			
-			
-
-			$expires_date = "0000-00-00 00:00:00";
-			$new_download_count = "0";
-			$buy_type = "new";
-
-			if(isset($post["subscr_type_select"][$key])&& $post["subscr_type_select"][$key] == "renewal"){// for renew license
-				$buy_type = "renewal";
-				$expires_date_string = "";
-				$expires_date_int = "";
-				$lic_id = intval($post["licences_select"][$key]);
-				$sql = "select `purchase_date`, `expires`, `plan_id` from #__digicom_licenses where id=".intval($post["licences_select"][$key]);
-				$this->_db->setQuery($sql);
-				$this->_db->query();
-				$detailes = $this->_db->loadAssocList();
-
-				$purchase_date_string = $detailes["0"]["purchase_date"];
-				$purchase_date_int = strtotime($purchase_date_string);
-
-				$expires_date_string = "0000-00-00 00:00:00";
-				$expires_date_int = "";
-
-				if($detailes["0"]["expires"] == "0000-00-00 00:00:00" && $detailes["0"]["plan_id"] != $unlimited_plan_id){
-					$plan_id = intval($post["subscr_plan_select"][$key]);
-					$sql = "select `duration_count`, `duration_type` from #__digicom_plans where id=".intval($detailes["0"]["plan_id"]);
-					$this->_db->setQuery($sql);
-					$this->_db->query();
-					$plan_values = $this->_db->loadAssocList();
-
-					$time = "";
-					switch($plan_values["0"]["duration_type"]){
-						case "1" :
-								$time = "hour";
-								break;
-						case "2" :
-								$time = "day";
-								break;
-						case "3" :
-								$time = "month";
-								break;
-						case "4" :
-								$time = "year";
-								break;
-					}
-					if($plan_values["0"]["duration_count"] != "-1"){
-						$expires_date_int = strtotime("+".$plan_values["0"]["duration_count"]." ".$time, $purchase_date_int);
-						$expires_date_string = date("Y-m-d H:i:s", $expires_date_int);
-					}
-					else{
-						$expires_date_string = "0000-00-00 00:00:00";
-					}
-				}
-				else{
-					$expires_date_string = $detailes["0"]["expires"];
-					$expires_date_int = strtotime($expires_date_string);
-
-					$date_today_int = strtotime($date_today);
-				if($expires_date_int < $date_today_int){
-						$purchase_date_string = $date_today;
-						$purchase_date_int = strtotime($purchase_date_string);
-						$expires_date_string = $date_today;
-						$expires_date_int = strtotime($expires_date_string);
-					}
-
-				}
-
-				$plan_id = intval($post["subscr_plan_select"][$key]);
-				$sql = "select `duration_count`, `duration_type` from #__digicom_plans where id=".intval($plan_id);
-				$this->_db->setQuery($sql);
-				$this->_db->query();
-				$plan_values = $this->_db->loadAssocList();
-
-				$time = "";
-				switch($plan_values["0"]["duration_type"]){
-					case "1" :
-							$time = "hour";
-							break;
-					case "2" :
-							$time = "day";
-							break;
-					case "3" :
-							$time = "month";
-							break;
-					case "4" :
-							$time = "year";
-							break;
-				}
-				if($plan_values["0"]["duration_type"] != "0" && $expires_date_string != "0000-00-00 00:00:00"){//dowloads
-					$expires_date_int = strtotime("+".$plan_values["0"]["duration_count"]." ".$time, $expires_date_int);
-					$expires_date_string = date("Y-m-d H:i:s", $expires_date_int);
-					$expires_date = $expires_date_string;
-				}
-				else{
-					if($plan_values["0"]["duration_count"] != "-1"){
-						$expires_date_int = strtotime("+".$plan_values["0"]["duration_count"]." ".$time, $purchase_date_int);
-						$expires_date_string = date("Y-m-d H:i:s", $expires_date_int);
-						$expires_date = $expires_date_string;
-					}
-					else{
-						$expires_date = "0000-00-00 00:00:00";
-					}
-				}
-
-				//check if is a downlaod plan to make expired date to 0000-00-00...
-				$sql = "select id from #__digicom_plans where duration_count <> -1 and duration_type=0";
-				$this->_db->setQuery($sql);
-				$this->_db->query();
-				$download_plans_ids = $this->_db->loadAssocList("id");
-				$download_plans_ids = array_keys($download_plans_ids);
-
-				if(in_array($plan_id, $download_plans_ids)){
-					$expires_date = "0000-00-00 00:00:00";
-				}
-			}
-			else{//for new license
-				$buy_type = "new";
-				$plan_id = intval($post["subscr_plan_select"][$key]);
-				$sql = "select `duration_count`, `duration_type` from #__digicom_plans where id=".intval($plan_id);
-				$this->_db->setQuery($sql);
-				$this->_db->query();
-				$plan_values = $this->_db->loadAssocList();
-
-				$time = "";
-				switch($plan_values["0"]["duration_type"]){
-					case "1" :
-							$time = "hour";
-							break;
-					case "2" :
-							$time = "day";
-							break;
-					case "3" :
-							$time = "month";
-							break;
-					case "4" :
-							$time = "year";
-							break;
-				}
-
-				$purchase_date_int = strtotime($purchase_date);
-				if($plan_values["0"]["duration_count"] != "-1"){
-					$expires_date_int = strtotime("+".$plan_values["0"]["duration_count"]." ".$time, $purchase_date_int);
-					$expires_date_string = date("Y-m-d H:i:s", $expires_date_int);
-					$expires_date = $expires_date_string;
-				}
-				else{
-					$expires_date = "0000-00-00 00:00:00";
-				}
-			}
-
 			$buy_date = date("Y-m-d H:i:s");
 			$sql = "insert into #__digicom_logs (`userid`, `productid`, `buy_date`, `buy_type`) values (".$post['userid'].", ".$product_id.", '".$buy_date."', '".$buy_type."')";
 			$this->_db->setQuery($sql);
@@ -367,142 +165,6 @@ class DigiComAdminModelOrder extends JModelForm{
 			$this->_db->setQuery( $sql );
 			$product_type = $this->_db->loadResult();
 
-			if($product_type == 3){
-				$sql = "select f.featuredid as id, p.name as name, f.planid as plan_id from #__digicom_featuredproducts f, #__digicom_products p where f.featuredid=p.id and f.productid=".$product_id;
-				$this->_db->setQuery($sql);
-				$prodincludes = $this->_db->loadObjectList();
-
-				foreach($prodincludes as $pi){
-					$sql = "";
-					if($post['subscr_type_select'][$key] == 'renewal'){
-						$sql = "select `price` from #__digicom_products_renewals where product_id=".$pi->id." and `default`=1";
-					}
-					else{
-						$sql = "select `price` from #__digicom_products_plans where product_id=".$pi->id." and `default`=1";
-					}
-					$this->_db->setQuery($sql);
-					$this->_db->query();
-					$amount_paid = $this->_db->loadResult();
-					if(!isset($amount_paid)){ //if renew but not renew plans
-						$sql = "select `price` from #__digicom_products_plans where product_id=".$pi->id." and `default`=1";
-						$this->_db->setQuery($sql);
-						$this->_db->query();
-						$amount_paid = $this->_db->loadResult();
-					}
-
-					$license = array();
-					$license['id'] = $lic_id;
-					$license['userid'] = $order['userid'];
-					$license['plan_id'] = $pi->plan_id;
-					$license['productid'] = $pi->id;
-					$license['domain'] = '';
-					$license['amount_paid'] = $amount_paid;
-					$license['orderid'] = $order_table->id;
-					$license['dev_domain'] = '';
-					$license['hosting_service'] = '';
-					$license['ltype'] = 'package_item';
-					$license['package_id'] = intval($product_id);
-					$license['purchase_date'] = $purchase_date;
-					$license['download_count'] = $new_download_count;
-					$license['published'] = '1';
-					$license['expires'] = $this->getExpireDate($pi->plan_id, $purchase_date_int);
-
-					$sql = "select max(licenseid) from #__digicom_licenses";
-					$this->_db->setQuery($sql);
-					$this->_db->query();
-					$licenseid = $this->_db->loadResult();
-					if(isset($licenseid) && intval($licenseid) != "0"){
-						if($post['subscr_type_select'][$key] == 'renewal'){
-						}
-						else{
-							$license_table->licenseid = intval($licenseid) + 1;
-						}
-					}
-					else{
-						$license_table->licenseid = intval($licenseid) + 100000000 + 1;
-					}
-
-					if(!$license_table->bind($license)){
-						die('stop bind');
-						return false;
-					}
-
-					if(!$license_table->check()){
-						die('stop check');
-						return false;
-					}
-
-					if(!$license_table->store()){
-						die('stop store');
-						return false;
-					}
-				}
-				continue;
-			}
-
-			$domain = "";
-			$dev_domain = "";
-			$old_orders = "";
-			if($post['subscr_type_select'][$key] == 'renewal'){
-				$sql = "select `domain`, `dev_domain`, `orderid`, `old_orders` from #__digicom_licenses where id=".trim($post['licences_select'][$key]);
-				$this->_db->setQuery($sql);
-				$this->_db->query();
-				$renew_licence_value = $this->_db->loadAssocList();
-				if(isset($renew_licence_value)){
-					$domain = $renew_licence_value["0"]["domain"];
-					$dev_domain = $renew_licence_value["0"]["dev_domain"];
-					$old_orders = trim($renew_licence_value["0"]["old_orders"]).trim($renew_licence_value["0"]["orderid"])."|";
-				}
-			}
-
-			// common or package
-			$license = array();
-			$license['id'] = $lic_id;
-			$license['userid'] = $order['userid'];
-			$license['plan_id'] = $post['subscr_plan_select'][$key];
-			$license['productid'] = $product_id;
-			$license['domain'] = $domain;
-			$license['amount_paid'] = '0';
-			$license['orderid'] = $order_table->id;
-			$license['dev_domain'] = $dev_domain;
-			$license['hosting_service'] = '';
-			$license['expires'] = $expires_date;
-			$license['old_orders'] = $old_orders;
-
-			if($product_type == 3){
-				$license['ltype'] = 'package';
-			}
-			else{
-				$license['ltype'] = 'common';
-			}
-
-			$license['package_id'] = "0";
-			$license['purchase_date'] = $purchase_date;
-			$license['download_count'] = $new_download_count;
-			$license['published'] = '1';
-
-			if(isset($post['licences_select'][$key]) && !empty($post['licences_select'][$key])){
-				if(isset($post['subscr_type_select'][$key]) && $post['subscr_type_select'][$key] == 'renewal'){
-					$license['renew'] = 1;
-					$license['renewlicid'] = $post['licences_select'][$key];
-				} else {
-					$license['renew'] = 0;
-				}
-			} else {
-				$license['renew'] = 0;
-			}
-
-			// get price for license
-			if ($license['renew']) {
-				$sql = 'SELECT price FROM `#__digicom_products_renewals` WHERE product_id='.$product_id.' AND plan_id='.$license['plan_id'];
-				$this->_db->setQuery( 'SELECT price FROM `#__digicom_products_renewals` WHERE product_id='.$product_id.' AND plan_id='.$license['plan_id'] );
-			} else {
-				$sql = 'SELECT price FROM `#__digicom_products_plans` WHERE product_id='.$product_id.' AND plan_id='.$license['plan_id'];
-				$this->_db->setQuery( $sql );
-			}
-			$license_price = $this->_db->loadResult();
-			$license['amount_paid'] = ($license_price) ? $license_price : '0';
-
 			if(!$license_table->bind($license)){
 				return false;
 			}
@@ -510,44 +172,78 @@ class DigiComAdminModelOrder extends JModelForm{
 			if(!$license_table->check()){
 				return false;
 			}
-
-			$sql = "select max(licenseid) from #__digicom_licenses";
-			$this->_db->setQuery($sql);
-			$this->_db->query();
-			$licenseid = $this->_db->loadResult();
-			if(isset($licenseid) && intval($licenseid) != "0"){
-				if($post['subscr_type_select'][$key] == 'renewal'){
-					//$license_table->licenseid = intval($licenseid);
-				}
-				else{
-					$license_table->licenseid = intval($licenseid) + 1;
-				}
-			}
-			else{
-				$license_table->licenseid = intval($licenseid) + 100000000 + 1;
-			}
-
+			
 			if(!$license_table->store()){
 				return false;
 			}
-
-			// Set customer groups
-			DigiComAdminHelper::expireUserProduct($license_table->userid);
-
-			//set no emails send to this course
-			$db = JFactory::getDBO();
-			$sql = "update #__digicom_products_emailreminders set `send`=0 where product_id=".intval($license["productid"]);
-			$db->setQuery($sql);
-			$db->query();
 		}
-
+		*/
+		/*
 		$license["licenseid"] = $license_table->id;
+		
 		require_once(JPATH_SITE.DS."components".DS."com_digicom".DS."helpers".DS."cronjobs.php");
 		submitEmailFromBackend($order, $license);
-
+		*/
+		
 		return true;
 	}
+	
+	function addOrderDetails($items, $orderid, $now, $customer, $status = "Active")
+	{
+		$license = array();
+		if($status != "Pending")
+			$published = 1;
+		else
+			$published = 0;
 
+		$database = JFactory::getDBO();
+		$license_index = 0;
+		$jconfig = JFactory::getConfig();
+		
+		$user_id = $customer;
+
+		if($user_id == 0){
+			return false;
+		}
+		
+		//print_r($items);die;
+		
+		// start foreach
+		foreach($items as $key=>$item)
+		{
+			if($key >= 0)
+			{
+				$price = (isset($item->discount) && ($item->discount > 0)) ? $item->discount : $item->subtotal_formated;
+				$date = JFactory::getDate();
+				$purchase_date = $date->toSql();
+				$expire_string = "0000-00-00 00:00:00";
+				$package_type = (!empty($item->bundle_source) ? $item->bundle_source : 'reguler');
+				$sql = "insert into #__digicom_orders_details(userid, productid,quantity, orderid, amount_paid, published, package_type, purchase_date, expires) "
+						. "values ('{$user_id}', '{$item}', '1', '".$orderid."', '{$price}', ".$published.", '".$package_type."', '".$purchase_date."', '".$expire_string."')";
+				//echo $sql;die;
+				$database->setQuery($sql);
+				$database->query();
+
+				$site_config = JFactory::getConfig();
+				$tzoffset = $site_config->get('offset');
+				$buy_date = date('Y-m-d H:i:s', time() + $tzoffset);
+				$sql = "insert into #__digicom_logs (`userid`, `productid`, `buy_date`, `buy_type`)
+						values (".$user_id.", ".$item.", '".$buy_date."', 'new')";
+				$database->setQuery($sql);
+				$database->query();
+				
+				
+				$sql = "update #__digicom_products set used=used+1 where id = '" . $item . "'";
+				$database->setQuery( $sql );
+				$database->query();
+				
+			}
+		}
+		// end foreach
+		
+		return true;
+	}
+	
 	function _getRate($ptc, $pc, $cust)
 	{
 		$configs = $this->getInstance("Config", "DigiComAdminModel");
@@ -645,11 +341,12 @@ class DigiComAdminModelOrder extends JModelForm{
 		$amount = 0;
 		$taxvalue = 0;
 
-		$cust_id = $req->customer_id;
+		//$cust_id = $req->customer_id;
 		if(isset($req)){
 			foreach($req->pids as $item ) {
 				if (!empty($item[0])) {
-					$sql = "SELECT price FROM #__digicom_products WHERE product_id = '" . $item[0] ."')";
+					
+					$sql = "SELECT price FROM #__digicom_products WHERE id = '" . $item[0] . "'";
 					$this->_db->setQuery( $sql );
 					$plan = $this->_db->loadObject();
 
@@ -658,16 +355,17 @@ class DigiComAdminModelOrder extends JModelForm{
 
 					$amount_subtotal += $price;
 					$amount += $price;
-					$taxvalue += $this->getTax( $product_id, $cust_id, $price );
+					//$taxvalue += $this->getTax( $product_id, $cust_id, $price );
+					$taxvalue += 0;
 				}
 			}
 		}
 		//add tax to total
 		$amount = $amount + $taxvalue;
 
-//--------------------------------------------------------
-// Promo code
-//--------------------------------------------------------
+		//--------------------------------------------------------
+		// Promo code
+		//--------------------------------------------------------
 
 		$promovalue = 0;
 		if($req->promocode != "none"){
@@ -720,7 +418,7 @@ class DigiComAdminModelOrder extends JModelForm{
 			}
 		}
 
-//--------------------------------------------------------
+		//--------------------------------------------------------
 		$amount_subtotal = $amount_subtotal < 0 ? "0.00" : $amount_subtotal;
 		$amount = $amount < 0 ? "0.00" : $amount;
 
@@ -1316,7 +1014,7 @@ class DigiComAdminModelOrder extends JModelForm{
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		$form = $this->loadForm('com_digicom.order', 'order', array('control' => '', 'load_data' => $loadData));
+		$form = $this->loadForm('com_digicom.order', 'order', array('control' => 'jform', 'load_data' => $loadData));
 		
 		if (empty($form))
 		{

@@ -41,6 +41,10 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'log.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'config.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
 
+if(!class_exists("Services_JSON")){
+	require_once (JPATH_COMPONENT.DS.'libs'.DS. 'JSON.php');
+}
+
 // load core script
 $document = JFactory::getDocument();
 $document->addScript(JURI::root(true).'/media/digicom/assets/js/digicom.js?v=1.0.0&amp;sitepath='.JURI::root(true).'/');

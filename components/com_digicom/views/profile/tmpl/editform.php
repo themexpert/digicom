@@ -39,7 +39,7 @@ if($uid != "0"){
 				</li>
 				<li class="divider-vertical"></li>
 				<li>
-					<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=licenses&Itemid=".$Itemid); ?>"><i class="ico-download"></i> <?php echo JText::_("DIGI_MY_DOWNLOADS"); ?></a>
+					<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=downloads&Itemid=".$Itemid); ?>"><i class="ico-download"></i> <?php echo JText::_("DIGI_MY_DOWNLOADS"); ?></a>
 				</li>
 				<li class="divider-vertical"></li>
 				<li>
@@ -47,11 +47,11 @@ if($uid != "0"){
 				</li>
 				<li class="divider-vertical"></li>
 				<li>
-					<a href="<?php echo JRoute::_("index.php?option=com_digicom&controller=cart&task=showCart".$and_itemid); ?>"><i class="ico-shopping-cart"></i> <?php echo JText::_("DIGI_MY_CART"); ?></a>
+					<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=cart&task=showCart".$and_itemid); ?>"><i class="ico-shopping-cart"></i> <?php echo JText::_("DIGI_MY_CART"); ?></a>
 				</li>
 				<li class="divider-vertical"></li>
 				<li>
-					<a href="index.php?option=com_users&task=user.logout&<?php echo JSession::getFormToken(); ?>=1"><?php echo 'Logout'; ?></a>
+					<a href="index.php?option=com_users&task=user.logout&<?php echo JSession::getFormToken(); ?>=1&return=<?php echo base64_encode(JURI::root()); ?>"><?php echo 'Logout'; ?></a>
 				</li>
 			</ul>
 		</div>

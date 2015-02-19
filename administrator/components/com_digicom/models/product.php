@@ -209,11 +209,9 @@ class DigiComAdminModelProduct extends JModelForm {
 		
 		if($this->_product->id){
 			$filesTable = JTable::getInstance('Files', 'Table');
-			$fileList = $filesTable->getList('product_id',$this->_product->id);
 			$this->_product->file = $filesTable->getList('product_id',$this->_product->id);
 			
 			$filesTable = JTable::getInstance('Bundle', 'Table');
-			$fileList = $filesTable->getList('product_id',$this->_product->id);
 			$this->_product->bundle = $filesTable->getList('product_id',$this->_product->id);
 			
 		}

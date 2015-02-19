@@ -53,7 +53,7 @@ $document->addScript("components/com_digicom/assets/js/redactor.min.js");
 	<?php endif;?>
 	<?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
 	
-	<div class="form-inline form-inline-header">
+	<div class="form-inline">
 		<?php echo $this->form->getControlGroup('price'); ?>
 	</div>
 	
@@ -99,6 +99,7 @@ $document->addScript("components/com_digicom/assets/js/redactor.min.js");
 		<input type="hidden" name="option" value="com_digicom" />
 		<input type="hidden" name="jform[id]" value="<?php echo $this->item->id; ?>" />
 		<input type="hidden" name="task" value="" />
+		<input type="hidden" name="jform[product_type]" value="<?php echo $this->item->product_type; ?>" />
 		<input type="hidden" name="controller" value="products" />
 		<input type="hidden" name="state_filter" value="<?php echo JRequest::getVar("state_filter", "-1"); ?>" />
 		<input type="hidden" name="return" value="<?php echo $input->getCmd('return'); ?>" />		

@@ -10,9 +10,11 @@
 
 defined ('_JEXEC') or die ("Go away.");
 $cart_itemid = DigiComHelper::getCartItemid();
+$itemid = JFactory::getApplication()->input->get('Itemid',$cart_itemid);
 $conf = $this->configs;
 $prod = $this->prod;
 $date_today = time();
+//dsdebug($prod);
 ?>
 <div class="digicom-wrapper com_digicom products">
 
@@ -94,27 +96,41 @@ $addtocart = '<input type="submit" value="'.(JText::_("DSADDTOCART")).'" class="
 			?>
 
 			<h1 class="ijd-single-product-title"><?php echo $prod->name; ?></h1>
+			<?php if(!empty($prod->bundle_source)):?>
+				<p class="alert alert-success"><?php echo JText::sprintf('COM_DIGICOM_PRODUCT_TYPE_BUNDLE_TYPE_'.strtoupper($prod->bundle_source),$prod->bundle_source);?></p>			
+			<?php endif; ?>
 			<div class="description"><?php echo $prod->fulldescription; ?></div>
 
-
-
+			<?php if(!empty($prod->bundle_source)):?>
+				<h3><?php echo JText::_('COM_DIGICOM_BUNDLE_ITEMS');?></h3>
+				<ul>
+					<?php foreach($prod->bundleitems as $key=>$bitem): ?>
+						<li>
+							<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=products&pid='.$bitem->id.'&cid='.$bitem->catid); ?>"><?php echo $bitem->name; ?></a>
+							<span class="label"><?php echo DigiComHelper::format_price2($bitem->price, $conf->get('currency','USD'), true, $conf); ?></span>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+				
+			<?php endif; ?>
 			<?php if ($this->configs->get('catalogue',0) == '0') : ?>
 			<div class="ijd-add-to-cart ijd-row">
 
 				<div class="ijd-addtocartbutton ijd-pad5">
-					<br />
 					
 					<label for="quantity23" class="quantity_box">
 						<?php echo JText::_('DSPRICE'); ?>:&nbsp;
-						<span class="label"><?php echo $prod->price; ?> <?php echo $conf->get('currency','USD'); ?> </span>
+						<span class="label"><?php echo DigiComHelper::format_price2($prod->price, $conf->get('currency','USD'), true, $conf); ?></span>
 					</label>
+					<br />
 					
-					<label for="quantity23" class="quantity_box">
-						<?php echo JText::_('DSQUANTITY'); ?>:&nbsp;
-						<input id="quantity_<?php echo $prod->id; ?>" type="number" name="qty" min="1" class="input-small" value="1" size="2" placeholder="<?php echo JText::_('DSQUANTITY'); ?>">
-					</label>
-						
-						
+					
+						<label for="quantity23" class="quantity_box">
+							<?php echo JText::_('DSQUANTITY'); ?>:&nbsp;
+							<input id="quantity_<?php echo $prod->id; ?>" type="number" name="qty" min="1" class="input-small" value="1" size="2" placeholder="<?php echo JText::_('DSQUANTITY'); ?>">
+						</label>
+						<br />
+					<div class="input-append">	
 						<?php
 							
 							if($conf->get('afteradditem',2) == "2")
@@ -129,6 +145,7 @@ $addtocart = '<input type="submit" value="'.(JText::_("DSADDTOCART")).'" class="
 								
 							
 						?>
+					</div>
 						
 				</div><!--add to cart-->
 			</div>
@@ -140,7 +157,7 @@ $addtocart = '<input type="submit" value="'.(JText::_("DSADDTOCART")).'" class="
 	<input type="hidden" name="task" value="add"/>
 	<input type="hidden" name="pid" value="<?php echo $prod->id; ?>"/>
 	<input type="hidden" name="cid" value="<?php echo JFactory::getApplication()->input->get('cid',0);?>"/>
-	<input type="hidden" name="Itemid" value="<?php echo JFactory::getApplication()->input->get('Itemid',$cart_itemid); ?>"/>
+	<input type="hidden" name="Itemid" value="<?php $itemid; ?>"/>
 </form>
 
 </div>

@@ -78,12 +78,49 @@ class DigiComModelProduct extends DigiComModel
 	function getProduct($id = 0){
 		$my = JFactory::getUser();
 		if(empty($this->_product)){
-			$this->_product = $this->getTable("Product");
+			$product = $this->getTable("Product");
 			if ($id) $this->_id = $id;
-			$this->_product->load($this->_id);
+			$product->load($this->_id);
 		}
-		
-		$this->_products = $this->_product;
+		//print_r($product);die;
+		if(!empty($product->bundle_source)){
+			
+			switch($product->bundle_source){
+				case 'category':
+					$BundleTable = JTable::getInstance('Bundle', 'Table');
+					$BundleList = $BundleTable->getFieldValues('product_id',$product->id,$product->bundle_source);
+					$bundle_ids = $BundleList->bundle_id;
+					
+					$db = $this->getDbo();
+					$query = $db->getQuery(true)
+						->select('*')
+						->from($db->quoteName('#__digicom_products'))
+						->where($db->quoteName('bundle_source').' IS NULL')
+						->where($db->quoteName('catid').' in ('.$bundle_ids.')');
+					$db->setQuery($query);
+					$product->bundleitems = $db->loadObjectList();
+					break;
+				case 'product':
+					
+					$BundleTable = JTable::getInstance('Bundle', 'Table');
+					$BundleList = $BundleTable->getFieldValues('product_id',$product->id,$product->bundle_source);
+					$bundle_ids = $BundleList->bundle_id;
+					
+					$db = $this->getDbo();
+					$query = $db->getQuery(true)
+						->select('*')
+						->from($db->quoteName('#__digicom_products'))
+						->where($db->quoteName('bundle_source').' IS NULL')
+						->where($db->quoteName('id').' in ('.$bundle_ids.')');
+					$db->setQuery($query);
+					$product->bundleitems = $db->loadObjectList();
+					
+					break;
+			}
+			
+		}
+		//print_r($product);die;
+		$this->_product = $product;
 		
 		return $this->_product;
 	}

@@ -52,7 +52,7 @@ class DigiComControllerOrders extends DigiComController {
 		{
 			$this->setRedirect($this->prof_link);
 		}
-
+		
 		JRequest::setVar ("view", "Orders");
 		$view = $this->getView("Orders", "html");
 		$view->setModel($this->_model, true);

@@ -224,14 +224,8 @@ class DigiComControllerProfile extends DigiComController
 
 		switch($return)
 		{
-			case "licensesreg":
-				$licid = JRequest::getVar("licid", "0");
-				$link = "index.php?option=com_digicom&view=downloads&task=register&licid=".$licid."&no_html=1&tmpl=component&Itemid=" . $Itemid . "&processor=" . $processor;
-				break;
-
-			case "digicomLicenses":
-			case "licenses":
-				$link = "index.php?option=com_digicom&view=downloads" . "&Itemid=" . $Itemid . "&processor=" . $processor;
+			case "downloads":
+				$link = "index.php?option=com_digicom&view=downloads" . "&Itemid=" . $Itemid;
 				break;
 
 			case "checkout":

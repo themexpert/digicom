@@ -99,6 +99,7 @@ class DigiComAdminViewProducts extends DigiComView
 		$this->pagination = $pagination;
 
 		$cats = $this->_models['category']->getlistCategories();
+		//print_r($cats);die;
 		$prc = JRequest::getVar( "prc", 0, "request" );
 
 		$cselector = DigiComAdminHelper::getSelectCatListProdInclude( new stdClass, $cats, 1, $prc );

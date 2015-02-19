@@ -90,10 +90,16 @@ class DigiComAdminModelCustomer extends JModelList {
 	}
 
 	function getCustomer() {
+
 		if (empty($this->_customer)) {
 			$this->_customer = $this->getTable("Customer");
 			$this->_customer->load($this->_id);
 		}
+		
+		$user = JFactory::getUser($this->_id);
+		
+		if (!isset($this->_customer->registerDate)) $this->_customer->registerDate = $user->registerDate;
+		
 		return $this->_customer;
 	}
 
