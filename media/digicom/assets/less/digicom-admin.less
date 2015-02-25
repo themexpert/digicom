@@ -142,6 +142,8 @@ body.com_digicom {
 		box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2);
 		padding: 10px 0;
 		border-bottom: 0;
+		min-height: inherit;
+		height: auto;
 		.btn-toolbar {
 			text-align: right;
 			margin: 0;
@@ -250,7 +252,7 @@ body.com_digicom {
 	}
 
 	&.sidebar-collapse,
-	&.task-edit {
+	&.task-edit,&.task-add {
 		#j-sidebar-container{ 
 			width: 38px; 
 			#sidebar {
@@ -465,6 +467,7 @@ body.sidebar-right-collapse {
 
 .panel {
 	border: 1px solid #e1e1e1;
+	margin-top: 20px;
 	.panel-header {
 		background: #f5f5f5;
 		padding: 10px;
@@ -574,5 +577,16 @@ body.layout-neworder {
 			margin-left: 20px;
 			display: inline-block;
 		}
+	}
+}
+
+
+/* Responsive Styling */
+@media (min-width: 1200px) {
+	body.com_digicom {		
+		.row-fluid [class*="span"] {
+			margin-left: 2.5641025641026%;
+		}
+		.row-fluid [class*="span"]:first-child {margin-left: 0;}
 	}
 }

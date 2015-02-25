@@ -105,6 +105,107 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 				</div>
 			</div>
 		</div>
+
+		<div class="row-fluid">
+			<div class="span6 panel">
+				<div class="panel-header clearfix">
+					<h3 class="panel-title"><span class="icon-star-empty"></span>Recent Sales</h3>
+				</div>
+				<div class="panel-content">
+					<table class="table table-striped">
+						<tr>
+							<th>#</th>
+							<th>Plan</th>
+							<th>Buyer</th>
+							<th>Amount</th>
+							<th>Date</th>
+						</tr>
+
+						<tr>
+							<td>1</td>
+							<td>Basic</td>
+							<td>Parvez</td>
+							<td>85.36</td>
+							<td>10 hours ago</td>
+						</tr>
+						<tr>
+							<td>2</td>
+							<td>Single</td>
+							<td>Anamoul</td>
+							<td>75.65</td>
+							<td>18 hours ago</td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>Pro</td>
+							<td>Faysal</td>
+							<td>420.36</td>
+							<td>22 hours ago</td>
+						</tr>
+						<tr>
+							<td>4</td>
+							<td>Standard</td>
+							<td>Titas</td>
+							<td>115.26</td>
+							<td>a day ago</td>
+						</tr>
+						<tr>
+							<td>5</td>
+							<td>Basic</td>
+							<td>Masud</td>
+							<td>88.74</td>
+							<td>2 days ago</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="span6 panel">
+				<div class="panel-header clearfix">
+					<h3 class="panel-title"><span class="icon-download"></span>Most Downloaded</h3>
+				</div>
+				<div class="panel-content">
+					<table class="table table-striped" style="text-align: center;">
+						<tr>
+							<th>ID</th>
+							<th>Name</th>
+							<th>Status</th>
+							<th>Total Downloads</th>
+						</tr>
+
+						<tr>
+							<td>1</td>
+							<td>Bolt</td>
+							<td>Active</td>
+							<td>25463</td>
+						</tr>
+						<tr>
+							<td>2</td>
+							<td>Extreme</td>
+							<td>Active</td>
+							<td>2468</td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>HostX</td>
+							<td>Active</td>
+							<td>68794</td>
+						</tr>
+						<tr>
+							<td>4</td>
+							<td>Optimus</td>
+							<td>Active</td>
+							<td>6948</td>
+						</tr>
+						<tr>
+							<td>5</td>
+							<td>DigiCom</td>
+							<td>Active</td>
+							<td>549783</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
 		
 	</div>
 </form>
