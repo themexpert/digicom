@@ -54,20 +54,21 @@ Joomla.submitbutton = function (pressbutton) {
 		<div class="js-stools">
 			<div class="clearfix">
 				<div class="btn-wrapper input-append">
-					<input type="text" name="search" placeholder="<?php echo JText::_('DSKEYWORD'); ?>" value="<?php echo (strlen( trim( $this->keyword ) ) > 0 ? $this->keyword : ""); ?>" class="span6" />		
+					<label>Search:</label>
+					<input type="text" name="search" placeholder="<?php echo JText::_('DSKEYWORD'); ?>" value="<?php echo (strlen( trim( $this->keyword ) ) > 0 ? $this->keyword : ""); ?>" class="" />		
 					<button type="submit" class="btn hasTooltip" title="" data-original-title="Search">
 						<i class="icon-search"></i>
 					</button>
 				</div>
 				<div class="btn-wrapper input-append">
 					<label><?php echo JText::_( "DSFROM" ); ?>:</label>
-					<?php echo JHTML::_( "calendar", $this->startdate > 0 ? date( $configs->get('time_format','DD-MM-YYYY'), $this->startdate ) : "", 'startdate', 'startdate', $f, array('class'=>'span2'), array('class'=>'span2'), array('class'=>'span2')); ?>&nbsp;
+					<?php echo JHTML::_( "calendar", $this->startdate > 0 ? date( $configs->get('time_format','DD-MM-YYYY'), $this->startdate ) : "", 'startdate', 'startdate', $f); ?>&nbsp;
 				</div>
 				<div class="btn-wrapper input-append">
 					<label><?php echo JText::_( "DSTO" ); ?>:</label>
 					<?php echo JHTML::_( "calendar", $this->enddate > 0 ? date( $configs->get('time_format','DD-MM-YYYY'), $this->enddate ) : "", 'enddate', 'enddate', $f ); ?>
 				</div>
-				<div class="btn-wrapper">
+				<div class="btn-wrapper" style="margin-top: 15px;">
 					<input type="submit" name="go" value="<?php echo JText::_( "DSGO" ); ?>" class="btn" />
 				</div>
 

@@ -179,7 +179,7 @@ body.com_digicom {
 	}
 
 	.container-main {
-		padding: 44px 0 0;
+		padding: 0 0 0;
 	}
 
 	#j-sidebar-container {
@@ -229,6 +229,8 @@ body.com_digicom {
 			}
 		}
 	}
+	.j-toggle-button-wrapper,
+	.j-toggle-sidebar-header {display: none;}
 
 	#j-main-container {
 		padding: 20px;
@@ -246,9 +248,15 @@ body.com_digicom {
 	    transition: all 0.3s ease-in-out;
 	}
 	
+	#system-message-container.j-toggle-main, 
+	#j-main-container.j-toggle-main, 
+	#system-debug.j-toggle-main {float: none;}
+
 	div#system-debug,
 	div#system-message-container {
-		margin: 15px 15px 15px 215px;
+		margin: 0px 15px 0px 215px;
+
+		> div {margin: 20px 0 0;}
 	}
 
 	&.sidebar-collapse,
