@@ -36,6 +36,7 @@ class DigiComAdminControllerProducts extends DigiComAdminController {
 		$this->_model = $this->getModel("products");
 
 		$prc = JRequest::getVar("catid");
+		
 		$state_filter = JRequest::getVar("state_filter", "-1", "request");
 		$csel = "";
 

@@ -75,33 +75,29 @@ $type = ($type == 'order' ? 'orders' : $type);
 
 	<div id="editcell" >
 
-		<table>
+		<table class="table">
 			<tr>
-				<td colspan="9" nowrap align="left">Search: <input type="text" name="search" value="<?php echo trim(JRequest::getVar('search','')); ?>"/><input type="submit" value="Go"/></td>
-				<td colspan="9" nowrap align="right"><?php echo JText::_("DSCATEGORY").": ".$this->csel; ?></td>
+				<td style="border: 0;">Search: <div class="input-append"><input type="text" name="search" value="<?php echo trim(JRequest::getVar('search','')); ?>"/><input class="btn" type="submit" value="Go"/></div></td>
+				<td style="border: 0;"><?php echo JText::_("DSCATEGORY").": ".$this->csel; ?></td>
 			</tr>
 		</table>
 
 		<br/>
 
-		<table class="adminlist table">
+		<table class="adminlist table table-striped">
 
 			<thead>
 
 				<tr>
-					<th width="1%">#</th>
-					<!-- th width="1%"></th -->
-					<th width="10%">
-							<span style="white-space:nowrap;"><nobr><?php echo JText::_('VIEWPRODSKU');?> / <?php echo JText::_('VIEWPRODID');?></nobr></span>
-					</th>
+					
 					<th>
 							<?php echo JText::_('VIEWPRODNAME');?>
 					</th>
-					<!-- th>
-							<?php echo JText::_('VIEWPRODPRICE');?>
-					</th -->
 					<th align="left">
 							<?php echo JText::_('VIEWPRODCATEGORY');?>
+					</th>
+					<th>
+							<?php echo JText::_('VIEWPRODPRICE');?>
 					</th>
 				</tr>
 
@@ -117,22 +113,17 @@ $type = ($type == 'order' ? 'orders' : $type);
 			$name = $prod->name;
 ?>
 				<tr class="row<?php echo $k;?>">
-					<td align="right"><?php echo $i+1;?></td>
+					
 					<td style="display:none;">
 						<input id="<?php echo $id; ?>_id_product" type="radio" name="product_id" value="<?php echo $name; ?>" onclick="selectProductID()"/>
 					</td>
 
-					<td align="center">
-						 <?php echo $prod->id. " / ". $id;?>
-					</td>
 
 					<td>
 						 <a href="javascript:void(0);" onclick="selectProductLink('<?php echo $id; ?>_id_product')"><?php echo $prod->name;?></a>
 					</td>
 
-					<!-- td align="center">
-						<?php echo $prod->price;?>
-					</td -->
+					
 
 					<td align="left">
 <?php 
@@ -142,6 +133,10 @@ $type = ($type == 'order' ? 'orders' : $type);
 						}
 						echo implode(', ',$categories);
 ?>
+					</td>
+
+					<td align="center">
+						<span class="label label-info"><?php echo $prod->price . ' ' . $configs['currency'] ;?></span>	
 					</td>
 
 				</tr>

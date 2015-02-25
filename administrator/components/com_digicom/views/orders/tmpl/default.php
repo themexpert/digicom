@@ -185,7 +185,7 @@ Joomla.submitbutton = function (pressbutton) {
 				<?php else: ?>
 					<tr>
 						<td colspan="9">
-							<?php echo  JText::_('VIEWORDERSEXIST'); ?>
+							<?php echo  JText::_('COM_DIGICOM_NO_ORDER_FOUND'); ?>
 						</td>
 					</tr>
 				<?php endif; ?>

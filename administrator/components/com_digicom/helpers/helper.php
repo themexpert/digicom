@@ -464,7 +464,7 @@ class DigiComAdminHelper {
 			}
 		}
 		// second pass - get an indent list of the items
-
+		//print_r($children);die;
 
 		$list = JHTML::_('menu.treerecurse', 0, "&nbsp;", array(), $children, 20, 0, 0);
 
@@ -483,7 +483,7 @@ class DigiComAdminHelper {
 			$output = JHTML::_('select.genericlist',  $mitems, 'catid[]', 'class="inputbox" size="10" multiple ', 'value', 'text', $row->selection);
 		else{
 			$id = JRequest::getVar("id", "0");
-			$output = JHTML::_('select.genericlist',  $mitems, 'catid[]', 'class="inputbox" onchange="window.location=\'index.php?option=com_digicom&controller=products&task=selectProductInclude&id='.$id.'&tmpl=component&prc=\'+this.value" ', 'value', 'text', $selected);
+			$output = JHTML::_('select.genericlist',  $mitems, 'catid', 'class="inputbox" onchange="window.location=\'index.php?option=com_digicom&controller=products&task=selectProductInclude&id='.$id.'&tmpl=component&prc=\'+this.value" ', 'value', 'text', $selected);
 		}
 
 		return $output;

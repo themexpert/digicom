@@ -18,9 +18,9 @@ $n = count ($this->order->products);
 //Log::debug($n);
 $configs = $this->configs;
 $order = $this->order;
-$refunds = DigiComAdminModelOrder::getRefunds($order->id);
-$chargebacks = DigiComAdminModelOrder::getChargebacks($order->id);
-$deleted = DigiComAdminModelOrder::getDeleted($order->id);
+$refunds = DigiComAdminModelOrders::getRefunds($order->id);
+$chargebacks = DigiComAdminModelOrders::getChargebacks($order->id);
+$deleted = DigiComAdminModelOrders::getDeleted($order->id);
 $date = date( $configs->get('time_format','d M Y'), $order->order_date);
 //Log::debug($order);
 //echo JText::_('DSEMPTYORDER');
@@ -90,9 +90,9 @@ $date = date( $configs->get('time_format','d M Y'), $order->order_date);
 				
 				$licenseid = $prod->id;
 				//print_r($prod);die;
-				$refund = DigiComAdminModelOrder::getRefunds($order->id, $prod->id);
-				$chargeback = DigiComAdminModelOrder::getChargebacks($order->id, $prod->id);
-				$cancelled = DigiComAdminModelOrder::isLicenseDeleted($prod->id);?>
+				$refund = DigiComAdminModelOrders::getRefunds($order->id, $prod->id);
+				$chargeback = DigiComAdminModelOrders::getChargebacks($order->id, $prod->id);
+				$cancelled = DigiComAdminModelOrders::isLicenseDeleted($prod->id);?>
 				<tr class="row<?php echo $k;?> sectiontableentry<?php echo ($i%2 + 1);?>">
 					<td style="<?php echo $cancelled == 3 ? 'text-decoration: line-through;' : '';?>"><?php echo $i+1; ?></td>
 					<td style="<?php echo $cancelled == 3 ? 'text-decoration: line-through;' : '';?>">

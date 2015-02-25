@@ -496,3 +496,83 @@ body.sidebar-right-collapse {
 		&.active a {background: @sidebar-active-border;color: #fff;}
 	}
 }
+
+/* Order page styling */
+body.layout-neworder {
+	.adminform {
+		margin: -15px -5px 10px;
+	}
+
+	.add-product {
+		.product-name {
+			text-transform: capitalize;
+			font-size: 14px;
+			line-height: 26px;
+		}
+		.btn-group {margin-left: 20px;}
+	}
+}
+
+.order-details,
+.product-details {
+	background: #fff;
+	padding: 10px;
+	> h3 {
+		margin: -10px -10px 10px;
+		padding: 10px;
+		background: @sidebar-background;
+		color: lighten(@sidebar-text-color, 20%);
+		text-transform: uppercase;
+		font-weight: normal;
+		line-height: 26px;
+	}
+}
+
+.product-details {
+	margin-top: 15px;
+}
+.promo-subtotal {
+	background: #f8f8f8;
+	padding: 10px;
+	border-top: 1px solid #e1e1e1;
+	margin: 15px -10px -10px;
+
+	.promos,
+	.subtotal {
+
+		.control-label {
+			float: none;
+			display: inline-block;
+		}
+		.controls {
+			margin-left: 20px;
+			display: inline-block;
+		}
+
+	}
+	.promos {
+		float: left;
+		width: 40%;
+	}
+	.subtotal {
+		float: right;
+		width: 40%;
+		text-align: right;
+	}
+}
+.grand-total {
+	margin: 15px 10px 0;
+	text-align: right;
+
+	.control-group {
+
+		.control-label {
+			float: none;
+			display: inline-block;
+		}
+		.controls {
+			margin-left: 20px;
+			display: inline-block;
+		}
+	}
+}

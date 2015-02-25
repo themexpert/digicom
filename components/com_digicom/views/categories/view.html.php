@@ -15,6 +15,7 @@ jimport ("joomla.application.component.view");
 class DigiComViewCategories extends DigiComView {
 
 	function display ($tpl =  null ) {
+		
 		$catid =  JFactory::getApplication()->input->get('cid',0);
 		$totalprods = 0; // 0 unlimited
 		$conf = $this->_models['config']->getConfigs();
@@ -22,7 +23,6 @@ class DigiComViewCategories extends DigiComView {
 		
 		$items = $this->_models['product']->getCategoryProducts($catid, $totalprods);
 		$prods = $items["items"];
-	
 		
 		$category = $this->_models['product']->getCategory();
 		
@@ -34,6 +34,7 @@ class DigiComViewCategories extends DigiComView {
 		$dispatcher	   = JDispatcher::getInstance();
 		$params 	   = $app->getParams('com_digicom');
 		$limitstart = 0;
+		
 		JPluginHelper::importPlugin('content');
 		$article = new stdClass;
 		

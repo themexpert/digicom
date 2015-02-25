@@ -47,17 +47,17 @@ $input->set('layout', 'dgform');
 					<div class="span9">
 						<div class="panel-box">
 							<?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
-							<?php echo $this->form->getControlGroup('image'); ?>
-							
-							<div class="control-group ">
-								<?php echo $this->form->getLabel('description'); ?>
-								<?php echo $this->form->getInput('description'); ?>
-							</div>
-							<div class="control-group ">
-								<?php echo $this->form->getLabel('fulldescription'); ?>
-								<?php echo $this->form->getInput('fulldescription'); ?>
-							</div>
-							<?php // Do not show the publishing options if the edit form is configured not to. ?>
+						<?php echo $this->form->getControlGroup('image'); ?>
+						
+						<div class="control-group ">
+							<?php echo $this->form->getLabel('description'); ?>
+							<?php echo $this->form->getInput('description'); ?>
+						</div>
+						<div class="control-group ">
+							<?php echo $this->form->getLabel('fulldescription'); ?>
+							<?php echo $this->form->getInput('fulldescription'); ?>
+						</div>
+						<?php // Do not show the publishing options if the edit form is configured not to. ?>
 						</div>
 						
 					</div>

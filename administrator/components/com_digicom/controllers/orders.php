@@ -27,7 +27,7 @@ class DigiComAdminControllerOrders extends DigiComAdminController
 		$this->registerTask( "", "listOrders" );
 		$this->registerTask( "show", "showOrder" );
 		$this->registerTask( "unpublish", "publish" );
-		$this->_model = $this->getModel( "Order" );
+		$this->_model = $this->getModel( "Orders" );
 		$this->_config = $this->getModel( "Config" );
 	}
 
@@ -171,6 +171,9 @@ class DigiComAdminControllerOrders extends DigiComAdminController
 
 
 	function add() {
+		$this->setRedirect('index.php?option=com_digicom&controller=orders&task=prepereNewOrder');
+		//$this->prepereNewOrder();
+		/*
 		$view = $this->getView( "Orders", "html" );
 		$view->setModel( $this->_model, true );
 		$model = $this->getModel( "Config" );
@@ -183,12 +186,16 @@ class DigiComAdminControllerOrders extends DigiComAdminController
 		$view->setModel( $model );
 		$view->setLayout( "addneworder" );
 		$view->addNewOrder();
+		*/
 	}
 
 
 	function prepereNewOrder() {
+		
 		$view = $this->getView( "Orders", "html" );
-		$view->setModel( $this->_model, true );
+		//$view->setModel( $this->_model, true );
+		$model = $this->getModel( "order" );
+		$view->setModel( $model,true );
 		$model = $this->getModel( "Config" );
 		$view->setModel( $model );
 		$model = $this->getModel('Customer');

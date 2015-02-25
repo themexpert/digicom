@@ -11,5 +11,5 @@ defined('_JEXEC') or die;
 ?>
 <a id="toggle_settings" href="javascript::void(0);" class="btn btn-small">
 	<span class="icon-options"></span>
-	<?php // echo JText::_('SETTINGS'); ?>
+	<?php echo JText::_('SETTINGS'); ?>
 </a>

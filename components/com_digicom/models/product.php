@@ -78,12 +78,49 @@ class DigiComModelProduct extends DigiComModel
 	function getProduct($id = 0){
 		$my = JFactory::getUser();
 		if(empty($this->_product)){
-			$this->_product = $this->getTable("Product");
+			$product = $this->getTable("Product");
 			if ($id) $this->_id = $id;
-			$this->_product->load($this->_id);
+			$product->load($this->_id);
 		}
-		
-		$this->_products = $this->_product;
+		//print_r($product);die;
+		if(!empty($product->bundle_source)){
+			
+			switch($product->bundle_source){
+				case 'category':
+					$BundleTable = JTable::getInstance('Bundle', 'Table');
+					$BundleList = $BundleTable->getFieldValues('product_id',$product->id,$product->bundle_source);
+					$bundle_ids = $BundleList->bundle_id;
+					
+					$db = $this->getDbo();
+					$query = $db->getQuery(true)
+						->select('*')
+						->from($db->quoteName('#__digicom_products'))
+						->where($db->quoteName('bundle_source').' IS NULL')
+						->where($db->quoteName('catid').' in ('.$bundle_ids.')');
+					$db->setQuery($query);
+					$product->bundleitems = $db->loadObjectList();
+					break;
+				case 'product':
+					
+					$BundleTable = JTable::getInstance('Bundle', 'Table');
+					$BundleList = $BundleTable->getFieldValues('product_id',$product->id,$product->bundle_source);
+					$bundle_ids = $BundleList->bundle_id;
+					
+					$db = $this->getDbo();
+					$query = $db->getQuery(true)
+						->select('*')
+						->from($db->quoteName('#__digicom_products'))
+						->where($db->quoteName('bundle_source').' IS NULL')
+						->where($db->quoteName('id').' in ('.$bundle_ids.')');
+					$db->setQuery($query);
+					$product->bundleitems = $db->loadObjectList();
+					
+					break;
+			}
+			
+		}
+		//print_r($product);die;
+		$this->_product = $product;
 		
 		return $this->_product;
 	}
@@ -109,13 +146,22 @@ class DigiComModelProduct extends DigiComModel
 
 		$date_today = time();
 
+		// Filter by published
 		$where[] = " published=1 ";
-		$where[] = " hide_public=0 ";
+		
+		// Filter by Publish date and Publish down date
 		$where[] = " (publish_up <= ".$date_today.") and (publish_down = 0 OR publish_down >= ".$date_today.") ";
 		
-		$configs =  $this->getInstance("Config", "digicomModel");
-		$configs = $configs->getConfigs();
-		$showfeatured_prod = $configs->get('showfeatured_prod',1);
+		// Filter by User ACL : Access Lavel		
+		// Implement View Level Access
+		$user = JFactory::getUser();
+		if (!$user->authorise('core.admin'))
+		{
+			$groups = implode(',', $user->getAuthorisedViewLevels());
+			$where[] = " access IN (" . $groups . ") ";
+		}
+		
+		$configs =  $this->getInstance("Config", "digicomModel")->getConfigs();
 
 		$sql = "select id from #__digicom_products where catid IN (".$catids.") " . (count($where) > 0 ? " and ": "") . implode (" and ", $where);
 		$this->_total = $this->_getListCount($sql);
@@ -123,19 +169,31 @@ class DigiComModelProduct extends DigiComModel
 		$orderby = JRequest::getVar('orderby', 'default' );
 
 		switch ( $orderby ) {
-			case 'id' :
-				$order_field = " id asc ";
-				break;
-
-			case 'latest' :
+			case 'rdate' :
 				$order_field = " id desc ";
 				break;
 
-			case 'name' :
+			case 'date' :
+				$order_field = " id asc ";
+				break;
+
+			case 'alpha' :
 				$order_field = " name asc ";
 				break;
 
-			case 'default' :
+			case 'ralpha' :
+				$order_field = " name desc ";
+				break;
+
+			case 'hits' :
+				$order_field = " hits desc ";
+				break;
+
+			case 'rhits' :
+				$order_field = " hits asc ";
+				break;
+
+			case 'order' :
 			default:
 				$order_field = " ordering asc ";
 				break;
@@ -143,11 +201,10 @@ class DigiComModelProduct extends DigiComModel
 		
 		$order = " order by " . $order_field;
 		$site_config = JFactory::getConfig();
-		$limit		= JRequest::getVar('limit', intval($site_config->get('list_limit',20)), '', 'int');
+		$limit		= JRequest::getVar('limit', intval($site_config->get('list_limit',3)), '', 'int');
 		$limitstart	= JRequest::getVar('limitstart', 0, '', 'int');
-		$pids = array();
 		
-		$limit = $configs->get('prodlayoutrow',3)*$configs->get('prodlayoutcol',3);
+		$pids = array();		
 		$pids = $this->_getList($sql.$order , $limitstart, $limit);
 		
 		if(isset($pids) && count($pids) > 0){
@@ -157,8 +214,7 @@ class DigiComModelProduct extends DigiComModel
 		}
 		
 		
-		// $pagination = new JPagination($totalprods,$limitstart,$limit);
-			
+		// $pagination = new JPagination($totalprods,$limitstart,$limit);	
 		$return = array('items' => $this->_products, 'total' => $totalprods, 'limit' => $limit,  'limitstart' => $limitstart);
 		return $return;
 	}

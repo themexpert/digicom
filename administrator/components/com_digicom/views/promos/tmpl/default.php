@@ -93,7 +93,7 @@ $document = JFactory::getDocument();
 
 						<th>
 							<?php echo JText::_('VIEWPROMODISCAMOUNT');?>
-						</th>						
+						</th>
 
 						<th>
 							<?php echo JText::_("VIEWORDERSSTATUS");?>

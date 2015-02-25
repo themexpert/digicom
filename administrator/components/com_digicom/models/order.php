@@ -14,7 +14,7 @@ defined( '_JEXEC' ) or die( "Go away." );
 jimport('joomla.application.component.modellist');
 jimport('joomla.utilities.date');
 
-class DigiComAdminModelOrder extends JModelList{
+class DigiComAdminModelOrder extends JModelForm{
 
 	protected $_context = 'com_digicom.Order';
 	var $_orders;
@@ -51,7 +51,54 @@ class DigiComAdminModelOrder extends JModelList{
 		$pagination->set('pages.stop',$nr_pages);
 		return $pagination;
 	}
+	
+	function getPromoCode(){
+		$db = JFactory::getDBO();
+		// Promocode
+		$sql = 'SELECT *, TRIM(code) AS alphabetical FROM #__digicom_promocodes WHERE published=1 ORDER BY alphabetical ASC';
+		$db->setQuery($sql);
+		$promocodes = $db->loadObjectList();
+		//echo "<pre>";var_dump($promocodes);die();
 
+		$promocode_valid[] = (object) array('text' => 'none', 'value' => 'none');
+		$nullDate = 0;
+
+		foreach($promocodes as $promo)
+		{
+			$timestart = $promo->codestart;
+			$timeend = $promo->codeend;
+			$limit = $promo->codelimit;
+			$used = $promo->used;
+			$now = time();
+
+			$promo_status = false;
+
+			if ( $timeend == 0)
+			{
+				$promo_status = true;
+			}
+			else
+			{
+				if ( $now < $timestart && ( $now <= $timeend || $timeend == $nullDate ) )
+				{
+					$promo_status = true;
+				}
+			}
+			if ($limit > 0 && $limit == $used)
+			{
+				$promo_status = false;
+			}
+
+			if ($promo_status)
+				$promocode_valid[] = (object) array( 'text' => $promo->code, 'value' => $promo->code );
+		}
+
+		return JHTML::_('select.genericlist',  $promocode_valid, 'promocode', 'class="inputbox" size="1" onchange="changePlain();" ', 'value', 'text', 'none');
+		
+
+		
+	}
+	
 	function getPromocodeByCode($code){
 		$sql = "SELECT id FROM #__digicom_promocodes WHERE code = '" . $code . "'";
 		$this->_db->setQuery( $sql );
@@ -602,12 +649,7 @@ class DigiComAdminModelOrder extends JModelList{
 		if(isset($req)){
 			foreach($req->pids as $item ) {
 				if (!empty($item[0])) {
-					if ( $item[1] == 'renewal' ) {
-						$sql = "SELECT * FROM #__digicom_products_renewals WHERE (product_id = " . $item[0] . " AND plan_id = " . $item[3] . ")";
-					} else {
-						$sql = "SELECT * FROM #__digicom_products_plans WHERE (product_id = " . $item[0] . " AND plan_id = " . $item[3] . ")";
-					}
-
+					$sql = "SELECT price FROM #__digicom_products WHERE product_id = '" . $item[0] ."')";
 					$this->_db->setQuery( $sql );
 					$plan = $this->_db->loadObject();
 
@@ -1260,4 +1302,27 @@ class DigiComAdminModelOrder extends JModelList{
 
 	}
 
+
+	
+	/**
+	 * Method to get a form object.
+	 *
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 *
+	 * @return  mixed  A JForm object on success, false on failure
+	 *
+	 * @since	3.2
+	 */
+	public function getForm($data = array(), $loadData = true)
+	{
+		$form = $this->loadForm('com_digicom.order', 'order', array('control' => '', 'load_data' => $loadData));
+		
+		if (empty($form))
+		{
+			return false;
+		}
+		
+		return $form;
+	}
 }

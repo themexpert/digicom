@@ -15,13 +15,14 @@ jimport ("joomla.application.component.view");
 class DigiComViewProfile extends DigiComView {
 
 	function display ($tpl =  null ) {
+		/*
 		JToolBarHelper::title(JText::_('Customers Manager'), 'generic.png');
 		JToolBarHelper::deleteList();
 		JToolBarHelper::editListX();
 		JToolBarHelper::addNewX();
 		JToolBarHelper::publishList();
 		JToolBarHelper::unpublishList();
-
+		*/
 		$customers = $this->get('listCustomers');
 		$this->assignRef('custs', $customers);
 		parent::display($tpl);

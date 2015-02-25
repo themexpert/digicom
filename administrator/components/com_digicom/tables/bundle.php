@@ -79,7 +79,7 @@ class TableBundle extends JTable
     * get all files list based on req
     */
     
-    public function getList($field = 'product_id',$value){
+    public function getList($field = 'product_id',$value,$bundle_type=null){
         $db = $this->getDbo();
         $query = $db->getQuery(true)
             ->select('b.bundle_id as bundle_id')
@@ -89,8 +89,28 @@ class TableBundle extends JTable
             ->from($db->quoteName('#__digicom_products').' as p')
             ->where($db->quoteName('b.'.$field).'='.$value)
             ->where($db->quoteName('p.id').'=b.bundle_id');
+		if(!empty($bundle_type)){
+			$query->where($db->quoteName('b.bundle_type').'="'.$bundle_type.'"');
+		}
         $db->setQuery($query);
         return $db->loadObjectList();
+    }
+	
+    /*
+    * get all files list based on req
+    */
+    
+    public function getFieldValues($field = 'product_id',$value,$bundle_type=null){
+        $db = $this->getDbo();
+        $query = $db->getQuery(true)
+            ->select('GROUP_CONCAT(bundle_id) as bundle_id')
+            ->from($db->quoteName('#__digicom_products_bundle'))
+            ->where($db->quoteName($field).'='.$value);
+		if(!empty($bundle_type)){
+			$query->where($db->quoteName('bundle_type').'="'.$bundle_type.'"');
+		}
+        $db->setQuery($query);
+        return $db->loadObject();
     }
     
 }

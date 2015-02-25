@@ -40,7 +40,7 @@ function updateCart()
 {
 	promocode = document.cart_form.promocode.value;
 
-	var url = "index.php?option=com_digicom&controller=Cart&task=updateCart&promocode="+promocode+"&from=ajax";
+	var url = "index.php?option=com_digicom&view=cart&task=updateCart&promocode="+promocode+"&from=ajax";
 	var req = new Request.HTML({
 		method: 'get',
 		url: url,
@@ -58,7 +58,7 @@ function updateCart()
 
 function deleteFromCart(cartid)
 {
-	var url = 'index.php?option=com_digicom&controller=Cart&task=deleteFromCart&from=ajax&cartid='+cartid;
+	var url = 'index.php?option=com_digicom&view=cart&task=deleteFromCart&from=ajax&cartid='+cartid;
 	var req = new Request.HTML({
 		method: 'get',
 		url: url,
@@ -97,24 +97,11 @@ function createPopUp(pid, cid, site, renew, renewlicid, itemid, to_cart)
 	divbody.id = "cart_body";
 	divbody.className = "modal-body";
 
-	if(renew == "renew")
-	{
-		renew = "1";
-	}
-
-	var url = 'index.php?option=com_digicom&controller=Cart&task=add'+
+	var url = 'index.php?option=com_digicom&view=cart&task=add'+
 						  '&from=ajax'+
 						  '&pid='+pid+
-						  '&cid='+cid+
-						  '&renewlicid='+renewlicid+
-						  '&renew='+renew;
-						  
-	if(eval(document.getElementById("plan_id")))
-	{
-		plan_id = document.getElementById("plan_id").value;
-		url += '&plan_id='+plan_id;
-	}
-
+						  '&cid='+cid;
+	console.log(req);
 	var req = new Request.HTML({
 		method: 'get',
 		url: url,
@@ -223,7 +210,7 @@ function ajaxRequest(Url,DivId)
 	}
 
 function update_cart(item_id) {
-	var url = "index.php?option=com_digicom&controller=Cart&task=getCartItem&cid="+item_id;
+	var url = "index.php?option=com_digicom&view=cart&task=getCartItem&cid="+item_id;
 
 	var plan_id = document.getElementById('plan_id'+item_id);
 	var plan_query = '';
@@ -275,7 +262,7 @@ function grayBoxiJoomla(link_element, width, height){
 }
 
 function changeImage(position, pid, width, height){
-	var url = 'index.php?option=com_digicom&controller=Products&task=previwimage&tmpl=component&position='+position+'&pid='+pid;
+	var url = 'index.php?option=com_digicom&view=products&task=previwimage&tmpl=component&position='+position+'&pid='+pid;
 
 	var req = new Request.HTML({
 		method: 'get',
@@ -289,7 +276,7 @@ function changeImage(position, pid, width, height){
 }
 
 function refresCartModule(){
-	var url = 'index.php?option=com_digicom&controller=Cart&task=get_cart_content';
+	var url = 'index.php?option=com_digicom&view=cart&task=get_cart_content';
 	if( document.getElementById('mod_digicom_cart_wrap') ) {
 		var req = new Request.HTML({
 			method: 'get',

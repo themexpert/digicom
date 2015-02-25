@@ -66,29 +66,29 @@ $input->set('layout', 'dgform');
 							<div class="span6">
 								<h3><?php echo JText::_( 'CUSTOMER_DETAILS' ); ?></h3>
 								<div class="control-group">
-									<label class="control-label"><?php echo JText::_( 'VIEWCUSTOMERUSERID' ); ?><span class="error">*</span></label>
+									<label class="control-label"><?php echo JText::_( 'VIEWCUSTOMERID' ); ?></label>
 									<div class="controls">
 										<?php echo $cust->id; ?>
 									</div>
 								</div>
 								<div class="control-group">
-									<label class="control-label"><?php echo JText::_( 'VIEWCUSTOMERUSERNAME' ); ?><span class="error">*</span></label>
+									<label class="control-label"><?php echo JText::_( 'VIEWCUSTOMERUSERNAME' ); ?></label>
 									<div class="controls">
 										<?php echo $user["username"]; ?>
 									</div>
 								</div>
 
 								<div class="control-group">
-									<label class="control-label"><?php echo JText::_( "VIEWCUSTOMERNAME" ); ?><span class="error">*</span></label>
+									<label class="control-label"><?php echo JText::_( "VIEWCUSTOMERNAME" ); ?></label>
 									<div class="controls">
 										<?php echo $cust->firstname . ' ' . $cust->lastname ?>
 									</div>
 								</div>
 
 								<div class="control-group">
-									<label class="control-label"><?php echo JText::_( "VIEWCUSTOMERREGISTERED" ); ?><span class="error">*</span></label>
+									<label class="control-label"><?php echo JText::_( "VIEWCUSTOMERREGISTERED" ); ?></label>
 									<div class="controls">
-										Registration date
+										<?php echo $cust->registerDate; ?>
 									</div>
 								</div>
 
@@ -96,7 +96,7 @@ $input->set('layout', 'dgform');
 
 								<div class="control-group">
 									<label class="control-label">
-										<?php echo JText::_( 'VIEWCUSTOMEREMAIL' );?><span class="error">*</span>
+										<?php echo JText::_( 'VIEWCUSTOMEREMAIL' );?>
 									</label>
 									<div class="controls">
 										<?php echo $user["email"]; ?>
@@ -111,18 +111,24 @@ $input->set('layout', 'dgform');
 								<h3><?php echo JText::_( "VIEWCUSTOMERBILLING" ); ?></h3>
 								<div class="control-group">
 									<label class="control-label">
-										<?php echo JText::_( "VIEWCUSTOMERPOC" ); ?><span class="error">*</span>
+										<?php echo JText::_( "VIEWCUSTOMERPOC" ); ?>
 									</label>
 									<div class="controls">
-										<div class="radio btn-group btn-group-yesno">
-											<input type="radio" value="1" checked="<?php echo (($cust->person != 0) ? "checked" : ""); ?>">
-											<label class="btn"><?php echo JText::_( "VIEWCUSTOMERIMPERSON" ); ?></label>
-											<input type="radio" value="0" checked="<?php echo (($cust->person == 0) ? "checked" : ""); ?>">
-											<label class="btn"><?php echo JText::_( "VIEWCUSTOMERIMCOMPANY" ); ?></label>
-										</div>
+										<fieldset id="person" class="radio btn-group btn-group-yesno">
+											<label for="person1" name="person" class="btn<?php echo (($cust->person != 0 or $cust->person == 1 or $cust->person == '') ? " active btn-success" : ""); ?>">
+												<input type="radio" id="person1" value="1" <?php echo (($cust->person != 0 or $cust->person == 1 or $cust->person == '') ? "checked='checked'" : ""); ?>>
+												<?php echo JText::_( "VIEWCUSTOMERIMPERSON" ); ?>
+											</label>
+											
+											<label for="person0" name="person" class="btn<?php echo (($cust->person == 0) ? " active btn-success" : ""); ?>">
+												<input type="radio" id="person0" value="0" <?php echo (($cust->person == 0) ? "checked='checked'" : ""); ?>>
+												<?php echo JText::_( "VIEWCUSTOMERIMCOMPANY" ); ?>
+											</label>											
+										</fieldset>
 									</div>
+									
 								</div>
-
+								
 								<div class="control-group">
 									<label class="control-label"><?php echo JText::_( "VIEWCUSTOMERCOMPANY" ); ?><b></b></label>
 									<div class="controls">
@@ -138,9 +144,16 @@ $input->set('layout', 'dgform');
 								</div>
 
 								<div class="control-group">
-									<label for="" class="control-label"><?php echo JText::_( "VIEWCUSTOMERCOUNTRY" ); ?><span class="error">*</span></label>
+									<label for="" class="control-label"><?php echo JText::_( "VIEWCUSTOMERCOUNTRY" ); ?></label>
 									<div class="controls">
 										<?php echo $this->lists['country_option']; ?>
+									</div>
+								</div>
+								
+								<div class="control-group">
+									<label for="" class="control-label"><?php echo JText::_( "VIEWCONFIGTAXNUM" ); ?></label>
+									<div class="controls">
+										<input name="taxnum" type="text" id="taxnum" size="30" value="<?php echo $cust->taxnum; ?>">
 									</div>
 								</div>
 

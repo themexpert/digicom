@@ -27,27 +27,6 @@ class DigiComModelConfig extends DigiComModel
 	
 		$comInfo = JComponentHelper::getComponent('com_digicom');
 		$this->_configs = $comInfo->params;
-		
-		$view = JRequest::getWord('view');
-		$lay = JRequest::getWord('layout');
-
-		if (strlen(trim($lay)) > 0) {
-			if (strtolower(trim($view)) == "categories")
-			switch(strtolower($lay)){
-				case "list":
-					$this->_configs->set('catlayoutstyle',0);
-					break;
-		
-				case "listthumbs":
-					$this->_configs->set('catlayoutstyle',1);
-					break;
-		
-				case "dropdown":
-					$this->_configs->set('catlayoutstyle',2);
-					break;
-
-			}
-		}
 		return $this->_configs;
 
 	}

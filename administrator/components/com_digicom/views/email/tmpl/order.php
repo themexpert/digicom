@@ -40,11 +40,11 @@ $input->set('layout', 'dgform');
 				
 				<div class="tab-content">
 					<div class="tab-pane active">
-						<div class="alert alert-info">
-						<?php echo JText::_('COM_DIGICOM_ORDEREMAIL_TIP'); ?>
-						</div>
+				<div class="alert alert-info">
+					<?php echo JText::_('COM_DIGICOM_ORDEREMAIL_TIP'); ?>
+				</div>
 
-						<div class="row-fluid">
+		<div class="row-fluid">
 			<div class="span8">
 				<fieldset class="adminform">
 					
@@ -131,7 +131,7 @@ $input->set('layout', 'dgform');
 				</div>
 			</div>
 		</div>
-					</div>
+	</div>
 				</div>
 				
 			</div>

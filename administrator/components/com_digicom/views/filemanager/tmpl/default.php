@@ -40,16 +40,16 @@ $mosConfig_absolute_path = JPATH_ROOT;
 							}).elfinder('instance');
 						});
 					</script>
-		<form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=filemanager&no_html=1'); ?>" method="post" class="clearfix" name="adminForm" id="adminForm">
-			
+					<form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=filemanager&no_html=1'); ?>" method="post" class="clearfix" name="adminForm" id="adminForm">
+						
 			<div id="">
-				<!--// Start Elfinder-->
-				<div id="elfinder"></div>
-				
-				<input type="hidden" name="task" value="" />
-				<input type="hidden" name="boxchecked" value="0" />
-				<?php echo JHtml::_('form.token'); ?>
-			</div>
-		</form>
+							<!--// Start Elfinder-->
+							<div id="elfinder"></div>
+							
+							<input type="hidden" name="task" value="" />
+							<input type="hidden" name="boxchecked" value="0" />
+							<?php echo JHtml::_('form.token'); ?>
+						</div>
+					</form>
 				
 	</div>

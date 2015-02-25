@@ -69,7 +69,7 @@ class DigiComAdminViewOrders extends DigiComView
 		
 		JToolBarHelper::Cancel();
 		$db = JFactory::getDBO();
-		$order =  $this->_models['order']->getOrder();
+		$order =  $this->_models['orders']->getOrder();
 		
 		$this->assign( "order", $order );
 		$configs =  $this->_models['config']->getConfigs();
@@ -93,97 +93,36 @@ class DigiComAdminViewOrders extends DigiComView
 	function prepereNewOrder( $tpl = null )
 	{
 
-		$db = JFactory::getDBO();
-		JHtml::_( 'behavior.modal' );
-
-		JToolBarHelper::title( JText::_( 'Create Order' ), 'generic.png' );
-		JToolBarHelper::cancel();
-
-		// get user info
-		$customer_model = $this->getModel('Customer');
-		$userid = JRequest::getVar('userid',0);
-		$cust = $customer_model->getUserByID($userid);
-		$this->assign( "cust", $cust );
-
-		// Subcription type
-		$subscr_types[] = JHTML::_('select.option',  'new',  'New Subcription' );
-		$subscr_types[] = JHTML::_('select.option',  'new',  'Renewal' );
-		$subscr_types = JHTML::_('select.genericlist',  $subscr_types, 'subscr_type', 'class="inputbox" size="1" ', 'value', 'text');
-		$this->assign( "subscr_types", $subscr_types );
-
-		// License to renew
-		$licenses[] = JHTML::_('select.option',  'none',  'none' );
-		$licenses = JHTML::_('select.genericlist',  $licenses, 'subscr_type', 'class="inputbox" size="1" ', 'value', 'text');
-		$this->assign( "licenses", $licenses );
-
-		// Subcription plain
-		$plans[] = JHTML::_('select.option',  'none',  'none' );
-		$plans = JHTML::_('select.genericlist',  $plans, 'subscr_type', 'class="inputbox" size="1" ', 'value', 'text');
-		$this->assign( "plans", $plans );
-
-		// get plugin info
-		$plugin_items = JPluginHelper::getPlugin( 'digicompayment' );
-		$plugins = array();
-		foreach ($plugin_items as $plugin_item) {
-			$plugin_params = new JRegistry($plugin_item->params);
-			$pluginname = $plugin_params->get($plugin_item->name.'_label');
-			$plugins[] = JHTML::_('select.option',  $plugin_item->name,  $pluginname );
-		}
-		$plugins = JHTML::_('select.genericlist',  $plugins, 'processor', 'class="inputbox" size="1" ', 'value', 'text');
-		$this->assign( "plugins", $plugins );
-
-		// Promocode
-		$sql = 'SELECT *, TRIM(code) AS alphabetical
-				FROM #__digicom_promocodes
-				WHERE published=1
-				ORDER BY alphabetical ASC';
-		$db->setQuery($sql);
-		$promocodes = $db->loadObjectList();
-		// echo "<pre>";var_dump($promocodes);die();
-
-		$promocode_valid[] = (object) array('text' => 'none', 'value' => 'none');
-		$nullDate = 0;
-
-		foreach($promocodes as $promo)
-		{
-			$timestart = $promo->codestart;
-			$timeend = $promo->codeend;
-			$limit = $promo->codelimit;
-			$used = $promo->used;
-			$now = time();
-
-			$promo_status = false;
-
-			if ( $timeend == 0)
-			{
-				$promo_status = true;
-			}
-			else
-			{
-				if ( $now < $timestart && ( $now <= $timeend || $timeend == $nullDate ) )
-				{
-					$promo_status = true;
-				}
-			}
-			if ($limit > 0 && $limit == $used)
-			{
-				$promo_status = false;
-			}
-
-			if ($promo_status)
-				$promocode_valid[] = (object) array( 'text' => $promo->code, 'value' => $promo->code );
-		}
-
-		$promocode = JHTML::_('select.genericlist',  $promocode_valid, 'promocode', 'class="inputbox" size="1" onchange="changePlain();" ', 'value', 'text', 'none');
-		$this->assign( "promocode", $promocode );
-
-		// Amount paid
-		$amount_paid = '$ <input type="text" name="amount_paid" value=""/>';
-		$this->assign( "amount_paid", $amount_paid );
-
+		
+		$form = $this->get('Form');
+		$this->assign( "form", $form );
+		
 		// configs
 		$configs =  $this->_models['config']->getConfigs();
 		$this->assign( "configs", $configs );
+		
+		// promocode
+		$promocode =  $this->get('PromoCode');
+		$this->assign( "promocode", $promocode );
+		
+		
+		
+		JToolBarHelper::title( JText::_( 'COM_DIGICOM_CREATE_NEW_ORDER' ), 'generic.png' );
+		$bar = JToolBar::getInstance('toolbar');
+		// Instantiate a new JLayoutFile instance and render the layout
+		$layout = new JLayoutFile('toolbar.title');
+		$title=array(
+			'title' => JText::_( 'COM_DIGICOM_CREATE_NEW_ORDER' ),
+			'class' => 'title'
+		);
+		$bar->appendButton('Custom', $layout->render($title), 'title');
+		
+		JToolBarHelper::save();
+		JToolBarHelper::cancel();
+		
+		DigiComAdminHelper::addSubmenu('orders');
+		$this->sidebar = JHtmlSidebar::render();
+		
 		parent::display( $tpl );
 	}
 
@@ -220,14 +159,8 @@ class DigiComAdminViewOrders extends DigiComView
 		// Subcription type
 		$subscr_types_options[] = JHTML::_('select.option',  'new',  'New Subcription' );
 		$subscr_types_options[] = JHTML::_('select.option',  'renewal',  'Renewal' );
-
-		$nr_licenses = $this->getCustomerLicensesCount();
-		$subscr_types = "";
-		if($nr_licenses != "0"){
-			$subscr_types = JHTML::_('select.genericlist',  $subscr_types_options, 'subscr_type_select['.$id_rand.']', 'class="inputbox" size="1" onchange="show_licences_renew(\''.$id_rand.'\')"', 'value', 'text');
-		}
-
-		$this->assign( "subscr_types", $subscr_types );
+		
+		$this->assign( "subscr_types", '' );
 
 		// License to renew
 		$licenses[] = JHTML::_('select.option',  'none',  'none' );

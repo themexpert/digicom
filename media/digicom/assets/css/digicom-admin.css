@@ -553,3 +553,70 @@ body.sidebar-right-collapse {
   background: #edd70c;
   color: #fff;
 }
+/* Order page styling */
+body.layout-neworder .adminform {
+  margin: -15px -5px 10px;
+}
+body.layout-neworder .add-product .product-name {
+  text-transform: capitalize;
+  font-size: 14px;
+  line-height: 26px;
+}
+body.layout-neworder .add-product .btn-group {
+  margin-left: 20px;
+}
+.order-details,
+.product-details {
+  background: #fff;
+  padding: 10px;
+}
+.order-details > h3,
+.product-details > h3 {
+  margin: -10px -10px 10px;
+  padding: 10px;
+  background: #3f3955;
+  color: #a09bad;
+  text-transform: uppercase;
+  font-weight: normal;
+  line-height: 26px;
+}
+.product-details {
+  margin-top: 15px;
+}
+.promo-subtotal {
+  background: #f8f8f8;
+  padding: 10px;
+  border-top: 1px solid #e1e1e1;
+  margin: 15px -10px -10px;
+}
+.promo-subtotal .promos .control-label,
+.promo-subtotal .subtotal .control-label {
+  float: none;
+  display: inline-block;
+}
+.promo-subtotal .promos .controls,
+.promo-subtotal .subtotal .controls {
+  margin-left: 20px;
+  display: inline-block;
+}
+.promo-subtotal .promos {
+  float: left;
+  width: 40%;
+}
+.promo-subtotal .subtotal {
+  float: right;
+  width: 40%;
+  text-align: right;
+}
+.grand-total {
+  margin: 15px 10px 0;
+  text-align: right;
+}
+.grand-total .control-group .control-label {
+  float: none;
+  display: inline-block;
+}
+.grand-total .control-group .controls {
+  margin-left: 20px;
+  display: inline-block;
+}

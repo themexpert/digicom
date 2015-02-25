@@ -59,7 +59,7 @@ $input->set('layout', 'dgform');
 			<?php echo JHtml::_('bootstrap.startTabSet', 'digicomTab', array('active' => 'general')); ?>
 
 				<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'general', JText::_('COM_DIGICOM_PRODUCT_CONTENT', true)); ?>
-
+				
 				<?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
 				
 				<div class="form-inline form-inline-header">
@@ -100,6 +100,7 @@ $input->set('layout', 'dgform');
 		<input type="hidden" name="option" value="com_digicom" />
 		<input type="hidden" name="jform[id]" value="<?php echo $this->item->id; ?>" />
 		<input type="hidden" name="task" value="" />
+		<input type="hidden" name="jform[product_type]" value="<?php echo $this->item->product_type; ?>" />
 		<input type="hidden" name="controller" value="products" />
 		<input type="hidden" name="state_filter" value="<?php echo JRequest::getVar("state_filter", "-1"); ?>" />
 		<input type="hidden" name="return" value="<?php echo $input->getCmd('return'); ?>" />		

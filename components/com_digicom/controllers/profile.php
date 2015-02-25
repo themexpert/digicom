@@ -25,7 +25,7 @@ class DigiComControllerProfile extends DigiComController
 		parent::__construct();
 
 		$this->registerTask("add", "edit");
-		$this->registerTask("", "edit");
+		$this->registerTask("", "login");
 		$this->registerTask("register", "edit");
 		$this->registerTask("saveCustomer", "save");
 		$this->registerTask ("login_register", "loginRegister");
@@ -224,14 +224,8 @@ class DigiComControllerProfile extends DigiComController
 
 		switch($return)
 		{
-			case "licensesreg":
-				$licid = JRequest::getVar("licid", "0");
-				$link = "index.php?option=com_digicom&view=downloads&task=register&licid=".$licid."&no_html=1&tmpl=component&Itemid=" . $Itemid . "&processor=" . $processor;
-				break;
-
-			case "digicomLicenses":
-			case "licenses":
-				$link = "index.php?option=com_digicom&view=downloads" . "&Itemid=" . $Itemid . "&processor=" . $processor;
+			case "downloads":
+				$link = "index.php?option=com_digicom&view=downloads" . "&Itemid=" . $Itemid;
 				break;
 
 			case "checkout":

@@ -103,6 +103,7 @@ class DigiComSessionHelper {
 
 		$this->_sid = $sid;
 		$this->_Itemid = $Itemid;
+		//print_r($my->registerDate);die;
 		$this->_user = $my;
 		if ($this->_user->id > 0) {
 			$sql ="select * from #__digicom_customers where id='".$this->_user->id."'";
@@ -123,6 +124,7 @@ class DigiComSessionHelper {
 		if (!isset($this->_customer->country)) $this->_customer->country = '';
 		if (!isset($this->_customer->state)) $this->_customer->state = '';
 		if (!isset($this->_customer->zipcode)) $this->_customer->zipcode = '';
+		if (!isset($this->_customer->registerDate)) $this->_customer->registerDate = $my->registerDate;
 		
 		if (!isset($this->_customer->id) && $my->id ) $this->_customer->id = $my->id;
 		
