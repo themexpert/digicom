@@ -38,7 +38,7 @@ class DigiComAdminViewCategories extends DigiComView {
 		$this->addToolbar();
 		
 		DigiComAdminHelper::addSubmenu('categories');
-		$this->sidebar = JHtmlSidebar::render();
+		$this->sidebar = DigiComAdminHelper::renderSidebar();
 		
 		parent::display($tpl);
 	}
@@ -84,7 +84,7 @@ class DigiComAdminViewCategories extends DigiComView {
 		}		
 
 		DigiComAdminHelper::addSubmenu('categories');
-		$this->sidebar = JHtmlSidebar::render();
+		$this->sidebar = DigiComAdminHelper::renderSidebar();
 
 		parent::display($tpl);
 

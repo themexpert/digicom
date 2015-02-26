@@ -27,7 +27,7 @@ class DigiComAdminViewAbout extends DigiComView {
 		$bar->appendButton('Custom', $layout->render($title), 'title');
 		
 		DigiComAdminHelper::addSubmenu('about');
-		$this->sidebar = JHtmlSidebar::render();
+		$this->sidebar = DigiComAdminHelper::renderSidebar();
 		
 		parent::display($tpl);
 	}

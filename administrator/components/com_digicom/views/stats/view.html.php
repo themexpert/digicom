@@ -37,7 +37,7 @@ class DigiComAdminViewStats extends DigiComView {
 		$this->assign("configs", $configs);
 		
 		DigiComAdminHelper::addSubmenu('stats');
-		$this->sidebar = JHtmlSidebar::render();
+		$this->sidebar = DigiComAdminHelper::renderSidebar();
 		
 		parent::display($tpl);
 	}

@@ -56,7 +56,7 @@ class DigiComAdminViewLogs extends DigiComView
 		$this->assign( "configs", $configs );
 		
 		DigiComAdminHelper::addSubmenu('logs');
-		$this->sidebar = JHtmlSidebar::render();
+		$this->sidebar = DigiComAdminHelper::renderSidebar();
 		
 		parent::display($tpl);
 	}

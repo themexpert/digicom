@@ -50,7 +50,7 @@ class DigiComAdminViewFileManager extends DigiComView {
 		$tmpl = JRequest::getCmd('tmpl','');
 		if($tmpl != 'component'){
 			DigiComAdminHelper::addSubmenu('filemanager');
-			$this->sidebar = JHtmlSidebar::render();
+			$this->sidebar = DigiComAdminHelper::renderSidebar();
 		}
 		
 		parent::display($tpl);

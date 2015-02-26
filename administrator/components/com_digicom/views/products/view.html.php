@@ -53,7 +53,7 @@ class DigiComAdminViewProducts extends DigiComView
 		$this->addToolbar();
 		
 		DigiComAdminHelper::addSubmenu('products');
-		$this->sidebar = JHtmlSidebar::render();
+		$this->sidebar = DigiComAdminHelper::renderSidebar();
 		
 		parent::display( $tpl );
 	}
@@ -143,7 +143,7 @@ class DigiComAdminViewProducts extends DigiComView
 		//set toolber
 		$this->addToolbarEdit($product);
 		DigiComAdminHelper::addSubmenu('products');
-		$this->sidebar = JHtmlSidebar::render();
+		$this->sidebar = DigiComAdminHelper::renderSidebar();
 
 		
 		parent::display( $tpl );

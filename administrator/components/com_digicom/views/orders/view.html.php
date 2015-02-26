@@ -50,7 +50,7 @@ class DigiComAdminViewOrders extends DigiComView
 		$this->addToolbar();
 		
 		DigiComAdminHelper::addSubmenu('orders');
-		$this->sidebar = JHtmlSidebar::render();
+		$this->sidebar = DigiComAdminHelper::renderSidebar();
 		
 		parent::display( $tpl );
 	}
@@ -332,7 +332,7 @@ class DigiComAdminViewOrders extends DigiComView
 		$this->assign( "tax", '0' );
 
 		DigiComAdminHelper::addSubmenu('orders');
-		$this->sidebar = JHtmlSidebar::render();
+		$this->sidebar = DigiComAdminHelper::renderSidebar();
 
 		parent::display( $tpl );
 	}

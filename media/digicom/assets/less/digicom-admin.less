@@ -1,9 +1,8 @@
 // Color Variables
-@body-background: #f1eeff;
-@sidebar-background: #3f3955;
-@sidebar-active-background: #463f5b;
-@sidebar-active-border: #edd70c; 
-@sidebar-text-color: #6c667c;
+@body-background: #f5f5f5;
+@sidebar-background: #3b2d38;
+@sidebar-active-background: #24aeed;
+@sidebar-text-color: #a39f98;
 @sidebar-active-text-color: #fbfbfb;
 
 // Utility Classes
@@ -31,7 +30,7 @@ td.order input {
 
 /* General FIX */
 #content [class^="icon-"], #content [class*=" icon-"] {
-	color: @sidebar-active-border;
+	color: @sidebar-active-background;
 }
 #content .btn [class^="icon-"], #content .btn [class*=" icon-"] {
 	color: inherit;
@@ -186,18 +185,20 @@ body.com_digicom {
 		background: @sidebar-background;
 		margin-left: 0;
 		width: 200px;
-		overflow: hidden;
 		color: @sidebar-text-color;
 		position: fixed;
 		top: 76px;
 		bottom: 28px;
 		left: 0;
+		overflow: hidden;
+		border: 0;
 
 		#sidebar {
 			padding: 15px 0;
 
 			#submenu {
 				width: 200px;
+				box-sizing: border-box;
 			}
 			.sidebar-nav .nav-list {
 				> li > a {
@@ -207,8 +208,20 @@ body.com_digicom {
 					line-height: 24px;
 					text-shadow: none;
 					> span + span {display: inline-block;}
+
+					&.dglogo {
+						background: url(../images/dglogo-white-176x48.png) no-repeat 16px 0;
+						background-size: 80%;
+						font-size: 0;
+						text-indent: -9999px;
+						height: 43px;
+						border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+						box-shadow: 0 2px 1px rgba(0, 0, 0, 0.15);
+						margin-bottom: 5px;
+					}
+
 					&:hover,&:focus {
-						background: inherit;
+						background-color: inherit;
 						color: @sidebar-active-text-color;
 						[class^="icon-"], [class*=" icon-"] {color: @sidebar-active-text-color;}
 					}
@@ -222,9 +235,20 @@ body.com_digicom {
 				> li.active > a {
 					background: @sidebar-active-background;
 					color: @sidebar-active-text-color;
-					border-left: 4px solid @sidebar-active-border;
+					position: relative;
 					> [class^="icon-"], 
 					> [class*=" icon-"] {color: @sidebar-active-text-color;}
+
+					&:after {
+						content: "";
+						display: block;
+						position: absolute;
+						right: 0px;
+						top: 7px;
+						border-style: solid;
+						border-width: 10px;
+						border-color: transparent #f5f5f5 transparent transparent;
+					}
 				} 
 			}
 		}
@@ -264,7 +288,12 @@ body.com_digicom {
 		#j-sidebar-container{ 
 			width: 38px; 
 			#sidebar {
-				.sidebar-nav .nav-list > li.active > a {border: 0;background: @sidebar-active-border;}
+				.sidebar-nav .nav-list > li > a.dglogo {
+					background: url(../images/dglogo-white-36x36.png) no-repeat 6px 0px;
+					background-size: 50%;
+					height: 28px;
+					width: 30px;
+				}
 			}
 		}
 		#j-main-container { margin-left: 38px; }
@@ -299,32 +328,6 @@ body.com_digicom {
 		box-shadow: none;
 	}
 
-	/* elFinder File manager style */
-	.elfinder {
-		border-radius: 0;
-		.elfinder-navbar {background: #f4f5f7;}
-	}
-
-	.elfinder-toolbar {
-		background: #f4f5f7;
-		border-style: solid;
-		border-radius: 0;
-		border-width: 0 0 1px;
-		border-color: #ddd;
-		padding: 10px 5px;
-		
-		.ui-state-default {background: none;}
-
-		input[type="text"] {
-			margin: 0;
-			height: auto;
-			line-height: 1;
-		}
-	}
-
-	.elfinder-buttonset {
-		border-radius: 0;
-	}
 
 	/* Form elements Styling */
 	textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], 
@@ -375,7 +378,7 @@ body.layout-dgform {
 			}
 			.active a,
 			.active a:hover {
-				border-top: 4px solid @sidebar-active-border; 
+				border-top: 4px solid @sidebar-active-background; 
 				color: @sidebar-text-color;
 				background: #fff;
 			}
@@ -429,7 +432,7 @@ body.layout-dgform {
 			transition: all 0.3s ease-in-out;
 
 			&:hover {
-				color: @sidebar-active-border;
+				color: @sidebar-active-background;
 				text-decoration: none;
 				padding-left: 5px;
 
@@ -444,6 +447,35 @@ body.sidebar-right-collapse {
 	-moz-transform: translateX(-200px);
 	-webkit-transform: translateX(-200px);
 	transform: translateX(-200px);	
+}
+
+/* elFinder File manager style */
+#elfinder {
+	.elfinder {
+		border-radius: 0;
+		.elfinder-navbar {background: #f4f5f7;}
+	}
+
+	.elfinder-toolbar {
+		background: #f4f5f7;
+		border-style: solid;
+		border-radius: 0;
+		border-width: 0 0 1px;
+		border-color: #ddd;
+		padding: 10px 5px;
+		
+		.ui-state-default {background: none;}
+
+		input[type="text"] {
+			margin: 0;
+			height: auto;
+			line-height: 1;
+		}
+	}
+
+	.elfinder-buttonset {
+		border-radius: 0;
+	}
 }
 
 /* Dashboard Styling */
@@ -504,7 +536,9 @@ body.sidebar-right-collapse {
 
 		}
 		&+li {border-left: 1px solid #eee;}
-		&.active a {background: @sidebar-active-border;color: #fff;}
+		&.active a,
+		&.active a:focus,
+		&.active a:hover {background: @sidebar-active-background;color: #fff;}
 	}
 }
 
@@ -588,6 +622,19 @@ body.layout-neworder {
 	}
 }
 
+/* About page styling */
+.about-dglogo {
+	margin-bottom: 15px;
+	a {
+		display: block;
+		background: url(../images/dglogo-250x68.png) no-repeat;
+		width: 250px;
+		height: 68px;
+		margin: 0 auto;
+		font-size: 0;
+		text-indent: -9999px;
+	}
+}
 
 /* Responsive Styling */
 @media (min-width: 1200px) {

@@ -17,7 +17,7 @@ class DigiComAdminViewEmail extends DigiComView {
 	function display($tpl =  null){
 		
 		DigiComAdminHelper::addSubmenu('email');
-		$this->sidebar = JHtmlSidebar::render();
+		$this->sidebar = DigiComAdminHelper::renderSidebar();
 		
 		$type = JRequest::getVar("type", "");
 		

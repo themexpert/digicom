@@ -43,7 +43,7 @@ class DigiComAdminViewCustomers extends DigiComView {
 		$this->addToolbar();
 		
 		DigiComAdminHelper::addSubmenu('customers');
-		$this->sidebar = JHtmlSidebar::render();
+		$this->sidebar = DigiComAdminHelper::renderSidebar();
 		
 		parent::display($tpl);
 
@@ -132,7 +132,7 @@ class DigiComAdminViewCustomers extends DigiComView {
 		$this->assign ("keyword", $keyword);
 		
 		DigiComAdminHelper::addSubmenu('customers');
-		$this->sidebar = JHtmlSidebar::render();
+		$this->sidebar = DigiComAdminHelper::renderSidebar();
 
 		parent::display($tpl);
 	}

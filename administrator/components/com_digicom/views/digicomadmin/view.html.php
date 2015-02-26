@@ -27,7 +27,7 @@ class DigiComAdminViewDigiComAdmin extends DigiComView {
 		
 		//load the toolber
 		$this->addToolbar();
-		$this->sidebar = JHtmlSidebar::render();
+		$this->sidebar = DigiComAdminHelper::renderSidebar();
 		
 		$this->latest_orders = DigiComAdminHelper::getOrders(5);
 		$this->latest_products = DigiComAdminHelper::getProducts(5);
