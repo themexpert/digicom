@@ -33,6 +33,9 @@ class DigiComAdminViewStats extends DigiComView {
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
 		
+		$layout = new JLayoutFile('toolbar.settings');
+		$bar->appendButton('Custom', $layout->render(array()), 'settings');
+		
 		$configs = $this->_models['config']->getConfigs();
 		$this->assign("configs", $configs);
 		

@@ -26,6 +26,9 @@ class DigiComAdminViewFileManager extends DigiComView {
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
 		
+		$layout = new JLayoutFile('toolbar.settings');
+		$bar->appendButton('Custom', $layout->render(array()), 'settings');
+		
 		$mainframe = JFactory::getApplication();
         $user = JFactory::getUser();
         $document = JFactory::getDocument();

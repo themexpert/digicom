@@ -80,7 +80,9 @@ class DigiComAdminViewCustomers extends DigiComView {
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
-
+		
+		$layout = new JLayoutFile('toolbar.settings');
+		$bar->appendButton('Custom', $layout->render(array()), 'settings');
 
 		JToolBarHelper::save();
 		if ($isNew) {
@@ -156,7 +158,10 @@ class DigiComAdminViewCustomers extends DigiComView {
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
 		
-		JToolBarHelper::addNew();
+		$layout = new JLayoutFile('toolbar.settings');
+		$bar->appendButton('Custom', $layout->render(array()), 'settings');
+		
+		//JToolBarHelper::addNew();
 		JToolBarHelper::editList();
 		JToolBarHelper::divider();
 		JToolBarHelper::publishList();
@@ -164,6 +169,6 @@ class DigiComAdminViewCustomers extends DigiComView {
 		JToolBarHelper::divider();
 		JToolBarHelper::deleteList();
 	}
+	
+	
 }
-
-?>

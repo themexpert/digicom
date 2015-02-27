@@ -27,6 +27,7 @@ $prc = JRequest::getVar("prc", "-1");
 $session = JFactory::getSession();
 $search_session = $session->get('digicom.product.search');
 $state_filter = JRequest::getVar("state_filter", "-1");
+$limit = JRequest::getVar("limit", "25");
 
 $document = JFactory::getDocument();
 //$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
@@ -47,9 +48,12 @@ $limistart = $this->pagination->limitstart;
 		<div class="js-stools">
 			<div class="clearfix">
 				<div class="btn-wrapper input-append">
-					<input type="text" name="search" placeholder="<?php echo JText::_('DSSEARCH'); ?>" value="<?php echo $search_session; ?>"/>		
+					<input id="filter_search" type="text" name="search" placeholder="<?php echo JText::_('DSSEARCH'); ?>" value="<?php echo $search_session; ?>"/>		
 					<button type="submit" class="btn hasTooltip" title="" data-original-title="Search">
 						<i class="icon-search"></i>
+					</button>
+					<button type="button" class="btn hasTooltip js-stools-btn-clear" onclick="document.id('filter_search').value='';this.form.submit();">
+						<i class="icon-remove"></i>	
 					</button>
 				</div>
 				
@@ -61,6 +65,16 @@ $limistart = $this->pagination->limitstart;
 						<option value="1" <?php if($state_filter == "1"){echo 'selected="selected"'; } ?>><?php echo JText::_("HELPERPUBLISHED"); ?></option>
 						<option value="0" <?php if($state_filter == "0"){echo 'selected="selected"'; } ?>><?php echo JText::_("HELPERUNPUBLICHED"); ?></option>
 					</select>
+					
+					<?php 
+						$options = array();						
+						for( $i=5; $i<=100 ; $i=$i+5 ){
+							$options[] = JHTML::_('select.option', $i, $i);
+						}
+						$options[] = JHTML::_('select.option', 0, JText::_('JALL'));
+						$dropdown = JHTML::_('select.genericlist', $options, 'limit', 'onchange="document.adminForm.submit();" class="input-mini"', 'value', 'text', $limit);						
+						echo $dropdown;
+					?>
 				</div>
 			</div>
 		</div>

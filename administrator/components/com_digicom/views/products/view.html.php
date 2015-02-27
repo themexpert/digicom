@@ -185,6 +185,8 @@ class DigiComAdminViewProducts extends DigiComView
 		$layout = new JLayoutFile('toolbar.products');
 		$bar->appendButton('Custom', $layout->render(array()), 'products');
 		
+		$layout = new JLayoutFile('toolbar.settings');
+		$bar->appendButton('Custom', $layout->render(array()), 'settings');
 		
 		//JToolBarHelper::addNew();
 		JToolBarHelper::editList();
@@ -305,7 +307,10 @@ class DigiComAdminViewProducts extends DigiComView
 			'class' => 'product'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
-
+		
+		$layout = new JLayoutFile('toolbar.settings');
+		$bar->appendButton('Custom', $layout->render(array()), 'settings');
+		
 		JToolBarHelper::save();
 		JToolBarHelper::save2new();
 		

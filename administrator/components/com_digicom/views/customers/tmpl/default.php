@@ -30,9 +30,12 @@ $n = count ($this->custs);
 		<div class="js-stools">
 			<div class="clearfix">
 				<div class="btn-wrapper input-append">
-					<input type="text" name="keyword" placeholder="<?php echo JText::_('DSSEARCH'); ?>" value="<?php echo (strlen(trim($this->keyword)) > 0 ?$this->keyword:"");?>" class="span6" />		
+					<input type="text" id="filter_search" class="input-large" name="keyword" placeholder="<?php echo JText::_('DSSEARCH'); ?>" value="<?php echo (strlen(trim($this->keyword)) > 0 ?$this->keyword:"");?>" class="span6" />		
 					<button type="submit" class="btn hasTooltip" title="" data-original-title="Search">
 						<i class="icon-search"></i>
+					</button>
+					<button type="button" class="btn hasTooltip js-stools-btn-clear" onclick="document.id('filter_search').value='';this.form.submit();">
+						<i class="icon-remove"></i>	
 					</button>
 				</div>
 

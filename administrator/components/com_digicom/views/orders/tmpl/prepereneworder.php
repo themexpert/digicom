@@ -291,7 +291,7 @@ $doc->addScriptDeclaration( $ajax );
 			<div class="promos">
 			    <label class="control-label" for="promocode">
 			    	<?php echo JText::_( 'Promocode' ); ?>
-			    	<?php
+					<?php
 						echo JHTML::tooltip(JText::_("COM_DIGICOM_ORDERPROMOCODE_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
 					?>
 			    </label>
@@ -303,7 +303,7 @@ $doc->addScriptDeclaration( $ajax );
 		  	<div class="subtotal">
 			    <label class="control-label" for="amount">
 			    	<?php echo JText::_( 'COM_DIGICOM_ORDER_SUBTOTAL' ); ?>
-			    	<?php
+			      	<?php
 						echo JHTML::tooltip(JText::_("COM_DIGICOM_ORDERAMOUNT_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
 					?>
 			    </label>
@@ -336,7 +336,7 @@ $doc->addScriptDeclaration( $ajax );
 	  	<div class="control-group">
 		    <label class="control-label" for="total">
 		    	<?php echo JText::_( 'COM_DIGICOM_ORDER_TOTAL' ); ?> 
-		    	<?php
+				<?php
 					echo JHTML::tooltip(JText::_("COM_DIGICOM_ORDERPROMOCODE_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
 				?>
 			</label>
@@ -349,7 +349,7 @@ $doc->addScriptDeclaration( $ajax );
 	  	<div class="control-group">
 		    <label class="control-label" for="amount_paid">
 		    	<?php echo JText::_( 'COM_DIGICOM_ORDER_AMOUNT_PAID' ); ?>
-		    	<?php
+		      	<?php
 					echo JHTML::tooltip(JText::_("COM_DIGICOM_ORDERAMOUNTPAID_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
 				?>
 		    </label>
@@ -363,10 +363,7 @@ $doc->addScriptDeclaration( $ajax );
 
 	
 
-  	<div style="border-top:1px solid #ccc;padding-top:5px;display: none;">
-		<input onclick="javascript: submitbutton('saveorder')" type="button" name="task" value="Save" class="btn btn-success" />
-		<div id="from_ajax_div" style="display:none;"></div>
-	</div>
+  	<div id="from_ajax_div" style="display:none;"></div>
 
 		<input type="hidden" name="option" value="com_digicom"/>
 		<input type="hidden" name="controller" value="orders"/>

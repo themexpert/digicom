@@ -65,6 +65,7 @@ class DigiComAdminModelCustomer extends JModelList {
 		if(trim($keyword) != ""){
 			$where .= " and (u.username like '%".$keyword."%' or c.firstname like '%".$keyword."%' or c.lastname like '%".$keyword."%' ) ";
 		}
+		$where .= " and c.id=(SELECT od.userid from #__digicom_orders od where od.userid=c.id limit 1)";
 
 		$sql = "select c.*, u.username, u.email from #__digicom_customers c left join #__users u on( u.id=c.id) where ".$where." order by c.id desc";
 		return $sql;

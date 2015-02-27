@@ -720,7 +720,6 @@ $formlink = JRoute::_("index.php?option=com_digicom&view=cart");
 	</div>
 	<?php endif;?>
 
-</div>
 
 <script>
 <?php

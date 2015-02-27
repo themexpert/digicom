@@ -59,6 +59,7 @@ class DigiComAdminModelPromo extends JModelList {
 		$promosearch = JRequest::getVar("promosearch", "");
 		$condition = JRequest::getVar("condition", '1');
 		$status = JRequest::getVar("status", '1');
+		$where = array();
 
 		if(trim($promosearch) != "")
 		{

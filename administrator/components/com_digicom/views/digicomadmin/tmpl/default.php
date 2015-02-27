@@ -105,7 +105,7 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 				</div>
 			</div>
 		</div>
-
+		
 		<div class="row-fluid">
 			<div class="span6 panel">
 				<div class="panel-header clearfix">

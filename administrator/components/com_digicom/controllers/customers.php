@@ -162,6 +162,4 @@ class DigiComAdminControllerCustomers extends DigiComAdminController {
 		$this->setRedirect($link, $msg);
 	}
 
-};
-
-?>
+}

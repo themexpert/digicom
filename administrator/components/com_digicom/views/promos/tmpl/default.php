@@ -20,48 +20,52 @@ $configs = $this->configs;
 $document = JFactory::getDocument();
 //$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 ?>
-<?php if (!empty( $this->sidebar)) : ?>
-<div id="j-sidebar-container" class="">
-	<?php echo $this->sidebar; ?>
-</div>
-<div id="j-main-container" class="">
-<?php else : ?>
-<div id="j-main-container" class="">
-<?php endif;?>
-	<div class="js-stools">
-		<div class="clearfix">
-			<div class="btn-wrapper input-append">
-				<?php $promosearch = JRequest::getVar("promosearch", ""); ?>
-				<input type="text" name="promosearch" value="<?php echo trim($promosearch);?>" placeholder="<?php echo JText::_("DIGI_FIND");?>" />
-				<button type="submit" class="btn hasTooltip" title="" data-original-title="Search">
-					<i class="icon-search"></i>
-				</button>
-			</div>
-			<div class="btn-wrapper pull-right">
-				
-				<?php echo JText::_("VIEWPROMOPUBLISHED");?>:
-				<select name="status" onchange="document.adminForm.task.value=''; document.adminForm.submit();">
-					<option value="" <?php if($this->status == ""){ echo 'selected="selected"';} ?> ><?php echo JText::_("DIGI_SELECT"); ?></option>
-					<option value="0" <?php if($this->status == "0"){ echo 'selected="selected"';} ?> ><?php echo JText::_("HELPERUNPUBLISHED"); ?></option>
-					<option value="1" <?php if($this->status == "1"){ echo 'selected="selected"';} ?> ><?php echo JText::_("PLAINPUBLISHED"); ?></option>
-				</select>
-				<?php echo JText::_("VIEWORDERSSTATUS");?>:
-				<select name="condition" onchange="document.adminForm.task.value=''; document.adminForm.submit();">
-					<option value="-1" <?php if($this->condition == "-1"){ echo 'selected="selected"';} ?> ><?php echo JText::_("DIGI_SELECT"); ?></option>
-					<option value="0" <?php if($this->condition == "0"){ echo 'selected="selected"';} ?> ><?php echo JText::_("HELPEREXPIRE"); ?></option>
-					<option value="1" <?php if($this->condition == "1"){ echo 'selected="selected"';} ?> ><?php echo JText::_("HELPERACTIVE"); ?></option>
-				</select>
+<form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&controller=promos'); ?>" method="post" name="adminForm" autocomplete="off" class="form-horizontal">
+	<?php if (!empty( $this->sidebar)) : ?>
+	<div id="j-sidebar-container" class="">
+		<?php echo $this->sidebar; ?>
+	</div>
+	<div id="j-main-container" class="">
+	<?php else : ?>
+	<div id="j-main-container" class="">
+	<?php endif;?>
+		<div class="js-stools">
+			<div class="clearfix">
+				<div class="btn-wrapper input-append">
+					<?php $promosearch = JRequest::getVar("promosearch", ""); ?>
+					<input id="filter_search" type="text" name="promosearch" value="<?php echo trim($promosearch);?>" placeholder="<?php echo JText::_("DIGI_FIND");?>" />
+					<button type="submit" class="btn hasTooltip" title="" data-original-title="Search">
+						<i class="icon-search"></i>
+					</button>
+					<button type="button" class="btn hasTooltip js-stools-btn-clear" onclick="document.id('filter_search').value='';this.form.submit();">
+							<i class="icon-remove"></i>	
+						</button>
+				</div>
+				<div class="btn-wrapper pull-right">
+					
+					<?php echo JText::_("VIEWPROMOPUBLISHED");?>:
+					<select name="status" onchange="document.adminForm.task.value=''; document.adminForm.submit();">
+						<option value="" <?php if($this->status == ""){ echo 'selected="selected"';} ?> ><?php echo JText::_("DIGI_SELECT"); ?></option>
+						<option value="0" <?php if($this->status == "0"){ echo 'selected="selected"';} ?> ><?php echo JText::_("HELPERUNPUBLISHED"); ?></option>
+						<option value="1" <?php if($this->status == "1"){ echo 'selected="selected"';} ?> ><?php echo JText::_("PLAINPUBLISHED"); ?></option>
+					</select>
+					<?php echo JText::_("VIEWORDERSSTATUS");?>:
+					<select name="condition" onchange="document.adminForm.task.value=''; document.adminForm.submit();">
+						<option value="-1" <?php if($this->condition == "-1"){ echo 'selected="selected"';} ?> ><?php echo JText::_("DIGI_SELECT"); ?></option>
+						<option value="0" <?php if($this->condition == "0"){ echo 'selected="selected"';} ?> ><?php echo JText::_("HELPEREXPIRE"); ?></option>
+						<option value="1" <?php if($this->condition == "1"){ echo 'selected="selected"';} ?> ><?php echo JText::_("HELPERACTIVE"); ?></option>
+					</select>
 
+				</div>
+				
 			</div>
-			
 		</div>
-	</div>
-	<br>
-		
-	<div class="alert alert-info">
-		<?php echo JText::_("HEADER_PROMOS"); ?>
-	</div>
-	<form id="adminForm" action="index.php" name="adminForm" method="post" class="form-horizontal">
+		<br>
+			
+		<div class="alert alert-info">
+			<?php echo JText::_("HEADER_PROMOS"); ?>
+		</div>
+
 		<table width="100%">
 			<tr>
 				<td width="100%" align="right" style="padding-bottom: 5px;">
@@ -204,6 +208,6 @@ $document = JFactory::getDocument();
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="controller" value="Promos" />
-	</form>
-
-</div>
+		
+	</div>
+</form>

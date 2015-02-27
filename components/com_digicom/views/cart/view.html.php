@@ -13,7 +13,7 @@ defined ('_JEXEC') or die ("Go away.");
 jimport ("joomla.application.component.view");
 jimport('joomla.html.parameter');
 
-class DigiComViewCart extends JViewLegacy
+class DigiComViewCart extends DigiComView
 {
 	function display ($tpl = null)
 	{
@@ -21,7 +21,7 @@ class DigiComViewCart extends JViewLegacy
 		$db = JFactory::getDBO();
 		$lists = array();
 		$task = JRequest::getWord('task');
-		$configs = $this->_models['config']->getConfigs();
+		$configs = JComponentHelper::getComponent('com_digicom')->params;
 
 		$document = JFactory::getDocument();
 		JHtml::_('bootstrap.framework');
@@ -131,7 +131,7 @@ class DigiComViewCart extends JViewLegacy
 		
 		$db = JFactory::getDBO();
 
-		$condtion = array(0 => '\'payment\'');
+		$condtion = array(0 => '\'digicom_pay\'');
 		$condtionatype = join(',',$condtion);
 		if(JVERSION >= '1.6.0')
 		{
@@ -154,7 +154,7 @@ class DigiComViewCart extends JViewLegacy
 		foreach($gatewayplugin as $gateway)
 		{
 			$gatewayname = strtoupper(str_replace('plugpayment', '',$gateway->element));
-			$lang->load('plg_payment_' . strtolower($gatewayname), JPATH_ADMINISTRATOR);
+			$lang->load('plg_digicom_pay_' . strtolower($gatewayname), JPATH_ADMINISTRATOR);
 			$options[] = JHTML::_('select.option',$gateway->element, JText::_($gatewayname));
 		}
 

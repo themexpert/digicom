@@ -20,21 +20,37 @@ JHtml::_('formbehavior.chosen', 'select');
 
 $app = JFactory::getApplication();
 $input = $app->input;
-$document = JFactory::getDocument();
-$document->addStyleSheet("components/com_digicom/assets/css/redactor.css");
-$document->addScript("components/com_digicom/assets/js/redactor.min.js");
 $input->set('layout', 'dgform');
 ?>
 <script type="text/javascript">
 	
-	jQuery(function(){
-		jQuery(".useredactor").redactor();
-		jQuery(".redactor_useredactor").css("height","200px");
-	});
-
-
 	Joomla.submitbutton = function(task)
 	{
+		if(task== 'save' || task == 'save2new' || task== 'apply'){
+			var product_type = jQuery("input[name='jform[product_type]']").val();
+			if(product_type == 'bundle'){
+				var product_source = jQuery("input:radio[name='jform[bundle_source]']:checked").val();
+				switch(product_source){
+					case 'category':
+						var bundleinfo = jQuery('#jformbundlecategory').val();
+						break;
+					case 'paroduct':
+					default:
+						var bundleinfo = jQuery("input[id^='product_include_id']").val();
+						break;
+				}
+				if(bundleinfo === null || bundleinfo === undefined || bundleinfo === '' ){
+					message = Joomla.JText._('JLIB_FORM_FIELD_INVALID');
+					error = {};
+					error.error = [];
+					label = '<?php echo JText::_('COM_DIGICOM_PRODUCT_BUNDLE_SOURCE_INFO_REQUIRED'); ?>';
+					error.error[0] = message + label;
+					
+					Joomla.renderMessages(error);
+					return false;
+				}
+			}
+		}
 		if (task == 'cancel' || document.formvalidator.isValid(document.id('item-form')))
 		{
 			Joomla.submitform(task, document.getElementById('item-form'));
@@ -60,17 +76,24 @@ $input->set('layout', 'dgform');
 
 				<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'general', JText::_('COM_DIGICOM_PRODUCT_CONTENT', true)); ?>
 				
-				<?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
-				
-				<div class="form-inline form-inline-header">
-					<?php echo $this->form->getControlGroup('price'); ?>
+				<div class="row-fluid">
+					<div class="span4">
+						<div class="form-inline form-inline-header product-image">
+							<?php echo $this->form->getControlGroup('images'); ?>
+						</div>						
+					</div>
+					<div class="span8">
+						<?php echo JLayoutHelper::render('edit.title_alias_price', $this); ?>
+
+						<div class="product-short-desc">
+							<?php echo $this->form->getLabel('description'); ?>
+							<?php echo $this->form->getInput('description'); ?>
+						</div>
+					</div>
+					
 				</div>
-				<?php echo $this->form->getControlGroup('images'); ?>
 				
-				<div class="control-group ">
-					<?php echo $this->form->getLabel('description'); ?>
-					<?php echo $this->form->getInput('description'); ?>
-				</div>
+				
 				<div class="control-group ">
 					<?php echo $this->form->getLabel('fulldescription'); ?>
 					<?php echo $this->form->getInput('fulldescription'); ?>

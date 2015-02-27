@@ -101,6 +101,23 @@ class DigiComAdminModelOrders extends JModelList{
 
 	function saveorder(){
 		$post = JRequest::get('post');
+		
+		$userid = $post['userid'];
+		$table = $this->getTable('Customer');
+		$table->loadCustommer($userid);
+		
+		if(empty($table->id) or $table->id < 0){
+			$user = JFactory::getUser($userid);
+			$name = explode(' ',$user->name);
+			
+			$cust = new stdClass();
+			$cust->id = $user->id;
+			$cust->firstname = $name[0];
+			$cust->lastname =  (!empty($name[1]) ? $name[1] : '');
+			$table->bind($cust);
+			$table->store();
+		}
+		
 		//print_r($post);die;
 		$config = JFactory::getConfig();
 		$tzoffset = $config->get('offset');
@@ -116,7 +133,6 @@ class DigiComAdminModelOrders extends JModelList{
 		}
 		
 		$order = array();
-		$order['id'] = '0';
 		$order['userid'] = $post['userid'];
 		$order['order_date'] = $order_date;
 		$order['processor'] = $post['processor'];
@@ -148,39 +164,8 @@ class DigiComAdminModelOrders extends JModelList{
 		$now = time();
 		//we have to add orderdetails now;
 		$this->addOrderDetails($post['product_id'], $order_table->id, $now, $post['userid'], $post['status']);
-		// Licenses
-		//$license_table = $this->getTable( 'License' );
 		/*
-		$date_today = date('Y-m-d H:i:s', time() + $tzoffset);
-		// exit();
-
-		foreach($post['product_id'] as $key => $product_id){
-			
-			$buy_date = date("Y-m-d H:i:s");
-			$sql = "insert into #__digicom_logs (`userid`, `productid`, `buy_date`, `buy_type`) values (".$post['userid'].", ".$product_id.", '".$buy_date."', '".$buy_type."')";
-			$this->_db->setQuery($sql);
-			$this->_db->query();
-
-			$sql = "SELECT product_type FROM `#__digicom_products` WHERE id = ".$product_id;
-			$this->_db->setQuery( $sql );
-			$product_type = $this->_db->loadResult();
-
-			if(!$license_table->bind($license)){
-				return false;
-			}
-
-			if(!$license_table->check()){
-				return false;
-			}
-			
-			if(!$license_table->store()){
-				return false;
-			}
-		}
-		*/
-		/*
-		$license["licenseid"] = $license_table->id;
-		
+		TODO:: email submit 
 		require_once(JPATH_SITE.DS."components".DS."com_digicom".DS."helpers".DS."cronjobs.php");
 		submitEmailFromBackend($order, $license);
 		*/
@@ -453,7 +438,8 @@ class DigiComAdminModelOrders extends JModelList{
 		$enddate = JRequest::getVar("enddate", "", "request");
 		$enddate = strtotime($enddate);
 
-		$keyword = JRequest::getVar( "keyword", "", "request" );
+		$keyword = JRequest::getVar( "keyword", "");
+		//echo $keyword ;die;
 		$keyword_where = "(u.username like '%" . $keyword . "%' 
 							or c.firstname like '%" . $keyword . "%' 
 							or c.lastname like '%" . $keyword . "%'
@@ -465,6 +451,7 @@ class DigiComAdminModelOrders extends JModelList{
 					#__users u ON u.id=o.userid
 						LEFT JOIN 
 					#__digicom_customers c ON u.id=c.id ";
+					
 		$where = array();
 		if($startdate > 0) 
 			$where[]=" o.order_date > " . $startdate . " ";
@@ -474,6 +461,9 @@ class DigiComAdminModelOrders extends JModelList{
 			$where[]=$keyword_where;
 		$where_clause = (count($where))? ' WHERE '. implode(' AND ',$where) : '';
 		$sql .= $where_clause. " ORDER BY o.id DESC";
+		
+		//echo $sql;die;
+		
 		return $sql;
 	}
 

@@ -30,7 +30,7 @@ class DigiComAdminModelProducts extends JModelList {
 		$this->_product = null;
 	}
 
-	function populateState($ordering = NULL, $direction = NULL){
+	function populateState($ordering = 'ordering', $direction = 'desc'){
 		$app = JFactory::getApplication('administrator');
 		$this->setState('list.start', $app->getUserStateFromRequest($this->_context . '.list.start', 'limitstart', 0, 'int'));
 		$this->setState('list.limit', $app->getUserStateFromRequest($this->_context . '.list.limit', 'limit', $app->getCfg('list_limit', 25) , 'int'));
@@ -59,9 +59,9 @@ class DigiComAdminModelProducts extends JModelList {
 	}
 
 	protected function getListQuery($sort = "ordering") {
-		$db = JFactory::getDBO();
 		$input = JFactory::getApplication()->input;
-		$catids = $input->get('catid','');
+        $db = JFactory::getDBO();
+        $catids = $input->get('catid','');
 		
 		$session	= JFactory::getSession();
 		$category	= $session->get('dsproducategory', 0, 'digicom');
@@ -71,31 +71,28 @@ class DigiComAdminModelProducts extends JModelList {
 		$session_search = $session->get( 'digicom.product.search');
 		$state_filter	= JRequest::getVar("state_filter", '-1');
 
-		$where = " 1=1 ";
+        $query = $db->getQuery(true);
+        $query->select('*');
+        $query->from('#__digicom_products');
 		
 		if($prc > 0){
-			$where .= " and catid='".$prc."' ";
+            $query->where($db->quoteName('catid') . " = '".$prc."'");
 		}
 		if($state_filter != "-1"){
-			$where .= " and published=".$state_filter;
+            $query->where($db->quoteName('published') . " = '".$state_filter."'");
 		}
 		$session->set( 'digicom.product.search', $search );
 		if (!empty($search)) {
-			$where .= " AND (name LIKE '%".$search."%') ";
+            $query->where($db->quoteName('name') . " LIKE '%".$search."%'");
 		}
 		elseif (isset($_POST['submit_search'])) {
 			$session->set('digicom.product.search', '');
 		}
 		elseif ($session_search) {
-			$where .= " AND (name LIKE '%".$session_search."%') ";
+            $query->where($db->quoteName('name') . " LIKE '%".$session_search."%'");
 		}
-
-		$query = $db->getQuery(true);
-		$query->select('*');
-		$query->from('#__digicom_products');
-		$query->where($where);
-		$query->order($sort);
-//		print_r($query->__toString());exit(''.__LINE__);
+        $query->order($sort);
+		//print_r($query->__toString());exit(''.__LINE__);
 		return $query;
 	}
 
@@ -104,8 +101,8 @@ class DigiComAdminModelProducts extends JModelList {
 		
 		$config = JFactory::getConfig();
 		$app	= JFactory::getApplication('administrator');
-		$listOrder		= $app->getUserStateFromRequest('digicom.product.list.ordering',	'filter_order',		'ordering','tring');
-		$listDirn		= $app->getUserStateFromRequest('digicom.product.list.direction',	'filter_order_Dir',	'asc','tring');
+		$listOrder		= $app->getUserStateFromRequest('digicom.product.list.ordering','order','id','string');
+		$listDirn		= $app->getUserStateFromRequest('digicom.product.list.direction','order_Dir','desc','string');
 
 		$limistart	= $app->getUserStateFromRequest($this->context.'.list.start', 'limitstart');
 		$limit		= $app->getUserStateFromRequest($this->context.'.list.limit', 'limit', $config->get('list_limit'));
@@ -499,43 +496,45 @@ class DigiComAdminModelProducts extends JModelList {
 
 	function delete () {
 		$cids = JRequest::getVar('cid', array(0), 'post', 'array');
-		$item = $this->getTable('Product');
+		$db = JFactory::getDBO();
+		$success = true;
 		foreach ($cids as $cid) {
-			if(!$item->delete($cid)){
-				$this->setError($item->getErrorMsg());
-				return false;
-			}
-			else{
-				$db = JFactory::getDBO();
-				$sql = "DELETE FROM #__digicom_featuredproducts WHERE productid=".intval($cid);
+			$notExist = $this->checkOrderExist($cid);
+			if($notExist){
+				$sql = "DELETE FROM #__digicom_products WHERE id=".intval($cid);
 				$db->setQuery($sql);
 				$db->query();
 
-				$sql = "DELETE FROM #__digicom_prodfields WHERE productid=".intval($cid);
+				$sql = "DELETE FROM #__digicom_products_files WHERE product_id=".intval($cid);
 				$db->setQuery($sql);
 				$db->query();
 
-				$sql = "DELETE FROM #__digicom_products_images WHERE product_id=".intval($cid);
+				$sql = "DELETE FROM #__digicom_products_bundle WHERE product_id=".intval($cid);
 				$db->setQuery($sql);
 				$db->query();
-
-				$sql = "DELETE FROM #__digicom_products_plans WHERE product_id=".intval($cid);
-				$db->setQuery($sql);
-				$db->query();
-
-				$sql = "DELETE FROM #__digicom_products_renewals WHERE product_id=".intval($cid);
-				$db->setQuery($sql);
-				$db->query();
-
-				$sql = "DELETE FROM #__digicom_product_categories WHERE productid=".intval($cid);
-				$db->setQuery($sql);
-				$db->query();
+			}else{
+				$success = false;
 			}
 		}
 
-		return true;
+		return $success;
 	}
+	
+	function checkOrderExist($cid){
+		$app = JFactory::getApplication();
 
+		$db = JFactory::getDBO();
+		$sql = "SELECT id FROM #__digicom_orders_details WHERE productid='".intval($cid)."' limit 1";
+		$db->setQuery($sql);
+		$od = $db->loadObject();
+		if($od->id > 0){
+			$app->enqueueMessage(JText::sprintf('COM_DIGICOM_PRODUCT_EXIST_IN_ORDER',$cid), 'warning');
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
 	function publish () {
 		$db = JFactory::getDBO();
 		$cids = JRequest::getVar('cid', array(0), 'post', 'array');
@@ -679,126 +678,49 @@ class DigiComAdminModelProducts extends JModelList {
 	}
 
 	function copyProduct($ids=array()){
+		
 		if(!$ids||!count($ids)){
 			$ids = JRequest::getVar("cid", array(), "array");
 		}
+        //print_r($ids);die;
 		if(isset($ids) && count($ids) > 0){
 			$db = JFactory::getDBO();
 			foreach($ids as $key_id=>$id){
-				$new_id = "";
-				$sql = "SELECT * FROM #__digicom_prodfields WHERE `productid`=".intval($id);
-				$db->setQuery($sql);
-				$db->query();
-				$result = $db->loadAssocList();
-				if(isset($result)){
-					$sql = "SELECT MAX(fieldid) FROM #__digicom_prodfields";
-					$db->setQuery($sql);
-					$db->query();
-					$max = $db->loadResult();
+                $table  = $this->getTable("product");
+				$table->load($id);
+				//Set id empty, so we can store as new product
+				$table->id = '';
+				
+				list($name, $alias) = $this->generateNewTitle($table->catid, $table->alias, $table->name);
+                $table->name = $name;
+				$table->alias = $alias;
 
-					$sql = "INSERT INTO #__digicom_prodfields (`fieldid`, `productid`, `publishing`, `mandatory`) VALUES (".intval($max+1).", ".intval($id).", ".intval($result["0"]["publishing"]).", ".intval($result["0"]["mandatory"]).")";
-					$db->setQuery($sql);
-					if(!$db->query()){
-						return false;
-					}
-				}
-
-				$sql = "select * from #__digicom_products where id=".intval($id);
-				$db->setQuery($sql);
-				$db->query();
-				$product = $db->loadAssocList();
-				if(isset($product)){
-					$sql = "INSERT INTO `#__digicom_products` (`name`, `images`, `discount`, `ordering`, `file`, `description`, `publish_up`, `publish_down`, `checked_out`, `checked_out_time`, `published`, `passphrase`, `main_zip_file`, `encoding_files`, `product_type`, `articlelink`, `articlelinkid`, `articlelinkuse`, `shippingtype`, `shippingvalue0`, `shippingvalue1`, `shippingvalue2`, `productemailsubject`, `productemail`, `sendmail`, `popupwidth`, `popupheight`, `stock`, `used`, `usestock`, `emptystockact`, `showstockleft`, `fulldescription`, `metatitle`, `metakeywords`, `metadescription`, `access`, `prodtypeforplugin`, `taxclass`, `class`, `sku`, `showqtydropdown`, `priceformat`, `featured`, `prodimages`, `defprodimage`, `mailchimplistid`, `subtitle`, `mailchimpapi`, `mailchimplist`, `mailchimpregister`, `mailchimpgroupid`, `video_url`, `video_width`, `video_height`) VALUES 
-					('Copy ".addslashes(trim($product["0"]["name"]))."', '".trim($product["0"]["images"])."', ".$product["0"]["discount"].", ".$product["0"]["ordering"].", '".$product["0"]["file"]."', '".addslashes(trim($product["0"]["description"]))."', ".$product["0"]["publish_up"].", ".$product["0"]["publish_down"].", ".$product["0"]["checked_out"].", '".$product["0"]["checked_out_time"]."', 0, '".$product["0"]["passphrase"]."', '".$product["0"]["main_zip_file"]."', '".$product["0"]["encoding_files"]."', ".$product["0"]["product_type"].", '".$product["0"]["articlelink"]."', ".$product["0"]["articlelinkid"].", ".$product["0"]["articlelinkuse"].", ".$product["0"]["shippingtype"].", ".$product["0"]["shippingvalue0"].", ".$product["0"]["shippingvalue1"].", ".$product["0"]["shippingvalue2"].", '".addslashes(trim($product["0"]["productemailsubject"]))."', '".addslashes($product["0"]["productemail"])."', ".$product["0"]["sendmail"].", ".$product["0"]["popupwidth"].", ".$product["0"]["popupheight"].", ".$product["0"]["stock"].", ".$product["0"]["used"].", ".$product["0"]["usestock"].", ".$product["0"]["emptystockact"].", ".$product["0"]["showstockleft"].", '".addslashes(trim($product["0"]["fulldescription"]))."', '".addslashes(trim($product["0"]["metatitle"]))."', '".addslashes(trim($product["0"]["metakeywords"]))."', '".addslashes(trim($product["0"]["metadescription"]))."', ".$product["0"]["access"].", '".$product["0"]["prodtypeforplugin"]."', ".$product["0"]["taxclass"].", ".$product["0"]["class"].", '".$product["0"]["sku"]."', ".$product["0"]["showqtydropdown"].", ".$product["0"]["priceformat"].", ".$product["0"]["featured"].", '".$product["0"]["prodimages"]."', '".$product["0"]["defprodimage"]."', '".$product["0"]["mailchimplistid"]."', '".addslashes(trim($product["0"]["subtitle"]))."', '".$product["0"]["mailchimpapi"]."', '".$product["0"]["mailchimplist"]."', ".$product["0"]["mailchimpregister"].", '".$product["0"]["mailchimpgroupid"]."', '".$product["0"]["video_url"]."', ".$product["0"]["video_width"].", ".$product["0"]["video_height"].")";
-					$db->setQuery($sql);
-					if(!$db->query()){
-						return false;
-					}
-					else{
-						$sql = "select max(id) from #__digicom_products";
-						$db->setQuery($sql);
-						$db->query();
-						$new_id = $db->loadResult();
-					}
-				}
-
-				$sql = "select * from #__digicom_products_emailreminders where product_id=".intval($id);
-				$db->setQuery($sql);
-				$db->query();
-				$emails = $db->loadAssocList();
-				if(isset($emails) && count($emails) > 0){
-					foreach($emails as $key=>$value){
-						$sql = "insert into #__digicom_products_emailreminders (`product_id`, `emailreminder_id`, `send`) values (".$new_id.", ".$value["emailreminder_id"].", ".$value["send"].")";
-						$db->setQuery($sql);
-						if(!$db->query()){
-							return false;
-						}
-					}
-				}
-
-				$sql = "select * from #__digicom_products_images where product_id=".intval($id);
-				$db->setQuery($sql);
-				$db->query();
-				$images = $db->loadAssocList();
-				if(isset($images) && count($images) > 0){
-					foreach($images as $key=>$value){
-						$sql = "insert into #__digicom_products_images (`product_id`, `path`, `title`, `default`, `order`) values (".intval($new_id).", '".$value["path"]."', '".$value["title"]."', ".$value["default"].", ".$value["order"].")";
-						$db->setQuery($sql);
-						if(!$db->query()){
-							return false;
-						}
-					}
-				}
-
-				$sql = "select * from #__digicom_products_plans where product_id=".intval($id);
-				$db->setQuery($sql);
-				$db->query();
-				$plains = $db->loadAssocList();
-				if(isset($plains) && count($plains) > 0){
-					foreach($plains as $key=>$value){
-						$sql = "insert into #__digicom_products_plans (`product_id`, `plan_id`, `price`, `default`) values (".intval($new_id).", ".$value["plan_id"].", ".$value["price"].", ".$value["default"].")";
-						$db->setQuery($sql);
-						if(!$db->query()){
-							return false;
-						}
-					}
-				}
-
-				$sql = "select * from #__digicom_products_renewals where product_id=".intval($id);
+				$table->store();
+				$new_id = $table->id;
+				
+				$sql = "select * from #__digicom_products_files where `product_id`='".intval($id)."'";
 				$db->setQuery($sql);
 				$db->query();
 				$renewals = $db->loadAssocList();
 				if(isset($renewals) && count($renewals) > 0){
 					foreach($renewals as $key=>$value){
-						$sql = "insert into #__digicom_products_renewals (`product_id`, `plan_id`, `price`, `default`) values (".intval($new_id).", ".$value["plan_id"].", ".$value["price"].", ".$value["default"].")";
+						$sql = "insert into #__digicom_products_files (`product_id`, `name`, `url`, `creation_date`,`hits`) 
+						values ('".intval($new_id)."', '".$value["name"]."', '".$value["url"]."', '".time()."','0')";
 						$db->setQuery($sql);
 						if(!$db->query()){
 							return false;
 						}
 					}
 				}
-
-				$sql = "select * from #__digicom_product_categories where productid=".intval($id);
+				
+				$sql = "select * from #__digicom_products_bundle where product_id=".intval($id);
 				$db->setQuery($sql);
 				$db->query();
-				$categs = $db->loadAssocList();
-				if(isset($categs) && count($categs) > 0){
-					foreach($categs as $key=>$value){
-						$sql = "insert into #__digicom_product_categories (`productid`, `catid`) values (".intval($new_id).", ".$value["catid"].")";
-						$db->setQuery($sql);
-						if(!$db->query()){
-							return false;
-						}
-					}
-				}
-
-				$sql = "select * from #__digicom_featuredproducts where productid=".intval($id);
-				$db->setQuery($sql);
-				$db->query();
-				$featured = $db->loadAssocList();
-				if(isset($featured) && count($featured) > 0){
-					foreach($featured as $key=>$value){
-						$sql = "insert into #__digicom_featuredproducts (`productid`, `featuredid`, `planid`) values (".intval($new_id).", ".$value["featuredid"].", ".$value["planid"].")";
+				$renewals = $db->loadAssocList();
+				if(isset($renewals) && count($renewals) > 0){
+					foreach($renewals as $key=>$value){
+						$sql = "insert into #__digicom_products_bundle (`product_id`, `bundle_id`, `bundle_type`) 
+						values ('".intval($new_id)."', '".$value["bundle_id"]."', '".$value["bundle_type"]."')";
 						$db->setQuery($sql);
 						if(!$db->query()){
 							return false;
@@ -807,7 +729,9 @@ class DigiComAdminModelProducts extends JModelList {
 				}
 
 			}
+
 		}
+
 		return true;
 	}
 
@@ -850,6 +774,19 @@ class DigiComAdminModelProducts extends JModelList {
 
 		return $this->_plains;
 	}
+
+    protected function generateNewTitle($category_id, $alias, $title)
+    {
+        // Alter the title & alias
+        $table = JTable::getInstance('Product', 'Table');
+        $table->load(array('alias' => $alias, 'catid' => $category_id));
+        if($table->id > 0)
+        {
+            $title = JString::increment($title);
+            $alias = JString::increment($alias, 'dash');
+        }
+        return array($title, $alias);
+    }
 
 	/**
 	 * Method to get a form object.

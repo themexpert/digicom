@@ -60,7 +60,8 @@
 !/modules/mod_digicom_google/*
 !/modules/mod_digicom_manager/*
 /plugins/*
-!/plugins/payment/*
+!/plugins/payment/
+!/plugins/digicom_pay/
 !/plugins/system/*
 /plugins/system/*
 !/plugins/system/digicom_addtocart*
