@@ -736,6 +736,27 @@ body.layout-neworder .add-product .btn-group {
   margin-left: 20px;
   display: inline-block;
 }
+/* Statistics page styling */
+#digiReportsTabs {
+  border-bottom: 0;
+}
+#digiReportsTabs > li {
+  margin-bottom: 0;
+}
+#digiReportsTabs > li > a {
+  padding: 0px 5px;
+  font-size: 12px;
+  border: 0;
+}
+#digiReportsTabs > li + li a {
+  border-left: 1px solid #ccc;
+}
+#digiReportsTabs > li > a:hover,
+#digiReportsTabs > .active > a,
+#digiReportsTabs > .active > a:hover,
+#digiReportsTabs > .active > a:focus {
+  background: none;
+}
 /* About page styling */
 .about-dglogo {
   margin-bottom: 15px;

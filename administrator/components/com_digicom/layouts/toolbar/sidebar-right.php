@@ -17,7 +17,8 @@ $pageURL = $uri->toString();
 	<h3>Global Settings</h3>
 	<ul>
 		<?php if (JFactory::getUser()->authorise('core.admin', 'com_digicom')) { ?>
-			<li><a href="index.php?option=com_config&view=component&component=com_digicom&return=<?php echo base64_encode($pageURL);?>">Global Settings</a></li>
+			<li><a href="index.php?option=com_config&view=component&component=com_digicom&return=<?php echo base64_encode($pageURL);?>">ACL Settings</a></li>
+			<li><a href="index.php?option=com_digicom&controller=configs">Settings</a></li>
 		<?php } ?>		
 	</ul>
 

@@ -239,7 +239,7 @@ $doc->addScriptDeclaration( $ajax );
 		      	<select id="processor" name="processor" class="inputbox" size="1">
 					<?php
 					$db = JFactory::getDBO();
-					$condtion = array(0 => '\'payment\'');
+					$condtion = array(0 => '\'digicom_pay\'');
 					$condtionatype = join(',',$condtion);
 					if(JVERSION >= '1.6.0')
 					{

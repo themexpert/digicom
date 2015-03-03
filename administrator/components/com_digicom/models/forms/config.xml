@@ -156,7 +156,7 @@
 			<field
 				name="default_payment"
 				type="sql" 
-				query="SELECT extension_id as id,name,element,enabled as published FROM #__extensions WHERE folder in ('payment') AND enabled=1" 
+				query="SELECT extension_id as id,name,element,enabled as published FROM #__extensions WHERE folder in ('digicom_pay') AND enabled=1" 
 				key_field="element" 
 				value_field="name" 
 				class="btn-group"

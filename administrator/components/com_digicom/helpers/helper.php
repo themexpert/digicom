@@ -109,11 +109,11 @@ class DigiComAdminHelper {
 			$vName == 'stats'
 		);
 		
-		JHtmlSidebar::addEntry(
+		/*JHtmlSidebar::addEntry(
 			JText::_('VIEWTREELOGS'),
 			'index.php?option=com_digicom&controller=logs',
 			$vName == 'logs'
-		);
+		);*/
 		JHtmlSidebar::addEntry(
 			JText::_('VIEWTREEABOUT'),
 			'index.php?option=com_digicom&controller=about',

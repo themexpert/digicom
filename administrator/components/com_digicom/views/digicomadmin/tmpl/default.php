@@ -57,53 +57,31 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 		<div class="panel">
 			<div class="panel-header clearfix">
 				<h3 class="panel-title"><span class="icon-bars"></span> Sales Analytics</h3>
-				<div class="pull-right">
-					<div class="btn-group">
-						<a href="#" class="btn">Day</a>
-						<a href="#" class="btn">Month</a>
-						<a href="#" class="btn">Year</a>
-					</div>
-				</div>
 			</div>
-			<div class="panel-content">
-				<ul class="nav nav-charts clearfix" id="myTab">
-				  <li class="active"><a href="#sales">Sales</a></li>
-				  <li><a href="#profile">Profile</a></li>
-				  <li><a href="#messages">Messages</a></li>
-				  <li><a href="#settings">Settings</a></li>
-				</ul>
- 
-				<div class="tab-content">
-				  <div class="tab-pane active" id="sales">
-				  	<canvas id="myChart" width="945" height="200"></canvas>
-				  	<script type="text/javascript">
-				  		var data = {
-						    labels: ["January", "February", "March", "April", "May", "June", "July"],
-						    datasets: [
+			<div class="panel-content"> 
+			  	<canvas id="myChart" width="945" height="200"></canvas>
+			  	<script type="text/javascript">
+			  		var data = {
+					    labels: ["January", "February", "March", "April", "May", "June", "July"],
+					    datasets: [
 
-						        {
-						            label: "My Second dataset",
-						            fillColor: "rgba(151,187,205,0.2)",
-						            strokeColor: "rgba(151,187,205,1)",
-						            pointColor: "rgba(151,187,205,1)",
-						            pointStrokeColor: "#fff",
-						            pointHighlightFill: "#fff",
-						            pointHighlightStroke: "rgba(151,187,205,1)",
-						            data: [28, 48, 40, 19, 86, 27, 90]
-						        }
-						    ]
-						};
-						var ctx = document.getElementById("myChart").getContext("2d");
-						var myLineChart = new Chart(ctx).Line(data);
-				  	</script>
-				  </div>
-				  <div class="tab-pane" id="profile">
-				  	
-				  </div>
-				  <div class="tab-pane" id="messages"></div>
-				  <div class="tab-pane" id="settings"></div>
-				</div>
+					        {
+					            label: "My Second dataset",
+					            fillColor: "rgba(151,187,205,0.2)",
+					            strokeColor: "rgba(151,187,205,1)",
+					            pointColor: "rgba(151,187,205,1)",
+					            pointStrokeColor: "#fff",
+					            pointHighlightFill: "#fff",
+					            pointHighlightStroke: "rgba(151,187,205,1)",
+					            data: [28, 48, 40, 19, 86, 27, 90]
+					        }
+					    ]
+					};
+					var ctx = document.getElementById("myChart").getContext("2d");
+					var myLineChart = new Chart(ctx).Line(data);
+			  	</script>				  
 			</div>
+			
 		</div>
 		
 		<div class="row-fluid">

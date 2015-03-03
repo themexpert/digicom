@@ -702,6 +702,25 @@ body.layout-neworder {
 	}
 }
 
+/* Statistics page styling */
+#digiReportsTabs {
+	border-bottom: 0;
+	>li {
+		margin-bottom: 0;
+		> a {
+			padding: 0px 5px;
+			font-size: 12px;
+			border: 0;
+		}
+
+		&+li a {border-left: 1px solid #ccc;}
+	}
+	>li > a:hover,
+	> .active > a, 
+	> .active > a:hover, 
+	> .active > a:focus {background: none;}
+}
+
 /* About page styling */
 .about-dglogo {
 	margin-bottom: 15px;
