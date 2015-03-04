@@ -90,30 +90,36 @@ class DigiComModelProduct extends DigiComModel
 					$BundleTable = JTable::getInstance('Bundle', 'Table');
 					$BundleList = $BundleTable->getFieldValues('product_id',$product->id,$product->bundle_source);
 					$bundle_ids = $BundleList->bundle_id;
-					
-					$db = $this->getDbo();
-					$query = $db->getQuery(true)
-						->select('*')
-						->from($db->quoteName('#__digicom_products'))
-						->where($db->quoteName('bundle_source').' IS NULL')
-						->where($db->quoteName('catid').' in ('.$bundle_ids.')');
-					$db->setQuery($query);
-					$product->bundleitems = $db->loadObjectList();
+					if(empty($bundle_ids)){
+						$product->bundleitems = new stdClass();
+					}else{
+						$db = $this->getDbo();
+						$query = $db->getQuery(true)
+							->select('*')
+							->from($db->quoteName('#__digicom_products'))
+							->where($db->quoteName('bundle_source').' IS NULL')
+							->where($db->quoteName('catid').' in ('.$bundle_ids.')');
+						$db->setQuery($query);
+						$product->bundleitems = $db->loadObjectList();
+					}
 					break;
 				case 'product':
 					
 					$BundleTable = JTable::getInstance('Bundle', 'Table');
 					$BundleList = $BundleTable->getFieldValues('product_id',$product->id,$product->bundle_source);
 					$bundle_ids = $BundleList->bundle_id;
-					
-					$db = $this->getDbo();
-					$query = $db->getQuery(true)
-						->select('*')
-						->from($db->quoteName('#__digicom_products'))
-						->where($db->quoteName('bundle_source').' IS NULL')
-						->where($db->quoteName('id').' in ('.$bundle_ids.')');
-					$db->setQuery($query);
-					$product->bundleitems = $db->loadObjectList();
+					if(empty($bundle_ids)){
+						$product->bundleitems = new stdClass();
+					}else{
+						$db = $this->getDbo();
+						$query = $db->getQuery(true)
+							->select('*')
+							->from($db->quoteName('#__digicom_products'))
+							->where($db->quoteName('bundle_source').' IS NULL')
+							->where($db->quoteName('id').' in ('.$bundle_ids.')');
+						$db->setQuery($query);
+						$product->bundleitems = $db->loadObjectList();
+					}
 					
 					break;
 			}
@@ -289,7 +295,7 @@ class DigiComModelProduct extends DigiComModel
 	
 	public function getSubCategoriesId($catid){
 		$db = JFactory::getDBO();
-		$query = 'SELECT `id`, `parent_id` AS `parent`, `parent_id`, `title`, `title` as `name` FROM `#__digicom_categories` WHERE `published` = 1 ORDER BY `ordering`';
+		$query = 'SELECT `id`, `parent_id` AS `parent`, `parent_id`, `name` FROM `#__digicom_categories` WHERE `published` = 1 ORDER BY `ordering`';
 		$db->setQuery($query);
 		$mitems = $db->loadObjectList();
 		

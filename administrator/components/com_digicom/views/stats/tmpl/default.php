@@ -24,7 +24,13 @@ $result = $this->getStartEndDate($report);
 $startdate = $result["0"];
 $enddate = $result["1"];
 
+$app = JFactory::getApplication();
+$input = $app->input;
+$input->set('layout', 'dgform');
+
 $document = JFactory::getDocument();
+
+$document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 $document->addStyleSheet("components/com_digicom/assets/css/diagrams.css");
 //$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 
@@ -51,6 +57,152 @@ $document->addStyleSheet("components/com_digicom/assets/css/diagrams.css");
 <?php else : ?>
 	<div id="j-main-container" class="">
 <?php endif;?>
+
+		<?php echo JHtml::_('bootstrap.startTabSet', 'digicomTab', array('active' => 'sales')); ?>
+
+			<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'sales', JText::_('Sales', true)); ?>
+
+			<ul class="nav nav-pills">
+			  <li class="active">
+			    <a href="index.php?option=com_digicom&controller=stats">Overview</a>
+			  </li>
+			  <li>
+			  	<a href="index.php?option=com_digicom&controller=stats">Daily</a>
+			  </li>
+			  <li>
+			  	<a href="index.php?option=com_digicom&controller=stats">Weekly</a>
+			  </li>
+			  <li>
+			  	<a href="index.php?option=com_digicom&controller=stats">Monthly</a>
+			  </li>
+			  <li>
+			  	<a href="index.php?option=com_digicom&controller=stats">Yearly</a>
+			  </li>
+			  <li>
+			  	<a href="index.php?option=com_digicom&controller=stats">Custom</a>
+			  </li>
+			</ul>
+
+			<div class="row-fluid sales-overview">
+				<div class="span3">
+				 	<div class="panel-box">			 		
+					 	<span class="icon-briefcase"></span>
+					 	<p><strong>$20000.89</strong><br>Total Sale</p>
+				 	</div>
+				</div>
+
+				<div class="span3">
+				 	<div class="panel-box">			 		
+					 	<span class="icon-cart"></span>
+					 	<p><strong>200</strong><br>Total Orders</p>
+				 	</div>
+				</div>
+
+				<div class="span3">
+				 	<div class="panel-box">
+				 		<span class="icon-warning"></span>
+					 	<p><strong>200</strong><br>Pending Orders</p>
+				 	</div>			 	
+				</div>
+
+				<div class="span3">
+				 	<div class="panel-box">			 		
+					 	<span class="icon-users"></span>
+					 	<p><strong>200</strong><br>Total Customers</p>
+				 	</div>
+				</div>
+			</div>
+
+			<div class="panel">
+				<div class="panel-header clearfix">
+					<h3 class="panel-title"><span class="icon-bars"></span> Sales Analytics</h3>
+				</div>
+				<div class="panel-content"> 
+				  	<canvas id="myChart" width="945" height="200"></canvas>
+				  	<script type="text/javascript">
+				  		var data = {
+						    labels: ["January", "February", "March", "April", "May", "June", "July"],
+						    datasets: [
+
+						        {
+						            label: "My Second dataset",
+						            fillColor: "rgba(151,187,205,0.2)",
+						            strokeColor: "rgba(151,187,205,1)",
+						            pointColor: "rgba(151,187,205,1)",
+						            pointStrokeColor: "#fff",
+						            pointHighlightFill: "#fff",
+						            pointHighlightStroke: "rgba(151,187,205,1)",
+						            data: [28, 48, 40, 19, 86, 27, 90]
+						        }
+						    ]
+						};
+						var ctx = document.getElementById("myChart").getContext("2d");
+						var myLineChart = new Chart(ctx).Line(data);
+				  	</script>				  
+				</div>
+				
+			</div>
+
+			<div class="row-fluid">
+			<div class="span6 panel">
+				<div class="panel-header clearfix">
+					<h3 class="panel-title"><span class="icon-star-empty"></span>Recent Sales</h3>
+				</div>
+				<div class="panel-content">
+					<canvas id="myBarChart" width="300" height="200"></canvas>
+					<script type="text/javascript">
+						var data = {
+						    labels: ["January", "February", "March", "April", "May", "June", "July"],
+						    datasets: [
+						        {
+						            label: "My First dataset",
+						            fillColor: "rgba(220,220,220,0.5)",
+						            strokeColor: "rgba(220,220,220,0.8)",
+						            highlightFill: "rgba(220,220,220,0.75)",
+						            highlightStroke: "rgba(220,220,220,1)",
+						            data: [65, 59, 80, 81, 56, 55, 40]
+						        }
+						    ]
+						};
+						var ctx = document.getElementById("myBarChart").getContext("2d");
+						var myBarChart = new Chart(ctx).Bar(data, options);
+					</script>
+				</div>
+			</div>
+			<div class="span6 panel">
+				<div class="panel-header clearfix">
+					<h3 class="panel-title"><span class="icon-download"></span>Most Purchased</h3>
+				</div>
+				<div class="panel-content">
+					<canvas id="myBarChart2" width="300" height="200"></canvas>
+					<script type="text/javascript">
+						var data = {
+						    labels: ["January", "February", "March", "April", "May", "June", "July"],
+						    datasets: [
+						        {
+						            label: "My First dataset",
+						            fillColor: "rgba(220,220,220,0.5)",
+						            strokeColor: "rgba(220,220,220,0.8)",
+						            highlightFill: "rgba(220,220,220,0.75)",
+						            highlightStroke: "rgba(220,220,220,1)",
+						            data: [65, 59, 80, 81, 56, 55, 40]
+						        }
+						    ]
+						};
+						var ctx = document.getElementById("myBarChart2").getContext("2d");
+						var myBarChart2 = new Chart(ctx).Bar(data, options);
+					</script>
+				</div>
+			</div>
+		</div>			
+
+			<?php echo JHtml::_('bootstrap.endTab'); ?>
+
+			<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'downloads', JText::_('Downloads', true)); ?>
+
+			<?php echo JHtml::_('bootstrap.endTab'); ?>
+
+		<?php echo JHtml::_('bootstrap.endTabSet'); ?>
 		
 		<!-- start select report anc custom date -->
 		<table>
@@ -180,31 +332,13 @@ $document->addStyleSheet("components/com_digicom/assets/css/diagrams.css");
 		<table>
 			<tr>
 				<td valign="top" style="color:#666666; font-family:Georgia, 'Times New Roman', Times, serif; width:15%">
-					<?php
-						$total = $this->getTotal();
-						$chargebacks = $this->getTotal('chargebacks');
-						$refunds = $this->getTotal('refunds');
-						echo '<p style="margin-bottom:5px;"><b>'.JText::_("DSTOTAL").": ".DigiComAdminHelper::format_price($total, $configs->get('currency','USD'), true, $configs) . '</b></p>';
-						echo '<p style="margin-bottom:5px;">'.JText::_("LICENSE_CHARGEBACKS").': <span style="color:#ff0000;">'.DigiComAdminHelper::format_price($chargebacks, $configs->get('currency','USD'), true, $configs) . '</span></p>';
-						echo '<p style="margin-bottom:5px;">'.JText::_("LICENSE_REFUNDS").': <span style="color:#ff0000;">'.DigiComAdminHelper::format_price($refunds, $configs->get('currency','USD'), true, $configs).'</span></p>';
-					?>
+					
 				</td>
 				<td valign="top" style="color:#666666; font-family:Georgia, 'Times New Roman', Times, serif; width:15%">
-					<?php
-						$nr_orders = $this->getNrOrders();
-						echo '<p><b>'.JText::_("VIEWSTATORD").": ".'<a href="index.php?option=com_digicom&controller=orders&startdate='.$link_start_date.'&enddate='.$link_end_date.'">'.$nr_orders.'</a></p>';
-					?>
+					
 				</td>
 				<td valign="top" style="color:#666666; font-family:Georgia, 'Times New Roman', Times, serif; width:15%">
-					<?php
-						$nr_licenses = $this->getNrLicenses('');
-						$chargebacks = $this->getNrLicenses('chargebacks');
-						$refunds = $this->getNrLicenses('refunds');
-						//echo '<p style="margin-bottom:5px;"><b>'.JText::_("VIEWTREELICENCES").": ".'<a href="index.php?option=com_digicom&controller=licenses&startdate='.$link_start_date.'&enddate='.$link_end_date.'&ltype=common">'.$nr_licenses.'</a></b></p>';
-						echo '<p style="margin-bottom:5px;"><b>'.JText::_("COM_DIGICOM_NUM_OF_PRODUCT_SALE").": ".$nr_licenses.'</b></p>';
-						echo '<p style="margin-bottom:5px;">'.JText::_("LICENSE_CHARGEBACKS").': <span style="color:#ff0000;">'.$chargebacks . '</span></p>';
-						echo '<p style="margin-bottom:5px;">'.JText::_("LICENSE_REFUNDS").': <span style="color:#ff0000;">'.$refunds.'</span></p>';
-					?>
+					
 				</td>
 				<td></td>
 			</tr>
@@ -244,7 +378,7 @@ $document->addStyleSheet("components/com_digicom/assets/css/diagrams.css");
 		?>
 		<!-- stop edit second diagram -->
 
-		<input type="hidden" name="controller" value="Stats" />
+		<input type="hidden" name="controller" value="stats" />
 		<input type="hidden" name="option" value="com_digicom" />
 		<input type="hidden" name="task" value="showStats" />
 	</div>

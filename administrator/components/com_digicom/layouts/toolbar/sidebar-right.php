@@ -9,14 +9,17 @@
 */
 
 defined ('_JEXEC') or die ("Go away.");
+$uri = JFactory::getURI(); 
+$pageURL = $uri->toString(); 
 ?>
 
 <div id="toggle_settings_wrap" class="">
 	<h3>Global Settings</h3>
 	<ul>
-		<li><a href="#">Email</a></li>
-		<li><a href="#">File & Folders</a></li>
-		<li><a href="#">Theme</a></li>
+		<?php if (JFactory::getUser()->authorise('core.admin', 'com_digicom')) { ?>
+			<li><a href="index.php?option=com_config&view=component&component=com_digicom&return=<?php echo base64_encode($pageURL);?>">ACL Settings</a></li>
+			<li><a href="index.php?option=com_digicom&controller=configs">Settings</a></li>
+		<?php } ?>		
 	</ul>
 
 	<h3>Add-ons Settings</h3>

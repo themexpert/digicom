@@ -18,16 +18,11 @@ class DigiComAdminViewDigiComAdmin extends DigiComView {
 	public $newversion 		= null;
 	
 	function display ($tpl =  null ) {		
-		// Options button.
-		if (JFactory::getUser()->authorise('core.admin', 'com_digicom')) {
-			JToolBarHelper::preferences('com_digicom');
-		}
-		
 		DigiComAdminHelper::addSubmenu('digicomadmin');
 		
 		//load the toolber
 		$this->addToolbar();
-		$this->sidebar = JHtmlSidebar::render();
+		$this->sidebar = DigiComAdminHelper::renderSidebar();
 		
 		$this->latest_orders = DigiComAdminHelper::getOrders(5);
 		$this->latest_products = DigiComAdminHelper::getProducts(5);
@@ -45,12 +40,7 @@ class DigiComAdminViewDigiComAdmin extends DigiComView {
 	{
 		JToolBarHelper::title(JText::_('DIGICOM_DASHBOARD'), 'generic.png');
 		
-		$bar = JToolBar::getInstance('toolbar');		
-		
-		
-		$layout = new JLayoutFile('toolbar.settings');
-		$bar->appendButton('Custom', $layout->render(array()), 'settings');
-
+		$bar = JToolBar::getInstance('toolbar');
 		
 		$layout = new JLayoutFile('toolbar.title');
 		$title = array(
@@ -62,6 +52,9 @@ class DigiComAdminViewDigiComAdmin extends DigiComView {
 		$layout = new JLayoutFile('toolbar.products');
 		$bar->appendButton('Custom', $layout->render(array()), 'products');
 		
+		$layout = new JLayoutFile('toolbar.settings');
+		$bar->appendButton('Custom', $layout->render(array()), 'settings');
+
 	}
 	function isCurlInstalled() {
 		$array = get_loaded_extensions();

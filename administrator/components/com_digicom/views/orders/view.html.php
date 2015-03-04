@@ -50,7 +50,7 @@ class DigiComAdminViewOrders extends DigiComView
 		$this->addToolbar();
 		
 		DigiComAdminHelper::addSubmenu('orders');
-		$this->sidebar = JHtmlSidebar::render();
+		$this->sidebar = DigiComAdminHelper::renderSidebar();
 		
 		parent::display( $tpl );
 	}
@@ -66,6 +66,9 @@ class DigiComAdminViewOrders extends DigiComView
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
+		
+		$layout = new JLayoutFile('toolbar.settings');
+		$bar->appendButton('Custom', $layout->render(array()), 'settings');
 		
 		JToolBarHelper::Cancel();
 		$db = JFactory::getDBO();
@@ -116,6 +119,8 @@ class DigiComAdminViewOrders extends DigiComView
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
+		$layout = new JLayoutFile('toolbar.settings');
+		$bar->appendButton('Custom', $layout->render(array()), 'settings');
 		
 		JToolBarHelper::save();
 		JToolBarHelper::cancel();
@@ -251,7 +256,10 @@ class DigiComAdminViewOrders extends DigiComView
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
-
+		
+		$layout = new JLayoutFile('toolbar.settings');
+		$bar->appendButton('Custom', $layout->render(array()), 'settings');
+		
 //		JToolBarHelper::save();
 		if ( $isNew ) {
 			JToolBarHelper::cancel();
@@ -332,7 +340,7 @@ class DigiComAdminViewOrders extends DigiComView
 		$this->assign( "tax", '0' );
 
 		DigiComAdminHelper::addSubmenu('orders');
-		$this->sidebar = JHtmlSidebar::render();
+		$this->sidebar = DigiComAdminHelper::renderSidebar();
 
 		parent::display( $tpl );
 	}
@@ -354,6 +362,9 @@ class DigiComAdminViewOrders extends DigiComView
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
+		
+		$layout = new JLayoutFile('toolbar.settings');
+		$bar->appendButton('Custom', $layout->render(array()), 'settings');
 		
 		JToolBarHelper::addNew();
 		JToolBarHelper::divider();

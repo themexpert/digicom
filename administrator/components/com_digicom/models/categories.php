@@ -15,7 +15,7 @@ jimport('joomla.utilities.date');
 
 class DigiComAdminModelCategories extends JModelList {
 	
-	protected $_context = 'com_digicom.Category';
+	protected $_context = 'com_digicom.category';
 	private $total=0;
 	var $_categories;
 	var $_category;
@@ -23,10 +23,31 @@ class DigiComAdminModelCategories extends JModelList {
 	var $_total = 0;
 	var $_pagination = null;
 
-	function __construct(){
-		parent::__construct();
+	function __construct () {
+		
+		if (empty($config['filter_fields']))
+		{
+			$config['filter_fields'] = array(
+				'id', 'a.id',
+				'name', 'a.name',
+				'alias', 'a.alias',
+				'published', 'a.published',
+				'access', 'a.access', 'access_level',
+				'language', 'a.language',
+				'checked_out', 'a.checked_out',
+				'checked_out_time', 'a.checked_out_time',
+				'created_time', 'a.created_time',
+				'created_user_id', 'a.created_user_id',
+				'level', 'a.level',
+				'parent_id', 'a.parent_id',
+				'tag'
+			);
+		}
+		
+		parent::__construct($config);
 		$cids = JRequest::getVar('cid', 0, '', 'array');
-		$this->setId((int)$cids[0]);
+	 	$this->setId((int)$cids[0]);
+		
 	}
 
 	function populateState($ordering = NULL, $direction = NULL){
@@ -34,20 +55,39 @@ class DigiComAdminModelCategories extends JModelList {
 		$this->setState('list.start', $app->getUserStateFromRequest($this->_context . '.list.start', 'limitstart', 0, 'int'));
 		$this->setState('list.limit', $app->getUserStateFromRequest($this->_context . '.list.limit', 'limit', $app->getCfg('list_limit', 25) , 'int'));
 		$this->setState('selected', JRequest::getVar('cid', array()));
-	}
 
-	function getPagination(){
-		$pagination=parent::getPagination();
-		$pagination->total=$this->total;
-		if($pagination->total%$pagination->limit>0){
-			$nr_pages=intval($pagination->total/$pagination->limit)+1;
+		$app = JFactory::getApplication();
+		$context = $this->_context;
+
+		$search = $this->getUserStateFromRequest($context . '.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$level = $this->getUserStateFromRequest($context . '.filter.level', 'filter_level');
+		$this->setState('filter.level', $level);
+
+		$access = $this->getUserStateFromRequest($context . '.filter.access', 'filter_access');
+		$this->setState('filter.access', $access);
+
+		$published = $this->getUserStateFromRequest($context . '.filter.published', 'filter_published', '');
+		$this->setState('filter.published', $published);
+
+		$language = $this->getUserStateFromRequest($context . '.filter.language', 'filter_language', '');
+		$this->setState('filter.language', $language);
+
+		$tag = $this->getUserStateFromRequest($this->context . '.filter.tag', 'filter_tag', '');
+		$this->setState('filter.tag', $tag);
+
+		// List state information.
+		parent::populateState('a.ordering', 'asc');
+
+		// Force a language
+		$forcedLanguage = $app->input->get('forcedLanguage');
+
+		if (!empty($forcedLanguage))
+		{
+			$this->setState('filter.language', $forcedLanguage);
+			$this->setState('filter.forcedLanguage', $forcedLanguage);
 		}
-		else{ 
-			$nr_pages=intval($pagination->total/$pagination->limit);
-		}
-		$pagination->set('pages.total',$nr_pages);
-		$pagination->set('pages.stop',$nr_pages);
-		return $pagination;
 	}
 
 	function setId($id) {
@@ -56,6 +96,7 @@ class DigiComAdminModelCategories extends JModelList {
 	}
 
 	protected function getListQuery() {
+		/*
 		$db = JFactory::getDBO();
 		$where = "1=1";
 
@@ -65,8 +106,127 @@ class DigiComAdminModelCategories extends JModelList {
 		$query->order("parent_id, ordering asc");
 		$query->where($where);
 		return $query;
-	}
+		*/
+		// Create a new query object.
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$user = JFactory::getUser();
 
+		// Select the required fields from the table.
+		$query->select(
+			$this->getState(
+				'list.select',
+				'a.id, a.name, a.alias, a.published, a.access,a.image' .
+				', a.checked_out, a.checked_out_time, a.created_user_id' .
+				', a.parent_id, a.level, a.ordering' .
+				', a.language'
+			)
+		);
+		$query->from('#__digicom_categories AS a');
+
+		// Join over the language
+		$query->select('l.title AS language_title')
+			->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = a.language');
+
+		// Join over the users for the checked out user.
+		$query->select('uc.name AS editor')
+			->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
+
+		// Join over the asset groups.
+		$query->select('ag.title AS access_level')
+			->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
+
+		// Join over the users for the author.
+		$query->select('ua.name AS author_name')
+			->join('LEFT', '#__users AS ua ON ua.id = a.created_user_id');
+
+		// Filter on the level.
+		if ($level = $this->getState('filter.level'))
+		{
+			$query->where('a.level <= ' . (int) $level);
+		}
+
+		// Filter by access level.
+		if ($access = $this->getState('filter.access'))
+		{
+			$query->where('a.access = ' . (int) $access);
+		}
+
+		// Implement View Level Access
+		if (!$user->authorise('core.admin'))
+		{
+			$groups = implode(',', $user->getAuthorisedViewLevels());
+			$query->where('a.access IN (' . $groups . ')');
+		}
+
+		// Filter by published state
+		$published = $this->getState('filter.published');
+
+		if (is_numeric($published))
+		{
+			$query->where('a.published = ' . (int) $published);
+		}
+		elseif ($published === '')
+		{
+			$query->where('(a.published IN (0, 1))');
+		}
+
+		// Filter by search in title
+		$search = $this->getState('filter.search');
+
+		if (!empty($search))
+		{
+			if (stripos($search, 'id:') === 0)
+			{
+				$query->where('a.id = ' . (int) substr($search, 3));
+			}
+			elseif (stripos($search, 'author:') === 0)
+			{
+				$search = $db->quote('%' . $db->escape(substr($search, 7), true) . '%');
+				$query->where('(ua.name LIKE ' . $search . ' OR ua.username LIKE ' . $search . ')');
+			}
+			else
+			{
+				$search = $db->quote('%' . str_replace(' ', '%', $db->escape(trim($search), true) . '%'));
+				$query->where('(a.name LIKE ' . $search . ' OR a.alias LIKE ' . $search . ' OR a.note LIKE ' . $search . ')');
+			}
+		}
+
+		// Filter on the language.
+		if ($language = $this->getState('filter.language'))
+		{
+			$query->where('a.language = ' . $db->quote($language));
+		}
+
+		// Filter by a single tag.
+		$tagId = $this->getState('filter.tag');
+
+		if (is_numeric($tagId))
+		{
+			$query->where($db->quoteName('tagmap.tag_id') . ' = ' . (int) $tagId)
+				->join(
+					'LEFT', $db->quoteName('#__contentitem_tag_map', 'tagmap')
+					. ' ON ' . $db->quoteName('tagmap.content_item_id') . ' = ' . $db->quoteName('a.id')
+					. ' AND ' . $db->quoteName('tagmap.type_alias') . ' = ' . $db->quote($extension . '.category')
+				);
+		}
+
+		// Add the list ordering clause
+		$listOrdering = $this->getState('list.ordering', 'a.ordering');
+		$listDirn = $db->escape($this->getState('list.direction', 'ASC'));
+
+		if ($listOrdering == 'a.access')
+		{
+			$query->order('a.access ' . $listDirn . ', a.ordering ' . $listDirn);
+		}
+		else
+		{
+			$query->order($db->escape($listOrdering) . ' ' . $listDirn);
+		}
+
+		return $query;
+	}
+	/*
 	function getItems(){
 		jimport('joomla.html.html.menu');
 		$config = JFactory::getConfig();
@@ -108,7 +268,7 @@ class DigiComAdminModelCategories extends JModelList {
 		}
 		return $categories;
 	}
-
+	*/
 	function getlistCategories(){
 		if (empty ($this->_categories)) {
 			$sql = "select * from #__digicom_categories order by parent_id, ordering asc";
@@ -212,7 +372,8 @@ class DigiComAdminModelCategories extends JModelList {
 			return false;
 		}
 
-//print_r($names);die;
+		//print_r($names);die;
+		/*
 		if ($task == "publish") {
 			foreach ($names as $i => $v) {
 
@@ -234,7 +395,7 @@ class DigiComAdminModelCategories extends JModelList {
 					$sql = "update #__menu set published='1' where menutype='digicats' and name='" . $v->name . "' and (link='" . $link . "' or link='" . $link2 . "')";
 				}
 
-//echo $sql;
+				//echo $sql;
 				$database->setQuery($sql);
 				$database->query();
 			}
@@ -249,7 +410,8 @@ class DigiComAdminModelCategories extends JModelList {
 
 			}
 		}
-//			   die;
+		//			   die;
+		*/
 
 		return true;
 
@@ -386,4 +548,5 @@ class DigiComAdminModelCategories extends JModelList {
 
 		return $form;
 	}
+
 }

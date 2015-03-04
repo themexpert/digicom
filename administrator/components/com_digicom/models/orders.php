@@ -102,6 +102,23 @@ class DigiComAdminModelOrders extends JModelList{
 	function saveorder(){
 		$post = JRequest::get('post');
 		//print_r($post);die;
+		$userid = $post['userid'];
+		$table = $this->getTable('Customer');
+		$table->loadCustommer($userid);
+		
+		if(empty($table->id) or $table->id < 0){
+			$user = JFactory::getUser($userid);
+			$name = explode(' ',$user->name);
+			
+			$cust = new stdClass();
+			$cust->id = $user->id;
+			$cust->firstname = $name[0];
+			$cust->lastname =  (!empty($name[1]) ? $name[1] : '');
+			$table->bind($cust);
+			$table->store();
+		}
+		
+		//print_r($post);die;
 		$config = JFactory::getConfig();
 		$tzoffset = $config->get('offset');
 		
@@ -116,7 +133,6 @@ class DigiComAdminModelOrders extends JModelList{
 		}
 		
 		$order = array();
-		$order['id'] = '0';
 		$order['userid'] = $post['userid'];
 		$order['order_date'] = $order_date;
 		$order['processor'] = $post['processor'];
@@ -126,12 +142,10 @@ class DigiComAdminModelOrders extends JModelList{
 		$order['number_of_products'] = count( $post['product_id'] );
 		$order['currency'] = $post['currency'];
 		$order['status'] = $post['status'];
-		//$order['tax'] = $post['tax'];
 		$order['discount'] = $post['discount'];
 		$order['amount'] = $post['amount'];
-		$order['amount_paid'] = trim($post['amount_paid']) != "" ? trim($post['amount_paid']) : '-1';
+		$order['amount_paid'] = trim($post['amount_paid']) != "" ? trim($post['amount_paid']) : '0';
 		$order['published'] = '1';
-		//print_r($order);die;
 		$order_table = $this->getTable( 'Order' );
 
 		if(!$order_table->bind($order)){
@@ -148,39 +162,8 @@ class DigiComAdminModelOrders extends JModelList{
 		$now = time();
 		//we have to add orderdetails now;
 		$this->addOrderDetails($post['product_id'], $order_table->id, $now, $post['userid'], $post['status']);
-		// Licenses
-		//$license_table = $this->getTable( 'License' );
 		/*
-		$date_today = date('Y-m-d H:i:s', time() + $tzoffset);
-		// exit();
-
-		foreach($post['product_id'] as $key => $product_id){
-			
-			$buy_date = date("Y-m-d H:i:s");
-			$sql = "insert into #__digicom_logs (`userid`, `productid`, `buy_date`, `buy_type`) values (".$post['userid'].", ".$product_id.", '".$buy_date."', '".$buy_type."')";
-			$this->_db->setQuery($sql);
-			$this->_db->query();
-
-			$sql = "SELECT product_type FROM `#__digicom_products` WHERE id = ".$product_id;
-			$this->_db->setQuery( $sql );
-			$product_type = $this->_db->loadResult();
-
-			if(!$license_table->bind($license)){
-				return false;
-			}
-
-			if(!$license_table->check()){
-				return false;
-			}
-			
-			if(!$license_table->store()){
-				return false;
-			}
-		}
-		*/
-		/*
-		$license["licenseid"] = $license_table->id;
-		
+		TODO:: email submit 
 		require_once(JPATH_SITE.DS."components".DS."com_digicom".DS."helpers".DS."cronjobs.php");
 		submitEmailFromBackend($order, $license);
 		*/
@@ -207,20 +190,21 @@ class DigiComAdminModelOrders extends JModelList{
 		}
 		
 		//print_r($items);die;
-		
+		$table = $this->getTable('Product');
 		// start foreach
 		foreach($items as $key=>$item)
 		{
 			if($key >= 0)
 			{
-				$price = (isset($item->discount) && ($item->discount > 0)) ? $item->discount : $item->subtotal_formated;
+				
+				$product = $table->load($item);
+				$price = $product->price;
 				$date = JFactory::getDate();
 				$purchase_date = $date->toSql();
 				$expire_string = "0000-00-00 00:00:00";
-				$package_type = (!empty($item->bundle_source) ? $item->bundle_source : 'reguler');
-				$sql = "insert into #__digicom_orders_details(userid, productid,quantity, orderid, amount_paid, published, package_type, purchase_date, expires) "
-						. "values ('{$user_id}', '{$item}', '1', '".$orderid."', '{$price}', ".$published.", '".$package_type."', '".$purchase_date."', '".$expire_string."')";
-				//echo $sql;die;
+				$package_type = (!empty($product->bundle_source) ? $product->bundle_source : 'reguler');
+				$sql = "insert into #__digicom_orders_details(userid, productid,quantity,price, orderid, amount_paid, published, package_type, purchase_date, expires) "
+						. "values ('{$user_id}', '{$item}', '1','{$price}','".$orderid."', '0', ".$published.", '".$package_type."', '".$purchase_date."', '".$expire_string."')";
 				$database->setQuery($sql);
 				$database->query();
 
@@ -228,7 +212,7 @@ class DigiComAdminModelOrders extends JModelList{
 				$tzoffset = $site_config->get('offset');
 				$buy_date = date('Y-m-d H:i:s', time() + $tzoffset);
 				$sql = "insert into #__digicom_logs (`userid`, `productid`, `buy_date`, `buy_type`)
-						values (".$user_id.", ".$item.", '".$buy_date."', 'new')";
+						values (".$user_id.", ". $item .", '".$buy_date."', 'new')";
 				$database->setQuery($sql);
 				$database->query();
 				
@@ -341,6 +325,41 @@ class DigiComAdminModelOrders extends JModelList{
 		$amount = 0;
 		$taxvalue = 0;
 
+		//--------------------------------------------------------
+		// Promo code
+		//--------------------------------------------------------
+
+		$promovalue = 0;
+		$addPromo = false;
+		$ontotal = false;
+		$onProduct = false;
+		if($req->promocode != "none"){
+
+			$q = "select * from #__digicom_promocodes where code = '".trim($req->promocode)."'";
+			$this->_db->setQuery($q);
+			$promo = $this->_db->loadObject();
+			//print_r($promo->discount_enable_range);die;
+			if($promo->id > 0){
+				//we got real promocode
+				$promoid = $promo->id;
+				$promocode = $promo->code;
+
+				//validate promocode
+				if(!($promo->codelimit <= $promo->used && $promo->codelimit > 0)){
+					$addPromo = true;
+					//we can use it, it has limit
+					if($promo->discount_enable_range==1){
+						// for entire cart
+						$ontotal = true;
+					}else{
+						$onProduct = true;
+					}
+				}
+			}
+		}
+
+		//echo $ontotal;die;
+
 		//$cust_id = $req->customer_id;
 		if(isset($req)){
 			foreach($req->pids as $item ) {
@@ -357,67 +376,69 @@ class DigiComAdminModelOrders extends JModelList{
 					$amount += $price;
 					//$taxvalue += $this->getTax( $product_id, $cust_id, $price );
 					$taxvalue += 0;
-				}
-			}
+
+					//check promocode on product apply
+					if($addPromo && $onProduct){
+						//TODO: Apply Product promo
+						// Get product restrictions
+						$sql = "SELECT p.`productid` FROM `#__digicom_promocodes_products` AS p WHERE p.`promoid`=" . $promo->id ." and p.`productid`=".$item[0];
+						$this->_db->setQuery( $sql );
+						$promo->product = $this->_db->loadObject();
+
+						if (count($promo->product) && $promo->aftertax == '0')
+						{
+							//promo discount should be applied before taxation
+							//we get product to calculate discount
+							
+							if ($promo->promotype == '0')
+							{
+								// Use absolute values
+								$promovalue += $promo->amount;
+							}
+							else
+							{
+								// Use percentage
+								$promovalue += $price * $promo->amount / 100;
+							}
+
+							$sql = "update #__digicom_promocodes set used=used+1 where id = '" . $promo->id . "'";
+							$this->_db->setQuery( $sql );
+							$this->_db->query();
+											
+						}
+					} // end if for: product promo check
+				} //end if for empty if check
+			} //end foreach for products
 		}
+
 		//add tax to total
 		$amount = $amount + $taxvalue;
 
-		//--------------------------------------------------------
-		// Promo code
-		//--------------------------------------------------------
-
-		$promovalue = 0;
-		if($req->promocode != "none"){
-			$q = "select * from #__digicom_promocodes where code = '".trim($req->promocode)."'";
-			$this->_db->setQuery($q);
-			$promo = $this->_db->loadObject();
-
-			if($promo->id > 0){
-				$promoid = $promo->id;
-				$promocode = $promo->code;
-			}
-			else{
-				$promoid = '0';
-				$promocode = '';
-			}
-
-			$promo_applied = -1; //no need for promo
-
-			if($promo->id > 0){//valid promocode was provided
-				if($promo->codelimit <= $promo->used && $promo->codelimit > 0){
-				}
-				else{
-					if($promo->aftertax == '0'){//promo discount should be applied before taxation
-						$promo_applied = 1; //all discounts are applied
-						if($promo->promotype == '0'){//use absolute values
-							$amount -= $promo->amount;
-							$promovalue = $promo->amount;
-						}
-						else{ //use percentage
-							$promovalue = $amount * $promo->amount / 100;
-							$amount *= 1 - $promo->amount / 100;
-						}
-					}
-					else{//promo discount should be applied after tax
-						$promo_applied = 0; //we should apply promo later
-						//nothing to do here - tax is not calculated yet
-					}
-				}
-			}
-			//now lets apply promo discounts if there are any
-			if($promo_applied == 0){
-				if($promo->promotype == '0'){//use absolute values
-					$amount -= $promo->amount;
-					$promovalue = $promo->amount;
-				}
-				else{ //use percentage
-					$promovalue = $amount * $promo->amount / 100;
-					$amount *= 1 - $promo->amount / 100;
-				}
-			}
+		if($addPromo && $onProduct){
+			$amount -= $promovalue;
 		}
 
+		//--------------------------------------------------------
+		// Promo code on cart
+		//--------------------------------------------------------
+		if($addPromo && $ontotal){
+			//echo 'apply promo on cart';die;
+			//now lets apply promo discounts if there are any
+			if($promo->promotype == '0'){//use absolute values
+				$amount -= $promo->amount;
+				$promovalue = $promo->amount;
+			}
+			else{ //use percentage
+				$promovalue = $amount * $promo->amount / 100;
+				$amount *= 1 - $promo->amount / 100;
+			}
+
+			$sql = "update #__digicom_promocodes set used=used+1 where id = '" . $promo->id . "'";
+			$this->_db->setQuery( $sql );
+			$this->_db->query();
+		}
+		
+		//echo $promovalue;die;
 		//--------------------------------------------------------
 		$amount_subtotal = $amount_subtotal < 0 ? "0.00" : $amount_subtotal;
 		$amount = $amount < 0 ? "0.00" : $amount;
@@ -453,7 +474,8 @@ class DigiComAdminModelOrders extends JModelList{
 		$enddate = JRequest::getVar("enddate", "", "request");
 		$enddate = strtotime($enddate);
 
-		$keyword = JRequest::getVar( "keyword", "", "request" );
+		$keyword = JRequest::getVar( "keyword", "");
+		//echo $keyword ;die;
 		$keyword_where = "(u.username like '%" . $keyword . "%' 
 							or c.firstname like '%" . $keyword . "%' 
 							or c.lastname like '%" . $keyword . "%'
@@ -465,6 +487,7 @@ class DigiComAdminModelOrders extends JModelList{
 					#__users u ON u.id=o.userid
 						LEFT JOIN 
 					#__digicom_customers c ON u.id=c.id ";
+					
 		$where = array();
 		if($startdate > 0) 
 			$where[]=" o.order_date > " . $startdate . " ";
@@ -474,6 +497,9 @@ class DigiComAdminModelOrders extends JModelList{
 			$where[]=$keyword_where;
 		$where_clause = (count($where))? ' WHERE '. implode(' AND ',$where) : '';
 		$sql .= $where_clause. " ORDER BY o.id DESC";
+		
+		//echo $sql;die;
+		
 		return $sql;
 	}
 
@@ -600,7 +626,7 @@ class DigiComAdminModelOrders extends JModelList{
 			$db->setQuery($sql);
 			$this->_order = $db->loadObject();
 			
-			$sql = "SELECT p.id, p.name, p.catid, od.package_type, od.amount_paid, od.price FROM #__digicom_products as p, #__digicom_orders_details as od WHERE p.id=od.productid AND od.orderid='". $this->_order->id ."'";
+			$sql = "SELECT p.id, p.name, p.price,p.catid, od.package_type,od.quantity, od.amount_paid FROM #__digicom_products as p, #__digicom_orders_details as od WHERE p.id=od.productid AND od.orderid='". $this->_order->id ."'";
 			$db->setQuery($sql);
 			$prods = $db->loadObjectList();
 			
@@ -649,7 +675,7 @@ class DigiComAdminModelOrders extends JModelList{
 		}
 
 		// delete licenses
-		$db->setQuery('delete from #__digicom_licenses where orderid in ('.implode(',', $cids).')');
+		$db->setQuery('delete from #__digicom_orders_details where orderid in ('.implode(',', $cids).')');
 
 		if (!$db->query())
 		{
@@ -1023,4 +1049,5 @@ class DigiComAdminModelOrders extends JModelList{
 		
 		return $form;
 	}
+
 }

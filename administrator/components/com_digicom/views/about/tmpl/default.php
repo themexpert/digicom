@@ -33,6 +33,10 @@ $input->set('layout', 'dgform');
 
 			<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'about', JText::_('COM_DIGICOM_ABOUT_ABOUT', true)); ?>
 
+			<div class="about-dglogo">
+				<a href="#">Digicom Logo</a>
+			</div>
+
 		<table class="adminform table">
 			<tr>
 				<td>

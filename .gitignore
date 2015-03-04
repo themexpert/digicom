@@ -1,4 +1,4 @@
-/.gitignore
+/.git/*
 /.htaccess
 /.idea/*
 /administrator/cache/*
@@ -52,6 +52,7 @@
 /layouts/*
 /libraries/*
 /logs/*
+/log/*
 /media/*
 !/media/digicom/
 /modules/*
@@ -60,8 +61,8 @@
 !/modules/mod_digicom_google/*
 !/modules/mod_digicom_manager/*
 /plugins/*
-!/plugins/payment/*
-!/plugins/system/*
+!/plugins/digicom_pay/
+!/plugins/system/
 /plugins/system/*
 !/plugins/system/digicom_addtocart*
 /templates/*

@@ -12,32 +12,15 @@ defined( '_JEXEC' ) or die( "Go away." );
 
 class TableCustomer extends JTable
 {
-/*
-	var $id = null;
-	var $address = null;
-	var $city = null;
-	var $state = null;
-	var $province = null;
-	var $zipcode = null;
-	var $country = null;
-	var $payment_type = null;
-	var $company = null;
-	var $firstname = null;
-	var $lastname = null;
-	var $shipaddress = null;
-	var $shipcity = null;
-	var $shipstate = null;
-	var $shipzipcode = null;
-	var $shipcountry = null;
-	var $person = null;
-	var $taxnum = null;
-	var $taxclass = null;
-*/
 	function TableCustomer( &$db )
 	{
 		parent::__construct( '#__digicom_customers', 'id', $db );
 	}
 
+	function loadCustommer( $id = NULL, $reset = true )
+	{
+		parent::load( $id );
+	}
 	function load( $id = NULL, $reset = true )
 	{
 		parent::load( $id );
@@ -93,6 +76,3 @@ class TableCustomer extends JTable
 	}
 
 }
-
-
-?>

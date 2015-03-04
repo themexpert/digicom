@@ -29,11 +29,11 @@ class DigiComAdminHelper {
 			'index.php?option=com_digicom',
 			$vName == 'digicomadmin'
 		);
-		JHtmlSidebar::addEntry(
+		/*JHtmlSidebar::addEntry(
 			JText::_('VIEWTREESETTINGMANAGER'),
 			'index.php?option=com_digicom&controller=configs',
 			$vName == 'configs'
-		);
+		);*/
 		
 		JHtmlSidebar::addEntry(
 			JText::_('VIEWTREECATEGORIES'),
@@ -109,11 +109,11 @@ class DigiComAdminHelper {
 			$vName == 'stats'
 		);
 		
-		JHtmlSidebar::addEntry(
+		/*JHtmlSidebar::addEntry(
 			JText::_('VIEWTREELOGS'),
 			'index.php?option=com_digicom&controller=logs',
 			$vName == 'logs'
-		);
+		);*/
 		JHtmlSidebar::addEntry(
 			JText::_('VIEWTREEABOUT'),
 			'index.php?option=com_digicom&controller=about',
@@ -124,6 +124,24 @@ class DigiComAdminHelper {
 			JText::_('COM_DIGICOM_TOGGLE_SIDEBAR'),
 			'#togglesidebar'
 		);
+		
+	}
+	
+	public static function renderSidebar(){
+		// Collect display data
+		$data                 = new stdClass;
+		$data->list           = JHtmlSidebar::getEntries();
+		$data->filters        = JHtmlSidebar::getFilters();
+		$data->action         = JHtmlSidebar::getAction();
+		$data->displayMenu    = count($data->list);
+		$data->displayFilters = count($data->filters);
+		$data->hide           = JFactory::getApplication()->input->getBool('hidemainmenu');
+
+		// Create a layout object and ask it to render the sidebar
+		$layout      = new JLayoutFile('sidebars.submenu');
+		$sidebarHtml = $layout->render($data);
+
+		return $sidebarHtml;
 		
 	}
 	
@@ -341,7 +359,7 @@ class DigiComAdminHelper {
 			$output = JHTML::_('select.genericlist',  $list, 'catid', 'class="inputbox"', 'id', 'treename', $row->catid);
 		}
 		else{ 
-			$output = JHTML::_('select.genericlist',  $list, 'catid', 'class="inputbox" onchange="window.location=\'index.php?option=com_digicom&controller=products&prc=\'+this.value" ', 'id', 'treename', $selected);
+			$output = JHTML::_('select.genericlist',  $list, 'catid', 'class="inputbox" onchange="document.adminForm.submit();"', 'id', 'treename', $selected);
 		}
 		return $output;
 	}

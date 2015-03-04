@@ -51,23 +51,12 @@ $date = date( $configs->get('time_format','d M Y'), $order->order_date);
 					<?php echo JText::_('DSPROD');?>
 				</th>
 				
-				<!--
 				<th class="sectiontableheader"  >
-					<?php echo JText::_('DSLICENSEID');?>
+					<?php echo JText::_('COM_DIGICOM_NUM_OF_PRODUCT_SALE');?>
 				</th>
-				-->
 
 				<th class="sectiontableheader"  >
 					<?php echo JText::_('DSPRICE');?>
-				</th>
-
-
-				<th class="sectiontableheader"  >
-					<?php echo JText::_('DSDISCOUNT');?>
-				</th>
-
-				<th class="sectiontableheader" >
-					<?php echo JText::_('DSTOTAL');?>
 				</th>
 
 			</tr>
@@ -104,13 +93,13 @@ $date = date( $configs->get('time_format','d M Y'), $order->order_date);
 							}
 						} ?>
 					</td>
-					<!--
-					<td style="<?php echo $cancelled == 3 ? 'text-decoration: line-through;' : '';?>"><?php echo $prod->licenseid;?></td>
-					-->
+					<td style="<?php echo $cancelled == 3 ? 'text-decoration: line-through;' : '';?>">
+						<?php echo $prod->quantity;?>
+					</td>
 					<td style="<?php echo $cancelled == 3 ? 'text-decoration: line-through;' : '';?>"><?php
 						$price = $prod->price - $refund - $chargeback;
 						echo DigiComAdminHelper::format_price($prod->price, $prod->currency, true, $configs);
-						
+						$oll_courses_total += $price;
 						if ($refund > 0)
 						{
 							echo '&nbsp;<span style="color:#ff0000;"><em>('.JText::_("LICENSE_REFUND")." - ".DigiComAdminHelper::format_price($refund, $prod->currency, true, $configs).')</em></span>';
@@ -120,55 +109,47 @@ $date = date( $configs->get('time_format','d M Y'), $order->order_date);
 							echo '&nbsp;<span style="color:#ff0000;"><em>('.JText::_("LICENSE_CHARGEBACK")." - ".DigiComAdminHelper::format_price($chargeback, $prod->currency, true, $configs).')</em></span>';
 						} ?>
 					</td>
-					<td style="<?php echo $cancelled == 3 ? 'text-decoration: line-through;' : '';?>">
-						<?php
-							echo DigiComAdminHelper::format_price($prod->price - $prod->amount_paid, $prod->currency, true, $configs);
-							$oll_courses_total += $prod->amount_paid;
-						?>
-					</td>
-					<td style="<?php echo $cancelled == 3 ? 'text-decoration: line-through;' : '';?>"><?php
-						$prod->amount_paid = $prod->amount_paid - $refund - $chargeback;
-						echo DigiComAdminHelper::format_price($prod->amount_paid, $prod->currency, true, $configs);?>
-					</td>
+					
 				</tr><?php
 				$k = 1 - $k;
 				$i++;
 			endforeach; ?>
 
-			<tr style="border-style:none;"><td style="border-style:none;" colspan="6"><hr /></td></tr>
-			<tr><td colspan="3" ></td>
+			<tr style="border-style:none;"><td style="border-style:none;" colspan="4"><hr /></td></tr>
+			<tr><td colspan="2" ></td>
 				<td style="font-weight:bold"><?php echo JText::_("DSSUBTOTAL");?></td>
 				<td>
 					<?php 
 						echo DigiComAdminHelper::format_price($oll_courses_total, $order->currency, true, $configs);
 					?>
-				</td></tr>
+				</td>
+			</tr>
 			
-			<tr><td colspan="3"></td>
+			<tr><td colspan="2"></td>
 				<td style="font-weight:bold"><?php echo JText::_("VIEWCONFIGSHOWCPROMO");?> "<?php echo $order->promocode; ?>"</td>
 				<td><?php echo DigiComAdminHelper::format_price($order->promocodediscount, $order->currency, true, $configs);?></td></tr>
 			<?php if ($refunds > 0):?>
 			<tr>
-				<td colspan="3"></td>
+				<td colspan="2"></td>
 				<td style="font-weight:bold;color:#ff0000;"><?php echo JText::_("LICENSE_REFUNDS");?></td>
 				<td style="color:#ff0000;"><?php echo DigiComAdminHelper::format_price($refunds, $order->currency, true, $configs); ?></td>
 			</tr>
 			<?php endif;?>
 			<?php if ($chargebacks > 0):?>
 			<tr>
-				<td colspan="3"></td>
+				<td colspan="2"></td>
 				<td style="font-weight:bold;color:#ff0000;"><?php echo JText::_("LICENSE_CHARGEBACKS");?></td>
 				<td style="color:#ff0000;"><?php echo DigiComAdminHelper::format_price($chargebacks, $order->currency, true, $configs); ?></td>
 			</tr>
 			<?php endif;?>
 			<?php if ($deleted > 0):?>
 			<tr>
-				<td colspan="3"></td>
+				<td colspan="2"></td>
 				<td style="font-weight:bold;color:#ff0000;"><?php echo JText::_("DELETED_LICENSES");?></td>
 				<td style="color:#ff0000;"><?php echo DigiComAdminHelper::format_price($deleted, $order->currency, true, $configs); ?></td>
 			</tr>
 			<?php endif;?>
-			<tr><td colspan="3"></td>
+			<tr><td colspan="2"></td>
 					<td style="font-weight:bold"><?php echo JText::_("DSTOTAL");?></td>
 				<td>
 					<?php
@@ -191,6 +172,6 @@ $date = date( $configs->get('time_format','d M Y'), $order->order_date);
 	<input type="hidden" name="option" value="com_digicom" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="controller" value="Orders" />
+	<input type="hidden" name="controller" value="orders" />
 </form>
 </div>

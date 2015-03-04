@@ -14,7 +14,7 @@ $cats = $displayData[1];
 ?>
 <script>
 	//bundle_source_option
-	jQuery(function ($) {	
+	jQuery(function ($) {
 		jQuery('#bundle_source_option_select .btn').click(function(){
 			//var bundle_source = jQuery('input[name=bundle_source]:checked').val();
 			var bundle_source = jQuery('input.jform_bundle_source:checked').val();
@@ -94,7 +94,7 @@ $cats = $displayData[1];
 				$('buttonaddincludeproduct').addEvent('click', function(e) {
 					e.stop()||new Event(e).stop();
 
-					var url = "index.php?option=com_digicom&controller=products&task=productincludeitem&no_html=1&tmpl=component";
+					var url = "index.php?option=com_digicom&controller=products&task=productincludeitem&no_html=1&tmpl=component&format=raw";
 
 					 var req = new Request.HTML({
 						method: 'get',

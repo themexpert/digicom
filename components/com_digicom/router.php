@@ -20,37 +20,41 @@ function digicomBuildRoute(&$query){
 	// get a menu item based on Itemid or currently active
 	$app = JFactory::getApplication();
 	$menu = $app->getMenu();
-	if( empty($query['Itemid']) ) {
+	
+	// We need a menu item.  Either the one specified in the query, or the current active one if none specified
+	if (empty($query['Itemid']))
+	{
 		$menuItem = $menu->getActive();
-	} else {
-		$menuItem = $menu->getItem($query['Itemid']);
-		$mquery = $menuItem->query;
-//		echo '<pre>'.print_r( $query, true ).'</pre>';
-//		echo '<pre>'.print_r( $menuItem, true ).'</pre>';
-		if($mquery['view']=='digicomproducts'&& $mquery['layout']=='viewproduct'){
-			return array();
-		}
+		$menuItemGiven = false;
 	}
+	else
+	{
+		$menuItem = $menu->getItem($query['Itemid']);
+		$menuItemGiven = true;
+	}
+	
+	// Check again
+	if ($menuItemGiven && isset($menuItem) && $menuItem->component != 'com_digicom')
+	{
+		$menuItemGiven = false;
+		unset($query['Itemid']);
+	}
+
+	if (isset($query['view']))
+	{
+		$view = $query['view'];
+	}
+	else
+	{
+		// We need to have a view in the query or it is an invalid URL
+		return $segments;
+	}
+
 	
 	if( count($query)==2 && isset($query['option']) && isset($query['Itemid'])){
-		return array();
+		return $segments;
 	}
-
-
-//	if($menuItem->id==281){
-//
-//		echo '<pre>'.print_r($segments,true).'</pre>';
-//		echo '<hr/>';
-//		echo '<pre>'.print_r($query,true).'</pre>';
-//		echo '<hr/>';
-//		echo '<pre>'.print_r($menuItem, true).'</pre>';
-//	}
 	
-	$mView = (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
-
-	//$mLayout = (empty($menuItem->query['layout'])) ? null : $menuItem->query['layout'];
-	$mId = (empty($menuItem->query['id'])) ? null : $menuItem->query['id'];
-
 	// Controller
 	if(isset($query['controller'])){
 		$segments[] = str_replace('digicom', '', strtolower($query['controller']));
@@ -93,12 +97,15 @@ function digicomBuildRoute(&$query){
 		$sql = "select name from #__digicom_categories where id=".intval($cid);
 		$db->setQuery($sql);
 		$cname = $db->loadResult();
-		$segments[] = $query['cid']."-".JFilterOutput::stringURLSafe($cname);
+		//$segments[] = $query['cid']."-".JFilterOutput::stringURLSafe($cname);
+		$segments[] = JFilterOutput::stringURLSafe($cname);
 		unset($query['cid']);
 	}
 
 	// Category ID and Product ID
 	if(isset($query['pid'])){
+		//print_r($query);
+		//print_r($segments);die;
 		if(is_array($query['pid'])){
 			$pid = $query['pid']['0'];
 		}
@@ -106,13 +113,20 @@ function digicomBuildRoute(&$query){
 			$pid = $query['pid'];
 		}
 
-		$sql = "select name from #__digicom_products where id=".intval($pid);
+		$sql = "select alias from #__digicom_products where id=".intval($pid);
 		$db->setQuery($sql);
-		$pname = $db->loadResult();
-		$segments[] = $query['pid']."-".JFilterOutput::stringURLSafe($pname);
+		$alias = $db->loadResult();
+		//$segments[] = $query['pid']."-".JFilterOutput::stringURLSafe($alias);
+		//$segments[] = JFilterOutput::stringURLSafe($alias);
+		$segments[] = $alias;
+		//echo $alias;die;
+		//print_r($segments);die;
 		unset($query['pid']);
+		
 	}
-
+	
+	//print_r($segments);die;
+	
 	if(isset($query['task'])){
 		// Don't add default task
 		if($query['task'] != 'list' and $query['task'] != 'view' and $query['task'] != 'showCart' and $query['task'] != 'listCategories'){
@@ -120,13 +134,7 @@ function digicomBuildRoute(&$query){
 	   	}
 		unset($query['task']);
 	}
-
-	if(isset($query['layout'])){
-		$layoutlist = array('horiz', 'list', 'listmulti', 'table', 'vert', 'viewproduct', 'dropdown', 'listthumbs');
-		$segments[] = $query['layout'];
-		unset($query['layout']);
-	}
-
+	
 	// Cart ID
 	if(isset($query['cartid'])){
 		if(is_array($query['cartid'])){
@@ -201,15 +209,20 @@ function digicomBuildRoute(&$query){
 	if(isset($query['no_html'])){
 		unset($query['no_html']);
 	}
-
-	// if(isset($query['Itemid'])){
-		// $segments[] = $query['Itemid'];
-	// }
-
+	
 	if(isset($segments["0"]) && isset($segments["1"]) && $segments["0"] == $segments["1"]){
 		array_shift($segments);
 	}
+	
+	$total = count($segments);
+
+	for ($i = 0; $i < $total; $i++)
+	{
+		$segments[$i] = str_replace(':', '-', $segments[$i]);
+	}
+
 	return $segments;
+
 }
 
 function digicomParseRoute($segments){
@@ -220,14 +233,14 @@ function digicomParseRoute($segments){
 	$item = $menu->getActive();
 	// Count route segments
 	$count = count($segments);
-	$controller_list = array('products', 'license', 'category', 'order');
+	$controller_list = array('products', 'downloads', 'category', 'order');
 	
-//echo '<pre>'.print_r($segments, true).'</pre>';
-//echo '<pre>'.print_r($item, true).'</pre>';
-//exit();
+	//echo '<pre>'.print_r($segments, true).'</pre>';
+	//echo '<pre>'.print_r($item, true).'</pre>';
+	//exit();
 
 
-	$controller = isset($segments['0']) && intval($segments['0']) == "0" ? 'digicom'.ucfirst($segments['0']) : null;
+	$controller = isset($segments['0']) && intval($segments['0']) == "0" ? ucfirst($segments['0']) : null;
 	$vars['controller'] = $controller;
 	//Handle View and Identifier
 	
@@ -236,25 +249,45 @@ function digicomParseRoute($segments){
 		$vars['controller'] = $controller;
 		array_unshift($segments, $controller);
 	}
-
+	
 	switch($controller){
 		case 'Products' :
 			if(isset($segments['1'])){
-				$start = JRequest::getVar("start", "");
+				//$start = JRequest::getVar("start", "");
+				//echo count($segments);die;
 				if(count($segments) == 3 || count($segments) == 2 ){// click on category and edit that category products   |  dupa adaugare produs si return la pagina de produse
 					$product_added = JRequest::getVar("product_added", "");
-					if(trim($start) == ""){
-						JRequest::setVar("limitstart", "0", "get");
+					//if(trim($start) == ""){
+						//JRequest::setVar("limitstart", "0", "get");
+					//}
+					if(isset($segments['1'])){
+					//if(strpos($segments['1'], ":") !== FALSE){
+						//echo $segments['1'];die;
+						$sql = "select id from #__digicom_categories where alias='".$segments['1']."'";
+						$db->setQuery($sql);
+						$cid = $db->loadResult();
+						$vars['cid'] = intval($cid);
+					//}
 					}
-					if(strpos($segments['1'], ":") !== FALSE){
-						$vars['cid'] = intval($segments['1']);
-					}
-					$vars['task'] = 'list';
-					if(isset($segments['2'])){
-						$vars['pid'] = intval($segments['2']);
-					}
+					//echo $vars['cid'];die;
+					//$vars['task'] = 'list';
+					//if(isset($segments['2'])){
+						//echo $segments['2'];die;
+						//$vars['pid'] = intval($segments['2']);
+						//$vars['pid'] = '48';
+					//}
+					//print_r($segments);die;
+					$palias = str_replace(':', '-', $segments['2']);
+					$query = $db->getQuery(true)
+						->select($db->quoteName('id'))
+						->from('#__digicom_products')
+						->where($db->quoteName('catid') . ' = ' . (int) $vars['cid'])
+						->where($db->quoteName('alias') . ' = ' . $db->quote($palias));
+					$db->setQuery($query);
+					$pid = $db->loadResult();
 					
-					$vars['task'] = (count($segments) == 3)? 'view':'list';
+					$vars['pid'] = $pid;
+					$vars['task'] = 'showProduct';
 				}
 				elseif(count($segments) == 4){// edit a product from list and from licenses
 					$vars['cid'] = intval($segments['1']);

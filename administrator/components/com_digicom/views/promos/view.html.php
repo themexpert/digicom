@@ -42,7 +42,7 @@ class DigiComAdminViewPromos extends DigiComView
 		$this->addToolbar();
 		
 		DigiComAdminHelper::addSubmenu('promos');
-		$this->sidebar = JHtmlSidebar::render();
+		$this->sidebar = DigiComAdminHelper::renderSidebar();
 		
 		parent::display($tpl);
 
@@ -65,6 +65,10 @@ class DigiComAdminViewPromos extends DigiComView
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
+		
+		$layout = new JLayoutFile('toolbar.settings');
+		$bar->appendButton('Custom', $layout->render(array()), 'settings');
+		
 		JToolBarHelper::save();
 		if ($isNew) {
 			JToolBarHelper::spacer();
@@ -89,7 +93,7 @@ class DigiComAdminViewPromos extends DigiComView
 		$this->assign("lists", $lists);
 		
 		DigiComAdminHelper::addSubmenu('promos');
-		$this->sidebar = JHtmlSidebar::render();
+		$this->sidebar = DigiComAdminHelper::renderSidebar();
 		
 		parent::display($tpl);
 
@@ -132,6 +136,9 @@ class DigiComAdminViewPromos extends DigiComView
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
+		
+		$layout = new JLayoutFile('toolbar.settings');
+		$bar->appendButton('Custom', $layout->render(array()), 'settings');
 		
 		JToolBarHelper::addNew();
 		JToolBarHelper::editList();

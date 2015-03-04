@@ -13,6 +13,7 @@ JHtml::_('formbehavior.chosen', 'select');
 
 $cust = $this->cust;
 $user = $this->user["0"];
+$configs = $this->configs;
 $app = JFactory::getApplication();
 $input = $app->input;
 
@@ -113,17 +114,12 @@ $input->set('layout', 'dgform');
 									<label class="control-label">
 										<?php echo JText::_( "VIEWCUSTOMERPOC" ); ?>
 									</label>
-									<div class="controls">
-										<fieldset id="person" class="radio btn-group btn-group-yesno">
-											<label for="person1" name="person" class="btn<?php echo (($cust->person != 0 or $cust->person == 1 or $cust->person == '') ? " active btn-success" : ""); ?>">
-												<input type="radio" id="person1" value="1" <?php echo (($cust->person != 0 or $cust->person == 1 or $cust->person == '') ? "checked='checked'" : ""); ?>>
-												<?php echo JText::_( "VIEWCUSTOMERIMPERSON" ); ?>
-											</label>
-											
-											<label for="person0" name="person" class="btn<?php echo (($cust->person == 0) ? " active btn-success" : ""); ?>">
-												<input type="radio" id="person0" value="0" <?php echo (($cust->person == 0) ? "checked='checked'" : ""); ?>>
-												<?php echo JText::_( "VIEWCUSTOMERIMCOMPANY" ); ?>
-											</label>											
+									<div class="controls">	
+										<fieldset id="customer_person_select" class="radio btn-group">
+											<input type="radio" class="jform_customer_person_select" name="person" id="customer_person_select_1" value="1" <?php echo (($cust->person == '1' || $cust->person === null)?"checked='checked'":"");?> />
+											<label class="btn" for="customer_person_select_1"><?php echo JText::_('VIEWCUSTOMERIMPERSON'); ?></label>
+											<input type="radio" class="jform_customer_person_select" name="person" id="customer_person_select_0" value="0" <?php echo (($cust->person == '0') ? "checked='checked'" : "");?> />
+											<label class="btn" for="customer_person_select_0"><?php echo JText::_('VIEWCUSTOMERIMCOMPANY'); ?></label>
 										</fieldset>
 									</div>
 									
@@ -139,7 +135,7 @@ $input->set('layout', 'dgform');
 								<div class="control-group">
 									<label for="" class="control-label"><?php echo Jtext::_( "VIEWCONFIGADDRESS" ); ?><span class="error">*</span></label>
 									<div class="controls">
-										<textarea><?php echo $cust->address; ?></textarea>
+										<textarea name="address"><?php echo $cust->address; ?></textarea>
 									</div>
 								</div>
 
@@ -160,12 +156,107 @@ $input->set('layout', 'dgform');
 							</div>
 						</div>
 						
-
-
 					</div>
 
 					<?php echo JHtml::_('bootstrap.endTab'); ?>
+					<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'order_details', JText::_('COM_DIGICOM_CUSTOMERS_ORDER_DETAILS', true)); ?>
 
+						<?php 
+						//show custommers order 
+						//print_r($cust->orders);
+						?>
+						<table class="adminlist table table-striped">
+							<thead>
+								<tr>
+									<th width="20">
+										<?php echo JText::_( 'VIEWORDERSID' ); ?>
+									</th>
+
+									<th>
+										<?php echo JText::_( 'VIEWORDERSDATE' ); ?>
+									</th>
+									<th>
+										<?php echo JText::_( 'VIEWORDERSPRICE' ); ?>
+									</th>
+									<th>
+										<?php echo JText::_( 'VIEWORDERSSTATUS' ); ?>
+									</th>
+									<th>
+										<?php echo JText::_( 'VIEWORDERSPAYMETHOD' ); ?>
+									</th>
+								</tr>
+							</thead>
+
+							<tbody>
+								<?php 
+								$n = count($cust->orders);
+								if($n > 0):  
+								?>
+								<?php
+								$z = 0;
+								$k = 0;
+								for ( $i = 0; $i < $n; $i++ ):
+									++$z;
+									$order =  $cust->orders[$i];
+
+									$id = $order->id;
+									$link = JRoute::_( "index.php?option=com_digicom&controller=licenses&task=list&oid[]=" . $id );
+									$olink = JRoute::_( "index.php?option=com_digicom&controller=orders&task=show&cid[]=" . $id );
+									$order->published = 1;
+									$published = JHTML::_( 'grid.published', $order, $i );
+
+								?>
+									<tr class="row<?php echo $k; ?>">
+										<td align="center">
+											<a href="<?php echo $olink; ?>"><?php echo $id; ?></a>
+										</td>
+										<td align="center">
+											<?php echo date( $configs->get('time_format','DD-MM-YYYY'), $order->order_date ); ?>
+										</td>
+										<td align="center">
+											<?php 
+												
+												if ($order->amount_paid == "-1") $order->amount_paid = $order->amount;
+												//$refunds = DigiComAdminModelOrder::getRefunds($order->id);
+												//$chargebacks = DigiComAdminModelOrder::getChargebacks($order->id);
+												//$order->amount_paid = $order->amount_paid - $refunds - $chargebacks;
+												$order->amount_paid = $order->amount_paid;
+												echo DigiComAdminHelper::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs); 
+												
+											?>
+										</td>
+										<td align="center">
+											<?php
+												$a_style = "";
+												if($order->status == "Pending"){
+													$a_style = ' label-warning';
+												}else{
+													$a_style = ' label-success';
+												}
+											?>
+											<span class="label<?php echo $a_style; ?>"><?php echo (trim( $order->status ) != "in_progres" ? $order->status : "Active"); ?></span>
+										</td>
+										<td align="center">
+											<?php echo $order->processor; ?>
+										</td>
+										
+									</tr>
+									<?php
+									$k = 1 - $k;
+								endfor;
+									?>
+								<?php else: ?>
+									<tr>
+										<td colspan="9">
+											<?php echo  JText::_('COM_DIGICOM_NO_ORDER_FOUND'); ?>
+										</td>
+									</tr>
+								<?php endif; ?>
+							</tbody>
+							
+						</table>
+
+					<?php echo JHtml::_('bootstrap.endTab'); ?>
 					<?php echo JHtml::_('bootstrap.endTabSet'); ?>
 				</div>
 			</div>
@@ -218,6 +309,6 @@ $input->set('layout', 'dgform');
 	<input type="hidden" name="option" value="com_digicom" />
 	<input type="hidden" name="id" value="<?php echo $user["id"]; ?>" />
 	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="controller" value="Customers" />
+	<input type="hidden" name="controller" value="customers" />
 	<input type="hidden" name="keyword" value="<?php echo $this->keyword; ?>" />
 </form>

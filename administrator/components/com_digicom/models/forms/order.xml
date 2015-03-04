@@ -4,7 +4,7 @@
 	
 		<field name="id"  type="text" class="readonly" label="JGLOBAL_FIELD_ID_LABEL" description ="JGLOBAL_FIELD_ID_DESC" size="10" default="0" readonly="true" />
 		
-		<field name="userid"  type="modal_digiuser" label="COM_DIGICOM_FIELD_SELECT_USER_LABEL" description ="COM_DIGICOM_FIELD_SELECT_USER_DESC" required="true" size="10" default="0" />
+		<field name="userid" type="user" label="COM_DIGICOM_FIELD_SELECT_USER_LABEL" description ="COM_DIGICOM_FIELD_SELECT_USER_DESC" required="true" size="10" default="0" />
 		
 		<field name="order_date" type="calendar" label="COM_DIGICOM_FIELD_ORDER_DATE_LABEL" description="COM_DIGICOM_FIELD_ORDER_DATE_DESC" size="40" required="true" />
 		

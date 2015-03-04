@@ -17,6 +17,13 @@ class DigiComAdminViewFileManager extends DigiComView {
 	function display($tpl =  null){
 		JToolBarHelper::title(JText::_('COM_DIGICOM_FILE_MANAGER'), 'generic.png');
 		
+
+		// Access check.
+		if (!JFactory::getUser()->authorise('digicom.filemanager', 'com_digicom'))
+		{
+			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout
 		$layout = new JLayoutFile('toolbar.title');
@@ -25,6 +32,9 @@ class DigiComAdminViewFileManager extends DigiComView {
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
+		
+		$layout = new JLayoutFile('toolbar.settings');
+		$bar->appendButton('Custom', $layout->render(array()), 'settings');
 		
 		$mainframe = JFactory::getApplication();
         $user = JFactory::getUser();
@@ -50,7 +60,7 @@ class DigiComAdminViewFileManager extends DigiComView {
 		$tmpl = JRequest::getCmd('tmpl','');
 		if($tmpl != 'component'){
 			DigiComAdminHelper::addSubmenu('filemanager');
-			$this->sidebar = JHtmlSidebar::render();
+			$this->sidebar = DigiComAdminHelper::renderSidebar();
 		}
 		
 		parent::display($tpl);

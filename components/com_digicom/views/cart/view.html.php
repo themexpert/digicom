@@ -13,7 +13,7 @@ defined ('_JEXEC') or die ("Go away.");
 jimport ("joomla.application.component.view");
 jimport('joomla.html.parameter');
 
-class DigiComViewCart extends JViewLegacy
+class DigiComViewCart extends DigiComView
 {
 	function display ($tpl = null)
 	{
@@ -21,7 +21,7 @@ class DigiComViewCart extends JViewLegacy
 		$db = JFactory::getDBO();
 		$lists = array();
 		$task = JRequest::getWord('task');
-		$configs = $this->_models['config']->getConfigs();
+		$configs = JComponentHelper::getComponent('com_digicom')->params;
 
 		$document = JFactory::getDocument();
 		JHtml::_('bootstrap.framework');
@@ -127,11 +127,104 @@ class DigiComViewCart extends JViewLegacy
 		parent::display($tpl);
 	}
 	
+	function submitOrder($tpl = null)
+	{
+		$pg_plugin 	= JRequest::getVar("processor", "", "", "string");
+		$Itemid 	= JRequest::getInt("Itemid", "0");
+		$order_id 	= JRequest::getInt("order_id", "0");
+		$dispatcher = JDispatcher::getInstance();
+		$plugin = JPluginHelper::importPlugin( 'digicom_pay', $pg_plugin );
+		$session 	= JFactory::getSession();
+		$customer 	= new DigiComSessionHelper();
+		$configs 	= $this->_models['config']->getConfigs();
+		$order 		=$this->_models['cart']->getOrder( $order_id );
+		$params 	= json_decode($order->params,true);
+		//print_r($order);die;
+		$items 		= $params['products'];
+		
+		/*
+		 * $items
+		 * [0]
+		 *	->name
+		 *	->discount
+		 *	->quantity
+		 *	->price
+		 *	->promo
+		 *	  amount = price - promo
+		 */
+		$vars = new stdClass();
+
+
+		$vars->order_id = $params['order_id'];
+		$vars->custom = $customer->_customer->id;
+		$vars->user_firstname = $customer->_customer->firstname;
+		$vars->user_lastname = $customer->_customer->lastname;
+		$vars->user_id = JFactory::getUser()->id;
+		$vars->user_email = $customer->_user->email;
+		$vars->item_name = '';
+		//print_r($items);die;
+		for($i=0; $i<count($items)-2; $i++)
+		{
+			//print_r($items[$i]);die;
+			$vars->item_name.= $items[$i]['name'] . ', ';
+		}
+		$vars->item_name = substr($vars->item_name, 0, strlen($vars->item_name)-2);
+
+		// downloads page
+		if ($configs->get('afterpurchase') == 0)
+		{
+			$vars->return = JRoute::_(JURI::root()."index.php?option=com_digicom&view=orders&orderid=".$params['order_id'], true, 0);
+		}
+		// orders page
+		else
+		{
+			$vars->return = JRoute::_(JURI::root()."index.php?option=com_digicom&view=orders&orderid=".$params['order_id'], true, 0);
+		}
+		
+		
+		$vars->return = str_replace('https', 'http', $vars->return);
+		$vars->cancel_return = JRoute::_(JURI::root()."index.php?option=com_digicom&Itemid=".$Itemid."&controller=cart&task=cancel&processor={$pg_plugin}", true, 0);
+		$vars->url = $vars->notify_url = JRoute::_(JURI::root()."index.php?option=com_digicom&controller=cart&task=processPayment&processor={$pg_plugin}&order_id=".$params['order_id']."&sid=".$customer->_sid, true, false);
+		$vars->currency_code = $configs->get('currency','USD');
+		$vars->amount = $items[-2]['taxed'];//+$items[-2]['shipping'];
+		
+		// Triggre plugin event
+		JPluginHelper::importPlugin('digicom_pay');
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('onSendPayment', array(& $params));
+		$html = $dispatcher->trigger('onTP_GetHTML', array($vars));
+		
+		
+		//print_r($html);die;
+		if (!isset($html[0])) {
+			$html[0] = '';
+		}
+		$html[0] = $html[0] . '<script type="text/javascript">';
+		if ($pg_plugin == 'paypal')
+		{
+			$html[0] = $html[0] . 'jQuery(".akeeba-bootstrap").hide();';
+		}
+		$html[0] = $html[0] . 'jQuery(".akeeba-bootstrap form").submit();';
+		$html[0] = $html[0] . '</script>';
+
+		//echo $html[0];
+		
+		$this->assign("pg_plugin", $pg_plugin);
+		$this->assign("configs", $configs);
+		$this->assign("data", $html);
+		
+		$template = new DigiComTemplateHelper($this);
+		$template->rander('submitorder');			
+		
+		parent::display($tpl);
+		
+	}
+	
 	public function MostraFormPagamento($configs){
 		
 		$db = JFactory::getDBO();
 
-		$condtion = array(0 => '\'payment\'');
+		$condtion = array(0 => '\'digicom_pay\'');
 		$condtionatype = join(',',$condtion);
 		if(JVERSION >= '1.6.0')
 		{
@@ -154,7 +247,7 @@ class DigiComViewCart extends JViewLegacy
 		foreach($gatewayplugin as $gateway)
 		{
 			$gatewayname = strtoupper(str_replace('plugpayment', '',$gateway->element));
-			$lang->load('plg_payment_' . strtolower($gatewayname), JPATH_ADMINISTRATOR);
+			$lang->load('plg_digicom_pay_' . strtolower($gatewayname), JPATH_ADMINISTRATOR);
 			$options[] = JHTML::_('select.option',$gateway->element, JText::_($gatewayname));
 		}
 

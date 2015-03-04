@@ -17,7 +17,7 @@ class DigiComAdminViewEmail extends DigiComView {
 	function display($tpl =  null){
 		
 		DigiComAdminHelper::addSubmenu('email');
-		$this->sidebar = JHtmlSidebar::render();
+		$this->sidebar = DigiComAdminHelper::renderSidebar();
 		
 		$type = JRequest::getVar("type", "");
 		
@@ -50,7 +50,10 @@ class DigiComAdminViewEmail extends DigiComView {
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
-
+		
+		$layout = new JLayoutFile('toolbar.settings');
+		$bar->appendButton('Custom', $layout->render(array()), 'settings');
+		
 		JToolBarHelper::save();
 		JToolBarHelper::apply();
 	}

@@ -45,6 +45,8 @@ class DigiComAdminViewLogs extends DigiComView
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
 		
+		$layout = new JLayoutFile('toolbar.settings');
+		$bar->appendButton('Custom', $layout->render(array()), 'settings');
 		
 		$emails = $this->get('Items');
 		$pagination = $this->get('Pagination');
@@ -56,7 +58,7 @@ class DigiComAdminViewLogs extends DigiComView
 		$this->assign( "configs", $configs );
 		
 		DigiComAdminHelper::addSubmenu('logs');
-		$this->sidebar = JHtmlSidebar::render();
+		$this->sidebar = DigiComAdminHelper::renderSidebar();
 		
 		parent::display($tpl);
 	}

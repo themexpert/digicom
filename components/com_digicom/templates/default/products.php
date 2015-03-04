@@ -15,6 +15,10 @@ $conf = $this->configs;
 $prod = $this->prod;
 $date_today = time();
 //dsdebug($prod);
+if($this->configs->get('afteradditem',0) == "2"){
+	JHTML::_('behavior.modal');
+	JFactory::getDocument()->addScript(JURI::base()."media/digicom/assets/js/createpopup.js");
+}
 ?>
 <div class="digicom-wrapper com_digicom products">
 
@@ -70,6 +74,7 @@ $addtocart = '<input type="submit" value="'.(JText::_("DSADDTOCART")).'" class="
 					<tr>
 						<td>
 							
+								<!--
 								<div id="tweet-zone2">
 									<a href="http://twitter.com/share" class="twitter-share-button" data-url="<?php echo $url; ?>" data-count="horizontal">Tweet</a>
 									<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
@@ -88,7 +93,7 @@ $addtocart = '<input type="submit" value="'.(JText::_("DSADDTOCART")).'" class="
 										</div>
 									</div>
 								</div>
-								
+								-->
 						</td>
 					</tr>
 				</table>
@@ -131,20 +136,11 @@ $addtocart = '<input type="submit" value="'.(JText::_("DSADDTOCART")).'" class="
 						</label>
 						<br />
 					<div class="input-append">	
-						<?php
-							
-							if($conf->get('afteradditem',2) == "2")
-							{
-								$doc->addScript(JURI::base()."components/com_digicom/assets/js/createpopup.js"); ?>
-								<button type="button" class="btn btn-warning" onclick="javascript:createPopUp(<?php echo $prod->id; ?>, <?php echo JRequest::getVar("cid", "0"); ?>, '<?php echo JURI::root(); ?>', '', '', <?php echo $cart_itemid; ?>, '<?php echo JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$cart_itemid); ?>');"><i class="ico-shopping-cart"></i> <?php echo JText::_("DSADDTOCART");?></button><?php
-							}
-							else
-							{ ?>
-								<button type="submit" class="btn btn-warning"><i class="ico-shopping-cart"></i> <?php echo JText::_('DSADDTOCART'); ?></button><?php
-							}
-								
-							
-						?>
+						<?php if($conf->get('afteradditem',2) == "2") {	?>
+							<button type="button" class="btn btn-warning" onclick="javascript:createPopUp(<?php echo $prod->id; ?>, <?php echo JRequest::getVar("cid", "0"); ?>, '<?php echo JURI::root(); ?>', '', '', <?php echo $cart_itemid; ?>, '<?php echo JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$cart_itemid); ?>');"><i class="ico-shopping-cart"></i> <?php echo JText::_("DSADDTOCART");?></button>
+						<?php }else { ?>
+							<button type="submit" class="btn btn-warning"><i class="ico-shopping-cart"></i> <?php echo JText::_('DSADDTOCART'); ?></button>
+						<?php } ?>
 					</div>
 						
 				</div><!--add to cart-->

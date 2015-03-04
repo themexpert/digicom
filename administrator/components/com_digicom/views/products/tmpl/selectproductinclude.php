@@ -21,22 +21,12 @@ $search = JRequest::getVar('search', '');
 
 <script type="text/javascript">
 
-	function selectProductID() {
+	function selectProductID(prod_id) {
 
 		var productids = document.adminForm;
-		var prod_id = '0';
-		var prod_name = '0';
-		for(var i=0; i<productids.length; i++) {
-			var inputtype = productids.elements[i].type;
-			if((inputtype == "radio") && (productids.elements[i].checked)) {
-				prod_name = productids.elements[i].value;
-				prod_id = productids.elements[i].id;
-			}
-		}
-
+		var prod_name = document.getElementById(prod_id + '_id_product').value;
 		window.parent.document.getElementById('product_include_name_text_<?php echo JRequest::getVar('id',0); ?>').innerHTML = prod_name;
 		window.parent.document.getElementById('product_include_id<?php echo JRequest::getVar('id',0); ?>').value = parseInt(prod_id);
-		//window.parent.show_plan_for_product_include( parseInt(prod_id), '<?php echo JRequest::getVar('id',0); ?>' );
 		window.parent.SqueezeBox.close();
 	}
 
@@ -97,7 +87,7 @@ $search = JRequest::getVar('search', '');
 				<tr class="row<?php echo $k;?>">
 
 					<td align="center">
-								<?php echo $id;?>
+						<?php echo $id;?>
 					</td>
 
 					<td>
@@ -119,7 +109,7 @@ $search = JRequest::getVar('search', '');
 					</td>
 
 					<td>
-						<button id="<?php echo $id; ?>_id_product" name="product_id" value="<?php echo $name; ?>" onclick="selectProductID()" class="btn btn-success"><?php echo JText::_('COM_DIGICOM_PRODUCT_SELECT');?></button>
+						<button id="<?php echo $id; ?>_id_product" name="product_id" value="<?php echo $name; ?>" onclick="selectProductID(<?php echo $id;?>);" class="btn btn-success"><?php echo JText::_('COM_DIGICOM_PRODUCT_SELECT');?></button>
 					</td>
 
 				</tr>

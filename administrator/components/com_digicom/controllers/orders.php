@@ -42,8 +42,15 @@ class DigiComAdminControllerOrders extends DigiComAdminController
 	}
 
 	function saveorder() {
-		$this->_model->saveorder();
-		$this->setRedirect('index.php?option=com_digicom&controller=orders');
+		$return = $this->_model->saveorder();
+		
+		if ($return) {
+			$msg = JText::_( 'ORDSAVED' );
+		} else {
+			$msg = JText::_( 'ORDFAILED' );
+		}
+		$link = "index.php?option=com_digicom&controller=orders";
+		$this->setRedirect( $link, $msg );
 	}
 
 	function calc(){
@@ -226,6 +233,8 @@ class DigiComAdminControllerOrders extends DigiComAdminController
 
 	function save()
 	{
+		$this->saveorder();
+		/*	
 		if ( $this->_model->store() ) {
 
 			$msg = JText::_( 'ORDSAVED' );
@@ -234,6 +243,7 @@ class DigiComAdminControllerOrders extends DigiComAdminController
 		}
 		$link = "index.php?option=com_digicom&controller=orders";
 		$this->setRedirect( $link, $msg );
+		*/
 
 	}
 

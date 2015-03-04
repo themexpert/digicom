@@ -18,13 +18,12 @@ class DigiComAdminControllerCustomers extends DigiComAdminController {
 	function __construct () {
 		
 		parent::__construct();
-		//$this->registerTask ("add", "edit");
+		$this->registerTask ("", "listCustomers");
 		$this->registerTask ("add", "newAuthorStep1");
 		$this->registerTask ("next", "newAuthorStep2");
 		$this->registerTask ("edit", "editAuthor");
 
 		$this->registerTask ("apply", "save");
-		$this->registerTask ("", "listCustomers");
 		$this->_model = $this->getModel('Customer');
 		
 	}
@@ -162,6 +161,4 @@ class DigiComAdminControllerCustomers extends DigiComAdminController {
 		$this->setRedirect($link, $msg);
 	}
 
-};
-
-?>
+}

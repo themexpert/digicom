@@ -1234,7 +1234,6 @@ class DigiComHelper {
 		}
 
 		$user_email = "";
-
 		if ( isset( $tcustomer->id ) && ( $tcustomer->id > 0 ) ) {
 			$user       = JFactory::getUser( $tcustomer->id );
 			$user_email = $user->email;
@@ -1245,13 +1244,23 @@ class DigiComHelper {
 		     || strlen( trim( $tcustomer->firstname ) ) < 1
 		     || strlen( trim( $tcustomer->lastname ) ) < 1
 		     || strlen( trim( $user_email ) ) < 1
-			//|| strlen( trim( $tcustomer->address ) ) < 1
-			//|| strlen( trim( $tcustomer->city ) ) < 1
-			//|| strlen( trim( $tcustomer->zipcode ) ) < 1
 		) {
 			return - 1;
 		}
-
+		
+		$userid = $tcustomer->id;
+		$table = JTable::getInstance('Customer', 'Table');
+		$table->loadCustommer($userid);
+		
+		if(empty($table->id) or $table->id < 0){			
+			$cust = new stdClass();
+			$cust->id = $user->id;
+			$cust->firstname = $tcustomer->firstname;
+			$cust->lastname =  $tcustomer->lastname;
+			$table->bind($cust);
+			$table->store();
+		}
+		
 		return 1;
 	}
 

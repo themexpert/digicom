@@ -110,7 +110,7 @@ foreach ($items as $j => $v) {
 	}
 
 	function update_cart(item_id) {
-		var url = "index.php?option=com_digicom&controller=cart&task=getCartItem&cid="+item_id;
+		var url = "index.php?option=com_digicom&view=cart&task=getCartItem&cid="+item_id;
 		
 		var qty = document.getElementById('quantity'+item_id);
 		var qty_query = '';
@@ -128,7 +128,7 @@ foreach ($items as $j => $v) {
 </script>
 
 <?php 
-	$formlink = JRoute::_("index.php?option=com_digicom&controller=cart");
+	$formlink = JRoute::_("index.php?option=com_digicom&view=cart");
 	$currency = $configs->get('currency','USD');
 ?>
 
@@ -167,7 +167,7 @@ foreach ($items as $j => $v) {
 
 			<!-- Remove -->
 			<td align="center" style="vertical-align:top;width:80px;text-align:right;">
-				<a href="javascript:void();" onclick="javascript:deleteFromCart(<?php echo $item->cid; ?>);"><i class="ico-trash"></i></a>
+				<a href="javascript:void();" onclick="javascript:deleteFromCart(<?php echo $item->cid; ?>);"><i class="icon-remove"></i></a>
 			</td>
 			<!-- /End Remove -->
 		</tr>

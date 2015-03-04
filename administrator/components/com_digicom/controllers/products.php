@@ -6,8 +6,6 @@
  * @lastmodified	$LastChangedDate: 2013-10-19 10:59:40 +0200 (Sat, 19 Oct 2013) $
  * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
 * @license
-
-
 */
 
 defined ('_JEXEC') or die ("Go away.");
@@ -25,6 +23,7 @@ class DigiComAdminControllerProducts extends DigiComAdminController {
 		$this->registerTask ('apply', 'save');
 		$this->registerDefaultTask('listProducts');
 		$this->registerTask ('unpublish', 'publish');
+		$this->registerTask ('unfeatured', 'featured');
 		$this->registerTask ('orderup', 'shiftorder');
 		$this->registerTask ("orderdown", "shiftorder");
 		$this->registerTask ("move_image_down", "moveImageDown");
@@ -196,8 +195,8 @@ class DigiComAdminControllerProducts extends DigiComAdminController {
 
 
 	public function save2copy(){
-		$id = JRequest::getVar('id');
-		$response = $this->_model->copyProduct(array($id));
+		$id = JRequest::getVar('cid');
+		$response = $this->_model->copyProduct($id);
 		$this->save();
 	}
 	
@@ -209,50 +208,34 @@ class DigiComAdminControllerProducts extends DigiComAdminController {
 		} else {
 			$msg = JText::_( 'PROFFILED' );
 		}
-		switch ($task){
-			case 'save':
-			case 'save2copy':
-				$save_url =  "index.php?option=com_digicom&controller=products".$this->csel;
-				$this->setRedirect($save_url, $msg);
-				break;
-			case 'apply':
-				$product_id = JRequest::getVar('id','');
-				if(trim($product_id) == "" || trim($product_id) == "0"){
-					$product_id = $result["id"];
-				}
-				$tab = JRequest::getVar("tab", "0");
-				$apply_url = "index.php?option=com_digicom&controller=products&task=edit&cid[]=".$product_id."&tab=".$tab;
-				$this->setRedirect($apply_url, $msg);
-				break;
-			case 'save2new':
-				$product_type = JRequest::getVar('product_type','reguler');
-				$redirect_url = 'index.php?option=com_digicom&controller=products&task=add&product_type='.$product_type;
-				$this->setRedirect($redirect_url);
-				break;
-			default:
-				break;
-		}
-		return;
-		if(JRequest::getVar('task','') == 'save'){
-			$save_url =  "index.php?option=com_digicom&controller=products".$this->csel;
-			$this->setRedirect($save_url, $msg);
-		}
-		else{
-			$product_id = JRequest::getVar('id','');
-			if(trim($product_id) == "" || trim($product_id) == "0"){
-				$product_id = $result["id"];
-			}
-			$tab = JRequest::getVar("tab", "0");
-			$apply_url = "index.php?option=com_digicom&controller=products&task=edit&cid[]=".$product_id."&tab=".$tab;
-			$this->setRedirect($apply_url, $msg);
-		}
-		
-// 		http://localhost/obexts/j30/administrator/index.php?option=com_digicom&controller=products&task=add&product_type=0
+		switch ($task) {
+            case 'save':
+            case 'save2copy':
+                $save_url = "index.php?option=com_digicom&controller=products" . $this->csel;
+                $this->setRedirect($save_url, $msg);
+                break;
+            case 'apply':
+                $product_id = JRequest::getVar('id', '');
+                if (trim($product_id) == "" || trim($product_id) == "0") {
+                    $product_id = $result["id"];
+                }
+                $tab = JRequest::getVar("tab", "0");
+                $apply_url = "index.php?option=com_digicom&controller=products&task=edit&cid[]=" . $product_id . "&tab=" . $tab;
+                $this->setRedirect($apply_url, $msg);
+                break;
+            case 'save2new':
+                $product_type = JRequest::getVar('product_type', 'reguler');
+                $redirect_url = 'index.php?option=com_digicom&controller=products&task=add&product_type=' . $product_type;
+                $this->setRedirect($redirect_url);
+                break;
+            default:
+                break;
+        }
 	}
 
 	function remove () {
 		if (!$this->_model->delete()) {
-			$msg = JText::_('PRODREMERR');
+			$msg = JText::_('COM_DIGICOM_PRODUCT_REMOVE_HAS_PROBLEM');
 		} else {
 		 	$msg = JText::_('PRODREMSUCC');
 		}
@@ -285,6 +268,23 @@ class DigiComAdminControllerProducts extends DigiComAdminController {
 		$this->setRedirect($link, $msg);
 	}
 
+	function featured () {
+		$res = $this->_model->featured();
+
+		if (!$res) {
+			$msg = JText::_('COM_DIGICOM_PRODUCT_FEATURED_ERROR');
+		} elseif ($res == -1) {
+		 	$msg = JText::_('COM_DIGICOM_PRODUCT_UNFEATURED');
+		} elseif ($res == 1) {
+			$msg = JText::_('COM_DIGICOM_PRODUCT_FEATURED');
+		} else {
+		 	$msg = JText::_('COM_DIGICOM_PRODUCT_FEATURED_NOT_FOUND');
+		}
+
+		$link = "index.php?option=com_digicom&controller=products".$this->csel;
+		$this->setRedirect($link, $msg);
+	}
+
 
 	function saveorder () {
 		$res = $this->_model->reorder();
@@ -297,7 +297,14 @@ class DigiComAdminControllerProducts extends DigiComAdminController {
 		$link = "index.php?option=com_digicom&controller=products".$this->csel;
 		$this->setRedirect($link, $msg);
 	}
-
+	function saveOrderAjax(){
+		$res = $this->_model->reorder();
+		if($res){
+			return true;
+		}else{
+			return false;
+		}
+	}
 	function shiftorder () {
 		$task = JRequest::getVar("task", "orderup", "request");
 		$direct = ($task == "orderup")?(-1):(1);
@@ -344,7 +351,7 @@ class DigiComAdminControllerProducts extends DigiComAdminController {
 	function copyProduct()
 	{
 		$response = $this->_model->copyProduct();
-		/*$catid = JRequest::getInt('catid', 0);
+		$catid = JRequest::getInt('catid', 0);
 		if($response === TRUE)
 		{
 			$msg = JText::_("DIGI_COPY_SUCCESSFULLY");
@@ -353,8 +360,8 @@ class DigiComAdminControllerProducts extends DigiComAdminController {
 		else
 		{
 			$msg = JText::_("DIGI_COPY_ERROR");
-			$this->setRedirect("index.php?option=com_digicom&controller=productss&catid=$catid", $msg, "notice");
-		}*/
+			$this->setRedirect("index.php?option=com_digicom&controller=products&catid=$catid", $msg, "notice");
+		}
 		$this->listProducts();
 	}
 

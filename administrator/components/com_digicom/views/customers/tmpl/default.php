@@ -30,9 +30,12 @@ $n = count ($this->custs);
 		<div class="js-stools">
 			<div class="clearfix">
 				<div class="btn-wrapper input-append">
-					<input type="text" name="keyword" placeholder="<?php echo JText::_('DSSEARCH'); ?>" value="<?php echo (strlen(trim($this->keyword)) > 0 ?$this->keyword:"");?>" class="span6" />		
+					<input type="text" id="filter_search" class="input-large" name="keyword" placeholder="<?php echo JText::_('DSSEARCH'); ?>" value="<?php echo (strlen(trim($this->keyword)) > 0 ?$this->keyword:"");?>" class="span6" />		
 					<button type="submit" class="btn hasTooltip" title="" data-original-title="Search">
 						<i class="icon-search"></i>
+					</button>
+					<button type="button" class="btn hasTooltip js-stools-btn-clear" onclick="document.id('filter_search').value='';this.form.submit();">
+						<i class="icon-remove"></i>	
 					</button>
 				</div>
 
@@ -47,10 +50,7 @@ $n = count ($this->custs);
 			<table class="adminlist table">
 				<thead>
 					<tr>
-						<th width="5">
-							<?php echo JHtml::_('grid.checkall'); ?>
-						</th>
-							<th width="20">
+						<th width="20">
 							<?php echo JText::_('VIEWCUSTOMERID');?>
 						</th>
 						<th>
@@ -58,6 +58,9 @@ $n = count ($this->custs);
 						</th>
 						<th>
 							<?php echo JText::_('VIEWCUSTOMERUSER');?>
+						</th>
+						<th>
+							<?php echo JText::_('COM_DIGICOM_TOTAL_ORDER');?>
 						</th>
 					</tr>
 				</thead>
@@ -69,24 +72,23 @@ $n = count ($this->custs);
 					<?php 
 					for ($i = 0; $i < $n; $i++):
 						$cust = $this->custs[$i];
+						//print_r( $cust);die;
 						$id = $cust->id;
-						$checked = JHTML::_('grid.id', $i, $id);
 						$link = JRoute::_("index.php?option=com_digicom&controller=customers&task=edit&cid[]=".$id.(strlen(trim($this->keyword))>0?"&keyword=".$this->keyword:""));
 						$ulink = JRoute::_("index.php?option=com_users&view=user&layout=edit&id=".$id);
 					?>
 					<tr class="row<?php echo $k;?>"> 
-							<td>
-									<?php echo $checked;?>
-						</td>
-
-							<td>
+						<td>
 									<?php echo $id;?>
 						</td>
-							<td>
-									<a href="<?php echo $link;?>" ><?php echo $cust->firstname." ".$cust->lastname;?></a>
+						<td>
+								<a href="<?php echo $link;?>" ><?php echo $cust->firstname." ".$cust->lastname;?></a>
 						</td>
-							<td>
-									<?php echo $cust->username;?>
+						<td>
+							<?php echo $cust->username;?>
+						</td>
+						<td>
+							<?php echo $cust->total_order;?>
 						</td>
 
 					</tr>

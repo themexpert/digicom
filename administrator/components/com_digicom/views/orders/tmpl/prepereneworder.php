@@ -34,12 +34,34 @@ if(isset($document->_scripts)){
 }
 $ajax = <<<EOD
 
+	jQuery(document).ready(function(){
+		jQuery('#buttonaddproduct').click(function(e){
+			e.preventDefault();
+			var url = "index.php?option=com_digicom&controller=orders&task=productitem&no_html=1&tmpl=component&format=raw";
+
+			var req = new Request.HTML({
+				method: 'get',
+				url: url,
+				data: { 'do' : '1' },
+				onComplete: function(response){
+					jQuery('#product_items').append(response);
+					$$('a.modal').each(function(el) {
+						el.addEvent('click', function(e) {
+							new Event(e).stop();
+							SqueezeBox.fromElement(el);
+						});
+					});
+				}
+			}).send();
+		});
+	});
+	/*
 	window.addEvent('domready', function(){
 
 		$('buttonaddproduct').addEvent('click', function(e) {
 			e.stop()||new Event(e).stop();
 
-			var url = "index.php?option=com_digicom&controller=orders&task=productitem&no_html=1&tmpl=component";
+			var url = "index.php?option=com_digicom&controller=orders&task=productitem&no_html=1&tmpl=component&format=raw";
 
 			 var req = new Request.HTML({
 				method: 'get',
@@ -56,8 +78,9 @@ $ajax = <<<EOD
 				}
 			}).send();
 		});
+		$('buttonaddproduct').click();
 	});
-
+	*/
 	function grayBoxiJoomla(link_element, width, height){
 		SqueezeBox.open(link_element, {
 			handler: 'iframe',
@@ -88,7 +111,7 @@ $ajax = <<<EOD
 		//var jsonString = JSON.encode({pids: product_ids, customer_id: castid, processor: tprocessor, promocode: tpromocode, amount_paid: tamount_paid});
 		var jsonString = JSON.encode({pids: product_ids, processor: tprocessor, promocode: tpromocode, amount_paid: tamount_paid});
 		var url = "index.php?option=com_digicom&controller=orders&task=calc&no_html=1&jsonString="+jsonString;
-		console.log(url);
+		//console.log(url);
 		var req = new Request.HTML({
 			method: 'get',
 			url: url,
@@ -180,178 +203,214 @@ $ajax = <<<EOD
 /* ]]> */
 EOD;
 $doc = JFactory::getDocument();
+$app = JFactory::getApplication();
+$input = $app->input;
+$input->set('layout', 'neworder');
 $doc->addScriptDeclaration( $ajax );
 ?>
-<?php if (!empty( $this->sidebar)) : ?>
-	<div id="j-sidebar-container" class="">
-		<?php echo $this->sidebar; ?>
-	</div>
-	<div id="j-main-container" class="">
-	<?php else : ?>
-	<div id="j-main-container" class="">
-	<?php endif;?>
+<script type="text/javascript">
 	
-<div id="returnJSON"></div>
-<fieldset class="adminform">
-	<legend><?php echo JText::_( 'New Order' ); ?></legend>
-
-	<p class="alert alert-info"> <?php echo JText::_("HEADER_ORDERS_ADD"); ?> </p>
-
-
-<form id="adminForm" action="index.php" method="post" name="adminForm">
-	<table width="100%">
-		<tr>
-			<td width="30%">Username</td>
-			<td><?php echo $this->form->getInput('userid'); ?></td>
-			<td>
+	Joomla.submitbutton = function(task)
+	{
+		if(task == 'save'){
+			var products = jQuery("input[id^='product_id']").val();
+			if(products === null || products === undefined || products === '' ){
+				message = Joomla.JText._('JLIB_FORM_FIELD_INVALID');
+				error = {};
+				error.error = [];
+				label = '<?php echo JText::_('COM_DIGICOM_PRODUCT_REQUIRED_FOR_ORDER'); ?>';
+				error.error[0] = message + label;
 				
-			</td>
-		</tr>
-		<tr>
-			<td colspan="3" style="background:#ccc;">
-				<h3><?php echo JText::_( 'Add Product(s) to this order' ); ?></h3>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="3" id="product_items">
-<!-- Products -->
-<div id="product_item_1">
+				Joomla.renderMessages(error);
+				return false;
+			}
+		}
+		if (task == 'cancel' || document.formvalidator.isValid(document.id('adminForm')))
+		{
+			Joomla.submitform(task, document.getElementById('adminForm'));
+		}
+	}
+</script>
+<?php if (!empty( $this->sidebar)) : ?>
+<div id="j-sidebar-container" class="">
+	<?php echo $this->sidebar; ?>
 </div>
-<!-- /Products -->
-			</td>
-		</tr>
-		<!-- Add Products -->
-		<tr>
-			<td style="border-top:1px solid #ccc;padding-top:5px;"></td>
-			<td style="border-top:1px solid #ccc;padding-top:5px;">
-				<!-- a href="#" id="buttonaddproduct"><?php echo JText::_( 'Add Product' ); ?></a -->
-				<input class="inputbox btn btn-small" type="button" id="buttonaddproduct" name="add_product_button" value="<?php echo JText::_( 'Add Product' ); ?>"/>
-			</td>
-			<td style="border-top:1px solid #ccc;padding-top:5px;"></td>
-		</tr>
-		<!-- Common info  -->
-		<tr>
-			<td style="border-top:1px solid #ccc;padding-top:5px;"><?php echo JText::_( 'COM_DIGICOM_FIELD_ORDER_STATUS_LABEL' ); ?></td>
-			<td style="border-top:1px solid #ccc;padding-top:5px;" ><?php echo $this->form->getInput('status'); ?></td>
-			<td style="border-top:1px solid #ccc;padding-top:5px;" ></td>
-		</tr>
-		
-		<tr>
-			<td><?php echo JText::_( 'Payment method' ); ?></td>
-			<td id="payment_method">
-				<?php // echo $this->plugins; ?>
-				<select id="processor" name="processor" class="inputbox" size="1">
-					<?php
-					$db = JFactory::getDBO();
-					$condtion = array(0 => '\'payment\'');
-					$condtionatype = join(',',$condtion);
-					if(JVERSION >= '1.6.0')
-					{
-						$query = "SELECT extension_id as id,name,element,enabled as published
-								  FROM #__extensions
-								  WHERE folder in ($condtionatype) AND enabled=1";
-					}
-					else
-					{
-						$query = "SELECT id,name,element,published
-								  FROM #__plugins
-								  WHERE folder in ($condtionatype) AND published=1";
-					}
-					$db->setQuery($query);
-					$gatewayplugin = $db->loadobjectList();
+<div id="j-main-container" class="">
+<?php else : ?>
+<div id="j-main-container" class="">
+<?php endif;?>
 
-					$lang = JFactory::getLanguage();
-					$options = array();
-					$options[] = JHTML::_('select.option', '', 'Select payment gateway');
-					foreach($gatewayplugin as $gateway)
-					{
-						$gatewayname = strtoupper(str_replace('plugpayment', '',$gateway->element));
-						$lang->load('plg_payment_' . strtolower($gatewayname), JPATH_ADMINISTRATOR);
-						echo '<option value="' . $gateway->element . '" ' . ($configs->get('default_payment','paypal') == $gateway->element ? "selected" : "") . '>' . JText::_($gatewayname) . '</option>';
-					} ?>
-				</select>
-				<?php
-					echo JHTML::tooltip(JText::_("COM_DIGICOM_ORDERPAYMETHOD_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
-				?>
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><?php echo JText::_( 'Promocode' ); ?></td>
-			<td>
-				<?php echo $this->promocode; ?>
-				<?php
-					echo JHTML::tooltip(JText::_("COM_DIGICOM_ORDERPROMOCODE_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
-				?>
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><?php echo JText::_( 'Amount' ); ?></td>
-			<td id="amount" width="10%"></td>
-			<td>
-			<?php
-				echo JHTML::tooltip(JText::_("COM_DIGICOM_ORDERAMOUNT_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
-			?>
-			</td>
-		</tr>
-		<tr style="display:none">
-			<td><?php echo JText::_( 'Tax' ); ?></td>
-			<td id="tax"></td>
-			<td>
-			<?php
-				echo JHTML::tooltip(JText::_("COM_DIGICOM_ORDERTAX_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
-			?>
-			</td>
-		</tr>
-		<tr>
-			<td><?php echo JText::_( 'Discount' ); ?></td>
-			<td id="discount_sign"></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><?php echo JText::_( 'Total' ); ?></td>
-			<td id="total"></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><?php echo JText::_( 'Amount paid' ); ?></td>
-			<td><span id="currency_amount_paid"></span><input id="amount_paid" name="amount_paid" type="text" value=""/></td>
-			<td>
-			<?php
-				echo JHTML::tooltip(JText::_("COM_DIGICOM_ORDERAMOUNTPAID_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
-			?>
-			</td>
-		</tr>
-		
-		<tr>
-			<td><?php echo JText::_( 'Order Date' ); ?></td>
-			<td>
-				<?php echo $this->form->getInput('order_date'); ?>
-			</td>
-			<td>
-			</td>
-		</tr>
-		<!-- /Common info  -->
-	</table>
+	<div id="returnJSON"></div>
+	<fieldset class="adminform">
+		<legend><?php echo JText::_( 'New Order' ); ?></legend>
 
+		<p class="alert alert-info"> <?php echo JText::_("HEADER_ORDERS_ADD"); ?> </p>
 
-		<input type="hidden" name="option" value="com_digicom"/>
-		<input type="hidden" name="controller" value="orders"/>
-		<input type="hidden" id="tax_value" name="tax" value="0"/>
-		<input type="hidden" name="shipping" value="0"/>
-		<input type="hidden" id="amount_value" name="amount" value="0"/>
-		<input type="hidden" id="discount" name="discount" value="0"/>
-		<input type="hidden" id="currency_value" name="currency" value=""/>
-		<input type="hidden" name="task" value=""/>
-</form>
+		<form id="adminForm" action="index.php" method="post" name="adminForm" class="form-horizontal">
+			<div class="order-details">
 
+				<h3>Order Details</h3>
+				<div class="control-group">
+				    <label class="control-label" for="userid">Customer</label>
+				    <div class="controls">
+				      <?php echo $this->form->getInput('userid'); ?>
+				    </div>
+			  	</div>
 
-<div style="border-top:1px solid #ccc;padding-top:5px;">
-	<input onclick="javascript: submitbutton('saveorder')" type="button" name="task" value="Save" class="btn btn-success" />
-	<div id="from_ajax_div" style="display:none;"></div>
-</div>
+			  	<div class="control-group">
+				    <label class="control-label" for="order_status"><?php echo JText::_( 'COM_DIGICOM_FIELD_ORDER_STATUS_LABEL' ); ?></label>
+				    <div class="controls">
+				      <?php echo $this->form->getInput('status'); ?>
+				    </div>
+			  	</div>
 
-</fieldset>
+			  	<div class="control-group">
+				    <label class="control-label" for="order_date"><?php echo JText::_( 'Order Date' ); ?></label>
+				    <div class="controls">
+				      	<?php echo $this->form->getInput('order_date'); ?>
+				    </div>
+			  	</div>
+
+			  	<div class="control-group">
+				    <label class="control-label" for="processor">
+				    	<?php echo JText::_( 'COM_DIGICOM_ORDER_PAYMENT_METHOD' ); ?>
+				    	<?php
+							echo JHTML::tooltip(JText::_("COM_DIGICOM_ORDERPAYMETHOD_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
+						?>
+				    </label>
+				    <div class="controls">
+				      	<select id="processor" name="processor" class="inputbox" size="1">
+							<?php
+							$db = JFactory::getDBO();
+							$condtion = array(0 => '\'digicom_pay\'');
+							$condtionatype = join(',',$condtion);
+							$query = "SELECT extension_id as id,name,element,enabled as published
+									  FROM #__extensions
+									  WHERE folder in ($condtionatype) AND enabled=1";
+						
+							$db->setQuery($query);
+							$gatewayplugin = $db->loadobjectList();
+
+							$lang = JFactory::getLanguage();
+							$options = array();
+							$options[] = JHTML::_('select.option', '', 'Select payment gateway');
+							foreach($gatewayplugin as $gateway)
+							{
+								$gatewayname = strtoupper($gateway->element);
+								$lang->load('plg_payment_' . strtolower($gatewayname), JPATH_ADMINISTRATOR);
+								echo '<option value="' . $gateway->element . '" ' . ($configs->get('default_payment','paypal') == $gateway->element ? "selected" : "") . '>' . JText::_($gatewayname) . '</option>';
+							} ?>
+						</select>
+						
+				    </div>
+			  	</div>
+
+			</div>
+
+			<div class="product-details">
+				
+				<h3>Product Details</h3>
+				
+				<!-- Div to show Product selection field -->
+				<div id="product_items"></div>
+			
+				<div class="control-group">
+				    <label class="control-label" for="buttonaddproduct">Add Products</label>
+				    <div class="controls">
+				      	<!-- a href="#" id="buttonaddproduct"><?php echo JText::_( 'Add Product' ); ?></a -->
+						<input class="inputbox btn btn-small" type="button" id="buttonaddproduct" name="add_product_button" value="<?php echo JText::_( 'Add Product' ); ?>"/>
+				    </div>
+				</div>	
+				
+				<div class="promo-subtotal clearfix">
+					
+					<div class="promos">
+					    <label class="control-label" for="promocode">
+					    	<?php echo JText::_( 'Promocode' ); ?>
+							<?php
+								echo JHTML::tooltip(JText::_("COM_DIGICOM_ORDERPROMOCODE_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
+							?>
+					    </label>
+					    <div class="controls">
+					      	<?php echo $this->promocode; ?>
+					    </div>
+				  	</div>
+
+				  	<div class="subtotal">
+					    <label class="control-label" for="amount">
+					    	<?php echo JText::_( 'COM_DIGICOM_ORDER_SUBTOTAL' ); ?>
+					      	<?php
+								echo JHTML::tooltip(JText::_("COM_DIGICOM_ORDERAMOUNT_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
+							?>
+					    </label>
+					    <div class="controls">
+					    	<span id="amount">00.00 <?php echo $configs->get('currency','USD'); ?></span>
+					      	
+					    </div>
+				  	</div>
+
+				</div>
+				
+
+			</div>
+			
+			<div class="grand-total clearfix">
+			  	<div class="control-group hide">
+				    <label class="control-label" for="total"><?php echo JText::_( 'Tax' ); ?></label>
+				    <div class="controls">
+				      	<span id="tax"></span>
+				    </div>
+			  	</div>
+
+			  	<div class="control-group">
+				    <label class="control-label" for="total"><?php echo JText::_( 'Discount' ); ?></label>
+				    <div class="controls">
+						<span id="discount_sign">00.00 <?php echo $configs->get('currency','USD'); ?></span>
+				    </div>
+			  	</div>
+
+			  	<div class="control-group">
+				    <label class="control-label" for="total">
+				    	<?php echo JText::_( 'COM_DIGICOM_ORDER_TOTAL' ); ?> 
+						<?php
+							echo JHTML::tooltip(JText::_("COM_DIGICOM_ORDERPROMOCODE_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
+						?>
+					</label>
+				    <div class="controls">
+						<span id="total">00.00 <?php echo $configs->get('currency','USD'); ?></span>
+						
+				    </div>
+			  	</div>
+
+			  	<div class="control-group">
+				    <label class="control-label" for="amount_paid">
+				    	<?php echo JText::_( 'COM_DIGICOM_ORDER_AMOUNT_PAID' ); ?>
+				      	<?php
+							echo JHTML::tooltip(JText::_("COM_DIGICOM_ORDERAMOUNTPAID_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
+						?>
+				    </label>
+				    <div class="controls">
+				      	<span id="currency_amount_paid" class="hide"></span><input id="amount_paid" name="amount_paid" type="text" value=""/>
+				    </div>
+			  	</div>
+
+			</div>
+		  	
+
+			
+
+		  		<div id="from_ajax_div" style="display:none;"></div>
+
+				<input type="hidden" name="option" value="com_digicom"/>
+				<input type="hidden" name="controller" value="orders"/>
+				<input type="hidden" id="tax_value" name="tax" value="0"/>
+				<input type="hidden" name="shipping" value="0"/>
+				<input type="hidden" id="amount_value" name="amount" value="0"/>
+				<input type="hidden" id="discount" name="discount" value="0"/>
+				<input type="hidden" id="currency_value" name="currency" value=""/>
+				<input type="hidden" name="task" value=""/>
+		</form>
+
+	</fieldset>
 
 <div>
