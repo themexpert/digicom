@@ -1,0 +1,683 @@
+/*@import url('http://fonts.googleapis.com/css?family=Montserrat:400,700');*/
+.nowrap {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #666666;
+	white-space: nowrap;
+	vertical-align:top;
+	padding:0;
+	margin:0;
+}
+
+.digicartcart {
+	padding:3px;
+	margin:3px;
+	width:98%;
+}
+
+.digicartcart td{
+	vertical-align:top;
+	text-align:center;
+}
+
+.dssoldout {
+	color: red;
+	text-transform: uppercase;
+}
+
+#dslayout-table div.dsimage, 
+#dslayout-table div.dsproductname, 
+#dslayout-table div.dsdesc, 
+#dslayout-table div.dsqty, 
+#dslayout-table div.dsprice, 
+#dslayout-table div.dsattribs, 
+#dslayout-table div.dsaddtocart,
+#dslayout-table div.dssoldout,
+#dslayout-table div.dsremainingstock
+{ 
+	text-align: center;
+	vertical-align: top;
+}
+#dslayout-table div.dsproductname, 
+#dslayout-table div.dsdesc {
+	text-align: left;
+}
+
+
+#dslayout-vert div.dsimage, 
+#dslayout-vert div.dsproductname, 
+#dslayout-vert div.dsdesc, 
+#dslayout-vert div.dsqty, 
+#dslayout-vert div.dsprice, 
+#dslayout-vert div.dsattribs, 
+#dslayout-vert div.dsaddtocart,
+#dslayout-vert div.dssoldout,
+#dslayout-vert div.dsremainingstock
+{ 
+	text-align: center;
+	vertical-align: top;
+}
+
+#dslayout-horiz div.dsimage, 
+#dslayout-horiz div.dsproductname, 
+#dslayout-horiz div.dsdesc, 
+#dslayout-horiz div.dsqty, 
+#dslayout-horiz div.dsprice, 
+#dslayout-horiz div.dsattribs, 
+#dslayout-horiz div.dsaddtocart,
+#dslayout-horiz div.dssoldout,
+#dslayout-horiz div.dsremainingstock
+{ 
+	text-align: center;
+	vertical-align: top;
+}
+
+#dslayout-listmulti div.dsimage, 
+#dslayout-listmulti div.dsproductname, 
+#dslayout-listmulti div.dsdesc, 
+#dslayout-listmulti div.dsqty, 
+#dslayout-listmulti div.dsprice, 
+#dslayout-listmulti div.dsattribs, 
+#dslayout-listmulti div.dsaddtocart,
+#dslayout-listmulti div.dssoldout,
+#dslayout-listmulti div.dsremainingstock
+{ 
+	text-align: center;
+	vertical-align: top;
+}
+#dslayout-listmulti div.dsproductname, 
+#dslayout-listmulti div.dsdesc{
+	text-align: left;
+}
+#dslayout-listmulti div.dsaddtocart{
+	/*text-align: right;*/
+	margin-right:5px;
+}
+
+#dslayout-list div.dsimage, 
+#dslayout-list div.dsproductname, 
+#dslayout-list div.dsdesc, 
+#dslayout-list div.dsqty, 
+#dslayout-list div.dsprice, 
+#dslayout-list div.dsattribs, 
+#dslayout-list div.dsaddtocart,
+#dslayout-list div.dssoldout,
+#dslayout-list div.dsremainingstock
+{ 
+	text-align: center;
+	vertical-align: top;
+}
+#dslayout-list div.dsproductname, 
+#dslayout-list div.dsdesc{
+	text-align: left;
+}
+
+
+#dslayout-viewproduct div.dsimage, 
+#dslayout-viewproduct div.dsproductname, 
+#dslayout-viewproduct div.dsdesc, 
+#dslayout-viewproduct div.dsqty, 
+#dslayout-viewproduct div.dsprice, 
+#dslayout-viewproduct div.dsattribs, 
+#dslayout-viewproduct div.dsaddtocart,
+#dslayout-viewproduct div.dssoldout,
+#dslayout-viewproduct div.dsremainingstock
+{ 
+	text-align: center;
+	vertical-align: top;
+}
+
+#dslayout-viewproduct div.dsremainingstock, #dslayout-viewproduct div.dssoldout 
+{
+	text-align: left;
+}
+
+img.cursym {
+	vertical-align:sub;
+	height:1.2em;
+}
+
+.dsleft{ text-align:left; }
+.dscenter{ text-align:center; }
+.dsright{ text-align:right; }
+
+/*non-digicom classes*/
+/*
+body {font: 12px Helvetica, sans-serif}
+#wrapper {margin: 10px auto; width: 640px}
+.label {text-align: center}
+a {text-decoration: none}
+a img {border: none}
+*/
+/* New Layout */
+
+/*frequently used classes*/
+.ijd-rounded {-moz-border-radius: 4px; -webkit-border-radius: 4px; -khtml-border-radius: 4px; -o-border-radius: 4px; -ms-border-radius: 4px; border-radius: 4px}
+.ijd-box {overflow: hidden; clear: both; margin: 0 0 7px; border: 1px #e6e7e8 solid;}
+.ijd-pad5 {padding: 5px}
+.ijd-mr5 {margin-right: 5px}
+.ijd-ml5 {margin-left: 5px}
+.ijd-width-100 {width:100%; }
+.ijd-width-80 {width:80%; }
+.ijd-width-75 {width:75%; }
+.ijd-width-70 {width:70%; }
+.ijd-width-60 {width:60%; }
+.ijd-width-50 {width:50%; }
+.ijd-width-40 {width:40%; }
+.ijd-width-33 {width: 33.3%}
+.ijd-width-30 {width:30%; }
+.ijd-width-25 {width:25%; }
+.ijd-width-20 {width:20%; }
+.ijd-width-16 {width:16%; }
+.ijd-width-14 {width:14%; }
+.ijd-width-12 {width:12%; }
+.ijd-width-11 {width:11%; }
+.ijd-width-10 {width:10%; }
+.ijd-width-9 {width:9%; }
+.ijd-row {clear: both; overflow: hidden; display: block}
+
+.ijd-product-price{
+	color: #5EC315; 
+	font-weight: bold; 
+	font-size: 16px; 
+	display: inline-block; 
+	/*text-align: center; */
+	width: 100%; 
+	/*margin-bottom:10px; */
+	margin-left:5px;
+}
+
+.ijd-read-more {padding: 5px}
+.ijd-left {float: left}
+.ijd-right {float: right}
+.ijd-center {text-align: center}
+img.ijd-center {display: block; margin-left: auto; margin-right: auto}
+
+.ijd-th-ltr{
+	float: left; 
+	font-weight: 
+	14px; 
+	font-weight: bold; 
+	text-indent: 5px; 
+	padding: 5px 0
+}
+
+.ijd-th-rtl{
+	float: right; 
+	font-weight: 
+	14px; 
+	font-weight: bold; 
+	text-indent: 5px; 
+	padding: 5px 0
+}
+
+.ijd-td{
+	float: left;
+}
+
+/* Product Navigation */
+.ijd-pagination {list-style: none; padding: 0}
+	.ijd-pagination li {display: inline}
+
+/* Title Bar */
+.ijd-index-store-name {margin: 0 0 10px; padding: 5px 5px 0}
+.ijd-index-store-description {padding: 5px 5px 0; margin: 0 0 10px}
+.ijd-index-title { color: #fff; padding: 5px; margin: 0 0 7px; }
+
+/* boxes */
+.ijd-index-box-title{
+	font-size:14px; 
+	margin:0 0 7px; 
+	padding:0 5px; 
+	/*text-align: center; */
+	font-weight:bold;
+}
+
+.ijd-index-product { margin:8px 0; }
+.ijd-description {margin:0 0 7px; padding: 0 5px;  font-size: 12px; text-align: center; line-height: 110%; }
+p.ijd-index-image { text-align:center; padding:8px 0 0; }
+p.ijd-index-image img { max-width:99%; height:auto; }
+span.ijd-number-products { color:#969696; font-size:12px; }
+.ijd-vertical-separator { background:url(../images/product-vertical-separator.png) top right repeat-y; }
+.ijd-vertical-separator-left { /*background:url(../images/product-vertical-separator.png) top left repeat-y; */}
+.ijd-horizontal-separator { height:1px; border-top:solid #e6e7e8 1px; clear:both; margin:0; }
+.ijd-button { background: #434343 url(../images/gradient.png) repeat-x 0 0; color: #fff; padding: 3px; margin: 3px 0; border: 1px #777 solid; font-weight: bold}
+
+/* Shop Description */
+.ijd-index-shop-description {}
+
+/* Quantity Field */
+input.inputboxquantity {width: 35px; height:18px;  text-align:center; margin:0 0 0 4px; border: 1px #ccc solid}
+label.quantity_box { font-size:15px; color:#666; width: 80px; display: inline-block; font-weight: bold; margin-bottom: 5px; }
+
+/* The quantity box beneath the "add to cart" button  */
+.quantity_box { }
+.quantity_box_button { width:18px; height:18px; background-repeat:no-repeat; background-position:center; border:none; }
+.quantity_box_button_down { background:url(../images/coddii-arrow-down.png); }
+.quantity_box_button_up { background:url(../images/coddii-arrow-up.png); }
+
+/* Customer Reviews */
+.ijd-review {}
+.ijd-review-even {}
+.ijd-review-odd {background: #eee}
+
+.cart_content  ul{
+	padding:0 0 0 2em;
+}
+
+#dslayout-horiz .dsimage {
+  padding: 3px 0 10px 10px;
+}
+
+.digi_remove_button {
+	background: url("../images/icon_trash.png") no-repeat scroll center center transparent;
+	border: medium none;
+	width: 80px;
+	height: 31px;
+}
+
+.digi_remove_popup_button {
+	background: url("../images/delete_popup.gif") no-repeat scroll center center transparent;
+	border: medium none;
+	width: 80px;
+	height: 18px;
+}
+
+#hidden_dst {
+	display: none;
+}
+
+.galleria-container{
+	margin:auto;
+}
+
+.downloadbutton, downloadbutton:hover{
+	color: #000000 !important;
+	padding: 1px !important;
+	text-decoration: none !important;
+	text-indent: 1px !important;
+}
+
+.digi_expired{
+	padding:1px;
+	margin: 0.1em 0;
+	color:#FF0000;
+	font-size:12px;
+}
+.digi_active{
+	padding:1px;
+	margin: 0.1em 0;
+	color:#66CC00;
+	font-size:12px;
+}
+
+.item_column ul, .total_row ul, .digicom_orders ul{
+	margin:0 !important;
+	padding-left: 0px !important;
+}
+
+ul.features{
+	padding-left: 15px !important;
+}
+
+.ijd-product-subtitle{
+	color: #666666;
+	font-family: Arial,Helvetica,sans-serif;
+	font-size: 12px;
+	margin-left: 5px;
+	display:block;
+}
+
+.align_topcenter{
+	text-align:center !important;
+	vertical-align:top !important;
+}
+
+.align_left{
+	text-align:left !important;
+}
+
+.align_right{
+	text-align:right !important;
+}
+
+.grid_center{
+	text-align:center !important;
+
+	padding:1px;
+}
+
+.close_btn, .close_btn:link, .close_btn:visited, .close_btn:focus, .close_btn:hover, close_btn:active {
+	background: url("../images/close.gif") no-repeat scroll right top transparent;
+	height: 13px;
+	position: absolute;
+	right: 4px;
+	text-indent: -9999px;
+	top: 4px;
+	width: 12px;
+}
+
+.error{
+	color:#FF0000;
+}
+
+#cart_header{
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+}
+
+#cart_futter{
+	-moz-border-radius-bottomleft: 5px;
+	-moz-border-radius-bottomright: 5px;
+}
+
+.popup_button{
+	background-color: #777878;
+}
+
+#total_slide{
+	float:left; 
+	margin: 10px;
+}
+
+.register_title{
+	color:#666666;
+	font-size:21px;
+}
+
+/*
+.register_table{
+	margin-top: 15px;
+	padding: 10px;
+	background-color:#fff;
+	border: 1px solid #eeeeee;
+	/*border-collapse: collapse;
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+	-moz-border-radius-bottomleft: 5px;
+	-moz-border-radius-bottomright: 5px;
+}
+*/
+.ijd-product-details{
+	float:left;
+}
+
+.invalid{
+	/*background-image:url(../images/invalid.png);
+	background-repeat:no-repeat;*/
+}
+
+.valid{
+	/*background-image:url(../images/valid.png);
+	background-repeat:no-repeat;*/
+}
+
+.digi_short_desc_list{font-size:12px;}
+.digi_price_list{}
+.digi_name_list{}
+.digi_short_desc_page{font-size:18px;font-weight:bold;}
+.digi_long_desc_page{}
+
+.product_image_gallery{
+	border: 1px solid #CCCCCC;
+	cursor:pointer;
+}
+
+.digi_image_title{
+	font-size: 14px;
+	font-weight: bold;
+}
+
+#pathway{
+	padding-bottom:10px !important;
+}
+
+.redirect_message{
+	font-weight:bold;
+}
+
+/*tr, td {
+	border: none !important;
+}*/
+
+ul li.list-products-msg{
+	list-style:disc !important;
+}
+
+#PayAutorizePaymentMainTable .digicom_cancel{
+	padding:2px 4px 2px 1px !important;
+}
+
+.bar{
+text-align: center;
+padding: 0.7em;
+margin: 10px 3px 10px 3px;
+display:block;
+
+}
+
+.active-step{
+	color:#666666;
+	background-color:#eeeeee;
+	padding: 5px;
+border:1px solid #f7f7f7;
+margin:2px;
+	font-weight:normal;
+}
+
+.inactive-step{
+	background-color:#f7f7f7;
+	color:#999999;
+border:1px solid #eeeeee;
+	padding: 5px;
+margin:2px;
+
+}
+
+.username-field{
+	border: 1px solid #333333;
+	background:url('../images/user_icon.gif') no-repeat left center;
+	padding-left:20px;
+}
+
+.password-field{
+	border: 1px solid #333333;
+	background:url('../images/password_icon.gif') no-repeat left center;
+	padding-left:20px;
+}
+
+.field-login{
+	padding-bottom:5px;
+}
+
+#tweet-zone2{
+	padding-bottom:5px;
+	float: right;
+	margin-left: 10px;
+}
+
+#fb-zone{
+	float: right;
+}
+
+.digicom #qty{
+	width: 100px;
+}
+
+.digicom #orderby{
+	margin-top: 5px;
+	margin-bottom: 3px;
+}
+
+/*.ijd-product-details div{
+	margin: 0px 0px 0px 0px !important;
+}*/
+
+#agreeterms{
+	margin-top: -2px;
+}
+
+.digicom .btn-warning {
+	text-shadow: none;
+}
+
+
+/* Added New CSS for new structure : 16 May 2013
+==================================================*/
+.register_table {
+}
+
+.register_table .digicom_form, .login_table .digicom_form {
+	background: #fff;
+	padding: 0 20px 20px;
+	border: 1px solid #ddd;
+	float: left;
+	/*margin: 0 10px 20px;*/
+	width: 42%;
+	border-radius: 3px;
+}
+
+.register_table .digicom_form span.text {
+	margin-bottom: 20px;
+	display: block;
+	font-size: 16px;
+}
+
+.login_table .digicom_form  {
+	display: block;
+	width: 40%;
+	margin: 0 auto 40px;
+	float: none;
+}
+
+.login_table .digicom_form h2 {
+	margin-bottom: 35px;
+}
+
+.login_table .form-horizontal .control-label {
+	width: 100px;
+}
+
+.login_table .form-horizontal .controls {
+	margin-left: 130px;
+}
+
+.digicom_form .form-horizontal .control-group {
+	margin-bottom: 15px;
+}
+
+.digicom_form h2 {
+	margin: 1px -20px 20px;
+	padding: 10px 20px 8px;
+	border-bottom: 1px solid #ddd;
+	font-size: 17px;
+	text-align: center;
+}
+
+.digicom_form h3 {
+	font-size: 18px;
+	margin-top: 0;
+}
+
+#ex-component form {
+	background: #fff;
+	width: 92%;
+	margin: 30px auto;
+	padding-bottom:0px !important;
+	padding-left: 30px !important;
+	padding-right: 30px !important;
+}
+
+#ex-main {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.button, .readon, .readmore, .btn {
+	/*font-family: Montserrat, Arial, Helvetica, sans-serif !important;*/
+}
+
+.digicom .btn {
+	padding: 4px 12px !important;
+}
+
+/* Cart responsive table */
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px)
+{
+	table#digicomcarttable, table#digicomcarttable thead, table#digicomcarttable th, table#digicomcarttable tr, table#digicomcarttable td {
+		display: block;
+	}
+	table#digicomcarttable thead tr {
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	table#digicomcarttable tr {
+		border: 0;
+	}
+	table#digicomcarttable td {
+		border: none;
+		border-bottom: 0;
+		position: relative;
+	}
+	table.table-bordered{
+		border:none;
+	}
+
+	.digicom table#digicomcartpromo select{
+		width: 220px;
+	}
+
+	.digicom div#digicomcartcontinue div{
+		text-align: right;
+	}
+
+	table#digicomcartpromo, table#digicomcartpromo thead, table#digicomcartpromo th, table#digicomcartpromo tr, table#digicomcartpromo td {
+		display: block;
+	}
+	table#digicomcartpromo thead tr {
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	table#digicomcartpromo tr {
+		border: 0;
+	}
+	table#digicomcartpromo td {
+		border: none;
+		border-bottom: 0;
+		position: relative;
+	}
+	table.table-bordered{
+		border:none;
+	}
+	.digicom table#digicomcartpromo select{
+		width: 220px;
+	}
+}
+
+/* Reset for default Joomla Templates */
+#main .digicom ul {
+	list-style-type: none;
+}
+
+.mod_digicom_cart table,
+table.digicom_manage {
+	border: 0 !important;
+}
+
+.mod_digicom_cart table tr,
+table.digicom_manage table tr {
+	border: 0 !important;
+}
+
+table#digicomcarttable ul {
+	margin: 0;
+}
+table#digicomcarttable ul li {
+	list-style-type: none;
+}
+form#product-form .row-fluid > [class^="span"] {
+	border-right: 1px solid lightgray;
+}
+.nomargin{margin:0;}
