@@ -17,6 +17,13 @@ class DigiComAdminViewFileManager extends DigiComView {
 	function display($tpl =  null){
 		JToolBarHelper::title(JText::_('COM_DIGICOM_FILE_MANAGER'), 'generic.png');
 		
+
+		// Access check.
+		if (!JFactory::getUser()->authorise('digicom.filemanager', 'com_digicom'))
+		{
+			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout
 		$layout = new JLayoutFile('toolbar.title');

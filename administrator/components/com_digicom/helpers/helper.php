@@ -359,7 +359,7 @@ class DigiComAdminHelper {
 			$output = JHTML::_('select.genericlist',  $list, 'catid', 'class="inputbox"', 'id', 'treename', $row->catid);
 		}
 		else{ 
-			$output = JHTML::_('select.genericlist',  $list, 'catid', 'class="inputbox" onchange="window.location=\'index.php?option=com_digicom&controller=products&prc=\'+this.value" ', 'id', 'treename', $selected);
+			$output = JHTML::_('select.genericlist',  $list, 'catid', 'class="inputbox" onchange="document.adminForm.submit();"', 'id', 'treename', $selected);
 		}
 		return $output;
 	}

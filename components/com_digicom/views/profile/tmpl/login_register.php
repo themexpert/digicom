@@ -102,7 +102,7 @@ endif;
 
 		<input type="hidden" name="Itemid" value="<?php echo $Itemid;?>" />
 		<input type="hidden" name="option" value="com_digicom" />
-		<input type="hidden" name="controller" value="Profile" />
+		<input type="hidden" name="controller" value="profile" />
 		<input type="hidden" name="task" value="logCustomerIn" />
 		<input type="hidden" name="processor" value="<?php echo JRequest::getVar("processor", ""); ?>" />
 		<input type="hidden" name="returnpage" value="<?php echo JRequest::getVar("returnpage", ""); ?>" />

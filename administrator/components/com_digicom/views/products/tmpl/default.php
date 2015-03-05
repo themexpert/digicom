@@ -15,24 +15,53 @@ JHtml::_('behavior.multiselect');
 JHtml::_('behavior.formvalidation');
 JHtml::_('formbehavior.chosen', 'select');
 
-$app = JFactory::getApplication();
-$listOrder	= $app->getUserState('digicom.product.list.ordering');
-$listDirn	= $app->getUserState('digicom.product.list.direction');
+$listOrder	= $this->escape($this->state->get('list.ordering'));
+$listDirn	= $this->escape($this->state->get('list.direction'));
 
 $k = 0;
 $n = count ($this->prods);
 $page = $this->pagination;
 $configs = $this->configs;
 $prc = JRequest::getVar("prc", "-1");
-$session = JFactory::getSession();
-$search_session = $session->get('digicom.product.search');
-$state_filter = JRequest::getVar("state_filter", "-1");
+$search_session = $this->escape($this->state->get('filter.search'));
+$state_filter = $this->escape($this->state->get('filter.published'));
 $limit = JRequest::getVar("limit", "25");
-
-$document = JFactory::getDocument();
-//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
-
 $limistart = $this->pagination->limitstart;
+
+$user		= JFactory::getUser();
+$userId		= $user->get('id');
+$canOrder	= $user->authorise('core.edit.state', 'com_digicom.component');
+
+$archived	= $this->state->get('filter.published') == 2 ? true : false;
+$trashed	= $this->state->get('filter.published') == -2 ? true : false;
+
+$saveOrder	= $listOrder == 'a.ordering';
+if ($saveOrder)
+{
+	$saveOrderingUrl = 'index.php?option=com_digicom&controller=products&task=saveOrderAjax&tmpl=component';
+	JHtml::_('sortablelist.sortable', 'productList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+}
+$sortFields = $this->getSortFields();
+
+JFactory::getDocument()->addScriptDeclaration('
+	Joomla.orderTable = function()
+	{
+		table = document.getElementById("sortTable");
+		direction = document.getElementById("directionTable");
+		order = table.options[table.selectedIndex].value;
+		if (order != "' . $listOrder . '")
+		{
+			dirn = "asc";
+		}
+		else
+		{
+			dirn = direction.options[direction.selectedIndex].value;
+		}
+		Joomla.tableOrdering(order, dirn, "");
+	};
+');
+?>
+
 
 ?>
 <form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&controller=products'); ?>" method="post" name="adminForm" autocomplete="off" class="form-horizontal">
@@ -48,7 +77,7 @@ $limistart = $this->pagination->limitstart;
 		<div class="js-stools">
 			<div class="clearfix">
 				<div class="btn-wrapper input-append">
-					<input id="filter_search" type="text" name="search" placeholder="<?php echo JText::_('DSSEARCH'); ?>" value="<?php echo $search_session; ?>"/>		
+					<input id="filter_search" type="text" name="filter_search" placeholder="<?php echo JText::_('DSSEARCH'); ?>" value="<?php echo $search_session; ?>"/>		
 					<button type="submit" class="btn hasTooltip" title="" data-original-title="Search">
 						<i class="icon-search"></i>
 					</button>
@@ -60,21 +89,32 @@ $limistart = $this->pagination->limitstart;
 				<div class="btn-wrapper pull-right">
 					<?php echo $this->csel; ?>
 					
-					<select name="state_filter" onchange="document.adminForm.submit();">
-						<option value="-1" <?php if($state_filter == "-1"){echo 'selected="selected"'; } ?>><?php echo JText::_("DIGI_SELECT_STATE"); ?></option>
+					<select name="filter_published" onchange="document.adminForm.submit();">
+						<option value="" <?php if($state_filter == ""){echo 'selected="selected"'; } ?>><?php echo JText::_("JALL"); ?></option>
 						<option value="1" <?php if($state_filter == "1"){echo 'selected="selected"'; } ?>><?php echo JText::_("HELPERPUBLISHED"); ?></option>
 						<option value="0" <?php if($state_filter == "0"){echo 'selected="selected"'; } ?>><?php echo JText::_("HELPERUNPUBLICHED"); ?></option>
 					</select>
 					
-					<?php 
-						$options = array();						
-						for( $i=5; $i<=100 ; $i=$i+5 ){
-							$options[] = JHTML::_('select.option', $i, $i);
-						}
-						$options[] = JHTML::_('select.option', 0, JText::_('JALL'));
-						$dropdown = JHTML::_('select.genericlist', $options, 'limit', 'onchange="document.adminForm.submit();" class="input-mini"', 'value', 'text', $limit);						
-						echo $dropdown;
-					?>
+					
+					<div class="btn-group pull-right">
+						<label for="sortTable" class="element-invisible"><?php echo JText::_('JGLOBAL_SORT_BY');?></label>
+						<select name="sortTable" id="sortTable" class="input-medium" onchange="Joomla.orderTable()">
+							<option value=""><?php echo JText::_('JGLOBAL_SORT_BY');?></option>
+							<?php echo JHtml::_('select.options', $sortFields, 'value', 'text', $listOrder);?>
+						</select>
+					</div>
+					<div class="btn-group pull-right hidden-phone">
+						<label for="directionTable" class="element-invisible"><?php echo JText::_('JFIELD_ORDERING_DESC');?></label>
+						<select name="directionTable" id="directionTable" class="input-medium" onchange="Joomla.orderTable()">
+							<option value=""><?php echo JText::_('JFIELD_ORDERING_DESC');?></option>
+							<option value="asc" <?php if ($listDirn == 'asc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_ASCENDING');?></option>
+							<option value="desc" <?php if ($listDirn == 'desc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_DESCENDING');?></option>
+						</select>
+					</div>
+					<div class="btn-group pull-right hidden-phone">
+						<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
+						<?php echo $this->pagination->getLimitBox(); ?>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -84,11 +124,14 @@ $limistart = $this->pagination->limitstart;
 		</div>
 		<div id="editcell" >
 
-			<table class="adminlist table table-striped table-hover">
+			<table class="adminlist table table-striped table-hover" id="productList">
 
 				<thead>
 
 					<tr>
+						<th width="1%" class="nowrap center hidden-phone">
+							<?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
+						</th>
 						<th width="1%">
 							<span><?php echo JHtml::_('grid.checkall'); ?></span>
 						</th>
@@ -137,17 +180,63 @@ $limistart = $this->pagination->limitstart;
 					$link = JRoute::_("index.php?option=com_digicom&controller=products&task=edit&cid[]=".$id.$cselected);
 					$published = JHTML::_('grid.published', $prod->published, $i);
 					DigiComAdminHelper::publishAndExpiryHelper($img, $alt, $times, $status, $prod->publish_up, $prod->publish_down, $prod->published, $this->configs);
+					
+					$canCreate  = $user->authorise('core.create',     'com_digicom.component');
+					$canEdit    = $user->authorise('core.edit',       'com_digicom.component');
+					$canCheckin = $user->authorise('core.manage',     'com_checkin') || $prod->checked_out == $user->get('id') || $prod->checked_out == 0;
+					$canChange  = $user->authorise('core.edit.state', 'com_digicom.component') && $canCheckin;
+					
+
 					?>
 					<tr class="row<?php echo $k;?>">
+						<td class="order nowrap center hidden-phone">
+							<?php
+							$iconClass = '';
+							if (!$canChange)
+							{
+								$iconClass = ' inactive';
+							}
+							elseif (!$saveOrder)
+							{
+								$iconClass = ' inactive tip-top hasTooltip" title="' . JHtml::tooltipText('JORDERINGDISABLED');
+							}
+							?>
+							<span class="sortable-handler<?php echo $iconClass ?>">
+								<i class="icon-menu"></i>
+							</span>
+							<?php if ($canChange && $saveOrder) : ?>
+								<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $prod->ordering;?>" class="width-20 text-area-order " />
+							<?php endif; ?>
+						</td>
 						<td>
 							<?php echo $checked; ?>
 						</td>
-						<td align="center">
-							<?php echo $published; ?>
+						<td class="center">
+							<div class="btn-group">
+								<?php //echo $checked; ?>
+								
+								<?php echo JHtml::_('jgrid.published', $prod->published, $i); ?>
+								<?php echo JHtml::_('featured.featured', $prod->featured, $i, $canChange); ?>
+								<?php
+								// Create dropdown prods
+								$action = $archived ? 'unarchive' : 'archive';
+								//JHtml::_('actionsdropdown.' . $action, 'cb' . $i, 'articles');
+
+								$action = $trashed ? 'untrash' : 'trash';
+								//JHtml::_('actionsdropdown.' . $action, 'cb' . $i, 'articles');
+
+								// Render dropdown list
+								//$label, $icon = '', $id = '', $task = ''
+								JHtml::_('actionsdropdown.addCustomItem', JText::_('EDIT'),'edit','cb'.$i,'edit');
+								JHtml::_('actionsdropdown.addCustomItem', JText::_('DUPLICATE'),'copy','cb'.$i,'copy');
+								JHtml::_('actionsdropdown.addCustomItem', JText::_('JREMOVE'),'remove','cb'.$i,'remove');
+								echo JHtml::_('actionsdropdown.render', $this->escape($prod->name));
+								?>
+							</div>
 						</td>
 						<td align="center">
 							<?php if(!empty($prod->images)): ?>
-							<img src="<?php echo '../'. $prod->images; ?>" height="48" width="48">
+							<img src="<?php echo JUri::root() . $prod->images; ?>" height="48" width="48">
 							<?php endif; ?>
 						</td>
 						<td>
@@ -175,10 +264,11 @@ $limistart = $this->pagination->limitstart;
 						</td>
 						
 						<td align="center">
-									<?php foreach( $prod->cats as $j => $z) {
-										$clink = JRoute::_("index.php?option=com_digicom&controller=categories&task=edit&cid[]=".$z->id);
-										echo '<a href="'.$clink.'" >'.$z->name.'</a><br />';
-									}
+							<a href="<?php echo JRoute::_("index.php?option=com_digicom&controller=categories&task=edit&cid[]=".$prod->catid); ?>" ><?php echo $prod->category_title; ?></a>
+									<?php //foreach( $prod->cats as $j => $z) {
+										//$clink = JRoute::_("index.php?option=com_digicom&controller=categories&task=edit&cid[]=".$z->id);
+										//echo '<a href="'.$clink.'" >'.$z->name.'</a><br />';
+									//}
 									?>
 						</td>
 						<td align="center">
@@ -202,7 +292,6 @@ $limistart = $this->pagination->limitstart;
 		</div>
 	</div>
 
-	<input type="hidden" name="prc" value="<?php echo $this->prc; ?>" />
 	<input type="hidden" name="option" value="com_digicom" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />

@@ -19,9 +19,9 @@ class DigiComAdminControllerCategories extends DigiComAdminController {
 
 		parent::__construct();
 
+		$this->registerTask ("", "listCategories");
 		$this->registerTask ("add", "edit");
 		$this->registerTask ("apply", "save");
-		$this->registerTask ("", "listCategories");
 		$this->registerTask ("unpublish", "publish");
 		$this->registerTask ("orderdown", "orderdown");
 		$this->registerTask ("orderup", "orderup");
@@ -159,6 +159,11 @@ class DigiComAdminControllerCategories extends DigiComAdminController {
 		$msg = $this->_model->saveorder();
 		$link = "index.php?option=com_digicom&controller=categories";
 		$this->setRedirect($link, $msg);
+	}
+
+	function saveOrderAjax() {
+		$this->_model->saveorder();
+		return true;
 	}
 
 }

@@ -6,8 +6,6 @@
  * @lastmodified	$LastChangedDate: 2013-10-19 10:59:40 +0200 (Sat, 19 Oct 2013) $
  * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
 * @license
-
-
 */
 
 defined ('_JEXEC') or die ("Go away.");
@@ -25,6 +23,7 @@ class DigiComAdminControllerProducts extends DigiComAdminController {
 		$this->registerTask ('apply', 'save');
 		$this->registerDefaultTask('listProducts');
 		$this->registerTask ('unpublish', 'publish');
+		$this->registerTask ('unfeatured', 'featured');
 		$this->registerTask ('orderup', 'shiftorder');
 		$this->registerTask ("orderdown", "shiftorder");
 		$this->registerTask ("move_image_down", "moveImageDown");
@@ -269,6 +268,23 @@ class DigiComAdminControllerProducts extends DigiComAdminController {
 		$this->setRedirect($link, $msg);
 	}
 
+	function featured () {
+		$res = $this->_model->featured();
+
+		if (!$res) {
+			$msg = JText::_('COM_DIGICOM_PRODUCT_FEATURED_ERROR');
+		} elseif ($res == -1) {
+		 	$msg = JText::_('COM_DIGICOM_PRODUCT_UNFEATURED');
+		} elseif ($res == 1) {
+			$msg = JText::_('COM_DIGICOM_PRODUCT_FEATURED');
+		} else {
+		 	$msg = JText::_('COM_DIGICOM_PRODUCT_FEATURED_NOT_FOUND');
+		}
+
+		$link = "index.php?option=com_digicom&controller=products".$this->csel;
+		$this->setRedirect($link, $msg);
+	}
+
 
 	function saveorder () {
 		$res = $this->_model->reorder();
@@ -281,7 +297,14 @@ class DigiComAdminControllerProducts extends DigiComAdminController {
 		$link = "index.php?option=com_digicom&controller=products".$this->csel;
 		$this->setRedirect($link, $msg);
 	}
-
+	function saveOrderAjax(){
+		$res = $this->_model->reorder();
+		if($res){
+			return true;
+		}else{
+			return false;
+		}
+	}
 	function shiftorder () {
 		$task = JRequest::getVar("task", "orderup", "request");
 		$direct = ($task == "orderup")?(-1):(1);

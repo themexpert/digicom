@@ -8,23 +8,7 @@
  */
 
 defined('JPATH_BASE') or die;
-
 JHtmlBehavior::core();
-
-JFactory::getDocument()->addScriptDeclaration('
-	jQuery(document).ready(function($)
-	{
-		if (window.toggleSidebar)
-		{
-			toggleSidebar(true);
-		}
-		else
-		{
-			$("#j-toggle-sidebar-header").css("display", "none");
-			$("#j-toggle-button-wrapper").css("display", "none");
-		}
-	});
-');
 ?>
 
 <div id="j-toggle-sidebar-wrapper">

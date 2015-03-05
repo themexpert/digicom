@@ -69,7 +69,7 @@ class DigiComAdminViewCustomers extends DigiComView {
 		$customer = $this->get('customer');
 		$user = $this->get('User');
 		$isNew = ($customer->id < 1);
-		$text = $isNew?JText::_('New'):JText::_('Edit');
+		$text = $isNew?JText::_('New'):JText::_('Edit')." : ".$customer->firstname;
 
 		JToolBarHelper::title(JText::_('Customer').":<small>[".$text."]</small>");
 
@@ -115,23 +115,12 @@ class DigiComAdminViewCustomers extends DigiComView {
 		$lists['customershippinglocation'] = DigiComAdminHelper::get_store_province($profile, true, $configs);
 
 		$cclasses = explode("\n", $customer->taxclass);
-		/*
-		$data = $this->get('listCustomerClasses');
-		$select = '<select name="taxclass" >';
-		if (count($data) > 0)
-		foreach($data as $i => $v) {
-			$select .= '<option value="'.$v->id.'" ';
-			if (in_array($v->id, $cclasses)) {
-				$select .= ' selected ' ;
-			}
-			$select .= ' > '.$v->name.'</option>';
-		}
-		$select .= '</select>';
-		$lists['customer_class'] = $select;
-		*/
+
 		$this->assign("lists", $lists);
 		$keyword = JRequest::getVar("keyword", "", "request");
 		$this->assign ("keyword", $keyword);
+		
+		$this->assign("configs", $configs);
 		
 		DigiComAdminHelper::addSubmenu('customers');
 		$this->sidebar = DigiComAdminHelper::renderSidebar();
@@ -161,13 +150,7 @@ class DigiComAdminViewCustomers extends DigiComView {
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
 		
-		//JToolBarHelper::addNew();
-		JToolBarHelper::editList();
-		JToolBarHelper::divider();
-		JToolBarHelper::publishList();
-		JToolBarHelper::unpublishList();
-		JToolBarHelper::divider();
-		JToolBarHelper::deleteList();
+
 	}
 	
 	

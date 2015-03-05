@@ -25,6 +25,3 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	</form>
 </div>
-<?php
-//exit(''.__LINE__);
-?>

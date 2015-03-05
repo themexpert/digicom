@@ -12,8 +12,9 @@
 	<files>
 		<filename plugin="byorder">byorder.php</filename>
 		<folder>byorder</folder>
+		<folder>language</folder>
 	</files>
-		<languages> 
+		<languages folder="language"> 
 			<language tag="en-GB">en-GB/en-GB.plg_digicom_pay_byorder.ini</language>
   	</languages>
 	<!-- Fields for Joomla 1.6.x and onwards -->

@@ -19,7 +19,7 @@ $user_id = JRequest::getVar('userid',0);
 	<table class="table">
 		<tr>
 			
-			<td style="">
+			<td>
 				<div style="float:left">
 					<span id="product_name_text_<?php echo $id_rand; ?>" class="product-name">Select a Product</span>
 					<input type="hidden" value="" id="product_id<?php echo $id_rand; ?>" name="product_id[<?php echo $id_rand; ?>]"/>

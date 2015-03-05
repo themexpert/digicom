@@ -378,7 +378,7 @@ $document->addStyleSheet("components/com_digicom/assets/css/diagrams.css");
 		?>
 		<!-- stop edit second diagram -->
 
-		<input type="hidden" name="controller" value="Stats" />
+		<input type="hidden" name="controller" value="stats" />
 		<input type="hidden" name="option" value="com_digicom" />
 		<input type="hidden" name="task" value="showStats" />
 	</div>

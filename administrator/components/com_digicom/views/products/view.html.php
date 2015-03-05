@@ -10,10 +10,13 @@
 
 defined ('_JEXEC') or die ("Go away.");
 
-jimport( "joomla.application.component.view" );
-
 class DigiComAdminViewProducts extends DigiComView
 {
+	protected $items;
+
+	protected $pagination;
+
+	protected $state;
 
 	function display( $tpl = null )
 	{
@@ -34,20 +37,19 @@ class DigiComAdminViewProducts extends DigiComView
 		$session = JFactory::getSession();
 		$session->set('dsproducategory', 0, 'digicom');
 
-		$products = $this->get('Items');
-		$pagination = $this->get('Pagination');
 
-		$this->prods = $products;
-		$this->pagination = $pagination;
+		$this->state      = $this->get('State');
+
+		$this->prods = $this->get('Items');
+
+		$this->pagination = $this->get('Pagination');
 
 		$cats = $this->_models['category']->getlistCategories();
-		$prc = JRequest::getVar( "prc", 0, "request" );
-		$state_filter = JRequest::getVar("state_filter", "-1");
+		$prc = $this->state->get('filter.category_id');
 
 		$cselector = DigiComAdminHelper::getCatListProd2( new stdClass, $cats, 1, $prc );
 		$this->assign("csel", $cselector);
 		$this->assign("prc", $prc);
-		$this->assign("state_filter", $state_filter);
 		
 		//set toolber
 		$this->addToolbar();
@@ -61,25 +63,31 @@ class DigiComAdminViewProducts extends DigiComView
 
 	function select( $tpl = null )
 	{
+		// Access check.
+		if (!JFactory::getUser()->authorise('digicom.products', 'com_digicom'))
+		{
+			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+		}
+		
 		$configs = $this->_models['config']->getConfigs();
 		$this->assign( "configs", $configs );
 
 		$session = JFactory::getSession();
-		$prc = $session->get('dsproducategory', 0, 'digicom');
-		$prc = JRequest::getVar( "prc", $prc, "request" );
-		$session->set('dsproducategory', $prc, 'digicom');
-		$products = $this->get('Items');
+		$session->set('dsproducategory', 0, 'digicom');
 
-		$this->assignRef( 'prods', $products );
 
-		$pagination = $this->get( 'Pagination' );
-		$this->assignRef( 'pagination', $pagination );
+		$this->state      = $this->get('State');
+
+		$this->prods = $this->get('Items');
+
+		$this->pagination = $this->get('Pagination');
 
 		$cats = $this->_models['category']->getlistCategories();
+		$prc = $this->state->get('filter.category_id');
 
-		$cselector = DigiComAdminHelper::getSelectCatListProd( new stdClass, $cats, 1, $prc );
-		$this->assign( "csel", $cselector );
-		$this->assign( "prc", $prc );
+		$cselector = DigiComAdminHelper::getCatListProd2( new stdClass, $cats, 1, $prc );
+		$this->assign("csel", $cselector);
+		$this->assign("prc", $prc);
 		
 		parent::display( $tpl );
 
@@ -325,6 +333,24 @@ class DigiComAdminViewProducts extends DigiComView
 
 	}
 	
+	/**
+	 * Returns an array of fields the table can be sorted by
+	 *
+	 * @return  array  Array containing the field name to sort by as the key and display text as value
+	 *
+	 * @since   3.0
+	 */
+	protected function getSortFields()
+	{
+		return array(
+			'a.ordering' => JText::_('JGRID_HEADING_ORDERING'),
+			'a.publish' => JText::_('JSTATUS'),
+			'a.name' => JText::_('JGLOBAL_TITLE'),
+			'a.access' => JText::_('JGRID_HEADING_ACCESS'),
+			'a.hits' => JText::_('JGLOBAL_HITS'),
+			'a.id' => JText::_('JGRID_HEADING_ID')
+		);
+	}
 	
 }
 

@@ -20,9 +20,44 @@ class DigiComAdminModelProducts extends JModelList {
 	var $_pagination = null;
 
 	function __construct () {
-		parent::__construct();
+		
+		if (empty($config['filter_fields']))
+		{
+			$config['filter_fields'] = array(
+				'id', 'a.id',
+				'name', 'a.name',
+				'alias', 'a.alias',
+				'checked_out', 'a.checked_out',
+				'checked_out_time', 'a.checked_out_time',
+				'catid', 'a.catid', 'category_title',
+				'access', 'a.access', 'access_level',
+				'created', 'a.created',
+				'created_by', 'a.created_by',
+				'ordering', 'a.ordering',
+				'featured', 'a.featured',
+				'language', 'a.language',
+				'hits', 'a.hits',
+				'publish_up', 'a.publish_up',
+				'publish_down', 'a.publish_down',
+				'published', 'a.published',
+				'author_id',
+				'category_id',
+				'level',
+				'tag'
+			);
+
+			if (JLanguageAssociations::isEnabled())
+			{
+				$config['filter_fields'][] = 'association';
+			}
+		}
+		
+		parent::__construct($config);
 		$cids = JRequest::getVar('cid', 0, '', 'array');
 	 	$this->setId((int)$cids[0]);
+		
+		
+		
 	}
 
 	function setId($id) {
@@ -30,13 +65,57 @@ class DigiComAdminModelProducts extends JModelList {
 		$this->_product = null;
 	}
 
-	function populateState($ordering = 'ordering', $direction = 'desc'){
-		$app = JFactory::getApplication('administrator');
-		$this->setState('list.start', $app->getUserStateFromRequest($this->_context . '.list.start', 'limitstart', 0, 'int'));
-		$this->setState('list.limit', $app->getUserStateFromRequest($this->_context . '.list.limit', 'limit', $app->getCfg('list_limit', 25) , 'int'));
-		$this->setState('selected', JRequest::getVar('cid', array()));
-	}
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$app = JFactory::getApplication();
 
+		// Adjust the context to support modal layouts.
+		if ($layout = $app->input->get('layout'))
+		{
+			$this->context .= '.' . $layout;
+		}
+
+		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$access = $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access');
+		$this->setState('filter.access', $access);
+
+		$authorId = $app->getUserStateFromRequest($this->context . '.filter.author_id', 'filter_author_id');
+		$this->setState('filter.author_id', $authorId);
+
+		$published = $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '');
+		$this->setState('filter.published', $published);
+
+		$categoryId = $this->getUserStateFromRequest($this->context . '.filter.category_id', 'catid','');
+		$this->setState('filter.category_id', $categoryId);
+
+		$level = $this->getUserStateFromRequest($this->context . '.filter.level', 'filter_level');
+		$this->setState('filter.level', $level);
+		
+		$limit = $this->getUserStateFromRequest($this->context . '.filter.limit', 'limit');
+		$this->setState('filter.limit', $limit);
+
+		$language = $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '');
+		$this->setState('filter.language', $language);
+
+		$tag = $this->getUserStateFromRequest($this->context . '.filter.tag', 'filter_tag', '');
+		$this->setState('filter.tag', $tag);
+
+		
+		// List state information.
+		parent::populateState();
+
+		// Force a language
+		$forcedLanguage = $app->input->get('forcedLanguage');
+
+		if (!empty($forcedLanguage))
+		{
+			$this->setState('filter.language', $forcedLanguage);
+			$this->setState('filter.forcedLanguage', $forcedLanguage);
+		}
+	}
+	/*
 	function getPagination(){
 		$pagination=parent::getPagination();
 		$pagination->total=$this->total;
@@ -50,7 +129,7 @@ class DigiComAdminModelProducts extends JModelList {
 		$pagination->set('pages.stop',$nr_pages);
 		return $pagination;
 	}
-
+	*/
 	function getCategories() {
 		$db = JFactory::getDBO();
 		$sql = "SELECT id,name FROM #__digicom_categories";
@@ -58,23 +137,49 @@ class DigiComAdminModelProducts extends JModelList {
 		return $db->loadObjectList();
 	}
 
-	protected function getListQuery($sort = "ordering") {
+	protected function getListQuery() {
 		$input = JFactory::getApplication()->input;
         $db = JFactory::getDBO();
-        $catids = $input->get('catid','');
+		$user = JFactory::getUser();
+        //$catids = $input->get('catid','');
 		
-		$session	= JFactory::getSession();
-		$category	= $session->get('dsproducategory', 0, 'digicom');
-		$prc		= JRequest::getVar("prc", $category, "request");
-		$search		= trim(JRequest::getVar("search", '', "post"));
+		//$session	= JFactory::getSession();
+		//$category	= $session->get('dsproducategory', 0, 'digicom');
+		//$prc		= JRequest::getVar("prc", $category, "request");
+		//$search		= trim(JRequest::getVar("search", '', "post"));
 
-		$session_search = $session->get( 'digicom.product.search');
-		$state_filter	= JRequest::getVar("state_filter", '-1');
+		//$session_search = $session->get( 'digicom.product.search');
+		//$state_filter	= JRequest::getVar("state_filter", '1');
 
         $query = $db->getQuery(true);
-        $query->select('*');
-        $query->from('#__digicom_products');
+        $query->select(
+			$this->getState(
+				'list.select',
+				'a.id, a.name, a.alias, a.checked_out, a.checked_out_time, a.catid' .
+					', a.published, a.access, a.created, a.created_by, a.ordering, a.featured, a.hits' .
+					', a.price, a.images, a.product_type, a.hide_public' .
+					', a.publish_up, a.publish_down'
+			)
+		);
+        $query->from('#__digicom_products a');
 		
+		// Join over the users for the checked out user.
+		$query->select('uc.name AS editor')
+			->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
+
+		// Join over the asset groups.
+		$query->select('ag.title AS access_level')
+			->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
+
+		// Join over the categories.
+		$query->select('c.name AS category_title')
+			->join('LEFT', '#__digicom_categories AS c ON c.id = a.catid');
+
+		// Join over the users for the author.
+		$query->select('ua.name AS author_name')
+			->join('LEFT', '#__users AS ua ON ua.id = a.created_by');
+		
+		/*
 		if($prc > 0){
             $query->where($db->quoteName('catid') . " = '".$prc."'");
 		}
@@ -93,24 +198,143 @@ class DigiComAdminModelProducts extends JModelList {
 		}
         $query->order($sort);
 		//print_r($query->__toString());exit(''.__LINE__);
+		*/
+		// Filter by access level.
+		if ($access = $this->getState('filter.access'))
+		{
+			$query->where('a.access = ' . (int) $access);
+		}
+
+		// Implement View Level Access
+		if (!$user->authorise('core.admin'))
+		{
+			$groups = implode(',', $user->getAuthorisedViewLevels());
+			$query->where('a.access IN (' . $groups . ')');
+		}
+
+		// Filter by published state
+		$published = $this->getState('filter.published');
+
+		if (is_numeric($published))
+		{
+			$query->where('a.published = ' . (int) $published);
+		}
+		elseif ($published === '')
+		{
+			$query->where('(a.published = 0 OR a.published = 1)');
+		}
+
+		// Filter by a single or group of categories.
+		$baselevel = 1;
+		$categoryId = $this->getState('filter.category_id');
+		//echo ($categoryId);die;
+		if (!empty($categoryId))
+		{
+			//JArrayHelper::toInteger($categoryId);
+			//$categoryId = implode(',', $categoryId);
+			$query->where('a.catid IN (' . $categoryId . ')');
+		}
+		
+		// Filter on the level.
+		if ($level = $this->getState('filter.level'))
+		{
+			$query->where('c.level <= ' . ((int) $level + (int) $baselevel - 1));
+		}
+
+		// Filter by author
+		$authorId = $this->getState('filter.author_id');
+
+		if (is_numeric($authorId))
+		{
+			$type = $this->getState('filter.author_id.include', true) ? '= ' : '<>';
+			$query->where('a.created_by ' . $type . (int) $authorId);
+		}
+
+		// Filter by search in title.
+		$search = $this->getState('filter.search');
+
+		if (!empty($search))
+		{
+			if (stripos($search, 'id:') === 0)
+			{
+				$query->where('a.id = ' . (int) substr($search, 3));
+			}
+			elseif (stripos($search, 'author:') === 0)
+			{
+				$search = $db->quote('%' . $db->escape(substr($search, 7), true) . '%');
+				$query->where('(ua.name LIKE ' . $search . ' OR ua.username LIKE ' . $search . ')');
+			}
+			else
+			{
+				$search = $db->quote('%' . str_replace(' ', '%', $db->escape(trim($search), true) . '%'));
+				$query->where('(a.name LIKE ' . $search . ' OR a.alias LIKE ' . $search . ')');
+			}
+		}
+
+		// Filter on the language.
+		if ($language = $this->getState('filter.language'))
+		{
+			$query->where('a.language = ' . $db->quote($language));
+		}
+
+		// Filter by a single tag.
+		/*
+		$tagId = $this->getState('filter.tag');
+
+		if (is_numeric($tagId))
+		{
+			$query->where($db->quoteName('tagmap.tag_id') . ' = ' . (int) $tagId)
+				->join(
+					'LEFT', $db->quoteName('#__contentitem_tag_map', 'tagmap')
+					. ' ON ' . $db->quoteName('tagmap.content_item_id') . ' = ' . $db->quoteName('a.id')
+					. ' AND ' . $db->quoteName('tagmap.type_alias') . ' = ' . $db->quote('com_content.article')
+				);
+		}
+		*/
+		// Add the list ordering clause.
+		$orderCol = $this->state->get('list.ordering', 'a.id');
+		$orderDirn = $this->state->get('list.direction', 'desc');
+
+		if ($orderCol == 'a.ordering' || $orderCol == 'category_title')
+		{
+			$orderCol = 'c.name ' . $orderDirn . ', a.ordering';
+		}
+
+		if ($orderCol == 'access_level')
+		{
+			$orderCol = 'ag.title';
+		}
+
+		$query->order($db->escape($orderCol . ' ' . $orderDirn));
+
 		return $query;
 	}
 
-	function getItems()
+	function getItems_x()
 	{
 		
 		$config = JFactory::getConfig();
 		$app	= JFactory::getApplication('administrator');
-		$listOrder		= $app->getUserStateFromRequest('digicom.product.list.ordering','order','id','string');
-		$listDirn		= $app->getUserStateFromRequest('digicom.product.list.direction','order_Dir','desc','string');
+		$listOrder		=  $this->state->get('list.ordering', 'a.id');
+		$listDirn		=  $this->state->get('list.direction', 'desc');
+		$limistart	= $this->state->get('list.start', 'limitstart');
+		$limit		= $this->state->get('list.limit', $config->get('list_limit'));
+		
+		echo// $limit;die;
 
-		$limistart	= $app->getUserStateFromRequest($this->context.'.list.start', 'limitstart');
-		$limit		= $app->getUserStateFromRequest($this->context.'.list.limit', 'limit', $config->get('list_limit'));
+		//$listOrder		= $app->getUserStateFromRequest('digicom.product.list.ordering','order','id','string');
+		//$listDirn		= $app->getUserStateFromRequest('digicom.product.list.direction','order_Dir','desc','string');
+
+		//$limistart	= $app->getUserStateFromRequest($this->context.'.list.start', 'limitstart');
+		//$limit		= $app->getUserStateFromRequest($this->context.'.list.limit', 'limit', $config->get('list_limit'));
 
 		$sort = $listOrder.' '.$listDirn;
 		$db = JFactory::getDBO();
 
+		//$query = $this->getListQuery($sort);
+		$query = $this->getListQuery();
 		$query = $this->getListQuery($sort);
+		
 		$db->setQuery($query);
 		$db->query();
 		$result	= $db->loadObjectList();
@@ -118,13 +342,14 @@ class DigiComAdminModelProducts extends JModelList {
 		$db->setQuery($query, $limistart, $limit);
 		$db->query();
 		$result	= $db->loadObjectList();
-
+		
+		//print_r($result);die;
 		
 		foreach($result as $i => $v)
 		{
 			$sql = "SELECT id,name
 					FROM #__digicom_categories
-					WHERE id='".$v->catid."'";
+					WHERE id='".$v->catid."' and published=1";
 			$db->setQuery($sql);
 			$result[$i]->cats = $db->loadObjectList();
 		}
@@ -558,6 +783,30 @@ class DigiComAdminModelProducts extends JModelList {
 		return $res;
 	}
 
+	function featured () {
+		$db = JFactory::getDBO();
+		$cids = JRequest::getVar('cid', array(0), 'post', 'array');
+		$task = JRequest::getVar('task', '', 'post');
+		$item = $this->getTable('Product');
+		$res = 0;
+		if ($task == 'featured') {
+			$res = 1;
+			$sql = "update #__digicom_products set featured='1' where id in ('".implode("','", $cids)."')";
+		} else {
+			$res = -1;
+			$sql = "update #__digicom_products set featured='0' where id in ('".implode("','", $cids)."')";
+
+		}
+		$db->setQuery($sql);
+		if (!$db->query() ) {
+			$this->setError($db->getErrorMsg());
+//			return false;
+		}
+		return $res;
+	}
+
+
+
 	function shiftorder($direction = 1) {
 		$db = JFactory::getDBO();
 		$cids = JRequest::getVar('cid', array(0), 'post', 'array');
@@ -807,6 +1056,18 @@ class DigiComAdminModelProducts extends JModelList {
 			return false;
 		}
 
+		return $form;
+	}
+	
+	public function getfilterForm($data = array(), $loadData = true)
+	{
+		$form = $this->loadForm('com_digicom.filter_product', 'filter_product', array('control' => '', 'load_data' => $loadData));
+		
+		if (empty($form))
+		{
+			return false;
+		}
+		
 		return $form;
 	}
 }

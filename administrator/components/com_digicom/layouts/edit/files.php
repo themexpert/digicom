@@ -40,12 +40,12 @@ jQuery(function(){
 					<td width="1%"><span class="move"><i class="icon-move"></i></span></td>
 					
 					<td width="10%">
-						<input type="text" name="file[{{row-count-placeholder}}][name]" placeholder="File Name"/>
+						<input type="text" name="jform[file][{{row-count-placeholder}}][name]" placeholder="File Name"/>
 					</td>
 					
 					<td width="70%">
 						<div class="input-prepend input-append" style="display: block;">
-							<input type="text" name="file[{{row-count-placeholder}}][url]" id="files_row_count_placeholder_id_url" placeholder="Upload or enter the file URL" class="span8"/>
+							<input type="text" name="jform[file][{{row-count-placeholder}}][url]" id="files_row_count_placeholder_id_url" placeholder="Upload or enter the file URL" class="span8"/>
 							<a class="files_uploader_modal btn modal" title="Select" 
 							href="javascript:;" onclick="openModal(this);"
 							>
@@ -68,12 +68,12 @@ jQuery(function(){
 						
 						<td width="10%">
 							<input type="text" 
-							name="file[<?php echo $key; ?>][name]" placeholder="File Name" value="<?php echo $value->name; ?>"/>
+							name="jform[file][<?php echo $key; ?>][name]" placeholder="File Name" value="<?php echo $value->name; ?>"/>
 						</td>
 						
 						<td width="70%">
 							<div class="input-prepend input-append" style="display: block;">
-								<input type="text" name="file[<?php echo $key; ?>][url]" id="files_<?php echo $key; ?>_url" placeholder="Upload or enter the file URL" class="span8"
+								<input type="text" name="jform[file][<?php echo $key; ?>][url]" id="files_<?php echo $key; ?>_url" placeholder="Upload or enter the file URL" class="span8"
 								value="<?php echo $value->url; ?>"
 								/>
 								<a class="files_uploader_modal btn modal" title="Select" 

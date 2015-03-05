@@ -442,7 +442,7 @@ class DigiComControllerCart extends DigiComController
 			$order_id = $cart->addOrderInfo($items, $customer, $tax, $status = 'Pending', $prosessor);
 			$cart->getFinalize($this->_customer->_sid, $msg = '', $order_id );
 			
-			$dispatcher = JDispatcher::getInstance();
+			/* Prepare params*/
 			$params = array();
 			$params['user_id'] = $this->_customer->_user->id;
 
@@ -480,15 +480,12 @@ class DigiComControllerCart extends DigiComController
 			$params['order_amount'] = $items[-2]['taxed'];
 			$params['order_currency'] = $items[-2]['currency'];
 			$params['Itemid'] = JRequest::getInt('Itemid');
-
-			JPluginHelper::importPlugin('digicom_pay');
-
-			if($configs->get('shopping_cart_style',0) == "1"){
-				JRequest::setVar("tmpl", "component");
-			}
-
-			$result = $dispatcher->trigger('onSendPayment', array(& $params));
-			$this->getHTML($params);
+			
+			$cart->storeOrderParams( $user->id, $order_id ,$params);
+			
+			//$this->getHTML($params);
+			$this->setRedirect("index.php?option=com_digicom&view=cart&task=submitOrder&order_id=".$order_id."&processor=".$params['processor']."&Itemid=".$itemid);
+			
 		}
 		
 		return true;
@@ -703,6 +700,12 @@ class DigiComControllerCart extends DigiComController
 		}
 	}
 
+	function submitOrder(){
+		$view = $this->getView("Cart", "html");
+		$view->setModel($this->_model, true);
+		$view->setModel($this->_config);
+		$view->submitOrder();
+	}
 	function getHTML($params)
 	{
 

@@ -68,6 +68,9 @@ class DigiComViewOrders extends DigiComView {
 		$this->assignRef('cartitems', $cartitems);
 		$this->assign("caturl", $cat_url);
 
+		$template = new DigiComTemplateHelper($this);
+		$template->rander('orders');
+
 		parent::display($tpl);
 	}
 
@@ -78,6 +81,10 @@ class DigiComViewOrders extends DigiComView {
 		$this->assign("order", $order);
 		$configs = $this->_models['config']->getConfigs();
 		$this->assign("configs", $configs);
+
+		$template = new DigiComTemplateHelper($this);
+		$template->rander('showorder');
+
 		parent::display($tpl);
 	}
 

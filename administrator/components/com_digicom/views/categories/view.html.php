@@ -10,12 +10,13 @@
 
 defined ('_JEXEC') or die ("Go away.");
 
-jimport ("joomla.application.component.view");
-
 class DigiComAdminViewCategories extends DigiComView {
 
 	protected $items;
+
 	protected $pagination;
+
+	protected $state;
 
 	function display($tpl=null)
 	{
@@ -29,11 +30,18 @@ class DigiComAdminViewCategories extends DigiComView {
 			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$categories = $this->get('Items');
-		$pagination = $this->get('Pagination');
+		$this->cats = $this->get('Items');
 
-		$this->cats = $categories;
-		$this->pagination = $pagination;
+		// Preprocess the list of items to find ordering divisions.
+		foreach ($this->cats as &$item)
+		{
+			$this->ordering[$item->parent_id][] = $item->id;
+		}
+
+		//print_r($this->cats);die;
+
+		$this->pagination = $this->get('Pagination');
+		$this->state = $this->get('state');
 		//set toolber
 		$this->addToolbar();
 		
@@ -143,7 +151,7 @@ class DigiComAdminViewCategories extends DigiComView {
 		// Instantiate a new JLayoutFile instance and render the layout
 		$layout = new JLayoutFile('toolbar.title');
 		$title=array(
-			'title' => JText::_( 'VIEWDSADMINCATEGORIES' ),
+			'title' => JText::_( 'VIEWDSADMINCATEGORIES' ),  
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
@@ -160,67 +168,24 @@ class DigiComAdminViewCategories extends DigiComView {
 		JToolBarHelper::deleteList();
 	}
 	
-	public function addMediaScript(){
-		
-		// Load the modal behavior script.
-		JHtml::_('behavior.modal');
-
-		// Include jQuery
-		JHtml::_('jquery.framework');
-
-		// Build the script.
-		$script = array();
-		$script[] = '	function jInsertFieldValue(value, id) {';
-		$script[] = '		var $ = jQuery.noConflict();';
-		$script[] = '		var old_value = $("#" + id).val();';
-		$script[] = '		if (old_value != value) {';
-		$script[] = '			var $elem = $("#" + id);';
-		$script[] = '			$elem.val(value);';
-		$script[] = '			$elem.trigger("change");';
-		$script[] = '			if (typeof($elem.get(0).onchange) === "function") {';
-		$script[] = '				$elem.get(0).onchange();';
-		$script[] = '			}';
-		$script[] = '			jMediaRefreshPreview(id);';
-		$script[] = '		}';
-		$script[] = '	}';
-
-		$script[] = '	function jMediaRefreshPreview(id) {';
-		$script[] = '		var $ = jQuery.noConflict();';
-		$script[] = '		var value = $("#" + id).val();';
-		$script[] = '		var $img = $("#" + id + "_preview");';
-		$script[] = '		if ($img.length) {';
-		$script[] = '			if (value) {';
-		$script[] = '				$img.attr("src", "' . JUri::root() . '" + value);';
-		$script[] = '				$("#" + id + "_preview_empty").hide();';
-		$script[] = '				$("#" + id + "_preview_img").show()';
-		$script[] = '			} else { ';
-		$script[] = '				$img.attr("src", "")';
-		$script[] = '				$("#" + id + "_preview_empty").show();';
-		$script[] = '				$("#" + id + "_preview_img").hide();';
-		$script[] = '			} ';
-		$script[] = '		} ';
-		$script[] = '	}';
-
-		$script[] = '	function jMediaRefreshPreviewTip(tip)';
-		$script[] = '	{';
-		$script[] = '		var $ = jQuery.noConflict();';
-		$script[] = '		var $tip = $(tip);';
-		$script[] = '		var $img = $tip.find("img.media-preview");';
-		$script[] = '		$tip.find("div.tip").css("max-width", "none");';
-		$script[] = '		var id = $img.attr("id");';
-		$script[] = '		id = id.substring(0, id.length - "_preview".length);';
-		$script[] = '		jMediaRefreshPreview(id);';
-		$script[] = '		$tip.show();';
-		$script[] = '	}';
-
-		// Add the script to the document head.
-		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
-		
-		$options = array(
-			'onShow' => 'jMediaRefreshPreviewTip',
-		);
-		JHtml::_('behavior.tooltip', '.hasTipPreview', $options);
-	}
 	
+	/**
+	 * Returns an array of fields the table can be sorted by
+	 *
+	 * @return  array  Array containing the field name to sort by as the key and display text as value
+	 *
+	 * @since   3.0
+	 */
+	protected function getSortFields()
+	{
+		return array(
+			'a.ordering' => JText::_('JGRID_HEADING_ORDERING'),
+			'a.published' => JText::_('JSTATUS'),
+			'a.name' => JText::_('JGLOBAL_TITLE'),
+			'a.access' => JText::_('JGRID_HEADING_ACCESS'),
+			'a.hits' => JText::_('JGLOBAL_HITS'),
+			'a.id' => JText::_('JGRID_HEADING_ID')
+		);
+	}
 }
 

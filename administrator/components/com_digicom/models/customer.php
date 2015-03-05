@@ -67,7 +67,7 @@ class DigiComAdminModelCustomer extends JModelList {
 		}
 		$where .= " and c.id=(SELECT od.userid from #__digicom_orders od where od.userid=c.id limit 1)";
 
-		$sql = "select c.*, u.username, u.email from #__digicom_customers c left join #__users u on( u.id=c.id) where ".$where." order by c.id desc";
+		$sql = "select c.*, (SELECT count(od.userid) from #__digicom_orders od where od.userid=c.id limit 1) as total_order, u.username, u.email from #__digicom_customers c left join #__users u on( u.id=c.id) where ".$where." order by c.id desc";
 		return $sql;
 	}
 
@@ -101,6 +101,8 @@ class DigiComAdminModelCustomer extends JModelList {
 		
 		if (!isset($this->_customer->registerDate)) $this->_customer->registerDate = $user->registerDate;
 		
+		$this->_customer->orders = $this->getlistCustomerOrders($this->_id);
+
 		return $this->_customer;
 	}
 
@@ -230,8 +232,8 @@ class DigiComAdminModelCustomer extends JModelList {
 		}
 	}
 
-	function getlistCustomerClasses () {
-		$sql = "select * from #__digicom_tax_customerclass order by ordering asc";
+	function getlistCustomerOrders ($userid) {
+		$sql = "select * from #__digicom_orders where userid='".$userid."'order by id desc";
 		$db = JFactory::getDBO();
 		$db->setQuery($sql);
 		return ($db->loadObjectList());
@@ -304,6 +306,4 @@ class DigiComAdminModelCustomer extends JModelList {
 		return $result;
 	}
 
-};
-
-?>
+}

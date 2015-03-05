@@ -25,6 +25,17 @@ $f = str_replace ("-", "-%", $f);
 $f = "%".$f;;
 $ajax = <<<EOD
 
+	jQuery(document).ready(function() {
+		jQuery('#discount_enable_range_option_select .btn').click(function(){
+			var discount_enable_range = jQuery('input.discount_enable_range:checked').val();
+			if(discount_enable_range === '1'){
+				jQuery('#discount_enable_range_product').hide('slide');
+			}else{
+				jQuery('#discount_enable_range_product').show('slide');
+			}
+		});
+	});
+
 	window.addEvent('domready', function(){
 		addProduct('items');
 		addProduct('orders');
@@ -32,7 +43,7 @@ $ajax = <<<EOD
 
 	function addProduct(TYPE, ID)
 	{
-		var url = "index.php?option=com_digicom&controller=promos&task=productitem&no_html=1&tmpl=component&type="+TYPE;
+		var url = "index.php?option=com_digicom&controller=promos&task=productitem&no_html=1&tmpl=component&format=raw&type="+TYPE;
 		var req = new Request.HTML({
 			method: 'get',
 			url: url,
@@ -67,6 +78,7 @@ $ajax = <<<EOD
 		//parent_element.removeChild(par);
 	}
 
+
 /* ]]> */
 EOD;
 $doc = JFactory::getDocument();
@@ -74,15 +86,12 @@ $doc->addScriptDeclaration( $ajax );
 ?>
 
 <script language="javascript" type="text/javascript">
-<!--
 function submitbutton(pressbutton) {
 	submitform( pressbutton );
 }
--->
 </script>
 
-
-<form action="index.php" method="post" name="adminForm" id="adminForm" class="form-horizontal">
+<form action="index.php?option=com_digicom&controller=promos" method="post" name="adminForm" id="adminForm" class="form-horizontal">
 	<?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="">
 		<?php echo $this->sidebar; ?>
@@ -101,7 +110,7 @@ function submitbutton(pressbutton) {
 						description.setStyle("display", "none");
 						title.addClass("closed").removeClass("open");
 					}',
-			'useCookie'		=> false, // this must not be a string. Don't use quotes.
+			'useCookie'		=> true, // this must not be a string. Don't use quotes.
 			'active'		=> 'general-settings'
 		);
 		echo JHtml::_('dctabs.start', 'promo_settings', $options);
@@ -144,14 +153,17 @@ function submitbutton(pressbutton) {
 						<div class="control-group">
 							<label for="" class="control-label"><?php echo JText::_("VIEWPROMODISCAMOUNT");?></label>
 							<div class="controls">
-						<input type="text" style="width:50px" name="amount" value="<?php echo $promo->amount;?>" />
+								<input type="text" style="width:50px" name="amount" value="<?php echo $promo->amount;?>" />
 						
-								<div class="radio btn-group btn-group-yesno">
-									<input type="radio" name="promotype" value="0" checked="<?php echo ($promo->promotype == 0)?"checked":""; ?>">
-									<label class="btn"><?php echo JText::_("COM_DIGICOM_DISCOUNT_TYPE_FIXED");?></label>
-									<input type="radio" name="promotype" value="1" checked="<?php echo ($promo->promotype == 1 || $promo->promotype !== '0')?"checked":""; ?>">
-									<label class="btn"><?php echo JText::_("COM_DIGICOM_DISCOUNT_TYPE_PERCENTAGE");?></label>
-								</div>
+								
+								<fieldset id="promotype_select" class="radio btn-group">
+									<input type="radio" id="promotype_0" class="promotype" name="promotype" value="0" checked="<?php echo ($promo->promotype == 0)?"checked":""; ?>">
+									<label for="promotype_0" class="btn"><?php echo JText::_("COM_DIGICOM_DISCOUNT_TYPE_FIXED");?></label>
+									
+									<input type="radio" id="promotype_1" class="promotype" name="promotype" value="1" checked="<?php echo ($promo->promotype == 1 || $promo->promotype !== '0')?"checked":""; ?>">
+									<label for="promotype_1" class="btn"><?php echo JText::_("COM_DIGICOM_DISCOUNT_TYPE_PERCENTAGE");?></label>
+								</fieldset>
+								
 						
 						&nbsp;
 						<?php
@@ -196,20 +208,16 @@ function submitbutton(pressbutton) {
 						</div>
 
 						<div class="control-group">
-							<label for="" class="control-label"><?php echo JText::_("Apply promo discount after tax");?></label>
-							<div class="controls">
-						<?php echo JText::_("VIEWPROMONO"); ?> <input type="radio" name="aftertax" value="0" <?php echo ($promo->aftertax == 0 || $promo->aftertax !== '1')?"checked":""; ?> />
-						<?php echo JText::_("VIEWPROMOYES"); ?> <input type="radio" name="aftertax" value="1" <?php echo ($promo->aftertax == 1 )?"checked":""; ?> />
-						<?php
-							echo JHTML::tooltip(JText::_("COM_DIGICOM_PROMOAFTERTAX_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
-						?>
-							</div>
-						</div>
-
-						<div class="control-group">
 							<label for="" class="control-label"><?php echo JText::_("VIEWPROMOPUBLISHING");?></label>
 							<div class="controls">
-						<input type="checkbox" name="published" value="1" <?php  echo $promo->published ? 'checked="checked"' : ''; ?> />
+														
+								<fieldset id="published_select" class="radio btn-group">
+									<input type="radio" id="published_0" class="published" name="published" value="0" checked="<?php echo ($promo->published == 0)?"checked":""; ?>">
+									<label for="published_0" class="btn"><?php echo JText::_("JUNPUBLISH");?></label>
+									
+									<input type="radio" id="published_1" class="published" name="published" value="1" checked="<?php echo ($promo->published == 1 || $promo->published !== '0')?"checked":""; ?>">
+									<label for="published_1" class="btn"><?php echo JText::_("JPUBLISH");?></label>
+								</fieldset>
 						<?php
 							echo JHTML::tooltip(JText::_("COM_DIGICOM_PROMOPUBLISHING_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
 						?>
@@ -219,8 +227,12 @@ function submitbutton(pressbutton) {
 						<div class="control-group">
 							<label for="" class="control-label"><?php echo JText::_("VIEWPROMOVALIDFOR");?></label>
 							<div class="controls">
-								<?php echo JText::_("VIEWPROMOVALIDFORNEW"); ?> <input type="checkbox" name="validfornew" value="1" <?php  echo $promo->validfornew ? 'checked="checked"' : ''; ?> />
-								<?php echo JText::_("VIEWPROMOVALIDFORRENEWAL"); ?> <input type="checkbox" name="validforrenewal" value="1" <?php  echo $promo->validforrenewal ? 'checked="checked"' : ''; ?> />
+								<?php echo JText::_("VIEWPROMOVALIDFORNEW"); ?> 
+								<input type="checkbox" name="validfornew" value="1" <?php  echo $promo->validfornew ? 'checked="checked"' : ''; ?> />
+								
+								<?php echo JText::_("VIEWPROMOVALIDFORRENEWAL"); ?> 
+								<input type="checkbox" name="validforrenewal" value="1" <?php  echo $promo->validforrenewal ? 'checked="checked"' : ''; ?> />
+							
 							</div>
 						</div>
 					</div>
@@ -228,13 +240,26 @@ function submitbutton(pressbutton) {
 			</div>
 
 			<div class="span4 well">
-				<table width="100%">
+				<div class="control-label">
+					<div class="control-label">
+						<label class="editlinktip hasTip" title="<?php echo JText::_('COM_DIGICOM_CART_FOR_ENTIRE_TIP'); ?>" ><?php echo JText::_('COM_DIGICOM_CART_FOR_ENTIRE_LABEL');?>:</label>
+					</div>
+					<div class="controls">
+						<fieldset id="discount_enable_range_option_select" class="radio btn-group">
+							<input type="radio" class="discount_enable_range" name="discount_enable_range" id="discount_enable_range_all" value="1" <?php echo (($promo->discount_enable_range == '1' || $promo->discount_enable_range === null)?"checked='checked'":"");?> />
+							<label class="btn" for="discount_enable_range_all"><?php echo JText::_('JALL'); ?></label>
+							<input type="radio" class="discount_enable_range" name="discount_enable_range" id="discount_enable_range_restrict" value="0" <?php echo (($promo->discount_enable_range == '0')?"checked='checked'":"");?> />
+							<label class="btn" for="discount_enable_range_restrict"><?php echo JText::_('JNO'); ?></label>
+						</fieldset>
+					</div>
+				</div>
+				<table width="100%" id="discount_enable_range_product" <?php echo (($promo->discount_enable_range == '1' || $promo->discount_enable_range === null) ? "class='hide'":"");?>>
 					<tr>
 						<td>
 							<h3><?php echo JText::_( 'VIEWPROMOPROMOCODEPRODUCTS_TIP' ); ?></h3>
 					</td>
-				</tr>
-				<tr>
+					</tr>
+					<tr>
 						<td id="product_items">
 							<!-- Products -->
 							<div id="product_item_1"></div>
@@ -246,12 +271,10 @@ function submitbutton(pressbutton) {
 								<div id="product_item_<?php echo $id_rand; ?>">
 									<table width="100%" class="table">
 										<tr>
-											<td width="30%">
-												<?php echo JText::_( 'Product' ); ?>
-											</td>
-					<td>
+											
+											<td colspan="3">
 												<div style="float:left">
-													<span id="product_items_name_text_<?php echo $id_rand; ?>" <?php echo $product->name;?></span>
+													<span id="product_items_name_text_<?php echo $id_rand; ?>"> <?php echo $product->name;?></span>
 													<input type="hidden" value="<?php echo $product->productid;?>" id="product_items_id<?php echo $id_rand; ?>" name="items_product_id[<?php echo $id_rand; ?>]"/>
 												</div>
 												<div><div class="blank input-append" style="padding:0">
@@ -262,16 +285,16 @@ function submitbutton(pressbutton) {
 												</div></div>
 											</td>
 											<td class="product_item_remove_btn">
-												<a href="javascript:void(0)" id="product_item_remove_<?php echo $id_rand; ?>" onclick="remove_product('<?php echo $id_rand; ?>', 'item');">Remove</a>
-					</td>
+												<a href="javascript:void(0)" id="product_item_remove_<?php echo $id_rand; ?>" class="btn" onclick="remove_product('<?php echo $id_rand; ?>', 'item');">Remove</a>
+											</td>
 										</tr>
 									</table>
 								</div><?php
 							} ?>
 							<!-- /Products -->
-					</td>
-				</tr>
-			</table>
+						</td>
+					</tr>
+				</table>
 			</div>
 
 		</div>
@@ -314,101 +337,8 @@ function submitbutton(pressbutton) {
 
 		<?php
 		echo JHtml::_('dctabs.endTab');
-		echo JHtml::_('dctabs.addTab', 'promo_settings', 'product-items', JText::_('VIEWPROMOPROMOCODEPRODUCTS') ); 
-					/*
-					foreach ($this->promo_products as $product)
-					{
-						$id_rand = uniqid(rand()); ?>
-						<div id="product_item_<?php echo $id_rand; ?>">
-							<table width="100%" class="table">
-								<tr>
-									<td style="border-top:1px solid #ccc;padding-top:5px;" width="30%">
-										<?php echo JText::_( 'Product' ); ?>
-									</td>
-									<td style="border-top:1px solid #ccc;padding-top:5px;">
-										<div style="float:left">
-											<span id="product_items_name_text_<?php echo $id_rand; ?>" style="color:#999;line-height: 17px;padding: 0.2em; border: 1px solid rgb(204, 204, 204); display: block; width: 250px; overflow: visible;"><?php echo $product->name;?></span>
-											<input type="hidden" value="<?php echo $product->productid;?>" id="product_items_id<?php echo $id_rand; ?>" name="items_product_id[<?php echo $id_rand; ?>]"/>
-										</div>
-										<div><div class="blank input-append" style="padding:0">
-											<input type="button" class="btn btn-small" onclick="javascript:grayBoxiJoomla('index.php?option=com_digicom&controller=products&task=selectProducts&id=<?php echo $id_rand; ?>&userid=0&tmpl=component&type=item&prodedit=1', 600, 400)" value="<?php echo JText::_('DIGI_SELECT')?>" />
-											<?php
-											echo JHTML::tooltip(JText::_("COM_DIGICOM_ORDERPRODUCT_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
-											?>
-										</div></div>
-									</td>
-									<td style="border-top:1px solid #ccc;padding-top:5px;" class="product_item_remove_btn">
-										<a href="javascript:void(0)" id="product_item_remove_<?php echo $id_rand; ?>" onclick="remove_product('<?php echo $id_rand; ?>', 'item');">Remove</a>
-									</td>
-								</tr>
-							</table>
-						</div><?php
-					} 
-					*/
-					?>
-					<!-- /Products -->
-				</td>
-			</tr>
-		</table>
-		<?php
-		echo JHtml::_('dctabs.endTab');
-		echo JHtml::_('dctabs.addTab', 'promo_settings', 'product-orders' ,JText::_('VIEWPROMOPROMOCODEPURCHASES') ); ?>
-			<table width="100%">
-				<tr>
-					<td colspan="2">
-						<h3><?php echo JText::_( 'VIEWPROMOPROMOCODEPURCHASES_TIP' ); ?></h3>
-					</td>
-				</tr>
-				<tr>
-					<td width="20%">
-						<?php echo JText::_("VIEWPROMOOFEC");?>
-					</td>
-					<td nowrap>
-						<?php echo JText::_("VIEWPROMONO"); ?> <input type="radio" name="forexisting" value="0" <?php echo ($promo->forexisting == 0)?"checked":""; ?> />
-						<?php echo JText::_("VIEWPROMOYES"); ?> <input type="radio" name="forexisting" value="1" <?php echo ($promo->forexisting == 1 || $promo->forexisting != 0)?"checked":""; ?> />
-						<?php
-						echo JHTML::tooltip(JText::_("COM_DIGICOM_PROMOOFEC_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
-						?>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2" id="product_orders">
-						<!-- Products -->
-						<div id="product_orders_1"></div><?php
-						foreach ($this->promo_orders as $product)
-						{
-							$id_rand = uniqid(rand()); ?>
-							<div id="product_order_<?php echo $id_rand; ?>">
-								<table width="100%">
-									<tr>
-										<td style="border-top:1px solid #ccc;padding-top:5px;" width="30%">
-											<?php echo JText::_( 'Product' ); ?>
-										</td>
-										<td style="border-top:1px solid #ccc;padding-top:5px;">
-											<div style="float:left">
-												<span id="product_orders_name_text_<?php echo $id_rand; ?>" style="color:#999;line-height: 17px;padding: 0.2em; border: 1px solid rgb(204, 204, 204); display: block; width: 250px; overflow: visible;"><?php echo $product->name;?></span>
-												<input type="hidden" value="<?php echo $product->productid;?>" id="product_orders_id<?php echo $id_rand; ?>" name="orders_product_id[<?php echo $id_rand; ?>]"/>
-											</div>
-											<div><div class="blank" style="padding:0">
-												<input type="button" class="btn btn-small" onclick="javascript:grayBoxiJoomla('index.php?option=com_digicom&controller=products&task=selectProducts&id=<?php echo $id_rand; ?>&userid=0&tmpl=component&type=order&prodedit=1', 600, 400)" value="<?php echo JText::_('DIGI_SELECT')?>" />
-												<?php
-												echo JHTML::tooltip(JText::_("COM_DIGICOM_ORDERPRODUCT_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
-												?>
-											</div></div>
-										</td>
-										<td style="border-top:1px solid #ccc;padding-top:5px;" class="product_order_remove_btn">
-											<a href="javascript:void(0)" id="product_order_remove_<?php echo $id_rand; ?>" onclick="remove_product('<?php echo $id_rand; ?>', 'order');">Remove</a>
-										</td>
-									</tr>
-								</table>
-							</div><?php
-						} ?>
-						<!-- /Products -->
-					</td>
-				</tr>
-			</table>
-		<?php
-		echo JHtml::_('dctabs.endTab');
+		
+		
 		echo JHtml::_('dctabs.end');
 		?>
 	</div>

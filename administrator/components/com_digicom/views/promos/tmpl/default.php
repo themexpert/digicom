@@ -207,7 +207,7 @@ $document = JFactory::getDocument();
 		<input type="hidden" name="option" value="com_digicom" />
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />
-		<input type="hidden" name="controller" value="Promos" />
+		<input type="hidden" name="controller" value="promos" />
 		
 	</div>
 </form>

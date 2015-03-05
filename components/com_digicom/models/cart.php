@@ -846,6 +846,15 @@ class DigiComModelCart extends DigiComModel
 		return true;
 	}
 	
+	function storeOrderParams($user_id,$order_id ,$params){
+
+		$table = $this->getTable('Order');
+		$table->load(array('id'=>$order_id,'userid'=>$user_id));
+		$table->params = json_encode($params);
+		$table->store();
+		return true;
+	}
+	
 	function proccessFail($controller, $result)
 	{
 		$msg = JText::_("DIGI_PAYMENT_FAIL");

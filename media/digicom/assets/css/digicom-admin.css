@@ -152,6 +152,10 @@ body.com_digicom .btn-danger {
 body.com_digicom header.header {
   display: none;
 }
+body.com_digicom .subhead-collapse {
+  z-index: 11;
+  position: relative;
+}
 body.com_digicom .subhead {
   margin-bottom: 0;
   background: #fff;
@@ -201,6 +205,9 @@ body.com_digicom #j-sidebar-container {
   left: 0;
   overflow: hidden;
   border: 0;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 body.com_digicom #j-sidebar-container #sidebar {
   padding: 15px 0;
@@ -769,6 +776,10 @@ body.layout-neworder .add-product .btn-group {
   margin: 0 auto;
   font-size: 0;
   text-indent: -9999px;
+}
+/* Global Settings page Styling */
+.mce-edit-area iframe {
+  height: 250px !important;
 }
 /* Responsive Styling */
 @media (min-width: 1200px) {

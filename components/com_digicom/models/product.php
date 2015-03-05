@@ -295,7 +295,7 @@ class DigiComModelProduct extends DigiComModel
 	
 	public function getSubCategoriesId($catid){
 		$db = JFactory::getDBO();
-		$query = 'SELECT `id`, `parent_id` AS `parent`, `parent_id`, `title`, `title` as `name` FROM `#__digicom_categories` WHERE `published` = 1 ORDER BY `ordering`';
+		$query = 'SELECT `id`, `parent_id` AS `parent`, `parent_id`, `name` FROM `#__digicom_categories` WHERE `published` = 1 ORDER BY `ordering`';
 		$db->setQuery($query);
 		$mitems = $db->loadObjectList();
 		
