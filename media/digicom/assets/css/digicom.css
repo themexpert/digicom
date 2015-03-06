@@ -3996,6 +3996,24 @@ div.modal.fade.in {
 #digicom .digi-products .bundled-products h3 {
   font-size: 20px;
   line-height: 30px;
+  background: #24aeed;
+  color: #fff;
+  margin: 0;
+  padding: 5px 15px;
+}
+#digicom .digi-products .bundled-products ul {
+  list-style: none;
+  margin: 0;
+  border: 1px solid #ddd;
+}
+#digicom .digi-products .bundled-products ul li {
+  padding: 10px 15px;
+}
+#digicom .digi-products .bundled-products ul li span {
+  float: right;
+}
+#digicom .digi-products .bundled-products ul li + li {
+  border-top: 1px solid #ddd;
 }
 #digicom .digi-products .price-addtocart {
   background: #eee;

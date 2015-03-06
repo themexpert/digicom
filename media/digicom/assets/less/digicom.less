@@ -158,7 +158,28 @@
 			line-height: 1.6;
 			margin: 0 0 7px;
 		}
-		.bundled-products h3 {font-size: 20px;line-height: 30px;}
+		.bundled-products {
+
+			h3 {
+				font-size: 20px;
+				line-height: 30px;
+				background: @color-primary;
+				color: #fff;
+				margin: 0;
+				padding: 5px 15px;
+			}
+
+			ul {
+				list-style: none;
+				margin: 0;
+				border: 1px solid #ddd;
+				li {
+					padding: 10px 15px;
+					span {float: right;}
+					&+li {border-top: 1px solid #ddd;}
+				}
+			}
+		}
 		.price-addtocart {
 			background: #eee;
 			padding: 20px;

@@ -57,7 +57,11 @@ $bsGrid = array(
 	                  	<?php if(!empty($item->images)): ?>
 					  	<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=products&cid='.$item->catid.'&pid='.$item->id);?>" class="image"><img alt="Product Image" src="<?php echo $item->images; ?>"></a>
 	                  	<?php endif; ?>
+
+						<?php if($item->featured): ?>
 	                  	<span class="featured">Featured</span>
+						<?php endif; ?>
+						
 	                  	<?php if(!empty($item->bundle_source)):?>
 						<span class="bundle-label"><?php echo JText::sprintf('COM_DIGICOM_CATEGORY_PRODUCT_TYPE_BUNDLE');?></span>
 						<?php endif; ?>	                  	
