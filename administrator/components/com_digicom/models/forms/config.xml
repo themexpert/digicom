@@ -420,6 +420,17 @@
 				label="DIGICOM_TEMPLATE_TITLE"
 				description="DIGICOM_TEMPLATE_TIP"
 				/>
+			<field
+				name="category_cols"
+				type="list"
+				label="DIGICOM_THEME_COLUMN_NO"
+			>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="6">6</option>
+			</field>
 		</fieldset>
 	</fields>
 			

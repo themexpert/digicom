@@ -9,10 +9,9 @@
 */
 
 defined ('_JEXEC') or die ("Go away.");
+$configs = $this->configs;
 $document = JFactory::getDocument();
-
 $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
-////$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_digicom'); ?>" class="clearfix" method="post" name="adminForm" id="adminForm">
 <?php if (!empty( $this->sidebar)) : ?>
@@ -23,33 +22,36 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 <?php else : ?>
 	<div id="j-main-container" class="">
 <?php endif;?>
-		
+		<h2>DigiCom Dashboard</h2>
+		<p class="lead">Revulationary Joomla Extension</p>
+		<p class="text-right alert alert-info">Report of the Month <span class="label label-info"><?php echo date('F'); ?></span> </p>
+
 		<div class="row-fluid sales-overview">
 			 <div class="span3">
 			 	<div class="panel-box">			 		
 				 	<span class="icon-briefcase"></span>
-				 	<p><strong>$20000.89</strong><br>Total Sale</p>
+				 	<p><strong><?php echo DigiComAdminHelper::format_price($this->totalOrder, $configs->get('currency','USD'), true, $configs);?></strong><br>Total Sale</p>
 			 	</div>
 			 </div>
 
 			 <div class="span3">
 			 	<div class="panel-box">			 		
 				 	<span class="icon-cart"></span>
-				 	<p><strong>200</strong><br>Total Orders</p>
+				 	<p><strong><?php echo $this->reportOrders['total']; ?></strong><br>Total Orders</p>
 			 	</div>
 			 </div>
 
 			 <div class="span3">
 			 	<div class="panel-box">
 			 		<span class="icon-warning"></span>
-				 	<p><strong>200</strong><br>Pending Orders</p>
+				 	<p><strong><?php echo $this->reportOrders['pending']; ?></strong><br>Pending Orders</p>
 			 	</div>			 	
 			 </div>
 
 			 <div class="span3">
 			 	<div class="panel-box">			 		
 				 	<span class="icon-users"></span>
-				 	<p><strong>200</strong><br>Total Customers</p>
+				 	<p><strong><?php echo $this->reportCustomer; ?></strong><br>New Customers</p>
 			 	</div>
 			 </div>
 		</div>
@@ -58,27 +60,40 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 			<div class="panel-header clearfix">
 				<h3 class="panel-title"><span class="icon-bars"></span> Sales Analytics</h3>
 			</div>
+			<?php
+				$chart = DigiComChart::test();
+				$monthlyDay = DigiComChart::getMonthLabelDay();
+				
+				$monthlyPrice = DigiComChart::getMonthLabelPrice($monthlyDay);
+			?>
 			<div class="panel-content"> 
-			  	<canvas id="myChart" width="945" height="200"></canvas>
+				<div><canvas id="myChart" width="945" height="200"></canvas></div>
+			  
 			  	<script type="text/javascript">
 			  		var data = {
-					    labels: ["January", "February", "March", "April", "May", "June", "July"],
+					    labels: [<?php echo $monthlyDay; ?>],
 					    datasets: [
 
 					        {
-					            label: "My Second dataset",
+					            label: "Monthly Report",
 					            fillColor: "rgba(151,187,205,0.2)",
 					            strokeColor: "rgba(151,187,205,1)",
 					            pointColor: "rgba(151,187,205,1)",
-					            pointStrokeColor: "#fff",
-					            pointHighlightFill: "#fff",
+					            pointStrokeColor: "#555",
+					            pointHighlightFill: "#555",
 					            pointHighlightStroke: "rgba(151,187,205,1)",
-					            data: [28, 48, 40, 19, 86, 27, 90]
+					            data: [<?php echo $monthlyPrice; ?>]
 					        }
 					    ]
 					};
+					options ={
+						animation: true,
+						scaleShowLabels: true,
+						responsive: true,
+						tooltipTemplate: "<%if (label){%><%}%><%= value %> <?php echo $configs->get('currency','USD')?>",
+					}
 					var ctx = document.getElementById("myChart").getContext("2d");
-					var myLineChart = new Chart(ctx).Line(data);
+					var myLineChart = new Chart(ctx).Line(data,options);
 			  	</script>				  
 			</div>
 			
@@ -87,100 +102,66 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 		<div class="row-fluid">
 			<div class="span6 panel">
 				<div class="panel-header clearfix">
-					<h3 class="panel-title"><span class="icon-star-empty"></span>Recent Sales</h3>
+					<h3 class="panel-title"><span class="icon-star-empty"></span><?php echo JText::_('DIGICOM_LATESTORDERS'); ?></h3>
 				</div>
 				<div class="panel-content">
 					<table class="table table-striped">
+					<thead>
 						<tr>
 							<th>#</th>
-							<th>Plan</th>
 							<th>Buyer</th>
 							<th>Amount</th>
 							<th>Date</th>
 						</tr>
+					</thead>
+					<?php foreach($this->latest_orders AS $order) : ?>
 
 						<tr>
-							<td>1</td>
-							<td>Basic</td>
-							<td>Parvez</td>
-							<td>85.36</td>
-							<td>10 hours ago</td>
+							<td>
+								<span class="label label-ds hasTip" title="" data-original-title="Order ID">
+									<a href="index.php?option=com_digicom&controller=orders&task=show&cid[]=<?php echo $order->id; ?>"><?php echo JText::_('VIEWLICLICORDERID').$order->id; ?></a>
+								</span>
+							</td>
+							<td>
+								<strong class="row-title">
+									<a href="index.php?option=com_digicom&controller=customers&task=edit&cid[]=<?php echo $order->userid;?>">
+										<?php echo $order->firstname.' '.$order->lastname;?>
+									</a>
+								</strong>
+							</td>
+							<td><span class="small pull-right"><?php echo DigiComAdminHelper::format_price($order->amount, $order->currency, true, $configs); ?></span></td>
+							<td><span class="small"><i class="icon-calendar"></i> <?php echo date("Y-m-d", $order->order_date); ?></span></td>
 						</tr>
-						<tr>
-							<td>2</td>
-							<td>Single</td>
-							<td>Anamoul</td>
-							<td>75.65</td>
-							<td>18 hours ago</td>
-						</tr>
-						<tr>
-							<td>3</td>
-							<td>Pro</td>
-							<td>Faysal</td>
-							<td>420.36</td>
-							<td>22 hours ago</td>
-						</tr>
-						<tr>
-							<td>4</td>
-							<td>Standard</td>
-							<td>Titas</td>
-							<td>115.26</td>
-							<td>a day ago</td>
-						</tr>
-						<tr>
-							<td>5</td>
-							<td>Basic</td>
-							<td>Masud</td>
-							<td>88.74</td>
-							<td>2 days ago</td>
-						</tr>
+						
+					<?php endforeach; ?>
 					</table>
+					<a href="index.php?option=com_digicom&controller=orders"><?php echo JText::_('COM_DIGICOM_ALL_ORDERS'); ?></a>
 				</div>
 			</div>
 			<div class="span6 panel">
 				<div class="panel-header clearfix">
-					<h3 class="panel-title"><span class="icon-download"></span>Most Downloaded</h3>
+					<h3 class="panel-title"><span class="icon-download"></span>Most Sold Product</h3>
 				</div>
 				<div class="panel-content">
 					<table class="table table-striped" style="text-align: center;">
+						<thead>
 						<tr>
-							<th>ID</th>
 							<th>Name</th>
-							<th>Status</th>
-							<th>Total Downloads</th>
+							<th>Type</th>
+							<th>Price</th>
+							<th>Num Sold</th>
 						</tr>
-
+						</thead>
+						<?php foreach($this->most_sold AS $product) : ?>
 						<tr>
-							<td>1</td>
-							<td>Bolt</td>
-							<td>Active</td>
-							<td>25463</td>
+							<td><a href="index.php?option=com_digicom&controller=products&task=edit&cid[]=<?php echo $product->productid;?>"><?php echo $product->name;?></a></td>
+							<td><?php echo ($product->package_type =='reguler' ? ucfirst($product->package_type) : JText::sprintf('COM_DIGICOM_BUNDLE',ucfirst($product->package_type)));?></td>
+							<td><?php echo $product->price;?></td>
+							<td><?php echo $product->total;?></td>
 						</tr>
-						<tr>
-							<td>2</td>
-							<td>Extreme</td>
-							<td>Active</td>
-							<td>2468</td>
-						</tr>
-						<tr>
-							<td>3</td>
-							<td>HostX</td>
-							<td>Active</td>
-							<td>68794</td>
-						</tr>
-						<tr>
-							<td>4</td>
-							<td>Optimus</td>
-							<td>Active</td>
-							<td>6948</td>
-						</tr>
-						<tr>
-							<td>5</td>
-							<td>DigiCom</td>
-							<td>Active</td>
-							<td>549783</td>
-						</tr>
+						<?php endforeach; ?>
 					</table>
+					<a href="index.php?option=com_digicom&controller=products"><?php echo JText::_('DIGICOM_RECENTPROD'); ?></a>
 				</div>
 			</div>
 		</div>

@@ -20,12 +20,12 @@ $input->set('layout', 'dgform');
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=email'); ?>" id="adminForm" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
 	<?php if (!empty( $this->sidebar)) : ?>
-	<div id="j-sidebar-container" class="span2">
+	<div id="j-sidebar-container">
 		<?php echo $this->sidebar; ?>
 	</div>
-	<div id="j-main-container" class="span10">
+	<div id="j-main-container">
 <?php else : ?>
-	<div id="j-main-container" class="span12">
+	<div id="j-main-container">
 <?php endif;?>
 		<div class="row-fluid">
 			<div class="span12">
@@ -67,7 +67,7 @@ $input->set('layout', 'dgform');
 			</div>
 
 			<div class="span4">
-				<div class="hasAffix" data-spy="affix" data-offset-top="100" data-offset-bottom="200" style="top: 80px;">
+				<div>
 					<h3><?php echo( JText::_( 'VIEWCONFIGTEMPLATEVARS' ) ); ?></h3>
 
 					<table class="table table-condensed">

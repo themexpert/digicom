@@ -168,6 +168,7 @@ body.com_digicom {
 	
 
 	header.header {display: none;}
+	.subhead-collapse {z-index: 11;position: relative;}
 	.subhead {
 		margin-bottom: 0;
 		background: #fff;
@@ -176,6 +177,7 @@ body.com_digicom {
 		border-bottom: 0;
 		min-height: inherit;
 		height: auto;
+
 		.btn-toolbar {
 			text-align: right;
 			margin: 0;
@@ -212,6 +214,9 @@ body.com_digicom {
 		left: 0;
 		overflow: hidden;
 		border: 0;
+		-webkit-backface-visibility: hidden;
+		-moz-backface-visibility: hidden;
+		backface-visibility: hidden;
 
 		#sidebar {
 			padding: 15px 0;
@@ -409,6 +414,7 @@ body.layout-dgform {
 		}
 
 	}
+
 }
 
 /* Sidebar right styling */
@@ -735,6 +741,10 @@ body.layout-neworder {
 	}
 }
 
+/* Global Settings page Styling */
+.mce-edit-area iframe {
+	height: 250px !important;
+}
 /* Responsive Styling */
 @media (min-width: 1200px) {
 	body.com_digicom {		

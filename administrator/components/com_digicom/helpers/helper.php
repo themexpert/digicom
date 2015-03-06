@@ -1240,7 +1240,60 @@ class DigiComAdminHelper {
 		}
 		return $products;
 	}
+	/**
+	 * Get latest products, to use with DS Dashboard
+	 * @return unknown
+	 */
+	public static function getMostSoldProducts($limit) {
+		$db = JFactory::getDbo();
+		// Create a new query object.
+
+		$query = $db->getQuery(true);
+		$query->select( 'SUM('.$db->quoteName('od.quantity') .') as total');
+		$query->select($db->quoteName(array('od.productid', 'od.package_type')));
+		
+		$query->select($db->quoteName(array('p.name','p.price')));
+
+		$query->from($db->quoteName('#__digicom_orders_details').' od');
+		$query->from($db->quoteName('#__digicom_products').' p');
+
+		$query->where($db->quoteName('p.id') . '= '. $db->quoteName('od.productid'));
+
+		$date = DigiComAdminHelper::getStartEndDateMonth();
+		$startdate_str = $date["0"];
+		$enddate_str = $date["1"];
+
+		$query->where($db->quoteName('od.purchase_date') . ' >= '. $db->quote($startdate_str));
+		$query->where($db->quoteName('od.purchase_date') . ' < '. $db->quote($enddate_str));
+
+		$query->where($db->quoteName('od.published') . ' = '. $db->quote('1'));
+
+		$query->group($db->quoteName('od.productid'));
+		$query->order($db->quoteName('total').' DESC');
+		$query->setLimit($limit);
+
+		// Reset the query using our newly populated query object.
+		$db->setQuery($query);
+		
+		if (!$products = $db->loadObjectList()) {
+			echo $db->getErrorMsg();
+		}
+		return $products;
+	}
 	
+	public static function getStartEndDateMonth(){
+		$return = array();
+		$date = new DateTime('now');
+		$date->modify('first day of this month');
+		$return[] = $date->format('Y-m-d') . ' 00:00:00';
+
+		$date->modify('first day of next month');
+		$return[] = $date->format('Y-m-d') . ' 00:00:00';
+
+		return $return;
+	}
+
+
 	/**
 	 * Get Top Customers, to use with DS Dashboard
 	 * @param unknown $limit

@@ -311,6 +311,8 @@ class DigiComModelCustomer extends DigiComModel {
 		if ( ! $mailSender->Send() ) {
 
 //			<Your error code management>
+		}else{
+			$email->store();
 		}
 //			mosMail( $adminEmail2, $adminName2, $my->email, $subject, $message, 1 ); // Send mail
 		if ( $configs->get('sendmailtoadmin',1) != 0 ) {
@@ -322,6 +324,8 @@ class DigiComModelCustomer extends DigiComModel {
 			$mailSender->setBody( $message );
 			if ( ! $mailSender->Send() ) {
 //					<Your error code management>
+			}else{
+				$email->store();
 			}
 			$site_config = JFactory::getConfig();
 			$tzoffset    = $site_config->get( 'offset' );

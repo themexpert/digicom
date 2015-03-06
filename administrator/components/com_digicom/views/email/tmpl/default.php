@@ -65,7 +65,7 @@ $input->set('layout', 'dgform');
 				</fieldset>
 			</div>
 			<div class="span4">
-				<div class="hasAffix" data-spy="affix" data-offset-top="100" data-offset-bottom="200" style="top: 80px;">
+				<div>
 					<h3><?php echo( JText::_( 'VIEWCONFIGTEMPLATEVARS' ) ); ?></h3>
 
 					<table class="table table-condensed">
