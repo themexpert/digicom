@@ -3926,6 +3926,7 @@ div.modal.fade.in {
   position: relative;
   padding: 0;
   overflow: hidden;
+  border-radius: 0;
 }
 #digicom .digi-categories .products-list .thumbnail .image img {
   width: 100%;
@@ -3938,6 +3939,12 @@ div.modal.fade.in {
   position: absolute;
   top: 0;
   left: 0;
+  display: block;
+  height: 40px;
+  width: 40px;
+  background: url(../images/featured-badge.png) no-repeat 0 0;
+  font-size: 0;
+  text-indent: -9999px;
 }
 #digicom .digi-categories .products-list .thumbnail .bundle-label {
   position: absolute;
