@@ -103,8 +103,8 @@ if($this->configs->get('afteradditem',0) == "2"){
 									<?php echo JText::_('DSQUANTITY'); ?>:&nbsp;									
 								</label> -->
 
-								<div class="input-append">
-									<input id="quantity_<?php echo $prod->id; ?>" type="number" name="qty" min="1" class="input-small" value="1" size="2" placeholder="<?php echo JText::_('DSQUANTITY'); ?>">
+								<div>
+									<!-- <input id="quantity_<?php echo $prod->id; ?>" type="number" name="qty" min="1" class="input-small" value="1" size="2" placeholder="<?php echo JText::_('DSQUANTITY'); ?>"> -->
 									<?php if($conf->get('afteradditem',2) == "2") {	?>
 									<button type="button" class="btn btn-warning" onclick="javascript:createPopUp(<?php echo $prod->id; ?>, <?php echo JRequest::getVar("cid", "0"); ?>, '<?php echo JURI::root(); ?>', '', '', <?php echo $cart_itemid; ?>, '<?php echo JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$cart_itemid); ?>');"><i class="icon-cart"></i> <?php echo JText::_("DSADDTOCART");?></button>
 									<?php }else { ?>

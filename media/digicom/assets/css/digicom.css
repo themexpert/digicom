@@ -3948,11 +3948,8 @@ div.modal.fade.in {
 }
 #digicom .digi-categories .products-list .thumbnail .bundle-label {
   position: absolute;
-  right: 0;
-  top: 0;
-  background: #24aeed;
-  color: #fff;
-  padding: 0 7px;
+  right: 5px;
+  top: 5px;
 }
 #digicom .digi-categories .products-list .thumbnail .caption {
   padding: 20px;

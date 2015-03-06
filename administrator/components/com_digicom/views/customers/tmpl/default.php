@@ -60,7 +60,7 @@ $n = count ($this->custs);
 							<?php echo JText::_('VIEWCUSTOMERUSER');?>
 						</th>
 						<th>
-							<?php echo JText::_('COM_DIGICOM_TOTAL_ORDER');?>
+							<?php echo JText::_('COM_DIGICOM_CUSTOMER_TOTAL_ORDER');?>
 						</th>
 					</tr>
 				</thead>

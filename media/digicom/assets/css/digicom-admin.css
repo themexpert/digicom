@@ -123,6 +123,7 @@ body.com_digicom {
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
   /* Button classes */
+  /* Table Styling */
   /* Table Styles */
   /* Form elements Styling */
 }
@@ -148,6 +149,9 @@ body.com_digicom .btn-warning {
 body.com_digicom .btn-danger {
   background: #d32f2f;
   border-color: #888;
+}
+body.com_digicom .table {
+  table-layout: fixed;
 }
 body.com_digicom header.header {
   display: none;
@@ -782,14 +786,6 @@ body.layout-neworder .add-product .btn-group {
   height: 250px !important;
 }
 /* Responsive Styling */
-@media (min-width: 1200px) {
-  body.com_digicom .row-fluid [class*="span"] {
-    margin-left: 2.5641025641026%;
-  }
-  body.com_digicom .row-fluid [class*="span"]:first-child {
-    margin-left: 0;
-  }
-}
 @media (min-width: 1300px) {
   body.com_digicom.task-edit #j-sidebar-container,
   body.com_digicom.task-add #j-sidebar-container {
@@ -811,5 +807,25 @@ body.layout-neworder .add-product .btn-group {
   body.com_digicom.task-edit div#system-message-container,
   body.com_digicom.task-add div#system-message-container {
     margin-left: 215px;
+  }
+}
+@media (min-width: 1200px) {
+  body.com_digicom .row-fluid [class*="span"] {
+    margin-left: 2.5641025641026%;
+  }
+  body.com_digicom .row-fluid [class*="span"]:first-child {
+    margin-left: 0;
+  }
+}
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+  body.com_digicom {
+    /* Table Styling */
+  }
+  body.com_digicom .table th,
+  body.com_digicom .table td {
+    white-space: normal;
+    word-wrap: break-word;
+    overflow: hidden;
   }
 }

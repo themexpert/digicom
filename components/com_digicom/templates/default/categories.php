@@ -61,9 +61,9 @@ $bsGrid = array(
 						<?php if($item->featured): ?>
 	                  	<span class="featured">Featured</span>
 						<?php endif; ?>
-						
+
 	                  	<?php if(!empty($item->bundle_source)):?>
-						<span class="bundle-label"><?php echo JText::sprintf('COM_DIGICOM_CATEGORY_PRODUCT_TYPE_BUNDLE');?></span>
+						<span class="bundle-label label label-warning"><?php echo JText::sprintf('COM_DIGICOM_CATEGORY_PRODUCT_TYPE_BUNDLE');?></span>
 						<?php endif; ?>	                  	
 					  
 					  	<!-- Product Name & Intro text -->

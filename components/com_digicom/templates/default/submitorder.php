@@ -19,11 +19,12 @@ $data = $this->data;
 if ($pg_plugin == 'paypal'){ ?>
 <div class="digicom">
 	<div class="container-fluid center">
-		<div class="logo">
+
+		<!-- <div class="logo">
 			<a href="<?php echo JURI::root() ;?>">
 				<img src="<?php echo JURI::root() . trim($configs->get('store_logo',''));?>" alt="store_logo" border="0">
 			</a>
-		</div>
+		</div> -->
 		<h3><?php echo JText::_("DSPAYMENT_WITH_PAYPAL") ;?></h3>
 		<div class="progress progress-striped active" style="width: 50%; margin: 20px auto 40px auto;">
 			<div  id="progressBar" class="bar" style="border-radius: 3px; margin: 0; width: 100%;"></div>

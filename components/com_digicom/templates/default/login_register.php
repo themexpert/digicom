@@ -30,9 +30,9 @@ $Itemid = JRequest::getInt("Itemid", 0);
 </script>
 
 <div class="digicom">
-<a href="<?php echo JURI::root();?>">
+<!-- <a href="<?php echo JURI::root();?>">
 	<img src="<?php echo Jroute::_($this->configs->get('store_logo')); ?>" alt="store_logo" border="0">
-</a>
+</a> -->
 
 <?php
 	if($this->configs->get('show_steps',1) == 1){
@@ -73,8 +73,17 @@ if(count(JFactory::getApplication()->getMessageQueue())):
 endif;
 ?>
 
-<input type="radio" name="log_option" value="0" onclick="javascript:ChangeLogOption(this.value);" checked="checked" />&nbsp;&nbsp;<span class="digi_subtitle"><?php echo JText::_("DIGI_LOGIN_BELOW"); ?></span><br/>
-<div id="log_form" style="display:<?php echo $display1; ?>;">
+
+<div class="accordion" id="accordion2">
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+        <?php echo JText::_("DIGI_LOGIN_BELOW"); ?>
+      </a>
+    </div>
+    <div id="collapseOne" class="accordion-body collapse in">
+      <div class="accordion-inner">
+        <div id="log_form">
 	<form name="login" id="login" method="post" action="index.php">
 		<table width="100%" style="border-collapse:separate !important;">
 			<tr>
@@ -108,9 +117,19 @@ endif;
 		<input type="hidden" name="returnpage" value="<?php echo JRequest::getVar("returnpage", ""); ?>" />
 	</form>
 </div>
+      </div>
+    </div>
+  </div>
 
-<input type="radio" name="log_option" value="1" onclick="javascript:ChangeLogOption(this.value);" <?php echo $checked; ?> />&nbsp;&nbsp;<span class="digi_subtitle"><?php echo JText::_("DIGI_REGISTER_BELOW"); ?></span><br/>
-<div id="reg_form" style="display:<?php echo $display; ?>;">
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+        <?php echo JText::_("DIGI_REGISTER_BELOW"); ?>
+      </a>
+    </div>
+    <div id="collapseTwo" class="accordion-body collapse">
+      <div class="accordion-inner">
+        <div id="reg_form">
 	<form name="adminForm" id="adminForm" method="post" action="index.php" onsubmit="return validateForm();" >
 		<table style="border-collapse:separate !important;">
 	<?php
@@ -133,6 +152,10 @@ endif;
 			</tr>
 		</table>
 	</form>
+</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 </div>

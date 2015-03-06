@@ -99,6 +99,9 @@ class DigiComViewProfile extends DigiComView {
 		$this->assign("customer", $customer);
 		$this->assign("configs", $configs);
 
+		$template = new DigiComTemplateHelper($this);
+		$template->rander('login_register');
+
 		parent::display($tpl);
 	}
 
