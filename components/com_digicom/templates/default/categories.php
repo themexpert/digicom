@@ -16,7 +16,8 @@ if($this->configs->get('afteradditem',0) == "2"){
 	JFactory::getDocument()->addScript(JURI::base()."media/digicom/assets/js/createpopup.js");
 }
 $cart_itemid = DigiComHelper::getCartItemid();
-
+$conf = $this->configs;
+$prod = $this->prod;
 $bsGrid = array(
 		1 => 'span12',
 		2 => 'span6',
@@ -56,8 +57,10 @@ $bsGrid = array(
 	                  	<?php if(!empty($item->images)): ?>
 					  	<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=products&cid='.$item->catid.'&pid='.$item->id);?>" class="image"><img alt="Product Image" src="<?php echo $item->images; ?>"></a>
 	                  	<?php endif; ?>
-	                  	<!-- Product price -->
-					  	<p class="price"><span class="label"><?php echo DigiComHelper::format_price2($item->price, $this->configs->get('currency','USD'), true, $this->configs); ?></span></p>
+	                  	<span class="featured">Featured</span>
+	                  	<?php if(!empty($item->bundle_source)):?>
+						<span class="bundle-label"><?php echo JText::sprintf('COM_DIGICOM_CATEGORY_PRODUCT_TYPE_BUNDLE');?></span>
+						<?php endif; ?>	                  	
 					  
 					  	<!-- Product Name & Intro text -->
 					  	<div class="caption">
@@ -82,8 +85,10 @@ $bsGrid = array(
 							</form> -->
 
 							<!-- Readmore Button -->
-		                    <p>
-		                    	<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=products&cid='.$item->catid.'&pid='.$item->id);?>" class="btn btn-primary"><?php echo JText::_('COM_DIGICOM_PRODUCT_DETAILS'); ?></a>
+		                    <p class="clearfix" style="margin: 0;">
+			                    <!-- Product price -->
+						  		<span class="price"><?php echo DigiComHelper::format_price2($item->price, $this->configs->get('currency','USD'), true, $this->configs); ?></span>
+		                    	<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=products&cid='.$item->catid.'&pid='.$item->id);?>" class="btn btn-primary read-more"><?php echo JText::_('COM_DIGICOM_PRODUCT_DETAILS'); ?></a>
 		                    </p> 
 	                  	</div>
 	                </div>

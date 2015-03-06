@@ -3934,16 +3934,18 @@ div.modal.fade.in {
   -o-transition: all 0.3s linear;
   transition: all 0.3s linear;
 }
-#digicom .digi-categories .products-list .thumbnail .price {
+#digicom .digi-categories .products-list .thumbnail span.featured {
   position: absolute;
   top: 0;
-  right: 0;
+  left: 0;
 }
-#digicom .digi-categories .products-list .thumbnail .price .label {
-  border-radius: 0;
-  padding: 4px 8px;
-  font-size: 14px;
-  line-height: 20px;
+#digicom .digi-categories .products-list .thumbnail .bundle-label {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: #24aeed;
+  color: #fff;
+  padding: 0 7px;
 }
 #digicom .digi-categories .products-list .thumbnail .caption {
   padding: 20px;
@@ -3957,12 +3959,26 @@ div.modal.fade.in {
 #digicom .digi-categories .products-list .thumbnail .caption h3 a:hover {
   text-decoration: none;
 }
+#digicom .digi-categories .products-list .thumbnail .price {
+  font-size: 17px;
+  font-style: italic;
+  line-height: 30px;
+  color: #24aeed;
+  display: inline-block;
+}
+#digicom .digi-categories .products-list .thumbnail .read-more {
+  float: right;
+}
 #digicom .digi-categories .products-list .thumbnail:hover .image img {
   opacity: 0.7;
 }
 #digicom .digi-products .product-title {
   font-size: 32px;
   line-height: 1.4;
+}
+#digicom .digi-products .product-title .label {
+  float: right;
+  margin: 5px;
 }
 #digicom .digi-products .short-desc {
   font-size: 1.2em;

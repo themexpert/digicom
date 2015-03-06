@@ -14,20 +14,26 @@ jimport ('joomla.application.component.controller');
 
 class DigiComAdminController extends DigiComController {
 
-	function __construct() {
-		parent::__construct();
-		$ajax_req = JRequest::getVar("no_html", 0, "request");
-		$ajax_tmpl = JRequest::getVar("tmpl", 0, "request");
+	/**
+	 * Method to display a view.
+	 *
+	 * @param   boolean  $cachable   If true, the view output will be cached
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 *
+	 * @return  JController  This object to support chaining.
+	 *
+	 * @since   1.5
+	 */
+	public function display($cachable = false, $urlparams = false)
+	{
+		require_once(JPATH_SITE.DS."administrator".DS."components".DS."com_digicom".DS."helpers".DS."chart.php");
 
-		$this->createDigiComMenu();
+		$view   = $this->input->get('view', 'DigiComAdmin');
+
+		parent::display();
+
+		return $this;
 	}
-
-	function debugStop($msg = '') {
-		global $mainframe;
-		echo $msg;
-		$mainframe->close();
-	}
-
 	/**
 	 * @TODO: get this function works on Joomla 3
 	 */

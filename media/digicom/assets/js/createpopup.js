@@ -136,7 +136,7 @@ function createPopUp(pid, cid, site, renew, renewlicid, itemid, to_cart)
 	popup.id = "digicart_popup";
 	popup.className = "modal";
 	popup.style.left = "50%";
-	popup.style.top = "50%";
+	//popup.style.top = "50%";
 	popup.style.position = "fixed";
 	popup.style.zIndex = "1000";
 

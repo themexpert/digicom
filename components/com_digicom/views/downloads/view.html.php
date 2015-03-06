@@ -23,7 +23,10 @@ class DigiComViewDownloads extends DigiComView {
 		//dsdebug($products);
 		
 		$this->assign("products", $products);
-		
+
+		$template = new DigiComTemplateHelper($this);
+		$template->rander('downloads');
+
 		parent::display($tpl);
 	}
 

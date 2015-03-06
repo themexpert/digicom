@@ -1,4 +1,5 @@
 /.git/*
+/.gitignore
 /.htaccess
 /.idea/*
 /administrator/cache/*
@@ -16,6 +17,7 @@
 /administrator/modules/*
 /administrator/templates/*
 /administrator/index.php
+/backup/*
 /bin/*
 /cache/*
 /cli/*

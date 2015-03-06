@@ -65,16 +65,21 @@ if($this->configs->get('afteradditem',0) == "2"){
 						<img src="<?php echo $prod->images; ?>" class="img-responsive img-rounded"/>
 						<?php endif; ?>
 
-						<h1 class="product-title"><?php echo $prod->name; ?></h1>
-						<?php if(!empty($prod->bundle_source)):?>
-						<p class="alert alert-success"><?php echo JText::sprintf('COM_DIGICOM_PRODUCT_TYPE_BUNDLE_TYPE_'.strtoupper($prod->bundle_source),$prod->bundle_source);?></p>			
-						<?php endif; ?>
+						<h1 class="product-title">
+						<?php echo $prod->name; ?>
+
+							<span class="label label-important">Featured</span>
+							<?php if(!empty($prod->bundle_source)):?>
+							<span class="label"><?php echo JText::sprintf('COM_DIGICOM_PRODUCT_TYPE_BUNDLE');?></span>
+							<?php endif; ?>
+						</h1>
+						
 						<div class="short-desc"><?php echo $prod->description; ?></div>
 						<div class="description"><?php echo $prod->fulldescription; ?></div>
 						
 						<?php if(!empty($prod->bundle_source)):?>
 						<div class="bundled-products">
-							<h3><?php echo JText::_('COM_DIGICOM_BUNDLE_ITEMS');?></h3>
+							<h3><?php echo JText::_('COM_DIGICOM_PRODUCT_BUNDLE_ITEMS');?></h3>
 							<ul>
 								<?php foreach($prod->bundleitems as $key=>$bitem): ?>
 									<li>

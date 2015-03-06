@@ -13,11 +13,77 @@ defined ('_JEXEC') or die ("Go away.");
 // error_reporting( E_ALL );
 // error_reporting(E_ALL);
 
-class DigiComDiagram {
+class DigiComChart {
 
 	public static function test(){
 		return 'working';
 	}
+
+	public static function getMonthLabelDay(){
+		$days = '';
+		$prefix = '';
+		$currentDayOfMonth=date('j');
+		for($i=1;$i<=$currentDayOfMonth;$i++){
+			$days = $days . $prefix . $i;
+			$prefix = ', ';
+		}
+		return $days;
+	}
+	
+	function addOrdinalNumberSuffix($num) {
+		if (!in_array(($num % 100),array(11,12,13))){
+			switch ($num % 10) {
+				// Handle 1st, 2nd, 3rd
+				case 1:  return $num.'st';
+				case 2:  return $num.'nd';
+				case 3:  return $num.'rd';
+			}
+		}
+		return $num.'th';
+	}
+
+	public static function getMonthLabelPrice($monthlyDay){
+		$date = new DateTime('now');
+		$date->modify('first day of this month');
+		$startdate = $date->format('Y-m-d') . ' 00:00:00';
+
+		$date->modify('first day of next month');
+		$enddate = $date->format('Y-m-d') . ' 00:00:00';
+
+		$days = explode(', ', $monthlyDay);
+		$price = '';
+		$prefix = '';
+		foreach($days as $day){
+			$dayPrice = ceil(DigiComChart::getAmountDaily($day));
+			$price = $price . $prefix . $dayPrice;
+			$prefix = ', ';
+		}
+		
+		return $price;
+	}
+
+	public static function getAmountDaily($day){
+		$db = JFactory::getDBO();
+		$config = JComponentHelper::getComponent('com_digicom')->params;
+
+		$startdate = date("Y-m-".$day." 00:00:00");
+		$start_date_int = strtotime($startdate);
+		$enddate = date('Y-m-d 00:00:0', strtotime($startdate . ' + 1 day'));
+		$end_date_int = strtotime($enddate);
+
+		$and = "";
+		$and .= " and `order_date` >= '".$start_date_int."'";
+		$and .= " and `order_date` < '".$end_date_int . "'";
+
+		$sql = "SELECT SUM(`amount_paid`) as total from #__digicom_orders where 1=1 ".$and;
+		//$sql = "SELECT SUM(CASE WHEN `amount_paid` = '1' THEN `amount` ELSE `amount_paid` END) as total from #__digicom_orders where 1=1 ".$and;
+		$db->setQuery($sql);
+		$db->query();
+		$price = $db->loadResult();
+		$result = DigiComAdminHelper::format_price($price, $config->get('currency','USD'), true, $config);
+		return $result;
+	}
+	
 
 	public static function getSumScale($report, $max_value){
 		$scale = array();
@@ -112,7 +178,7 @@ class DigiComDiagram {
 		}
 		return $edit_line;
 	}
-
+	
 	public static function getAmount($report, $startdate, $enddate, $poz){
 		$db = JFactory::getDBO();
 		$start_date_int = "";

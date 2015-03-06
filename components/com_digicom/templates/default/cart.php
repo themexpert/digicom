@@ -311,9 +311,9 @@ $items = $this->items;
 				<?php
 					$user = JFactory::getUser();
 					if($user->id != "0"){ ?>
-						<div class="span12" style="text-align:right;vertical-align:bottom;">
+						<!--<div class="span12" style="text-align:right;vertical-align:bottom;">
 							<?php echo JText::_("DIGI_LOGGED_IN_AS")." ".$user->name; ?>
-						</div>
+						</div>-->
 					<?php }
 				} else{ ?>
 					<div class="span6">

@@ -11,45 +11,6 @@
 defined ('_JEXEC') or die ("Go away.");
 
 class TableProduct extends JTable {
-	var $id = null;
-	var $name = null;
-	var $images = null;
-	var $price = null;
-	var $discount = null;
-	var $ordering = null;
-	var $file = null;
-	var $description = null;
-	var $publish_up = null;
-	var $publish_down = null;
-	var $checked_out = null;
-	var $checked_out_time = null;
-	var $published = null;
-	var $passphrase = null;
-	var $main_zip_file = null;
-	var $encoding_files = null;
-	var $domainrequired = null;
-	var $articlelink = null;
-	var $articlelinkid = null;
-	var $articlelinkuse = null;
-	var $shippingtype = null;
-	var $shippingvalue0 = null;
-	var $shippingvalue1 = null;
-	var $shippingvalue2 = null;
-	var $productemailsubject = null;
-	var $productemail = null;
-	var $sendmail = null;
-	var $popupwidth = null;
-	var $popupheight = null;
-	var $stock = null;
-	var $used = null;
-	var $usestock = null;
-	var $emptystockact = null;
-	var $showstockleft = null;
-	var $fulldescription = null;
-	var $metatitle = null;
-	var $metakeywords = null;
-	var $metadescription = null;
-	var $subtitle = null;
 
 	function TableProduct (&$db) {
 		parent::__construct('#__digicom_products', 'id', $db);

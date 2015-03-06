@@ -56,6 +56,11 @@
 
 }
 
+
+// Color Variables 
+@color-primary: #24AEED;
+
+
 #digicom {
 
 	.input-append input, .input-append select, .input-append .uneditable-input, 
@@ -89,20 +94,19 @@
 					width: 100%;
 					.transition(all 0.3s linear);
 				}
-
-				.price {
+				span.featured {
 					position: absolute;
 					top: 0;
-					right: 0;
-
-					.label {
-						border-radius: 0;
-						padding: 4px 8px;
-						font-size: 14px;
-						line-height: 20px;
-					}
+					left: 0;
 				}
-
+				.bundle-label {
+					position: absolute;
+					right: 0;
+					top: 0;
+					background: @color-primary;
+					color: #fff;
+					padding: 0 7px;
+				}
 				.caption {
 					padding: 20px;
 					h3 {
@@ -113,6 +117,15 @@
 						a:hover {text-decoration: none;}
 					}
 				}
+				
+				.price {
+					font-size: 17px;
+					font-style: italic;
+					line-height: 30px;
+					color: @color-primary;
+					display: inline-block;
+				}
+				.read-more {float: right;}
 
 				&:hover {
 					.image img {
@@ -126,7 +139,12 @@
 
 	/* Product Page Styling */
 	.digi-products {
-		.product-title {font-size: 32px;line-height: 1.4;}
+		.product-title {
+			font-size: 32px;
+			line-height: 1.4;
+
+			.label {float: right;margin: 5px;}
+		}
 		.short-desc {
 			font-size: 1.2em;
 			font-style: italic;
@@ -170,6 +188,6 @@
 }
 
 /* Submit Order Page Styling */
-	body.task-submitOrder .akeeba-bootstrap {
-		.form-horizontal .control-label {padding-top: 0;}
-	}
+body.task-submitOrder .akeeba-bootstrap {
+	.form-horizontal .control-label {padding-top: 0;}
+}

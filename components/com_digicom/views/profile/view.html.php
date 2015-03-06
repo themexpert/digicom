@@ -25,6 +25,10 @@ class DigiComViewProfile extends DigiComView {
 		*/
 		$customers = $this->get('listCustomers');
 		$this->assignRef('custs', $customers);
+
+		$template = new DigiComTemplateHelper($this);
+		$template->rander('profile');
+		
 		parent::display($tpl);
 
 	}
