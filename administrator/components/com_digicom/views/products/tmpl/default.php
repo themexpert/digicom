@@ -129,16 +129,16 @@ JFactory::getDocument()->addScriptDeclaration('
 				<thead>
 
 					<tr>
-						<th width="1%" class="nowrap center hidden-phone">
+						<th class="nowrap center hidden-phone">
 							<?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
 						</th>
-						<th width="1%">
+						<th>
 							<span><?php echo JHtml::_('grid.checkall'); ?></span>
 						</th>
-						<th width="1%">
+						<th>
 							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_STATUS', 'published', $listDirn, $listOrder); ?>
 						</th>
-						<th width="1%">
+						<th>
 							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_IMG', 'id', $listDirn, $listOrder); ?>
 						</th>
 						<th>
@@ -147,16 +147,16 @@ JFactory::getDocument()->addScriptDeclaration('
 						<th>
 							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_TYPE', 'product_type', $listDirn, $listOrder); ?>
 						</th>
-						<th width="10%">
+						<th>
 							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_PRICE', 'hide_public', $listDirn, $listOrder); ?>
 						</th>
-						<th width="10%">
+						<th>
 							<?php echo JHtml::_('grid.sort', 'PRODUCT_IS_VISIBLE', 'hide_public', $listDirn, $listOrder); ?>
 						</th>
 						<th>
 							<?php echo JText::_('VIEWPRODCATEGORY'); ?>
 						</th>
-						<th width="1%">
+						<th>
 							<?php echo JHtml::_('grid.sort', 'VIEWPRODID', 'id', $listDirn, $listOrder); ?>
 						</th>
 					</tr>

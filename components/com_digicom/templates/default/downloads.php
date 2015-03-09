@@ -21,7 +21,8 @@ if($product_itemid != "0"){
 	$andProdItem = "&Itemid=".$product_itemid;
 }
 ?>
-<div class="digicom">
+<div id="digicom">
+	 
 	<div class="navbar">
 		<div class="navbar-inner hidden-phone">
 			<ul class="nav hidden-phone">
@@ -52,49 +53,48 @@ if($product_itemid != "0"){
 			</li>
 		</ul>
 	</div>
-	
-</div>
-<div class="accordion" id="digicom_products_download">
-	<?php foreach($this->products as $key=>$item): ?>
-	<div class="accordion-group">
-		<div class="accordion-heading">
-			<a class="accordion-toggle" data-toggle="collapse" data-parent="#digicom_products_download" href="#product<?php echo $item->productid; ?>">
-				<?php echo $item->name; ?>
-				<span class="pull-right"><i class="icon-download"></i></span>
-			</a>
-		</div>
-		<div id="product<?php echo $item->productid; ?>" class="accordion-body<?php echo ($key==0 ? ' in' : ''); ?> collapse">
-			<div class="accordion-inner">
-				<?php //dsdebug($item->files); ?>
-				<table class="table table-bordered">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th><?php echo JText::_('COM_DIGICOM_FILE_NAME'); ?></th>
-							<th><?php echo JText::_('COM_DIGICOM_FILE_SIZE'); ?></th>
-							<th><?php echo JText::_('COM_DIGICOM_FILE_UPDATES'); ?></th>
-							<th><?php echo JText::_('COM_DIGICOM_FILE_HITS'); ?></th>
-							<th><?php echo JText::_('COM_DIGICOM_FILE_DOWNLOAD_ACTION'); ?></th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php foreach($item->files as $key2=>$file):?>
+		
+	<div class="accordion" id="digicom_products_download">
+		<?php foreach($this->products as $key=>$item): ?>
+		<div class="accordion-group">
+			<div class="accordion-heading">
+				<a class="accordion-toggle" data-toggle="collapse" data-parent="#digicom_products_download" href="#product<?php echo $item->productid; ?>">
+					<?php echo $item->name; ?>
+					<span class="pull-right"><i class="icon-download"></i></span>
+				</a>
+			</div>
+			<div id="product<?php echo $item->productid; ?>" class="accordion-body<?php echo ($key==0 ? ' in' : ''); ?> collapse">
+				<div class="accordion-inner">
+					<?php //dsdebug($item->files); ?>
+					<table class="table table-bordered">
+						<thead>
 							<tr>
-								<td><?php echo $key2; ?></td>
-								<td><?php echo $file->name; ?></td>
-								<td><?php echo $file->filesize; ?></td>
-								<td><?php echo $file->filemtime; ?></td>
-								<td><?php echo $file->hits; ?></td>
-								<td>
-									<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=downloads&task=makeDownload&downloadid='.$file->downloadid.'&Itemid='.$Itemid);?>" class="btn btn-download btn-mini"><?php echo JText::_('COM_DIGICOM_FILE_DOWNLOAD'); ?></a>
-								</td>
+								<th><?php echo JText::_('COM_DIGICOM_FILE_NAME'); ?></th>
+								<th><?php echo JText::_('COM_DIGICOM_FILE_SIZE'); ?></th>
+								<th><?php echo JText::_('COM_DIGICOM_FILE_UPDATES'); ?></th>
+								<th><?php echo JText::_('COM_DIGICOM_FILE_HITS'); ?></th>
+								<th><?php echo JText::_('COM_DIGICOM_FILE_DOWNLOAD_ACTION'); ?></th>
 							</tr>
-						<?php endforeach; ?>
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							<?php foreach($item->files as $key2=>$file):?>
+								<tr>
+									<td><?php echo $file->name; ?></td>
+									<td><?php echo $file->filesize; ?></td>
+									<td><?php echo $file->filemtime; ?></td>
+									<td><?php echo $file->hits; ?></td>
+									<td>
+										<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=downloads&task=makeDownload&downloadid='.$file->downloadid.'&Itemid='.$Itemid);?>" class="btn btn-download btn-mini"><?php echo JText::_('COM_DIGICOM_FILE_DOWNLOAD'); ?></a>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
+		<?php endforeach; ?>
 	</div>
-	<?php endforeach; ?>
+	<?php echo DigiComHelper::powered_by(); ?>
+
 </div>
-<?php echo DigiComHelper::powered_by(); ?>

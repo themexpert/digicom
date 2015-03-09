@@ -123,7 +123,6 @@ body.com_digicom {
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
   /* Button classes */
-  /* Table Styling */
   /* Table Styles */
   /* Form elements Styling */
 }
@@ -149,9 +148,6 @@ body.com_digicom .btn-warning {
 body.com_digicom .btn-danger {
   background: #d32f2f;
   border-color: #888;
-}
-body.com_digicom .table {
-  table-layout: fixed;
 }
 body.com_digicom header.header {
   display: none;
@@ -821,6 +817,9 @@ body.layout-neworder .add-product .btn-group {
 @media (min-width: 768px) and (max-width: 979px) {
   body.com_digicom {
     /* Table Styling */
+  }
+  body.com_digicom .table {
+    table-layout: fixed;
   }
   body.com_digicom .table th,
   body.com_digicom .table td {

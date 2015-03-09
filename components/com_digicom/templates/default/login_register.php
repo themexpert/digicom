@@ -29,7 +29,7 @@ $Itemid = JRequest::getInt("Itemid", 0);
 	}
 </script>
 
-<div class="digicom">
+<div id="digicom">
 <!-- <a href="<?php echo JURI::root();?>">
 	<img src="<?php echo Jroute::_($this->configs->get('store_logo')); ?>" alt="store_logo" border="0">
 </a> -->

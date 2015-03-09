@@ -50,6 +50,11 @@ $bsGrid = array(
 				  foreach($this->prods as $key=>$item): 
 				 	if(! ($i % $this->configs->get('category_cols')) )  echo '</ul></div><div class="row-fluid"><ul class="thumbnails">';
 				  	// echo ( $i == $this->configs->get('category_cols') ) ? '<div class="clearfix"></div>' : '';
+				 if($item->price > 0){
+					 $price = DigiComHelper::format_price2($item->price, $this->configs->get('currency','USD'), true, $this->configs);
+				  }else{
+				  	$price = '<span class="label label-success">'.JText::_('COM_DIGICOM_FREE_PRODUCT_PRICE').'</span>';
+				  }
 				  ?>
 				  <li class="<?php echo $bsGrid[$this->configs->get('category_cols')]?>">
 	                <div class="thumbnail">
@@ -88,10 +93,10 @@ $bsGrid = array(
 								<?php } ?>
 							</form> -->
 
-							<!-- Readmore Button -->
+							<!-- Price & Readmore Button -->
 		                    <p class="clearfix" style="margin: 0;">
 			                    <!-- Product price -->
-						  		<span class="price"><?php echo DigiComHelper::format_price2($item->price, $this->configs->get('currency','USD'), true, $this->configs); ?></span>
+						  		<span class="price"><?php echo $price; ?></span>
 		                    	<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=products&cid='.$item->catid.'&pid='.$item->id);?>" class="btn btn-primary read-more"><?php echo JText::_('COM_DIGICOM_PRODUCT_DETAILS'); ?></a>
 		                    </p> 
 	                  	</div>

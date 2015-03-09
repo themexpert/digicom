@@ -23,7 +23,7 @@ if($cart_itemid != ""){
 
 ?>
 
-<div class="digicom">
+<div id="digicom">
 	<div class="navbar">
 		<div class="navbar-inner hidden-phone">
 			<ul class="nav">
