@@ -242,7 +242,7 @@ function submitbutton(pressbutton) {
 			<div class="span4 well">
 				<div class="control-label">
 					<div class="control-label">
-						<label class="editlinktip hasTip" title="<?php echo JText::_('COM_DIGICOM_CART_FOR_ENTIRE_TIP'); ?>" ><?php echo JText::_('COM_DIGICOM_CART_FOR_ENTIRE_LABEL');?>:</label>
+						<label class="editlinktip hasTip" title="<?php echo JText::_('COM_DIGICOM_CART_FOR_ENTIRE_TIP'); ?>" ><?php echo JText::_('COM_DIGICOM_DISCOUNT_EDIT_ENABLE_FOR_ALL_PRODUCT');?>:</label>
 					</div>
 					<div class="controls">
 						<fieldset id="discount_enable_range_option_select" class="radio btn-group">

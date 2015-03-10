@@ -23,7 +23,7 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 	<div id="j-main-container" class="">
 <?php endif;?>
 		<h2>DigiCom Dashboard</h2>
-		<p class="lead">Revulationary Joomla Extension</p>
+		<p class="lead">Revolutionary Joomla Extension</p>
 		<p class="text-right alert alert-info">Report of the Month <span class="label label-info"><?php echo date('F'); ?></span> </p>
 
 		<div class="row-fluid sales-overview">

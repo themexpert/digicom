@@ -3895,6 +3895,7 @@ div.modal.fade.in {
   /* Category List Page Styling */
   /* Product Page Styling */
   /* Cart Page Styling */
+  /* Submit Order Page Styling */
 }
 #digicom .input-append input,
 #digicom .input-append select,
@@ -4044,7 +4045,6 @@ div.modal.fade.in {
 #digicom .digi-cart .continue-shopping .chzn-drop .chzn-results {
   margin-left: 0;
 }
-/* Submit Order Page Styling */
-body.task-submitOrder .akeeba-bootstrap .form-horizontal .control-label {
+#digicom .akeeba-bootstrap .form-horizontal .control-label {
   padding-top: 0;
 }
