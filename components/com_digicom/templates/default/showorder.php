@@ -68,8 +68,10 @@ if ($this->order->id < 1){
 <table id="edd_purchase_receipt" class="table table-striped table-hover table-bordered">
 	<thead>
 		<tr>
+			<th><?php echo JText::_('COM_DIGICOM_PRODUCTS_IMAGE'); ?></th>
 			<th><?php echo JText::_('COM_DIGICOM_PRODUCTS_NAME'); ?></th>
 			<th><?php echo JText::_('COM_DIGICOM_PRODUCTS_TYPE'); ?></th>
+			<th><?php echo JText::_('COM_DIGICOM_PRODUCTS_PRICE'); ?></th>
 		</tr>
 	</thead>
 
@@ -79,8 +81,10 @@ if ($this->order->id < 1){
 			$productlink = JRoute::_("index.php?option=com_digicom&view=products&cid=".$product->catid."&pid=".$product->id);
 		?>
 		<tr>
+			<td><?php echo $product->images; ?></td>
 			<td><strong><a href="<?php echo $productlink; ?>" target="_blank"><?php echo $product->name; ?></a></strong></td>
 			<td><?php echo ucfirst( $product->package_type ); ?></td>
+			<td><?php echo DigiComHelper::format_price($product->price, $configs->get('currency','USD'), true, $configs);?></td>
 		</tr>
 		<?php endforeach; ?>
 	</tbody>

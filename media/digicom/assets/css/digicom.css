@@ -3896,6 +3896,7 @@ div.modal.fade.in {
   /* Product Page Styling */
   /* Cart Page Styling */
   /* Submit Order Page Styling */
+  /* Customer page Styling */
 }
 #digicom .input-append input,
 #digicom .input-append select,
@@ -3965,8 +3966,7 @@ div.modal.fade.in {
   text-decoration: none;
 }
 #digicom .digi-categories .products-list .thumbnail .price {
-  font-size: 17px;
-  font-style: italic;
+  font-weight: bold;
   line-height: 30px;
   color: #24aeed;
   display: inline-block;
@@ -4038,13 +4038,42 @@ div.modal.fade.in {
 #digicom .digi-cart .continue-shopping {
   margin-top: 15px;
 }
-#digicom .digi-cart .continue-shopping .chzn-container {
-  float: left;
-  margin-top: 3px;
-}
 #digicom .digi-cart .continue-shopping .chzn-drop .chzn-results {
   margin-left: 0;
 }
 #digicom .akeeba-bootstrap .form-horizontal .control-label {
   padding-top: 0;
+}
+#digicom .customer-info {
+  padding: 15px;
+  border-left: 1px solid #ccc;
+  background: rgba(0, 0, 0, 0.05);
+}
+#digicom .customer-info h4 {
+  margin-top: 0;
+}
+#digicom .active-products {
+  margin-top: 20px;
+}
+#digicom .active-products h4 {
+  font-size: 20px;
+  line-height: 30px;
+  background: #24aeed;
+  color: #fff;
+  margin: 0;
+  padding: 5px 15px;
+}
+#digicom .active-products ul {
+  list-style: none;
+  margin: 0;
+  border: 1px solid #ddd;
+}
+#digicom .active-products ul li {
+  padding: 10px 15px;
+}
+#digicom .active-products ul li span {
+  float: right;
+}
+#digicom .active-products ul li + li {
+  border-top: 1px solid #ddd;
 }

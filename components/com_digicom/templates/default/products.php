@@ -52,7 +52,7 @@ if($this->configs->get('afteradditem',0) == "2"){
 		$addtocart = '<input type="submit" value="'.(JText::_("DSADDTOCART")).'" class="btn"/> ';
 		?>
 
-		<div id="dslayout-viewproduct">
+		<div>
 
 			<form name="prod" id="product-form" action="<?php echo JRoute::_('index.php?option=com_digicom&view=cart');?>" method="post" style="width:100%;">
 
@@ -60,9 +60,15 @@ if($this->configs->get('afteradditem',0) == "2"){
 					
 					<!-- Details & Cart -->
 					<div class="span12">
-					
+						<?php 
+							if($prod->price > 0){
+								 $price = '<span>'.JText::_('COM_DIGICOM_PRODUCT_PRICE').": ".DigiComHelper::format_price2($prod->price, $conf->get('currency','USD'), true, $conf).'</span>';
+							  }else{
+							  	$price = '<span>'.JText::_('COM_DIGICOM_FREE_PRODUCT_PRICE').'</span>';
+							  }
+						?>
 						<?php if(!empty($prod->images)): ?>
-						<img src="<?php echo $prod->images; ?>" class="img-responsive img-rounded"/>
+						<img src="<?php echo $prod->images; ?>" class="img-responsive"/>
 						<?php endif; ?>
 
 						<h1 class="product-title">
@@ -94,8 +100,7 @@ if($this->configs->get('afteradditem',0) == "2"){
 						<?php if ($this->configs->get('catalogue',0) == '0') : ?>
 						<div class="price-addtocart clearfix">	
 							<div class="product-price">
-								<?php echo JText::_('DSPRICE'); ?>:
-								<span><?php echo DigiComHelper::format_price2($prod->price, $conf->get('currency','USD'), true, $conf); ?></span>
+								<?php echo $price; ?>
 							</div>						
 							
 							<div class="addtocart-bar">

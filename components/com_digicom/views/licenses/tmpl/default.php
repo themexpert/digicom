@@ -238,7 +238,7 @@ function ds_update_license(id)
 </script>
 	
 
-<div class="digicom">
+<div id="digicom">
 
 
 	<div class="navbar">

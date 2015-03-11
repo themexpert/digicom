@@ -512,7 +512,7 @@ $items = $this->items;
 				<tr valign="top">
 					<td colspan="<?php echo $nr_columns - 1; ?>" >
 						<div class="input-append">
-							<input type="text" id="promocode" name="promocode" size="15" value="<?php echo $this->promocode; ?>" />
+							<input type="text" id="promocode" class="input-small" name="promocode" size="15" value="<?php echo $this->promocode; ?>" />
 							<button type="submit" class="btn" onclick="document.getElementById('returnpage').value=''; document.getElementById('type_button').value='recalculate';"><i class="ico-gift"></i> <?php echo JText::_("DIGI_RECALCULATE"); ?></button>
 						</div>
 						<span class="digi_error">
@@ -527,7 +527,7 @@ $items = $this->items;
 					</td>
 					<td nowrap="nowrap" style="text-align: center;">
 						<ul style="margin: 0; padding: 0;list-style-type: none;">
-							<li class="digi_cart_amount" id="cart_total" style="color:green;font-weight: bold;font-size: 18px;text-align:right;"><?php echo DigiComHelper::format_price2($tax['taxed'], $tax['currency'], true, $configs); ?></li>
+							<li class="digi_cart_amount" id="cart_total" style="font-weight: bold;font-size: 18px;text-align:right;"><?php echo DigiComHelper::format_price2($tax['taxed'], $tax['currency'], true, $configs); ?></li>
 						</ul>
 					</td>
 				</tr>
@@ -554,7 +554,7 @@ $items = $this->items;
 			<?php 
 			if($configs->get('showccont',0) == 1){ ?>
 				<div id="digicomcartcontinue" class="row-fluid continue-shopping">
-					<div class="span5">
+					<div class="span8">
 						<?php
 						echo JText::_("DIGI_PAYMENT_METHOD").": ".$this->lists['plugins'];
 						$onclick = "document.getElementById('returnpage').value='checkout'; document.getElementById('type_button').value='checkout';";
@@ -563,14 +563,15 @@ $items = $this->items;
 						} ?>
 						<input type="submit" name="Submit" class="btn btn-warning" value="<?php echo JText::_("DSCHECKOUTE");?>" onClick="<?php echo $onclick; ?>">
 					</div>
-					<div class="span7" <?php if ($discount!=1) echo 'style="display:none"'?>>&nbsp;</div>
+					<div class="span4" <?php if ($discount!=1) echo 'style="display:none"'?>>&nbsp;</div>
 				</div>
 			<?php } else { ?>
 				<div id="digicomcartcontinue" class="row-fluid continue-shopping">
-					<div class="span5" style="margin-bottom:10px;">
+					<div class="span8" style="margin-bottom:10px;">
 						<button type="button" class="btn" onclick="window.location='<?php echo DigiComHelper::DisplayContinueUrl($configs, $cat_url); ?>';" ><i class="icon-cart"></i> <?php echo JText::_("DSCONTINUESHOPING")?></button>
 					</div>
-					<div class="span7" style="margin-bottom:10px;">
+					<div class="span4" style="margin-bottom:10px;">
+					<h5>Payment method</h5>
 						<?php
 						$button_value = "DSCHECKOUTE";
 						$onclick = "if(jQuery('#processor').val() == ''){ ShowPaymentAlert(); return false; }";
@@ -593,7 +594,7 @@ $items = $this->items;
 
 						<?php echo $this->MostraFormPagamento($configs); ?>
 						<div id="html-container"></div>
-						<button type="button" class="btn btn-warning" style="float:right;margin-left:10px;" onclick="<?php echo $onclick; ?> "><?php echo JText::_($button_value);?> <i class="ico-ok-sign"></i></button>
+						<button type="button" class="btn btn-warning" style="float:right;margin-top:10px;" onclick="<?php echo $onclick; ?> "><?php echo JText::_($button_value);?> <i class="ico-ok-sign"></i></button>
 					</div>
 				</div>
 			<?php } ?>

@@ -123,8 +123,7 @@
 				}
 				
 				.price {
-					font-size: 17px;
-					font-style: italic;
+					font-weight: bold;
 					line-height: 30px;
 					color: @color-primary;
 					display: inline-block;
@@ -203,10 +202,7 @@
 	.digi-cart {
 		.continue-shopping {
 			margin-top: 15px;
-			.chzn-container {
-				float: left;
-				margin-top: 3px;
-			}
+			
 			.chzn-drop .chzn-results {margin-left: 0;}
 		}
 	}
@@ -214,5 +210,35 @@
 	/* Submit Order Page Styling */
 	.akeeba-bootstrap {
 		.form-horizontal .control-label {padding-top: 0;}
+	}
+
+	/* Customer page Styling */
+	.customer-info {
+		padding: 15px;
+	  	border-left: 1px solid #ccc;
+	  	background: rgba(0, 0, 0, 0.05);
+		h4 {margin-top: 0;}
+	}
+	.active-products {
+		margin-top: 20px;
+		h4 {
+			font-size: 20px;
+			line-height: 30px;
+			background: @color-primary;
+			color: #fff;
+			margin: 0;
+			padding: 5px 15px;
+		}
+
+		ul {
+			list-style: none;
+			margin: 0;
+			border: 1px solid #ddd;
+			li {
+				padding: 10px 15px;
+				span {float: right;}
+				&+li {border-top: 1px solid #ddd;}
+			}
+		}
 	}
 }
