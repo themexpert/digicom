@@ -55,7 +55,7 @@ if($cart_itemid != ""){
 		</ul>
 	</div>
 
-<h1><?php echo JText::_("DIGI_MY_STORE_ACCOUNT"); ?></h1>
+<h1 class="digi-page-title"><?php echo JText::_("DIGI_MY_STORE_ACCOUNT"); ?></h1>
 <?php
 
 	if ($n < 1):

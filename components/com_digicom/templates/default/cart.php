@@ -513,7 +513,7 @@ $items = $this->items;
 					<td colspan="<?php echo $nr_columns - 1; ?>" >
 						<div class="input-append">
 							<input type="text" id="promocode" class="input-small" name="promocode" size="15" value="<?php echo $this->promocode; ?>" />
-							<button type="submit" class="btn" onclick="document.getElementById('returnpage').value=''; document.getElementById('type_button').value='recalculate';"><i class="ico-gift"></i> <?php echo JText::_("DIGI_RECALCULATE"); ?></button>
+							<button type="submit" class="btn" onclick="document.getElementById('returnpage').value=''; document.getElementById('type_button').value='recalculate';"><i class="ico-gift"></i> <?php echo JText::_("COM_DIGICOM_CART_PROMOCODE_APPLY"); ?></button>
 						</div>
 						<span class="digi_error">
 							<?php echo $this->promoerror; ?>
@@ -570,8 +570,8 @@ $items = $this->items;
 					<div class="span8" style="margin-bottom:10px;">
 						<button type="button" class="btn" onclick="window.location='<?php echo DigiComHelper::DisplayContinueUrl($configs, $cat_url); ?>';" ><i class="icon-cart"></i> <?php echo JText::_("DSCONTINUESHOPING")?></button>
 					</div>
-					<div class="span4" style="margin-bottom:10px;">
-					<h5>Payment method</h5>
+					<div class="span4" style="margin-top: -34px;margin-bottom: 10px;">
+					<p><strong>Payment method</strong></p>
 						<?php
 						$button_value = "DSCHECKOUTE";
 						$onclick = "if(jQuery('#processor').val() == ''){ ShowPaymentAlert(); return false; }";
@@ -718,11 +718,17 @@ $items = $this->items;
 				<?php echo $terms_content;?>
 			</div>
 			<div class="modal-footer">
+				<button class="action-agree btn btn-success" data-dismiss="modal" aria-hidden="true"><?php echo JText::_("COM_DIGICOM_CHECKOUT_TERMS_AGREE");?></button>
 				<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_("DIGI_CLOSE");?></button>
 			</div>
 		</div>
 		<?php endif;?>
 
+	<script>
+		jQuery('.action-agree').click(function() {
+		    jQuery('input[name="agreeterms"]').attr('checked', 'checked');
+		});
+	</script>
 
 	<script>
 	<?php

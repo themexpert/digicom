@@ -100,17 +100,17 @@ $invisible = 'style="display:none;"';
 		</ul>
 	</div>
 
-<h1><?php echo JText::_("DIGI_MY_ORDERS"); ?></h1>
+	<h1 class="digi-page-title"><?php echo JText::_("DIGI_MY_ORDERS"); ?></h1>
 
-<?php
+	<?php
 
-if ($n < 1):
+	if ($n < 1):
 
-	/*  NO, orders is not foind  */
+		/*  NO, orders is not foind  */
 
-	$continue_url = DigiComHelper::DisplayContinueUrl($configs,$this->caturl);
+		$continue_url = DigiComHelper::DisplayContinueUrl($configs,$this->caturl);
 
-?>
+	?>
 
 		<form action="<?php echo $continue_url;?>" name="adminForm" method="post">
 
@@ -142,22 +142,22 @@ else:
 
 		<form action="index.php" name="adminForm" method="post">
 
-			<div id="digicom_body">
-				<div class="digicom input-append">
-					<input type="text" id="dssearch" name="search" class="digi_textbox"  value="<?php echo trim(JRequest::getVar('search', '')); ?>" size="30"/>
-					<button type="submit" class="btn"><i class="ico-search"></i> <?php echo JText::_("DIGI_SEARCH"); ?></button>
+			<div class="clearfix">
+				<div class="input-append">
+					<input type="text" id="dssearch" name="search" class="digi-textbox"  value="<?php echo trim(JRequest::getVar('search', '')); ?>" size="30"/>
+					<button type="submit" class="btn"><?php echo JText::_("DIGI_SEARCH"); ?></button>
 				</div>
 				<div>
 
 					<table class="table table-bordered table-striped">
 						<thead>
-						<tr>
-							<th><?php echo JText::_("COM_DIGICOM_ORDER_ID"); ?></th>
-							<th><?php echo JText::_("COM_DIGICOM_DATE"); ?></th>
-							<th><?php echo JText::_("COM_DIGICOM_STATUS"); ?></th>
-							<th><?php echo JText::_("COM_DIGICOM_AMOUNT_PAID"); ?></th>
-							<th><?php echo JText::_("COM_DIGICOM_ORDER_ACTION"); ?></th>
-						</tr>
+							<tr>
+								<th><?php echo JText::_("COM_DIGICOM_ORDER_ID"); ?></th>
+								<th><?php echo JText::_("COM_DIGICOM_DATE"); ?></th>
+								<th><?php echo JText::_("COM_DIGICOM_STATUS"); ?></th>
+								<th><?php echo JText::_("COM_DIGICOM_AMOUNT_PAID"); ?></th>
+								<th><?php echo JText::_("COM_DIGICOM_ORDER_ACTION"); ?></th>
+							</tr>
 						</thead>
 						<tbody>
 					<?php
@@ -167,10 +167,10 @@ else:
 								$id = $order->id;
 
 								$order_link = JRoute::_("index.php?option=com_digicom&view=orders&task=details&orderid=".$id."&Itemid=".$Itemid);
-								$order_link = '<a class="btn btn-primary" href="'.$order_link.'">'.JText::_('COM_DIGICOM_ORDER_DETAILS').'</a>';
+								$order_link = '<a class="btn btn-success" href="'.$order_link.'">'.JText::_('COM_DIGICOM_ORDER_DETAILS').'</a>';
 
 								$rec_link = JRoute::_("index.php?option=com_digicom&view=orders&task=showrec&orderid=".$id."&tmpl=component&Itemid=".$Itemid);
-								$rec_link = '<a class="btn" href="'.$rec_link.'" target="_blank">'.JText::_('DSVIEWANDPRINT').'</a>';
+								$rec_link = '<a class="btn btn-info" href="'.$rec_link.'" target="_blank">'.'<i class="icon-printer"></i> '.JText::_('COM_DIGICOM_ORDER_PRINT').'</a>';
 
 								// Price
 								$order_price = DigiComHelper::format_price($order->amount_paid, $order->currency, true, $configs);
@@ -184,7 +184,12 @@ else:
 								<?php echo date($configs->get('time_format','d-M-Y'), $order->order_date);?>
 							</td>
 							<td>
-								<?php echo $order->status; ?>
+							<?php
+								$labelClass = '';
+								if ( strtolower($order->status) === 'active') $labelClass = 'label-success';
+								elseif ( strtolower($order->status) === 'pending') $labelClass = 'label-warning';
+							?>
+								<span class="label <?php echo $labelClass; ?>"><?php echo $order->status; ?></span>
 							</td>
 							<td>
 								<?php echo $order_price; ?>

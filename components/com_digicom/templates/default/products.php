@@ -71,9 +71,8 @@ if($this->configs->get('afteradditem',0) == "2"){
 						<img src="<?php echo $prod->images; ?>" class="img-responsive"/>
 						<?php endif; ?>
 
-						<h1 class="product-title">
+						<h1 class="digi-page-title">
 						<?php echo $prod->name; ?>
-
 							<span class="label label-important">Featured</span>
 							<?php if(!empty($prod->bundle_source)):?>
 							<span class="label"><?php echo JText::sprintf('COM_DIGICOM_PRODUCT_TYPE_BUNDLE');?></span>
@@ -117,11 +116,6 @@ if($this->configs->get('afteradditem',0) == "2"){
 									<?php } ?>
 								</div>								
 							</div>	
-							
-							<!-- <br />
-							<div class="input-append">	
-								
-							</div> -->
 						</div>
 						<?php endif; ?>
 					</div>

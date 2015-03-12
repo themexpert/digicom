@@ -471,7 +471,8 @@ body.layout-dgform #j-main-container .nav-tabs > li > a:focus {
   background: none;
 }
 body.layout-dgform #j-main-container .nav-tabs .active a,
-body.layout-dgform #j-main-container .nav-tabs .active a:hover {
+body.layout-dgform #j-main-container .nav-tabs .active a:hover,
+body.layout-dgform #j-main-container .nav-tabs .active a:focus {
   border-top: 4px solid #24aeed;
   color: #444;
   background: #fff;

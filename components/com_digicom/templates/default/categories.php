@@ -33,7 +33,7 @@ $bsGrid = array(
 		<!-- Category Info -->
 		<div class="category-info media">
 			<!-- Category Name -->
-			<h2 class="page-title"><?php echo $this->category->name; ?></h2>
+			<h1 class="digi-page-title"><?php echo $this->category->name; ?></h1>
 			<div class="pull-left">
 				<img class="img-rounded" src="<?php echo $this->category->image; ?>"/>
 			</div>

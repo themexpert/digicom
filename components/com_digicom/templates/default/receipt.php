@@ -33,182 +33,206 @@ if ($this->order->id < 1):
 ?>
 
 <div id="digicom">
-	<div class="container">
-		<div class="row-fluid">
-			<div class="span12">
-				
-				<form action="index.php" name="adminForm" method="post" style="padding-left: 10px; padding-right:10px; padding-top:100px;">
-
-					<table  class="table table-striped" width="100%"  border="0" cellpadding="3" cellspacing="0" bordercolor="#cccccc" style="border-collapse: collapse">
-						<tr>
-							<td align="left" valign="top">
-								<?php
-									$store_logo = $configs->get('store_logo','');
-									if(trim($store_logo) != ""){
-								?>
-										<img src="<?php echo JRoute::_($store_logo); ?>" alt="store_logo" border="0">
-								<?php
-									}
-								?>
-							</td>
-							<td align="right" valign="top">
-								<input id="print_button" class="btn" type="button" value="<?php echo JText::_("DSPRINT");?>" onclick="document.getElementById('print_button').style.display='none'; javascript:window.print(); return false;" />
-							</td>
-						</tr>
-
-						<tr>
-							<th align="left">
-								<b><?php echo trim($configs->get('store_name','DigiCom Store')) != "" ? $configs->get('store_name','DigiCom Store') : ""; ?></b>
-							</th>
-
-							<th style="font-weight:normal" align="right">
-								<?php echo JText::_("DSMYORDER")." #".$order->id; ?>
-								<br />
-								<?php echo JText::_("DSDATE")." ".date( $configs->get('time_format','d-m-Y'), $order->order_date);?>
-							</th>
-						</tr>
-
-						<tr>
-
-							<td align="left">
-								<?php echo trim($configs->get('store_url','') != "") ? "&nbsp;&nbsp;URL: ".$configs->get('store_url','') : ""; ?><br />
-								<table>
-									<?php
-									if(trim($configs->get('address')) != ""){
-									?>
-									<tr>
-										<td style="border: 0;">
-											<?php echo JText::_('DSADDRESS');?>:</td><td> <?php echo $configs->get('address','');?>
-										</td>
-									</tr>
-									<?php
-									}
-
-									if(trim($configs->get('state','')) != ""){
-									?>
-									<tr>
-										<td style="border: 0;"></td>
-										<td style="border: 0;">
-											<?php if(!empty($configs->city)) : ?>
-											<?php echo $configs->city;?>,&nbsp;
-											<?php endif; ?>
-											<?php echo $configs->get('state','');?>
-										</td>
-									</tr>
-									<?php
-									}
-
-									if(trim($configs->get('country','')) != ""){
-									?>
-									<tr>
-										<td style="border: 0;"></td>
-										<td style="border: 0;">
-											<?php if(!empty($configs->zip)) : ?>
-											<?php echo $configs->zip;?>,&nbsp;
-											<?php endif; ?>
-											<?php echo $configs->get('country','');?>
-										</td>
-									</tr>
-									<?php
-									}
-									?>
-								</table>
-								<?php echo trim($configs->get('phone')) != "" ? JText::_("PHONE").":".$configs->get('phone') : ""; ?><br />
-								<?php echo trim($configs->get('fax')) != "" ? JText::_("FAX").":".$configs->get('fax') : ""; ?><br />
-							</td>
-
-							<td></td>
-						</tr>
-
-	
-
-						<tr>
-							<th align="left">
-								<?php echo JText::_("DSBILLEDTO");?>
-							</th>
-
-							<th align="right">
-
-							</th>
-						</tr>
-						<tr>
-							<td align="left">
-								<?php if(!empty($user->firstname)) : ?>
-								<?php echo $user->firstname?>&nbsp;<?php echo $user->lastname;?> <br />
-								<?php endif; ?>
-								<?php if(!empty($user->address)) : ?>
-									<?php echo $user->address?><br />
-								<?php endif; ?>
-								<?php if(!empty($user->city)) : ?>
-								<?php echo $user->city?>,&nbsp;<?php echo $user->state?> <br />
-								<?php endif; ?>
-								<?php if(!empty($user->zipcode)) : ?>
-								<?php echo $user->zipcode;?>,&nbsp;<?php echo $user->country?> <br />
-								<?php endif; ?>
-							</td>
-
-							<td>
-
-							</td>
-						</tr>
-					</table>
+	<div class="digi-view-order">	
+		<div class="container">
+			<div class="row-fluid">
+				<div class="span12">
 					
-					<table class="adminlist table table-striped">
-						<thead>
+					<form action="index.php" name="adminForm" method="post" style="padding-left: 10px; padding-right:10px; padding-top:100px;">
+						<input id="print_button" class="btn" style="float:right;margin-bottom: 10px;" type="button" value="<?php echo JText::_("DSPRINT");?>" onclick="document.getElementById('print_button').style.display='none'; javascript:window.print(); return false;" />
+						
+						<table  class="table" width="100%"  border="0" cellpadding="3" cellspacing="0" bordercolor="#cccccc" style="border-collapse: collapse">
+							<tr>
+								<td align="left" valign="top">
+									<?php
+										$store_logo = $configs->get('store_logo','');
+										if(trim($store_logo) != ""){
+									?>
+											<img src="<?php echo JRoute::_($store_logo); ?>" alt="store_logo" border="0">
+									<?php
+										}
+									?>
+								</td>
+								<td align="right" valign="top" style="text-align: right;font-size: 13px;">
+									<b><?php echo trim($configs->get('store_name','DigiCom Store')) != "" ? $configs->get('store_name','DigiCom Store') : ""; ?></b>
+									<br />								
+									<?php if(trim($configs->get('address')) != "") {
+										echo $configs->get('address','');
+										} ?>
+									<br />
+									<?php if(!empty($configs->city)) : ?>
+									<?php echo $configs->city;?>,&nbsp;
+									<?php endif; ?>
+									<?php if(trim($configs->get('state','')) != ""){
+										echo $configs->get('state','');
+									} ?>,&nbsp;
+									<?php if(!empty($configs->zip)) : ?>
+									<?php echo $configs->zip;?>,&nbsp;
+									<?php endif; ?>
+									<?php if(trim($configs->get('country','')) != ""){ 
+										echo $configs->get('country','');
+									} ?>
+									<br />																
+									<?php echo trim($configs->get('phone')) != "" ? JText::_("PHONE").":".$configs->get('phone') : ""; ?>
+									<br />
+									<?php echo trim($configs->get('fax')) != "" ? JText::_("FAX").":".$configs->get('fax') : ""; ?>
+									<br />
+									<?php echo trim($configs->get('store_url','') != "") ? "".$configs->get('store_url','') : ""; ?>
+								</td>
+							</tr>
 
 							<tr>
-								<th>#</th>
-								<th class="sectiontableheader"  <?php //if ($configs->showoipurch == 0) echo $invisible;?> >
-									<?php echo JText::_('DSPROD');?>
-								</th>
-								<th class="sectiontableheader"  <?php //if ($configs->showoipurch == 0) echo $invisible;?> >
-									<?php echo JText::_('COM_DIGICOM_PRODUCTS_TYPE'); ?>
-								</th>
+								<td align="left">
+									<?php if(!empty($user->firstname)) : ?>
+									<strong><?php echo $user->firstname?>&nbsp;<?php echo $user->lastname;?></strong><br />
+									<?php endif; ?>
+									<?php if(!empty($user->address)) : ?>
+										<?php echo $user->address?><br />
+									<?php endif; ?>
+									<?php if(!empty($user->city)) : ?>
+									<?php echo $user->city?>,&nbsp;<?php echo $user->state?> <br />
+									<?php endif; ?>
+									<?php if(!empty($user->zipcode)) : ?>
+									<?php echo $user->zipcode;?>,&nbsp;<?php echo $user->country?> <br />
+									<?php endif; ?>
+								</td>
 
-							</tr>
-						</thead>
-
-						<tbody>
-
-						<?php
-							$total = "0";
-
-							for ($i = 0; $i < $n; $i++):
-								$prod = $order->products[$i];
-								$id = $order->id;
-								if (!isset($prod->currency)) $prod->currency = $configs->get('currency','USD');
-						?>
-							<tr class="row<?php echo $k;?> sectiontableentry<?php echo ($i%2 + 1);?>">
 								<td>
-									<?php 
-										echo $i+1; 
-									?>
-								</td>
 
-								<td <?php //if($configs->showoipurch == 0) echo $invisible;?>>
-								 	<?php echo $prod->name;?>
-								</td>
-
-								<td <?php //if($configs->showoipurch == 0) echo $invisible;?>>
-								 	<?php echo ucfirst( $prod->package_type ); ?>
 								</td>
 							</tr>
-						<?php
-								$k = 1 - $k;
-							endfor;
 
-							$colspan=5;
-							$colspan--;
-						?>	
-						</tbody>
+							<tr>
+								<td align="left">
+									<h3 style="text-transform: uppercase;font-size: 30px;"><?php echo JText::_('COM_DIGICOM_ORDER_VIEW_INVOICE');?></h3>
+									<?php echo JText::_("DSMYORDER")." #".$order->id; ?>
+									<br />
+									<?php echo JText::_("DSDATE")." ".date( $configs->get('time_format','d-m-Y'), $order->order_date);?>
+								</td>
+
+								<td style="font-weight:normal" align="right">
+									
+								</td>
+							</tr>
+
+							<!-- <tr>
+							
+								<td align="left">
+									
+									<table>
+										
+										<tr>
+											<td style="border: 0;">
+												<?php echo JText::_('DSADDRESS');?>:</td><td> <?php ?>
+											</td>
+										</tr>
+										
+										<tr>
+											<td style="border: 0;"></td>
+											<td style="border: 0;">
+												
+												<?php ?>
+											</td>
+										</tr>
+										<?php
+										
+							
+										
+										?>
+										<tr>
+											<td style="border: 0;"></td>
+											<td style="border: 0;">
+												
+											</td>
+										</tr>
+										<?php
+									
+										?>
+									</table>
+									
+								</td>
+							
+								<td></td>
+							</tr> -->
+
+		
+
+							<!-- <tr>
+								<th align="left">
+									<?php echo JText::_("DSBILLEDTO");?>
+								</th>
+							
+								<th align="right">
+							
+								</th>
+							</tr> -->
+							
 						</table>
+						
+						<table class="table" style="margin-bottom: 40px;">
+							<thead>
+								<tr style="border-bottom: 3px solid #666;">
+									<th>#</th>
+									<th class="sectiontableheader"  <?php //if ($configs->showoipurch == 0) echo $invisible;?> >
+										<?php echo JText::_('DSPROD');?>
+									</th>
+									<th class="sectiontableheader"  <?php //if ($configs->showoipurch == 0) echo $invisible;?> >
+										<?php echo JText::_('COM_DIGICOM_PRODUCTS_TYPE'); ?>
+									</th>
+									<th style="text-align: right;">
+										<?php echo JText::_('COM_DIGICOM_ORDER_VIEW_PRODUCT_PRICE');?>
+									</th>
+								</tr>
 
-						<table class="table table-striped">
+							</thead>
+
 							<tbody>
 
-								<tr>
+							<?php
+								$total = "0";
+
+								for ($i = 0; $i < $n; $i++):
+									$prod = $order->products[$i];
+									$id = $order->id;
+									if (!isset($prod->currency)) $prod->currency = $configs->get('currency','USD');
+							?>
+								<tr class="row<?php echo $k;?> sectiontableentry<?php echo ($i%2 + 1);?>">
+									<td>
+										<?php 
+											echo $i+1; 
+										?>
+									</td>
+
+									<td <?php //if($configs->showoipurch == 0) echo $invisible;?>>
+									 	<?php echo $prod->name;?>
+									</td>
+
+									<td <?php //if($configs->showoipurch == 0) echo $invisible;?>>
+									 	<?php echo ucfirst( $prod->package_type ); ?>
+									</td>
+
+									<td style="text-align: right;">
+										<?php echo $prod->price;?>
+									</td>
+								</tr>
+							<?php
+									$k = 1 - $k;
+								endfor;
+
+								$colspan=5;
+								$colspan--;
+							?>	
+							</tbody>
+						</table>
+
+						<hr>
+
+						<table class="table">
+							<tbody>
+
+								<tr style="">
 									<td style="font-weight:bold;text-align: right;" width="70%"><?php echo JText::_("DSSUBTOTAL");?></td>
-									<td style="text-align: right;"><span style="white-space:nowrap;"><?php echo DigiComHelper::format_price($order->amount, $prod->currency, true, $configs);?></span></td>
+									<td style="text-align: right;"><span style="white-space:nowrap;font-weight: bold;"><?php echo DigiComHelper::format_price($order->amount, $prod->currency, true, $configs);?></span></td>
 								</tr>
 
 								<?php
@@ -217,7 +241,7 @@ if ($this->order->id < 1):
 								?>
 								<tr>
 									<td style="font-weight:bold;text-align: right;" width="70%"><?php echo JText::_("DSPROMO");?></td>
-									<td style="text-align: right;"><span style="white-space:nowrap;"><?php echo DigiComHelper::format_price($order->promocodediscount, $prod->currency, true, $configs);?></span></td>
+									<td style="text-align: right;"><span style="white-space:nowrap;font-weight: bold;"><?php echo DigiComHelper::format_price($order->promocodediscount, $prod->currency, true, $configs);?></span></td>
 								</tr>
 								<?php
 									}
@@ -230,27 +254,56 @@ if ($this->order->id < 1):
 											$total = $order->amount_paid;
 										}
 									?>
-									<td style="text-align: right;"><span style="white-space:nowrap;"><?php echo DigiComHelper::format_price($total, $prod->currency, true, $configs);?></span></td>
+									<td style="text-align: right;"><span style="white-space:nowrap;font-weight: bold;font-size: 18px;"><?php echo DigiComHelper::format_price($total, $prod->currency, true, $configs);?></span></td>
 								</tr>
 
 							</tbody>
 						</table>
 
+						<table class="table">
+							<tr>
+								<td>
+									<strong><?php echo JText::_(COM_DIGICOM_ORDER_VIEW_PAY_ACCOUNT); ?></strong>
+									<br />
+									Account Info
+								</td>
 
-					<input type="hidden" name="option" value="com_digicom" />
-					<input type="hidden" name="task" value="" />
-					<input type="hidden" name="boxchecked" value="0" />
-					<input type="hidden" name="controller" value="Orders" />
-				</form>
-				<?php
+								<td>
+									
+								</td>
+							</tr>
+						</table>
 
-				endif;
+						<table class="table">
+							<tr>
+								<td>
+									<?php echo JText::_(COM_DIGICOM_ORDER_VIEW_THANKS_GIVING); ?>,
+									<br />
+									Themexpert Team
+								</td>
 
-				echo DigiComHelper::powered_by(); ?>
+								<td>
+									
+								</td>
+							</tr>
+						</table>
 
 
-			</div><!-- End of span12 -->
-			
-		</div><!-- End of row-fluid -->
-	</div><!-- End of container -->
+						<input type="hidden" name="option" value="com_digicom" />
+						<input type="hidden" name="task" value="" />
+						<input type="hidden" name="boxchecked" value="0" />
+						<input type="hidden" name="controller" value="Orders" />
+					</form>
+					<?php
+
+					endif;
+
+					echo DigiComHelper::powered_by(); ?>
+
+
+				</div><!-- End of span12 -->
+				
+			</div><!-- End of row-fluid -->
+		</div><!-- End of container -->
+	</div> <!-- End of Digi OrderView -->
 </div><!-- End of Digicom -->

@@ -421,9 +421,9 @@ class DigiComHelper {
 	}
 
 	public static function powered_by() {
-		$html = '<div style="margin: 0 auto; width: 250px; text-align: center;" class="small">';
+		$html = '<div style="text-align: center;" class="small">';
 		$html .= '<span>Powered by ';
-		$html .= '<a target="_blank" title="Sale Digital Product with Joomla" href="http://www.themexpert.com/digicom">';
+		$html .= '<a target="_blank" title="Sale Digital Products with Joomla" href="http://www.themexpert.com/digicom">';
 		$html .= 'DigiCom</a></span>';
 		$html .= '</div>';
 
