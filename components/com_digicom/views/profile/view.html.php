@@ -164,6 +164,10 @@ class DigiComViewProfile extends DigiComView {
 		$this->assign("lists", $lists);
 
 		$this->assign("configs", $configs);
+
+		$template = new DigiComTemplateHelper($this);
+		$template->rander('profile-editform');
+
 		parent::display($tpl);
 
 	}

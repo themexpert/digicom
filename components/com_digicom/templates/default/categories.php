@@ -31,13 +31,13 @@ $bsGrid = array(
 	<div class="digi-categories">
 		
 		<!-- Category Info -->
-		<div class="category-info media">
+		<div class="category-info">
 			<!-- Category Name -->
 			<h1 class="digi-page-title"><?php echo $this->category->name; ?></h1>
 			<div class="pull-left">
 				<img class="img-rounded" src="<?php echo $this->category->image; ?>"/>
 			</div>
-			<div class="media-body">
+			<div class="category-desc">
 				<?php echo $this->category->description; ?>
 			</div>
 		</div>
@@ -94,11 +94,10 @@ $bsGrid = array(
 							</form> -->
 
 							<!-- Price & Readmore Button -->
-		                    <p class="clearfix" style="margin: 0;">
-			                    <!-- Product price -->
+		                    <div class="clearfix">
 						  		<span class="price"><?php echo $price; ?></span>
 		                    	<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=products&cid='.$item->catid.'&pid='.$item->id);?>" class="btn btn-primary read-more"><?php echo JText::_('COM_DIGICOM_PRODUCT_DETAILS'); ?></a>
-		                    </p> 
+		                    </div> 
 	                  	</div>
 	                </div>
 	              </li>

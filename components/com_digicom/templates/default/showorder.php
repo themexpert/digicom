@@ -70,7 +70,7 @@ if ($this->order->id < 1){
 		</tbody>
 	</table>
 
-	<h3><?php echo JText::_('COM_DIGICOM_PRODUCTS'); ?></h3>
+	<h3 class="digi-section-title"><?php echo JText::_('COM_DIGICOM_PRODUCTS'); ?></h3>
 	<table class="table table-striped table-hover table-bordered">
 		<thead>
 			<tr>

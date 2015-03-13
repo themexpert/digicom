@@ -425,7 +425,7 @@ $items = $this->items;
 						<!-- /End Discount -->
 
 						<!-- Total -->
-						<td nowrap style="text-align:center;">
+						<td nowrap>
 							<span id="cart_item_total<?php echo $item->cid; ?>" class="digi_cart_amount"><?php
 								echo DigiComHelper::format_price2($item->subtotal-$value_discount, $item->currency, true, $configs); ?>
 							</span>
@@ -535,7 +535,7 @@ $items = $this->items;
 			</table>
 
 			<?php if($configs->get('askterms',0) == '1'):?>
-				<div class="row-fluid">
+				<div class="accept-terms">
 					<input type="checkbox" name="agreeterms" id="agreeterms" style="margin-top: 0;"/><?php
 					$db = JFactory::getDBO();
 					$sql = "select `alias`, `catid`, `introtext`
@@ -698,7 +698,7 @@ $items = $this->items;
 		<div id="myModal" class="modal" style="display:none;">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h3 id="myModalLabel">...</h3>
+				<h3 id="myModalLabel" style="line-height: 1;">...</h3>
 			</div>
 			<div id="myModalBody" class="modal-body">
 
@@ -712,7 +712,7 @@ $items = $this->items;
 		<div id="myModalTerms" class="modal" style="display:none;">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h3><?php echo JText::_("DIGI_TERMS");?></h3>
+				<h3 style="line-height: 1;"><?php echo JText::_("DIGI_TERMS");?></h3>
 			</div>
 			<div class="modal-body">
 				<?php echo $terms_content;?>

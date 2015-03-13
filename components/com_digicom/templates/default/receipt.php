@@ -260,35 +260,6 @@ if ($this->order->id < 1):
 							</tbody>
 						</table>
 
-						<table class="table">
-							<tr>
-								<td>
-									<strong><?php echo JText::_(COM_DIGICOM_ORDER_VIEW_PAY_ACCOUNT); ?></strong>
-									<br />
-									Account Info
-								</td>
-
-								<td>
-									
-								</td>
-							</tr>
-						</table>
-
-						<table class="table">
-							<tr>
-								<td>
-									<?php echo JText::_(COM_DIGICOM_ORDER_VIEW_THANKS_GIVING); ?>,
-									<br />
-									Themexpert Team
-								</td>
-
-								<td>
-									
-								</td>
-							</tr>
-						</table>
-
-
 						<input type="hidden" name="option" value="com_digicom" />
 						<input type="hidden" name="task" value="" />
 						<input type="hidden" name="boxchecked" value="0" />

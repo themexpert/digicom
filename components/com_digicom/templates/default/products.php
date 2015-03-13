@@ -52,82 +52,81 @@ if($this->configs->get('afteradditem',0) == "2"){
 		$addtocart = '<input type="submit" value="'.(JText::_("DSADDTOCART")).'" class="btn"/> ';
 		?>
 
-		<div>
+		<form name="prod" id="product-form" action="<?php echo JRoute::_('index.php?option=com_digicom&view=cart');?>" method="post" style="width:100%;">
 
-			<form name="prod" id="product-form" action="<?php echo JRoute::_('index.php?option=com_digicom&view=cart');?>" method="post" style="width:100%;">
+			<div class="row-fluid">
+				
+				<!-- Details & Cart -->
+				<div class="span12">
+					<?php 
+						if($prod->price > 0){
+							 $price = '<span>'.JText::_('COM_DIGICOM_PRODUCT_PRICE').": ".DigiComHelper::format_price2($prod->price, $conf->get('currency','USD'), true, $conf).'</span>';
+						  }else{
+						  	$price = '<span>'.JText::_('COM_DIGICOM_FREE_PRODUCT_PRICE').'</span>';
+						  }
+					?>
+					<?php if(!empty($prod->images)): ?>
+					<img src="<?php echo $prod->images; ?>" class="img-responsive"/>
+					<?php endif; ?>
 
-				<div class="row-fluid">
-					
-					<!-- Details & Cart -->
-					<div class="span12">
-						<?php 
-							if($prod->price > 0){
-								 $price = '<span>'.JText::_('COM_DIGICOM_PRODUCT_PRICE').": ".DigiComHelper::format_price2($prod->price, $conf->get('currency','USD'), true, $conf).'</span>';
-							  }else{
-							  	$price = '<span>'.JText::_('COM_DIGICOM_FREE_PRODUCT_PRICE').'</span>';
-							  }
-						?>
-						<?php if(!empty($prod->images)): ?>
-						<img src="<?php echo $prod->images; ?>" class="img-responsive"/>
-						<?php endif; ?>
-
-						<h1 class="digi-page-title">
-						<?php echo $prod->name; ?>
-							<span class="label label-important">Featured</span>
-							<?php if(!empty($prod->bundle_source)):?>
-							<span class="label"><?php echo JText::sprintf('COM_DIGICOM_PRODUCT_TYPE_BUNDLE');?></span>
-							<?php endif; ?>
-						</h1>
-						
-						<div class="short-desc"><?php echo $prod->description; ?></div>
-						<div class="description"><?php echo $prod->fulldescription; ?></div>
-						
+					<h1 class="digi-page-title">
+					<?php echo $prod->name; ?>
+						<span class="label label-important">Featured</span>
 						<?php if(!empty($prod->bundle_source)):?>
-						<div class="bundled-products">
-							<h3><?php echo JText::_('COM_DIGICOM_PRODUCT_BUNDLE_ITEMS');?></h3>
-							<ul>
-								<?php foreach($prod->bundleitems as $key=>$bitem): ?>
-									<li>
-										<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=products&pid='.$bitem->id.'&cid='.$bitem->catid); ?>"><?php echo $bitem->name; ?></a>
-										<span class="label"><?php echo DigiComHelper::format_price2($bitem->price, $conf->get('currency','USD'), true, $conf); ?></span>
-									</li>
-								<?php endforeach; ?>
-							</ul>	
+						<span class="label"><?php echo JText::sprintf('COM_DIGICOM_PRODUCT_TYPE_BUNDLE');?></span>
+						<?php endif; ?>
+					</h1>
+					
+					<p class="short-desc"><?php echo $prod->description; ?></p>
+					<div class="description"><?php echo $prod->fulldescription; ?></div>
+					
+					<?php if(!empty($prod->bundle_source)):?>
+					<div class="bundled-products">
+						<h3><?php echo JText::_('COM_DIGICOM_PRODUCT_BUNDLE_ITEMS');?></h3>
+						<ul>
+							<?php foreach($prod->bundleitems as $key=>$bitem): ?>
+								<li>
+									<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=products&pid='.$bitem->id.'&cid='.$bitem->catid); ?>"><?php echo $bitem->name; ?></a>
+									<span class="label"><?php echo DigiComHelper::format_price2($bitem->price, $conf->get('currency','USD'), true, $conf); ?></span>
+								</li>
+							<?php endforeach; ?>
+						</ul>	
+					</div>						
+						
+					<?php endif; ?>
+					<?php if ($this->configs->get('catalogue',0) == '0') : ?>
+					<div class="well clearfix">	
+						<div class="product-price">
+							<?php echo $price; ?>
 						</div>						
+						
+						<div class="addtocart-bar">
 							
-						<?php endif; ?>
-						<?php if ($this->configs->get('catalogue',0) == '0') : ?>
-						<div class="price-addtocart clearfix">	
-							<div class="product-price">
-								<?php echo $price; ?>
-							</div>						
-							
-							<div class="addtocart-bar">
-								<!-- <label for="quantity23" class="quantity_box">
-									<?php echo JText::_('DSQUANTITY'); ?>:&nbsp;									
-								</label> -->
+							<?php if($conf->get('afteradditem',2) == "2") {	?>
+							<button type="button" class="btn btn-warning" onclick="javascript:createPopUp(<?php echo $prod->id; ?>, <?php echo JRequest::getVar("cid", "0"); ?>, '<?php echo JURI::root(); ?>', '', '', <?php echo $cart_itemid; ?>, '<?php echo JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$cart_itemid); ?>');"><i class="icon-cart"></i> <?php echo JText::_("DSADDTOCART");?></button>
+							<?php }else { ?>
+							<button type="submit" class="btn btn-warning"><i class="icon-cart"></i> <?php echo JText::_('DSADDTOCART'); ?></button>
+							<?php } ?>
 
-								<div>
-									<!-- <input id="quantity_<?php echo $prod->id; ?>" type="number" name="qty" min="1" class="input-small" value="1" size="2" placeholder="<?php echo JText::_('DSQUANTITY'); ?>"> -->
-									<?php if($conf->get('afteradditem',2) == "2") {	?>
-									<button type="button" class="btn btn-warning" onclick="javascript:createPopUp(<?php echo $prod->id; ?>, <?php echo JRequest::getVar("cid", "0"); ?>, '<?php echo JURI::root(); ?>', '', '', <?php echo $cart_itemid; ?>, '<?php echo JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$cart_itemid); ?>');"><i class="icon-cart"></i> <?php echo JText::_("DSADDTOCART");?></button>
-									<?php }else { ?>
-									<button type="submit" class="btn btn-warning"><i class="icon-cart"></i> <?php echo JText::_('DSADDTOCART'); ?></button>
-									<?php } ?>
-								</div>								
-							</div>	
-						</div>
-						<?php endif; ?>
+							<!-- <div>
+															<input id="quantity_<?php echo $prod->id; ?>" type="number" name="qty" min="1" class="input-small" value="1" size="2" placeholder="<?php echo JText::_('DSQUANTITY'); ?>">
+															<label for="quantity23" class="quantity_box">
+																<?php echo JText::_('DSQUANTITY'); ?>:&nbsp;									
+															</label>
+														</div>	 -->							
+						</div>	
 					</div>
+					<?php endif; ?>
 				</div>
-				<input type="hidden" name="option" value="com_digicom"/>
-				<input type="hidden" name="view" value="cart"/>
-				<input type="hidden" name="task" value="add"/>
-				<input type="hidden" name="pid" value="<?php echo $prod->id; ?>"/>
-				<input type="hidden" name="cid" value="<?php echo JFactory::getApplication()->input->get('cid',0);?>"/>
-				<input type="hidden" name="Itemid" value="<?php $itemid; ?>"/>
-			</form>
-		</div>
+			</div>
+			<input type="hidden" name="option" value="com_digicom"/>
+			<input type="hidden" name="view" value="cart"/>
+			<input type="hidden" name="task" value="add"/>
+			<input type="hidden" name="pid" value="<?php echo $prod->id; ?>"/>
+			<input type="hidden" name="cid" value="<?php echo JFactory::getApplication()->input->get('cid',0);?>"/>
+			<input type="hidden" name="Itemid" value="<?php $itemid; ?>"/>
+		</form>
+		
 
 		<?php echo DigiComHelper::powered_by(); ?>
 	</div>

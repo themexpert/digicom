@@ -54,11 +54,11 @@ if($product_itemid != "0"){
 		</ul>
 	</div>
 		
-	<div class="accordion" id="digicom_products_download">
+	<div class="accordion" id="">
 		<?php foreach($this->products as $key=>$item): ?>
 		<div class="accordion-group">
 			<div class="accordion-heading">
-				<a class="accordion-toggle" data-toggle="collapse" data-parent="#digicom_products_download" href="#product<?php echo $item->productid; ?>">
+				<a class="accordion-toggle" data-toggle="collapse" data-parent="" href="#product<?php echo $item->productid; ?>">
 					<?php echo $item->name; ?>
 					<span class="pull-right"><i class="icon-download"></i></span>
 				</a>
@@ -78,15 +78,15 @@ if($product_itemid != "0"){
 						</thead>
 						<tbody>
 							<?php foreach($item->files as $key2=>$file):?>
-								<tr>
-									<td><?php echo $file->name; ?></td>
-									<td><?php echo $file->filesize; ?></td>
-									<td><?php echo $file->filemtime; ?></td>
-									<td><?php echo $file->hits; ?></td>
-									<td>
-										<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=downloads&task=makeDownload&downloadid='.$file->downloadid.'&Itemid='.$Itemid);?>" class="btn btn-warning btn-mini"><?php echo JText::_('COM_DIGICOM_FILE_DOWNLOAD'); ?></a>
-									</td>
-								</tr>
+							<tr>
+								<td><?php echo $file->name; ?></td>
+								<td><?php echo $file->filesize; ?></td>
+								<td><?php echo $file->filemtime; ?></td>
+								<td><?php echo $file->hits; ?></td>
+								<td>
+									<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=downloads&task=makeDownload&downloadid='.$file->downloadid.'&Itemid='.$Itemid);?>" class="btn btn-warning btn-mini"><?php echo JText::_('COM_DIGICOM_FILE_DOWNLOAD'); ?></a>
+								</td>
+							</tr>
 							<?php endforeach; ?>
 						</tbody>
 					</table>
