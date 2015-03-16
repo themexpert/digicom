@@ -10,32 +10,9 @@
 
 defined ('_JEXEC') or die ("Go away.");
 
-jimport ('joomla.application.component.controller');
+class DigiComControllerFileManager extends JControllerAdmin {
 
-class DigiComAdminControllerFileManager extends DigiComAdminController {
 
-	var $_model = null;
-
-	function __construct(){
-		parent::__construct();
-		require_once( JPATH_COMPONENT.DS.'helpers'.DS.'helper.php' );
-		$this->registerTask ("", "FileManager");
-	}
-
-	function FileManager(){
-		$view = $this->getView("FileManager", "html");
-		$view->display();
-	}
-
-	function vimeo(){
-   		JRequest::setVar( 'view', 'FileManager' );
-		JRequest::setVar( 'layout', 'vimeo'  );
-		$view = $this->getView("FileManager", "html");
-		$view->setLayout("vimeo");
-		$view->vimeo();
-		die();
-	}
-	
 	function connector()
 	{
         $mainframe = JFactory::getApplication();
@@ -66,6 +43,7 @@ class DigiComAdminControllerFileManager extends DigiComAdminController {
 		include_once JPATH_COMPONENT_ADMINISTRATOR.DS.'libs'.DS.'elfinder'.DS.'elFinder.class.php';
 		include_once JPATH_COMPONENT_ADMINISTRATOR.DS.'libs'.DS.'elfinder'.DS.'elFinderVolumeDriver.class.php';
 		include_once JPATH_COMPONENT_ADMINISTRATOR.DS.'libs'.DS.'elfinder'.DS.'elFinderVolumeLocalFileSystem.class.php';
+		
 		function access($attr, $path, $data, $volume)
 		{
 			$mainframe = JFactory::getApplication();
@@ -85,17 +63,17 @@ class DigiComAdminControllerFileManager extends DigiComAdminController {
 			switch($attr)
 			{
 				case 'read' :
-				return true;
-				break;
+					return true;
+					break;
 				case 'write' :
-				return ($mainframe->isSite()) ? false : true;
-				break;
+					return ($mainframe->isSite()) ? false : true;
+					break;
 				case 'locked' :
-				return ($mainframe->isSite()) ? true : false;
-				break;
+					return ($mainframe->isSite()) ? true : false;
+					break;
 				case 'hidden' :
-				return false;
-				break;
+					return false;
+					break;
 			}
 			
 		}
@@ -116,20 +94,18 @@ class DigiComAdminControllerFileManager extends DigiComAdminController {
 		}
         
 		$options = array(
-		'debug' => false,
-		'roots' => array( array(
-		'driver' => 'LocalFileSystem',
-		'path' => $path,
-		'URL' => $url,
-		'accessControl' => 'access',
-		'defaults' => $permissions
-		))
+			'debug' => false,
+			'roots' => array( array(
+				'driver' => 'LocalFileSystem',
+				'path' => $path,
+				'URL' => $url,
+				'accessControl' => 'access',
+				'defaults' => $permissions
+			))
 		);
         
 		$connector = new elFinderConnector(new elFinder($options));
 		$connector->run();
         
 	}
-};
-
-?>
+}

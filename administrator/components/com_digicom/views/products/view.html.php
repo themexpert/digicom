@@ -10,7 +10,7 @@
 
 defined ('_JEXEC') or die ("Go away.");
 
-class DigiComAdminViewProducts extends DigiComView
+class DigiComViewProducts extends JViewLegacy
 {
 	protected $items;
 
@@ -18,11 +18,14 @@ class DigiComAdminViewProducts extends DigiComView
 
 	protected $state;
 
+	protected $configs;
+
 	function display( $tpl = null )
 	{
-		$layout = JRequest::getVar('layout','');
-		if($layout){
-			$this->setLayout($layout);
+		
+		if ($this->getLayout() !== 'modal')
+		{
+			DigiComHelperDigiCom::addSubmenu('products');
 		}
 		
 		// Access check.
@@ -30,158 +33,95 @@ class DigiComAdminViewProducts extends DigiComView
 		{
 			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
-		
-		$configs = $this->_models['config']->getConfigs();
-		$this->assign( "configs", $configs );
 
-		$session = JFactory::getSession();
-		$session->set('dsproducategory', 0, 'digicom');
+		$this->items         = $this->get('Items');
+		$this->pagination    = $this->get('Pagination');
+		$this->state         = $this->get('State');
+		$this->authors       = $this->get('Authors');
+		$this->filterForm    = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
+		$this->configs 		 = $this->get('configs');
 
-
-		$this->state      = $this->get('State');
-
-		$this->prods = $this->get('Items');
-
-		$this->pagination = $this->get('Pagination');
-
-		$cats = $this->_models['category']->getlistCategories();
-		$prc = $this->state->get('filter.category_id');
-
-		$cselector = DigiComAdminHelper::getCatListProd2( new stdClass, $cats, 1, $prc );
-		$this->assign("csel", $cselector);
-		$this->assign("prc", $prc);
-		
-		//set toolber
-		$this->addToolbar();
-		
-		DigiComAdminHelper::addSubmenu('products');
-		$this->sidebar = DigiComAdminHelper::renderSidebar();
-		
-		parent::display( $tpl );
-	}
-
-
-	function select( $tpl = null )
-	{
-		// Access check.
-		if (!JFactory::getUser()->authorise('digicom.products', 'com_digicom'))
+		// Check for errors.
+		if (count($errors = $this->get('Errors')))
 		{
-			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+			JError::raiseError(500, implode("\n", $errors));
+
+			return false;
+		}
+
+		// Levels filter.
+		$options	= array();
+		$options[]	= JHtml::_('select.option', '1', JText::_('J1'));
+		$options[]	= JHtml::_('select.option', '2', JText::_('J2'));
+		$options[]	= JHtml::_('select.option', '3', JText::_('J3'));
+		$options[]	= JHtml::_('select.option', '4', JText::_('J4'));
+		$options[]	= JHtml::_('select.option', '5', JText::_('J5'));
+		$options[]	= JHtml::_('select.option', '6', JText::_('J6'));
+		$options[]	= JHtml::_('select.option', '7', JText::_('J7'));
+		$options[]	= JHtml::_('select.option', '8', JText::_('J8'));
+		$options[]	= JHtml::_('select.option', '9', JText::_('J9'));
+		$options[]	= JHtml::_('select.option', '10', JText::_('J10'));
+
+		$this->f_levels = $options;
+
+		// We don't need toolbar in the modal window.
+		if ($this->getLayout() !== 'modal')
+		{
+			//set toolber
+			$this->addToolbar();			
+			$this->sidebar = DigiComHelperDigiCom::renderSidebar();
 		}
 		
-		$configs = $this->_models['config']->getConfigs();
-		$this->assign( "configs", $configs );
-
-		$session = JFactory::getSession();
-		$session->set('dsproducategory', 0, 'digicom');
-
-
-		$this->state      = $this->get('State');
-
-		$this->prods = $this->get('Items');
-
-		$this->pagination = $this->get('Pagination');
-
-		$cats = $this->_models['category']->getlistCategories();
-		$prc = $this->state->get('filter.category_id');
-
-		$cselector = DigiComAdminHelper::getCatListProd2( new stdClass, $cats, 1, $prc );
-		$this->assign("csel", $cselector);
-		$this->assign("prc", $prc);
-		
-		parent::display( $tpl );
-
-	}
-
-	function selectproductinclude($tpl = null){
-		
-		$configs = $this->_models['config']->getConfigs();
-		$this->assign( "configs", $configs );
-
-		$products = $this->get('Items');
-		$this->assignRef( 'prods', $products );
-
-		$pagination = $this->get('Pagination');
-
-		$this->prods = $products;
-		$this->pagination = $pagination;
-
-		$cats = $this->_models['category']->getlistCategories();
-		//print_r($cats);die;
-		$prc = JRequest::getVar( "prc", 0, "request" );
-
-		$cselector = DigiComAdminHelper::getSelectCatListProdInclude( new stdClass, $cats, 1, $prc );
-		$this->assign( "csel", $cselector );
-		$this->assign( "prc", $prc );
-		
-		parent::display( $tpl );
-
-	}
-
-	function addProduct( $tpl = null ) {
-
-		JToolBarHelper::title( JText::_( 'Products Manager: select product type' ), 'generic.png' );
-		JToolBarHelper::cancel();
 		
 		parent::display( $tpl );
 	}
 
-	function editForm( $tpl = null )
-	{
-		$db = JFactory::getDBO();
-		
-		$form = $this->get('Form');
-		$product = $this->get('product');
-		
-		// Bind the form to the data.
-		if ($form && $product)
-		{
-			$form->bind($product);
-		}
-		$cats = $this->get("listCategories");
-		
-		$this->assign( "form", $form );
-		$this->assign( "item", $product );
-		$this->assign( "cats", $cats );
-		
-		$configs = $this->_models['config']->getConfigs();
-		
-		$this->assign( "configs", $configs );
-		
-		//set toolber
-		$this->addToolbarEdit($product);
-		DigiComAdminHelper::addSubmenu('products');
-		$this->sidebar = DigiComAdminHelper::renderSidebar();
 
-		
-		parent::display( $tpl );
-	}
-
-	function productincludeitem( $tpl = null ) {
-		// Rand ID
-		$id_rand = uniqid (rand ());
-		$this->assign( "id_rand", $id_rand );
-
-		$include = array(
-			'id' => $id_rand,
-			'name' => JText::_('Select product'),
-			'plans' => null
-		);
-
-		$this->assign( "newinclude", $include );
-		parent::display( $tpl );
-	}
+	
 
 	/**
 	 * Add the page title and toolbar.
 		*
 	 * @since   1.6
 	 */
+
 	protected function addToolbar()
 	{
-		JToolBarHelper::title( JText::_( 'VIEWDSADMINPRODUCTS' ), 'generic.png' );
-		
+		$canDo = JHelperContent::getActions('com_digicom', 'category', $this->state->get('filter.category_id'));
+		$user  = JFactory::getUser();
+
+		// Get the toolbar object instance
 		$bar = JToolBar::getInstance('toolbar');
+		JToolbarHelper::title(JText::_('VIEWDSADMINPRODUCTS'), 'stack product');
+
+		if ($canDo->get('core.create') || (count($user->getAuthorisedCategories('com_digicom', 'core.create'))) > 0 )
+		{
+			//JToolbarHelper::addNew('product.add');
+			$layout = new JLayoutFile('toolbar.products');
+			$bar->appendButton('Custom', $layout->render(array()), 'products');
+		}
+
+		
+		if ($canDo->get('core.edit.state'))
+		{
+			JToolbarHelper::publish('products.publish', 'JTOOLBAR_PUBLISH', true);
+			JToolbarHelper::unpublish('products.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			//JToolbarHelper::custom('products.featured', 'featured.png', 'featured_f2.png', 'JFEATURE', true);
+			//JToolbarHelper::custom('products.unfeatured', 'unfeatured.png', 'featured_f2.png', 'JUNFEATURE', true);
+			//JToolbarHelper::archiveList('products.archive');
+			//JToolbarHelper::checkin('products.checkin');
+		}
+
+		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete'))
+		{
+			JToolbarHelper::deleteList('', 'products.delete', 'JTOOLBAR_EMPTY_TRASH');
+		}
+		elseif ($canDo->get('core.edit.state'))
+		{
+			JToolbarHelper::trash('products.trash');
+		}
+
 		// Instantiate a new JLayoutFile instance and render the layout
 		$layout = new JLayoutFile('toolbar.title');
 		$title=array(
@@ -189,150 +129,13 @@ class DigiComAdminViewProducts extends DigiComView
 				'class' => 'product'
 			);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
-		
-		$layout = new JLayoutFile('toolbar.products');
-		$bar->appendButton('Custom', $layout->render(array()), 'products');
-		
+
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
-		
-		//JToolBarHelper::addNew();
-		JToolBarHelper::editList();
-		JToolBarHelper::custom('copy', 'copy.png', 'copy.png', 'JLIB_HTML_BATCH_COPY', true, false);
-		JToolBarHelper::divider();
-		JToolBarHelper::publishList();
-		JToolBarHelper::unpublishList();
-		JToolBarHelper::divider();
-		JToolBarHelper::deleteList();
+	
 	}
 	
-	public function addMediaScript(){
 		
-		// Load the modal behavior script.
-		JHtml::_('behavior.modal');
-
-		// Include jQuery
-		JHtml::_('jquery.framework');
-
-		// Build the script.
-		$script = array();
-		$script[] = '	function jInsertFieldValue(value, id) {';
-		$script[] = '		var $ = jQuery.noConflict();';
-		$script[] = '		var old_value = $("#" + id).val();';
-		$script[] = '		if (old_value != value) {';
-		$script[] = '			var $elem = $("#" + id);';
-		$script[] = '			$elem.val(value);';
-		$script[] = '			$elem.trigger("change");';
-		$script[] = '			if (typeof($elem.get(0).onchange) === "function") {';
-		$script[] = '				$elem.get(0).onchange();';
-		$script[] = '			}';
-		$script[] = '			jMediaRefreshPreview(id);';
-		$script[] = '		}';
-		$script[] = '	}';
-
-		$script[] = '	function jMediaRefreshPreview(id) {';
-		$script[] = '		var $ = jQuery.noConflict();';
-		$script[] = '		var value = $("#" + id).val();';
-		$script[] = '		var $img = $("#" + id + "_preview");';
-		$script[] = '		if ($img.length) {';
-		$script[] = '			if (value) {';
-		$script[] = '				$img.attr("src", "' . JUri::root() . '" + value);';
-		$script[] = '				$("#" + id + "_preview_empty").hide();';
-		$script[] = '				$("#" + id + "_preview_img").show()';
-		$script[] = '			} else { ';
-		$script[] = '				$img.attr("src", "")';
-		$script[] = '				$("#" + id + "_preview_empty").show();';
-		$script[] = '				$("#" + id + "_preview_img").hide();';
-		$script[] = '			} ';
-		$script[] = '		} ';
-		$script[] = '	}';
-
-		$script[] = '	function jMediaRefreshPreviewTip(tip)';
-		$script[] = '	{';
-		$script[] = '		var $ = jQuery.noConflict();';
-		$script[] = '		var $tip = $(tip);';
-		$script[] = '		var $img = $tip.find("img.media-preview");';
-		$script[] = '		$tip.find("div.tip").css("max-width", "none");';
-		$script[] = '		var id = $img.attr("id");';
-		$script[] = '		id = id.substring(0, id.length - "_preview".length);';
-		$script[] = '		jMediaRefreshPreview(id);';
-		$script[] = '		$tip.show();';
-		$script[] = '	}';
-
-		// Add the script to the document head.
-		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
-		
-		$options = array(
-			'onShow' => 'jMediaRefreshPreviewTip',
-		);
-		JHtml::_('behavior.tooltip', '.hasTipPreview', $options);
-	}
-	
-	
-	
-	/**
-	 * Add the page title and toolbar for edit
-		*
-	 * @since   1.6
-	 */
-	protected function addToolbarEdit($product)
-	{
-		$isNew = ($product->id < 1);
-		$text = $isNew ? JText::_( 'New' ) : JText::_( 'JACTION_EDIT' ) . ' : ' . $product->name;
-		
-		if (isset($product->product_type) && !empty($product->product_type)) {
-			$product_type = $product->product_type;
-		} else {
-			$product_type = JRequest::getVar('product_type','reguler');
-		}
-
-		
-		switch($product_type){
-			case 1:
-				$title = JText::_('VIEWPRODPRODTYPEDR');
-				break;
-			case 2:
-				$title = JText::_('VIEWPRODPRODTYPESP');
-				break;
-			case 3:
-				$title = JText::_('VIEWPRODPRODTYPEPAK');
-				break;
-			case 4:
-				$title = JText::_('VIEWPRODPRODTYPESERV');
-				break;
-			case 0:
-			default:
-				$title = JText::_('VIEWPRODPRODTYPEDNR');
-			break;
-		}
-		
-		JToolBarHelper::title($title . ' ' . JText::_( 'DSPROD' ) . " : " . $text);
-		// Instantiate a new JLayoutFile instance and render the layout
-		$bar = JToolBar::getInstance('toolbar');
-		$layout = new JLayoutFile('toolbar.title');
-		$title=array(
-			'title' => $text,
-			'class' => 'product'
-		);
-		$bar->appendButton('Custom', $layout->render($title), 'title');
-		
-		$layout = new JLayoutFile('toolbar.settings');
-		$bar->appendButton('Custom', $layout->render(array()), 'settings');
-		
-		JToolBarHelper::save();
-		JToolBarHelper::save2new();
-		
-		if($product->id){
-			JToolBarHelper::save2copy();
-		}
-
-		JToolBarHelper::spacer();
-		JToolBarHelper::apply();
-		JToolBarHelper::divider();
-		JToolBarHelper::cancel( 'cancel', 'JTOOLBAR_CLOSE' );
-
-	}
-	
 	/**
 	 * Returns an array of fields the table can be sorted by
 	 *

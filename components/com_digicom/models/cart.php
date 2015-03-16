@@ -6,18 +6,16 @@
  * @lastmodified	$LastChangedDate: 2014-01-26 08:51:32 +0100 (Sun, 26 Jan 2014) $
  * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
 * @license
-
-
 */
 
 defined ('_JEXEC') or die ("Go away.");
-jimport( "joomla.aplication.component.model" );
-jimport('joomla.filesystem.file');
 
-class DigiComModelCart extends DigiComModel
+class DigiComModelCart extends JModelItem
 {
 	public $orders 		= array();
 	public $packages 	= array();
+	public $configs 	= array();
+	public $customer 	= array();
 	
 	public $_items = null;
 	public $tax = null;
@@ -25,6 +23,9 @@ class DigiComModelCart extends DigiComModel
 	function __construct()
 	{
 		parent::__construct();
+		$this->configs = JComponentHelper::getComponent('com_digicom')->params;
+		$this->customer = new DigiComSiteHelperSession();
+
 	}
 
 	/**
@@ -70,7 +71,8 @@ class DigiComModelCart extends DigiComModel
 		return false;
 	}
 
-	function addToCart($customer){
+	function addToCart(){
+		$customer = $this->customer;
 		$db = JFactory::getDBO();
 		$sid = $customer->_sid; //digicom session id
 		$uid = $customer->_user->id; //joomla user id
@@ -119,8 +121,11 @@ class DigiComModelCart extends DigiComModel
 		return $cid;
 	}
 
-	function getCartItems($customer, $configs)
-	{
+	function getCartItems()
+	{	
+		$customer = $this->customer;
+		$configs = $this->configs;
+
 		if(is_object($customer)){
 			$sid = $customer->_sid;
 		}
@@ -155,11 +160,11 @@ class DigiComModelCart extends DigiComModel
 			$item = &$items[$i];
 			$item->discount = 0;
 			$item->currency = $configs->get('currency','USD');
-			$item->price = DigiComHelper::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
-			$item->subtotal = DigiComHelper::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
+			$item->price = DigiComSiteHelperDigiCom::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
+			$item->subtotal = DigiComSiteHelperDigiCom::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
 
-			$item->price_formated = DigiComHelper::format_price2( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
-			$item->subtotal_formated = DigiComHelper::format_price2( $item->subtotal, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
+			$item->price_formated = DigiComSiteHelperDigiCom::format_price2( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
+			$item->subtotal_formated = DigiComSiteHelperDigiCom::format_price2( $item->subtotal, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
 		
 			$item->subtotal = $item->price * $item->quantity;
 		}
@@ -346,8 +351,8 @@ class DigiComModelCart extends DigiComModel
 		
 		$payprocess['taxed'] = $payprocess['shipping'] + $sum_tax;
 		$payprocess['discount_calculated'] = (isset($payprocess['discount_calculated']) ? $payprocess['discount_calculated'] : 0);
-		$payprocess['shipping'] = DigiComHelper::format_price( $payprocess['shipping'], $payprocess['currency'], false, $configs ); //sprintf($price_format, $payprocess['shipping']);
-		$payprocess['taxed'] = DigiComHelper::format_price( $payprocess['taxed'], $payprocess['currency'], false, $configs ); //sprintf($price_format, $payprocess['taxed']);//." ".$payprocess['currency'];
+		$payprocess['shipping'] = DigiComSiteHelperDigiCom::format_price( $payprocess['shipping'], $payprocess['currency'], false, $configs ); //sprintf($price_format, $payprocess['shipping']);
+		$payprocess['taxed'] = DigiComSiteHelperDigiCom::format_price( $payprocess['taxed'], $payprocess['currency'], false, $configs ); //sprintf($price_format, $payprocess['taxed']);//." ".$payprocess['currency'];
 		$payprocess['type'] = 'TAX';
 
 		$this->_tax = $payprocess;
@@ -448,7 +453,7 @@ class DigiComModelCart extends DigiComModel
 			$db->setQuery( $sql );
 			$promo->orders = $db->loadObjectList();
 		} else {
-			$promo = $this->getTable( "Promo" );
+			$promo = $this->getTable( "Discount" );
 		}
 		$promo->error = "";
 		if ( $promodata[0] == "promoerror" )
@@ -689,7 +694,7 @@ class DigiComModelCart extends DigiComModel
 
 		$order_id = JRequest::getVar('order_id','');
 		$sid = JRequest::getVar('sid',$order_id);
-		$mosConfig_live_site = DigiComHelper::getLiveSite();
+		$mosConfig_live_site = DigiComSiteHelperDigiCom::getLiveSite();
 		$success_url = $mosConfig_live_site . "/index.php?option=com_digicom&controller=" . $controller . "&task=" . $task . "&success=1&sid=" . $sid;
 		$failed_url = $mosConfig_live_site . "/index.php?option=com_digicom&controller=" . $controller . "&task=" . $task . "&success=0&sid=" . $sid;
 		$success_url = str_replace("https://", "http://", $success_url);
@@ -883,7 +888,7 @@ class DigiComModelCart extends DigiComModel
 
 		global $Itemid;
 
-		$mosConfig_live_site = DigiComHelper::getLiveSite(); //$jconf->live_site;
+		$mosConfig_live_site = DigiComSiteHelperDigiCom::getLiveSite(); //$jconf->live_site;
 
 		$conf = $this->getInstance( "config", "digicomModel" );
 		$configs = $conf->getConfigs();
@@ -977,7 +982,7 @@ class DigiComModelCart extends DigiComModel
 
 		global $Itemid;
 
-		$mosConfig_live_site = DigiComHelper::getLiveSite(); //$jconf->live_site;
+		$mosConfig_live_site = DigiComSiteHelperDigiCom::getLiveSite(); //$jconf->live_site;
 
 		$conf = $this->getInstance( "config", "digicomModel" );
 		$configs = $conf->getConfigs();
@@ -1255,7 +1260,7 @@ class DigiComModelCart extends DigiComModel
 	function affiliate( $total, $orderid, $configs )
 	{
 
-		$mosConfig_live_site = DigiComHelper::getLiveSite();
+		$mosConfig_live_site = DigiComSiteHelperDigiCom::getLiveSite();
 
 		$my = JFactory::getUser();
 		if ( $configs->get('idevaff','notapplied') == 'notapplied' )

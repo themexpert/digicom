@@ -277,8 +277,9 @@ else{
 		}
 
 	</script>
-<div id="digicom">
+
 	<div id="debugid"></div>
+
 
 	<?php
 		$formlink = JRoute::_("index.php?option=com_digicom&controller=cart");
@@ -698,5 +699,3 @@ else{
 		}
 	}
 ?>
-
-</div><!-- End of DigiCom -->

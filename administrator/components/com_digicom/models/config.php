@@ -9,7 +9,7 @@
 */
 
 defined ('_JEXEC') or die ("Go away.");
-class DigiComAdminModelConfig extends JModelForm
+class DigiComModelConfig extends JModelForm
 {
 
 	/**
@@ -98,7 +98,7 @@ class DigiComAdminModelConfig extends JModelForm
 		return true;
 	}
 
-	public function getConfigs(){
+	public static function getConfigs(){
 		$comInfo = JComponentHelper::getComponent('com_digicom');
 		return $comInfo->params;
 	}

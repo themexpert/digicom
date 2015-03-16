@@ -15,7 +15,6 @@ $component = $input->getCmd('option', 'com_digicom');
 $saveHistory = JComponentHelper::getParams($component)->get('save_history', 0);
 
 $fields0 = $displayData->get('fields') ?: array(
-	'tags',
 	'sticky',
 	'language',
 	'note'	
@@ -23,6 +22,7 @@ $fields0 = $displayData->get('fields') ?: array(
 
 $fields = $displayData->get('fields') ?: array(
 	array('category', 'catid'),
+	'tags',
 	array('parent', 'parent_id'),
 	array('published', 'state', 'enabled'),
 	'featured',
@@ -34,8 +34,11 @@ $fields = $displayData->get('fields') ?: array(
 );
 $fields2 = $displayData->get('fields') ?: array(
 	'metatitle',
+	'metakey',
 	'metakeywords',
-	'metadescription'
+	'metadesc',
+	'metadescription',
+	'metadata'
 );
 $fields3 = $displayData->get('fields') ?: array(	
 	'hits',

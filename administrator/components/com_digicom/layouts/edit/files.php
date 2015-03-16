@@ -56,9 +56,10 @@ jQuery(function(){
 					<td width="10%"><span class="remove"><i class="icon-remove"></i></span></td>
 				</tr>
 				<?php
-					$files = $displayData;
+					$item = $displayData;
 					
-					if(count($files) >=1 && is_array($files)) :
+					if(isset($item->file) && count($item->file) >=1 && is_array($item->file)) :
+					$files = $item->file;
 					foreach($files as $key => $value){?>
 					<tr class="row">
 						<td width="1%">
@@ -96,7 +97,7 @@ jQuery(function(){
 				<tr class="row">
 					<td width="10%" colspan="4">
 						<span class="add btn btn-mini">Add</span>
-						<input type="hidden" name="files_remove_id" value="" id="jform_files_remove_id"/>
+						<input type="hidden" name="jform[files_remove_id]" value="" id="jform_files_remove_id"/>
 					</td>
 				</tr>
 			</tfoot>

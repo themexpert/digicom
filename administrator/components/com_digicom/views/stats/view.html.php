@@ -10,9 +10,7 @@
 
 defined ('_JEXEC') or die ("Go away.");
 
-jimport ("joomla.application.component.view");
-
-class DigiComAdminViewStats extends DigiComView {
+class DigiComViewStats extends JViewLegacy {
 
 	function display ($tpl =  null )
 	{
@@ -36,37 +34,37 @@ class DigiComAdminViewStats extends DigiComView {
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
 		
-		$configs = $this->_models['config']->getConfigs();
+		$configs = $this->get('Configs');
 		$this->assign("configs", $configs);
 		
-		DigiComAdminHelper::addSubmenu('stats');
-		$this->sidebar = DigiComAdminHelper::renderSidebar();
+		DigiComHelperDigiCom::addSubmenu('stats');
+		$this->sidebar = DigiComHelperDigiCom::renderSidebar();
 		
 		parent::display($tpl);
 	}
 
 	function getTotal($type=''){
-		$total = $this->_models['stat']->getreportTotal($type);
+		$total = $this->getModel()->getreportTotal($type);
 		return $total;
 	}
 
 	function getNrOrders(){
-		$total = $this->_models['stat']->getreportOrders();
+		$total = $this->getModel()->getreportOrders();
 		return $total;
 	}
 
 	function getNrLicenses($type){
-		$total = $this->_models['stat']->getreportLicenses($type);
+		$total = $this->getModel()->getreportLicenses($type);
 		return $total;
 	}
 
 	function getStartEndDate($report){
-		$total = $this->_models['stat']->getStartEndDate($report);
+		$total = $this->getModel()->getStartEndDate($report);
 		return $total;
 	}
 
 	function getPaginationDate($configs){
-		$this->_models['stat']->getPaginationDate($configs);
+		return $this->getModel()->getPaginationDate($configs);
 	}
 	
 	function prepereJoomlaDataFormat($format = '%m-%d-%Y') {

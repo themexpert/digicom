@@ -103,7 +103,7 @@ $invisible = 'style="display:none;"';
 
 ?>
 
-<div id="digicom">
+<div class="digicom">
 
 	<div class="navbar">
 		<div class="navbar-inner hidden-phone">

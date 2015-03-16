@@ -10,76 +10,29 @@
 
 defined ('_JEXEC') or die ("Go away.");
 
-jimport ("joomla.application.component.view");
-jimport('joomla.html.parameter');
-
-class DigiComViewCart extends DigiComView
+class DigiComViewCart extends JViewLegacy
 {
 	function display ($tpl = null)
 	{
-		global $isJ25;
-		$db = JFactory::getDBO();
-		$lists = array();
-		$task = JRequest::getWord('task');
-		$configs = JComponentHelper::getComponent('com_digicom')->params;
 
-		$document = JFactory::getDocument();
-		JHtml::_('bootstrap.framework');
+		$this->configs = JComponentHelper::getComponent('com_digicom')->params;
 
-		$Itemid = JRequest::getvar("Itemid", "0");
+		$this->Itemid = JRequest::getvar("Itemid", "0");
 
-		$this->assignRef("configs", $configs);
-		$customer = new DigiComSessionHelper();
+		$this->customer = new DigiComSiteHelperSession();
 		
-		$this->assign("customer", $customer);
-
-		$items = $this->_models['cart']->getCartItems($customer, $configs);		
-
-		$this->assignRef("items", $items);
+		$this->items = $this->get('CartItems');		
 		
-		// Plugins
-		$plugin_items = $this->get('PluginList');
-		$plugins = array();
-		foreach($plugin_items as $plugin_item){
-			$plugin_params = new JRegistry($plugin_item->params);
-			$pluginname = $plugin_params->get($plugin_item->name.'_label');
-			$plugins[] = JHTML::_('select.option',  $plugin_item->name,  $pluginname );
-		}
-		$processor = '';
-		if (isset($plan_details['processor'])) $processor = $plan_details['processor'];
-		if (!empty($plugins)) {
-			$lists['plugins'] = '<span class="digicom_details" style="display: inline-block; margin-left: 5px;">'. JHTML::_('select.genericlist',  $plugins, 'processor', 'class="inputbox" ', 'value', 'text', $processor) . '</span>';
-		} else {
-			$lists['plugins'] = '<span class="digicom_details" style="display: inline-block;" margin-left: 5px;>'.JText::_('Payment plugins not installed').'</span>';
-		}
+		$this->plugins = $this->get('PluginList');
 
-		$sid = $customer->_sid;
-		$sql = "select cart_details from `#__digicom_session` where sid='".$sid."'";
-		$db->setQuery($sql);
-		$data = $db->loadResult();
-		$promo = explode ("=", $data);
-
-		$sql = "select shipping_details from #__digicom_session where sid='".$sid."'";
-		$db->setQuery($sql);
-		$shipto = $db->loadResult();
-		$price_format = '%'.$configs->get('totaldigits','').'.'.$configs->get('decimaldigits','2').'f';
-		$categ_digicom = '';	   
-		if ( $categ_digicom != '' ) {
-			$sql = "select id from #__digicom_categories where title like '".$categ_digicom."' or name like '".$categ_digicom."'";
-			$database->setQuery($sql);
-			$id = $database->loadResult();
-			$cat_url = JRoute::_("index.php?option=com_digicom&view=categories&cid=" . $id."&Itemid=".$Itemid);
-		} else {
-			$cat_url = JRoute::_("index.php?option=com_digicom&view=categories&cid=0"."&Itemid=".$Itemid);
-		}
-		$this->assign ("cat_url", $cat_url);
+		$this->cat_url = $this->get('cat_url');
+		
 		$maxfields = 0;
 		$disc = 0;
 		$optlen = array();
-		$totalfields = 0;
 		$select_only = array();
 
-		foreach ($items as $i => $item) {
+		foreach ($this->items as $i => $item) {
 
 			if ($i < 0 ) continue;
 
@@ -88,30 +41,25 @@ class DigiComViewCart extends DigiComView
 
 			if (isset($item->discounted_price) && $item->discounted_price && $item->discount > 0) $disc = 1;
 
-			if($task != 'summary'){
-				//$lists[$item->cid]['quantity'] = JHTML::_('select.genericlist',  $qty, 'quantity['.$item->cid.']', 'size="1" class="inputbox" onchange="update_cart('.$item->cid.')" ', 'value', 'text', $item->quantity);
-				$lists[$item->cid]['attribs'] = DigiComHelper::add_selector_to_cart($item, $optlen, $select_only, $i, $configs, $configs);
-			}
-			else{
-				$lists[$item->cid]['attribs'] = DigiComHelper::add_selector_to_summary ( $item, $optlen, $select_only, $i, $configs, $configs);
-				//$lists[$item->cid]['quantity'] = $item->quantity;//JHTML::_('select.genericlist',  $qty, 'quantity['.$item->cid.']', 'class="inputbox" ', 'value', 'text', $item->quantity);
-			}
+			
 		}
 
-		$this->assign("discount", $disc);
-		$this->assign("maxfields", $maxfields);
-		$this->assign("optlen", $optlen);
-		$this->assign("totalfields", $totalfields);
+		$this->discount = $disc;
+		$this->maxfields = $maxfields;
 
-		$tax = $this->_models["cart"]->calc_price($items, $customer, $configs);
-		$this->assign("tax", $tax);
+		$this->tax = $this->get('calc_price');
 
-		$promo = $this->_models['cart']->get_promo($customer, 1);
-		$this->assign("promocode", $promo->code);
-		$this->assign("promoerror", $promo->error);
-		$this->assign("lists", $lists);
+		$promo = $this->get('promo');
+		if(isset($promo)){
+			$this->promocode = $promo->code;
+			$this->promoerror = $promo->error;			
+		}else{
+			$this->promocode = '';
+			$this->promoerror = '';		
+		}
 		
-		$template = new DigiComTemplateHelper($this);
+		$template = new DigiComSiteHelperTemplate($this);
+
 		$from = JRequest::getVar("from", "");
 		if($from == "ajax"){
 			$template->rander('cart_popup');			

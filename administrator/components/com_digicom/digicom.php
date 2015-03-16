@@ -8,37 +8,18 @@
 * @license			GNU/GPLv3
 */
 
-defined ('_JEXEC') or die ("Go away.");
-defined ('DS') or define('DS', DIRECTORY_SEPARATOR);
+defined('_JEXEC') or die;
+JLoader::discover('DigiComHelper', JPATH_COMPONENT_ADMINISTRATOR . '/helpers');
 
-include_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'loader.php');
+JHtml::_('behavior.tabstate');
 
-// Access check.
 if (!JFactory::getUser()->authorise('core.manage', 'com_digicom'))
 {
 	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
-require_once(JPATH_COMPONENT.DS.'controller.php');
-$controller = JRequest::getCmd('controller');
-$task = JRequest::getVar("task", "");
-
-if($controller)
-{
-	$path = JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php';
-	if(file_exists($path))
-	{
-		require_once($path);
-	}
-	else
-	{
-	 	$controller = '';
-	}
-}
-
-$classname = "DigiComAdminController".$controller;
-$controller = new $classname();
-$controller->execute ($task);
+$controller	= JControllerLegacy::getInstance('Digicom');
+$controller->execute(JFactory::getApplication()->input->get('task'));
 $controller->redirect();
 
-DigiComAdminHelper::setSidebarRight();
+DigiComHelperDigiCom::setSidebarRight();

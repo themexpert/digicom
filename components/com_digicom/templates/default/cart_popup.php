@@ -20,8 +20,7 @@ $processor = JRequest::getVar("processor", "");
 $Itemid = JRequest::getInt("Itemid", 0);
 $items = $this->items;
 ?>
-<div id="digicom">
-<div class="digi-cart">
+<div class="digicom-wrapper com_digicom cart">
 <?php
 $button_value = "DSCHECKOUTE";
 $onclick = "document.getElementById('returnpage').value='checkout'; document.getElementById('type_button').value='checkout';";
@@ -901,4 +900,3 @@ if(jQuery(window).width() > jQuery("#digicomcarttable").width() && jQuery(window
 	jQuery(".digicom table select").css("width", (jQuery("#digicomcarttable").width()-30)+"px");
 }
 </script>
-</div>

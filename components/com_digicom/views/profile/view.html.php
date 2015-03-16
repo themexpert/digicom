@@ -25,10 +25,6 @@ class DigiComViewProfile extends DigiComView {
 		*/
 		$customers = $this->get('listCustomers');
 		$this->assignRef('custs', $customers);
-
-		$template = new DigiComTemplateHelper($this);
-		$template->rander('profile');
-		
 		parent::display($tpl);
 
 	}
@@ -99,9 +95,6 @@ class DigiComViewProfile extends DigiComView {
 		$this->assign("customer", $customer);
 		$this->assign("configs", $configs);
 
-		$template = new DigiComTemplateHelper($this);
-		$template->rander('login_register');
-
 		parent::display($tpl);
 	}
 
@@ -164,10 +157,6 @@ class DigiComViewProfile extends DigiComView {
 		$this->assign("lists", $lists);
 
 		$this->assign("configs", $configs);
-
-		$template = new DigiComTemplateHelper($this);
-		$template->rander('profile-editform');
-
 		parent::display($tpl);
 
 	}

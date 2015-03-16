@@ -60,7 +60,7 @@ $n = count ($this->custs);
 							<?php echo JText::_('VIEWCUSTOMERUSER');?>
 						</th>
 						<th>
-							<?php echo JText::_('COM_DIGICOM_CUSTOMER_TOTAL_ORDER');?>
+							<?php echo JText::_('COM_DIGICOM_TOTAL_ORDER');?>
 						</th>
 					</tr>
 				</thead>
@@ -74,7 +74,7 @@ $n = count ($this->custs);
 						$cust = $this->custs[$i];
 						//print_r( $cust);die;
 						$id = $cust->id;
-						$link = JRoute::_("index.php?option=com_digicom&controller=customers&task=edit&cid[]=".$id.(strlen(trim($this->keyword))>0?"&keyword=".$this->keyword:""));
+						$link = JRoute::_("index.php?option=com_digicom&view=customer&task=customer.edit&id=".$id.(strlen(trim($this->keyword))>0?"&keyword=".$this->keyword:""));
 						$ulink = JRoute::_("index.php?option=com_users&view=user&layout=edit&id=".$id);
 					?>
 					<tr class="row<?php echo $k;?>"> 
@@ -129,6 +129,6 @@ $n = count ($this->custs);
 		<input type="hidden" name="option" value="com_digicom" />
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />
-		<input type="hidden" name="controller" value="Customers" />
+		<input type="hidden" name="view" value="customers" />
 	</form>
 </div>

@@ -97,10 +97,6 @@ class DigiComViewOrders extends DigiComView {
 		$this->assign("configs", $configs);
 		$customer = new DigiComSessionHelper();
 	   	$this->assign("customer", $customer);
-
-	   	$template = new DigiComTemplateHelper($this);
-		$template->rander('receipt');
-
 		parent::display($tpl);
 	}
 }

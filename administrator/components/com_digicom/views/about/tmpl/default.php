@@ -17,7 +17,6 @@ $document = JFactory::getDocument();
 $app = JFactory::getApplication();
 $input = $app->input;
 $input->set('layout', 'dgform');
-//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=about'); ?>" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
 	<?php if (!empty( $this->sidebar)) : ?>
@@ -100,7 +99,6 @@ $input->set('layout', 'dgform');
 					echo $version;
 					echo "</td></tr>";
 				} else {
-					//echo "&nbsp;&nbsp;&nbsp;&nbsp;+ ".$total_file_titles[$var]. "&nbsp;&nbsp<font color=\"red\"><strong>Not Installed</strong></font><br />";
 					echo "<tr><td width=\"20px\">&nbsp;</td><td  nowrap width=\"90px\" align=\"left\"><font color=\"red\"><strong><nowrap>".(JText::_('DSNOTINSTALLED'))."</nowrap></strong></font></td><td width=\"130px\" nowrap>+ ".$total_file_titles[$var]. "<td nowrap>&nbsp;</td></tr>";
 					array_push($notinstalled_parts,$var);
 				}
@@ -117,100 +115,6 @@ $input->set('layout', 'dgform');
 
 			</td></tr>
 		</table>
-
-			<?php echo JHtml::_('bootstrap.endTab'); ?>
-
-			<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'system', JText::_('COM_DIGICOM_ABOUT_SYSTEM', true)); ?>
-
-				<fieldset class="adminform">
-					<legend>System Information</legend>
-					<table class="table table-striped">
-						<thead>
-							<tr>
-								<th width="25%">
-									Setting				</th>
-								<th>
-									Value				</th>
-							</tr>
-						</thead>
-						<tfoot>
-							<tr>
-								<td colspan="2">&nbsp;</td>
-							</tr>
-						</tfoot>
-						<tbody>
-							<tr>
-								<td>
-									<strong>PHP Built On</strong>
-								</td>
-								<td>
-									Windows NT EVAN-THE 6.2 build 9200 (Windows 8 Business Edition) i586				</td>
-							</tr>
-							<tr>
-								<td>
-									<strong>Database Version</strong>
-								</td>
-								<td>
-									5.6.14				</td>
-							</tr>
-							<tr>
-								<td>
-									<strong>Database Collation</strong>
-								</td>
-								<td>
-									utf8_general_ci				</td>
-							</tr>
-							<tr>
-								<td>
-									<strong>PHP Version</strong>
-								</td>
-								<td>
-									5.5.6				</td>
-							</tr>
-							<tr>
-								<td>
-									<strong>Web Server</strong>
-								</td>
-								<td>
-									Apache/2.4.7 (Win32) OpenSSL/1.0.1e PHP/5.5.6				</td>
-							</tr>
-							<tr>
-								<td>
-									<strong>WebServer to PHP Interface</strong>
-								</td>
-								<td>
-									apache2handler				</td>
-							</tr>
-							<tr>
-								<td>
-									<strong>Joomla! Version</strong>
-								</td>
-								<td>
-									Joomla! 3.4.0 Stable [ Ember ] 24-February-2015 23:00 GMT				</td>
-							</tr>
-							<tr>
-								<td>
-									<strong>Joomla! Platform Version</strong>
-								</td>
-								<td>
-									Joomla Platform 13.1.0 Stable [ Curiosity ] 24-Apr-2013 00:00 GMT				</td>
-							</tr>
-							<tr>
-								<td>
-									<strong>User Agent</strong>
-								</td>
-								<td>
-									Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36				</td>
-							</tr>
-						</tbody>
-					</table>
-				</fieldset>
-								
-
-			<?php echo JHtml::_('bootstrap.endTab'); ?>
-
-			<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'support', JText::_('COM_DIGICOM_ABOUT_SUPPORT', true)); ?>
-
 
 			<?php echo JHtml::_('bootstrap.endTab'); ?>
 

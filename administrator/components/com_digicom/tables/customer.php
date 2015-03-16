@@ -57,6 +57,7 @@ class TableCustomer extends JTable
 
 	function store($updateNulls = false)
 	{
+		
 		$db = JFactory::getDBO();
 		$sql = "select count(*) from #__digicom_customers where id='" . $this->id . "'";
 		$db->setQuery( $sql );
@@ -70,9 +71,7 @@ class TableCustomer extends JTable
 			return false;
 		}
 
-		parent::store($updateNulls = false);
-
-		return true;
+		return parent::store($updateNulls = false);
 	}
 
 }

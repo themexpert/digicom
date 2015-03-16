@@ -1,35 +1,36 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 341 $
- * @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package     Joomla.Administrator
+ * @subpackage  com_categories
+ *
+ * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
 
-jimport('joomla.application.component.modellist');
-jimport('joomla.utilities.date');
-
-class DigiComAdminModelCategories extends JModelList {
-	
-	protected $_context = 'com_digicom.category';
-	private $total=0;
-	var $_categories;
-	var $_category;
-	var $_id = null;
-	var $_total = 0;
-	var $_pagination = null;
-
-	function __construct () {
-		
+/**
+ * Categories Component Categories Model
+ *
+ * @since  1.6
+ */
+class DigiComModelCategories extends JModelList
+{
+	/**
+	 * Constructor.
+	 *
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
+	 * @see     JController
+	 * @since   1.6
+	 */
+	public function __construct($config = array())
+	{
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = array(
 				'id', 'a.id',
-				'name', 'a.name',
+				'title', 'a.title',
 				'alias', 'a.alias',
 				'published', 'a.published',
 				'access', 'a.access', 'access_level',
@@ -38,26 +39,43 @@ class DigiComAdminModelCategories extends JModelList {
 				'checked_out_time', 'a.checked_out_time',
 				'created_time', 'a.created_time',
 				'created_user_id', 'a.created_user_id',
+				'lft', 'a.lft',
+				'rgt', 'a.rgt',
 				'level', 'a.level',
-				'parent_id', 'a.parent_id',
+				'path', 'a.path',
 				'tag'
 			);
 		}
-		
+
 		parent::__construct($config);
-		$cids = JRequest::getVar('cid', 0, '', 'array');
-	 	$this->setId((int)$cids[0]);
-		
 	}
 
-	function populateState($ordering = NULL, $direction = NULL){
-		$app = JFactory::getApplication('administrator');
-		$this->setState('list.start', $app->getUserStateFromRequest($this->_context . '.list.start', 'limitstart', 0, 'int'));
-		$this->setState('list.limit', $app->getUserStateFromRequest($this->_context . '.list.limit', 'limit', $app->getCfg('list_limit', 25) , 'int'));
-		$this->setState('selected', JRequest::getVar('cid', array()));
-
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
+	 *
+	 * @return  void
+	 *
+	 * @since   1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
 		$app = JFactory::getApplication();
-		$context = $this->_context;
+		$context = $this->context;
+
+		$extension = 'com_digicom';
+		$this->setState('filter.extension', $extension);
+		$parts = explode('.', $extension);
+
+		// Extract the component name
+		$this->setState('filter.component', $parts[0]);
+
+		// Extract the optional section name
+		$this->setState('filter.section', (count($parts) > 1) ? $parts[1] : null);
 
 		$search = $this->getUserStateFromRequest($context . '.search', 'filter_search');
 		$this->setState('filter.search', $search);
@@ -78,7 +96,7 @@ class DigiComAdminModelCategories extends JModelList {
 		$this->setState('filter.tag', $tag);
 
 		// List state information.
-		parent::populateState('a.ordering', 'asc');
+		parent::populateState('a.lft', 'asc');
 
 		// Force a language
 		$forcedLanguage = $app->input->get('forcedLanguage');
@@ -90,23 +108,39 @@ class DigiComAdminModelCategories extends JModelList {
 		}
 	}
 
-	function setId($id) {
-		$this->_id = $id;
-		$this->_category = null;
+	/**
+	 * Method to get a store id based on model configuration state.
+	 *
+	 * This is necessary because the model is used by the component and
+	 * different modules that might need different sets of data or different
+	 * ordering requirements.
+	 *
+	 * @param   string  $id  A prefix for the store id.
+	 *
+	 * @return  string  A store id.
+	 *
+	 * @since   1.6
+	 */
+	protected function getStoreId($id = '')
+	{
+		// Compile the store id.
+		$id .= ':' . $this->getState('filter.search');
+		$id .= ':' . $this->getState('filter.extension');
+		$id .= ':' . $this->getState('filter.published');
+		$id .= ':' . $this->getState('filter.language');
+
+		return parent::getStoreId($id);
 	}
 
-	protected function getListQuery() {
-		/*
-		$db = JFactory::getDBO();
-		$where = "1=1";
-
-		$query = $db->getQuery(true);
-		$query->select('*');
-		$query->from('#__digicom_categories');
-		$query->order("parent_id, ordering asc");
-		$query->where($where);
-		return $query;
-		*/
+	/**
+	 * Method to get a database query to list categories.
+	 *
+	 * @return  JDatabaseQuery object.
+	 *
+	 * @since   1.6
+	 */
+	protected function getListQuery()
+	{
 		// Create a new query object.
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
@@ -116,13 +150,13 @@ class DigiComAdminModelCategories extends JModelList {
 		$query->select(
 			$this->getState(
 				'list.select',
-				'a.id, a.name, a.alias, a.published, a.access,a.image' .
+				'a.id, a.title, a.alias, a.note, a.published, a.access' .
 				', a.checked_out, a.checked_out_time, a.created_user_id' .
-				', a.parent_id, a.level, a.ordering' .
+				', a.path, a.parent_id, a.level, a.lft, a.rgt' .
 				', a.language'
 			)
 		);
-		$query->from('#__digicom_categories AS a');
+		$query->from('#__categories AS a');
 
 		// Join over the language
 		$query->select('l.title AS language_title')
@@ -139,6 +173,23 @@ class DigiComAdminModelCategories extends JModelList {
 		// Join over the users for the author.
 		$query->select('ua.name AS author_name')
 			->join('LEFT', '#__users AS ua ON ua.id = a.created_user_id');
+
+		// Join over the associations.
+		$assoc = $this->getAssoc();
+
+		if ($assoc)
+		{
+			$query->select('COUNT(asso2.id)>1 as association')
+				->join('LEFT', '#__associations AS asso ON asso.id = a.id AND asso.context=' . $db->quote('com_categories.item'))
+				->join('LEFT', '#__associations AS asso2 ON asso2.key = asso.key')
+				->group('a.id, l.title, uc.name, ag.title, ua.name');
+		}
+
+		// Filter by extension
+		if ($extension = $this->getState('filter.extension'))
+		{
+			$query->where('a.extension = ' . $db->quote($extension));
+		}
 
 		// Filter on the level.
 		if ($level = $this->getState('filter.level'))
@@ -188,7 +239,7 @@ class DigiComAdminModelCategories extends JModelList {
 			else
 			{
 				$search = $db->quote('%' . str_replace(' ', '%', $db->escape(trim($search), true) . '%'));
-				$query->where('(a.name LIKE ' . $search . ' OR a.alias LIKE ' . $search . ' OR a.note LIKE ' . $search . ')');
+				$query->where('(a.title LIKE ' . $search . ' OR a.alias LIKE ' . $search . ' OR a.note LIKE ' . $search . ')');
 			}
 		}
 
@@ -212,12 +263,12 @@ class DigiComAdminModelCategories extends JModelList {
 		}
 
 		// Add the list ordering clause
-		$listOrdering = $this->getState('list.ordering', 'a.ordering');
+		$listOrdering = $this->getState('list.ordering', 'a.lft');
 		$listDirn = $db->escape($this->getState('list.direction', 'ASC'));
 
 		if ($listOrdering == 'a.access')
 		{
-			$query->order('a.access ' . $listDirn . ', a.ordering ' . $listDirn);
+			$query->order('a.access ' . $listDirn . ', a.lft ' . $listDirn);
 		}
 		else
 		{
@@ -226,327 +277,44 @@ class DigiComAdminModelCategories extends JModelList {
 
 		return $query;
 	}
-	/*
-	function getItems(){
-		jimport('joomla.html.html.menu');
-		$config = JFactory::getConfig();
-		$app = JFactory::getApplication('administrator');
-		$limistart = $app->getUserStateFromRequest($this->context.'.list.start', 'limitstart');
-		$limit = $app->getUserStateFromRequest($this->context.'.list.limit', 'limit', $config->get('list_limit'));
-		$db = JFactory::getDBO();
-		$query = $db->getQuery(true);
-		$query = $this->getListQuery();
-
-		$db->setQuery($query);
-		$db->query();
-		$result	= $db->loadObjectList();
-		$this->total=count($result);
-
-		$children = array();
-		$citems = $result;
-
-		if($citems){
-			foreach($citems as $v){
-				$pt 	= $v->parent_id;
-				$list 	= @$children[$pt] ? $children[$pt] : array();
-				array_push($list, $v);
-				$children[$pt] = $list;
-			}
-		}
-		
-		foreach($children as $i => $v){
-			foreach($children[$i] as $j => $vv){
-				$children[$i][$j]->parent = $vv->parent_id;
-				$children[$i][$j]->title = $vv->name;
-			}
-		}		
-		
-		$lists = JHTML::_('menu.treerecurse', 0, "", array(), $children, 20, 0, 0);
-		$categories = $lists;
-		if($limit != "0"){
-			$categories = array_slice($categories, $limistart, $limit);
-		}
-		return $categories;
-	}
-	*/
-	function getlistCategories(){
-		if (empty ($this->_categories)) {
-			$sql = "select * from #__digicom_categories order by parent_id, ordering asc";
-			$this->_total = $this->_getListCount($sql);
-			if ($this->getState('limitstart') > $this->_total) $this->setState('limitstart', 0);
-			if ($this->getState('limitstart') > 0 & $this->getState('limit') == 0)  $this->setState('limitstart', 0);
-			$this->_categories = $this->_getList($sql);
-		}
-		return $this->_categories;
-	}
-
-	function getCategory() {
-		if (empty ($this->_category)) {
-			$this->_category = $this->getTable("Category");
-			$this->_category->load($this->_id);
-		}
-		return $this->_category;
-	}
-
-	function store(){
-		
-		$item = $this->getTable('Category');
-		//file processing
-		$data = JFactory::getApplication()->input->get('jform', array(), 'ARRAY');
-		if(!$item->bind($data)){
-			$this->setError($item->getError());
-			return false;
-		}
-
-		if(!$item->check()){
-			$this->setError($item->getError());
-			return false;
-		}
-		if (!$item->store()){
-			return false;
-		}
-		// Reorder categories
-		$item->reorder('`parent_id` = ' . (int) $item->parent_id);		
-		return true;
-	}
-
-	function delete () {
-		$cids = JRequest::getVar('cid', array(0), 'post', 'array');
-		$database = JFactory::getDBO();
-		if (count($cids)) {
-			$cid = implode(',', $cids);
-
-			$sql = "select name from #__digicom_categories where id in (" . $cid . ")";
-			$database->setQuery($sql);
-			$names = $database->loadObjectList();
-			$n = array ();
-			foreach ($names as $name)
-				$n[] = $name->name;
-			$sql = "delete from #__menu where title in ('" . implode("','", $n) . "') and menutype='digicats'";
-			$database->setQuery($sql);
-			$database->query();
-
-			$query = "DELETE FROM #__digicom_categories" . "\n WHERE id IN ( $cid )";
-			$database->setQuery($query);
-			if (!$database->query()) {
-				echo "<script> alert('" . $database->getErrorMsg() . "'); window.history.go(-1); </script>\n";
-			}
-		}
-
-
-		$item = $this->getTable('Category');
-		foreach ($cids as $cid) {
-			if (!$item->delete($cid)) {
-				$this->setError($item->getErrorMsg());
-				return false;
-
-			}
-		}
-		$cid = implode(',', $cids);
-		return true;
-	}
-
-	
-	function publish () {
-		$db = JFactory::getDBO();
-		$cids = JRequest::getVar('cid', array(0), 'post', 'array');
-		$task = JRequest::getVar('task', '', 'post');
-		$item = $this->getTable('Category');
-
-		$database = JFactory::getDBO();
-		$cid = implode(',', $cids);
-		$sql = "select * from #__digicom_categories where id in (" . $cid . ")";
-		$database->setQuery($sql);
-		$names = $database->loadObjectList();
-
-		if ($task == 'publish') {
-			$sql = "update #__digicom_categories set published='1' where id in ('".implode("','", $cids)."')";
-		} else {
-			$sql = "update #__digicom_categories set published='0' where id in ('".implode("','", $cids)."')";
-
-		}
-//echo $sql; die;
-		$db->setQuery($sql);
-		if (!$db->query() ) {
-			$this->setError($db->getErrorMsg());
-			return false;
-		}
-
-		//print_r($names);die;
-		/*
-		if ($task == "publish") {
-			foreach ($names as $i => $v) {
-
-				$parent_link = 'index.php?option=com_digicom&controller=products&task=list&cid[]=' . $v->parent_id;
-				$sql = "select id from #__menu where menutype='digicats' and link='" . $parent_link . "'";
-				$database->setQuery($sql);
-				$parent_id = $database->loadResult();
-
-				$link = 'index.php?option=com_digicom&controller=products&task=list&cid[]=' . $v->id;
-				$link2 = 'index.php?option=com_digicom&controller=categories&task=view&cid[]=' . $v->id;
-
-				$sql = "select count(*) from #__digicom_categories where parent_id='" . $v->id . "' and published='1'";
-				$database->setQuery($sql);
-				$sibs = $database->loadResult();
-				if ($sibs > 0) {
-					//		$link = $link2;
-					$sql = "update #__menu set published='1', link='".$link2."' where menutype='digicats' and name='" . $v->name . "' and (link='" . $link . "' or link='" . $link2 . "')";
-				} else {
-					$sql = "update #__menu set published='1' where menutype='digicats' and name='" . $v->name . "' and (link='" . $link . "' or link='" . $link2 . "')";
-				}
-
-				//echo $sql;
-				$database->setQuery($sql);
-				$database->query();
-			}
-
-		} else {
-			foreach ($names as $i => $v) {
-				$link = 'index.php?option=com_digicom&controller=products&task=list&cid[]=' . $v->id;
-				$link2 = 'index.php?option=com_digicom&controller=categories&task=view&cid[]=' . $v->id;
-				$sql = "update #__menu set published='0' where menutype='digicats' and name='" . $v->name . "' and (link='" . $link . "' or link='" . $link2 . "')";
-				$database->setQuery($sql);
-				$database->query();
-
-			}
-		}
-		//			   die;
-		*/
-
-		return true;
-
-
-
-	}
-
-	function orderField( $uid, $inc ) {
-		// Initialize variables
-		$db		= JFactory::getDBO();
-		$row	=& JTable::getInstance('Category','Table');
-		$row->load( $uid );
-		$row->move( $inc, '`parent_id` = '.$db->Quote($row->parent_id) );
-		$msg = JText::_('CATEGORYORDERINGSUCCESS');
-		return $msg;
-	}
-
-
-	function saveorder($pcid = 'params', $porder = 'params') {
-
-		// Initialize variables
-		$db			= JFactory::getDBO();
-
-
-		if ( ($pcid != 'params') && ($porder != 'params')) {
-			$cid		= $pcid;
-			$order		= $porder;
-		} else {
-			$cid		= JRequest::getVar( 'cid', array(0), 'post', 'array' );
-			$order		= JRequest::getVar( 'order', array (0), 'post', 'array' );
-		}
-
-		$total		= count($cid);
-		$conditions	= array ();
-
-		//debug($cid); debug($order); die();
-
-		JArrayHelper::toInteger($cid, array(0));
-		JArrayHelper::toInteger($order, array(0));
-
-		$row = & JTable::getInstance('Category','Table');
-		// update ordering values
-		for( $i=0; $i < $total; $i++ ) {
-			$row->load( (int) $cid[$i] );
-			// track sections
-			$groupings[] = $row->parent_id;
-			if ($row->ordering != $order[$i]) {
-				$row->ordering = $order[$i];
-				if (!$row->store()) {
-					$msg = JText::_('CATEGORYORDERINGERROR');
-					JError::raiseError(500, $db->getErrorMsg());
-				}
-			}
-		}
-
-		// execute updateOrder for each parent group
-		$groupings = array_unique( $groupings );
-
-		foreach ($groupings as $group) {
-			$row->reorder('`parent_id` = '.$db->Quote($group));
-		}
-
-		$msg = JText::_('CATEGORYORDERINGSUCCESS');
-		return $msg;
-	}
-
-	function getCatAndProductLisenceId( $id, $indent, $list, &$children, $prod, &$html, $selected, $level=0, $type=1) {
-
-		if (@$children[$id]) {
-
-			foreach ($children[$id] as $v) {
-
-				$id = $v->id;
-
-				if ( $type ) {
-					$pre	 = '|_ &nbsp;';
-					$spacer = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-				} else {
-					$pre	 = '- ';
-					$spacer = '&nbsp;&nbsp;';
-				}
-
-				if ( $v->parent == 0 ) {
-					$txt	 = $v->name;
-				} else {
-					$txt	 = $pre . $v->name;
-				}
-
-				$pt = $v->parent;
-				$list[$id] = $v;
-				$list[$id]->treename = "$indent$txt";
-				$list[$id]->prods = (isset($prod[$id])) ? $prod[$id] : array();
-				$list[$id]->children = count( @$children[$id] );
-
-				$html .= "<OPTGROUP LABEL='".$list[$id]->treename."'>\n";
-				if (isset($prod[$id])) {
-					foreach($prod[$id] as $key => $proditem) {
-						if ($selected != $key)
-							$html .= "<OPTION VALUE='".$key."'>".$indent.$proditem."</OPTION>";
-						else
-							$html .= "<OPTION SELECTED='SELECTED' VALUE='".$key."'>".$indent.$proditem."</OPTION>";
-					}
-				}
-				$list = $this->getCatAndProductLisenceId( $id, $indent . $spacer, $list, $children, $prod, $html, $selected, $level+1, $type);
-				$html .= "</OPTGROUP>\n";
-			}
-		}
-		return $list;
-	}
-
-	function getConfigs() {
-		$comInfo = JComponentHelper::getComponent('com_digicom');
-		return $comInfo->params;
-	}
 
 	/**
-	 * Method to get a form object.
+	 * Method to determine if an association exists
 	 *
-	 * @param   array    $data      Data for the form.
-	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 * @return  boolean  True if the association exists
 	 *
-	 * @return  mixed  A JForm object on success, false on failure
-	 *
-	 * @since	3.2
+	 * @since  3.0
 	 */
-	public function getForm($data = array(), $loadData = true)
+
+	public function getAssoc()
 	{
-		$form = $this->loadForm('com_digicom.category', 'category', array('control' => 'jform', 'load_data' => $loadData));
-		
-		if (empty($form))
+		static $assoc = null;
+
+		if (!is_null($assoc))
 		{
-			return false;
+			return $assoc;
 		}
 
-		return $form;
-	}
+		$app = JFactory::getApplication();
+		$extension = $this->getState('filter.extension');
 
+		$assoc = JLanguageAssociations::isEnabled();
+		$extension = explode('.', $extension);
+		$component = array_shift($extension);
+		$cname = str_replace('com_', '', $component);
+
+		if (!$assoc || !$component || !$cname)
+		{
+			$assoc = false;
+		}
+		else
+		{
+			$hname = $cname . 'HelperAssociation';
+			JLoader::register($hname, JPATH_SITE . '/components/' . $component . '/helpers/association.php');
+
+			$assoc = class_exists($hname) && !empty($hname::$category_association);
+		}
+
+		return $assoc;
+	}
 }

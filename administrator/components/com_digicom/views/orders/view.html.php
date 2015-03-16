@@ -10,9 +10,7 @@
 
 defined ('_JEXEC') or die ("Go away.");
 
-jimport( "joomla.application.component.view" );
-
-class DigiComAdminViewOrders extends DigiComView
+class DigiComViewOrders extends JViewLegacy
 {
 
 	function display( $tpl = null )
@@ -31,16 +29,13 @@ class DigiComAdminViewOrders extends DigiComView
 		$this->orders = $orders;
 		$this->pagination = $pagination;
 
-		$configs =  $this->_models['config']->getConfigs();
-		$this->assign( "configs", $configs );
-
 		$startdate = JRequest::getVar( "startdate", "", "request" );
 		$startdate = strtotime($startdate);
-		//$startdate = DigiComAdminHelper::parseDate( $configs->get('time_format','DD-MM-YYYY'), $startdate );
+		//$startdate = DigiComHelperDigiCom::parseDate( $configs->get('time_format','DD-MM-YYYY'), $startdate );
 		$this->assign( "startdate", $startdate );
 		$enddate = JRequest::getVar( "enddate", "", "request" );
 		$enddate = strtotime($enddate);
-		//$enddate = DigiComAdminHelper::parseDate( $configs->get('time_format','DD-MM-YYYY'), $enddate );
+		//$enddate = DigiComHelperDigiCom::parseDate( $configs->get('time_format','DD-MM-YYYY'), $enddate );
 		$this->assign( "enddate", $enddate );
 
 		$keyword = JRequest::getVar( "keyword", "", "request" );
@@ -49,8 +44,8 @@ class DigiComAdminViewOrders extends DigiComView
 		//set toolber
 		$this->addToolbar();
 		
-		DigiComAdminHelper::addSubmenu('orders');
-		$this->sidebar = DigiComAdminHelper::renderSidebar();
+		DigiComHelperDigiCom::addSubmenu('orders');
+		$this->sidebar = DigiComHelperDigiCom::renderSidebar();
 		
 		parent::display( $tpl );
 	}
@@ -78,7 +73,7 @@ class DigiComAdminViewOrders extends DigiComView
 		$configs =  $this->_models['config']->getConfigs();
 		$this->assign( "configs", $configs );
 		
-		DigiComAdminHelper::addSubmenu('orders');
+		DigiComHelperDigiCom::addSubmenu('orders');
 		$this->sidebar = JHtmlSidebar::render();
 		
 		parent::display( $tpl );
@@ -125,7 +120,7 @@ class DigiComAdminViewOrders extends DigiComView
 		JToolBarHelper::save();
 		JToolBarHelper::cancel();
 		
-		DigiComAdminHelper::addSubmenu('orders');
+		DigiComHelperDigiCom::addSubmenu('orders');
 		$this->sidebar = JHtmlSidebar::render();
 		
 		parent::display( $tpl );
@@ -204,21 +199,21 @@ class DigiComAdminViewOrders extends DigiComView
 		$this->assign("cust", $customer);
 
 		$configs = $this->_models['config']->getConfigs();
-		$country_option = DigiComAdminHelper::get_country_options($customer, false, $configs);
+		$country_option = DigiComHelperDigiCom::get_country_options($customer, false, $configs);
 		$lists['country_option'] = $country_option;
 
 		$profile = new StdClass();
 		$profile->country = $customer->shipcountry;
 		$profile->state = $customer->shipstate;
-		$shipcountry_option = DigiComAdminHelper::get_country_options($customer, true, $configs);
+		$shipcountry_option = DigiComHelperDigiCom::get_country_options($customer, true, $configs);
 		$lists['shipcountry_options'] = $shipcountry_option;
 
-		$lists['customerlocation'] = DigiComAdminHelper::get_store_province($customer);
+		$lists['customerlocation'] = DigiComHelperDigiCom::get_store_province($customer);
 
 		$profile = new StdClass();
 		$profile->country = $customer->shipcountry;
 		$profile->state = $customer->shipstate;
-		$lists['customershippinglocation'] = DigiComAdminHelper::get_store_province($profile, true, $configs);
+		$lists['customershippinglocation'] = DigiComHelperDigiCom::get_store_province($profile, true, $configs);
 
 		$cclasses = explode("\n", $customer->taxclass);
 		$data = $this->get('listCustomerClasses', 'digicomCustomer');
@@ -339,8 +334,8 @@ class DigiComAdminViewOrders extends DigiComView
 		$this->assign( "total", $order->amount );
 		$this->assign( "tax", '0' );
 
-		DigiComAdminHelper::addSubmenu('orders');
-		$this->sidebar = DigiComAdminHelper::renderSidebar();
+		DigiComHelperDigiCom::addSubmenu('orders');
+		$this->sidebar = DigiComHelperDigiCom::renderSidebar();
 
 		parent::display( $tpl );
 	}
@@ -366,9 +361,9 @@ class DigiComAdminViewOrders extends DigiComView
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
 		
-		JToolBarHelper::addNew();
+		JToolBarHelper::addNew('ordernew.add');
 		JToolBarHelper::divider();
-		JToolBarHelper::deleteList();
+		JToolBarHelper::deleteList('orders.remove');
 		JToolBarHelper::spacer();
 	}
 	

@@ -1,174 +1,222 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 341 $
- * @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package     Joomla.Administrator
+ * @subpackage  com_categories
+ *
+ * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
 
-class DigiComAdminViewCategories extends DigiComView {
-
+/**
+ * Categories view class for the Category package.
+ *
+ * @since  1.6
+ */
+class DigiComViewCategories extends JViewLegacy
+{
 	protected $items;
 
 	protected $pagination;
 
 	protected $state;
 
-	function display($tpl=null)
-	{
-		$layout=  JRequest::getCmd('layout','');
-		if($layout){
-			$this->setLayout($layout);
-		}
-		// Access check.
-		if (!JFactory::getUser()->authorise('digicom.categories', 'com_digicom'))
-		{
-			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
-		}
+	protected $assoc;
 
-		$this->cats = $this->get('Items');
+	/**
+	 * Display the view
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  void
+	 */
+	public function display($tpl = null)
+	{
+		$this->state         = $this->get('State');
+		$this->items         = $this->get('Items');
+		$this->pagination    = $this->get('Pagination');
+		$this->assoc         = $this->get('Assoc');
+		$this->filterForm    = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
+
+		// Check for errors.
+		if (count($errors = $this->get('Errors')))
+		{
+			JError::raiseError(500, implode("\n", $errors));
+
+			return false;
+		}
 
 		// Preprocess the list of items to find ordering divisions.
-		foreach ($this->cats as &$item)
+		foreach ($this->items as &$item)
 		{
 			$this->ordering[$item->parent_id][] = $item->id;
 		}
 
-		//print_r($this->cats);die;
+		// Levels filter.
+		$options	= array();
+		$options[]	= JHtml::_('select.option', '1', JText::_('J1'));
+		$options[]	= JHtml::_('select.option', '2', JText::_('J2'));
+		$options[]	= JHtml::_('select.option', '3', JText::_('J3'));
+		$options[]	= JHtml::_('select.option', '4', JText::_('J4'));
+		$options[]	= JHtml::_('select.option', '5', JText::_('J5'));
+		$options[]	= JHtml::_('select.option', '6', JText::_('J6'));
+		$options[]	= JHtml::_('select.option', '7', JText::_('J7'));
+		$options[]	= JHtml::_('select.option', '8', JText::_('J8'));
+		$options[]	= JHtml::_('select.option', '9', JText::_('J9'));
+		$options[]	= JHtml::_('select.option', '10', JText::_('J10'));
 
-		$this->pagination = $this->get('Pagination');
-		$this->state = $this->get('state');
-		//set toolber
+		$this->f_levels = $options;
+
 		$this->addToolbar();
-		
-		DigiComAdminHelper::addSubmenu('categories');
-		$this->sidebar = DigiComAdminHelper::renderSidebar();
-		
-		parent::display($tpl);
-	}
-
-	function editForm($tpl = null)
-	{
-		$form = $this->get('Form');
-		$category = $this->get('category');
-		
-		// Bind the form to the data.
-		if ($form && $category)
-		{
-			$form->bind($category);
-		}
-		
-		$this->assign( "form", $form );
-		$this->assign( "item", $category );
-		
-		$isNew = ($category->id < 1);
-		$text = $isNew?JText::_('New'):JText::_('Edit');
-
-		JToolBarHelper::title(JText::_('DSCATEGORY').":<small>[".$text."]</small>");
-		// 		$title = JText::_('VIEWPRODPRODTYPEDR');
-		$bar = JToolBar::getInstance('toolbar');
-		$layout = new JLayoutFile('toolbar.title');
-		$title=array(
-			'title' => JText::_('DSCATEGORY').":<small>[".$text."]</small>",
-			'class' => 'product'
-		);
-		$bar->appendButton('Custom', $layout->render($title), 'title');
-
-		$layout = new JLayoutFile('toolbar.settings');
-		$bar->appendButton('Custom', $layout->render(array()), 'settings');
-		
-		JToolBarHelper::save();
-		if ($isNew) {
-			JToolBarHelper::divider();
-			JToolBarHelper::cancel();
-
-		} else {
-			JToolBarHelper::apply();
-			JToolBarHelper::divider();
-			JToolBarHelper::cancel ('cancel', 'Close');
-
-		}		
-
-		DigiComAdminHelper::addSubmenu('categories');
-		$this->sidebar = DigiComAdminHelper::renderSidebar();
+		DigiComHelperDigiCom::addSubmenu('categories');
+		$this->sidebar = DigiComHelperDigiCom::renderSidebar();		
 
 		parent::display($tpl);
-
-	}
-	
-	public function getParentCategory($row){
-		$db = JFactory::getDBO();
-		if ($row->id == '') {
-			$row->id = 0;
-		}
-		$query = 'SELECT s.id AS value, s.* FROM #__digicom_categories AS s  
-					WHERE s.id NOT IN('.$row->id.')
-					ORDER BY s.parent_id ASC ,s.ordering ASC';
-		$db->setQuery($query);
-		$mitems = $db->loadObjectList();
-
-		$children = array();
-		if ( $mitems )
-		{
-			foreach ( $mitems as $v )
-			{
-				$v->title 		= $v->name;
-				$pt = $v->parent_id;
-				$list = @$children[$pt] ? $children[$pt] : array();
-				array_push($list, $v);
-				$children[$pt] = $list;
-			}
-		}
-		$list = JHTML::_('menu.treerecurse', 0, '', array(), $children, 9999, 0, 0);
-		$mitems = array();
-		// @$mitems[] = JHTML::_('select.option', 0, JText::_('PLG_OBSS_INTER_HIKASHOP_ALL_CATEGORIES'));
-		$msg = JText::_('HELPERTOP');
-		$mitems[] = JHTML::_('select.option', 0, $msg );
-		foreach ($list as $item)
-		{
-			$item->treename = JString::str_ireplace('&#160;', '- ', $item->treename);
-			$mitems[] = JHTML::_('select.option', $item->id, $item->treename);
-		}
-		$output = JHTML::_('select.genericlist',  $mitems, 'parent_id', 'class="inputbox" size="10"', 'value', 'text', $row->parent_id );
-		return $output;
 	}
 
-	
 	/**
 	 * Add the page title and toolbar.
-		*
+	 *
+	 * @return  void
+	 *
 	 * @since   1.6
 	 */
 	protected function addToolbar()
 	{
-		JToolBarHelper::title(JText::_('VIEWDSADMINCATEGORIES'), 'generic.png');
+		$categoryId	= $this->state->get('filter.category_id');
+		$component	= $this->state->get('filter.component');
+		$section	= $this->state->get('filter.section');
+		$canDo		= JHelperContent::getActions($component, 'category', $categoryId);
+		$user		= JFactory::getUser();
+		$extension  = JFactory::getApplication()->input->get('extension', '', 'word');
 
+		// Get the toolbar object instance
 		$bar = JToolBar::getInstance('toolbar');
-		// Instantiate a new JLayoutFile instance and render the layout
+
+		// Avoid nonsense situation.
+		if ($component == 'com_categories')
+		{
+			return;
+		}
+
+		// Need to load the menu language file as mod_menu hasn't been loaded yet.
+		$lang = JFactory::getLanguage();
+		$lang->load($component, JPATH_BASE, null, false, true)
+		|| $lang->load($component, JPATH_ADMINISTRATOR . '/components/' . $component, null, false, true);
+
+		// Load the category helper.
+		require_once JPATH_COMPONENT . '/helpers/categories.php';
+
+		// If a component categories title string is present, let's use it.
+		if ($lang->hasKey($component_title_key = strtoupper($component . ($section ? "_$section" : '')) . '_CATEGORIES_TITLE'))
+		{
+			$ptitle = JText::_($component_title_key);
+		}
+		elseif ($lang->hasKey($component_section_key = strtoupper($component . ($section ? "_$section" : ''))))
+		// Else if the component section string exits, let's use it
+		{
+			$ptitle = JText::sprintf('COM_CATEGORIES_CATEGORIES_TITLE', $this->escape(JText::_($component_section_key)));
+		}
+		else
+		// Else use the base title
+		{
+			$ptitle = JText::_('COM_CATEGORIES_CATEGORIES_BASE_TITLE');
+		}
+
+		// Load specific css component
+		JHtml::_('stylesheet', $component . '/administrator/categories.css', array(), true);
+
+		// Prepare the toolbar.
+		JToolbarHelper::title($ptitle, 'folder categories ' . substr($component, 4) . ($section ? "-$section" : '') . '-categories');
+
+		if ($canDo->get('core.create') || (count($user->getAuthorisedCategories($component, 'core.create'))) > 0)
+		{
+			JToolbarHelper::addNew('category.add');
+		}
+
+		if ($canDo->get('core.edit') || $canDo->get('core.edit.own'))
+		{
+			JToolbarHelper::editList('category.edit');
+		}
+
+		if ($canDo->get('core.edit.state'))
+		{
+			JToolbarHelper::publish('categories.publish', 'JTOOLBAR_PUBLISH', true);
+			JToolbarHelper::unpublish('categories.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			JToolbarHelper::archiveList('categories.archive');
+		}
+
+		if (JFactory::getUser()->authorise('core.admin'))
+		{
+			JToolbarHelper::checkin('categories.checkin');
+		}
+
+		// Add a batch button
+		if ($user->authorise('core.create', $extension) & $user->authorise('core.edit', $extension) && $user->authorise('core.edit.state', $extension))
+		{
+			JHtml::_('bootstrap.modal', 'collapseModal');
+			$title = JText::_('JTOOLBAR_BATCH');
+
+			// Instantiate a new JLayoutFile instance and render the batch button
+			$layout = new JLayoutFile('joomla.toolbar.batch');
+
+			$dhtml = $layout->render(array('title' => $title));
+			$bar->appendButton('Custom', $dhtml, 'batch');
+		}
+
+		if ($canDo->get('core.admin'))
+		{
+			JToolbarHelper::custom('categories.rebuild', 'refresh.png', 'refresh_f2.png', 'JTOOLBAR_REBUILD', false);
+		}
+
+		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete', $component))
+		{
+			JToolbarHelper::deleteList('', 'categories.delete', 'JTOOLBAR_EMPTY_TRASH');
+		}
+		elseif ($canDo->get('core.edit.state'))
+		{
+			JToolbarHelper::trash('categories.trash');
+		}
+
+		// Compute the ref_key if it does exist in the component
+		if (!$lang->hasKey($ref_key = strtoupper($component . ($section ? "_$section" : '')) . '_CATEGORIES_HELP_KEY'))
+		{
+			$ref_key = 'JHELP_COMPONENTS_' . strtoupper(substr($component, 4) . ($section ? "_$section" : '')) . '_CATEGORIES';
+		}
+
+		/*
+		 * Get help for the categories view for the component by
+		 * -remotely searching in a language defined dedicated URL: *component*_HELP_URL
+		 * -locally  searching in a component help file if helpURL param exists in the component and is set to ''
+		 * -remotely searching in a component URL if helpURL param exists in the component and is NOT set to ''
+		 */
+		if ($lang->hasKey($lang_help_url = strtoupper($component) . '_HELP_URL'))
+		{
+			$debug = $lang->setDebug(false);
+			$url = JText::_($lang_help_url);
+			$lang->setDebug($debug);
+		}
+		else
+		{
+			$url = null;
+		}
+
+		JToolbarHelper::help($ref_key, JComponentHelper::getParams($component)->exists('helpURL'), $url);
+
 		$layout = new JLayoutFile('toolbar.title');
-		$title=array(
-			'title' => JText::_( 'VIEWDSADMINCATEGORIES' ),  
-			'class' => 'title'
+		$title = array(
+			'title' => $ptitle,
+			'class' => 'product'
 		);
-		$bar->appendButton('Custom', $layout->render($title), 'title');
+		$bar->appendButton('Custom', $layout->render($title), 'title');		
 		
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
-		
-		JToolBarHelper::addNew();
-		JToolBarHelper::editList();
-		JToolBarHelper::divider();
-		JToolBarHelper::publishList();
-		JToolBarHelper::unpublishList();
-		JToolBarHelper::divider();
-		JToolBarHelper::deleteList();
+
 	}
-	
-	
+
 	/**
 	 * Returns an array of fields the table can be sorted by
 	 *
@@ -179,13 +227,12 @@ class DigiComAdminViewCategories extends DigiComView {
 	protected function getSortFields()
 	{
 		return array(
-			'a.ordering' => JText::_('JGRID_HEADING_ORDERING'),
+			'a.lft' => JText::_('JGRID_HEADING_ORDERING'),
 			'a.published' => JText::_('JSTATUS'),
-			'a.name' => JText::_('JGLOBAL_TITLE'),
+			'a.title' => JText::_('JGLOBAL_TITLE'),
 			'a.access' => JText::_('JGRID_HEADING_ACCESS'),
-			'a.hits' => JText::_('JGLOBAL_HITS'),
+			'language' => JText::_('JGRID_HEADING_LANGUAGE'),
 			'a.id' => JText::_('JGRID_HEADING_ID')
 		);
 	}
 }
-

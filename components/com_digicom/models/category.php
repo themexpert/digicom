@@ -1,295 +1,367 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 341 $
- * @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package     Joomla.Site
+ * @subpackage  com_digicom
+ *
+ * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
 
-jimport ("joomla.aplication.component.model");
-
-class DigiComModelCategory extends DigiComModel
+/**
+ * Weblinks Component product Model
+ *
+ * @package     Joomla.Site
+ * @subpackage  com_digicom
+ * @since       1.5
+ */
+class DigiComModelCategory extends JModelList
 {
+	/**
+	 * Category items data
+	 *
+	 * @var array
+	 */
+	protected $_item = null;
 
-	var $_categories;
-	var $_category;
-	var $_id = null;
-	var $_total = 0;
-	var $_pagination = null;
-	var $_categorycats = null;
-	var $_categoryprods = null;
+	protected $_articles = null;
 
-	function __construct () {
-		parent::__construct();
-		$cids = JRequest::getVar('cid', 0, '', 'array');
-		if (is_array($cids)) $cid = intval($cids[0]); else $cid = intval($cids);
-		$this->setId((int)$cid);
-		global $mainframe, $option;
-		$configs = $this->getInstance("Config", "digicomModel");
-		$configs = $configs->getConfigs();
-		// Get the pagination request variables
-		$limit = $configs->get('catlayoutcol',3) * $configs->get('catlayoutrow',3) ;//$mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-		$limitstart = JRequest::getVar("limitstart", 0, "request");//$mainframe->getUserStateFromRequest( $option.'limitstart', 'limitstart', 0, 'int' );
+	protected $_siblings = null;
 
-		$this->setState('limit', $limit); // Set the limit variable for query later on
-		$this->setState('limitstart', $limitstart);
-	}
+	protected $_children = null;
 
+	protected $_parent = null;
 
-	function setId($id) {
-		$this->_id = $id;
-		$this->_category = null;
-	}
-
-	function getPagination($catid = 0) {
-		// Lets load the content if it doesn't already exist
-		if (empty($this->_pagination))	{
-			jimport('joomla.html.pagination');
-			if (!$this->_total) {
-				if ($catid) {
-					$this->getCategoryCategories();
-				} else {
-					$this->getlistCategories();
-				}
-			}
-			$this->_pagination = new JPagination( $this->_total, $this->getState('limitstart'), $this->getState('limit') );
-		}
-		return $this->_pagination;
-	}
-
-	function getlistCategories(){
-		
-		$where = array();
-
-		if(empty ($this->_categories)){
-			$user = JFactory::getUser();
-			$where[] = " c.published=1 ";
-			//$where[] = " c.access <= ".$user->gid;
-			$where[] = " c.parent_id=0 ";
-			$where[] = "(
-							(select count(p.id)
-							 from #__digicom_products p
-							 where p.hide_public = 0
-							   and p.id IN (SELECT productid
-											FROM #__digicom_product_categories
-											WHERE catid = c.id)) > 0
-							or
-							(select count(cc.id)
-							 from #__digicom_categories cc
-							 where cc.parent_id=c.id and cc.published=1) > 0
-						) ";
-
-			$sql = "select c.* from #__digicom_categories c ".(count($where) > 0? " where ": "") . implode (" and ", $where);
-			$order = " order by ordering asc ";
-			$this->_total = @$this->_getListCount($sql);
-			$this->_categories = $this->_getList($sql.$order, $this->getState('limitstart'), $this->getState('limit'));
-		}
-		//move images---------------------------------------
-		if(isset($this->_categories) && count($this->_categories) > 0){
-			$db = JFactory::getDBO();
-			foreach($this->_categories as $key=>$category){
-				if(trim($category->images) != ""){
-					$category->images = str_replace("/", DS, trim($category->images));
-					$category->images = str_replace("\\", DS, trim($category->images));
-					$images = explode(DS, $category->images);
-					$images = $images[count($images)-1];
-					copy(JPATH_SITE.$category->images, JPATH_SITE.DS."images".DS."stories".DS."digicom".DS."categories".DS.$images);
-					$this->_categories[$key]->image = $images;
-					$this->_categories[$key]->images = "";
-					$sql = "update #__digicom_categories set `image`='".trim($images)."', `images` = '' where id=".intval($category->id);
-					$db->setQuery($sql);
-					$db->query();
-				}
-			}
-		}
-		//move images---------------------------------------
-		return $this->_categories;
-	}
-
-
-	function getCategory() {
-		if (empty ($this->_category)) {
-			$this->_category = $this->getTable("Category");
-			$this->_category->load($this->_id);
-		}
-		return $this->_category;
-	}
-
-
-	function getCategoryProducts($id = 0) {
-
-		$my = JFactory::getUser();
-
-		if (empty ($this->_category) && !$id) {
-			$this->getCategory();
-		}
-
-		if (!empty($this->_category) && !$this->_category->id && !$id) return null;
-
-		if (!$id) $id = $this->_category->id;
-
-		$where[] = " published=1 ";
-		//$where[] = " access<=".$my->gid." ";
-
-		$sql = "select id
-				from #__digicom_products
-				where id in (select productid from #__digicom_product_categories where catid='".intval($id)."')
-				  and hide_public=0".
-			(count($where) > 0? " and ": "") .
-			implode (" and ", $where);
-		;
-		$this->_total = @$this->_getListCount($sql);
-
-		$order = " order by ordering asc ";
-
-		$products = $this->_getList($sql.$order);
-		$this->_categoryprods = $products;
-		return $this->_categoryprods;
-	}
-
-	function __showCategories(& $cats) {
-
-		$output = '';
-		foreach($cats as $cat) {
-			if ( $cat->parent_id == 0 ) {
-				$output .= $this->__showCategoriesItem(0, $cat, $cats ,$output);
-			}
-		}
-
-		return $output;
-	}
-
-	function getConfigs(){
-		$comInfo = JComponentHelper::getComponent('com_digicom');
-		return $comInfo->params;
-	}
-
-	function __showCategoriesItem($level, $cat, & $cats, & $output)
+	/**
+	 * Constructor.
+	 *
+	 * @param   array  An optional associative array of configuration settings.
+	 * @see     JController
+	 * @since   1.6
+	 */
+	public function __construct($config = array())
 	{
-		$configs = $this->getConfigs();
-		$Itemid = JRequest::getVar("Itemid", "0");
-
-		$output .= "<ul class='level".$level."'>";
-		$output .= "<li>";
-
-		if ( $cat->catcount > 0 ) {
-			$catlink = JRoute::_("index.php?option=com_digicom&controller=categories&task=view&cid=".$cat->id."&Itemid=".$Itemid);
-		} else {
-			$catlink = JRoute::_("index.php?option=com_digicom&controller=products&task=list&cid=".$cat->id."&Itemid=".$Itemid);
+		if (empty($config['filter_fields']))
+		{
+			$config['filter_fields'] = array(
+				'id', 'a.id',
+				'title', 'a.title',
+				'hits', 'a.hits',
+				'ordering', 'a.ordering',
+			);
 		}
 
-		$output .= "<a href='".$catlink."'>" . $cat->name . "</a> (" . $cat->catcount . " categories / ".$cat->prodcount." products )" ;
+		parent::__construct($config);
+	}
 
-		foreach($cats as $tcat) {
-			if ($tcat->parent_id == $cat->id) {
-				$output .= $this->__showCategoriesItem( $level + 1, $tcat, $cats, $output );
+	/**
+	 * The category that applies.
+	 *
+	 * @access    protected
+	 * @var        object
+	 */
+	protected $_category = null;
+
+	/**
+	 * The list of other product categories.
+	 *
+	 * @access    protected
+	 * @var        array
+	 */
+	protected $_categories = null;
+
+	/**
+	 * Method to get a list of items.
+	 *
+	 * @return  mixed  An array of objects on success, false on failure.
+	 */
+	public function getItems()
+	{
+		// Invoke the parent getItems method to get the main list
+		$items = parent::getItems();
+
+		// Convert the params field into an object, saving original in _params
+		/*foreach ($items as $item)
+		{
+			if (!isset($this->_params))
+			{
+				$params = new JRegistry;
+				$params->loadString($item->params);
+				$item->params = $params;
+			}
+			// Get the tags
+			$item->tags = new JHelperTags;
+			$item->tags->getItemTags('com_digicom.product', $item->id);
+		}
+		*/
+		return $items;
+	}
+
+	/**
+	 * Method to build an SQL query to load the list data.
+	 *
+	 * @return  string    An SQL query
+	 * @since   1.6
+	 */
+	protected function getListQuery()
+	{
+		$user = JFactory::getUser();
+		$groups = implode(',', $user->getAuthorisedViewLevels());
+
+		// Create a new query object.
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+
+		// Select required fields from the categories.
+		$query->select($this->getState('list.select', 'a.*'))
+			->from($db->quoteName('#__digicom_products') . ' AS a')
+			->where('a.access IN (' . $groups . ')');
+
+		// Filter by category.
+		if ($categoryId = $this->getState('category.id'))
+		{
+			$query->where('a.catid = ' . (int) $categoryId)
+				->join('LEFT', '#__categories AS c ON c.id = a.catid')
+				->where('c.access IN (' . $groups . ')');
+
+			//Filter by published category
+			$cpublished = $this->getState('filter.c.published');
+			if (is_numeric($cpublished))
+			{
+				$query->where('c.published = ' . (int) $cpublished);
 			}
 		}
 
-		$output .= "</li>";
-		$output .= "</ul>";
+		// Join over the users for the author and modified_by names.
+		//$query->select("CASE WHEN a.created_by_alias > ' ' THEN a.created_by_alias ELSE ua.name END AS author")
+		$query->select("ua.name AS author")
+			->select("ua.email AS author_email")
+
+			->join('LEFT', '#__users AS ua ON ua.id = a.created_by')
+			->join('LEFT', '#__users AS uam ON uam.id = a.modified_by');
+
+		// Filter by state
+
+		$state = $this->getState('filter.state');
+		if (is_numeric($state))
+		{
+			$query->where('a.published = ' . (int) $state);
+		}
+		// do not show trashed links on the front-end
+		$query->where('a.published != -2');
+
+		// Filter by start and end dates.
+		$nullDate = $db->quote($db->getNullDate());
+		$date = JFactory::getDate();
+		$nowDate = $db->quote($date->toSql());
+
+		if ($this->getState('filter.publish_date'))
+		{
+			$query->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')')
+				->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
+		}
+
+		// Filter by language
+		if ($this->getState('filter.language'))
+		{
+			$query->where('a.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
+		}
+
+		// Filter by search in title
+		$search = $this->getState('list.filter');
+		if (!empty($search))
+		{
+			$search = $db->quote('%' . $db->escape($search, true) . '%');
+			$query->where('(a.title LIKE ' . $search . ')');
+		}
+
+		// Add the list ordering clause.
+		$query->order($db->escape($this->getState('list.ordering', 'a.ordering')) . ' ' . $db->escape($this->getState('list.direction', 'ASC')));
+		return $query;
 	}
 
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since   1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$app = JFactory::getApplication();
+		$params = JComponentHelper::getParams('com_digicom');
 
-	function getCategoriesTree() {
+		// List state information
+		$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->get('list_limit'), 'uint');
+		$this->setState('list.limit', $limit);
+
+		$limitstart = $app->input->get('limitstart', 0, 'uint');
+		$this->setState('list.start', $limitstart);
+
+		// Optional filter text
+		$this->setState('list.filter', $app->input->getString('filter-search'));
+
+		$orderCol = $app->input->get('filter_order', 'ordering');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 'ordering';
+		}
+		$this->setState('list.ordering', $orderCol);
+
+		$listOrder = $app->input->get('filter_order_Dir', 'ASC');
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+		$this->setState('list.direction', $listOrder);
+
+		$id = $app->input->get('id', 0, 'int');
+		$this->setState('category.id', $id);
 
 		$user = JFactory::getUser();
+		if ((!$user->authorise('core.edit.state', 'com_digicom')) && (!$user->authorise('core.edit', 'com_digicom')))
+		{
+			// limit to published for people who can't edit or edit.state.
+			$this->setState('filter.state', 1);
 
-		$where[] = " c.published=1 ";
-		//$where[] = " c.access <= ".$user->gid;
+			// Filter by start and end dates.
+			$this->setState('filter.publish_date', true);
+		}
 
+		$this->setState('filter.language', JLanguageMultilang::isEnabled());
 
-		$sql ="select c.id, c.name, c.parent_id
-				from #__digicom_categories c
-				where " . implode(" and ", $where) . "
-				order by c.ordering asc";
-		$this->_db->setQuery($sql);
-		$cats = $this->_db->loadObjectList();
-		$this->getCategoriesTreeIterator( 0, 0, $cats ); 
-		return $this->__showCategories( $cats );
+		// Load the parameters.
+		$this->setState('params', $params);
 	}
 
+	/**
+	 * Method to get category data for the current category
+	 *
+	 * @param   integer  An optional ID
+	 *
+	 * @return  object
+	 * @since   1.5
+	 */
+	public function getCategory()
+	{
+		if (!is_object($this->_item))
+		{
+			$app = JFactory::getApplication();
+			$menu = $app->getMenu();
+			$active = $menu->getActive();
+			$params = new JRegistry;
 
-	function getCategoriesTreeIterator( $id,  $level, & $cats ) {
+			if ($active)
+			{
+				$params->loadString($active->params);
+			}
 
-		foreach( $cats as $key => $tcat ) {
-
-			$cat = $cats[$key];
-
-			if ($tcat->parent_id == $id) {
-
-				$sql = "select count(*) from #__digicom_categories c where parent_id=".$tcat->id;
-				$this->_db->setQuery($sql);
-				$cat->catcount = $this->_db->loadResult();
-
-				$sql = "select count(*) from #__digicom_products p 
-						inner join #__digicom_product_categories c on (p.id = c.productid) 
-						where c.catid=".$tcat->id;
-				$this->_db->setQuery($sql);
-				$cat->prodcount = $this->_db->loadResult();
-
-				$this->getCategoriesTreeIterator( $cat->id, $level + 1, $cats );
+			$options = array();
+			$options['countItems'] = $params->get('show_cat_num_links_cat', 1) || $params->get('show_empty_categories', 0);
+			$categories = JCategories::getInstance('DigiCom', $options);
+			$this->_item = $categories->get($this->getState('category.id', 'root'));
+			
+			if (is_object($this->_item))
+			{
+				$this->_children = $this->_item->getChildren();
+				$this->_parent = false;
+				if ($this->_item->getParent())
+				{
+					$this->_parent = $this->_item->getParent();
+				}
+				$this->_rightsibling = $this->_item->getSibling();
+				$this->_leftsibling = $this->_item->getSibling(false);
+			}
+			else
+			{
+				$this->_children = false;
+				$this->_parent = false;
 			}
 		}
+
+		return $this->_item;
 	}
 
-	function getCategoryCategories($id = 0) {
-		if (empty ($this->_category) && !$id) {
+	/**
+	 * Get the parent category
+	 *
+	 * @param   integer  An optional category id. If not supplied, the model state 'category.id' will be used.
+	 *
+	 * @return  mixed  An array of categories or false if an error occurs.
+	 */
+	public function getParent()
+	{
+		if (!is_object($this->_item))
+		{
 			$this->getCategory();
 		}
-		$this->_categorycats = null;
-		if ((isset($this->_category->id) && !$this->_category->id) && !$id) return null;
-		$db = JFactory::getDBO();
-
-		$user = JFactory::getUser();
-
-		if (empty ($this->_categorycats)) {
-			$where[] = " c.published=1 ";
-			//$where[] = " c.access <= ".$user->gid;
-/*
-			$where[] = " ((select count(p.id) from #__digicom_products p where 
-					p.hide_public = 0 and
-					p.id IN (
-							SELECT productid
-							FROM #__digicom_product_categories
-							WHERE catid = c.id
-						)
-					) > 0 or (select count(cc.id) from #__digicom_categories cc where cc.parent_id=c.id and cc.published=1) > 0 )";
-*/
-			$sql = "select c.* from #__digicom_categories c where parent_id='".(($id < 1)? $this->_category->id:$id)."'".
-				(count($where) > 0? " and ": "") .
-				implode (" and ", $where);
-				;
-
-			$this->_total = @$this->_getListCount($sql);
-			$order = " order by ordering asc ";
-			$x2 = $this->_getList($sql.$order, $this->getState('limitstart'), $this->getState('limit'));
-			
-			$x = array();
-			foreach( $x2 as $xi){
-				$subids = DigiComHelper::getSubCategoriesId($xi->id);
-				$subids = array_merge(array($xi->id),$subids);
-				$sql = 'select count(p.id) from #__digicom_products p where 
-					p.hide_public = 0 and
-					p.id IN (SELECT productid
-							FROM #__digicom_product_categories
-							WHERE catid IN ('.implode(',', $subids).'))';
-				$db->setQuery($sql);
-				$res = $db->loadResult();
-				if($res){
-					$x[]=$xi;
-				}
-			}
-
-			$this->_categorycats = $x;
-		}
-
-		return $this->_categorycats;
+		return $this->_parent;
 	}
 
-}
+	/**
+	 * Get the sibling (adjacent) categories.
+	 *
+	 * @return  mixed  An array of categories or false if an error occurs.
+	 */
+	function &getLeftSibling()
+	{
+		if (!is_object($this->_item))
+		{
+			$this->getCategory();
+		}
+		return $this->_leftsibling;
+	}
 
+	function &getRightSibling()
+	{
+		if (!is_object($this->_item))
+		{
+			$this->getCategory();
+		}
+		return $this->_rightsibling;
+	}
+
+	/**
+	 * Get the child categories.
+	 *
+	 * @param   integer  An optional category id. If not supplied, the model state 'category.id' will be used.
+	 *
+	 * @return  mixed  An array of categories or false if an error occurs.
+	 */
+	function &getChildren()
+	{
+		if (!is_object($this->_item))
+		{
+			$this->getCategory();
+		}
+
+		return $this->_children;
+	}
+
+	/**
+	 * Increment the hit counter for the category.
+	 *
+	 * @param   int  $pk  Optional primary key of the category to increment.
+	 *
+	 * @return  boolean True if successful; false otherwise and internal error set.
+	 *
+	 * @since   3.2
+	 */
+	public function hit($pk = 0)
+	{
+		$input    = JFactory::getApplication()->input;
+		$hitcount = $input->getInt('hitcount', 1);
+
+		if ($hitcount)
+		{
+			$pk    = (!empty($pk)) ? $pk : (int) $this->getState('category.id');
+			$table = JTable::getInstance('Category', 'JTable');
+			$table->load($pk);
+			$table->hit($pk);
+		}
+
+		return true;
+	}
+}

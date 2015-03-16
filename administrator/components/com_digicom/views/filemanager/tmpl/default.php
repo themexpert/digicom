@@ -25,7 +25,7 @@ $mosConfig_absolute_path = JPATH_ROOT;
 						jQuery(document).ready(function() {
 							var basePath = '<?php echo JURI::root(true); ?>';
 							var elf = jQuery('#elfinder').elfinder({
-								url : '<?php echo JURI::base(true); ?>/index.php?option=com_digicom&controller=filemanager&task=connector&no_html=1',
+								url : '<?php echo JURI::base(true); ?>/index.php?option=com_digicom&view=filemanager&task=filemanager.connector&no_html=1',
 								<?php if($this->mimes): ?>
 								onlyMimes: [<?php echo $this->mimes; ?>],
 								<?php endif; ?>

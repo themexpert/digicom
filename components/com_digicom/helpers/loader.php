@@ -22,13 +22,11 @@ if ($isJ25) {
 	class DigiComModel		extends JModelLegacy {}
 	class DigiComView		extends JViewLegacy {}
 }
-// Config Singelton
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'config.php' );
 // Debug and Log helper
 require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'helper.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'log.php' );
+//require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'log.php' );
 // Image Helper
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php' );
+//require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php' );
 // Google Analitics
 require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'google.php' );
 // session handler
@@ -62,7 +60,6 @@ if(strlen(trim($view)) > 0 && strlen(trim($controller)) < 1){
 			"categories" => "categories",
 			"products" => "products",
 			"downloads" => "downloads",
-			"dashboard" => "dashboard",
 			"profile" => "profile");
 	$layout_to_task = array("");
 	$controller = @$view_to_controller[strtolower($view)];

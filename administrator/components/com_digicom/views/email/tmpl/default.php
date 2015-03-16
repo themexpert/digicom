@@ -18,7 +18,7 @@ $input = $app->input;
 $input->set('layout', 'dgform');
 //$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=email'); ?>" id="adminForm" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
+<form action="<?php echo JRoute::_('index.php?option=com_digicom&view=email'); ?>" id="adminForm" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
 	<?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="">
 		<?php echo $this->sidebar; ?>
@@ -33,9 +33,9 @@ $input->set('layout', 'dgform');
 					<?php echo JText::_( "HEADER_EMAIL_SETTINGS" ); ?>
 				</div>
 				<ul class="nav nav-tabs">
-				  <li role="presentation" class="active"><a href="<?php echo JRoute::_('index.php?option=com_digicom&controller=email'); ?>">Register</a></li>
-				  <li role="presentation"><a href="<?php echo JRoute::_('index.php?option=com_digicom&controller=email&type=order'); ?>">Order</a></li>
-				  <li role="presentation"><a href="<?php echo JRoute::_('index.php?option=com_digicom&controller=email&type=approved'); ?>">Approved</a></li>
+				  <li role="presentation" class="active"><a href="<?php echo JRoute::_('index.php?option=com_digicom&view=email'); ?>">Register</a></li>
+				  <li role="presentation"><a href="<?php echo JRoute::_('index.php?option=com_digicom&view=email&type=order'); ?>">Order</a></li>
+				  <li role="presentation"><a href="<?php echo JRoute::_('index.php?option=com_digicom&view=email&type=approved'); ?>">Approved</a></li>
 				</ul>
 
 				<div class="tab-content">
@@ -55,11 +55,11 @@ $input->set('layout', 'dgform');
 							</label>
 						</div>
 						<div class="controls">
-							<input type="text" value="<?php echo $this->template->subject; ?>" name="subject" class="xlarge"/>
+							<?php echo $this->form->getInput('subject'); ?>
 						</div>
 					</div>
 					<div class="control-group ">
-						<textarea id="register_editor" name="body" class="useredactor" style="width:90%;height:450px;"><?php echo $this->template->body; ?></textarea>
+						<?php echo $this->form->getInput('body'); ?>
 					</div>
 					
 				</fieldset>
@@ -121,8 +121,9 @@ $input->set('layout', 'dgform');
 		
 	</div>
 	<div>
-		<input type="hidden" name="type" value="register" />
-		<input type="hidden" name="controller" value="email" />
+		<input type="hidden" name="jform[type]" value="register" />
+		<input type="hidden" name="jform[id]" value="<?php echo $this->item->id; ?>" />
+		<input type="hidden" name="view" value="email" />
 		<input type="hidden" name="task" value="" />
 		<?php echo JHtml::_('form.token'); ?>
 	</div>

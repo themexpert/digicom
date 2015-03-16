@@ -12,7 +12,7 @@ defined ('_JEXEC') or die ("Go away.");
 
 jimport ("joomla.application.component.view");
 
-class DigiComAdminViewCustomers extends DigiComView {
+class DigiComViewCustomers extends JViewLegacy {
 
 	function display ($tpl =  null )
 	{
@@ -42,8 +42,8 @@ class DigiComAdminViewCustomers extends DigiComView {
 		//set toolber
 		$this->addToolbar();
 		
-		DigiComAdminHelper::addSubmenu('customers');
-		$this->sidebar = DigiComAdminHelper::renderSidebar();
+		DigiComHelperDigiCom::addSubmenu('customers');
+		$this->sidebar = DigiComHelperDigiCom::renderSidebar();
 		
 		parent::display($tpl);
 
@@ -64,7 +64,8 @@ class DigiComAdminViewCustomers extends DigiComView {
 	}
 
 	function editForm($tpl = null) {
-		require_once( JPATH_COMPONENT.DS.'helpers'.DS.'sajax.php' );
+		
+		//require_once( JPATH_COMPONENT.DS.'helpers'.DS.'sajax.php' );
 		$db = JFactory::getDBO();
 		$customer = $this->get('customer');
 		$user = $this->get('User');
@@ -98,32 +99,32 @@ class DigiComAdminViewCustomers extends DigiComView {
 		$this->assign("user", $user);
 
 		$configs = $this->get("Configs");
-		$country_option = DigiComAdminHelper::get_country_options($customer, false, $configs);
-		$lists['country_option'] = $country_option;
+		//$country_option = DigiComHelperDigiCom::get_country_options($customer, false, $configs);
+		//$lists['country_option'] = $country_option;
 
 		$profile = new StdClass();
 		$profile->country = $customer->shipcountry;
 		$profile->state = $customer->shipstate;
-		$shipcountry_option = DigiComAdminHelper::get_country_options($customer, true, $configs);
-		$lists['shipcountry_options'] = $shipcountry_option;
+		//$shipcountry_option = DigiComHelperDigiCom::get_country_options($customer, true, $configs);
+		//$lists['shipcountry_options'] = $shipcountry_option;
 
-		$lists['customerlocation'] = DigiComAdminHelper::get_store_province($customer);
+		//$lists['customerlocation'] = DigiComHelperDigiCom::get_store_province($customer);
 
 		$profile = new StdClass();
 		$profile->country = $customer->shipcountry;
 		$profile->state = $customer->shipstate;
-		$lists['customershippinglocation'] = DigiComAdminHelper::get_store_province($profile, true, $configs);
+		//$lists['customershippinglocation'] = DigiComHelperDigiCom::get_store_province($profile, true, $configs);
 
 		$cclasses = explode("\n", $customer->taxclass);
 
-		$this->assign("lists", $lists);
+		//$this->assign("lists", $lists);
 		$keyword = JRequest::getVar("keyword", "", "request");
 		$this->assign ("keyword", $keyword);
 		
 		$this->assign("configs", $configs);
 		
-		DigiComAdminHelper::addSubmenu('customers');
-		$this->sidebar = DigiComAdminHelper::renderSidebar();
+		DigiComHelperDigiCom::addSubmenu('customers');
+		$this->sidebar = DigiComHelperDigiCom::renderSidebar();
 
 		parent::display($tpl);
 	}

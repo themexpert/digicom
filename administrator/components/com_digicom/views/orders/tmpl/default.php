@@ -21,7 +21,7 @@ $document = JFactory::getDocument();
 
 $k = 0;
 $n = count( $this->orders );
-$configs = $this->configs;
+$configs = JComponentHelper::getComponent('com_digicom')->params;
 $f = $configs->get('time_format','DD-MM-YYYY');
 $f = str_replace( "-", "-%", $f );
 $f = "%" . $f;
@@ -50,7 +50,7 @@ Joomla.submitbutton = function (pressbutton) {
 <?php else : ?>
 <div id="j-main-container" class="">
 <?php endif;?>
-	<form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&controller=orders'); ?>" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
+	<form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&view=orders'); ?>" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
 		<div class="js-stools">
 			<div class="clearfix">
 				<div class="btn-wrapper input-append">
@@ -127,12 +127,11 @@ Joomla.submitbutton = function (pressbutton) {
 
 					$id = $order->id;
 					$checked = JHTML::_( 'grid.id', $i, $id );
-					$link = JRoute::_( "index.php?option=com_digicom&controller=licenses&task=list&oid[]=" . $id );
-					$olink = JRoute::_( "index.php?option=com_digicom&controller=orders&task=show&cid[]=" . $id );
-					$customerlink = JRoute::_( "index.php?option=com_digicom&controller=customers&task=edit&cid[]=" . $order->userid );
+					$olink = JRoute::_( "index.php?option=com_digicom&view=order&task=order.edit&id=" . $id );
+					$customerlink = JRoute::_( "index.php?option=com_digicom&view=customer&task=customer.edit&id=" . $order->userid );
 					$order->published = 1;
 					$published = JHTML::_( 'grid.published', $order, $i );
-					$orderstatuslink = JRoute::_( "index.php?option=com_digicom&controller=orders&task=cycleStatus&cid[]=" . $id );
+					$orderstatuslink = JRoute::_( "index.php?option=com_digicom&view=orders&task=orders.cycleStatus&id=" . $id );
 					$userlink = "index.php?option=com_users&view=users&filter_search=".$order->username;
 
 				?>
@@ -158,7 +157,7 @@ Joomla.submitbutton = function (pressbutton) {
 								//$chargebacks = DigiComAdminModelOrder::getChargebacks($order->id);
 								//$order->amount_paid = $order->amount_paid - $refunds - $chargebacks;
 								$order->amount_paid = $order->amount_paid;
-								echo DigiComAdminHelper::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs); 
+								echo DigiComHelperDigiCom::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs); 
 								
 							?>
 						</td>
@@ -216,6 +215,7 @@ Joomla.submitbutton = function (pressbutton) {
 		<input type="hidden" name="option" value="com_digicom" />
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />
-		<input type="hidden" name="controller" value="orders" />
+		<input type="hidden" name="view" value="orders" />
+		<?php echo JHtml::_('form.token'); ?>
 	</form>
 </div>

@@ -10,13 +10,36 @@
 
 defined ('_JEXEC') or die ("Go away.");
 
-jimport ("joomla.aplication.component.model");
-
-
-class DigiComAdminModelEmail extends DigiComModel
+class DigiComModelEmail extends JModelAdmin
 {
 
-	function getItems () {
+	/**
+	 * The type alias for this content type.
+	 *
+	 * @var    string
+	 * @since  3.2
+	 */
+	public $typeAlias = 'com_digicom.email';
+
+	/**
+	 * The prefix to use with controller messages.
+	 *
+	 * @var    string
+	 * @since  1.6
+	 */
+	protected $text_prefix = 'COM_DIGICOM_EMAIL';
+
+	/**
+	 * Method to get a single record.
+	 *
+	 * @param   integer  $pk  The id of the primary key.
+	 *
+	 * @return  mixed  Object on success, false on failure.
+	 *
+	 * @since   1.6
+	 */
+
+	function getItem ($pk = NULL) {
 
 		$type = JRequest::getVar('type','register','string');
 		$db = JFactory::getDBO();
@@ -31,7 +54,8 @@ class DigiComAdminModelEmail extends DigiComModel
 	}
 
 
-	function store () {
+	public function save($data){
+		print_r($data);die;
 		$item = $this->getTable('MailTemplates');
 		$data = JRequest::get('post');
 		$item->load(array('type'=>$data['type']));
@@ -55,5 +79,44 @@ class DigiComAdminModelEmail extends DigiComModel
 		return true;
 
 	}
+
+	/**
+	 * Method to get the row form.
+	 *
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 *
+	 * @return  mixed    A JForm object on success, false on failure
+	 *
+	 * @since   1.6
+	 */
+	public function getForm($data = array(), $loadData = true)
+	{
+		$form = $this->loadForm('com_digicom.email', 'email', array('control' => 'jform', 'load_data' => $loadData));
+		
+		if (empty($form))
+		{
+			return false;
+		}
+		
+		return $form;
+	}
+
+	/**
+	 * Method to get a table object, load it if necessary.
+	 *
+	 * @param   string  $type    The table name. Optional.
+	 * @param   string  $prefix  The class prefix. Optional.
+	 * @param   array   $config  Configuration array for model. Optional.
+	 *
+	 * @return  JTable  A JTable object
+	 *
+	 * @since   1.6
+	 */
+	public function getTable($type = 'MailTemplates', $prefix = 'Table', $config = array())
+	{
+		return JTable::getInstance($type, $prefix, $config);
+	}
+
 
 }

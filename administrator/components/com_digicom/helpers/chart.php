@@ -13,7 +13,7 @@ defined ('_JEXEC') or die ("Go away.");
 // error_reporting( E_ALL );
 // error_reporting(E_ALL);
 
-class DigiComChart {
+class DigiComHelperChart {
 
 	public static function test(){
 		return 'working';
@@ -54,7 +54,7 @@ class DigiComChart {
 		$price = '';
 		$prefix = '';
 		foreach($days as $day){
-			$dayPrice = ceil(DigiComChart::getAmountDaily($day));
+			$dayPrice = ceil(DigiComHelperChart::getAmountDaily($day));
 			$price = $price . $prefix . $dayPrice;
 			$prefix = ', ';
 		}
@@ -80,7 +80,7 @@ class DigiComChart {
 		$db->setQuery($sql);
 		$db->query();
 		$price = $db->loadResult();
-		$result = DigiComAdminHelper::format_price($price, $config->get('currency','USD'), true, $config);
+		$result = DigiComHelperDigiCom::format_price($price, $config->get('currency','USD'), true, $config);
 		return $result;
 	}
 	
@@ -373,7 +373,7 @@ class DigiComChart {
 					$padding = ($sum * 270) / $total;
 					$padding = intval(270 - $padding);
 					$padding = $padding > 258 ? 258 : $padding;
-					$sum = DigiComAdminHelper::format_price($sum, $configs->get('currency','USD'), true, $configs);
+					$sum = DigiComHelperDigiCom::format_price($sum, $configs->get('currency','USD'), true, $configs);
 				}
 				else{
 					$padding = 270;

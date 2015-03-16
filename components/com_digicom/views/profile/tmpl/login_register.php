@@ -35,7 +35,7 @@ $Itemid = JRequest::getInt("Itemid", 0);
 </a>
 
 <?php
-	if($this->configs->get('show_steps',1) == 1){
+	if($this->configs->get('show_steps',0) == 0){
 ?>
 		<div class="pagination pagination-centered">
 			<ul>

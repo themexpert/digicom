@@ -10,25 +10,32 @@
 
 defined ('_JEXEC') or die ("Go away.");
 
-jimport ("joomla.application.component.view");
 
-class DigiComAdminViewEmail extends DigiComView {
+class DigiComViewEmail extends JViewLegacy {
+
+	protected $state;
+
+	protected $item;
+
+	protected $form;
+	
+	protected $configs;
 
 	function display($tpl =  null){
 		
-		DigiComAdminHelper::addSubmenu('email');
-		$this->sidebar = DigiComAdminHelper::renderSidebar();
-		
+		$this->state	= $this->get('State');
+		$this->item		= $this->get('Item');
+		$this->form		= $this->get('Form');
+		$this->configs 	= $this->get('configs');
+
 		$type = JRequest::getVar("type", "");
 		
 		if($type) $this->setLayout($type);
 		
 		//toolber
 		$this->addToolbar();
-		
-		$template = $this->get('Items');
-		//print_r($template);die;
-		$this->template = $template;
+		DigiComHelperDigiCom::addSubmenu('email');
+		$this->sidebar = DigiComHelperDigiCom::renderSidebar();
 		
 		parent::display($tpl);
 	}
@@ -54,7 +61,7 @@ class DigiComAdminViewEmail extends DigiComView {
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
 		
-		JToolBarHelper::save();
-		JToolBarHelper::apply();
+		JToolBarHelper::save('email.save');
+		JToolBarHelper::apply('email.apply');
 	}
 }

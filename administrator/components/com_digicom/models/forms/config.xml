@@ -190,8 +190,8 @@
 					<option value="0">VIEWCONFIGAFTERBUYINGTOLICENSE</option>
 					<option value="1">VIEWCONFIGAFTERBUYINGTOORDER</option>
 			</field>
-
 		</fieldset>
+		
 		<fieldset name="CURRENCY" addfieldpath="/administrator/components/com_digicom/models/fields">
 			<field
 				name="decimaldigits"
@@ -242,8 +242,8 @@
 				label="COM_DIGICOM_THOUSANDS_GROUP_SYMBOL"
 				default=","
 				description="COM_DIGICOM_THOUSANDS_GROUP_SYMBOL_DESC" />
-			
 		</fieldset>
+		
 		<fieldset name="CONTENTS">
 			<field
 				name="content_spacer"
@@ -279,8 +279,8 @@
 				buttons="true"
 				height="200px" 
 				filter="safehtml" />
-			
 		</fieldset>
+		
 		<fieldset name="STORE">
 			<field
 				name="store_spacer"
@@ -303,49 +303,15 @@
 				label="VIEWCONFIGCATSTOREURL"
 				default="DigiCom Store"
 				description="COM_DIGICOM_STOREURL_TIP" />
-			<field 
-				name="store_email"
-				type="text"
-				class="btn-group"
-				label="VIEWCONFIGCATSTOREEMAIL"
-				description="COM_DIGICOM_STOREEMAIL_TIP" />
-			
-			<field 
-				name="usestoremail"
-				type="checkbox"
-				label="VIEWCONFIGUSESTOREMAIL"
-				description="COM_DIGICOM_USESTOREMAIL_TIP" />
-			<field 
-				name="sendmailtoadmin"
-				type="list"
-				class="btn-group"
-				label="VIEWCONFIGCOPYTOADMIN"
-				description="COM_DIGICOM_STORESENDEMAIL_TIP">
-					<option value="0">VIEWCONFIGCOPYTOADMINYESNO</option>
-					<option value="1">VIEWCONFIGCOPYTOADMINYES</option>
-			</field>
 			
 			<field 
 				name="country"
-				type="countryoption"
-				class="btn-group"
+				type="text"
 				label="VIEWCONFIGSELECTCOUNTRY"
-				onchange="changeProvince();"
 				description="COM_DIGICOM_STORECOUNTRY_TIP" />
-			<!--
-			<field 
-				name="state"
-				type="stateoption"
-				class="btn-group"
-				wrapper="province"
-				id="sel_province"
-				label="VIEWCONFIGSTORESTATE"
-				description="COM_DIGICOM_STORESTATE_TIP" />
-			-->
 			<field 
 				name="state"
 				type="text"
-				class="btn-group"
 				label="VIEWCONFIGSTORESTATE"
 				description="COM_DIGICOM_STORESTATE_TIP" />
 			
@@ -406,6 +372,7 @@
 				label="VIEWCONFIGSTOREDESC"
 				description="COM_DIGICOM_STOREDESC_TIP" />
 		</fieldset>
+		
 		<fieldset name="THEME" addfieldpath="/administrator/components/com_digicom/models/fields">
 			<field
 				name="theme_spacer"
@@ -432,6 +399,32 @@
 				<option value="6">6</option>
 			</field>
 		</fieldset>
+
+		<fieldset name="email_settings" addfieldpath="/administrator/components/com_digicom/models/fields"
+			label="COM_DIGICOM_EMAIL_SETTINGS_LABEL"
+			description="COM_DIGICOM_EMAIL_SETTINGS_DESC">
+			
+			<field
+				name="email_from_name"
+				type="text"
+				label="COM_DIGICOM_EMAIL_FROM_NAME_LABEL"
+				description="COM_DIGICOM_EMAIL_FROM_NAME_DESC"
+				/>
+			<field
+				name="email_from"
+				type="email"
+				label="COM_DIGICOM_EMAIL_FROM_LABEL"
+				description="COM_DIGICOM_EMAIL_FROM_DESC"
+				/>
+			<field
+				name="email"
+				type="systememail"
+				class="systememail"
+				label="COM_DIGICOM_SYSTEM_EMAIL_LABEL"
+				description="COM_DIGICOM_SYSTEM_EMAIL_DESC"
+				/>
+		</fieldset>
+		
 	</fields>
 			
 </form>

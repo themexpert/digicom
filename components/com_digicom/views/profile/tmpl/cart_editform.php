@@ -242,7 +242,7 @@ function populateShipping () {
 
 <tr>
 	<td>
-		<h3 class="digi-section-title"><?php echo JText::_("DSLOGININFO"); ?></h3>
+		<h2><?php echo JText::_("DSLOGININFO"); ?></h2>
 	</td>
 	<td>&nbsp;</td>
 </tr>
@@ -363,7 +363,7 @@ function populateShipping () {
 
 		<tr>
 			<td>
-				<h3 class="digi-section-title"><?php echo JText::_("DSBILLINGADR"); ?></h3>
+				<h2><?php echo JText::_("DSBILLINGADR"); ?></h2>
 			</td>
 			<td>&nbsp;</td>
 		</tr>

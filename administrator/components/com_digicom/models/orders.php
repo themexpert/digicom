@@ -1,7 +1,6 @@
 <?php
 
 /**
-
  *
  * @package			DigiCom Joomla Extension
  * @author			themexpert.com
@@ -11,12 +10,9 @@
  * @license			GNU/GPLv3 */
 defined( '_JEXEC' ) or die( "Go away." );
 
-jimport('joomla.application.component.modellist');
-jimport('joomla.utilities.date');
+class DigiComModelOrders extends JModelList{
 
-class DigiComAdminModelOrders extends JModelList{
-
-	protected $_context = 'com_digicom.Order';
+	protected $_context = 'com_digicom.order';
 	var $_orders;
 	var $_order;
 	var $_id = null;
@@ -230,7 +226,7 @@ class DigiComAdminModelOrders extends JModelList{
 	
 	function _getRate($ptc, $pc, $cust)
 	{
-		$configs = $this->getInstance("Config", "DigiComAdminModel");
+		$configs = $this->getInstance("Config", "DigiComModelConfig");
 		$configs = $configs->getConfigs();
 		$db = JFactory::getDBO();
 
@@ -274,7 +270,7 @@ class DigiComAdminModelOrders extends JModelList{
 	function getTax( $product_id, $cust_id, &$price ){
 		$db = JFactory::getDBO();
 
-		$configs = $this->getInstance("Config", "DigiComAdminModel");
+		$configs = $this->getInstance("Config", "DigiComModelConfig");
 		$configs = $configs->getConfigs();
 
 		$sql = "select * from #__digicom_tax_productclass order by ordering asc";
@@ -317,8 +313,7 @@ class DigiComAdminModelOrders extends JModelList{
 
 
 	function calcPrice($req){
-		$c = $this->getInstance( "Config", "DigiComAdminModel" );
-		$configs = $c->getConfigs();
+		$configs = JComponentHelper::getComponent('com_digicom')->params;
 
 		$result = array();
 		$amount_subtotal = 0;
@@ -333,7 +328,7 @@ class DigiComAdminModelOrders extends JModelList{
 		$addPromo = false;
 		$ontotal = false;
 		$onProduct = false;
-		if($req->promocode != "none"){
+		if($req->promocode !='none'){
 
 			$q = "select * from #__digicom_promocodes where code = '".trim($req->promocode)."'";
 			$this->_db->setQuery($q);
@@ -443,14 +438,14 @@ class DigiComAdminModelOrders extends JModelList{
 		$amount_subtotal = $amount_subtotal < 0 ? "0.00" : $amount_subtotal;
 		$amount = $amount < 0 ? "0.00" : $amount;
 
-		$result['amount'] = trim( DigiComAdminHelper::format_price( $amount_subtotal, $configs->get('currency','USD'), true, $configs ) );
-		$result['amount_value'] = trim( DigiComAdminHelper::format_price( $amount_subtotal, $configs->get('currency','USD'), false, $configs ) );
-		$result['tax_value'] = trim( DigiComAdminHelper::format_price( $taxvalue, $configs->get('currency','USD'), false, $configs ) );
-		$result['tax'] = trim( DigiComAdminHelper::format_price( $taxvalue, $configs->get('currency','USD'), true, $configs ) );;
-		$result['discount_sign'] = trim( DigiComAdminHelper::format_price( $promovalue, $configs->get('currency','USD'), true, $configs ) );
-		$result['discount'] = trim( DigiComAdminHelper::format_price( $promovalue, $configs->get('currency','USD'), false, $configs ) );
-		$result['total'] = trim( DigiComAdminHelper::format_price( $amount, $configs->get('currency','USD'), true, $configs ) );
-		$result['total_value'] = trim( DigiComAdminHelper::format_price( $amount, $configs->get('currency','USD'), false, $configs ) );
+		$result['amount'] = trim( DigiComHelperDigiCom::format_price( $amount_subtotal, $configs->get('currency','USD'), true, $configs ) );
+		$result['amount_value'] = trim( DigiComHelperDigiCom::format_price( $amount_subtotal, $configs->get('currency','USD'), false, $configs ) );
+		$result['tax_value'] = trim( DigiComHelperDigiCom::format_price( $taxvalue, $configs->get('currency','USD'), false, $configs ) );
+		$result['tax'] = trim( DigiComHelperDigiCom::format_price( $taxvalue, $configs->get('currency','USD'), true, $configs ) );;
+		$result['discount_sign'] = trim( DigiComHelperDigiCom::format_price( $promovalue, $configs->get('currency','USD'), true, $configs ) );
+		$result['discount'] = trim( DigiComHelperDigiCom::format_price( $promovalue, $configs->get('currency','USD'), false, $configs ) );
+		$result['total'] = trim( DigiComHelperDigiCom::format_price( $amount, $configs->get('currency','USD'), true, $configs ) );
+		$result['total_value'] = trim( DigiComHelperDigiCom::format_price( $amount, $configs->get('currency','USD'), false, $configs ) );
 		$result['currency'] = $configs->get('currency','USD');
 		$result['shipping'] = 0;
 
@@ -465,7 +460,7 @@ class DigiComAdminModelOrders extends JModelList{
 
 	protected function getListQuery(){
 		$db = JFactory::getDBO();
-		$c = $this->getInstance( "Config", "DigiComAdminModel" );
+		$c = $this->getInstance( "Config", "DigiComModel" );
 		$configs = $c->getConfigs();
 
 		$startdate = JRequest::getVar("startdate", "", "request");
@@ -568,7 +563,7 @@ class DigiComAdminModelOrders extends JModelList{
 
 	/*function getlistOrders(){
 		if ( empty( $this->_orders ) ) {
-			$c = $this->getInstance( "Config", "DigiComAdminModel" );
+			$c = $this->getInstance( "Config", "DigiComModelConfig" );
 			$configs = $c->getConfigs();
 
 			$startdate = JRequest::getVar("startdate", "", "request");
@@ -725,8 +720,8 @@ class DigiComAdminModelOrders extends JModelList{
 
 	function cycleStatus(){
 		$db = JFactory::getDBO();
-		$cids = JRequest::getVar( 'cid', array(0), 'request', 'array' );
-		$sql = "select status from #__digicom_orders where  id in ('" . implode( "','", $cids ) . "')";
+		$cids = JRequest::getVar( 'id');
+		$sql = "select status from #__digicom_orders where id ='" . $cids . "'";
 		$db->setQuery( $sql );
 
 		$status = $db->loadResult();
@@ -742,7 +737,7 @@ class DigiComAdminModelOrders extends JModelList{
 		if ( $statid > $max_status )
 			$statid = 0;
 		$status = $this->_statusList[$statid];
-		$sql = "update #__digicom_orders set status='" . $status . "' where id in ('" . implode( "','", $cids ) . "')";
+		$sql = "update #__digicom_orders set status='" . $status . "' where id in ('" . $cids . "')";
 		$db->setQuery($sql);
 		$res = true;
 
@@ -751,11 +746,11 @@ class DigiComAdminModelOrders extends JModelList{
 		}
 
 		if($status == "Pending"){
-			$sql = "update #__digicom_licenses set published=0 where orderid in ('".implode("','", $cids)."')";
+			$sql = "update #__digicom_orders_details set published=0 where orderid in ('".$cids."')";
 
 		}
 		elseif($status == "Active"){
-			$sql = "update #__digicom_licenses set published=1 where orderid in ('" . implode( "','", $cids ) . "')";
+			$sql = "update #__digicom_orders_details set published=1 where orderid in ('" . $cids  . "')";
 			/*foreach($cids as $cid){
 				$this->sendApprovedEmail($cid);
 			}*/
@@ -775,7 +770,7 @@ class DigiComAdminModelOrders extends JModelList{
 		$order = $this->getTable( "Order" );
 		$order->load( $cid );
 
-		$c = $this->getInstance( "Config", "DigiComAdminModel" );
+		$c = $this->getInstance( "Config", "DigiComModelConfig" );
 		$configs = $c->getConfigs();
 
 		$cust_info = $this->getTable( "Customer" );

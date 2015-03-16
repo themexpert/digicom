@@ -16,7 +16,7 @@ defined('JPATH_BASE') or die;
  * @subpackage  com_digicom
  * @since       1.6
  */
-include_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'sajax.php');
+//include_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'sajax.php');
 class JFormFieldCountryOption extends JFormField {
  
 	protected $type = 'CountryOption';

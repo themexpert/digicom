@@ -9,7 +9,7 @@
 */
 
 defined ('_JEXEC') or die ("Go away.");
-class DigiComAdminViewConfigs extends DigiComView 
+class DigiComViewConfigs extends JViewLegacy 
 {
 
 	function display($tpl = null)
@@ -51,7 +51,7 @@ class DigiComAdminViewConfigs extends DigiComView
 		//set toolber
 		$this->addToolbar();
 		
-		DigiComAdminHelper::addSubmenu('configs');
+		DigiComHelperDigiCom::addSubmenu('configs');
 		$this->sidebar = JHtmlSidebar::render();
 		
 		parent::display($tpl);
@@ -83,11 +83,11 @@ class DigiComAdminViewConfigs extends DigiComView
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
 		
-		JToolBarHelper::save();
-		JToolBarHelper::apply();
+		JToolBarHelper::save('configs.save');
+		JToolBarHelper::apply('configs.apply');
 		JToolBarHelper::divider();
 
-		JToolBarHelper::cancel('cancel', 'JTOOLBAR_CLOSE');
+		JToolBarHelper::cancel('configs.cancel', 'JTOOLBAR_CLOSE');
 	}
 
 }

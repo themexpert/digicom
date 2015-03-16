@@ -10,12 +10,9 @@
 
 defined ('_JEXEC') or die ("Go away.");
 
-jimport('joomla.application.component.modellist');
-jimport('joomla.utilities.date');
+class DigiComModelCustomer extends JModelAdmin {
 
-class DigiComAdminModelCustomer extends JModelList {
-
-	protected $_context = 'com_digicom.Customer';   
+	protected $_context = 'com_digicom.customer';   
 	var $_customers;
 	var $_customer;
 	var $_id = null;
@@ -24,8 +21,8 @@ class DigiComAdminModelCustomer extends JModelList {
 
 	function __construct () {
 		parent::__construct();
-		$cids = JRequest::getVar('cid', 0, '', 'array');
-		$this->setId((int)$cids[0]);
+		$cids = JRequest::getVar('id', 0);
+		$this->setId((int)$cids);
 	}
 
 	function setId($id) {
@@ -132,18 +129,19 @@ class DigiComAdminModelCustomer extends JModelList {
 	}
 
 	function store (&$error){
+		
 		jimport("joomla.database.table.user");
 		
 		$db = JFactory::getDBO();
 		$user = new JUser();
 		$my = new stdClass;
 		$item = $this->getTable('Customer');
-		
 		$id = JRequest::getVar("id", "0");
+		
 		if($id != "0"){
 			$data = JRequest::get('post');
-			$data['password2'] = $data['password_confirm'];
-			$data['name'] = $data['firstname'];
+			//$data['password2'] = $data['password_confirm'];
+			//$data['name'] = $data['firstname'];
 			$data['groups']= array(2);
 			$data['block'] = 0;
 			$user->bind($data);
@@ -175,17 +173,18 @@ class DigiComAdminModelCustomer extends JModelList {
 		if (!$item->check()) {
 			$res = false;
 		}
-
+		
 		if (!$item->store()) {
 			$res = false;
 		}
+		//echo $res;die;
 
 		$this->setId($item->id);
 		$this->getCustomer();
 		
 		return $res;
 	}
-
+	/*
 	function delete () {
 		
 		$cids = JRequest::getVar('cid', array(0), 'post', 'array');
@@ -213,7 +212,8 @@ class DigiComAdminModelCustomer extends JModelList {
 		return true;
 	}
 
-
+	*/
+	/*
 	function publish () {
 		$db = JFactory::getDBO();
 		$cids = JRequest::getVar('cid', array(0), 'post', 'array');
@@ -231,7 +231,7 @@ class DigiComAdminModelCustomer extends JModelList {
 			return false;
 		}
 	}
-
+	*/
 	function getlistCustomerOrders ($userid) {
 		$sql = "select * from #__digicom_orders where userid='".$userid."'order by id desc";
 		$db = JFactory::getDBO();
@@ -304,6 +304,29 @@ class DigiComAdminModelCustomer extends JModelList {
 		$db->query();
 		$result = $db->loadAssocList();
 		return $result;
+	}
+
+
+	/**
+	 * Method to get the row form.
+	 *
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 *
+	 * @return  mixed    A JForm object on success, false on failure
+	 *
+	 * @since   1.6
+	 */
+	public function getForm($data = array(), $loadData = true)
+	{
+		$form = $this->loadForm('com_digicom.customer', 'customer', array('control' => 'jform', 'load_data' => $loadData));
+		
+		if (empty($form))
+		{
+			return false;
+		}
+		
+		return $form;
 	}
 
 }

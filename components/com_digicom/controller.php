@@ -1,115 +1,65 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 341 $
- * @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package     Joomla.Site
+ * @subpackage  com_weblinks
+ *
+ * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controller');
-
+/**
+ * Weblinks Component Controller
+ *
+ * @package     Joomla.Site
+ * @subpackage  com_weblinks
+ * @since       1.5
+ */
 class DigiComController extends JControllerLegacy
 {
-	var $_customer = null;
-
-	function __construct()
+	/**
+	 * Method to display a view.
+	 *
+	 * @param   boolean			If true, the view output will be cached
+	 * @param   array  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 *
+	 * @return  JController		This object to support chaining.
+	 * @since   1.5
+	 */
+	public function display($cachable = false, $urlparams = false)
 	{
-		parent::__construct();
-		$ajax_req = JRequest::getVar("no_html", 0, "request");
-		$this->_customer = new DigiComSessionHelper();
-		$document = JFactory::getDocument();
-		$document->addStyleSheet(JURI::root()."media/digicom/assets/css/digicom.css");
-	}
+		$cachable	= true;	// Huh? Why not just put that in the constructor?
+		$user		= JFactory::getUser();
 
-	function display($cachable = false, $urlparams = false){
-		parent::display();
-	}
+		// Set the default view name and format from the Request.
+		// Note we are using w_id to avoid collisions with the router and the return page.
+		// Frontend is a bit messier than the backend.
+		$id    = $this->input->getInt('w_id');
+		$vName = $this->input->get('view', 'categories');
+		$this->input->set('view', $vName);
 
-	function debugStop($msg = ''){
-		$mainframe=JFactory::getApplication();
-		echo $msg;
-		$mainframe->close();
-	}
-
-	function breadcrumbs(){
-		$Itemid		= JRequest::getInt("Itemid", 0);
-		$mainframe	= JFactory::getApplication();
-
-		// Get the PathWay object from the application
-		$pw		= $mainframe->getPathway();
-		$db		= JFactory::getDBO();
-		$cids	= JRequest::getVar('cid', 0, '', 'array');
-		$cid	= intval($cids[0]);
-		$pids	= JRequest::getVar('pid', 0, '', 'array');
-		$pid	= intval($pids[0]);
-		$c		= JRequest::getVar("controller", "");
-		$t		= JRequest::getVar("task", "");
-
-		if ( $c != "Licenses" && $c != "Orders" ) {
-			$sql = "SELECT name, parent_id FROM #__digicom_categories WHERE id=".intval($cid);
-			$db->setQuery($sql);
-			$res = $db->loadObjectList();
-			$res = $res[0];
-			$cname = $res->name;
-			$parent_id = $res->parent_id;
-			$sql = "SELECT name FROM #__digicom_products WHERE id=".intval($pid);
-			$db->setQuery($sql);
-			$pname = $db->loadResult();
-		} else {
-			$cname = $cid;
-			$pname = $pid;
+		if ($user->get('id') ||($this->input->getMethod() == 'POST' && $vName = 'categories'))
+		{
+			$cachable = false;
 		}
 
-		$link = JRoute::_("index.php?option=com_digicom&controller=categories&Itemid".$Itemid);
-		$name = "Category List";
-		$pw->addItem($name, $link);
-		$bc_added = 0;
+		$safeurlparams = array(
+			'id'				=> 'INT',
+			'limit'				=> 'UINT',
+			'limitstart'		=> 'UINT',
+			'filter_order'		=> 'CMD',
+			'filter_order_Dir'	=> 'CMD',
+			'lang'				=> 'CMD'
+		);
 
-		if($c == "Categories"){
-			if($parent_id > 0){
-				$sql = "select name from #__digicom_categories where id=".intval($parent_id);
-				$db->setQuery($sql);
-				$name = $db->loadResult();
-				$link = JRoute::_("index.php?option=com_digicom&controller=categories&task=list&cid=" . $parent_id . "&Itemid=" . $Itemid);
-				$pw->addItem($name, $link);
-				$bc_added = 1;
-			}
+		// Check for edit form.
+		if ($vName == 'form' && !$this->checkEditId('com_digicom.edit.product', $id))
+		{
+			// Somehow the person just went to the form - we don't allow that.
+			return JError::raiseError(403, JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
 		}
 
-		if($c == "Products"){
-			if($t == "list"){
-				$link = JRoute::_("index.php?option=com_digicom&controller=products&task=list&cid=".$parent_id."&Itemid=".$Itemid);
-				$pw->addItem($cname, $link);
-				$bc_added = 1;
-			}
-
-			if($t == "show"){
-				$link = JRoute::_("index.php?option=com_digicom&controller=products&task=list&cid=" . $parent_id . "&Itemid=" . $Itemid);
-				$pw->addItem($cname, $link);
-				$bc_added = 1;
-			}
-		}
-
-		if($c == "Cart"){
-			$link = JRoute::_("index.php?option=com_digicom&view=cart&task=showCart&Itemid=" . $Itemid);
-			$name = "Cart";
-			$pw->addItem($name, $link);
-			if($t == "checkout"){
-				$link = "";
-				$name = "Checkout";
-				$pw->addItem($name, $link);
-			}
-			$bc_added = 1;
-		}
-
-		if(strlen(trim($c)) > 0 && $bc_added == 0 && $c != "Categories"){
-			$link = "";
-			$name = $c;
-			$pw->addItem($name, $link);
-		}
+		return parent::display($cachable, $safeurlparams);
 	}
 }

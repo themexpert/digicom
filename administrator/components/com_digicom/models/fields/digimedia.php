@@ -334,7 +334,7 @@ class JFormFieldDiGiMedia extends JFormField
 			$html[] = '</div>';
 			
 		}
-
+		if(is_array($this->value)) $this->value = '';
 		$html[] = '<div class="media-control btn-group">';
 		$html[] = '	<input type="hidden" name="' . $this->name . '" id="' . $this->id . '" value="'
 			. htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '" readonly="readonly"' . $attr . ' />';

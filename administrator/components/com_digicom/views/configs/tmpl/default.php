@@ -31,7 +31,7 @@ JHtml::_('formbehavior.chosen', 'select');
 		}
 	}
 </script>
-<form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=configs'); ?>" id="component-form" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
+<form action="<?php echo JRoute::_('index.php?option=com_digicom&view=configs'); ?>" id="component-form" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
 	<?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container">
 		<?php echo $this->sidebar; ?>
@@ -62,6 +62,7 @@ JHtml::_('formbehavior.chosen', 'select');
 							?>
 							<?php foreach ($this->form->getFieldset($name) as $field) : ?>
 								<?php
+								$fieldname = str_replace( ']', '', str_replace('jform[', '', $field->name) );
 								$class = '';
 								$rel = '';
 								if ($showon = $field->getAttribute('showon'))
@@ -75,12 +76,12 @@ JHtml::_('formbehavior.chosen', 'select');
 								}
 								?>
 								<div class="control-group<?php echo $class; ?>"<?php echo $rel; ?>>
-									<?php if (!$field->hidden && $name != "permissions") : ?>
+									<?php if (!$field->hidden && $name != "permissions" && $fieldname != "email") : ?>
 										<div class="control-label">
 											<?php echo $field->label; ?>
 										</div>
 									<?php endif; ?>
-									<div class="<?php if ($name != "permissions") : ?>controls<?php endif; ?>">
+									<div class="<?php if ($name != "permissions" && $fieldname != "email") : ?>controls<?php endif; ?>">
 										<?php echo $field->input; ?>
 									</div>
 								</div>
@@ -94,7 +95,7 @@ JHtml::_('formbehavior.chosen', 'select');
 	<div>
 		<input type="hidden" name="id" value="<?php echo $this->component->id; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->component->option; ?>" />
-		<input type="hidden" name="controller" value="configs" />
+		<input type="hidden" name="view" value="configs" />
 		<input type="hidden" name="task" value="" />
 		<?php echo JHtml::_('form.token'); ?>
 	</div>

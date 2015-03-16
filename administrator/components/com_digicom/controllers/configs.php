@@ -6,43 +6,28 @@
  * @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
  * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
 * @license
-
-
 */
 
 defined ('_JEXEC') or die ("Go away.");
 
 jimport ('joomla.application.component.controller');
 
-class DigiComAdminControllerConfigs extends DigiComAdminController {
-
-	var $_model = null;
-	var $app = null;
+class DigiComControllerConfigs extends JControllerAdmin {
 
 	function __construct () {
 
 		parent::__construct();
 
-		require_once( JPATH_COMPONENT.DS.'helpers'.DS.'helper.php' );
-		$this->registerTask ("", "Configs");
 		$this->registerTask("apply", "save");
 		$this->registerTask("save", "save");
-		$this->registerTask("cancel", "cancel");
-		$this->registerTask("supportedsites", "supportedsites");
 		
 		$this->_model = $this->getModel("Config");
 		$this->app = JFactory::getApplication();
 		
 	}
 
-	function Configs() {
-		$view = $this->getView("Configs", "html");
-		$view->setModel($this->_model, true);
-		$view->display();
-	}
-
-	function Cancel() {
-		$this->app->redirect('index.php?option=com_digicom');
+	function cancel() {
+		$this->setRedirect('index.php?option=com_digicom');
 	}
 
 
@@ -52,7 +37,7 @@ class DigiComAdminControllerConfigs extends DigiComAdminController {
 		if (!JSession::checkToken())
 		{
 			$this->app->enqueueMessage(JText::_('JINVALID_TOKEN'));
-			$this->app->redirect('index.php?option=com_digicom&controller=configs');
+			$this->setRedirect('index.php?option=com_digicom&view=configs');
 		}
 		
 		$form   = $this->_model->getForm();
@@ -65,7 +50,7 @@ class DigiComAdminControllerConfigs extends DigiComAdminController {
 		if (!JFactory::getUser()->authorise('core.admin', $option))
 		{
 			$this->app->enqueueMessage(JText::_('JERROR_ALERTNOAUTHOR'));
-			$this->app->redirect('index.php?option=com_digicom&controller=configs');
+			$this->setRedirect('index.php?option=com_digicom&view=configs');
 		}
 		
 		// Validate the posted data.
@@ -82,7 +67,7 @@ class DigiComAdminControllerConfigs extends DigiComAdminController {
 			$this->app->setUserState('com_digicom.configs.global.data', $data);
 
 			// Redirect back to the edit screen.
-			$this->app->redirect(JRoute::_('index.php?option=com_digicom&controller=configs' . $redirect, false));
+			$this->app->redirect(JRoute::_('index.php?option=com_digicom&view=configs' . $redirect, false));
 		}
 
 		// Attempt to save the configuration.
@@ -103,7 +88,7 @@ class DigiComAdminControllerConfigs extends DigiComAdminController {
 
 			// Save failed, go back to the screen and display a notice.
 			$this->app->enqueueMessage(JText::sprintf('JERROR_SAVE_FAILED', $e->getMessage()), 'error');
-			$this->app->redirect(JRoute::_('index.php?option=com_digicom&controller=configs' . $redirect, false));
+			$this->app->redirect(JRoute::_('index.php?option=com_digicom&view=configs' . $redirect, false));
 		}
 
 		// Set the redirect based on the task.
@@ -111,7 +96,7 @@ class DigiComAdminControllerConfigs extends DigiComAdminController {
 		{
 			case 'apply':
 				$this->app->enqueueMessage(JText::_('CONFIGSAVED'));
-				$this->app->redirect(JRoute::_('index.php?option=com_digicom&controller=configs', false));
+				$this->app->redirect(JRoute::_('index.php?option=com_digicom&view=configs', false));
 
 				break;
 

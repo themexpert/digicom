@@ -12,6 +12,7 @@ defined ('_JEXEC') or die ("Go away.");
 
 class TableProduct extends JTable {
 
+
 	function TableProduct (&$db) {
 		parent::__construct('#__digicom_products', 'id', $db);
 	}

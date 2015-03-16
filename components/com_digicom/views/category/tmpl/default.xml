@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="DIGICOM_CATEGORIES_LAYOUT">
+		<message>
+			<![CDATA[DIGICOM_CATEGORIES_LAYOUT_TIP]]>
+		</message>
+	</layout>
+
+	<!-- Add fields to the request variables for the layout. -->
+	<fields name="request">
+		<fieldset name="request" addfieldpath="/administrator/components/com_digicom/models/fields">
+			
+			<field name="id" type="category" 
+				label="JGLOBAL_FIELD_CATEGORIES_CHOOSE_CATEGORY_LABEL"
+				extension="com_digicom"
+				required="true"
+				description="JGLOBAL_FIELD_CATEGORIES_CHOOSE_CATEGORY_DESC"/>
+			
+			<field name="orderby" type="list"
+				description="COM_DIGICOM_PRODUCT_ORDER_DESC"
+				label="COM_DIGICOM_PRODUCT_ORDER_LABEL"
+			>
+				<option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
+				<option value="date">JGLOBAL_OLDEST_FIRST</option>
+				<option value="alpha">JGLOBAL_TITLE_ALPHABETICAL</option>
+				<option value="ralpha">JGLOBAL_TITLE_REVERSE_ALPHABETICAL</option>
+				<option value="hits">JGLOBAL_MOST_HITS</option>
+				<option value="rhits">JGLOBAL_LEAST_HITS</option>
+				<option value="order">COM_DIGICOM_PRODUCT_ORDERING</option>
+			</field>
+			
+		</fieldset>
+	</fields>
+	<fields name="params">
+		<fieldset name="basic" label="COM_DIGICOM_CATEGORIES_OPTIONS">		
+			
+			<field name="spacer1" type="spacer" class="text-info"
+					label="COM_DIGICOM_CATEGORY_OPTION"
+			/>
+			<field name="num_products" type="text"
+				description="COM_DIGICOM_NUM_PRODUCTS_DESC"
+				label="COM_DIGICOM_NUM_PRODUCTS_LABEL" 
+				default="9" />
+				
+			<field name="show_cat_title" type="radio"
+				description="COM_DIGICOM_SHOW_CAT_TITLE_DESC"
+				label="COM_DIGICOM_SHOW_CAT_TITLE_LABEL"
+				class="btn-group"
+				default="1"
+			>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			
+			<field name="show_cat_image" type="radio"
+				description="COM_DIGICOM_SHOW_CAT_IMAGE_DESC"
+				label="COM_DIGICOM_SHOW_CAT_IMAGE_LABEL"
+				class="btn-group"
+				default="1"
+			>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			
+			<field name="show_cat_intro" type="radio"
+				description="COM_DIGICOM_SHOW_CAT_INTRO_DESC"
+				label="COM_DIGICOM_SHOW_CAT_INTRO_LABEL"
+				class="btn-group"
+				default="1"
+			>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="show_only_featured" type="radio"
+				description="COM_DIGICOM_SHOW_ONLY_FEATURED_DESC"
+				label="COM_DIGICOM_SHOW_ONLY_FEATURED_LABEL"
+				class="btn-group"
+				default="0"
+			>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			
+			<field name="show_only_bundle" type="radio"
+				description="COM_DIGICOM_SHOW_ONLY_BUNDLE_DESC"
+				label="COM_DIGICOM_SHOW_ONLY_BUNDLE_LABEL"
+				class="btn-group"
+				default="0"
+			>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+
+			<!--
+			<field name="spacer2" type="spacer" class="text-info"
+					label="COM_DIGICOM_PRODUCT_OPTION"
+			/>
+			
+			<field name="show_category" type="radio"
+				description="COM_DIGICOM_SHOW_CATEGORY_DESC"
+				label="COM_DIGICOM_SHOW_CATEGORY_LABEL"
+				class="btn-group"
+				default="1"
+			>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="show_tag" type="radio"
+				description="COM_DIGICOM_SHOW_TAG_DESC"
+				label="COM_DIGICOM_SHOW_TAG_LABEL"
+				class="btn-group"
+				default="1"
+			>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="show_intro" type="radio"
+				description="COM_DIGICOM_SHOW_INTRO_DESC"
+				label="COM_DIGICOM_SHOW_INTRO_LABEL"
+				class="btn-group"
+				default="1"
+			>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+		-->
+		</fieldset>
+	</fields>
+</metadata>

@@ -12,75 +12,17 @@ defined ('_JEXEC') or die ("Go away.");
 
 jimport ('joomla.application.component.controller');
 
-class DigiComAdminControllerCustomers extends DigiComAdminController {
+class DigiComControllerCustomers extends JControllerAdmin {
 	var $model = null;
 
 	function __construct () {
 		
 		parent::__construct();
-		$this->registerTask ("", "listCustomers");
-		$this->registerTask ("add", "newAuthorStep1");
-		$this->registerTask ("next", "newAuthorStep2");
 		$this->registerTask ("edit", "editAuthor");
-
 		$this->registerTask ("apply", "save");
 		$this->_model = $this->getModel('Customer');
 		
 	}
-
-	function listCustomers() {
-		$view = $this->getView("Customers", "html");
-		$view->setModel($this->_model, true);
-		$view->display();
-	}
-
-	function newAuthorStep1(){
-		JRequest::setVar ("view", "Customers");
-		$view = $this->getView("Customers", "html");
-		$view->setLayout("settype");
-		$view->setModel($this->_model, true);
-		$username_value = JRequest::getVar("username", "","","string");
-		$view->settypeform();
-	}
-
-	function newAuthorStep2(){
-		$author_type 	= JRequest::getVar("author_type", 0,"","int");
-		$username_value = JRequest::getVar("username", "", "", "string");
-
-		if($author_type==1){
-			if($this->_model->existUser($username_value)){
-				if($this->_model->existNewAuthor($username_value)){
-					$id = $this->_model->getCustomerId($username_value);
-					$msg = JText::_("DIGI_EXIST_CUSTOMER_ERROR");
-					$this->setRedirect('index.php?option=com_digicom&controller=customers&task=add', $msg, "notice");
-				}
-				else{
-					$userid = $this->_model->getUserId($username_value);
-					if(!empty($userid)){
-						JRequest::setVar("id", $userid);
-					}
-					JRequest::setVar ("view", "Customers");
-					$view = $this->getView("Customers", "html");
-					$view->setLayout("editform");
-					$view->setModel($this->_model, true);
-					$view->editForm();
-				}
-			}
-			else{
-				$msg = JText::_("DIGI_NO_USER");
-				$this->setRedirect( 'index.php?option=com_digicom&controller=customers&hidemainmenu=1&task=edit', $msg, "notice");
-			}
-		}
-		else{
-			JRequest::setVar ("view", "Customers");
-			$view = $this->getView("Customers", "html");
-			$view->setLayout("editform");
-			$view->setModel($this->_model, true);
-			$view->editForm();
-		}
-	}
-
-
 
 	function editAuthor(){
 		JRequest::setVar ("hidemainmenu", 1);

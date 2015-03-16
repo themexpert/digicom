@@ -1,190 +1,161 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 341 $
- * @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package     Joomla.Administrator
+ * @subpackage  com_digicom
+ *
+ * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
-defined ('_JEXEC') or die ("Go away.");
-$function = JRequest::getCmd('function');
+defined('_JEXEC') or die;
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.multiselect');
+$app = JFactory::getApplication();
 
-$k = 0;
-$n = count ($this->prods);
-$page = $this->pagination;
-$configs = $this->configs;
-$prc = JRequest::getCmd("prc", "-1");
-$session = JFactory::getSession();
-$search_session = $session->get('digicom.product.search');
-$state_filter = JRequest::getVar("state_filter", "-1");
+if ($app->isSite())
+{
+	JSession::checkToken('get') or die(JText::_('JINVALID_TOKEN'));
+}
 
-$document = JFactory::getDocument();
-//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
-$limistart = $this->pagination->limitstart;
+require_once JPATH_ROOT . '/components/com_digicom/helpers/route.php';
 
+JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+JHtml::_('bootstrap.tooltip');
+JHtml::_('behavior.framework', true);
+JHtml::_('formbehavior.chosen', 'select');
+
+$function  = $app->input->getCmd('function', 'jSelectProduct');
+$listOrder = $this->escape($this->state->get('list.ordering'));
+$listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
-<form id="adminForm" action="index.php" name="adminForm" method="post" class="form-horizontal">
+<form action="<?php echo JRoute::_('index.php?option=com_digicom&view=products&layout=modal&tmpl=component&function=' . $function . '&' . JSession::getFormToken() . '=1');?>"
+      method="post" name="adminForm" id="adminForm" class="form-inline">
+	<fieldset class="filter clearfix">
+		<div class="btn-toolbar">
+			<div class="btn-group pull-left">
+				<label for="filter_search">
+					<?php echo JText::_('JSEARCH_FILTER_LABEL'); ?>
+				</label>
+			</div>
+			<div class="btn-group pull-left">
+				<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" size="30" title="<?php echo JText::_('COM_CONTENT_FILTER_SEARCH_DESC'); ?>" />
+			</div>
+			<div class="btn-group pull-left">
+				<button type="submit" class="btn hasTooltip" title="<?php echo JHtml::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>" data-placement="bottom">
+					<span class="icon-search"></span><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
+				<button type="button" class="btn hasTooltip" title="<?php echo JHtml::tooltipText('JSEARCH_FILTER_CLEAR'); ?>" data-placement="bottom" onclick="document.getElementById('filter_search').value='';this.form.submit();">
+					<span class="icon-remove"></span><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<hr class="hr-condensed" />
+		<div class="filters pull-left">
+			<select name="filter_access" class="input-medium" onchange="this.form.submit()">
+				<option value=""><?php echo JText::_('JOPTION_SELECT_ACCESS');?></option>
+				<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
+			</select>
 
-	<div id="editcell" >
+			<select name="filter_published" class="input-medium" onchange="this.form.submit()">
+				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
+				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
+			</select>
 
-		<table>
+			<?php if ($this->state->get('filter.forcedLanguage')) : ?>
+			<select name="filter_category_id" class="input-medium" onchange="this.form.submit()">
+				<option value=""><?php echo JText::_('JOPTION_SELECT_CATEGORY');?></option>
+				<?php echo JHtml::_('select.options', JHtml::_('category.options', 'com_digicom', array('filter.language' => array('*', $this->state->get('filter.forcedLanguage')))), 'value', 'text', $this->state->get('filter.category_id'));?>
+			</select>
+			<input type="hidden" name="forcedLanguage" value="<?php echo $this->escape($this->state->get('filter.forcedLanguage')); ?>" />
+			<input type="hidden" name="filter_language" value="<?php echo $this->escape($this->state->get('filter.language')); ?>" />
+			<?php else : ?>
+			<select name="filter_category_id" class="input-medium" onchange="this.form.submit()">
+				<option value=""><?php echo JText::_('JOPTION_SELECT_CATEGORY');?></option>
+				<?php echo JHtml::_('select.options', JHtml::_('category.options', 'com_digicom'), 'value', 'text', $this->state->get('filter.category_id'));?>
+			</select>
+			<select name="filter_language" class="input-medium" onchange="this.form.submit()">
+				<option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE');?></option>
+				<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'));?>
+			</select>
+			<?php endif; ?>
+		</div>
+	</fieldset>
+
+	<table class="table table-striped table-condensed">
+		<thead>
 			<tr>
-				<td width="30%">
-					<input type="text" name="search" placeholder="<?php echo JText::_('DSSEARCH'); ?>" value="<?php echo $search_session; ?>" class="span6" />&nbsp;&nbsp;
-					<input type="submit" name="submit_search" value="Go!" class="btn" />
-				</td>
-				<td nowrap="nowrap" width="70%" align="right">
-					<?php echo $this->csel; ?>
-				
-					<select name="state_filter" onchange="document.adminForm.submit();" class="span3">
-						<option value="-1" <?php if($state_filter == "-1"){echo 'selected="selected"'; } ?>><?php echo JText::_("DIGI_SELECT_STATE"); ?></option>
-						<option value="1" <?php if($state_filter == "1"){echo 'selected="selected"'; } ?>><?php echo JText::_("HELPERPUBLISHED"); ?></option>
-						<option value="0" <?php if($state_filter == "0"){echo 'selected="selected"'; } ?>><?php echo JText::_("HELPERUNPUBLICHED"); ?></option>
-					</select>
+				<th class="title">
+					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
+				</th>
+				<th width="5%" class="center nowrap">
+					<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRICE', 'price', $listDirn, $listOrder); ?>
+				</th>
+				<th width="15%" class="center nowrap">
+					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ACCESS', 'access_level', $listDirn, $listOrder); ?>
+				</th>
+				<th width="15%" class="center nowrap">
+					<?php echo JHtml::_('grid.sort', 'JCATEGORY', 'a.catid', $listDirn, $listOrder); ?>
+				</th>
+				<th width="1%" class="center nowrap">
+					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+				</th>
+			</tr>
+		</thead>
+		<tfoot>
+			<tr>
+				<td colspan="15">
+					<?php echo $this->pagination->getListFooter(); ?>
 				</td>
 			</tr>
-		</table>
-
-		<br/>
-
-		<table width="100%">
-			<tr>
-				<td class="header_zone">
-					<?php
-						echo JText::_("HEADER_PRODUCTS");
-					?>
+		</tfoot>
+		<tbody>
+		<?php foreach ($this->items as $i => $item) : ?>
+			<?php if ($item->language && JLanguageMultilang::isEnabled())
+			{
+				$tag = strlen($item->language);
+				if ($tag == 5)
+				{
+					$lang = substr($item->language, 0, 2);
+				}
+				elseif ($tag == 6)
+				{
+					$lang = substr($item->language, 0, 3);
+				}
+				else {
+					$lang = "";
+				}
+			}
+			elseif (!JLanguageMultilang::isEnabled())
+			{
+				$lang = "";
+			}
+			$price = DigiComHelperDigiCom::format_price($item->price, $this->configs->get('currency','USD'), true, $this->configs);
+			?>
+			<tr class="row<?php echo $i % 2; ?>">
+				<td>
+					<a href="javascript:void(0)" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('<?php echo $item->id; ?>', '<?php echo $this->escape(addslashes($item->name)); ?>', '<?php echo $this->escape($item->catid); ?>', null, '<?php echo $this->escape(DigiComHelperRoute::getProductRoute($item->id, $item->catid, $item->language)); ?>', '<?php echo $this->escape($lang); ?>', '<?php echo $this->escape($price); ?>');">
+						<?php echo $this->escape($item->name); ?></a>
+				</td>
+				<td class="small">
+					<?php echo $this->escape($price); ?>
+				</td>
+				<td class="center">
+					<?php echo $this->escape($item->access_level); ?>
+				</td>
+				<td class="center">
+					<?php echo $this->escape($item->category_title); ?>
+				</td>
+				<td class="center">
+					<?php echo (int) $item->id; ?>
 				</td>
 			</tr>
-			<tr>
-				<td colspan="3" align="right">
-					<a class="modal digi_video" rel="{handler: 'iframe', size: {x: 750, y: 435}}" href="index.php?option=com_digicom&controller=about&task=vimeo&id=38448917">
-						<img src="<?php echo JURI::base(); ?>components/com_digicom/assets/images/icon_video.gif" class="video_img" />
-						<?php echo JText::_("COM_DIGICOM_VIDEO_PROD_ADDPROD"); ?>
-					</a>
-				</td>
-			</tr>
-		</table>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
 
-		<table class="adminlist table table-striped">
-
-			<thead>
-
-				<tr>
-					<th width="1%">
-						<input type="checkbox" onclick="checkAll(<?php echo $n; ?>)" name="toggle" value="" />
-					</th>
-
-					<th width="1%">
-						<?php echo JText::_('VIEWPRODSKU');?>
-					</th>
-
-					<th>
-						<?php echo JText::_('VIEWPRODNAME');?>
-					</th>
-
-					<th>
-						<?php echo JText::_('VIEWPRODTYPE');?>
-					</th>
-
-					<th width="10%">
-						<?php echo JText::_('PRODUCT_IS_VISIBLE');?>
-					</th>
-					<th width="10%">
-						<?php echo JText::_('VIEWPRODPUBLISHING');?>
-					</th>
-					<th>
-						<?php echo JText::_('VIEWPRODCATEGORY');?>
-					</th>
-
-					<th width="1%">
-							<?php echo JText::_('VIEWPRODID');?>
-					</th>
-				</tr>
-
-			</thead>
-
-			<tbody>
-
-			<?php
-			JHTML::_("behavior.tooltip");
-			$ordering = true;
-			$cselected = "";
-			$poz = $limistart + 1;
-			if ($prc > 0) $cselected .= "&prc=".$prc;
-			if ($state_filter != "-1") $cselected .= "&state_filter=".$state_filter;
-			else $cselected = '';
-			for ($i = 0; $i < $n; $i++):
-				$prod = $this->prods[$i];
-				$id = $prod->id;
-				$checked = JHTML::_('grid.id', $i, $id);
-				$link = JRoute::_("index.php?option=com_digicom&controller=products&task=edit&cid[]=".$id.$cselected);
-				$published = JHTML::_('grid.published', $prod->published, $i);
-				DigiComAdminHelper::publishAndExpiryHelper($img, $alt, $times, $status, $prod->publish_up, $prod->publish_down, $prod->published, $this->configs);
-				?>
-				<tr class="row<?php echo (string)$k; ?>">
-					<td><?php echo $checked; ?></td>
-					<td align="center">
-					</td>
-					<td>
-						<a href="javascript:void(0)" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('<?php echo $id; ?>', '<?php echo $this->escape(addslashes($prod->name)); ?>', '<?php echo $this->escape($prod->cats[0]->id); ?>', '<?php echo $this->escape($prod->cats[0]->name); ?>', '', '', null);" ><?php echo $prod->name;?></a>
-					</td>
-					<td>
-						<?php
-							switch ( $prod->product_type )
-								{
-									case 'bundle':
-										echo JText::_('VIEWPRODPRODTYPEPAK');
-										break;
-									case 'reguler':
-									default:
-										echo JText::_('VIEWPRODPRODTYPEDNR');
-										break;
-								}
-						?>
-					</td>
-					<td align="center">
-						<?php echo ($prod->hide_public ? '<span style="color:#ff0000;">' . JText::_("DSNO") . '</span>' : JText::_("DSYES")); ?>
-					</td>
-					<td align="center">
-						<?php echo $published; ?>
-					</td>
-					<td align="center">
-								<?php foreach( $prod->cats as $j => $z) {
-									$clink = JRoute::_("index.php?option=com_digicom&controller=categories&task=edit&cid[]=".$z->id);
-									echo '<a href="'.$clink.'" >'.$z->name.'</a><br />';
-								}
-								?>
-					</td>
-					<td align="center">
-						<?php echo $id; ?>
-					</td>
-				</tr>
-						<?php
-						$k = 1 - $k;
-					endfor;
-					?>
-			</tbody>
-
-			<tfoot>
-				<tr>
-					<td colspan="8">
-						<?php echo $this->pagination->getListFooter(); ?>
-					</td>
-				</tr>
-			</tfoot>
-		</table>
-
+	<div>
+		<input type="hidden" name="task" value="" />
+		<input type="hidden" name="boxchecked" value="0" />
+		<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
+		<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
+		<?php echo JHtml::_('form.token'); ?>
 	</div>
-
-	<input type="hidden" name="prc" value="<?php echo $this->prc; ?>" />
-	<input type="hidden" name="option" value="com_digicom" />
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="controller" value="Products" />
-
 </form>
