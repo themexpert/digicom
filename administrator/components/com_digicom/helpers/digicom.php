@@ -29,7 +29,7 @@ class DigiComHelperDigiCom extends JHelperContent{
 	public static function addSubmenu($vName)
 	{
 		JHtmlSidebar::addEntry(
-			JText::_('DIGICOM_DASHBOARD'),
+			JText::_('COM_DIGICOM_SIDEBAR_MENU_DASHBOARD'),
 			'index.php?option=com_digicom',
 			$vName == 'digicom'
 		);
@@ -40,28 +40,28 @@ class DigiComHelperDigiCom extends JHelperContent{
 		);*/
 		
 		JHtmlSidebar::addEntry(
-			JText::_('VIEWTREECATEGORIES'),
+			JText::_('COM_DIGICOM_SIDEBAR_MENU_CATEGORIES'),
 			'index.php?option=com_digicom&view=categories',
 			$vName == 'categories'
 		);
 		
 		JHtmlSidebar::addEntry(
-			JText::_('VIEWTREEPRODUCTS'),
+			JText::_('COM_DIGICOM_SIDEBAR_MENU_PRODUCTS'),
 			'index.php?option=com_digicom&view=products',
 			$vName == 'products'
 		);
 		JHtmlSidebar::addEntry(
-			JText::_('VIEWTREEFILEMANAGER'),
+			JText::_('COM_DIGICOM_SIDEBAR_MENU_FILE_MANAGER'),
 			'index.php?option=com_digicom&view=filemanager',
 			$vName == 'filemanager'
 		);
 		JHtmlSidebar::addEntry(
-			JText::_('VIEWTREECUSTOMERS'),
+			JText::_('COM_DIGICOM_SIDEBAR_MENU_CUSTOMERS'),
 			'index.php?option=com_digicom&view=customers',
 			$vName == 'customers'
 		);
 		JHtmlSidebar::addEntry(
-			JText::_('VIEWTREEORDERS'),
+			JText::_('COM_DIGICOM_SIDEBAR_MENU_ORDERS'),
 			'index.php?option=com_digicom&view=orders',
 			$vName == 'orders'
 		);
@@ -79,7 +79,7 @@ class DigiComHelperDigiCom extends JHelperContent{
 		);
 		*/
 		JHtmlSidebar::addEntry(
-			JText::_('VIEWTREEPROMO'),
+			JText::_('COM_DIGICOM_SIDEBAR_MENU_DISCOUNTS'),
 			'index.php?option=com_digicom&view=discounts',
 			$vName == 'discounts'
 		);
@@ -108,7 +108,7 @@ class DigiComHelperDigiCom extends JHelperContent{
 		);
 		*/
 		JHtmlSidebar::addEntry(
-			JText::_('VIEWTREESTATS'),
+			JText::_('COM_DIGICOM_SIDEBAR_MENU_REPORTS'),
 			'index.php?option=com_digicom&view=stats',
 			$vName == 'stats'
 		);
@@ -119,13 +119,13 @@ class DigiComHelperDigiCom extends JHelperContent{
 			$vName == 'logs'
 		);*/
 		JHtmlSidebar::addEntry(
-			JText::_('VIEWTREEABOUT'),
+			JText::_('COM_DIGICOM_SIDEBAR_MENU_ABOUT'),
 			'index.php?option=com_digicom&view=about',
 			$vName == 'about'
 		);
 		
 		JHtmlSidebar::addEntry(
-			JText::_('COM_DIGICOM_TOGGLE_SIDEBAR'),
+			JText::_('COM_DIGICOM_SIDEBAR_MENU_COLLAPSE'),
 			'#togglesidebar'
 		);
 		

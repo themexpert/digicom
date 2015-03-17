@@ -122,7 +122,7 @@ class DigiComViewCategories extends JViewLegacy
 		else
 		// Else use the base title
 		{
-			$ptitle = JText::_('COM_CATEGORIES_CATEGORIES_BASE_TITLE');
+			$ptitle = JText::_('COM_DIGICOM_CATEGORIES_TOOLBAR_TITLE');
 		}
 
 		// Load specific css component

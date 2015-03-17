@@ -74,7 +74,7 @@ $input->set('layout', 'dgform');
 			<div class="span9">
 			<?php echo JHtml::_('bootstrap.startTabSet', 'digicomTab', array('active' => 'general')); ?>
 
-				<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'general', JText::_('COM_DIGICOM_PRODUCT_CONTENT', true)); ?>
+				<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'general', JText::_('COM_DIGICOM_PRODUCT_GENERAL_SETTINGS', true)); ?>
 				
 				<div class="row-fluid">
 					<div class="span4">
@@ -109,7 +109,7 @@ $input->set('layout', 'dgform');
 
 				if($product_type == 'reguler'): ?>
 				
-					<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'files', JText::_('COM_DIGICOM_FILES_SELECTION', true)); ?>
+					<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'files', JText::_('COM_DIGICOM_PRODUCT_REGULAR_FILES_SELECTION', true)); ?>
 						<?php echo JLayoutHelper::render('edit.files', $this->item); ?>
 					<?php echo JHtml::_('bootstrap.endTab'); ?>
 

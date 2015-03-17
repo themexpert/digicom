@@ -120,7 +120,7 @@ JFactory::getDocument()->addScriptDeclaration('
 		</div>
 		<br> -->
 		<div class="alert alert-info">
-			<?php echo JText::_("HEADER_PRODUCTS"); ?>
+			<?php echo JText::_("COM_DIGICOM_PRODUCTS_HEADER_NOTICE"); ?>
 		</div>
 		<div id="editcell" >
 
@@ -136,13 +136,13 @@ JFactory::getDocument()->addScriptDeclaration('
 							<span><?php echo JHtml::_('grid.checkall'); ?></span>
 						</th>
 						<th width="1%" style="min-width:55px">
-							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_STATUS', 'published', $listDirn, $listOrder); ?>
+							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_ACTION', 'published', $listDirn, $listOrder); ?>
 						</th>
 						<th width="1%">
-							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_IMG', 'id', $listDirn, $listOrder); ?>
+							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_IMAGE', 'id', $listDirn, $listOrder); ?>
 						</th>
 						<th>
-							<?php echo JHtml::_('grid.sort', 'VIEWPRODNAME', 'name', $listDirn, $listOrder); ?>
+							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_NAME', 'name', $listDirn, $listOrder); ?>
 						</th>
 						<th>
 							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_TYPE', 'product_type', $listDirn, $listOrder); ?>
@@ -151,13 +151,13 @@ JFactory::getDocument()->addScriptDeclaration('
 							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_PRICE', 'hide_public', $listDirn, $listOrder); ?>
 						</th>
 						<th width="10%">
-							<?php echo JHtml::_('grid.sort', 'PRODUCT_IS_VISIBLE', 'hide_public', $listDirn, $listOrder); ?>
+							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_STOCK', 'hide_public', $listDirn, $listOrder); ?>
 						</th>
 						<th width="10%" class="nowrap hidden-phone">
 							<?php echo JHtml::_('searchtools.sort',  'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
 						</th>
 						<th width="1%">
-							<?php echo JHtml::_('grid.sort', 'VIEWPRODID', 'id', $listDirn, $listOrder); ?>
+							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_ID', 'id', $listDirn, $listOrder); ?>
 						</th>
 						<th width="1%" class="nowrap hidden-phone">
 							<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
@@ -264,11 +264,11 @@ JFactory::getDocument()->addScriptDeclaration('
 								switch ( $item->product_type )
 								{
 									case 'bundle':
-										echo JText::_('VIEWPRODPRODTYPEPAK');
+										echo JText::_('COM_DIGICOM_PRODUCTS_TYPE_BUNDLE');
 										break;
 									case 'reguler':
 									default:
-										echo JText::_('VIEWPRODPRODTYPEDNR');
+										echo JText::_('COM_DIGICOM_PRODUCTS_TYPE_REGULAR');
 										break;
 								}
 							?>
@@ -277,7 +277,7 @@ JFactory::getDocument()->addScriptDeclaration('
 							<?php echo DigiComHelperDigiCom::format_price($item->price, $this->configs->get('currency','USD'), true, $this->configs); ?>
 						</td>
 						<td align="center" style="text-align: center; ">
-							<?php echo ($item->hide_public ? '<span class="label label-important">' . JText::_("DSNO") . '</span>' : '<span class="label label-success">' . JText::_("DSYES") . '</span>' ); ?>
+							<?php echo ($item->hide_public ? '<span class="label label-important">' . JText::_("COM_DIGICOM_PRODUCTS_STOCK_NO") . '</span>' : '<span class="label label-success">' . JText::_("COM_DIGICOM_PRODUCTS_STOCK_YES") . '</span>' ); ?>
 						</td>
 						<td class="small hidden-phone">
 							<?php echo $this->escape($item->access_level); ?>

@@ -68,7 +68,7 @@ JFactory::getDocument()->addScriptDeclaration("
 			</div>
 			<?php echo JHtml::_('bootstrap.endTab'); ?>
 
-			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'publishing', JText::_('COM_CATEGORIES_FIELDSET_PUBLISHING', true)); ?>
+			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'publishing', JText::_('COM_DIGICOM_CATEGORY_PUBLISHING_OPTION', true)); ?>
 			<div class="row-fluid form-horizontal-desktop">
 				<div class="span6">
 					<?php echo JLayoutHelper::render('joomla.edit.publishingdata', $this); ?>
@@ -84,7 +84,7 @@ JFactory::getDocument()->addScriptDeclaration("
 			<?php endif; ?>
 
 			<?php if ($this->canDo->get('core.admin')) : ?>
-				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'rules', JText::_('COM_CATEGORIES_FIELDSET_RULES', true)); ?>
+				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'rules', JText::_('COM_DIGICOM_CATEGORY_PERMISSIONS', true)); ?>
 				<?php echo $this->form->getInput('rules'); ?>
 				<?php echo JHtml::_('bootstrap.endTab'); ?>
 			<?php endif; ?>

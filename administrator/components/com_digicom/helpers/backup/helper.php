@@ -25,7 +25,7 @@ class DigiComAdminHelper {
 	public static function addSubmenu($vName)
 	{
 		JHtmlSidebar::addEntry(
-			JText::_('DIGICOM_DASHBOARD'),
+			JText::_('COM_DIGICOM_SIDEBAR_MENU_DASHBOARD'),
 			'index.php?option=com_digicom',
 			$vName == 'digicomadmin'
 		);
@@ -36,7 +36,7 @@ class DigiComAdminHelper {
 		);*/
 		
 		JHtmlSidebar::addEntry(
-			JText::_('VIEWTREECATEGORIES'),
+			JText::_('COM_DIGICOM_SIDEBAR_MENU_CATEGORIES'),
 			'index.php?option=com_digicom&controller=categories',
 			$vName == 'categories'
 		);

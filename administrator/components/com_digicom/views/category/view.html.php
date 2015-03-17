@@ -121,12 +121,12 @@ class DigiComViewCategory extends JViewLegacy
 		// Else if the component section string exits, let's use it
 		elseif ($lang->hasKey($component_section_key = $component . ($section ? "_$section" : '')))
 		{
-			$ptitle = JText::sprintf('COM_CATEGORIES_CATEGORY_' . ($isNew ? 'ADD' : 'EDIT') . '_TITLE', $this->escape(JText::_($component_section_key)));
+			$ptitle = JText::sprintf('COM_DIGICOM_CATEGORY_' . ($isNew ? 'ADD' : 'EDIT') . '_TITLE', $this->escape(JText::_($component_section_key)));
 		}
 		// Else use the base ptitle
 		else
 		{
-			$ptitle = JText::_('COM_CATEGORIES_CATEGORY_BASE_' . ($isNew ? 'ADD' : 'EDIT') . '_TITLE');
+			$ptitle = JText::_('COM_DIGICOM_CATEGORY_BASE_' . ($isNew ? 'ADD' : 'EDIT') . '_TITLE');
 		}
 
 		// Load specific css component

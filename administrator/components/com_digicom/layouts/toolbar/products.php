@@ -14,22 +14,22 @@ JHtml::_('bootstrap.popover');
 <div class="btn-group">
   <a href="#" class="newproduct btn btn-small btn-primary" data-toggle="dropdown" aria-expanded="false">
 	<span class="icon-cart"></span>
-	<?php echo JText::_('DIGICOM_ADDNEWPRODUCT'); ?>
+	<?php echo JText::_('COM_DIGICOM_PRODUCTS_TOOLBAR_ADD_NEW'); ?>
 	<span class="caret"></span>
   </a>
   <ul class="dropdown-menu dropdown-menu-right" role="menu">
     <li>
-		<a class="hasPopover" title="<?php echo JText::_("DIGI_DONWNLOADABLE"); ?>" data-content="<?php echo JHtml::tooltipText(JText::_('DIGI_DONWNLOADABLE_TIP')); ?>"
+		<a class="hasPopover" title="<?php echo JText::_("COM_DIGICOM_PRODUCTS_TOOLBAR_ADD_REGULAR_PRODUCT"); ?>" data-content="<?php echo JHtml::tooltipText(JText::_('COM_DIGICOM_PRODUCTS_TOOLBAR_ADD_REGULAR_PRODUCT_TIP')); ?>"
 			href="<?php echo Jroute::_('index.php?option=com_digicom&task=product.add&product_type=reguler'); ?>">
 			<i class="icon-download"></i>
-			<?php echo JText::_("DIGI_DONWNLOADABLE"); ?>
+			<?php echo JText::_("COM_DIGICOM_PRODUCTS_TOOLBAR_ADD_REGULAR_PRODUCT"); ?>
 		</a>
 	</li>
     <li>
-		<a class="hasPopover" title="<?php echo JText::_("DIGI_PACKAGE_NO_UPLOAD"); ?>" data-content="<?php echo JHtml::tooltipText(JText::_('COM_DIGICOM_PRODPACKAGE_TIP')); ?>" 
+		<a class="hasPopover" title="<?php echo JText::_("COM_DIGICOM_PRODUCTS_TOOLBAR_ADD_BUNDLE_PRODUCT"); ?>" data-content="<?php echo JHtml::tooltipText(JText::_('COM_DIGICOM_PRODUCTS_TOOLBAR_ADD_BUNDLE_PRODUCT_TIP')); ?>" 
 			href="<?php echo JRoute::_('index.php?option=com_digicom&task=product.add&product_type=bundle'); ?>">
 			<i class="icon-box-add"></i>
-			<?php echo JText::_("DIGI_PACKAGE_NO_UPLOAD"); ?>
+			<?php echo JText::_("COM_DIGICOM_PRODUCTS_TOOLBAR_ADD_BUNDLE_PRODUCT"); ?>
 		</a>
 	</li>
   </ul>

@@ -110,7 +110,7 @@ class DigiComViewProduct extends JViewLegacy
 		
 		$layout = new JLayoutFile('toolbar.title');
 		$title=array(
-				'title' => JText::_( 'COM_DIGICOM_MANAGER_PRODUCT_ADD_EDIT' ),
+				'title' => JText::_( 'COM_DIGICOM_PRODUCT_ADD_EDIT_TOOLBAR_TITLE' ),
 				'class' => 'product'
 			);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
