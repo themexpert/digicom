@@ -137,13 +137,13 @@ class DigiComViewCustomers extends JViewLegacy {
 	 */
 	protected function addToolbar()
 	{
-		JToolBarHelper::title(JText::_('VIEWDSADMINCUSTOMERS'), 'generic.png');
+		JToolBarHelper::title(JText::_('COM_DIGICOM_CUSTOMERS_TOOLBAR_TITLE'), 'generic.png');
 
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout
 		$layout = new JLayoutFile('toolbar.title');
 		$title=array(
-			'title' => JText::_( 'VIEWDSADMINCUSTOMERS' ),
+			'title' => JText::_( 'COM_DIGICOM_CUSTOMERS_TOOLBAR_TITLE' ),
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
