@@ -58,9 +58,9 @@ $link = 'index.php?option=com_digicom&amp;view=products&amp;layout=modal&amp;tmp
 
 <fieldset class="adminform">
 
-	<legend><?php echo JText::_('VIEWPRODPACKAGE');?></legend>
+	<legend><?php echo JText::_('COM_DIGICOM_PRODUCT_BUNDLE_FILES');?></legend>
 	<div class="alert alert-info">
-		<?php echo JText::_("HEADER_PRODUCTINCLUDE"); ?>
+		<?php echo JText::_("COM_DIGICOM_PRODUCT_BUNDLE_HEADER_NOTICE"); ?>
 	</div>
 	
 	<?php echo $form->renderField('bundle_source'); ?>
@@ -105,7 +105,7 @@ $link = 'index.php?option=com_digicom&amp;view=products&amp;layout=modal&amp;tmp
 		<div style="margin:15px;padding:10px;">
 			<a class="btn btn-small modal-button" title="Products" href="<?php echo $link; ?>" rel="{handler: 'iframe', size: {x: 800, y: 500}}">
 				<i class="icon-file-add"></i> 
-				<?php echo JText::_('VIEWPRODADDPRODUCT'); ?>
+				<?php echo JText::_('COM_DIGICOM_PRODUCT_BUNDLE_ADD_PRODUCT'); ?>
 			</a>
 
 		</div>

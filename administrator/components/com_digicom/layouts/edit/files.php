@@ -18,7 +18,7 @@ jQuery(function(){
 });
 </script>
 <fieldset class="adminform">
-	<legend><?php echo JText::_('VIEWPRODFILE');?></legend>
+	<legend><?php echo JText::_('COM_DIGICOM_PRODUCT_SINGLE_FILES');?></legend>
 	<div id="digicom_item_files_items" class="repeat">
 		<table class="table table-striped wrapper" id="itemList">
 			<thead>

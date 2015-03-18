@@ -142,7 +142,7 @@ JFactory::getDocument()->addScriptDeclaration('
 							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_IMAGE', 'id', $listDirn, $listOrder); ?>
 						</th>
 						<th>
-							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_NAME', 'name', $listDirn, $listOrder); ?>
+							<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'name', $listDirn, $listOrder); ?>
 						</th>
 						<th>
 							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_TYPE', 'product_type', $listDirn, $listOrder); ?>
@@ -157,7 +157,7 @@ JFactory::getDocument()->addScriptDeclaration('
 							<?php echo JHtml::_('searchtools.sort',  'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
 						</th>
 						<th width="1%">
-							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_ID', 'id', $listDirn, $listOrder); ?>
+							<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'id', $listDirn, $listOrder); ?>
 						</th>
 						<th width="1%" class="nowrap hidden-phone">
 							<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
@@ -268,7 +268,7 @@ JFactory::getDocument()->addScriptDeclaration('
 										break;
 									case 'reguler':
 									default:
-										echo JText::_('COM_DIGICOM_PRODUCTS_TYPE_REGULAR');
+										echo JText::_('COM_DIGICOM_PRODUCTS_TYPE_SINGLE');
 										break;
 								}
 							?>
@@ -277,7 +277,7 @@ JFactory::getDocument()->addScriptDeclaration('
 							<?php echo DigiComHelperDigiCom::format_price($item->price, $this->configs->get('currency','USD'), true, $this->configs); ?>
 						</td>
 						<td align="center" style="text-align: center; ">
-							<?php echo ($item->hide_public ? '<span class="label label-important">' . JText::_("COM_DIGICOM_PRODUCTS_STOCK_NO") . '</span>' : '<span class="label label-success">' . JText::_("COM_DIGICOM_PRODUCTS_STOCK_YES") . '</span>' ); ?>
+							<?php echo ($item->hide_public ? '<span class="label label-important">' . JText::_("JNO") . '</span>' : '<span class="label label-success">' . JText::_("JYES") . '</span>' ); ?>
 						</td>
 						<td class="small hidden-phone">
 							<?php echo $this->escape($item->access_level); ?>

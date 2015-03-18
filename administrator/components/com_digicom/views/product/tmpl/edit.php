@@ -115,7 +115,7 @@ $input->set('layout', 'dgform');
 
 				<?php else: ?>
 
-					<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'bundle', JText::_('COM_DIGICOM_BUNDLE_SELECTION', true)); ?>
+					<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'bundle', JText::_('COM_DIGICOM_PRODUCT_BUNDLE_FILES_SELECTION', true)); ?>
 						<?php echo JLayoutHelper::render('edit.bundle', $this); ?>
 					<?php echo JHtml::_('bootstrap.endTab'); ?>
 				

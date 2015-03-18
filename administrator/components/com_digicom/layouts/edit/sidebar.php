@@ -1,4 +1,4 @@
-<?php
+ <?php
 /**
  * @package     Joomla.Site
  * @subpackage  Layout
@@ -57,7 +57,7 @@ $html[] = '<fieldset class="form-vertical">';
 $html[] = '<div class="accordion" id="digicom-product">';
 
 $html[] = '<div class="accordion-group">';
-$html[] = '<div class="accordion-heading"><a class="accordion-toggle" data-toggle="collapse" data-parent="#digicom-product" href="#basic_option">'. JText::_('GENERAL') .'</a></div>';
+$html[] = '<div class="accordion-heading"><a class="accordion-toggle" data-toggle="collapse" data-parent="#digicom-product" href="#basic_option">'. JText::_('COM_DIGICOM_PRODUCT_SIDEBAR_ACCORDION_HEADING_GENERAL') .'</a></div>';
 
 $html[] = '<div id="basic_option" class="accordion-body collapse in">';
 $html[] = '<div class="accordion-inner">';
@@ -83,7 +83,7 @@ $html[] = '</div></div>';
 $html[] = '</div>';
 
 $html[] = '<div class="accordion-group">';
-$html[] = '<div class="accordion-heading"><a class="accordion-toggle" data-toggle="collapse" data-parent="#digicom-product" href="#seo_option">'. JText::_('META_INFO') .'</a></div>';
+$html[] = '<div class="accordion-heading"><a class="accordion-toggle" data-toggle="collapse" data-parent="#digicom-product" href="#seo_option">'. JText::_('COM_DIGICOM_PRODUCT_SIDEBAR_ACCORDION_HEADING_META_INFO') .'</a></div>';
 
 $html[] = '<div id="seo_option" class="accordion-body collapse">';
 $html[] = '<div class="accordion-inner">';
@@ -109,7 +109,7 @@ $html[] = '</div></div>';
 $html[] = '</div>';
 
 $html[] = '<div class="accordion-group">';
-$html[] = '<div class="accordion-heading"><a class="accordion-toggle" data-toggle="collapse" data-parent="#digicom-product" href="#stat_option">'. JText::_('STATS') .'</a></div>';
+$html[] = '<div class="accordion-heading"><a class="accordion-toggle" data-toggle="collapse" data-parent="#digicom-product" href="#stat_option">'. JText::_('COM_DIGICOM_PRODUCT_SIDEBAR_ACCORDION_HEADING_REPORTS') .'</a></div>';
 
 $html[] = '<div id="stat_option" class="accordion-body collapse">';
 $html[] = '<div class="accordion-inner">';

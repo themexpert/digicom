@@ -11,13 +11,13 @@
 
 		<field name="alias" type="text" label="JFIELD_ALIAS_LABEL" description="JFIELD_ALIAS_DESC" hint="JFIELD_ALIAS_PLACEHOLDER" size="40" class="input-xlarge input-large-text"/>
 		
-		<field name="price" type="number" label="COM_DIGICOM_FIELD_PRICE_LABEL" description="COM_DIGICOM_FIELD_PRICE_DESC" hint="COM_DIGICOM_FIELD_PRICE_PLACEHOLDER" class="input-large input-large-text" size="40" required="true"/>
+		<field name="price" type="number" label="COM_DIGICOM_PRODUCT_FIELD_PRICE_LABEL" description="COM_DIGICOM_PRODUCT_FIELD_PRICE_DESC" hint="COM_DIGICOM_PRODUCT_FIELD_PRICE_PLACEHOLDER" class="input-large input-large-text" size="40" required="true"/>
 		
-		<field name="images" type="digimedia" label="COM_DIGICOM_FIELD_INTRO_LABEL" description="COM_DIGICOM_FIELD_INTRO_DESC" default=""/>
+		<field name="images" type="digimedia" label="COM_DIGICOM_PRODUCT_FIELD_IMAGE" description="COM_DIGICOM_PRODUCT_FIELD_IMAGE_DESC" default=""/>
 		
-		<field name="description" type="textarea" rows="5" cols="20" label="COM_DIGICOM_FIELD_ARTICLETEXT_LABEL" description="COM_DIGICOM_FIELD_ARTICLETEXT_DESC"/>
+		<field name="description" type="textarea" rows="5" cols="20" label="COM_DIGICOM_PRODUCT_FIELD_INTROTEXT_LABEL" description="COM_DIGICOM_PRODUCT_FIELD_INTROTEXT_DESC"/>
 		
-		<field name="fulldescription" type="editor" label="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_LABEL" description="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_DESC" filter="JComponentHelper::filterText" buttons="true" />
+		<field name="fulldescription" type="editor" label="COM_DIGICOM_PRODUCT_FIELD_FULLTEXT_LABEL" description="COM_DIGICOM_PRODUCT_FIELD_FULLTEXT_DESC" filter="JComponentHelper::filterText" buttons="true" />
 			
 		<field id="published" name="published" type="list" label="JSTATUS" description="JFIELD_PUBLISHED_DESC" class="chzn-color-state" size="1" default="1" >
 			<option value="1"> JPUBLISHED</option>
@@ -41,14 +41,14 @@
 		<field name="files_remove_id" type="hidden" />
 
 		<!--// Bundle Options-->
-		<field id="bundle_source_option_select" name="bundle_source" type="radio" label="COM_DIGICOM_BUNDLE_OPTION" description="COM_DIGICOM_BUNDLE_OPTION_TIP" class="jform_bundle_source btn-group" default="product" >
-			<option value="product">VIEWPRODPRODUCT</option>
-			<option value="category">VIEWPRODCATEGORY</option>
+		<field id="bundle_source_option_select" name="bundle_source" type="radio" label="COM_DIGICOM_PRODUCT_BUNDLE_SOURCE" description="COM_DIGICOM_PRODUCT_BUNDLE_SOURCE_TIP" class="jform_bundle_source btn-group" default="product" >
+			<option value="product">COM_DIGICOM_PRODUCT_BUNDLE_SOURCE_PRODUCT</option>
+			<option value="category">COM_DIGICOM_PRODUCT_BUNDLE_SOURCE_CATEGORY</option>
 		</field>
 
 		<field name="bundle_product" type="hidden" />
 
-		<field name="bundle_category" type="category" extension="com_digicom" multiple="true" class="input-xxlarge" label="VIEWPRODPRODCAT" description="COM_DIGICOM_PRODCATEGS_TIP"/>
+		<field name="bundle_category" type="category" extension="com_digicom" multiple="true" class="input-xlarge" label="COM_DIGICOM_PRODUCT_BUNDLE_CATEGORIES_SELECT_LABEL" description="COM_DIGICOM_PRODUCT_BUNDLE_CATEGORIES_SELECT_TIP"/>
 
 
 		<field name="access" type="accesslevel" label="JFIELD_ACCESS_LABEL" description="JFIELD_ACCESS_DESC" size="1" />
@@ -67,9 +67,9 @@
 		
 		<field name="ordering" type="digiordering" label="JFIELD_ORDERING_LABEL" description="JFIELD_ORDERING_DESC" content_type="com_digicom.product" />
 
-		<field name="publish_up" type="calendar" label="COM_DIGICOM_FIELD_PUBLISH_UP_LABEL" description="COM_DIGICOM_FIELD_PUBLISH_UP_DESC" format="%Y-%m-%d %H:%M:%S" size="22" filter="user_utc" />
+		<field name="publish_up" type="calendar" label="COM_DIGICOM_PRODUCT_FIELD_PUBLISHED_DATE_LABEL" description="COM_DIGICOM_PRODUCT_FIELD_PUBLISHED_DATE_DESC" format="%Y-%m-%d %H:%M:%S" size="22" filter="user_utc" />
 
-		<field name="publish_down" type="calendar" label="COM_DIGICOM_FIELD_PUBLISH_DOWN_LABEL" description="COM_DIGICOM_FIELD_PUBLISH_DOWN_DESC" format="%Y-%m-%d %H:%M:%S" size="22" filter="user_utc" />
+		<field name="publish_down" type="calendar" label="COM_DIGICOM_PRODUCTC_FIELD_UNPUBLISHED_DATE_LABEL" description="COM_DIGICOM_PRODUCTC_FIELD_UNPUBLISHED_DATE_DESC" format="%Y-%m-%d %H:%M:%S" size="22" filter="user_utc" />
 		
 		<field name="metatitle" type="text" label="JFIELD_META_TITLE_LABEL" description="JFIELD_META_TITLE_DESC" size="40" />
 		
@@ -77,11 +77,11 @@
 
 		<field name="metadescription" type="textarea" label="JFIELD_META_DESCRIPTION_LABEL" description="JFIELD_META_DESCRIPTION_DESC" rows="3" cols="30" />
 		
-		<field name="hits" type="text" label="JGLOBAL_HITS" description="COM_DIGICOM_FIELD_HITS_DESC" class="readonly" size="6" readonly="true" filter="unset" />
+		<field name="hits" type="text" label="JGLOBAL_HITS" description="COM_DIGICOM_PRODUCT_FIELD_HITS_DESC" class="readonly" size="6" readonly="true" filter="unset" />
 			
-		<field name="used" type="text" label="JFIELD_COM_DIGICOM_USED_LABEL" description="JFIELD_COM_DIGICOM_USED_DESC" class="readonly" size="6" readonly="true" filter="unset"  />
+		<field name="used" type="text" label="COM_DIGICOM_PRODUCT_FIELD_TOTAL_PURCHASE_LABEL" description="COM_DIGICOM_PRODUCT_FIELD_TOTAL_PURCHASE_DESC" class="readonly" size="6" readonly="true" filter="unset"  />
 		
-		<field name="hide_public" type="radio" class="btn-group btn-group-yesno" label="COM_DIGICOM_FIELD_HIDE_PUBLIC_LABEL" description="COM_DIGICOM_FIELD_HIDE_PUBLIC_DESC" default="0" >
+		<field name="hide_public" type="radio" class="btn-group btn-group-yesno" label="COM_DIGICOM_PRODUCT_FIELD_STOP_SALE_LABEL" description="COM_DIGICOM_PRODUCT_FIELD_STOP_SALE_DESC" default="0" >
 			<option value="1">JYES</option>
 			<option value="0">JNO</option>
 		</field>
