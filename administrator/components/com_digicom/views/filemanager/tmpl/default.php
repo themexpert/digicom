@@ -20,7 +20,9 @@ $mosConfig_absolute_path = JPATH_ROOT;
 <?php else : ?>
 	<div id="j-main-container" class="">
 <?php endif;?>
-		
+		<div class="alert alert-info">
+			<?php echo JText::_("COM_DIGICOM_FILE_MANAGER_HEADER_NOTICE"); ?>
+		</div>
 					<script type="text/javascript">
 						jQuery(document).ready(function() {
 							var basePath = '<?php echo JURI::root(true); ?>';
