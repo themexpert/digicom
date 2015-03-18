@@ -60,34 +60,34 @@ $input->set('layout', 'dgform');
 				<div class="span12">
 					<?php echo JHtml::_('bootstrap.startTabSet', 'digicomTab', array('active' => 'details')); ?>
 
-					<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'details', JText::_('COM_DIGICOM_CUSTOMERS_DETAILS', true)); ?>
+					<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'details', JText::_('COM_DIGICOM_CUSTOMER_TAB_HEADING_CUSTOMER_INFO', true)); ?>
 				
 					<div class="form-horizontal">
 						<div class="row-fluid">
 							<div class="span6">
-								<h3><?php echo JText::_( 'CUSTOMER_DETAILS' ); ?></h3>
+								<h3><?php echo JText::_( 'COM_DIGICOM_CUSTOMER_TITLE_CUSTOMER_DETAILS' ); ?></h3>
 								<div class="control-group">
-									<label class="control-label"><?php echo JText::_( 'VIEWCUSTOMERID' ); ?></label>
+									<label class="control-label"><?php echo JText::_( 'JGRID_HEADING_ID' ); ?></label>
 									<div class="controls">
 										<?php echo $cust->id; ?>
 									</div>
 								</div>
 								<div class="control-group">
-									<label class="control-label"><?php echo JText::_( 'VIEWCUSTOMERUSERNAME' ); ?></label>
+									<label class="control-label"><?php echo JText::_( 'COM_DIGICOM_USER_NAME' ); ?></label>
 									<div class="controls">
 										<?php echo $user["username"]; ?>
 									</div>
 								</div>
 
 								<div class="control-group">
-									<label class="control-label"><?php echo JText::_( "VIEWCUSTOMERNAME" ); ?></label>
+									<label class="control-label"><?php echo JText::_( "COM_DIGICOM_FULL_NAME" ); ?></label>
 									<div class="controls">
 										<?php echo $cust->firstname . ' ' . $cust->lastname ?>
 									</div>
 								</div>
 
 								<div class="control-group">
-									<label class="control-label"><?php echo JText::_( "VIEWCUSTOMERREGISTERED" ); ?></label>
+									<label class="control-label"><?php echo JText::_( "COM_DIGICOM_CUSTOMER_REGISTRATION_DATE" ); ?></label>
 									<div class="controls">
 										<?php echo $cust->registerDate; ?>
 									</div>
@@ -97,7 +97,7 @@ $input->set('layout', 'dgform');
 
 								<div class="control-group">
 									<label class="control-label">
-										<?php echo JText::_( 'VIEWCUSTOMEREMAIL' );?>
+										<?php echo JText::_( 'COM_DIGICOM_EMAIL' );?>
 									</label>
 									<div class="controls">
 										<?php echo $user["email"]; ?>
@@ -109,45 +109,45 @@ $input->set('layout', 'dgform');
 
 							<div class="span6">
 
-								<h3><?php echo JText::_( "VIEWCUSTOMERBILLING" ); ?></h3>
+								<h3><?php echo JText::_( "COM_DIGICOM_CUSTOMER_TITLE_CUSTOMER_BILLING_ADDRESS" ); ?></h3>
 								<div class="control-group">
 									<label class="control-label">
-										<?php echo JText::_( "VIEWCUSTOMERPOC" ); ?>
+										<?php echo JText::_( "COM_DIGICOM_CUSTOMER_TYPE" ); ?>
 									</label>
 									<div class="controls">	
 										<fieldset id="customer_person_select" class="radio btn-group">
 											<input type="radio" class="jform_customer_person_select" name="person" id="customer_person_select_1" value="1" <?php echo (($cust->person == '1' || $cust->person === null)?"checked='checked'":"");?> />
-											<label class="btn" for="customer_person_select_1"><?php echo JText::_('VIEWCUSTOMERIMPERSON'); ?></label>
+											<label class="btn" for="customer_person_select_1"><?php echo JText::_('COM_DIGICOM_CUSTOMER_TYPE_PERSON'); ?></label>
 											<input type="radio" class="jform_customer_person_select" name="person" id="customer_person_select_0" value="0" <?php echo (($cust->person == '0') ? "checked='checked'" : "");?> />
-											<label class="btn" for="customer_person_select_0"><?php echo JText::_('VIEWCUSTOMERIMCOMPANY'); ?></label>
+											<label class="btn" for="customer_person_select_0"><?php echo JText::_('COM_DIGICOM_CUSTOMER_TYPE_COMPANY'); ?></label>
 										</fieldset>
 									</div>
 									
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label"><?php echo JText::_( "VIEWCUSTOMERCOMPANY" ); ?><b></b></label>
+									<label class="control-label"><?php echo JText::_( "COM_DIGICOM_CUSTOMER_TYPE_COMPANY" ); ?><b></b></label>
 									<div class="controls">
 										<input name="company" type="text" id="company" size="30" value="<?php echo $cust->company; ?>">
 									</div>
 								</div>
 
 								<div class="control-group">
-									<label for="" class="control-label"><?php echo Jtext::_( "VIEWCONFIGADDRESS" ); ?><span class="error">*</span></label>
+									<label for="" class="control-label"><?php echo Jtext::_( "COM_DIGICOM_CUSTOMER_ADDRESS" ); ?><span class="error">*</span></label>
 									<div class="controls">
 										<textarea name="address"><?php echo $cust->address; ?></textarea>
 									</div>
 								</div>
 
 								<div class="control-group">
-									<label for="" class="control-label"><?php echo JText::_( "VIEWCUSTOMERCOUNTRY" ); ?></label>
+									<label for="" class="control-label"><?php echo JText::_( "COM_DIGICOM_CUSTOMER_COUNTRY" ); ?></label>
 									<div class="controls">
 										<?php //echo $this->lists['country_option']; ?>
 									</div>
 								</div>
 								
 								<div class="control-group">
-									<label for="" class="control-label"><?php echo JText::_( "VIEWCONFIGTAXNUM" ); ?></label>
+									<label for="" class="control-label"><?php echo JText::_( "COM_DIGICOM_CUSTOMER_TAX_NUMBER" ); ?></label>
 									<div class="controls">
 										<input name="taxnum" type="text" id="taxnum" size="30" value="<?php echo $cust->taxnum; ?>">
 									</div>
@@ -159,7 +159,7 @@ $input->set('layout', 'dgform');
 					</div>
 
 					<?php echo JHtml::_('bootstrap.endTab'); ?>
-					<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'order_details', JText::_('COM_DIGICOM_CUSTOMERS_ORDER_DETAILS', true)); ?>
+					<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'order_details', JText::_('COM_DIGICOM_CUSTOMER_TAB_HEADING_CUSTOMER_ORDERS', true)); ?>
 
 						<?php 
 						//show custommers order 
@@ -169,20 +169,20 @@ $input->set('layout', 'dgform');
 							<thead>
 								<tr>
 									<th width="20">
-										<?php echo JText::_( 'VIEWORDERSID' ); ?>
+										<?php echo JText::_( 'JGRID_HEADING_ID' ); ?>
 									</th>
 
 									<th>
-										<?php echo JText::_( 'VIEWORDERSDATE' ); ?>
+										<?php echo JText::_( 'COM_DIGICOM_DATE' ); ?>
 									</th>
 									<th>
-										<?php echo JText::_( 'VIEWORDERSPRICE' ); ?>
+										<?php echo JText::_( 'COM_DIGICOM_PRICE' ); ?>
 									</th>
 									<th>
-										<?php echo JText::_( 'VIEWORDERSSTATUS' ); ?>
+										<?php echo JText::_( 'JSTATUS' ); ?>
 									</th>
 									<th>
-										<?php echo JText::_( 'VIEWORDERSPAYMETHOD' ); ?>
+										<?php echo JText::_( 'COM_DIGICOM_CUSTOMER_PAYMENT_METHOD' ); ?>
 									</th>
 								</tr>
 							</thead>

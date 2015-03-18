@@ -54,10 +54,10 @@ $n = count ($this->custs);
 							<?php echo JText::_('JGRID_HEADING_ID');?>
 						</th>
 						<th>
-							<?php echo JText::_('COM_DIGICOM_CUSTOMERS_FULL_NAME');?>
+							<?php echo JText::_('COM_DIGICOM_FULL_NAME');?>
 						</th>
 						<th>
-							<?php echo JText::_('COM_DIGICOM_CUSTOMERS_USER_NAME');?>
+							<?php echo JText::_('COM_DIGICOM_USER_NAME');?>
 						</th>
 						<th>
 							<?php echo JText::_('COM_DIGICOM_CUSTOMERS_TOTAL_ORDER');?>

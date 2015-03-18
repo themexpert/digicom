@@ -20,14 +20,14 @@ class DigiComViewCustomer extends JViewLegacy {
 		//print_r($customer);die;
 		$user = $this->get('User');
 		$isNew = ($customer->id < 1);
-		$text = $isNew?JText::_('New'):JText::_('Edit')." : ".$customer->firstname;
+		$text = $isNew?JText::_('COM_DIGICOM_NEW'):JText::_('COM_DIGICOM_EDIT')." : ".$customer->firstname;
 
-		JToolBarHelper::title(JText::_('Customer').":<small>[".$text."]</small>");
+		JToolBarHelper::title(JText::_('COM_DIGICOM_CUSTOMER').":<small>[".$text."]</small>");
 
 		$bar = JToolBar::getInstance('toolbar');
 		$layout = new JLayoutFile('toolbar.title');
 		$title=array(
-			'title' => JText::_('Customer').":<small>[".$text."]</small>",
+			'title' => JText::_('COM_DIGICOM_CUSTOMER').":<small>[".$text."]</small>",
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
