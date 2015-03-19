@@ -183,7 +183,8 @@ if ($saveOrder)
 							</td>
 							<td class="center hidden-phone">
 								<span title="<?php echo sprintf('%d-%d', $item->lft, $item->rgt); ?>">
-									<?php echo (int) $item->id; ?></span>
+									<?php echo (int) $item->id; ?>
+								</span>
 							</td>
 						</tr>
 					<?php endforeach; ?>

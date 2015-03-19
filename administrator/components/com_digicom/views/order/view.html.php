@@ -34,12 +34,12 @@ class DigiComViewOrder extends JViewLegacy
 		$this->configs 	= $this->get('configs');
 
 
-		JToolBarHelper::title( JText::_( 'VIEWDSADMINORDERS' ), 'generic.png' );
+		JToolBarHelper::title( JText::_( 'COM_DIGICOM_ORDER_DETAILS_TOOLBAR_TITLE' ), 'generic.png' );
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout
 		$layout = new JLayoutFile('toolbar.title');
 		$title=array(
-			'title' => JText::_( 'VIEWDSADMINORDERS' ),
+			'title' => JText::_( 'COM_DIGICOM_ORDER_DETAILS_TOOLBAR_TITLE' ),
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');

@@ -38,25 +38,25 @@ $date = date( $configs->get('time_format','d M Y'), $order->order_date);
 <form id="adminForm" action="index.php" name="adminForm" method="post">
 
 <div id="contentpane" >
-	
-<h2><?php echo JText::_('COM_DIGICOM_ORDER_DETAILS'); ?></h2>
 <p class="alert alert-info">
-	<?php echo JText::sprintf('COM_DIGICOM_ORDER_DETAILS_NOTICE',$order->id,$date,$order->status); ?>
+	<?php echo JText::sprintf('COM_DIGICOM_ORDER_DETAILS_HEADER_NOTICE',$order->id,$date,$order->status); ?>
 </p>
+	
+<h2><?php echo JText::_('COM_DIGICOM_ORDER_DETAILS_HEADER_TITLE'); ?></h2>
 	<table class="adminlist table table-striped">
 		<thead>
 			<tr>
 				<th class="sectiontableheader">#</th>
 				<th class="sectiontableheader"  >
-					<?php echo JText::_('DSPROD');?>
+					<?php echo JText::_('COM_DIGICOM_PRODUCT');?>
 				</th>
 				
 				<th class="sectiontableheader"  >
-					<?php echo JText::_('COM_DIGICOM_NUM_OF_PRODUCT_SALE');?>
+					<?php echo JText::_('COM_DIGICOM_ORDER_DETAILS_TOTAL_PRODUCT');?>
 				</th>
 
 				<th class="sectiontableheader"  >
-					<?php echo JText::_('DSPRICE');?>
+					<?php echo JText::_('COM_DIGICOM_PRICE');?>
 				</th>
 
 			</tr>
@@ -117,7 +117,7 @@ $date = date( $configs->get('time_format','d M Y'), $order->order_date);
 
 			<tr style="border-style:none;"><td style="border-style:none;" colspan="4"><hr /></td></tr>
 			<tr><td colspan="2" ></td>
-				<td style="font-weight:bold"><?php echo JText::_("DSSUBTOTAL");?></td>
+				<td style="font-weight:bold"><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></td>
 				<td>
 					<?php 
 						echo DigiComHelperDigiCom::format_price($oll_courses_total, $order->currency, true, $configs);
@@ -126,7 +126,7 @@ $date = date( $configs->get('time_format','d M Y'), $order->order_date);
 			</tr>
 			
 			<tr><td colspan="2"></td>
-				<td style="font-weight:bold"><?php echo JText::_("VIEWCONFIGSHOWCPROMO");?> <strong><?php echo $order->promocode; ?></strong></td>
+				<td style="font-weight:bold"><?php echo JText::_("COM_DIGICOM_DISCOUNT");?> <strong><?php echo $order->promocode; ?></strong></td>
 				<td><?php echo DigiComHelperDigiCom::format_price($order->promocodediscount, $order->currency, true, $configs);?></td></tr>
 			<?php if ($refunds > 0):?>
 			<tr>
@@ -150,7 +150,7 @@ $date = date( $configs->get('time_format','d M Y'), $order->order_date);
 			</tr>
 			<?php endif;?>
 			<tr><td colspan="2"></td>
-					<td style="font-weight:bold"><?php echo JText::_("DSTOTAL");?></td>
+					<td style="font-weight:bold"><?php echo JText::_("COM_DIGICOM_TOTAL");?></td>
 				<td>
 					<?php
 						$value = $order->amount_paid;
