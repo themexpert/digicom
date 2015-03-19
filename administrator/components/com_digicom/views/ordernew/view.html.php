@@ -68,12 +68,12 @@ class DigiComViewOrderNew extends JViewLegacy
 		$this->promocode 	= $this->get('promocode');
 
 		
-		JToolBarHelper::title( JText::_( 'COM_DIGICOM_CREATE_NEW_ORDER' ), 'generic.png' );
+		JToolBarHelper::title( JText::_( 'COM_DIGICOM_ORDER_CREATE_NEW_ORDER_TOOLBAR_TITLE' ), 'generic.png' );
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout
 		$layout = new JLayoutFile('toolbar.title');
 		$title=array(
-			'title' => JText::_( 'COM_DIGICOM_CREATE_NEW_ORDER' ),
+			'title' => JText::_( 'COM_DIGICOM_ORDER_CREATE_NEW_ORDER_TOOLBAR_TITLE' ),
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
