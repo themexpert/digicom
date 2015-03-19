@@ -52,12 +52,12 @@ class DigiComViewOrders extends JViewLegacy
 
 	function showOrder( $tpl = null )
 	{
-		JToolBarHelper::title( JText::_( 'VIEWDSADMINORDERS' ), 'generic.png' );
+		JToolBarHelper::title( JText::_( 'COM_DIGICOM_ORDERS_TOOLBAR_TITLE' ), 'generic.png' );
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout
 		$layout = new JLayoutFile('toolbar.title');
 		$title=array(
-			'title' => JText::_( 'VIEWDSADMINORDERS' ),
+			'title' => JText::_( 'COM_DIGICOM_ORDERS_TOOLBAR_TITLE' ),
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
@@ -347,13 +347,13 @@ class DigiComViewOrders extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		JToolBarHelper::title( JText::_( 'VIEWDSADMINORDERS' ), 'generic.png' );
+		JToolBarHelper::title( JText::_( 'COM_DIGICOM_ORDERS_TOOLBAR_TITLE' ), 'generic.png' );
 
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout
 		$layout = new JLayoutFile('toolbar.title');
 		$title=array(
-			'title' => JText::_( 'VIEWDSADMINORDERS' ),
+			'title' => JText::_( 'COM_DIGICOM_ORDERS_TOOLBAR_TITLE' ),
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');

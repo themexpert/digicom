@@ -50,6 +50,10 @@ Joomla.submitbutton = function (pressbutton) {
 <?php else : ?>
 <div id="j-main-container" class="">
 <?php endif;?>
+
+	<div class="alert alert-info">
+		<?php echo JText::_("COM_DIGICOM_ORDERS_HEADER_NOTICE"); ?>
+	</div>
 	<form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&view=orders'); ?>" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
 		<div class="js-stools">
 			<div class="clearfix">
@@ -80,9 +84,7 @@ Joomla.submitbutton = function (pressbutton) {
 		<br>
 
 
-		<div class="alert alert-info">
-			<?php echo JText::_("HEADER_ORDERS"); ?>
-		</div>
+		
 		<table class="adminlist table table-striped">
 			<thead>
 				<tr>
@@ -90,29 +92,29 @@ Joomla.submitbutton = function (pressbutton) {
 						<?php echo JHtml::_('grid.checkall'); ?>
 					</th>
 					<th width="20">
-						<?php echo JText::_( 'VIEWORDERSID' ); ?>
+						<?php echo JText::_( 'JGRID_HEADING_ID' ); ?>
 					</th>
 
 					<th>
-						<?php echo JText::_( 'VIEWORDERSDATE' ); ?>
+						<?php echo JText::_( 'COM_DIGICOM_DATE' ); ?>
 					</th>
 					<th  <?php if ( $configs->get('showolics',0) == 0 ) echo $invisible; ?>>
 						<?php echo JText::_( 'VIEWORDERSNOL' ); ?>
 					</th>
 					<th>
-						<?php echo JText::_( 'VIEWORDERSPRICE' ); ?>
+						<?php echo JText::_( 'COM_DIGICOM_PRICE' ); ?>
 					</th>
 					<th>
-						<?php echo JText::_( 'VIEWORDERSUSERNAME' ); ?>
+						<?php echo JText::_( 'COM_DIGICOM_USER_NAME' ); ?>
 					</th>
 					<th>
-						<?php echo JText::_( 'VIEWORDERSCUST' ); ?>
+						<?php echo JText::_( 'COM_DIGICOM_CUSTOMER' ); ?>
 					</th>
 					<th>
-						<?php echo JText::_( 'VIEWORDERSSTATUS' ); ?>
+						<?php echo JText::_( 'JSTATUS' ); ?>
 					</th>
 					<th>
-						<?php echo JText::_( 'VIEWORDERSPAYMETHOD' ); ?>
+						<?php echo JText::_( 'COM_DIGICOM_CUSTOMER_PAYMENT_METHOD' ); ?>
 					</th>
 				</tr>
 			</thead>
