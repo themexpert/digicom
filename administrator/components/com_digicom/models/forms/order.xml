@@ -29,7 +29,7 @@
 
 		<field name="processor" type="plugins" folder="digicom_pay"
 			description="COM_USERS_USER_FIELD_EDITOR_DESC"
-			label="COM_USERS_USER_FIELD_EDITOR_LABEL" default="offline" required="required" class="input-xxlarge required" />
+			label="COM_USERS_USER_FIELD_EDITOR_LABEL" default="offline" required="required" class="input-xlarge required" />
 
 		<field id="published" name="published" type="list" label="JSTATUS" description="JFIELD_PUBLISHED_DESC" class="chzn-color-state" size="1" default="1" >
 			<option value="1"> JPUBLISHED</option>
