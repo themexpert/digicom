@@ -244,7 +244,7 @@ class DigiComViewCategory extends JViewCategory
 		{
 			$this->document->setMetaData('author', $this->category->get('author', ''));
 		}
-
+		
 		$mdata = $this->category->metadata->toArray();
 
 		foreach ($mdata as $k => $v)
