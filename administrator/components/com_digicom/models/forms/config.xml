@@ -434,7 +434,7 @@
 				type="list"
 				label="COM_DIGICOM_IMAGE_THUMB_METHOD_LABEL"
 				description="COM_DIGICOM_IMAGE_THUMB_METHOD_DESC"
-				default="SCALE_FILL"
+				default="SCALE_FILL" 
 				>
 				<option value="6">COM_DIGICOM_IMAGE_RESIZE_METHOD_SCALE_FIT</option>
 				<option value="1">COM_DIGICOM_IMAGE_RESIZE_METHOD_SCALE_FILL</option>
