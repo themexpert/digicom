@@ -119,7 +119,7 @@ class DigiComViewCategory extends JViewCategory
 			$results = $dispatcher->trigger('onContentAfterDisplay', array('com_digicom.category', &$item, &$item->params, 0));
 			$item->event->afterDisplayContent = trim(implode("\n", $results));
 		
-			$item->images = DigiComSiteHelperDigiCom::getThumbnail($item->images);
+			$item->images = DigiComSiteHelperDigiCom::getThumbnail($item->images); 
 		}
 
 		// Check for layout override only if this is not the active menu item
