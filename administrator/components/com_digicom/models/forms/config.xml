@@ -398,6 +398,51 @@
 				<option value="4">4</option>
 				<option value="6">6</option>
 			</field>
+
+			<field
+				name="thumb_image_size_spacer"
+				type="spacer"
+				class="title"
+				label="COM_DIGICOM_THEME_THUMBNAIL_IMAGE_SETTINGS_LABEL"
+				/>
+			<field 
+				name="image_thumb_enable"
+				type="radio"
+				class="btn-group"
+				label="COM_DIGICOM_IMAGE_THUMB_ENABLE_LABEL"
+				description="COM_DIGICOM_IMAGE_THUMB_ENABLE_DESC"
+				default="1">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+			</field>
+			<field
+				name="image_thumb_width"
+				type="number"
+				label="COM_DIGICOM_IMAGE_THUMB_WIDTH_LABEL"
+				description="COM_DIGICOM_IMAGE_THUMB_WIDTH_DESC"
+				default="400"
+				/>
+			<field
+				name="image_thumb_height"
+				type="number"
+				label="COM_DIGICOM_IMAGE_THUMB_HEIGHT_LABEL"
+				description="COM_DIGICOM_IMAGE_THUMB_HEIGHT_DESC"
+				default="400"
+				/>
+			<field
+				name="image_thumb_method"
+				type="list"
+				label="COM_DIGICOM_IMAGE_THUMB_METHOD_LABEL"
+				description="COM_DIGICOM_IMAGE_THUMB_METHOD_DESC"
+				default="SCALE_FILL"
+				>
+				<option value="SCALE_FIT">COM_DIGICOM_IMAGE_RESIZE_METHOD_SCALE_FIT</option>
+				<option value="SCALE_FILL">COM_DIGICOM_IMAGE_RESIZE_METHOD_SCALE_FILL</option>
+				<option value="SCALE_INSIDE">COM_DIGICOM_IMAGE_RESIZE_METHOD_SCALE_INSIDE</option>
+				<option value="SCALE_OUTSIDE">COM_DIGICOM_IMAGE_RESIZE_METHOD_SCALE_OUTSIDE</option>
+			</field>
+
+
 		</fieldset>
 
 		<fieldset name="email_settings" addfieldpath="/administrator/components/com_digicom/models/fields"
