@@ -29,19 +29,28 @@ $bsGrid = array(
 <div id="digicom">
 	<div class="digi-categories">
 		
-		<?php if(!empty($this->category->name)): ?>
+		<?php if($this->category->params->get('show_cat_title',1) or $this->category->params->get('show_cat_image',1) or $this->category->params->get('show_cat_intro',1)): ?>
 		<!-- Category Info -->
-		<div class="category-info">
+		<div class="category-info clearfix">
 			<!-- Category Name -->
-			<h1 class="digi-page-title"><?php echo $this->category->name; ?></h1>
+			<?php if($this->category->params->get('show_cat_title',1) && !empty($this->category->title)): ?>
+			<h1 class="digi-page-title"><?php echo $this->category->title; ?></h1>
+			<?php endif; ?>
+
+			<?php if($this->category->params->get('show_cat_image',1) && !empty($this->category->params->get('image'))): ?>
 			<div class="pull-left">
-				<img class="img-rounded" src="<?php echo $this->category->image; ?>"/>
+				<img class="img-rounded" src="<?php echo $this->category->params->get('image'); ?>" />
 			</div>
+			<?php endif; ?>
+
+			<?php if($this->category->params->get('show_cat_intro',1) && !empty($this->category->description)): ?>
 			<div class="category-desc">
 				<?php echo $this->category->description; ?>
 			</div>
+			<?php endif; ?>
 		</div>
 		<?php endif; ?>
+
 		<div class="products-list clearfix">
 			<div class="row-fluid">
 	            <ul class="thumbnails">
