@@ -1,18 +1,17 @@
 <?php
 /**
-  DigiCom component
- * http://themexpert.com
- *
- * @copyright  (C) 2006-2012 ThemeXpert.
- * @license	GNU General Public License version 2 or later; see LICENSE.txt
- *
+ * @package		DigiCom
+ * @copyright	Copyright (c)2010-2015 ThemeXpert
+ * @license 	GNU General Public License version 3, or later
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @since 		1.0.0
  */
 
-defined('_JEXEC') or die('Direct Access to this location is not allowed.');
+defined('_JEXEC') or die;
 
 defined ('DS') or define('DS', DIRECTORY_SEPARATOR);
 /**
-  Script file of DigiCom component
+ * Script file of DigiCom component
  */
 class Com_DigiComInstallerScript
 {

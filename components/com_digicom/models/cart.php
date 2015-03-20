@@ -6,18 +6,16 @@
  * @lastmodified	$LastChangedDate: 2014-01-26 08:51:32 +0100 (Sun, 26 Jan 2014) $
  * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
 * @license
-
-
 */
 
 defined ('_JEXEC') or die ("Go away.");
-jimport( "joomla.aplication.component.model" );
-jimport('joomla.filesystem.file');
 
-class DigiComModelCart extends DigiComModel
+class DigiComModelCart extends JModelItem
 {
 	public $orders 		= array();
 	public $packages 	= array();
+	public $configs 	= array();
+	public $customer 	= array();
 	
 	public $_items = null;
 	public $tax = null;
@@ -25,6 +23,9 @@ class DigiComModelCart extends DigiComModel
 	function __construct()
 	{
 		parent::__construct();
+		$this->configs = JComponentHelper::getComponent('com_digicom')->params;
+		$this->customer = new DigiComSiteHelperSession();
+
 	}
 
 	/**
@@ -70,7 +71,8 @@ class DigiComModelCart extends DigiComModel
 		return false;
 	}
 
-	function addToCart($customer){
+	function addToCart(){
+		$customer = $this->customer;
 		$db = JFactory::getDBO();
 		$sid = $customer->_sid; //digicom session id
 		$uid = $customer->_user->id; //joomla user id
@@ -120,7 +122,8 @@ class DigiComModelCart extends DigiComModel
 	}
 
 	function getCartItems($customer, $configs)
-	{
+	{	
+
 		if(is_object($customer)){
 			$sid = $customer->_sid;
 		}
@@ -155,17 +158,18 @@ class DigiComModelCart extends DigiComModel
 			$item = &$items[$i];
 			$item->discount = 0;
 			$item->currency = $configs->get('currency','USD');
-			$item->price = DigiComHelper::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
-			$item->subtotal = DigiComHelper::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
+			$item->price = DigiComSiteHelperDigiCom::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
+			$item->subtotal = DigiComSiteHelperDigiCom::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
 
-			$item->price_formated = DigiComHelper::format_price2( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
-			$item->subtotal_formated = DigiComHelper::format_price2( $item->subtotal, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
+			$item->price_formated = DigiComSiteHelperDigiCom::format_price2( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
+			$item->subtotal_formated = DigiComSiteHelperDigiCom::format_price2( $item->subtotal, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
 		
 			$item->subtotal = $item->price * $item->quantity;
 		}
 		
-		//print_r($items);die;
 		
+		$this->_items = $items;
+
 		if(count($items) > 0){
 			$this->calc_price($items, $customer, $configs);
 			foreach($items as $i => $v){
@@ -175,16 +179,12 @@ class DigiComModelCart extends DigiComModel
 			}
 		}
 		
-		//print_r($items);die;
-		
-		$this->_items = $items;
-
-
-		return $items;
+		return $this->_items;
 	}
 
-	function calc_price(&$items, $cust_info, $configs)
+	function calc_price($items,$cust_info,$configs)
 	{
+		
 		if(isset($items[-1]) && $items[-1] == "PayProcessed"){
 			return $items[-2];
 		}
@@ -199,6 +199,172 @@ class DigiComModelCart extends DigiComModel
 			$configs = $this->getInstance( "Config", "digicomModel" );
 			$configs = $configs->getConfigs();
 		}
+
+		if(isset($cust_info->_customer) && !isset($cust_info->_customer->country)){
+			$cust_info->_customer->country = '';
+		}
+		if(isset($cust_info->_customer) && !isset($cust_info->_customer->state)){
+			$cust_info->_customer->state = '';
+		}
+		$pay_flag = false;
+		$can_promo = true;
+		$payprocess = array();
+		
+		$total = 0;
+		$price_format = '%' . $configs->get('totaldigits','') . '.' . $configs->get('decimaldigits','2') . 'f';
+		$payprocess['number_of_products'] = 0;
+		$payprocess['shipping'] = 0;
+		$payprocess['currency'] = $configs->get('currency','USD');
+		$payprocess['promo'] = 0;
+		//--------------------------------------------------------
+		// Promo code
+		//--------------------------------------------------------
+		$promo = $this->get_promo( $cust_info );
+		$promovalue = 0;
+		$addPromo = false;
+		$ontotal = false;
+		$onProduct = false;
+		$promo_applied = 0;
+
+		if($promo->id > 0){
+			//we got real promocode
+			$promoid = $promo->id;
+			$promocode = $promo->code;
+
+			//validate promocode
+			if(!($promo->codelimit <= $promo->used && $promo->codelimit > 0)){
+				$addPromo = true;
+				//we can use it, it has limit
+				if($promo->discount_enable_range==1){
+					// for entire cart
+					$ontotal = true;
+				}else{
+					$onProduct = true;
+				}
+			}
+		} else {
+			$promoid = '0';
+			$promocode = '';
+		}
+
+		foreach ( $items as $item )
+		{
+
+			$total += $item->subtotal;
+			$payprocess['number_of_products'] += $item->quantity;
+
+			//check promocode on product apply
+			if($addPromo && $onProduct){
+				//TODO: Apply Product promo
+				// Get product restrictions
+				$sql = "SELECT p.`productid` FROM `#__digicom_promocodes_products` AS p WHERE p.`promoid`=" . $promo->id ." and p.`productid`=".$item->id;
+				$this->_db->setQuery( $sql );
+				$promo->product = $this->_db->loadObject();
+
+				if (count($promo->product) && $promo->aftertax == '0')
+				{
+					//promo discount should be applied before taxation
+					//we get product to calculate discount
+					if ($promo->promotype == '0')
+					{
+						// Use absolute values
+						$promoamount = $promo->amount;
+						$promovalue += $promo->amount;
+					}
+					else
+					{
+						// Use percentage
+						$promoamount = $item->price * $promo->amount / 100;
+						$promovalue += $item->price * $promo->amount / 100;
+					}
+
+					$sql = "update #__digicom_promocodes set used=used+1 where id = '" . $promo->id . "'";
+					$this->_db->setQuery( $sql );
+					$this->_db->query();
+					
+					$item->discount += $promoamount;
+					$payprocess['discount_calculated'] = 1;
+				}
+			} // end if for: product promo check
+		}
+		
+		if($addPromo && $onProduct){
+			$total -= $promovalue;
+			$promo_applied = 1;
+			$payprocess['promo'] = $promovalue;
+		}
+
+		//--------------------------------------------------------
+		// Promo code on cart
+		//--------------------------------------------------------
+		if($addPromo && $ontotal){
+			//echo 'apply promo on cart';die;
+			//now lets apply promo discounts if there are any
+			if($promo->promotype == '0'){//use absolute values
+				$total -= $promo->amount;
+				$promovalue = $promo->amount;
+			}
+			else{ //use percentage
+				$promovalue = $total * $promo->amount / 100;
+				$total *= 1 - $promo->amount / 100;
+			}
+			$payprocess['promo_order'] = 1;
+			$payprocess['promo'] = $promovalue;
+			$promo_applied = 1;
+
+			$sql = "update #__digicom_promocodes set used=used+1 where id = '" . $promo->id . "'";
+			$this->_db->setQuery( $sql );
+			$this->_db->query();
+		}
+
+		$payprocess['payable_amount'] = $total;
+
+		//final price calculations
+		$tmp_customer = $customer;
+
+		if (is_object($customer) && isset($customer->_customer) && !empty($customer->_customer)) $tmp_customer = $customer->_customer;
+		if (is_array($customer)) $tmp_customer = $customer;
+		$customer = $tmp_customer;
+		//final calculations end here
+		
+		if(!isset($payprocess['value'])) $payprocess['value'] = 0;
+		$sum_tax = $total + $payprocess['value']; //$vat_tax + $state_tax;//total tax
+		
+		$payprocess['promo_error'] = (!$user->id && isset($promo->orders) && count($promo->orders) ? JText::_("DIGI_PROMO_LOGIN") : '');
+		$payprocess['total'] = $total;
+		
+		$payprocess['taxed'] = $payprocess['shipping'] + $sum_tax;
+		$payprocess['discount_calculated'] = (isset($payprocess['discount_calculated']) ? $payprocess['discount_calculated'] : 0);
+		$payprocess['shipping'] = DigiComSiteHelperDigiCom::format_price( $payprocess['shipping'], $payprocess['currency'], false, $configs ); //sprintf($price_format, $payprocess['shipping']);
+		$payprocess['taxed'] = DigiComSiteHelperDigiCom::format_price( $payprocess['taxed'], $payprocess['currency'], false, $configs ); //sprintf($price_format, $payprocess['taxed']);//." ".$payprocess['currency'];
+		$payprocess['type'] = 'TAX';
+
+		$this->_tax = $payprocess;
+		if(count($items) > 0){
+			$this->_items[-1] = "PayProcessed";
+			$this->_items[-2] = $payprocess;
+		}
+		return $payprocess;
+	}
+
+	function calc_price_backup($items,$cust_info,$configs)
+	{
+		
+		if(isset($items[-1]) && $items[-1] == "PayProcessed"){
+			return $items[-2];
+		}
+		
+		$db = JFactory::getDBO();
+		$user = JFactory::getUser();
+		if (is_object($cust_info))	$sid = $cust_info->_sid;
+		if (is_array($cust_info))	$sid = $cust_info['sid'];
+		$customer = $cust_info;
+
+		if ( null != $configs->get('totaldigits','') ) {
+			$configs = $this->getInstance( "Config", "digicomModel" );
+			$configs = $configs->getConfigs();
+		}
+
 		if(isset($cust_info->_customer) && !isset($cust_info->_customer->country)){
 			$cust_info->_customer->country = '';
 		}
@@ -242,14 +408,19 @@ class DigiComModelCart extends DigiComModel
 
 		if($promo->id > 0 && $can_promo) { //valid promocode was provided
 			$payprocess['promoaftertax'] = $promo->aftertax;
+			
+
 			if($promo->codelimit <= $promo->used && $promo->codelimit > 0 ){
 				//nothing to do now
 			} else {
 				if($promo->aftertax == '0'){//promo discount should be applied before taxation
+					
 					$promo_applied = 1; //all discounts are applied
-					$restricted_order = (int) $this->havePreviousOrderOfProduct($promo);
+					
+					//$restricted_order = (int) $this->havePreviousOrderOfProduct($promo);
 					// If there are restrictions must check line per line in the products
-					if (count($promo->products) || count($promo->orders))
+					//if (count($promo->products) || count($promo->orders))
+					if (count($promo->products))
 					{
 						$payprocess['promo_order'] = 0;
 
@@ -258,18 +429,19 @@ class DigiComModelCart extends DigiComModel
 							$restricted_product = (int) $this->isRestrictedProduct($item, $promo->products);
 							$have_discount = 0;
 							$item->discount = 0;
-							if ($restricted_order && count($promo->orders) && $restricted_product && count($promo->products))
+							/*if ($restricted_order && count($promo->orders) && $restricted_product && count($promo->products))
 							{
 								$have_discount = 1;
-							}
+							}*/
 							if ($restricted_product && count($promo->products) && count($promo->orders) == 0)
 							{
 								$have_discount = 1;
 							}
-							if ($restricted_order && count($promo->orders) && count($promo->products) == 0)
+							/*if ($restricted_order && count($promo->orders) && count($promo->products) == 0)
 							{
 								$have_discount = 1;
 							}
+							*/
 							if (count($promo->products) == 0 && count($promo->orders) == 0)
 							{
 								$have_discount = 1;
@@ -346,8 +518,8 @@ class DigiComModelCart extends DigiComModel
 		
 		$payprocess['taxed'] = $payprocess['shipping'] + $sum_tax;
 		$payprocess['discount_calculated'] = (isset($payprocess['discount_calculated']) ? $payprocess['discount_calculated'] : 0);
-		$payprocess['shipping'] = DigiComHelper::format_price( $payprocess['shipping'], $payprocess['currency'], false, $configs ); //sprintf($price_format, $payprocess['shipping']);
-		$payprocess['taxed'] = DigiComHelper::format_price( $payprocess['taxed'], $payprocess['currency'], false, $configs ); //sprintf($price_format, $payprocess['taxed']);//." ".$payprocess['currency'];
+		$payprocess['shipping'] = DigiComSiteHelperDigiCom::format_price( $payprocess['shipping'], $payprocess['currency'], false, $configs ); //sprintf($price_format, $payprocess['shipping']);
+		$payprocess['taxed'] = DigiComSiteHelperDigiCom::format_price( $payprocess['taxed'], $payprocess['currency'], false, $configs ); //sprintf($price_format, $payprocess['taxed']);//." ".$payprocess['currency'];
 		$payprocess['type'] = 'TAX';
 
 		$this->_tax = $payprocess;
@@ -407,6 +579,12 @@ class DigiComModelCart extends DigiComModel
 	//if checkvalid == 1 - checks if this promocode is still valid and can be used.
 	function get_promo( $customer, $checkvalid = 1 )
 	{
+		
+		if(empty($customer->_sid) and empty($customer['sid']))
+		{
+			$customer = new DigiComSiteHelperSession();
+		}
+
 		$uid = 0;
 
 		if (is_object($customer) && isset($customer->_sid) && !empty($customer->_sid)) $sid = $customer->_sid;
@@ -427,44 +605,44 @@ class DigiComModelCart extends DigiComModel
 			$promocode = $promodata[1];
 		else
 			$promocode = '';
-
+		
+		
 		if ( strlen( $promocode ) > 0 ) {//valid promocode was provided
 			$sql = "select *
 					from #__digicom_promocodes
 					where code='" . $promocode . "'";
 			$db->setQuery( $sql );
-			$promo = $db->loadObjectList();
-			$promo = $promo[0];
+			$promo = $db->loadObject();
+			
 			// Get products restrictions
 			$sql = "SELECT p.`productid`
 					FROM `#__digicom_promocodes_products` AS p
 					WHERE p.`promoid`=" . $promo->id;
 			$db->setQuery( $sql );
 			$promo->products = $db->loadObjectList();
-			// Get previous orders restrictions
-			$sql = "SELECT o.`productid`
-					FROM `#__digicom_promocodes_orders` AS o
-					WHERE o.`promoid`=" . $promo->id;
-			$db->setQuery( $sql );
-			$promo->orders = $db->loadObjectList();
+			
 		} else {
-			$promo = $this->getTable( "Promo" );
+			$promo = $this->getTable( "Discount" );
 		}
+
+
 		$promo->error = "";
 		if ( $promodata[0] == "promoerror" )
 			$promo->error = $promodata[1];
+
 		//code exists and we're about to validate it
 		if ( $promo->id > 0 && $checkvalid == 1 ) {
-			/*
-			if ( $uid > 0 ) {
-				$sql = "select count(*) from #__digicom_licenses where userid='" . $uid . "' and published='1'";
+			
+			/*if ( $uid > 0 ) {
+				$sql = "select count(*) from #__digicom_orders where userid='" . $uid . "' and promocode='".$promocode."'";
 				$db->setQuery( $sql );
 				$licensecount = $db->loadResult();
 			} else {
 				$licensecount = 0;
-			}
-			*/
+			}		*/	
+
 			$licensecount = 0;
+
 			$now = time();
 			$promo_data = $promo;
 			$error = 1;
@@ -568,6 +746,8 @@ class DigiComModelCart extends DigiComModel
 				$db->query();
 				//$jAp->enqueueMessage(nl2br($db->getErrorMsg()),'error');
 			}
+
+
 		} else {//cleaning up promocode entry
 			$sql = "update #__digicom_session set cart_details='' where sid='" . intval($sid) . "'";
 			$db->setQuery( $sql );
@@ -606,7 +786,7 @@ class DigiComModelCart extends DigiComModel
 
 	function checkCartIsEmpty() {
 
-		$customer = new DigiComSessionHelper();
+		$customer = new DigiComSiteHelperSession();
 
 		$conf = $this->getInstance( "config", "digicomModel" );
 		$configs = $conf->getConfigs();
@@ -689,7 +869,7 @@ class DigiComModelCart extends DigiComModel
 
 		$order_id = JRequest::getVar('order_id','');
 		$sid = JRequest::getVar('sid',$order_id);
-		$mosConfig_live_site = DigiComHelper::getLiveSite();
+		$mosConfig_live_site = DigiComSiteHelperDigiCom::getLiveSite();
 		$success_url = $mosConfig_live_site . "/index.php?option=com_digicom&controller=" . $controller . "&task=" . $task . "&success=1&sid=" . $sid;
 		$failed_url = $mosConfig_live_site . "/index.php?option=com_digicom&controller=" . $controller . "&task=" . $task . "&success=0&sid=" . $sid;
 		$success_url = str_replace("https://", "http://", $success_url);
@@ -760,6 +940,11 @@ class DigiComModelCart extends DigiComModel
 	function proccessSuccess($result, $pg_plugin, $order_id, $sid)
 	{
 		
+		if($order_id == 0)
+		{
+			JFactory::getApplication()->redirect(JURI::root()."index.php?option=com_digicom&view=orders");
+		}
+
 		unset($_SESSION["creditCardNumber"]);
 		unset($_SESSION["expDateMonth"]);
 		unset($_SESSION["expDateYear"]);
@@ -803,10 +988,7 @@ class DigiComModelCart extends DigiComModel
 			$this->updateOrder($order_id,$result,$data,$pg_plugin);
 			//$order_id = $this->addOrder($items, $customer, $now, $pg_plugin, $status);
 			
-			if($order_id == 0)
-			{
-				JFactory::getApplication()->redirect(JURI::root()."index.php?option=com_digicom&view=orders");
-			}
+			
 			
 			//$this->addOrderDetails($items, $order_id, $now, $customer, $status);
 			
@@ -817,8 +999,9 @@ class DigiComModelCart extends DigiComModel
 			//$this->emptyCart($sid);
 		}
 		//$controller->setRedirect($return_url, $msg);
+
 		if($status == "Pending"){
-			JFactory::getApplication()->redirect(JURI::root()."index.php?option=com_digicom&view=orders",$msg);
+			JFactory::getApplication()->redirect(JURI::root()."index.php?option=com_digicom&view=order&id=".$order_id,$msg);
 		}
 		
 		// downloads page
@@ -883,7 +1066,7 @@ class DigiComModelCart extends DigiComModel
 
 		global $Itemid;
 
-		$mosConfig_live_site = DigiComHelper::getLiveSite(); //$jconf->live_site;
+		$mosConfig_live_site = DigiComSiteHelperDigiCom::getLiveSite(); //$jconf->live_site;
 
 		$conf = $this->getInstance( "config", "digicomModel" );
 		$configs = $conf->getConfigs();
@@ -897,7 +1080,7 @@ class DigiComModelCart extends DigiComModel
 			//debug($cart_items);
 		}
 
-		$customer = new DigiComSessionHelper();
+		$customer = new DigiComSiteHelperSession();
 		$_Itemid = $Itemid;
 		if ( isset( $customer->_Itemid ) && ($customer->_Itemid > 0) )
 			$_Itemid = $customer->_Itemid;
@@ -977,7 +1160,7 @@ class DigiComModelCart extends DigiComModel
 
 		global $Itemid;
 
-		$mosConfig_live_site = DigiComHelper::getLiveSite(); //$jconf->live_site;
+		$mosConfig_live_site = DigiComSiteHelperDigiCom::getLiveSite(); //$jconf->live_site;
 
 		$conf = $this->getInstance( "config", "digicomModel" );
 		$configs = $conf->getConfigs();
@@ -991,7 +1174,7 @@ class DigiComModelCart extends DigiComModel
 			//debug($cart_items);
 		}
 
-		$customer = new DigiComSessionHelper();
+		$customer = new DigiComSiteHelperSession();
 		$_Itemid = $Itemid;
 		if ( isset( $customer->_Itemid ) && ($customer->_Itemid > 0) )
 			$_Itemid = $customer->_Itemid;
@@ -1037,6 +1220,10 @@ class DigiComModelCart extends DigiComModel
 		$db->setQuery( $sql );
 		$prof = $db->loadResult();
 		return unserialize(base64_decode($prof));
+	}
+
+	function getCat_url(){
+		return '#';
 	}
 
 	function storeTransactionData( $items, $orderid, $tax, $sid ){
@@ -1255,7 +1442,7 @@ class DigiComModelCart extends DigiComModel
 	function affiliate( $total, $orderid, $configs )
 	{
 
-		$mosConfig_live_site = DigiComHelper::getLiveSite();
+		$mosConfig_live_site = DigiComSiteHelperDigiCom::getLiveSite();
 
 		$my = JFactory::getUser();
 		if ( $configs->get('idevaff','notapplied') == 'notapplied' )

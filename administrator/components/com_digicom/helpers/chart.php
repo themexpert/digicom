@@ -1,19 +1,15 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 341 $
- * @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package		DigiCom
+ * @copyright	Copyright (c)2010-2015 ThemeXpert
+ * @license 	GNU General Public License version 3, or later
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
-// ini_set( 'display_errors', true );  
-// error_reporting( E_ALL );
-// error_reporting(E_ALL);
+defined('_JEXEC') or die;
 
-class DigiComChart {
+class DigiComHelperChart {
 
 	public static function test(){
 		return 'working';
@@ -54,7 +50,7 @@ class DigiComChart {
 		$price = '';
 		$prefix = '';
 		foreach($days as $day){
-			$dayPrice = ceil(DigiComChart::getAmountDaily($day));
+			$dayPrice = ceil(DigiComHelperChart::getAmountDaily($day));
 			$price = $price . $prefix . $dayPrice;
 			$prefix = ', ';
 		}
@@ -80,7 +76,7 @@ class DigiComChart {
 		$db->setQuery($sql);
 		$db->query();
 		$price = $db->loadResult();
-		$result = DigiComAdminHelper::format_price($price, $config->get('currency','USD'), true, $config);
+		$result = DigiComHelperDigiCom::format_price($price, $config->get('currency','USD'), true, $config);
 		return $result;
 	}
 	
@@ -373,7 +369,7 @@ class DigiComChart {
 					$padding = ($sum * 270) / $total;
 					$padding = intval(270 - $padding);
 					$padding = $padding > 258 ? 258 : $padding;
-					$sum = DigiComAdminHelper::format_price($sum, $configs->get('currency','USD'), true, $configs);
+					$sum = DigiComHelperDigiCom::format_price($sum, $configs->get('currency','USD'), true, $configs);
 				}
 				else{
 					$padding = 270;

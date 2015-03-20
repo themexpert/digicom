@@ -1,8 +1,18 @@
 <?php
+/**
+ * @package		DigiCom
+ * @copyright	Copyright (c)2010-2015 ThemeXpert
+ * @license 	GNU General Public License version 3, or later
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @since 		1.0.0
+ */
+
+defined('_JEXEC') or die;
+
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-  Converts to and from JSON format.
+ * Converts to and from JSON format.
  *
  * JSON (JavaScript Object Notation) is a lightweight data-interchange
  * format. It is easy for humans to read and write. It is easy for machines

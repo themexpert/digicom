@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="DIGICOM_DASHBOARD">
+		<message>
+			<![CDATA[DIGICOM_DASHBOARD_TIP]]>
+		</message>
+	</layout>
+	<state>
+		<name>DIGICOM_DASHBOARD</name>
+		<description>DIGICOM_DASHBOARD_DESC</description>
+		<params>
+		</params>
+	</state>
+</metadata>

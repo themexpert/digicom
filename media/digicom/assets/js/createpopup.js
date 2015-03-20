@@ -40,7 +40,7 @@ function updateCart()
 {
 	promocode = document.cart_form.promocode.value;
 
-	var url = "index.php?option=com_digicom&view=cart&task=updateCart&promocode="+promocode+"&from=ajax";
+	var url = "index.php?option=com_digicom&view=cart&task=cart.updateCart&promocode="+promocode+"&from=ajax";
 	var req = new Request.HTML({
 		method: 'get',
 		url: url,
@@ -58,7 +58,7 @@ function updateCart()
 
 function deleteFromCart(cartid)
 {
-	var url = 'index.php?option=com_digicom&view=cart&task=deleteFromCart&from=ajax&cartid='+cartid;
+	var url = 'index.php?option=com_digicom&view=cart&task=cart.deleteFromCart&from=ajax&cartid='+cartid;
 	var req = new Request.HTML({
 		method: 'get',
 		url: url,
@@ -97,7 +97,7 @@ function createPopUp(pid, cid, site, renew, renewlicid, itemid, to_cart)
 	divbody.id = "cart_body";
 	divbody.className = "modal-body";
 
-	var url = 'index.php?option=com_digicom&view=cart&task=add'+
+	var url = 'index.php?option=com_digicom&view=cart&task=cart.add'+
 						  '&from=ajax'+
 						  '&pid='+pid+
 						  '&cid='+cid;
@@ -210,7 +210,7 @@ function ajaxRequest(Url,DivId)
 	}
 
 function update_cart(item_id) {
-	var url = "index.php?option=com_digicom&view=cart&task=getCartItem&cid="+item_id;
+	var url = "index.php?option=com_digicom&view=cart&task=cart.getCartItem&cid="+item_id;
 
 	var plan_id = document.getElementById('plan_id'+item_id);
 	var plan_query = '';
@@ -261,22 +261,9 @@ function grayBoxiJoomla(link_element, width, height){
 	SqueezeBox.open(link_element);
 }
 
-function changeImage(position, pid, width, height){
-	var url = 'index.php?option=com_digicom&view=products&task=previwimage&tmpl=component&position='+position+'&pid='+pid;
-
-	var req = new Request.HTML({
-		method: 'get',
-		url: url,
-		data: { 'do' : '1' },
-		onComplete: function(responseTree, responseElements, responseHTML, responseJavaScript){
-			document.getElementById('all_layout').innerHTML = responseHTML;
-			window.parent.changeGrayBoxSize(width, height);
-		}
-	}).send();
-}
 
 function refresCartModule(){
-	var url = 'index.php?option=com_digicom&view=cart&task=get_cart_content';
+	var url = 'index.php?option=com_digicom&view=cart&task=cart.get_cart_content';
 	if( document.getElementById('mod_digicom_cart_wrap') ) {
 		var req = new Request.HTML({
 			method: 'get',

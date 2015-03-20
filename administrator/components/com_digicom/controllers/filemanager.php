@@ -1,47 +1,23 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 341 $
- * @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package		DigiCom
+ * @copyright	Copyright (c)2010-2015 ThemeXpert
+ * @license 	GNU General Public License version 3, or later
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
 
-jimport ('joomla.application.component.controller');
+class DigiComControllerFileManager extends JControllerAdmin {
 
-class DigiComAdminControllerFileManager extends DigiComAdminController {
 
-	var $_model = null;
-
-	function __construct(){
-		parent::__construct();
-		require_once( JPATH_COMPONENT.DS.'helpers'.DS.'helper.php' );
-		$this->registerTask ("", "FileManager");
-	}
-
-	function FileManager(){
-		$view = $this->getView("FileManager", "html");
-		$view->display();
-	}
-
-	function vimeo(){
-   		JRequest::setVar( 'view', 'FileManager' );
-		JRequest::setVar( 'layout', 'vimeo'  );
-		$view = $this->getView("FileManager", "html");
-		$view->setLayout("vimeo");
-		$view->vimeo();
-		die();
-	}
-	
 	function connector()
 	{
         $mainframe = JFactory::getApplication();
-		$params = JComponentHelper::getParams('com_media');
-		$root = $params->get('file_path', 'digicom/');
-		$root = 'digicom';
+		$params = JComponentHelper::getParams('com_digicom');
+		$root = $params->get('ftp_source_path', 'digicom');
+
 		$folder = JRequest::getVar('folder', $root, 'default', 'path');
 		if (JString::trim($folder) == "")
 		{
@@ -66,6 +42,7 @@ class DigiComAdminControllerFileManager extends DigiComAdminController {
 		include_once JPATH_COMPONENT_ADMINISTRATOR.DS.'libs'.DS.'elfinder'.DS.'elFinder.class.php';
 		include_once JPATH_COMPONENT_ADMINISTRATOR.DS.'libs'.DS.'elfinder'.DS.'elFinderVolumeDriver.class.php';
 		include_once JPATH_COMPONENT_ADMINISTRATOR.DS.'libs'.DS.'elfinder'.DS.'elFinderVolumeLocalFileSystem.class.php';
+		
 		function access($attr, $path, $data, $volume)
 		{
 			$mainframe = JFactory::getApplication();
@@ -85,17 +62,17 @@ class DigiComAdminControllerFileManager extends DigiComAdminController {
 			switch($attr)
 			{
 				case 'read' :
-				return true;
-				break;
+					return true;
+					break;
 				case 'write' :
-				return ($mainframe->isSite()) ? false : true;
-				break;
+					return ($mainframe->isSite()) ? false : true;
+					break;
 				case 'locked' :
-				return ($mainframe->isSite()) ? true : false;
-				break;
+					return ($mainframe->isSite()) ? true : false;
+					break;
 				case 'hidden' :
-				return false;
-				break;
+					return false;
+					break;
 			}
 			
 		}
@@ -116,20 +93,18 @@ class DigiComAdminControllerFileManager extends DigiComAdminController {
 		}
         
 		$options = array(
-		'debug' => false,
-		'roots' => array( array(
-		'driver' => 'LocalFileSystem',
-		'path' => $path,
-		'URL' => $url,
-		'accessControl' => 'access',
-		'defaults' => $permissions
-		))
+			'debug' => false,
+			'roots' => array( array(
+				'driver' => 'LocalFileSystem',
+				'path' => $path,
+				'URL' => $url,
+				'accessControl' => 'access',
+				'defaults' => $permissions
+			))
 		);
         
 		$connector = new elFinderConnector(new elFinder($options));
 		$connector->run();
         
 	}
-};
-
-?>
+}

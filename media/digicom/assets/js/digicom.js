@@ -15,9 +15,10 @@ function elFinderUpdate(fieldID, value) {
 		parent.document.getElementById('sbox-btn-close').click()
 	}
 }
+
 function openModal(a){
   fileInput = jQuery(a).prev();
-  SqueezeBox.open('index.php?option=com_digicom&controller=filemanager&tmpl=component&folder='+imgpath+'&layout=modal&fieldID='+fileInput.attr('id'),{handler:'iframe',size:{x:800,y:450}});
+  SqueezeBox.open('index.php?option=com_digicom&view=filemanager&tmpl=component&folder='+imgpath+'&layout=modal&fieldID='+fileInput.attr('id'),{handler:'iframe',size:{x:800,y:450}});
 }
 
 jQuery(document).ready(function() {

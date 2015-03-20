@@ -12,7 +12,7 @@ defined ('_JEXEC') or die ("Go away.");
 
 jimport ("joomla.application.component.view");
 
-class DigiComAdminViewCustomers extends DigiComView {
+class DigiComViewCustomers extends JViewLegacy {
 
 	function display ($tpl =  null )
 	{
@@ -42,8 +42,8 @@ class DigiComAdminViewCustomers extends DigiComView {
 		//set toolber
 		$this->addToolbar();
 		
-		DigiComAdminHelper::addSubmenu('customers');
-		$this->sidebar = DigiComAdminHelper::renderSidebar();
+		DigiComHelperDigiCom::addSubmenu('customers');
+		$this->sidebar = DigiComHelperDigiCom::renderSidebar();
 		
 		parent::display($tpl);
 
@@ -63,70 +63,6 @@ class DigiComAdminViewCustomers extends DigiComView {
 		parent::display($tpl);
 	}
 
-	function editForm($tpl = null) {
-		require_once( JPATH_COMPONENT.DS.'helpers'.DS.'sajax.php' );
-		$db = JFactory::getDBO();
-		$customer = $this->get('customer');
-		$user = $this->get('User');
-		$isNew = ($customer->id < 1);
-		$text = $isNew?JText::_('New'):JText::_('Edit')." : ".$customer->firstname;
-
-		JToolBarHelper::title(JText::_('Customer').":<small>[".$text."]</small>");
-
-		$bar = JToolBar::getInstance('toolbar');
-		$layout = new JLayoutFile('toolbar.title');
-		$title=array(
-			'title' => JText::_('Customer').":<small>[".$text."]</small>",
-			'class' => 'title'
-		);
-		$bar->appendButton('Custom', $layout->render($title), 'title');
-		
-		$layout = new JLayoutFile('toolbar.settings');
-		$bar->appendButton('Custom', $layout->render(array()), 'settings');
-
-		JToolBarHelper::save();
-		if ($isNew) {
-			JToolBarHelper::divider();
-			JToolBarHelper::cancel();
-		} else {
-			JToolBarHelper::apply();
-			JToolBarHelper::divider();
-			JToolBarHelper::cancel ('cancel', 'Close');
-		}
-
-		$this->assign("cust", $customer);
-		$this->assign("user", $user);
-
-		$configs = $this->get("Configs");
-		$country_option = DigiComAdminHelper::get_country_options($customer, false, $configs);
-		$lists['country_option'] = $country_option;
-
-		$profile = new StdClass();
-		$profile->country = $customer->shipcountry;
-		$profile->state = $customer->shipstate;
-		$shipcountry_option = DigiComAdminHelper::get_country_options($customer, true, $configs);
-		$lists['shipcountry_options'] = $shipcountry_option;
-
-		$lists['customerlocation'] = DigiComAdminHelper::get_store_province($customer);
-
-		$profile = new StdClass();
-		$profile->country = $customer->shipcountry;
-		$profile->state = $customer->shipstate;
-		$lists['customershippinglocation'] = DigiComAdminHelper::get_store_province($profile, true, $configs);
-
-		$cclasses = explode("\n", $customer->taxclass);
-
-		$this->assign("lists", $lists);
-		$keyword = JRequest::getVar("keyword", "", "request");
-		$this->assign ("keyword", $keyword);
-		
-		$this->assign("configs", $configs);
-		
-		DigiComAdminHelper::addSubmenu('customers');
-		$this->sidebar = DigiComAdminHelper::renderSidebar();
-
-		parent::display($tpl);
-	}
 	
 	
 	/**
@@ -136,13 +72,13 @@ class DigiComAdminViewCustomers extends DigiComView {
 	 */
 	protected function addToolbar()
 	{
-		JToolBarHelper::title(JText::_('VIEWDSADMINCUSTOMERS'), 'generic.png');
+		JToolBarHelper::title(JText::_('COM_DIGICOM_CUSTOMERS_TOOLBAR_TITLE'), 'generic.png');
 
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout
 		$layout = new JLayoutFile('toolbar.title');
 		$title=array(
-			'title' => JText::_( 'VIEWDSADMINCUSTOMERS' ),
+			'title' => JText::_( 'COM_DIGICOM_CUSTOMERS_TOOLBAR_TITLE' ),
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');

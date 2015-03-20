@@ -1,19 +1,19 @@
 <?php
 /**
- * @package     Joomla.Administrator
- * @subpackage  com_content
- *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @package		DigiCom
+ * @copyright	Copyright (c)2010-2015 ThemeXpert
+ * @license 	GNU General Public License version 3, or later
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @since 		1.0.0
  */
 
 defined('JPATH_BASE') or die;
 
 /**
- * Supports a modal article picker.
+ * Supports a modal product picker.
  *
  * @package     Joomla.Administrator
- * @subpackage  com_content
+ * @subpackage  com_digicom
  * @since       1.6
  */
 class JFormFieldModal_DSProduct extends JFormField
@@ -92,7 +92,7 @@ class JFormFieldModal_DSProduct extends JFormField
 
 		// Setup variables for display.
 		$html	= array();
-		$link	= 'index.php?option=com_digicom&amp;controller=products&amp;layout=modal&amp;tmpl=component&amp;function=jSelectDSProduct_' . $this->id;
+		$link	= 'index.php?option=com_digicom&amp;view=products&amp;layout=modal&amp;tmpl=component&amp;function=jSelectDSProduct_' . $this->id;
 
 		if (isset($this->element['language']))
 		{
@@ -124,7 +124,7 @@ class JFormFieldModal_DSProduct extends JFormField
 		}
 		$title = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
 
-		// The active article id field.
+		// The active product id field.
 		if (0 == (int) $this->value)
 		{
 			$value = '';
@@ -134,18 +134,13 @@ class JFormFieldModal_DSProduct extends JFormField
 			$value = (int) $this->value;
 		}
 
-		// The current article display field.
+		// The current product display field.
 		$html[] = '<span class="input-append">';
 		$html[] = '<input type="text" class="input-medium" id="' . $this->id . '_name" value="' . $title . '" disabled="disabled" size="35" />';
 		$html[] = '<a class="modal btn hasTooltip" title="' . JHtml::tooltipText('COM_CONTENT_CHANGE_ARTICLE') . '"  href="' . $link . '&amp;' . JSession::getFormToken() . '=1" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-file"></i> ' . JText::_('JSELECT') . '</a>';
 
-		// Edit article button
-		if ($allowEdit)
-		{
-			$html[] = '<a class="btn hasTooltip' . ($value ? '' : ' hidden') . '" href="index.php?option=com_content&layout=modal&tmpl=component&task=article.edit&id=' . $value . '" target="_blank" title="' . JHtml::tooltipText('COM_CONTENT_EDIT_ARTICLE') . '" ><span class="icon-edit"></span> ' . JText::_('JACTION_EDIT') . '</a>';
-		}
-
-		// Clear article button
+		
+		// Clear product button
 		if ($allowClear)
 		{
 			$html[] = '<button id="' . $this->id . '_clear" class="btn' . ($value ? '' : ' hidden') . '" onclick="return jClearArticle(\'' . $this->id . '\')"><span class="icon-remove"></span> ' . JText::_('JCLEAR') . '</button>';

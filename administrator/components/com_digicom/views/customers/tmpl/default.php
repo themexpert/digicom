@@ -26,11 +26,14 @@ $n = count ($this->custs);
 <div id="j-main-container" class="">
 <?php endif;?>
 	<form id="adminForm" action="index.php" name="adminForm" method="post">
+		<div class="alert alert-info">
+			<?php echo JText::_("COM_DIGICOM_CUSTOMERS_HEADER_NOTICE"); ?>
+		</div>
 
 		<div class="js-stools">
 			<div class="clearfix">
 				<div class="btn-wrapper input-append">
-					<input type="text" id="filter_search" class="input-large" name="keyword" placeholder="<?php echo JText::_('DSSEARCH'); ?>" value="<?php echo (strlen(trim($this->keyword)) > 0 ?$this->keyword:"");?>" class="span6" />		
+					<input type="text" id="filter_search" class="input-large" name="keyword" placeholder="<?php echo JText::_('COM_DIGICOM_SEARCH'); ?>" value="<?php echo (strlen(trim($this->keyword)) > 0 ?$this->keyword:"");?>" class="span6" />		
 					<button type="submit" class="btn hasTooltip" title="" data-original-title="Search">
 						<i class="icon-search"></i>
 					</button>
@@ -41,26 +44,23 @@ $n = count ($this->custs);
 
 			</div>
 		</div>
-		<br>
-		<div class="alert alert-info">
-			<?php echo JText::_("HEADER_CUSTOMERS"); ?>
-		</div>
+		
 		<div id="editcell" >
 			
 			<table class="adminlist table">
 				<thead>
 					<tr>
 						<th width="20">
-							<?php echo JText::_('VIEWCUSTOMERID');?>
+							<?php echo JText::_('JGRID_HEADING_ID');?>
 						</th>
 						<th>
-							<?php echo JText::_('VIEWCUSTOMERNAME');?>
+							<?php echo JText::_('COM_DIGICOM_FULL_NAME');?>
 						</th>
 						<th>
-							<?php echo JText::_('VIEWCUSTOMERUSER');?>
+							<?php echo JText::_('COM_DIGICOM_USER_NAME');?>
 						</th>
 						<th>
-							<?php echo JText::_('COM_DIGICOM_TOTAL_ORDER');?>
+							<?php echo JText::_('COM_DIGICOM_CUSTOMERS_TOTAL_ORDER');?>
 						</th>
 					</tr>
 				</thead>
@@ -74,7 +74,7 @@ $n = count ($this->custs);
 						$cust = $this->custs[$i];
 						//print_r( $cust);die;
 						$id = $cust->id;
-						$link = JRoute::_("index.php?option=com_digicom&controller=customers&task=edit&cid[]=".$id.(strlen(trim($this->keyword))>0?"&keyword=".$this->keyword:""));
+						$link = JRoute::_("index.php?option=com_digicom&view=customer&task=customer.edit&id=".$id.(strlen(trim($this->keyword))>0?"&keyword=".$this->keyword:""));
 						$ulink = JRoute::_("index.php?option=com_users&view=user&layout=edit&id=".$id);
 					?>
 					<tr class="row<?php echo $k;?>"> 
@@ -117,7 +117,7 @@ $n = count ($this->custs);
 				<?php else: ?>
 					<tr>
 						<td colspan="4">
-							<p class="alert alert-warning"><?php 	echo JText::_('VIEWCUSTOMERNOCUST'); ?></p>
+							<p class="alert alert-warning"><?php 	echo JText::_('COM_DIGICOM_CUSTOMERS_NO_CUSTOMER_NOTICE'); ?></p>
 						</td>
 					</tr>
 				<?php endif; ?>
@@ -129,6 +129,6 @@ $n = count ($this->custs);
 		<input type="hidden" name="option" value="com_digicom" />
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />
-		<input type="hidden" name="controller" value="Customers" />
+		<input type="hidden" name="view" value="customers" />
 	</form>
 </div>

@@ -1,15 +1,13 @@
 <?php
-
 /**
+ * @package		DigiCom
+ * @copyright	Copyright (c)2010-2015 ThemeXpert
+ * @license 	GNU General Public License version 3, or later
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @since 		1.0.0
+ */
 
- *
- * @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 448 $
- * @lastmodified	$LastChangedDate: 2013-12-03 09:41:08 +0100 (Tue, 03 Dec 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
- * @license			GNU/GPLv3 */
-defined( '_JEXEC' ) or die( "Go away." );
+defined('_JEXEC') or die;
 
 class TableOrderDetails extends JTable
 {

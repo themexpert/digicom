@@ -17,7 +17,6 @@ $document = JFactory::getDocument();
 $app = JFactory::getApplication();
 $input = $app->input;
 $input->set('layout', 'dgform');
-//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=about'); ?>" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
 	<?php if (!empty( $this->sidebar)) : ?>
@@ -100,7 +99,6 @@ $input->set('layout', 'dgform');
 					echo $version;
 					echo "</td></tr>";
 				} else {
-					//echo "&nbsp;&nbsp;&nbsp;&nbsp;+ ".$total_file_titles[$var]. "&nbsp;&nbsp<font color=\"red\"><strong>Not Installed</strong></font><br />";
 					echo "<tr><td width=\"20px\">&nbsp;</td><td  nowrap width=\"90px\" align=\"left\"><font color=\"red\"><strong><nowrap>".(JText::_('DSNOTINSTALLED'))."</nowrap></strong></font></td><td width=\"130px\" nowrap>+ ".$total_file_titles[$var]. "<td nowrap>&nbsp;</td></tr>";
 					array_push($notinstalled_parts,$var);
 				}
@@ -117,19 +115,6 @@ $input->set('layout', 'dgform');
 
 			</td></tr>
 		</table>
-
-			<?php echo JHtml::_('bootstrap.endTab'); ?>
-
-			<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'system', JText::_('COM_DIGICOM_ABOUT_SYSTEM', true)); ?>
-
-				<div class="alert alert-info">
-					<p>Need to show System info here!!!</p>
-				</div>
-
-			<?php echo JHtml::_('bootstrap.endTab'); ?>
-
-			<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'support', JText::_('COM_DIGICOM_ABOUT_SUPPORT', true)); ?>
-
 
 			<?php echo JHtml::_('bootstrap.endTab'); ?>
 

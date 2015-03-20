@@ -1,13 +1,14 @@
 <?php
 /**
- * @package     Joomla.Administrator
- * @subpackage  com_weblinks
- *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @package     DigiCom
+ * @copyright   Copyright (c)2010-2015 ThemeXpert
+ * @license     GNU General Public License version 3, or later
+ * @author      ThemeXpert http://www.themexpert.com
+ * @since       1.0.0
  */
 
 defined('_JEXEC') or die;
+
 
 /**
  * digicom_products_bundle Table class
@@ -38,7 +39,8 @@ class TableBundle extends JTable
 	 */
 	public function store($updateNulls = false)
 	{
-		// Verify that the bundle is added once per product
+		
+        // Verify that the bundle is added once per product
 		$table = JTable::getInstance('Bundle', 'Table');
 
 		if ($table->load(array('product_id' => $this->product_id, 'bundle_id' => $this->bundle_id,'bundle_type'=>$this->bundle_type)) && ($table->id != $this->id || $this->id == 0))
@@ -62,10 +64,43 @@ class TableBundle extends JTable
         //DELETE from tablename WHERE id IN (1,2,3,...,254);
         $query = "DELETE from ".$db->quoteName('#__digicom_products_bundle')." WHERE ".$db->quoteName('product_id') . "='".$product_id ."' and ".$db->quoteName('bundle_type') . "='".$bundle_type ."' and ".$db->quoteName('bundle_id') . " in ('".$files_id."')";
         //echo $query;die;
-		$db->setQuery($query);
+        $db->setQuery($query);
         return $db->Query();
     }
-     
+    
+    public function removeUnmatchBundle($bundle_items,$product_id,$bundle='category'){
+        $items = implode(',', $bundle_items);
+
+        $db = $this->getDbo();
+        $query = $db->getQuery(true)
+            ->select('GROUP_CONCAT(id) as id')
+            ->from($db->quoteName('#__digicom_products_bundle'))
+            ->where($db->quoteName('product_id').'='.$product_id)
+            ->where($db->quoteName('bundle_type').'='.$db->quote($bundle))
+            ->where($db->quoteName('bundle_id').' NOT IN ('.$items.')');
+        $db->setQuery($query);
+        $found = $db->loadObject();
+       
+        if(!empty($found->id) > 0){
+            //TODO: delete them
+            $query = $db->getQuery(true)
+                    ->delete('#__digicom_products_bundle')
+                    ->where('id IN (' . $found->id . ')');
+                $db->setQuery($query);
+                $db->execute();
+
+                if ($error = $db->getErrorMsg())
+                {
+                    $this->setError($error);
+                    return false;
+                }
+                return true;
+        }else{
+            return true;
+        }
+       
+    }
+
     public function removeSameTypes($bundle_type,$product_id){
         $db = $this->getDbo();
         //DELETE from tablename WHERE id IN (1,2,3,...,254);
@@ -79,21 +114,22 @@ class TableBundle extends JTable
     * get all files list based on req
     */
     
-    public function getList($field = 'product_id',$value,$bundle_type=null){
+    public function getList($field = 'product_id',$value){
         $db = $this->getDbo();
         $query = $db->getQuery(true)
-            ->select('b.bundle_id as bundle_id')
-            ->select('b.bundle_type')
+            ->select('b.bundle_id as id')
             ->select('p.name')
+            ->select('p.price')
             ->from($db->quoteName('#__digicom_products_bundle').' as b')
             ->from($db->quoteName('#__digicom_products').' as p')
             ->where($db->quoteName('b.'.$field).'='.$value)
-            ->where($db->quoteName('p.id').'=b.bundle_id');
-		if(!empty($bundle_type)){
-			$query->where($db->quoteName('b.bundle_type').'="'.$bundle_type.'"');
-		}
+            ->where($db->quoteName('p.id').'=b.bundle_id')
+            ->where($db->quoteName('b.bundle_type').'="product"');
         $db->setQuery($query);
-        return $db->loadObjectList();
+        $items = $db->loadObjectList();
+        //print_r($items);die;
+        return $items;
+
     }
 	
     /*

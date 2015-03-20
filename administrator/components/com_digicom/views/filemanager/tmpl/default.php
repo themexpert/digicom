@@ -20,12 +20,14 @@ $mosConfig_absolute_path = JPATH_ROOT;
 <?php else : ?>
 	<div id="j-main-container" class="">
 <?php endif;?>
-		
+		<div class="alert alert-info">
+			<?php echo JText::_("COM_DIGICOM_FILE_MANAGER_HEADER_NOTICE"); ?>
+		</div>
 					<script type="text/javascript">
 						jQuery(document).ready(function() {
 							var basePath = '<?php echo JURI::root(true); ?>';
 							var elf = jQuery('#elfinder').elfinder({
-								url : '<?php echo JURI::base(true); ?>/index.php?option=com_digicom&controller=filemanager&task=connector&no_html=1',
+								url : '<?php echo JURI::base(true); ?>/index.php?option=com_digicom&view=filemanager&task=filemanager.connector&no_html=1',
 								<?php if($this->mimes): ?>
 								onlyMimes: [<?php echo $this->mimes; ?>],
 								<?php endif; ?>

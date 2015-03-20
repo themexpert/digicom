@@ -1,193 +1,115 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  Layout
- *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @package		DigiCom
+ * @copyright	Copyright (c)2010-2015 ThemeXpert
+ * @license 	GNU General Public License version 3, or later
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @since 		1.0.0
  */
+
 defined('_JEXEC') or die;
+
+$app = JFactory::getApplication();
+$form = $displayData->getForm();
+$input = $app->input;
+$component = $input->getCmd('option', 'com_digicom');
 $document = JFactory::getDocument();
-$document->addScript(JURI::root(true).'/media/digicom/assets/js/repeatable-fields.js?v=1.0.0');
-$prod = $displayData[0];
-$cats = $displayData[1];
-?>
-<script>
-	//bundle_source_option
-	jQuery(function ($) {
-		jQuery('#bundle_source_option_select .btn').click(function(){
-			//var bundle_source = jQuery('input[name=bundle_source]:checked').val();
-			var bundle_source = jQuery('input.jform_bundle_source:checked').val();
-			jQuery('.bundle_source_option').hide('slide');
-			jQuery('#bundle_source_'+bundle_source+'_option').show('slide');
-		});
+$product = $displayData->get('item');
+$configs = $displayData->get('configs');
+//print_r($configs);die;
+$link = 'index.php?option=com_digicom&amp;view=products&amp;layout=modal&amp;tmpl=component&amp;' . JSession::getFormToken() . '=1';
+
+//<a id="product_include_remove_1" class="btn btn-small btn-danger" href="javascript:void(0)" onclick="remove_product_include('<?php echo $key; 
+//
+$js = "
+function jSelectProduct(id, title, catid, object, link, lang,price)
+{
+	var hreflang = '';
+	if (lang !== '')
+	{
+		var hreflang = ' hreflang = \"' + lang + '\"';
+	}
+
+	var tag = '<tr id=\"productincludes_item_' + id + '\"><td><input type=\"hidden\" id=\"product_include_id'+id+'\" name=\"jform[bundle_product][]\" value=\"'+id+'\" /> <a' + hreflang + ' href=\"' + link + '\">' + title + '</a></td><td>'+ price +'</td><td><a href=\#\" onclick=\"jRemveProduct('+ id +');\"><i class=\"icon-remove\"></i></a></td></tr>';
+	//jInsertEditorText(tag, '" . 'productincludes_items' . "');
+	jQuery('#productincludes_items').append(tag);
+	jModalClose();
+}
+function jRemveProduct(id){
+	event.preventDefault();
+	jQuery('tr#productincludes_item_'+id).remove();
+}
+";
+$document->addScriptDeclaration($js);
+$js = "
+jQuery(function ($) {
+	jQuery('#jform_bundle_source_option_select .btn').click(function(){
+		var bundle_source = jQuery('input[type=radio]:checked').val();
+		//alert(bundle_source);
+		//var bundle_source = jQuery('input.jform_bundle_source:checked').val();
+		jQuery('.bundle_source_option').hide('slide');
+		jQuery('#bundle_source_'+bundle_source+'_option').show('slide');
 	});
-</script>
+});
+";
+
+$document->addScriptDeclaration($js);
+JHtml::_('behavior.modal');
+$link = 'index.php?option=com_digicom&amp;view=products&amp;layout=modal&amp;tmpl=component&amp;' . JSession::getFormToken() . '=1';
+?>
+
 <fieldset class="adminform">
 
-	<legend><?php echo JText::_('VIEWPRODPACKAGE');?></legend>
+	<legend><?php echo JText::_('COM_DIGICOM_PRODUCT_BUNDLE_FILES');?></legend>
 	<div class="alert alert-info">
-		<?php echo JText::_("HEADER_PRODUCTINCLUDE"); ?>
+		<?php echo JText::_("COM_DIGICOM_PRODUCT_BUNDLE_HEADER_NOTICE"); ?>
 	</div>
 	
-	<div class="control-group">
-		<div class="control-label">
-			<label class="editlinktip hasTip" title="<?php echo JText::_('COM_DIGICOM_BUNDLE_OPTION_TIP'); ?>" ><?php echo JText::_('COM_DIGICOM_BUNDLE_OPTION');?>:</label>
-		</div>
-		<div class="controls">
-			<fieldset id="bundle_source_option_select" class="radio btn-group">
-				<input type="radio" class="jform_bundle_source" name="jform[bundle_source]" id="bundle_source_product" value="product" <?php echo (($prod->bundle_source == 'product' || $prod->bundle_source === null)?"checked='checked'":"");?> />
-				<label class="btn" for="bundle_source_product"><?php echo JText::_('VIEWPRODPRODUCT'); ?></label>
-				<input type="radio" class="jform_bundle_source" name="jform[bundle_source]" id="bundle_source_category" value="category" <?php echo (($prod->bundle_source == 'category')?"checked='checked'":"");?> />
-				<label class="btn" for="bundle_source_category"><?php echo JText::_('VIEWPRODCATEGORY'); ?></label>
-			</fieldset>
-		</div>
-	</div>
-	
+	<?php echo $form->renderField('bundle_source'); ?>
+
+
 	<hr>
 	
-	<div class="control-group bundle_source_option <?php echo ($prod->bundle_source == 'category' ? '' : ' hide');?>" id="bundle_source_category_option">
-		<div class="control-label">
-			<label class="editlinktip hasTip" title="<?php echo JText::_('COM_DIGICOM_PRODCATEGS_TIP'); ?>" ><?php echo JText::_('VIEWPRODPRODCAT');?>:</label>
-		</div>
-		<div class="controls">
-			<?php
-			## Initialize array to store dropdown options ##
-			$options = array();
-			
-			foreach($cats as $key=>$value) :
-				## Create $value ##
-				$options[] = JHTML::_('select.option', $value->id, $value->name);
-			endforeach;
-			
-			## Create <select name="month" class="inputbox"></select> ##
-			//bundle[bundle_type]
-			$bundle_cat = array();
-			if(count($prod->bundle) > 0) :
-				foreach($prod->bundle as $key => $include){
-					if($include->bundle_type == 'category'){
-						$bundle_cat[] = $include->bundle_id;
-					}
-				}
-			endif;
-			//print_r($bundle_cat);
-			$dropdown = JHTML::_('select.genericlist', $options, 'jform[bundle][category][]', 'multiple="multiple"', 'value', 'text', $bundle_cat);
-			echo $dropdown;
-			?>
-		</div>
+	<div class="bundle_source_option <?php echo ($product->bundle_source == 'category' ? '' : ' hide');?>" id="bundle_source_category_option">
+		<?php echo $form->renderField('bundle_category'); ?>
 	</div>
 	
-	<div class="control-group bundle_source_option <?php echo (($prod->bundle_source == 'product' or $prod->bundle_source =='') ? '' : ' hide');?>" id="bundle_source_product_option">
-		<script type="text/javascript">
-
-			function grayBoxiJoomla(link_element, width, height){
-				SqueezeBox.open(link_element, {
-					handler: 'iframe',
-					size: {x: width, y: height}
-				});
-			}
-
-			// Add new include item
-
-			window.addEvent('domready', function(){
-
-				$('buttonaddincludeproduct').addEvent('click', function(e) {
-					e.stop()||new Event(e).stop();
-
-					var url = "index.php?option=com_digicom&controller=products&task=productincludeitem&no_html=1&tmpl=component&format=raw";
-
-					 var req = new Request.HTML({
-						method: 'get',
-						url: url,
-						data: { 'do' : '1' },
-						//update: $('productincludes'),
-						onComplete: function(transport){
-							$('productincludes').adopt(transport);
-
-							$$('a.modal').each(function(el) {
-								el.addEvent('click', function(e) {
-									new Event(e).stop();
-									SqueezeBox.fromElement(el);
-								});
-							});
-						}
-					}).send();
-				});
-			});
-
-
-			// Remove include item
-
-			function remove_product_include( box_id ) {
-
-				var product_include_id = document.getElementById('product_include_id' + box_id).value;
-				//console.log(product_include_id);
-				var bundle_remove_id = document.getElementById('jform_bundle_remove_id').value;
-				//console.log(bundle_remove_id);
-				if(product_include_id){
-					if(bundle_remove_id){
-						document.getElementById('jform_bundle_remove_id').value = bundle_remove_id + ',' + product_include_id; 
-						//bundle_remove_id.val(bundle_remove_id + ',' + product_include_id); 
-					}else{
-						//bundle_remove_id.val(product_include_id); 
-						document.getElementById('jform_bundle_remove_id').value = product_include_id; 
-					}
-				}
-				
-				var box = document.getElementById('product_include_box_' + box_id);
-				//var box = box.parentNode;
-				while (box.firstChild) {
-					box.removeChild( box.firstChild );
-				}
-
-				// remove wrapper div to include item
-				var parent_box = document.getElementById('productincludes');
-				parent_box.removeChild(box);
-				
-				
-				
-			}
-		</script>
-
-		<div id="productincludes">
-
-			<?php 
-			if(count($prod->bundle) > 0) :
-			foreach($prod->bundle as $key => $include) :
-				if($include->bundle_type == 'product'){
-			?>
-			
-				<div id="product_include_box_<?php echo $key; ?>" style="border-bottom:1px solid #ccc;margin:15px;padding:10px;">
-					<table width="100%">
-						<tr>
-							<td style="" width="30%"><?php echo JText::_( 'DSPROD' ); ?></td>
-							<td style="">
-								<div style="float:left">
-									<span id="product_include_name_text_<?php echo $key; ?>" style="line-height: 17px;padding: 0.2em; border: 1px solid rgb(204, 204, 204); display: block; width: 250px;"><?php echo $include->name; ?></span>
-									<input type="hidden" value="<?php echo $include->bundle_id; ?>" id="product_include_id<?php echo $key; ?>" name="jform[bundle][product][<?php echo $key; ?>]"/>
-								</div>
-								<div class="button2-left">
-									<div class="blank input-append" style="padding:0">
-										<a rel="{handler: 'iframe', size: {x: 800, y: 600}}" href="index.php?option=com_digicom&controller=products&task=selectProductInclude&id=<?php echo $key; ?>&tmpl=component" title="Select a Product Include" class="btn btn-small modal">Select</a>
-									</div>
-								</div>
-							</td>
-							<td style="">
-								<a id="product_include_remove_1" class="btn btn-small btn-danger" href="javascript:void(0)" onclick="remove_product_include('<?php echo $key; ?>');">Remove</a>
-							</td>
-						</tr>
-						
-					</table>
-				</div>
-
-				<?php } ?>
-			<?php endforeach; ?>
-			<?php endif; ?>
-		</div>
+	<div class="bundle_source_option <?php echo (($product->bundle_source == 'product' or $product->bundle_source =='') ? '' : ' hide');?>" id="bundle_source_product_option">
+		
+		<table id="productincludes" class="table table-striped table-hover" id="productList">
+			<thead>
+				<tr>
+					<td>Product Name</td>
+					<td width="100px">Price</td>
+					<td width="1%">Action</td>
+				</tr>
+			</thead>
+			<tbody id="productincludes_items">
+				<?php 
+				if(isset($product->bundle_product) && count($product->bundle_product) > 0) :
+					foreach($product->bundle_product as $key => $include) :
+						$price = DigiComHelperDigiCom::format_price($include->price, $configs->get('currency','USD'), true, $configs);
+					?>
+					<tr id="productincludes_item_<?php echo $include->id;?>">
+						<td>
+							<input type="hidden" id="product_include_id<?php echo $include->id;?>" name="jform[bundle_product][]" value="<?php echo $include->id;?>">
+							<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=product&layout=edit&id='.$include->id);?>"><?php echo $include->name;?></a>
+						</td>
+						<td width="100px"><?php echo $price;?></td>
+						<td width="1%"><a href="#" onclick="jRemveProduct('<?php echo $include->id;?>');"><i class="icon-remove"></i></a></td>
+					</tr>
+					<?php endforeach; ?>
+				<?php endif; ?>
+			</tbody>
+		</table>
+		
 
 		<div style="margin:15px;padding:10px;">
-			<a id="buttonaddincludeproduct" class="btn btn-small" href="#"><?php echo JText::_('VIEWPRODADDPRODUCT'); ?></a>
-			<input type="hidden" name="bundle_remove_id" value="" id="jform_bundle_remove_id"/>
+			<a class="btn btn-small modal-button" title="Products" href="<?php echo $link; ?>" rel="{handler: 'iframe', size: {x: 800, y: 500}}">
+				<i class="icon-file-add"></i> 
+				<?php echo JText::_('COM_DIGICOM_PRODUCT_BUNDLE_ADD_PRODUCT'); ?>
+			</a>
+
 		</div>
 		
 	</div>

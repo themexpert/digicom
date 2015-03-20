@@ -10,21 +10,22 @@
 
 defined ('_JEXEC') or die ("Go away.");
 
-jimport ("joomla.application.component.view");
-
-class DigiComViewOrders extends DigiComView {
+class DigiComViewOrders extends JViewLegacy {
 
 	function display($tpl = null)
 	{
-		$mainframe=JFactory::getApplication();
-		$Itemid = JRequest::getInt("Itemid", 0);
-		$ga = JRequest::getInt("ga", 0);
-		if($ga){
-			require_once JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'google.php';
+		$customer = new DigiComSiteHelperSession();
+		$app = JFactory::getApplication();
+		$input = $app->input;
+		$Itemid = $input->get("Itemid", 0);
+		if($customer->_user->id < 1)
+		{
+			$app->Redirect(JRoute::_('index.php?option=com_digicom&view=login&returnpage=orders&Itemid='.$Itemid, false));
+			return true;
 		}
-
+		
 		$orders = $this->get('listOrders');
-		$configs = $this->_models['config']->getConfigs();
+		$configs = JComponentHelper::getComponent('com_digicom')->params;
 		$database = JFactory::getDBO();
 		$db = $database;
 		$sql = "select params
@@ -46,8 +47,8 @@ class DigiComViewOrders extends DigiComView {
 		}
 
 		/* Get Cart items */
-		$cart = $this->getModel('Cart');
-		$customer = new DigiComSessionHelper();
+		$cart = JModelLegacy::getInstance( 'Cart', 'DigiComModel' );
+		
 		$cartitems = $cart->getCartItems($customer, $configs);
 	   
 		if ( $categ_digicom != '' )
@@ -64,39 +65,13 @@ class DigiComViewOrders extends DigiComView {
 
 		$this->assignRef('orders', $orders);
 		$this->assign("configs", $configs);
-		$this->assign("ga", $ga);
+
 		$this->assignRef('cartitems', $cartitems);
 		$this->assign("caturl", $cat_url);
 
-		$template = new DigiComTemplateHelper($this);
+		$template = new DigiComSiteHelperTemplate($this);
 		$template->rander('orders');
 
-		parent::display($tpl);
-	}
-
-	function showOrder($tpl = null)
-	{
-		$db = JFactory::getDBO();
-		$order = $this->_models['order']->getOrder();
-		$this->assign("order", $order);
-		$configs = $this->_models['config']->getConfigs();
-		$this->assign("configs", $configs);
-
-		$template = new DigiComTemplateHelper($this);
-		$template->rander('showorder');
-
-		parent::display($tpl);
-	}
-
-	function showReceipt($tpl = null)
-	{
-		$db = JFactory::getDBO();
-		$order = $this->_models['order']->getOrder();
-		$this->assign("order", $order);
-		$configs = $this->_models['config']->getConfigs();
-		$this->assign("configs", $configs);
-		$customer = new DigiComSessionHelper();
-	   	$this->assign("customer", $customer);
 		parent::display($tpl);
 	}
 }

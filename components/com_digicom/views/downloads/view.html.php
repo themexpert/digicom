@@ -10,19 +10,30 @@
 
 defined ('_JEXEC') or die ("Go away.");
 
-jimport ("joomla.application.component.view");
 
-class DigiComViewDownloads extends DigiComView {
+class DigiComViewDownloads extends JViewLegacy {
 
 	function display($tpl = null)
 	{
 		
+		$customer = new DigiComSiteHelperSession();
+		$app = JFactory::getApplication();
+		$input = $app->input;
+		$Itemid = $input->get("Itemid", 0);
+		if($customer->_user->id < 1)
+		{
+			$app->Redirect(JRoute::_('index.php?option=com_digicom&view=login&returnpage=downloads&Itemid='.$Itemid, false));
+			return true;
+		}
+
 		$mainframe=JFactory::getApplication();
 		$Itemid = JRequest::getInt("Itemid", 0);
 		$products = $this->get('listDownloads');
-		//dsdebug($products);
 		
 		$this->assign("products", $products);
+
+		$template = new DigiComSiteHelperTemplate($this);
+		$template->rander('downloads');
 		
 		parent::display($tpl);
 	}

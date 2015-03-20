@@ -1,10 +1,10 @@
 <?php
 /**
- * @package     Joomla.Libraries
- * @subpackage  Form
- *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * @package		DigiCom
+ * @copyright	Copyright (c)2010-2015 ThemeXpert
+ * @license 	GNU General Public License version 3, or later
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @since 		1.0.0
  */
 
 defined('JPATH_PLATFORM') or die;
@@ -334,7 +334,7 @@ class JFormFieldDiGiMedia extends JFormField
 			$html[] = '</div>';
 			
 		}
-
+		if(is_array($this->value)) $this->value = '';
 		$html[] = '<div class="media-control btn-group">';
 		$html[] = '	<input type="hidden" name="' . $this->name . '" id="' . $this->id . '" value="'
 			. htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '" readonly="readonly"' . $attr . ' />';

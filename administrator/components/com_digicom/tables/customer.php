@@ -1,14 +1,14 @@
 <?php
 /**
+ * @package		DigiCom
+ * @copyright	Copyright (c)2010-2015 ThemeXpert
+ * @license 	GNU General Public License version 3, or later
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @since 		1.0.0
+ */
 
- *
- * @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 341 $
- * @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
- * @license			GNU/GPLv3 */
-defined( '_JEXEC' ) or die( "Go away." );
+defined('_JEXEC') or die;
+
 
 class TableCustomer extends JTable
 {
@@ -57,6 +57,7 @@ class TableCustomer extends JTable
 
 	function store($updateNulls = false)
 	{
+		
 		$db = JFactory::getDBO();
 		$sql = "select count(*) from #__digicom_customers where id='" . $this->id . "'";
 		$db->setQuery( $sql );
@@ -70,9 +71,7 @@ class TableCustomer extends JTable
 			return false;
 		}
 
-		parent::store($updateNulls = false);
-
-		return true;
+		return parent::store($updateNulls = false);
 	}
 
 }

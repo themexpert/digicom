@@ -1,169 +1,143 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 341 $
- * @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package		DigiCom
+ * @copyright	Copyright (c)2010-2015 ThemeXpert
+ * @license 	GNU General Public License version 3, or later
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
 
-jimport ('joomla.application.component.controller');
+/**
+ * The Categories List Controller
+ *
+ * @since  1.6
+ */
+class DigiComControllerCategories extends JControllerAdmin
+{
+	/**
+	 * Proxy for getModel
+	 *
+	 * @param   string  $name    The model name. Optional.
+	 * @param   string  $prefix  The class prefix. Optional.
+	 * @param   array   $config  The array of possible config values. Optional.
+	 *
+	 * @return  object  The model.
+	 *
+	 * @since   1.6
+	 */
+	public function getModel($name = 'Category', $prefix = 'DigiComModel', $config = array('ignore_request' => true))
+	{
+		$model = parent::getModel($name, $prefix, $config);
 
-class DigiComAdminControllerCategories extends DigiComAdminController {
-	var $_model = null;
-
-	function __construct () {
-
-		parent::__construct();
-
-		$this->registerTask ("", "listCategories");
-		$this->registerTask ("add", "edit");
-		$this->registerTask ("apply", "save");
-		$this->registerTask ("unpublish", "publish");
-		$this->registerTask ("orderdown", "orderdown");
-		$this->registerTask ("orderup", "orderup");
-		$this->registerTask ("saveorder", "saveorder");
-
-		$this->_model = $this->getModel("Categories");
+		return $model;
 	}
 
-	function listCategories() {
-		JRequest::setVar ("view", "Categories");
-		$view = $this->getView("Categories", "html");
-		$view->setModel($this->_model, true);
-		$view->display();
+	/**
+	 * Rebuild the nested set tree.
+	 *
+	 * @return  bool  False on failure or error, true on success.
+	 *
+	 * @since   1.6
+	 */
+	public function rebuild()
+	{
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		$extension = $this->input->get('extension');
+		$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=categories&extension=' . $extension, false));
+
+		$model = $this->getModel();
+
+		if ($model->rebuild())
+		{
+			// Rebuild succeeded.
+			$this->setMessage(JText::_('COM_CATEGORIES_REBUILD_SUCCESS'));
+
+			return true;
+		}
+		else
+		{
+			// Rebuild failed.
+			$this->setMessage(JText::_('COM_CATEGORIES_REBUILD_FAILURE'));
+
+			return false;
+		}
 	}
 
+	/**
+	 * Save the manual order inputs from the categories list page.
+	 *
+	 * @return      void
+	 *
+	 * @since       1.6
+	 * @see         JControllerAdmin::saveorder()
+	 * @deprecated  4.0
+	 */
+	public function saveorder()
+	{
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
-	function edit () {
-		$model = $this->getModel("Category");
-		JRequest::setVar ("hidemainmenu", 1);
-		$view = $this->getView("Categories", "html");
-		$view->setLayout("editForm");
-		$view->setModel($model, true);
-		$view->editForm();
+		JLog::add('CategoriesControllerCategories::saveorder() is deprecated. Function will be removed in 4.0', JLog::WARNING, 'deprecated');
 
+		// Get the arrays from the Request
+		$order = $this->input->post->get('order', null, 'array');
+		$originalOrder = explode(',', $this->input->getString('original_order_values'));
+
+		// Make sure something has changed
+		if (!($order === $originalOrder))
+		{
+			parent::saveorder();
+		}
+		else
+		{
+			// Nothing to reorder
+			$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
+
+			return true;
+		}
 	}
 
-	function uploadimage() {
+	/**
+	 * Deletes and returns correctly.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.1.2
+	 */
+	public function delete()
+	{
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
-		jimport('joomla.filesystem.file');
+		// Get items to remove from the request.
+		$cid = $this->input->get('cid', array(), 'array');
+		$extension = $this->input->getCmd('extension', null);
 
-		$path_image = JPATH_ROOT . DS . "images" . DS . "stories" . DS .  "digicom" . DS . "categories" . DS;
-		$path_thumb = JPATH_ROOT . DS . "images" . DS . "stories" . DS .  "digicom" . DS . "categories" . DS . "thumb" . DS;
+		if (!is_array($cid) || count($cid) < 1)
+		{
+			JError::raiseWarning(500, JText::_($this->text_prefix . '_NO_ITEM_SELECTED'));
+		}
+		else
+		{
+			// Get the model.
+			$model = $this->getModel();
 
-		// resize source image file
-		require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'libs' . DS . 'thumbnail.inc.php';
+			// Make sure the item ids are integers
+			jimport('joomla.utilities.arrayhelper');
+			JArrayHelper::toInteger($cid);
 
-		$config_model = $this->getModel("Config");
-		$configs = $config_model->getConfigs();
-
-		$file = JRequest::getVar('catimage', null, 'files', 'array');
-
-		if ($file['error'] == 0) {
-
-			$uniqid = uniqid (rand (),true);
-			$filename = JFile::makeSafe($file['name']);
-
-			$filepath = JPath::clean($path_image . strtolower($uniqid.'_'.$file['name']));
-
-			if (!JFile::upload( $file['tmp_name'], $filepath )) {
-				echo 'Can not upload file to "' . $filepath . '"';
+			// Remove the items.
+			if ($model->delete($cid))
+			{
+				$this->setMessage(JText::plural($this->text_prefix . '_N_ITEMS_DELETED', count($cid)));
 			}
-
-			echo "<div id='box".$uniqid."' style='float:left;padding:0.5em;margin:0.5em;'>
-					<img src='".ImageHelper::ShowCategoryImage(strtolower($uniqid.'_'.$file['name']))."'/>
-					<input type='hidden' name='catimageshidden' value='".strtolower($uniqid.'_'.$file['name'])."'/>
-					<div style='padding:0.5em 0;'>
-						<span style='float:right;'><a href='javascript:void(0);'  onclick='document.getElements(\"div[id=box".$uniqid."]\").each( function(el) { el.getParent().removeChild(el); });'>Delete</a></span>
-					</div>
-				</div>";
+			else
+			{
+				$this->setMessage($model->getError());
+			}
 		}
 
-		die();
+		$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&extension=' . $extension, false));
 	}
-
-	function save () {
-
-		if ($this->_model->store() ) {
-			$msg = JText::_('CATEGORYSAVED');
-		} else {
-			$msg = JText::_('CATEGORYSAVEFAILED');
-		}
-
-		if ( JRequest::getVar('task','') == 'save' ) {
-			$save_url =  "index.php?option=com_digicom&controller=categories";
-			$this->setRedirect($save_url, $msg);
-		} else {
-			$data = JFactory::getApplication()->input->get('jform', array(), 'ARRAY');
-			$category_id = $data['id'];
-			$apply_url = "index.php?option=com_digicom&controller=categories&task=edit&cid[]=" . $category_id;
-			$this->setRedirect($apply_url, $msg);
-		}
-	}
-
-	function remove () {
-		if (!$this->_model->delete()) {
-			$msg = JText::_('CATEGORYREMOVEFAILL');
-		} else {
-			$msg = JText::_('CATEGORYREMOVEFAILL');
-		}
-
-		$link = "index.php?option=com_digicom&controller=categories";
-		$this->setRedirect($link, $msg);
-	}
-
-	function cancel () {
-		$msg = JText::_('CATEGORYCANCELED');
-		$link = "index.php?option=com_digicom&controller=categories";
-		$this->setRedirect($link, $msg);
-	}
-
-	function publish () {
-		$res = $this->_model->publish();
-
-		if (!$res) {
-			$msg = JText::_('CATEGORYPUBLISHINGERROR');
-		} elseif ($res == -1) {
-			$msg = JText::_('CATEGORYUNPUBLISHINGSUCC');
-		} elseif ($res == 1) {
-			$msg = JText::_('CATEGORYPUBLISHINGSUCC');
-		} else {
-			$msg = JText::_('CATEGORYUNSPECERROR');
-		}
-
-		$link = "index.php?option=com_digicom&controller=categories";
-		$this->setRedirect($link, $msg);
-
-
-	}
-
-	function orderdown() {
-		$cid = JRequest::getVar( 'cid', array(0), '', 'array' );
-		$this->_model->orderField( $cid[0], 1 );
-		$link = "index.php?option=com_digicom&controller=categories";
-		$this->setRedirect($link, $msg);
-	}
-
-	function orderup() {
-		$cid = JRequest::getVar( 'cid', array(0), '', 'array' );
-		$msg = $this->_model->orderField( $cid[0], -1 );
-		$link = "index.php?option=com_digicom&controller=categories";
-		$this->setRedirect($link, $msg);
-	}
-
-	function saveorder() {
-		$msg = $this->_model->saveorder();
-		$link = "index.php?option=com_digicom&controller=categories";
-		$this->setRedirect($link, $msg);
-	}
-
-	function saveOrderAjax() {
-		$this->_model->saveorder();
-		return true;
-	}
-
 }

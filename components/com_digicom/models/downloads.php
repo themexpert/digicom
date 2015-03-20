@@ -10,9 +10,9 @@
 
 defined ('_JEXEC') or die ("Go away.");
 
-jimport ("joomla.aplication.component.model");
 jimport('joomla.filesystem.file');
-class DigiComModelDownloads extends DigiComModel
+
+class DigiComModelDownloads extends JModelList
 {
 	var $_products;
 	var $_product;
@@ -38,7 +38,7 @@ class DigiComModelDownloads extends DigiComModel
 	}
 	
 	function getlistDownloads(){
-		$user = new DigiComSessionHelper();
+		$user = new DigiComSiteHelperSession();
 		//dsdebug($user->_customer->id);die;
 		$db = JFactory::getDBO();
 
@@ -62,6 +62,7 @@ class DigiComModelDownloads extends DigiComModel
 			$db->setQuery($query);
  
 			$products = $db->loadObjectList();
+
 			$bundleItems = array();
 			foreach($products as $key=>$product){
 				if($product->type != 'reguler'){
@@ -74,17 +75,18 @@ class DigiComModelDownloads extends DigiComModel
 							$BundleTable = JTable::getInstance('Bundle', 'Table');
 							$BundleList = $BundleTable->getFieldValues('product_id',$product->productid,$product->bundle_source);
 							$bundle_ids = $BundleList->bundle_id;
-							
-							$db = $this->getDbo();
-							$query = $db->getQuery(true)
-								->select(array('id as productid','name','catid'))
-								->from($db->quoteName('#__digicom_products'))
-								->where($db->quoteName('bundle_source').' IS NULL')
-								->where($db->quoteName('catid').' in ('.$bundle_ids.')');
-							$db->setQuery($query);
-							$bundleItems[] = $db->loadObjectList();
-							// Unset current product as its category bundle.
-							//we should show only items
+							if($bundle_ids){
+								$db = $this->getDbo();
+								$query = $db->getQuery(true)
+									->select(array('id as productid','name','catid'))
+									->from($db->quoteName('#__digicom_products'))
+									->where($db->quoteName('bundle_source').' IS NULL')
+									->where($db->quoteName('catid').' in ('.$bundle_ids.')');
+								$db->setQuery($query);
+								$bundleItems[] = $db->loadObjectList();
+								//we should show only items
+							}
+
 							unset($products[$key]);
 							
 							break;
@@ -93,16 +95,16 @@ class DigiComModelDownloads extends DigiComModel
 							$BundleTable = JTable::getInstance('Bundle', 'Table');
 							$BundleList = $BundleTable->getFieldValues('product_id',$product->productid,$product->bundle_source);
 							$bundle_ids = $BundleList->bundle_id;
-							
-							$db = $this->getDbo();
-							$query = $db->getQuery(true)
-								->select(array('id as productid','name','catid'))
-								->from($db->quoteName('#__digicom_products'))
-								->where($db->quoteName('bundle_source').' IS NULL')
-								->where($db->quoteName('id').' in ('.$bundle_ids.')');
-							$db->setQuery($query);
-							$bundleItems[] = $db->loadObjectList();
-							// Unset current product as its category bundle.
+							if($bundle_ids){
+								$db = $this->getDbo();
+								$query = $db->getQuery(true)
+									->select(array('id as productid','name','catid'))
+									->from($db->quoteName('#__digicom_products'))
+									->where($db->quoteName('bundle_source').' IS NULL')
+									->where($db->quoteName('id').' in ('.$bundle_ids.')');
+								$db->setQuery($query);
+								$bundleItems[] = $db->loadObjectList();
+							}					
 							//we should show only items
 							unset($products[$key]);
 							
@@ -150,7 +152,7 @@ class DigiComModelDownloads extends DigiComModel
 						}
 						if (JFile::exists($fileLink)) {
 							$filesize = filesize ($fileLink);
-							$item->filesize = DigiComHelper::FileSizeConvert($filesize);
+							$item->filesize = DigiComSiteHelperDigiCom::FileSizeConvert($filesize);
 							$item->filemtime = date("d F Y", filemtime($fileLink));
 						}else{
 							$item->filesize = JText::_('COM_DIGICOM_FILE_DONT_EXIST');
@@ -198,9 +200,9 @@ class DigiComModelDownloads extends DigiComModel
 
 		define( 'PCLZIP_TEMPORARY_DIR', JPATH_ROOT.DS.'administrator/components/digicom_product_uploads/tmp/' );
 
-		DigiComHelper::CreateIndexFile(JPATH_ROOT.DS.'administrator/components/digicom_product_uploads/');
-		DigiComHelper::CreateIndexFile(JPATH_ROOT.DS."components/com_digicom/download/");
-		DigiComHelper::CreateIndexFile(JPATH_ROOT.DS."components/com_digicom/download/".$license->userid."/");
+		DigiComSiteHelperDigiCom::CreateIndexFile(JPATH_ROOT.DS.'administrator/components/digicom_product_uploads/');
+		DigiComSiteHelperDigiCom::CreateIndexFile(JPATH_ROOT.DS."components/com_digicom/download/");
+		DigiComSiteHelperDigiCom::CreateIndexFile(JPATH_ROOT.DS."components/com_digicom/download/".$license->userid."/");
 
 		require_once (JPATH_ROOT.DS."administrator".DS."includes".DS."pcl".DS."pclzip.lib.php");
 

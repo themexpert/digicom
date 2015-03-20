@@ -10,9 +10,7 @@
 
 defined ('_JEXEC') or die ("Go away.");
 
-jimport ("joomla.aplication.component.model");
-
-class DigiComModelConfig extends DigiComModel
+class DigiComModelConfig extends JModelLegacy
 {
 	
 	var $_configs = null;

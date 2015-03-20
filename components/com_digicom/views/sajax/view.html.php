@@ -2,17 +2,15 @@
 /**
 * @package			DigiCom Joomla Extension
  * @author			themexpert.com
- * @version			$Revision: 341 $
- * @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
+ * @version			$Revision: 364 $
+ * @lastmodified	$LastChangedDate: 2013-10-15 15:27:43 +0200 (Tue, 15 Oct 2013) $
  * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
 * @license			GNU/GPLv3
 */
 
 defined ('_JEXEC') or die ("Go away.");
 
-jimport ("joomla.application.component.view");
-
-class DigiComViewSajax extends DigiComView {
+class DigiComViewLogin extends JViewLegacy {
 
 	function display ($tpl =  null) {
 		require_once( JPATH_COMPONENT.DS.'helpers'.DS.'sajax.php' );
@@ -23,5 +21,3 @@ class DigiComViewSajax extends DigiComView {
 
 
 }
-
-?>

@@ -1,98 +1,89 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 341 $
- * @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package     Joomla.Site
+ * @subpackage  com_weblinks
+ *
+ * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
 
-jimport ("joomla.application.component.view");
+/**
+ * Content categories view.
+ *
+ * @package     Joomla.Site
+ * @subpackage  com_weblinks
+ * @since       1.5
+ */
+class DigiComViewCategories extends JViewCategories
+{
+	protected $item = null;
 
-class DigiComViewCategories extends DigiComView {
+	/**
+	 * @var    string  Default title to use for page title
+	 * @since  3.2
+	 */
+	protected $defaultPageTitle = 'COM_DIGICOM_DEFAULT_PAGE_TITLE';
 
-	function display ($tpl =  null ) {
-		
-		$catid =  JFactory::getApplication()->input->get('cid',0);
-		$totalprods = 0; // 0 unlimited
-		$conf = $this->_models['config']->getConfigs();
-		$this->assignRef("configs", $conf);
-		
-		$items = $this->_models['product']->getCategoryProducts($catid, $totalprods);
-		$prods = $items["items"];
-		
-		$category = $this->_models['product']->getCategory();
-		
-		$this->assign("category", $category);
-		$this->assign("totalprods", $totalprods);
+	/**
+	 * @var    string  The name of the extension for the category
+	 * @since  3.2
+	 */
+	protected $extension = 'com_digicom';
 
-		$app = JFactory::getApplication("site");
-		$document	   = JFactory::getDocument();
-		$dispatcher	   = JDispatcher::getInstance();
-		$params 	   = $app->getParams('com_digicom');
-		$limitstart = 0;
-		
-		JPluginHelper::importPlugin('content');
-		$article = new stdClass;
-		
-		$lists = array();
-		if (count($prods) > 0) {
-			foreach ($prods as $key=>$prod) {
-				$article->text = $prod->description;
-				$article->fulltext = $prod->description;
-				$dispatcher->trigger('onPrepareContent', array (& $article, & $params, $limitstart));
-			}
+	/**
+	 * @var    string  The name of the view to link individual items to
+	 * @since  3.2
+	 */
+	protected $viewName = 'product';
+
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a Error object.
+	 */
+	public function display($tpl = null)
+	{
+		$state		= $this->get('State');
+		$items		= $this->get('Items');
+		$parent		= $this->get('Parent');
+		$configs = JComponentHelper::getComponent('com_digicom')->params;
+		// Check for errors.
+		if (count($errors = $this->get('Errors')))
+		{
+			JError::raiseWarning(500, implode("\n", $errors));
+			return false;
 		}
-		
-		$this->assignRef('prods', $prods);
 
-		jimport('joomla.html.pagination');
-		$pagination = new JPagination($items["total"], $items['limitstart'], $items['limit']);
+		if ($items === false)
+		{
+			return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
+		}
 
-		$this->assignRef('total', $items['total']);
-		$this->assignRef('limit', $items['limit']);
-		$this->assignRef('limitstart', $items['limitstart']);
-		$this->assignRef('pagination',	$pagination);
-		
-		$template = new DigiComTemplateHelper($this);
+		if ($parent == false)
+		{
+			return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
+		}
+
+		$params = &$state->params;
+
+		$items = array($parent->id => $items);
+
+		// Escape strings for HTML output
+		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
+
+		$this->maxLevelcat = $params->get('maxLevelcat', 1);
+		$this->params = &$params;
+		$this->parent = &$parent;
+		$this->items  = &$items;
+		$this->configs  = &$configs;
+
+		$template = new DigiComSiteHelperTemplate($this);
 		$template->rander('categories');
-		
-		parent::display($tpl);
-	}
 
-	public static function countSublist($cat_id){
-		$return = "";
-		$db = JFactory::getDBO();
-		$sql = "select count(*) from #__digicom_categories where `parent_id`=".intval($cat_id)." and `published`=1";
-		$db->setQuery($sql);
-		$db->query();
-		$result = $db->loadResult();
-		if($result == 1){
-			$return = $result." ".JText::_("DIGI_CATEGORY");
-		}
-		elseif($result > 1){
-			$return = $result." ".JText::_("DIGI_CATEGORIES");
-		}
-		elseif($result == 0){
-			$sql = "select count(*)
-					from #__digicom_products p
-					where p.catid=".intval($cat_id)."
-					  and p.published=1
-					  and p.hide_public=0";
-			$db->setQuery($sql);
-			$db->query();
-			$result = $db->loadResult();
-			if($result == 1){
-				$return = $result." ".JText::_("DIGI_PRODUCT");
-			}
-			elseif($result > 1){
-				$return = $result." ".JText::_("DIGI_PRODUCTS");
-			}
-		}
-		return $return;
+		return parent::display($tpl);
 	}
-
 }

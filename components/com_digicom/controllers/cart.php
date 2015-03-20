@@ -6,15 +6,11 @@
  * @lastmodified	$LastChangedDate: 2013-11-16 10:52:05 +0100 (Sat, 16 Nov 2013) $
  * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
 * @license
-
-
 */
 
 defined ('_JEXEC') or die ("Go away.");
 
-jimport('joomla.application.component.controller');
-
-class DigiComControllerCart extends DigiComController
+class DigiComControllerCart extends JControllerLegacy
 {
 
 	var $_model = null;
@@ -25,8 +21,6 @@ class DigiComControllerCart extends DigiComController
 	function __construct()
 	{
 		parent::__construct();
-		$this->registerTask("", "showCart");
-		$this->registerTask("view", "showCart");
 		$this->registerTask("summary", "showSummary");
 		$this->registerTask("validate_input", "validateInput");
 		$this->registerTask("cancel", "cancel");
@@ -34,8 +28,9 @@ class DigiComControllerCart extends DigiComController
 		$this->registerTask("getcountries", "getCountries");
 
 		$this->_model = $this->getModel("Cart");
-		$this->_config = $this->getModel("Config");
+		$this->_config = JComponentHelper::getComponent('com_digicom')->params;
 		$this->_product = $this->getModel("Product");
+		$this->_customer = new DigiComSiteHelperSession();
 	}
 
 	function addMulti()
@@ -49,7 +44,7 @@ class DigiComControllerCart extends DigiComController
 		}
 
 		$db = JFactory::getDBO();
-		$configs = $this->_config->getConfigs();
+		$configs = $this->_config;
 		$where1 = array();
 
 		$prodids = JRequest::getVar("prodid", array(), 'request');
@@ -97,7 +92,7 @@ class DigiComControllerCart extends DigiComController
 		}
 
 		if($configs->get('afteradditem','0') == 0){// Take to cart
-			$cart_itemid = DigiComHelper::getCartItemid();
+			$cart_itemid = DigiComSiteHelperDigiCom::getCartItemid();
 			$this->setRedirect(JRoute::_("index.php?option=com_digicom&controller=cart&task=showCart&Itemid=".$cart_itemid, false));
 		}
 		elseif($configs->get('afteradditem',0) == 1){//Stay on product list
@@ -117,7 +112,7 @@ class DigiComControllerCart extends DigiComController
 		}
 		elseif($configs->get('afteradditem',0) == 2){//Show cart in pop up
 			//redirect to cart
-			$cart_itemid = DigiComHelper::getCartItemid();
+			$cart_itemid = DigiComSiteHelperDigiCom::getCartItemid();
 			$this->setRedirect(JRoute::_("index.php?option=com_digicom&controller=cart&task=showCart&Itemid=".$cart_itemid, false));
 		}
 	}
@@ -137,20 +132,23 @@ class DigiComControllerCart extends DigiComController
 		
 		//check if this product is unpublished
 		$cid = JFactory::getApplication()->input->get('cid',0);
-		$res = $this->_model->addToCart($this->_customer);
-		$configs = $this->_config->getConfigs();
+		$res = $this->_model->addToCart();
+		$configs = $this->_config;
 
 		$from = JFactory::getApplication()->input->get('from','');
 
 		if($from == "ajax"){
 			$renew = JRequest::getVar("renew", "");
-			$this->showCart();
+			//$this->showCart();
+			$url = JRoute::_("index.php?option=com_digicom&view=cart&layout=cart_popup&tmpl=component&Itemid=".$cart_itemid, false);
+			$this->setRedirect($url);
+			return true;
 		}
 		global $Itemid;
-		$cart_itemid = DigiComHelper::getCartItemid();
+		$cart_itemid = DigiComSiteHelperDigiCom::getCartItemid();
 
 		if(JRequest::getVar('status', '-1') == 'change'){
-			$url = JRoute::_("index.php?option=com_digicom&view=cart&task=showCart&Itemid=".$cart_itemid, false);
+			$url = JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$cart_itemid, false);
 			$this->setRedirect($url);
 		}
 		else{
@@ -177,7 +175,7 @@ class DigiComControllerCart extends DigiComController
 			}
 
 			if($type_afteradd == 0){// Take to cart
-				$url = JRoute::_("index.php?option=com_digicom&view=cart&task=showCart&Itemid=".$cart_itemid, false);
+				$url = JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$cart_itemid, false);
 				$this->setRedirect($url);
 			}
 			elseif($type_afteradd == 1){//Stay on product list
@@ -193,52 +191,32 @@ class DigiComControllerCart extends DigiComController
 					$products = implode(", ", $temp_msg);
 					$msg = urlencode($products);
 				}
-				$link = JRoute::_("index.php?option=com_digicom&controller=products&task=list&cid=" . $cid . $layout . "&product_added=" . $msg . "&Itemid=" . $Itemid, false);
+				$link = JRoute::_("index.php?option=com_digicom&view=product&cid=" . $cid . $layout . "&product_added=" . $msg . "&Itemid=" . $Itemid, false);
 				$this->setRedirect($link, "");
 			}
 			elseif($type_afteradd == 2){//Show cart in pop up
 				$task = JRequest::getVar("task", "", "get");
 				$renewlicid = JRequest::getVar("renewlicid", "", "post");
 				if($task == "add" && $from != "ajax"){
-					$url = JRoute::_("index.php?option=com_digicom&controller=cart&task=showCart&Itemid=".$cart_itemid, false);
+					$url = JRoute::_("index.php?option=com_digicom&view=cart&&Itemid=".$cart_itemid, false);
 					$this->setRedirect($url);
 				}
 				if(trim($renewlicid) != ""){
-					$url = JRoute::_("index.php?option=com_digicom&controller=cart&task=showCart&Itemid=".$cart_itemid, false);
+					$url = JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$cart_itemid, false);
 					$this->setRedirect($url);
 				}
 			}
 		}
 	}
 
-	function showCart()
-	{
-		$from = JRequest::getVar("from", "test");
-		$view = $this->getView("Cart", "html");
-		$view->setModel($this->_model, true);
-		$view->setModel($this->_config);
-		$view->setModel($this->_product);
-		$view->display();
-	}
-
-	function showSummary()
-	{
-		$view = $this->getView("Cart", "html");
-		$view->setModel($this->_model, true);
-		$view->setModel($this->_config);
-		$view->setModel($this->_product);
-		$view->setLayout('summary');
-		$view->display();
-	}
-
 	function updateCart()
 	{
-		$res = $this->_model->updateCart($this->_customer, $this->_config->getConfigs());
+		$res = $this->_model->updateCart($this->_customer, $this->_config);
 
 		$from = JRequest::getVar("from", "");
 		if($from == "ajax")
 		{
-			$url = JRoute::_("index.php?option=com_digicom&view=cart&task=showCart&from=ajax&tmpl=component", false);
+			$url = JRoute::_("index.php?option=com_digicom&view=cart&from=ajax&tmpl=component", false);
 			$this->setRedirect($url);
 		}
 		else
@@ -265,8 +243,8 @@ class DigiComControllerCart extends DigiComController
 
 			if(strlen($rp) < 1)
 			{
-				$cart_itemid = DigiComHelper::getCartItemid();
-				$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&task=showCart&Itemid=".$cart_itemid."&processor=".$processor."&agreeterms=".$agreeterms, false));
+				$cart_itemid = DigiComSiteHelperDigiCom::getCartItemid();
+				$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$cart_itemid."&processor=".$processor."&agreeterms=".$agreeterms, false));
 			}
 			else
 			{
@@ -288,18 +266,19 @@ class DigiComControllerCart extends DigiComController
 
 	function deleteFromCart()
 	{
-		$res = $this->_model->deleteFromCart($this->_customer, $this->_config->getConfigs());
-		$itemid = DigiComHelper::getCartItemid();
+		$res = $this->_model->deleteFromCart($this->_customer, $this->_config);
+		$itemid = DigiComSiteHelperDigiCom::getCartItemid();
 		$from = JRequest::getVar("from", "");
 		$agreeterms = JRequest::getVar("agreeterms", "");
 		$processor = JRequest::getVar("processor", "");
 
 		if($from == "ajax"){
-			$this->showCart();
+			//$this->showCart();
+			$this->setRedirect("index.php?option=com_digicom&view=cart&layout=cart_popup&tmpl=component&Itemid=".$itemid."&processor=".$processor."&agreeterms=".$agreeterms);
+
 		}
 		else{
-			//$this->showCart();
-			$this->setRedirect("index.php?option=com_digicom&view=cart&task=showCart&Itemid=".$itemid."&processor=".$processor."&agreeterms=".$agreeterms);
+			$this->setRedirect("index.php?option=com_digicom&view=cart&Itemid=".$itemid."&processor=".$processor."&agreeterms=".$agreeterms);
 		}
 	}
 
@@ -340,74 +319,80 @@ class DigiComControllerCart extends DigiComController
 
 	function checkout()
 	{
+		
 		$Itemid = JRequest::getInt("Itemid", 0);
 		$processor = JRequest::getVar("processor", "");
+		$returnpage = JRequest::getVar("returnpage", "");
 		$_Itemid = $Itemid;
 		$user = JFactory::getUser();
 		$cart = $this->_model;
 		$plugins_enabled = $cart->getPluginList();
 
 		// Check Login
-		if(!$user->id){
+		if(!$user->id or $this->_customer->_user->id < 1){
 			$uri = JURI::getInstance();
- 			$this->setRedirect("index.php?option=com_digicom&view=profile&task=login_register&returnpage=login_register&Itemid=".$Itemid."&processor=".$processor);
-			return true;
-		}
-		if($this->_customer->_user->id < 1){
-			$uri = JURI::getInstance();
- 			$this->setRedirect("index.php?option=com_digicom&view=profile&task=login_register&returnpage=login_register&Itemid=".$Itemid."&processor=".$processor);
+			$return = base64_encode($uri->toString());
+ 			$this->setRedirect("index.php?option=com_digicom&view=register&layout=register_cart&Itemid=".$Itemid."&processor=".$processor.'&returnpage='.$returnpage);
 			return true;
 		}
 
 		// Check Payment Plugin installed
 		if (empty($plugins_enabled)) {
 			$msg = JText::_('Payment plugins not installed');
-			$this->setRedirect("index.php?option=com_digicom&view=cart", $msg);
+			$this->setRedirect("index.php?option=com_digicom&view=cart&Itemid=".$Itemid, $msg);
 			return;
 		}
 
 		$customer = $this->_customer;
-		$configs = $this->_config->getConfigs();
+		$configs = $this->_config;
 
-		$res = DigiComHelper::checkProfileCompletion($customer);
-
+		$res = DigiComSiteHelperDigiCom::checkProfileCompletion($customer);
 		if( $res < 1 ) {
-			if($configs->get('askforbilling','0') != 0)
-			{
-				$this->setRedirect("index.php?option=com_digicom&view=profile&task=edit&returnpage=checkout&Itemid=".$_Itemid."&processor=".$processor);
-			}
-			else 
-			{
-				$name = $this->_customer->_user->name;
-				$name_array = explode(" ", $name);
-				$first_name = "";
-				$last_name = "";
-				if(count($name_array) == 1){
-					$first_name = $name;
-					$last_name = $name;
-				}
-				else{
-					$last_name = $name_array[count($name_array)-1];
-					unset($name_array[count($name_array)-1]);
-					$first_name = implode(" ", $name_array);
-				}
-				$db = JFactory::getDBO();
+			$this->setRedirect("index.php?option=com_digicom&view=profile&layout=edit&returnpage=checkout&Itemid=".$_Itemid."&processor=".$processor);
+		}
 
-				$sql = "SELECT `firstname`, `lastname` FROM #__digicom_customers WHERE id=".intval($this->_customer->_user->id);
-				$db->setQuery($sql);
-				$db->query();
-				$result = $db->loadObject();
-				if(isset($result) && (trim($result->firstname) == "" || trim($result->lastname) == "")){
-					$sql = "UPDATE #__digicom_customers set `firstname`='".addslashes(trim($first_name))."', `lastname`='".addslashes(trim($last_name))."' where id=".intval($this->_customer->_user->id);
-				} elseif (!$result){
-					$sql = "INSERT INTO #__digicom_customers(`id`, `firstname`, `lastname`) VALUES (".intval($this->_customer->_user->id).", '".addslashes(trim($first_name))."', '".addslashes(trim($last_name))."')";
-				}
-
-				$db->setQuery($sql);
-				$db->query();
-				$this->_customer = new DigiComSessionHelper();
-				$customer = $this->_customer;
+		if($configs->get('askforbilling',1) != 0)
+		{
+			$this->setRedirect("index.php?option=com_digicom&view=profile&layout=edit&returnpage=checkout&Itemid=".$_Itemid."&processor=".$processor);
+		}
+		
+		if( $res == 1 ) {
+			
+			$fromsum = JRequest::getVar('fromsum', '0');
+			if(!$fromsum) {
+				$this->setRedirect("index.php?option=com_digicom&view=cart&layout=summary&Itemid=".$_Itemid."&processor=".$processor);
+				return true;
 			}
+
+			$name = $this->_customer->_user->name;
+			$name_array = explode(" ", $name);
+			$first_name = "";
+			$last_name = "";
+			if(count($name_array) == 1){
+				$first_name = $name;
+				$last_name = $name;
+			}
+			else{
+				$last_name = $name_array[count($name_array)-1];
+				unset($name_array[count($name_array)-1]);
+				$first_name = implode(" ", $name_array);
+			}
+			$db = JFactory::getDBO();
+
+			$sql = "SELECT `firstname`, `lastname` FROM #__digicom_customers WHERE id=".intval($this->_customer->_user->id);
+			$db->setQuery($sql);
+			$db->query();
+			$result = $db->loadObject();
+			if(isset($result) && (trim($result->firstname) == "" || trim($result->lastname) == "")){
+				$sql = "UPDATE #__digicom_customers set `firstname`='".addslashes(trim($first_name))."', `lastname`='".addslashes(trim($last_name))."' where id=".intval($this->_customer->_user->id);
+			} elseif (!$result){
+				$sql = "INSERT INTO #__digicom_customers(`id`, `firstname`, `lastname`) VALUES (".intval($this->_customer->_user->id).", '".addslashes(trim($first_name))."', '".addslashes(trim($last_name))."')";
+			}
+
+			$db->setQuery($sql);
+			$db->query();
+			$this->_customer = new DigiComSiteHelperSession();
+			$customer = $this->_customer;
 		}
 
 		$total = 0;
@@ -434,8 +419,9 @@ class DigiComControllerCart extends DigiComController
 			$sql = "select processor from #__digicom_session where sid='".$this->_customer->_sid."'";
 			$db->setQuery($sql);
 			$prosessor = $db->loadResult();
+
 			if(!isset($prosessor) || trim($prosessor) == ""){
-				$prosessor = $_SESSION["processor"];
+				$prosessor = $processor;
 			}
 			
 			//store order
@@ -455,7 +441,7 @@ class DigiComControllerCart extends DigiComController
 			}
 
 			$params['products'] = $items; // array of products
-			$params['config'] = $this->_config->getConfigs();
+			$params['config'] = $this->_config;
 			$params['processor'] = $prosessor;//JRequest::getVar('processor'); //'payauthorize';
 			
 			$gataways = JPluginHelper::getPlugin('digicom_pay', $params['processor']);
@@ -484,7 +470,7 @@ class DigiComControllerCart extends DigiComController
 			$cart->storeOrderParams( $user->id, $order_id ,$params);
 			
 			//$this->getHTML($params);
-			$this->setRedirect("index.php?option=com_digicom&view=cart&task=submitOrder&order_id=".$order_id."&processor=".$params['processor']."&Itemid=".$itemid);
+			$this->setRedirect("index.php?option=com_digicom&view=checkout&order_id=".$order_id."&processor=".$params['processor']."&Itemid=".$itemid);
 			
 		}
 		
@@ -522,13 +508,13 @@ class DigiComControllerCart extends DigiComController
 		$hidden_form = JRequest::getVar("hidden_form", "");
 		if($hidden_form == "" && $processor != "paypaypal" && $processor != "offline"){
 			include_once(JPATH_SITE.DS."components".DS."com_digicom".DS."helpers".DS."helper.php");
-			$form = DigiComHelper::getSubmitForm($this->_config->getConfigs(), 'payauthorize');
+			$form = DigiComSiteHelperDigiCom::getSubmitForm($this->_config, 'payauthorize');
 			$script = '<script type=\'text/javascript\'>var time=setTimeout("document.digiadminForm.submit()", 2000); </script>';
 			$form = $form.$script;
 			echo $form;
 		}
 		elseif($processor == "offline"){
-			$configs = $this->_config->getConfigs();
+			$configs = $this->_config;
 			$customer = $this->_customer;
 			$cart = $this->_model;
 			$items = $cart->getCartItems($customer, $configs);
@@ -544,7 +530,7 @@ class DigiComControllerCart extends DigiComController
 
 			$controller = "orders";
 			$task = "list";
-			$mosConfig_live_site = DigiComHelper::getLiveSite();
+			$mosConfig_live_site = DigiComSiteHelperDigiCom::getLiveSite();
 			$success_url = $mosConfig_live_site . "/index.php?option=com_digicom&controller=" . $controller . "&task=" . $task . "&success=1&sid=" . $order_id;
 
 			$msg = JText::_("DIGI_THANK_YOU_FOR_PAYMENT");
@@ -559,7 +545,7 @@ class DigiComControllerCart extends DigiComController
 			$param['handle'] = &$this;
 
 			$customer = $this->_customer;
-			$configs = $this->_config->getConfigs();
+			$configs = $this->_config;
 			$cart = $this->_model;
 			$items = $cart->getCartItems($customer, $configs);
 			$products = array();
@@ -638,7 +624,7 @@ class DigiComControllerCart extends DigiComController
 
 			$cart = $this->_model;
 			$customer = $this->_customer;
-			$configs = $this->_config->getConfigs();
+			$configs = $this->_config;
 
 			$sid = $this->_customer->_sid;
 			$sql = "UPDATE #__digicom_cart SET quantity = ".$qty." where cid=" . $cid; // sid = " . $sid . " and
@@ -659,19 +645,19 @@ class DigiComControllerCart extends DigiComController
 				{
 					$result['cid'] = $cid;
 					$result['cart_item_qty'.$cid] = $item->quantity;
-					$result['cart_item_price'.$cid] = DigiComHelper::format_price($item->price, $item->currency, true, $configs);
-					$result['cart_item_discount'.$cid] = DigiComHelper::format_price($item->discount, $item->currency, true, $configs);
-					$result['cart_item_total'.$cid] = DigiComHelper::format_price($item->subtotal-$item->discount, $item->currency, true, $configs);
+					$result['cart_item_price'.$cid] = DigiComSiteHelperDigiCom::format_price($item->price, $item->currency, true, $configs);
+					$result['cart_item_discount'.$cid] = DigiComSiteHelperDigiCom::format_price($item->discount, $item->currency, true, $configs);
+					$result['cart_item_total'.$cid] = DigiComSiteHelperDigiCom::format_price($item->subtotal-$item->discount, $item->currency, true, $configs);
 				}
 			}
-
-			$total = DigiComHelper::format_price($items[-2]['taxed'], $items[-2]['currency'], true, $configs);
+			//print_r($items);die;
+			$total = DigiComSiteHelperDigiCom::format_price($items[-2]['taxed'], $items[-2]['currency'], true, $configs);
 			$result['cart_total'] = $total;//"{$items[-2]['taxed']}";
 
 			$cart = $this->_model;
 			$cart_tax = $cart->calc_price($items, $customer, $configs);
-			$result['cart_discount'] = DigiComHelper::format_price($cart_tax["promo"], $items[-2]['currency'], true, $configs);
-			$result['cart_tax'] = DigiComHelper::format_price($cart_tax["value"], $items[-2]['currency'], true, $configs);
+			$result['cart_discount'] = DigiComSiteHelperDigiCom::format_price($cart_tax["promo"], $items[-2]['currency'], true, $configs);
+			$result['cart_tax'] = DigiComSiteHelperDigiCom::format_price($cart_tax["value"], $items[-2]['currency'], true, $configs);
 			echo json_encode($result);
 
 		} else {
@@ -698,9 +684,12 @@ class DigiComControllerCart extends DigiComController
 				echo "0";
 			}
 		}
+		JFactory::getApplication()->close();
+
 	}
 
 	function submitOrder(){
+
 		$view = $this->getView("Cart", "html");
 		$view->setModel($this->_model, true);
 		$view->setModel($this->_config);
@@ -716,7 +705,7 @@ class DigiComControllerCart extends DigiComController
 		
 		$session 	= JFactory::getSession();
 		$customer 	= $this->_customer;
-		$configs 	= $this->_config->getConfigs();
+		$configs 	= $this->_config;
 		$cart 		= $this->_model;
 		//$items 		= $cart->getCartItems( $customer, $configs );
 		$items 		= $params['products'];
@@ -855,5 +844,23 @@ class DigiComControllerCart extends DigiComController
 		$module = JModuleHelper::getModule('mod_digicom_cart');
 		echo JModuleHelper::renderModule($module);
 		exit();
+	}
+
+	/**
+	 * Proxy for getModel
+	 *
+	 * @param   string  $name    The model name. Optional.
+	 * @param   string  $prefix  The class prefix. Optional.
+	 * @param   array   $config  The array of possible config values. Optional.
+	 *
+	 * @return  object  The model.
+	 *
+	 * @since   1.6
+	 */
+	public function getModel($name = 'Cart', $prefix = 'DigiComModel', $config = array('ignore_request' => true))
+	{
+		$model = parent::getModel($name, $prefix, $config);
+
+		return $model;
 	}
 }

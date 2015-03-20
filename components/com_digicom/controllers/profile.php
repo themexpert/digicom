@@ -1,6 +1,5 @@
 <?php
 /**
-
  *
  * @package			DigiCom Joomla Extension
  * @author			themexpert.com
@@ -8,15 +7,11 @@
  * @lastmodified	$LastChangedDate: 2013-11-16 11:22:16 +0100 (Sat, 16 Nov 2013) $
  * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
  * @license
-
-
  */
 
 defined ('_JEXEC') or die ("Go away.");
 
-jimport('joomla.application.component.controller');
-
-class DigiComControllerProfile extends DigiComController
+class DigiComControllerProfile extends JControllerLegacy
 {
 
 	var $model = null;
@@ -28,71 +23,40 @@ class DigiComControllerProfile extends DigiComController
 		$this->registerTask("", "login");
 		$this->registerTask("register", "edit");
 		$this->registerTask("saveCustomer", "save");
-		$this->registerTask ("login_register", "loginRegister");
+		$this->registerTask ("register", "loginRegister");
 		$this->_model = $this->getModel('Customer');
 	}
 
-	function edit() {
-		$user = JFactory::getUser();
-		$app = JFactory::getApplication();
-		//$this->setRedirect(JRoute::_('index.php?option=com_users&view=profile&layout=edit'));
-		if(!$user->id) {
-			$redirect = "index.php?option=com_digicom&view=orders";
-			$app->redirect('index.php?option=com_users&view=registration&redirect='.base64_encode($redirect));
-		}
-		$view = $this->getView("Profile", "html");
-		$view->setLayout("editForm");
-		$view->setModel($this->_model, true);
-		$model = $this->getModel("Config");
-		$view->setModel($model);
-		//$model = $this->getModel("Plugin");
-		//$view->setModel($model);
-		$view->editForm();
-	}
-
-	function loginRegister() {
-		$view = $this->getView("Profile", "html");
-		$view->setLayout("login_register");
-		$view->loginRegister();
-	}
-
-	function login() {
-		if(!$this->_customer->_user->id){
-			$returnpage = JRequest::getVar("returnpage", "orders");
-			$view = $this->getView("Profile", "html");
-			$view->setLayout("login");
-			$view->setModel($this->_model, true);
-			$model = $this->getModel("Config");
-			$view->setModel($model);
-			$view->login();
-		} else {
-			$link = $this->getLink();
-			$this->setRedirect(JRoute::_($link, false));
-		}
-	}
-
 	function checkNextAction($err) {
+
 		$Itemid = JRequest::getVar("Itemid", "0");
 		$processor = JRequest::getVar("processor", "");
-		if (trim($err->message) != "" || $err === FALSE) {
-			$link = JRoute::_("index.php?option=com_digicom&controller=profile&task=login_register&returnpage=login_register&Itemid=".$Itemid."&processor=".$processor);
+		$return = JRequest::getVar("return", "");
+
+		if ((isset($err->message) && trim($err->message) != "") || $err === FALSE) {
+			$link = JRoute::_("index.php?option=com_digicom&view=profile&layout=register&return=".$return."&Itemid=".$Itemid."&processor=".$processor);
 			$this->setRedirect($link);
 			return true;
 		} else {
+
 			$cart_model = $this->getModel("Cart");
-			$config = $this->getModel("Config");
-			$configs = $config->getConfigs();
-			$this->_customer = new DigiComSessionHelper();
+
+			$configs = JComponentHelper::getComponent('com_digicom')->params;
+			
+			$this->_customer = new DigiComSiteHelperSession();
 			$customer = $this->_customer;
 			$items = $cart_model->getCartItems($customer, $configs);
 			$tax = $cart_model->calc_price($items, $customer, $configs);
-			$link = "";
 
 			if($tax["shipping"] != "0" || $tax["value"] != "0") {
-				$link = "index.php?option=com_digicom&controller=cart&task=summary&Itemid=".$Itemid."&processor=" . $processor;
+				$link = "index.php?option=com_digicom&view=cart&layout=summary&Itemid=".$Itemid."&processor=" . $processor;
 			} else {
-				$link = "index.php?option=com_digicom&controller=cart&task=wait&Itemid=".$Itemid."&processor=" . $processor;
+				$link = "index.php?option=com_digicom&view=cart&layout=wait&Itemid=".$Itemid."&processor=" . $processor;
 			}
+
+			$link = "index.php?option=com_digicom&view=cart&layout=summary&Itemid=".$Itemid."&processor=" . $processor;
+			
+
 			$this->setRedirect($link);
 
 			return true;
@@ -113,36 +77,22 @@ class DigiComControllerProfile extends DigiComController
 		$options['remember'] = JRequest::getBool('remember', false);
 		$options['return'] = $returnpage;
 
-		$username = JRequest::getVar("username", "", 'request');
-		$password = JRequest::getVar("passwd", "", 'request');
+		$username = JRequest::getVar("username", "", 'request','username');
+		$password = JRequest::getVar("passwd", "", 'post',JREQUEST_ALLOWRAW);
 
 		$credentials = array();
 		$credentials['username'] = $username; //JRequest::getVar('username', '', 'method', 'username');
 		$credentials['password'] = $password; //JRequest::getString('passwd', '', 'post', JREQUEST_ALLOWRAW);
 
 		$err = $app->login($credentials, $options);
+		
 		$link = $this->getLink();
-
-		if($returnpage == "login_register")
-		{
-			$this->checkNextAction($err);
+		if($returnpage != 'checkout'){
+			$this->setRedirect($link);
 			return true;
 		}
-
-		if(!isset($err->message))
-		{
-			// Set customer groups
-			require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'helper.php' );
-			$my = JFactory::getUser();
-			//DigiComAdminHelper::expireUserProduct($my->id);
-			$this->setRedirect($link);
-		}
-		else
-		{
-			$cid = JRequest::getInt('cid', 0);
-			$pid = JRequest::getInt('pid', 0);
-			$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=profile&task=login&returnpage=checkout&cid=" . $cid . "&pid=" . $pid . "&Itemid=" . $Itemid . "&processor=" . $processor));
-		}
+		$this->checkNextAction($err);
+		
 	}
 
 	function save()
@@ -152,7 +102,7 @@ class DigiComControllerProfile extends DigiComController
 		$conf = $this->getModel( "Config" );
 		$configs = $conf->getConfigs();
 		$returnpage = JRequest::getVar("returnpage", "");
-		$redirect = 'licenses';
+		$redirect = 'downloads';
 
 		if($configs->get('afterpurchase',1)) {
 			$redirect = 'orders';
@@ -160,8 +110,9 @@ class DigiComControllerProfile extends DigiComController
 
 		$link = $this->getLink($redirect);
 		$err = $this->_model->store($error);
-
+		
 		if($returnpage == "login_register"){
+
 			if($err["err"] === FALSE){
 				$_SESSION["login_register_invalid"] = "notok";
 
@@ -208,8 +159,7 @@ class DigiComControllerProfile extends DigiComController
 			$return = JRequest::getVar("returnpage", "");
 		}
 		$link = $this->getLink();
-		$url = JRoute::_($link);
-		$this->setRedirect($url);
+		$this->setRedirect($link);
 	}
 
 	function getLink($preturn = '')
@@ -229,23 +179,25 @@ class DigiComControllerProfile extends DigiComController
 				break;
 
 			case "checkout":
-				$link = "index.php?option=com_digicom&view=cart&task=checkout" . "&Itemid=" . $Itemid . "&processor=" . $processor;
+				$link = "index.php?option=com_digicom&view=cart&layout=summary" . "&Itemid=" . $Itemid . "&processor=" . $processor;
 				break;
 
 			case "cart":
-				$link = "index.php?option=com_digicom&view=cart&task=view"."&Itemid=".$Itemid . "&processor=" . $processor;
+				$link = "index.php?option=com_digicom&view=cart"."&Itemid=".$Itemid . "&processor=" . $processor;
 				break;
 
+			case "order":
 			case "orders":
-				$link = "index.php?option=com_digicom&view=orders&task=list" . "&Itemid=" . $Itemid . "&processor=" . $processor;
+				$link = "index.php?option=com_digicom&view=orders" . "&Itemid=" . $Itemid . "&processor=" . $processor;
 				break;
 
+			case "register":
 			case "login_register":
-				$link = "index.php?option=com_digicom&view=profile&task=login_register&returnpage=login_register&Itemid=" . $Itemid . "&processor=" . $processor;
+				$link = "index.php?option=com_digicom&view=profile&layout=register&returnpage=register&Itemid=" . $Itemid . "&processor=" . $processor;
 				break;
 
 			default:
-				$link = "index.php?option=com_digicom&view=profile&task=edit&Itemid=" . $Itemid . "&processor=" . $processor;
+				$link = "index.php?option=com_digicom&view=dashboard&Itemid=" . $Itemid;
 				break;
 		}
 		return $link;

@@ -10,16 +10,27 @@
 		
 		<field name="currency" type="media" label="COM_DIGICOM_FIELD_INTRO_LABEL" description="COM_DIGICOM_FIELD_INTRO_DESC" />
 		
+		<field name="product_id" type="media" label="COM_DIGICOM_FIELD_INTRO_LABEL" description="COM_DIGICOM_FIELD_INTRO_DESC" />
+		
 		<field id="order_status" name="status" default="Active" type="radio" label="COM_DIGICOM_FIELD_ORDER_STATUS_LABEL" description="COM_DIGICOM_FIELD_ORDER_STATUS_DESC" class="btn-group" size="1" >
 			<option value="Active">COM_DIGICOM_ORDER_STATUS_ACTIVE</option>
 			<option value="Pending">COM_DIGICOM_ORDER_STATUS_PENDING</option>
 		</field>
-		<field name="promocodeid" type="text" label="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_LABEL" description="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_DESC" filter="JComponentHelper::filterText" buttons="true" />
-		<field name="promocode" type="text" label="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_LABEL" description="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_DESC" filter="JComponentHelper::filterText" buttons="true" />
-		<field name="promocodediscount" type="text" label="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_LABEL" description="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_DESC" filter="JComponentHelper::filterText" buttons="true" />
-		<field name="amount_paid" type="text" label="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_LABEL" description="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_DESC" filter="JComponentHelper::filterText" buttons="true" />
-		<field name="processor" type="text" label="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_LABEL" description="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_DESC" filter="JComponentHelper::filterText" buttons="true" />
-					
+		
+		<field name="discount" type="discounts" label="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_LABEL" description="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_DESC" published="true" onchange="changePlain();"/>
+
+
+		<field name="promocodeid" type="text" label="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_LABEL" description="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_DESC" buttons="true" />
+
+
+		<field name="promocodediscount" type="text" label="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_LABEL" description="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_DESC" buttons="true" />
+
+		<field name="amount_paid" type="text" label="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_LABEL" description="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_DESC" buttons="true" />
+
+		<field name="processor" type="plugins" folder="digicom_pay"
+			description="COM_USERS_USER_FIELD_EDITOR_DESC"
+			label="COM_USERS_USER_FIELD_EDITOR_LABEL" default="offline" required="required" class="input-xlarge required" />
+
 		<field id="published" name="published" type="list" label="JSTATUS" description="JFIELD_PUBLISHED_DESC" class="chzn-color-state" size="1" default="1" >
 			<option value="1"> JPUBLISHED</option>
 			<option value="0"> JUNPUBLISHED</option>
@@ -29,7 +40,9 @@
 		
 		<field name="amount" type="text" label="JFIELD_ORDER_AMOUNT_LABEL" description="JFIELD_ORDER_AMOUNT_DESC" hint="JFIELD_ALIAS_PLACEHOLDER" size="40" />
 
-	
+		<field name="products" type="hidden" />
+
+		
 	</fields>
 	
 </form>

@@ -10,13 +10,13 @@
 
 defined ('_JEXEC') or die ("Go away.");
 
-class DigiComSessionHelper {
+class DigiComSiteHelperSession {
 	var $_sid = null;
 	var $user = null;
 	var $_customer;
 	var $_Itemid = null;
 
-	function digicomSessionHelper () {
+	function __construct () {
 
 		global $Itemid;
 

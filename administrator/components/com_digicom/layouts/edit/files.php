@@ -1,12 +1,14 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  Layout
- *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @package		DigiCom
+ * @copyright	Copyright (c)2010-2015 ThemeXpert
+ * @license 	GNU General Public License version 3, or later
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @since 		1.0.0
  */
+
 defined('_JEXEC') or die;
+
 $document = JFactory::getDocument();
 $document->addScript(JURI::root(true).'/media/digicom/assets/js/repeatable-fields.js?v=1.0.0');
 ?>
@@ -18,7 +20,7 @@ jQuery(function(){
 });
 </script>
 <fieldset class="adminform">
-	<legend><?php echo JText::_('VIEWPRODFILE');?></legend>
+	<legend><?php echo JText::_('COM_DIGICOM_PRODUCT_SINGLE_FILES');?></legend>
 	<div id="digicom_item_files_items" class="repeat">
 		<table class="table table-striped wrapper" id="itemList">
 			<thead>
@@ -56,9 +58,10 @@ jQuery(function(){
 					<td width="10%"><span class="remove"><i class="icon-remove"></i></span></td>
 				</tr>
 				<?php
-					$files = $displayData;
+					$item = $displayData;
 					
-					if(count($files) >=1 && is_array($files)) :
+					if(isset($item->file) && count($item->file) >=1 && is_array($item->file)) :
+					$files = $item->file;
 					foreach($files as $key => $value){?>
 					<tr class="row">
 						<td width="1%">
@@ -96,7 +99,7 @@ jQuery(function(){
 				<tr class="row">
 					<td width="10%" colspan="4">
 						<span class="add btn btn-mini">Add</span>
-						<input type="hidden" name="files_remove_id" value="" id="jform_files_remove_id"/>
+						<input type="hidden" name="jform[files_remove_id]" value="" id="jform_files_remove_id"/>
 					</td>
 				</tr>
 			</tfoot>

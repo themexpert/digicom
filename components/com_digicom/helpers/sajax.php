@@ -40,14 +40,14 @@ if (!isset($SAJAX_INCLUDED)) {
 	// Helper function to return the script's own URI. 
 	// 
 	function sajax_get_my_uri() {
-//print_r($_SERVER["REQUEST_URI"]);
-//		$sajax_remote_uri = $_SERVER["REQUEST_URI"];
-//change to 
-			$sajax_remote_uri = DigiComHelper::getLiveSite();
+			//print_r($_SERVER["REQUEST_URI"]);
+			//		$sajax_remote_uri = $_SERVER["REQUEST_URI"];
+			//change to 
+			$sajax_remote_uri = DigiComSiteHelperDigiCom::getLiveSite();
 			$sajax_remote_uri .= "/index.php?option=com_digicom";
-//if there are any problems with country/province lists populating
-		if (!strpos( $sajax_remote_uri, "?option=com_digicom")) $sajax_remote_uri.='&option=com_digicom';
-		return $sajax_remote_uri."&no_html=1&controller=sajax";
+			//if there are any problems with country/province lists populating
+			if (!strpos( $sajax_remote_uri, "?option=com_digicom")) $sajax_remote_uri.='&option=com_digicom';
+				return $sajax_remote_uri."&no_html=1&view=sajax";
 	}
 	$sajax_remote_uri = sajax_get_my_uri();
 

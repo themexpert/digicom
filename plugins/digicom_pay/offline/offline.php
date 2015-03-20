@@ -1,6 +1,9 @@
 <?php
 /** ensure this file is being included by a parent file */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+//Import filesystem libraries. Perhaps not necessary, but does not hurt
+jimport('joomla.filesystem.file');
+
 $lang = JFactory::getLanguage();
 $lang->load('plg_digicom_pay_offline', JPATH_ADMINISTRATOR);
 require_once(JPATH_SITE.'/plugins/digicom_pay/offline/offline/helper.php');

@@ -56,10 +56,25 @@
 
 }
 
+
+// Color Variables 
+@color-primary: #24AEED;
+
+
 #digicom {
 
 	.input-append input, .input-append select, .input-append .uneditable-input, 
 	.input-prepend input, .input-prepend select, .input-prepend .uneditable-input {height: auto;}
+
+	.digi-page-title {
+		font-size: 30px;
+		line-height: 1.5;
+	}
+	.digi-section-title {
+		font-size: 18px;
+		line-height: 1.3;
+		color: #777;
+	}
 
 	/* Category List Page Styling */
 	.digi-categories {
@@ -74,7 +89,7 @@
 				padding: 3px;
 			}
 		}
-		.page-title {
+		.digi-page-title {
 			margin: 0 0 10px;
 			line-height: 1.3;
 		}
@@ -84,25 +99,28 @@
 				position: relative;
 				padding: 0;
 				overflow: hidden;
+				border-radius: 0;
 
 				.image img {
 					width: 100%;
 					.transition(all 0.3s linear);
 				}
-
-				.price {
+				span.featured {
 					position: absolute;
 					top: 0;
-					right: 0;
-
-					.label {
-						border-radius: 0;
-						padding: 4px 8px;
-						font-size: 14px;
-						line-height: 20px;
-					}
+					left: 0;
+					display: block;
+					height: 40px;
+					width: 40px;
+					background: url(../images/featured-badge.png) no-repeat 0 0;
+					font-size: 0;
+					text-indent: -9999px;
 				}
-
+				.bundle-label {
+					position: absolute;
+					right: 5px;
+					top: 5px;					
+				}
 				.caption {
 					padding: 20px;
 					h3 {
@@ -113,6 +131,14 @@
 						a:hover {text-decoration: none;}
 					}
 				}
+				
+				.price {
+					font-weight: bold;
+					line-height: 30px;
+					color: @color-primary;
+					display: inline-block;
+				}
+				.read-more {float: right;}
 
 				&:hover {
 					.image img {
@@ -126,20 +152,42 @@
 
 	/* Product Page Styling */
 	.digi-products {
-		.product-title {font-size: 32px;line-height: 1.4;}
+		.digi-page-title {
+			
+			.label {float: right;margin: 5px;}
+		}
 		.short-desc {
 			font-size: 1.2em;
 			font-style: italic;
 			line-height: 1.6;
 			margin: 0 0 7px;
 		}
-		.bundled-products h3 {font-size: 20px;line-height: 30px;}
-		.price-addtocart {
-			background: #eee;
-			padding: 20px;
-			margin-top: 15px;
-			border: 1px solid #ddd;
+		.description {
+			margin-bottom: 20px;
 		}
+		.bundled-products {
+			margin-bottom: 20px;
+			h3 {
+				font-size: 20px;
+				line-height: 30px;
+				background: @color-primary;
+				color: #fff;
+				margin: 0;
+				padding: 5px 15px;
+			}
+
+			ul {
+				list-style: none;
+				margin: 0;
+				border: 1px solid #ddd;
+				li {
+					padding: 10px 15px;
+					span {float: right;}
+					&+li {border-top: 1px solid #ddd;}
+				}
+			}
+		}
+		
 		.product-price {
 			font-size: 16px;
 			line-height: 24px;
@@ -160,16 +208,55 @@
 	.digi-cart {
 		.continue-shopping {
 			margin-top: 15px;
-			.chzn-container {
-				float: left;
-				margin-top: 3px;
-			}
+			
 			.chzn-drop .chzn-results {margin-left: 0;}
 		}
 	}
-}
 
-/* Submit Order Page Styling */
-	body.task-submitOrder .akeeba-bootstrap {
+	/* Submit Order Page Styling */
+	.akeeba-bootstrap {
 		.form-horizontal .control-label {padding-top: 0;}
 	}
+
+	
+	/* Order View Page Styling */
+	.digi-view-order {
+		.table th, 
+		.table td {border-top: 0;}
+		hr {
+			border-top: 2px solid #666;
+			border-bottom: 1px solid #666;
+		}
+	}
+
+	
+	/* Customer page Styling */
+	.customer-info {
+		padding: 15px;
+	  	border-left: 1px solid #ccc;
+	  	background: rgba(0, 0, 0, 0.05);
+		h4 {margin-top: 0;}
+	}
+	.active-products {
+		margin-top: 20px;
+		h4 {
+			font-size: 20px;
+			line-height: 30px;
+			background: @color-primary;
+			color: #fff;
+			margin: 0;
+			padding: 5px 15px;
+		}
+
+		ul {
+			list-style: none;
+			margin: 0;
+			border: 1px solid #ddd;
+			li {
+				padding: 10px 15px;
+				span {float: right;}
+				&+li {border-top: 1px solid #ddd;}
+			}
+		}
+	}
+}

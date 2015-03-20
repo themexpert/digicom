@@ -10,9 +10,7 @@
 
 defined( '_JEXEC' ) or die ( "Go away." );
 
-jimport( "joomla.aplication.component.model" );
-
-class DigiComModelCustomer extends DigiComModel {
+class DigiComModelCustomer extends JModelItem {
 	var $_customers;
 	var $_customer;
 	var $_id = null;
@@ -146,6 +144,9 @@ class DigiComModelCustomer extends DigiComModel {
 			//$res = false;
 		}
 
+		//generate session;
+		$customer = new DigiComSiteHelperSession();
+
 		if ( ! $res["err"] ) {
 			$reg->set( "tmp_profile", $data );
 
@@ -174,6 +175,8 @@ class DigiComModelCustomer extends DigiComModel {
 		if ( $res["err"] && $new_user ) {
 			$this->sendRegConfirm( $data );
 		}
+
+
 
 		return $res;
 	}
@@ -226,13 +229,15 @@ class DigiComModelCustomer extends DigiComModel {
 			$promocode = '0';
 		}
 
+		
+
 		$app      = JFactory::getApplication();
 		$sitename = ( trim( $configs->get('store_name','DigiCom Store') ) != '' ) ? $configs->get('store_name','DigiCom Store') : $app->getCfg( 'sitename' );
 		$siteurl  = ( trim( $configs->get('store_url','') ) != '' ) ? $configs->get('store_url','') : $mosConfig_live_site;
-		$ship_add = DigiComHelper::get_customer_shipping_add( $my->id );
+		$ship_add = DigiComSiteHelperDigiCom::get_customer_shipping_add( $my->id );
 		$message  = str_replace( "[SHIPPING_ADDRESS]", $ship_add, $message );
 		$message  = str_replace( "[SITENAME]", $sitename, $message );
-		$message  = str_replace( "[CUSTOMER_COMPANY_NAME]", $my->copany, $message );
+		$message  = str_replace( "[CUSTOMER_COMPANY_NAME]", $my->company, $message );
 		$message  = str_replace( "../%5BSITEURL%5D", $siteurl, $message );
 		$message  = str_replace( "%5BSITEURL%5D", $siteurl, $message );
 		$message  = str_replace( "[SITEURL]", $siteurl, $message );

@@ -21,7 +21,7 @@ $document = JFactory::getDocument();
 
 $k = 0;
 $n = count( $this->orders );
-$configs = $this->configs;
+$configs = JComponentHelper::getComponent('com_digicom')->params;
 $f = $configs->get('time_format','DD-MM-YYYY');
 $f = str_replace( "-", "-%", $f );
 $f = "%" . $f;
@@ -50,7 +50,11 @@ Joomla.submitbutton = function (pressbutton) {
 <?php else : ?>
 <div id="j-main-container" class="">
 <?php endif;?>
-	<form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&controller=orders'); ?>" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
+
+	<div class="alert alert-info">
+		<?php echo JText::_("COM_DIGICOM_ORDERS_HEADER_NOTICE"); ?>
+	</div>
+	<form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&view=orders'); ?>" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
 		<div class="js-stools">
 			<div class="clearfix">
 				<div class="btn-wrapper input-append">
@@ -80,9 +84,7 @@ Joomla.submitbutton = function (pressbutton) {
 		<br>
 
 
-		<div class="alert alert-info">
-			<?php echo JText::_("HEADER_ORDERS"); ?>
-		</div>
+		
 		<table class="adminlist table table-striped">
 			<thead>
 				<tr>
@@ -90,29 +92,29 @@ Joomla.submitbutton = function (pressbutton) {
 						<?php echo JHtml::_('grid.checkall'); ?>
 					</th>
 					<th width="20">
-						<?php echo JText::_( 'VIEWORDERSID' ); ?>
+						<?php echo JText::_( 'JGRID_HEADING_ID' ); ?>
 					</th>
 
 					<th>
-						<?php echo JText::_( 'VIEWORDERSDATE' ); ?>
+						<?php echo JText::_( 'COM_DIGICOM_DATE' ); ?>
 					</th>
 					<th  <?php if ( $configs->get('showolics',0) == 0 ) echo $invisible; ?>>
 						<?php echo JText::_( 'VIEWORDERSNOL' ); ?>
 					</th>
 					<th>
-						<?php echo JText::_( 'VIEWORDERSPRICE' ); ?>
+						<?php echo JText::_( 'COM_DIGICOM_PRICE' ); ?>
 					</th>
 					<th>
-						<?php echo JText::_( 'VIEWORDERSUSERNAME' ); ?>
+						<?php echo JText::_( 'COM_DIGICOM_USER_NAME' ); ?>
 					</th>
 					<th>
-						<?php echo JText::_( 'VIEWORDERSCUST' ); ?>
+						<?php echo JText::_( 'COM_DIGICOM_CUSTOMER' ); ?>
 					</th>
 					<th>
-						<?php echo JText::_( 'VIEWORDERSSTATUS' ); ?>
+						<?php echo JText::_( 'JSTATUS' ); ?>
 					</th>
 					<th>
-						<?php echo JText::_( 'VIEWORDERSPAYMETHOD' ); ?>
+						<?php echo JText::_( 'COM_DIGICOM_CUSTOMER_PAYMENT_METHOD' ); ?>
 					</th>
 				</tr>
 			</thead>
@@ -127,12 +129,11 @@ Joomla.submitbutton = function (pressbutton) {
 
 					$id = $order->id;
 					$checked = JHTML::_( 'grid.id', $i, $id );
-					$link = JRoute::_( "index.php?option=com_digicom&controller=licenses&task=list&oid[]=" . $id );
-					$olink = JRoute::_( "index.php?option=com_digicom&controller=orders&task=show&cid[]=" . $id );
-					$customerlink = JRoute::_( "index.php?option=com_digicom&controller=customers&task=edit&cid[]=" . $order->userid );
+					$olink = JRoute::_( "index.php?option=com_digicom&view=order&task=order.edit&id=" . $id );
+					$customerlink = JRoute::_( "index.php?option=com_digicom&view=customer&task=customer.edit&id=" . $order->userid );
 					$order->published = 1;
 					$published = JHTML::_( 'grid.published', $order, $i );
-					$orderstatuslink = JRoute::_( "index.php?option=com_digicom&controller=orders&task=cycleStatus&cid[]=" . $id );
+					$orderstatuslink = JRoute::_( "index.php?option=com_digicom&view=orders&task=orders.cycleStatus&id=" . $id );
 					$userlink = "index.php?option=com_users&view=users&filter_search=".$order->username;
 
 				?>
@@ -158,7 +159,7 @@ Joomla.submitbutton = function (pressbutton) {
 								//$chargebacks = DigiComAdminModelOrder::getChargebacks($order->id);
 								//$order->amount_paid = $order->amount_paid - $refunds - $chargebacks;
 								$order->amount_paid = $order->amount_paid;
-								echo DigiComAdminHelper::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs); 
+								echo DigiComHelperDigiCom::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs); 
 								
 							?>
 						</td>
@@ -216,6 +217,7 @@ Joomla.submitbutton = function (pressbutton) {
 		<input type="hidden" name="option" value="com_digicom" />
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />
-		<input type="hidden" name="controller" value="orders" />
+		<input type="hidden" name="view" value="orders" />
+		<?php echo JHtml::_('form.token'); ?>
 	</form>
 </div>

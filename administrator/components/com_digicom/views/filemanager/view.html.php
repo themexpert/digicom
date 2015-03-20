@@ -12,10 +12,10 @@ defined ('_JEXEC') or die ("Go away.");
 
 jimport ("joomla.application.component.view");
 
-class DigiComAdminViewFileManager extends DigiComView {
+class DigiComViewFileManager extends JViewLegacy {
 
 	function display($tpl =  null){
-		JToolBarHelper::title(JText::_('COM_DIGICOM_FILE_MANAGER'), 'generic.png');
+		JToolBarHelper::title(JText::_('COM_DIGICOM_FILE_MANAGER_TOOLBAR_TITLE'), 'generic.png');
 		
 
 		// Access check.
@@ -28,7 +28,7 @@ class DigiComAdminViewFileManager extends DigiComView {
 		// Instantiate a new JLayoutFile instance and render the layout
 		$layout = new JLayoutFile('toolbar.title');
 		$title=array(
-			'title' => JText::_( 'COM_DIGICOM_FILE_MANAGER' ),
+			'title' => JText::_( 'COM_DIGICOM_FILE_MANAGER_TOOLBAR_TITLE' ),
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
@@ -59,8 +59,8 @@ class DigiComAdminViewFileManager extends DigiComView {
 		
 		$tmpl = JRequest::getCmd('tmpl','');
 		if($tmpl != 'component'){
-			DigiComAdminHelper::addSubmenu('filemanager');
-			$this->sidebar = DigiComAdminHelper::renderSidebar();
+			DigiComHelperDigiCom::addSubmenu('filemanager');
+			$this->sidebar = DigiComHelperDigiCom::renderSidebar();
 		}
 		
 		parent::display($tpl);

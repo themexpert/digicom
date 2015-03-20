@@ -1,14 +1,14 @@
 <?php
 /**
- * @version     2.7.x
  * @package     DigiCom
- * @author      ThemeXpert
- * @copyright   Copyright (c) 2006 - 2014 ThemeXpert Ltd. All rights reserved.
- * @license     GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+ * @copyright   Copyright (c)2010-2015 ThemeXpert
+ * @license     GNU General Public License version 3, or later
+ * @author      ThemeXpert http://www.themexpert.com
+ * @since       1.0.0
  */
 
-// no direct access
 defined('_JEXEC') or die;
+
 
 /**
  * elFinder - file manager for web.

@@ -1,40 +1,37 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 341 $
- * @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package		DigiCom
+ * @copyright	Copyright (c)2010-2015 ThemeXpert
+ * @license 	GNU General Public License version 3, or later
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
+
 
 class TableProduct extends JTable {
+
+	/**
+	 * Ensure the params and metadata in json encoded in the bind method
+	 *
+	 * @var    array
+	 * @since  3.4
+	 */
+	protected $_jsonEncode = array('params', 'metadata');
+
 	
-	function TableProduct (&$db) {
+	function __construct (&$db) {
 		parent::__construct('#__digicom_products', 'id', $db);
+
+		// Set the published column alias
+		$this->setColumnAlias('published', 'published');
+
+		JTableObserverTags::createObserver($this, array('typeAlias' => 'com_digicom.product'));
+		JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_digicom.product'));
+
 	}
 
-	function load ($id = 0, $reset = true) {
-		parent::load($id);
-	}
-	
-	/**
-	 * Overloaded bind function to pre-process the params.
-	 *
-	 * @param   mixed  $array   An associative array or object to bind to the JTable instance.
-	 * @param   mixed  $ignore  An optional array or space separated list of properties to ignore while binding.
-	 *
-	 * @return  boolean  True on success.
-	 *
-	 * @see     JTable:bind
-	 * @since   1.5
-	 */
-	public function bind($array, $ignore = '')
-	{
-		return parent::bind($array, $ignore);
-	}
 
 	function store($updateNulls = false) {
 

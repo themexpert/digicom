@@ -1,15 +1,15 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
-* @author			themexpert.com
-* @version			$Revision: 341 $
-* @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
-* @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license
-*/
+ * @package		DigiCom
+ * @copyright	Copyright (c)2010-2015 ThemeXpert
+ * @license 	GNU General Public License version 3, or later
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
-class DigiComAdminModelConfig extends JModelForm
+defined('_JEXEC') or die;
+
+class DigiComModelConfig extends JModelForm
 {
 
 	/**
@@ -98,7 +98,7 @@ class DigiComAdminModelConfig extends JModelForm
 		return true;
 	}
 
-	public function getConfigs(){
+	public static function getConfigs(){
 		$comInfo = JComponentHelper::getComponent('com_digicom');
 		return $comInfo->params;
 	}

@@ -1,19 +1,15 @@
 <?php
-
 /**
+ * @package		DigiCom
+ * @copyright	Copyright (c)2010-2015 ThemeXpert
+ * @license 	GNU General Public License version 3, or later
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @since 		1.0.0
+ */
 
- *
- * @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 341 $
- * @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
- * @license			GNU/GPLv3 */
-defined( '_JEXEC' ) or die( "Go away." );
+defined('_JEXEC') or die;
 
-jimport( 'joomla.application.component.controller' );
-
-class DigiComAdminControllerOrders extends DigiComAdminController
+class DigiComControllerOrders extends JControllerAdmin
 {
 
 	var $_model = null;
@@ -23,228 +19,8 @@ class DigiComAdminControllerOrders extends DigiComAdminController
 
 		parent::__construct();
 
-//		$this->registerTask ("add", "edit");
-		$this->registerTask( "", "listOrders" );
-		$this->registerTask( "show", "showOrder" );
-		$this->registerTask( "unpublish", "publish" );
 		$this->_model = $this->getModel( "Orders" );
 		$this->_config = $this->getModel( "Config" );
-	}
-
-	function showOrder()
-	{
-		$view = $this->getView( "Orders", "html" );
-		$view->setModel( $this->_model, true );
-		$view->setModel( $this->_config );
-		$view->setLayout( "showorder" );
-		$view->showOrder();
-
-	}
-
-	function saveorder() {
-		$return = $this->_model->saveorder();
-		
-		if ($return) {
-			$msg = JText::_( 'ORDSAVED' );
-		} else {
-			$msg = JText::_( 'ORDFAILED' );
-		}
-		$link = "index.php?option=com_digicom&controller=orders";
-		$this->setRedirect( $link, $msg );
-	}
-
-	function calc(){
-		$json = new Services_JSON;
-		//decode incoming JSON string
-		$jsonRequest = JRequest::getVar("jsonString", "", "get");
-		$jsonRequest = $json->decode($jsonRequest);
-		$calc_result = $this->_model->calcPrice($jsonRequest);
-
-		$jsonRequest->amount = $calc_result['amount'];
-		$jsonRequest->amount_value = $calc_result['amount_value'];
-		$jsonRequest->tax = $calc_result['tax'];
-		$jsonRequest->tax_value = $calc_result['tax_value'];
-		$jsonRequest->discount_sign = $calc_result['discount_sign'];
-		$jsonRequest->discount = $calc_result['discount'];
-		$jsonRequest->total = $calc_result['total'];
-		$jsonRequest->total_value = $calc_result['total_value'];
-		$jsonRequest->currency = $calc_result['currency'];
-
-		echo $json->encode($jsonRequest);
-		exit;
-	}
-
-	function listOrders()
-	{
-		$view = $this->getView( "Orders", "html" );
-		$view->setModel( $this->_model, true );
-		$model = $this->getModel( "Config" );
-		$view->setModel( $model );
-		$view->display();
-
-	}
-
-	function saveCustomer() {
-
-		$error = "";
-		$customer_model = $this->getModel('Customer');
-		if ($result = $customer_model->store($error) ) {
-			$id = $customer_model->_customer->id;
-			if ($id > 0) {
-				$this->setRedirect('index.php?option=com_digicom&controller=orders&task=prepereNewOrder&userid='.$id);
-			}
-		} else {
-			$msg = JText::_('CUSTSAVEFAILED');
-			echo $msg .= " " . JText::_($error);
-			$this->setMessage($msg);
-			$view = $this->getView( "Orders", "html" );
-			$view->setModel( $this->_model, true );
-			$model = $this->getModel( "Config" );
-			$view->setModel( $model );
-			$model = $this->getModel('Customer');
-			$view->setModel( $model );
-			$view->setLayout( "newcustomer" );
-			$view->newCustomer();
-		}
-	}
-
-	function newCreateCustomer() {
-		$view = $this->getView( "Orders", "html" );
-		$view->setModel( $this->_model, true );
-		$model = $this->getModel( "Config" );
-		$view->setModel( $model );
-		$model = $this->getModel('Customer');
-		$view->setModel( $model );
-		$customer = $model;
-		$view->setLayout( "newcustomer" );
-
-		// define need redirect to create order or redirect to fill profile
-
-		$usertype = JRequest::getVar('usertype', 3);
-		$username = JRequest::getVar('username','');
-
-		if(trim($username) == ""){
-			$this->setRedirect('index.php?option=com_digicom&controller=orders&task=checkcreateuser&usertype=3', JText::_("DIGI_ENTER_VALID_USERNAME"), "notice");
-		}
-
-		$user = $customer->getUserByName($username);
-		if (!empty($user->id)) {
-			$cust =  $customer->getCustomerbyID($user->id);
-			if (!empty($cust->firstname)) {
-				$this->setRedirect('index.php?option=com_digicom&controller=orders&task=prepereNewOrder&userid='.$user->id);
-			} else {
-				$view->newCustomer();
-			}
-		} else {
-			$cust =  $customer->getCustomerbyID(0);
-			$view->newCustomer();
-		}
-	}
-
-	function checkcreateuser() {
-
-		$usertype = JRequest::getVar('usertype', 3);
-
-		switch($usertype) {
-			case '1':
-				$view = $this->getView( "Orders", "html" );
-				$view->setModel( $this->_model, true );
-				$model = $this->getModel( "Config" );
-				$view->setModel( $model );
-				$model = $this->getModel('Customer');
-				$view->setModel( $model );
-				$view->setLayout( "newcustomer" );
-				$view->newCustomer();
-				break;
-			case '2':
-				$view = $this->getView( "Orders", "html" );
-				$view->setModel( $this->_model, true );
-				$model = $this->getModel( "Config" );
-				$view->setModel( $model );
-				$view->setLayout( "selectusername" );
-				$view->selectUsername();
-				break;
-			case '3':
-			default:
-				$view = $this->getView( "Orders", "html" );
-				$view->setModel( $this->_model, true );
-				$model = $this->getModel( "Config" );
-				$view->setModel( $model );
-				$view->setLayout( "selectusername" );
-				$view->selectUsername();
-				break;
-		}
-	}
-
-
-	function add() {
-		$this->setRedirect('index.php?option=com_digicom&controller=orders&task=prepereNewOrder');
-		//$this->prepereNewOrder();
-		/*
-		$view = $this->getView( "Orders", "html" );
-		$view->setModel( $this->_model, true );
-		$model = $this->getModel( "Config" );
-		$view->setModel( $model );
-		$model = $this->getModel( "Customer" );
-		$view->setModel( $model );
-		$model = $this->getModel( "License" );
-		$view->setModel( $model );
-		$model = $this->getModel( "Plain" );
-		$view->setModel( $model );
-		$view->setLayout( "addneworder" );
-		$view->addNewOrder();
-		*/
-	}
-
-
-	function prepereNewOrder() {
-		
-		$view = $this->getView( "Orders", "html" );
-		//$view->setModel( $this->_model, true );
-		$model = $this->getModel( "order" );
-		$view->setModel( $model,true );
-		$model = $this->getModel( "Config" );
-		$view->setModel( $model );
-		$model = $this->getModel('Customer');
-		$view->setModel( $model );
-		$view->setLayout( "prepereneworder" );
-		$view->prepereNewOrder();
-	}
-
-	function edit()
-	{
-		JRequest::setVar( "hidemainmenu", 1 );
-		$view = $this->getView( "Orders", "html" );
-		$view->setModel( $this->_model, true );
-
-		$model = $this->getModel( "Config" );
-		$view->setModel( $model );
-
-		$model = $this->getModel('Customer');
-		$view->setModel( $model );
-
-		$model = $this->getModel( "Product" );
-		$view->setModel( $model );
-
-		$view->setLayout( "editForm" );
-
-		$view->editForm();
-	}
-
-	function save()
-	{
-		$this->saveorder();
-		/*	
-		if ( $this->_model->store() ) {
-
-			$msg = JText::_( 'ORDSAVED' );
-		} else {
-			$msg = JText::_( 'ORDFAILED' );
-		}
-		$link = "index.php?option=com_digicom&controller=orders";
-		$this->setRedirect( $link, $msg );
-		*/
-
 	}
 
 	function remove()
@@ -255,7 +31,7 @@ class DigiComAdminControllerOrders extends DigiComAdminController
 			$msg = JText::_( 'ORDREMSUCC' );
 		}
 
-		$link = "index.php?option=com_digicom&controller=orders";
+		$link = "index.php?option=com_digicom&view=orders";
 		$this->setRedirect( $link, $msg );
 
 	}
@@ -263,7 +39,7 @@ class DigiComAdminControllerOrders extends DigiComAdminController
 	function cancel()
 	{
 		$msg = JText::_( 'ORDCANCEL' );
-		$link = "index.php?option=com_digicom&controller=orders";
+		$link = "index.php?option=com_digicom&view=orders";
 		$this->setRedirect( $link, $msg );
 
 	}
@@ -281,7 +57,7 @@ class DigiComAdminControllerOrders extends DigiComAdminController
 			$msg = JText::_( 'ORDUNSPEC' );
 		}
 
-		$link = "index.php?option=com_digicom&controller=orders";
+		$link = "index.php?option=com_digicom&view=orders";
 		$this->setRedirect( $link, $msg );
 
 	}
@@ -295,22 +71,42 @@ class DigiComAdminControllerOrders extends DigiComAdminController
 		else{
 			$msg = JText::_('ORDSTATUSCHANGED');
 		}
-		$link_orders = "index.php?option=com_digicom&controller=orders";
+		$link_orders = "index.php?option=com_digicom&view=orders";
 		$this->setRedirect($link_orders, $msg);
 	}
 
-	function productitem() {
-		$view = $this->getView( "Orders", "html" );
-		$view->setModel( $this->_model, true );
-		$model = $this->getModel( "Config" );
-		$view->setModel( $model );
-		$model = $this->getModel('Customer');
-		$view->setModel( $model );
-		$model = $this->getModel('License');
-		$view->setModel( $model );
-		$view->setLayout( "productitem" );
-		$view->productitem();
+	function calc(){
+		//$json = new Services_JSON;
+		//decode incoming JSON string
+		$jsonRequest = JRequest::getVar("jsonString", "", "get");
+		//$jsonRequest = $json->decode($jsonRequest);
+		$jsonRequest = json_decode($jsonRequest);
+		//print_r($jsonRequest);die;
+		$calc_result = $this->_model->calcPrice($jsonRequest);
+		
+		$data = new stdclass();
+		$data->amount = $calc_result['amount'];
+		$data->amount_value = $calc_result['amount_value'];
+		$data->tax = $calc_result['tax'];
+		$data->tax_value = $calc_result['tax_value'];
+		$data->discount_sign = $calc_result['discount_sign'];
+		$data->discount = $calc_result['discount'];
+		$data->total = $calc_result['total'];
+		$data->total_value = $calc_result['total_value'];
+		$data->currency = $calc_result['currency'];
+		//echo $json->encode($jsonRequest);
+		
+		// Get the document object.
+		$document = JFactory::getDocument();
+		
+		// Set the MIME type for JSON output.
+		$document->setMimeEncoding('application/json');
+		
+		// Change the suggested filename.
+		JResponse::setHeader('Content-Disposition','attachment;filename="orders.json"');
+		// Output the JSON data.
+		echo json_encode($data);
+		JFactory::getApplication()->close();
+
 	}
-
-
 }
