@@ -56,7 +56,7 @@ class DigiComController extends JControllerLegacy
 			if($db->query()){
 				$sql = "SELECT `extension_id` FROM #__extensions WHERE `name`='com_digicom' AND `element`='com_digicom'";
 				$db->setQuery($sql);
-				$db->query();
+				$db->query(); 
 				$componentid = intval($db->loadResult());
 				$sql = "
 							INSERT IGNORE INTO `#__menu` (`menutype`, `title`, `alias`, `note`, `path`, `link`, `type`, `published`, `parent_id`, `level`, `component_id`, `checked_out`, `checked_out_time`, `browserNav`, `access`, `img`, `template_style_id`, `params`, `lft`, `rgt`, `home`, `language`, `client_id`)
