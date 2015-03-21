@@ -631,6 +631,7 @@ class DigiComSiteHelperDigicom {
 			if(JFile::exists($thumbpath)) return $thumburl;
 			
 			$image = $jimage->createThumbs(array($image_thumb_width.'x'.$image_thumb_height), $image_thumb_method,$path);
+			$thumburl = str_replace(JPATH_SITE.'/', '', $image[0]->getPath());
 			return $thumburl;
 
 		}else{
@@ -638,4 +639,124 @@ class DigiComSiteHelperDigicom {
 		}
 		
 	}
+
+
+	public static function get_country_options( $profile, $ship = false, $configs ) {
+
+		$db           = JFactory::getDBO();
+		$country_word = 'country';
+		if ( ! $profile ) {
+			$profile = new stdClass();
+		}
+		if ( $ship ) {
+			$country_word = 'ship' . $country_word;
+		}
+		if ( ! isset( $profile->$country_word ) ) {
+			$profile->$country_word = '';
+		}
+		$query = "SELECT country"
+		         . "\n FROM #__digicom_states"
+		         . "\n GROUP BY country"
+		         . "\n ORDER BY country ASC";
+		$db->setQuery( $query );
+		$countries = $db->loadObjectList();
+
+
+		$country_option = "<select name='" . $country_word . "' id='" . $country_word . "' onChange='changeProvince" . ( $ship ? '_ship' : '' ) . "();' style='width:15.5em;'>";
+		$country_option .= '<option value="" ';
+		if ( ! $profile->$country_word ) {
+			$country_option .= 'selected';
+		}
+		$country_option .= '>' . ( JText::_( 'DSSELECTCOUNTRY' ) ) . '</option>';
+		$country_option .= '<option value="" ></option>';
+		$topcountries = $configs->get('topcountries','');
+
+		if ( count( $topcountries ) > 0 ) {
+
+			foreach ( $topcountries as $topcountry ) {
+				if ( $topcountry != '0' ) {
+					$country_option .= '<option value="' . $topcountry . '" ';
+					if ( $profile->$country_word == $topcountry && strlen( trim( $topcountry ) ) > 0 ) {
+						$country_option .= 'selected';
+					}
+					$country_option .= ' >' . $topcountry . '</option>';
+				}
+			}
+
+		} else {
+
+			$country_option .= '<option value="United-States" ';
+			if ( $profile->$country_word == 'United-States' ) {
+				$country_option .= 'selected';
+			}
+			$country_option .= ' >United-States</option>';
+
+			$country_option .= '<option value="Canada" ';
+			if ( $profile->$country_word == 'Canada' ) {
+				$country_option .= 'selected';
+
+				$country_option .= '  >Canada</option>';
+
+			}
+
+		}
+
+		$country_option .= '<option value=""  >-------</option>';
+		foreach ( $countries as $country ) {
+			if ( ( $country->country != 'United-States' && $country->country != 'Canada' && count( $topcountries ) < 1 ) || ( count( $topcountries ) > 0 && ! in_array( $country->country, $topcountries ) ) ) {
+				$country_option .= "<option value='" . $country->country . "' ";
+
+				if ( $country->country == $profile->$country_word ) {
+					$country_option .= "selected";
+				}
+
+				$country_option .= " >" . $country->country . "</option>";
+			}
+		}
+		$country_option .= "</select>";
+
+		return $country_option;
+
+	}
+
+	public static function get_store_province( $custommer, $ship = 0 ) {
+		$db            = JFactory::getDBO();
+		$province_word = "province";
+		$state_word    = "state";
+		$shipword      = '';
+		if ( $ship ) {
+			$province_word = 'ship' . $province_word;
+			$shipword      = "ship";
+			$state_word    = "ship" . $state_word;
+		}
+		if ($custommer->state) {
+			$query = "SELECT state FROM #__digicom_states WHERE country='" . $custommer->country . "' order by `state`";
+			$db->setQuery( $query );
+			$res    = $db->loadObjectList();
+			$output = '
+						<div id="' . $province_word . '">
+							<select name="' . $state_word . '" id="' . $shipword . 'sel_province" style="width:15.5em;">';
+			foreach ( $res as $i => $v ) {
+				$output .= '<option value="' . $v->state . '" ';
+				if ( $v->state == $custommer->state ) {
+					$output .= 'selected';
+				}
+				$output .= '>' . $v->state . '</option>';
+
+
+			}
+
+			$output .= '</select></div>';
+		} else {
+			$output = '<div id="' . $province_word . '">
+		 			   <select style="width:15.5em;"><option>' . ( JText::_( 'DSSELECTCOUNTRYFIRST' ) ) . '</option></select>
+					</div>
+					';
+
+		}
+
+		return $output;
+
+	}
+
 }
