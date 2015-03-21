@@ -10,7 +10,7 @@
 
 defined ('_JEXEC') or die ("Go away.");
 
-class DigiComViewLogin extends JViewLegacy {
+class DigiComViewSAjax extends JViewLegacy {
 
 	function display ($tpl =  null) {
 		require_once( JPATH_COMPONENT.DS.'helpers'.DS.'sajax.php' );
