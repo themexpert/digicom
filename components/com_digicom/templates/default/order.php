@@ -22,6 +22,8 @@ if ($this->order->id < 1){
 
 <div id="digicom">	
 
+	<?php DigiComSiteHelperDigicom::loadModules('digicom_toolber'); ?>
+
 	<h1 class="digi-page-title"><?php echo JText::_('COM_DIGICOM_ORDER_DETAILS'); ?></h1>
 
 	<table class="table table-striped table-hover table-bordered">
@@ -105,6 +107,8 @@ if ($this->order->id < 1){
 		<i class="icon-printer"></i> <?php echo JText::_('COM_DIGICOM_ORDER_PRINT'); ?>
 	</a>
 
-	<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>
+	<?php DigiComSiteHelperDigicom::loadModules('digicom_footer','xhtml'); ?>
 
 </div>
+
+<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>

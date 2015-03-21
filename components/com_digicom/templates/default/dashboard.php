@@ -19,47 +19,9 @@ $user = $this->customer->_user;
 
 <div id="digicom">
 
+	<?php DigiComSiteHelperDigicom::loadModules('digicom_toolber'); ?>
 
-	<div class="navbar">
-		<div class="navbar-inner hidden-phone">
-			<ul class="nav">
-				<li class="active">
-					<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=dashboard&Itemid=".$Itemid); ?>"><i class="icon-home"></i> <?php echo JText::_("DIGI_MY_DASHBOARD"); ?></a>
-				</li>
-				<li class="divider-vertical"></li>
-				<li>
-					<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=downloads&Itemid=".$Itemid); ?>"><i class="icon-download"></i> <?php echo JText::_("DIGI_MY_DOWNLOADS"); ?></a>
-				</li>
-				<li class="divider-vertical"></li>
-				<li>
-					<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=orders&Itemid=".$Itemid); ?>"><i class="icon-list-alt"></i> <?php echo JText::_("DIGI_MY_ORDERS"); ?></a>
-				</li>
-				<li class="divider-vertical"></li>
-				<li>
-					<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$Itemid); ?>"><i class="icon-shopping-cart"></i> <?php echo JText::_("DIGI_MY_CART"); ?></a>
-				</li>
-			</ul>
-		</div>
-		<ul class="nav nav-pills">
-			<li class="active">
-				<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=dashboard&Itemid=".$Itemid); ?>"><i class="icon-home"></i> <?php echo JText::_("DIGI_MY_DASHBOARD"); ?></a>
-			</li>
-			<li class="divider-vertical"></li>
-			<li>
-				<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=downloads&Itemid=".$Itemid); ?>"><i class="icon-download"></i> <?php echo JText::_("DIGI_MY_DOWNLOADS"); ?></a>
-			</li>
-			<li class="divider-vertical"></li>
-			<li>
-				<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=orders&Itemid=".$Itemid); ?>"><i class="icon-list-alt"></i> <?php echo JText::_("DIGI_MY_ORDERS"); ?></a>
-			</li>
-			<li class="divider-vertical"></li>
-			<li>
-				<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$Itemid); ?>"><i class="icon-shopping-cart"></i> <?php echo JText::_("DIGI_MY_CART"); ?></a>
-			</li>
-		</ul>
-	</div>
-
-	<h3><?php echo JText::_("COM_DIGICOM_MY_ACCOUNT_DASHBOARD_TITLE"); ?></h3>
+	<h2><?php echo JText::_("COM_DIGICOM_MY_ACCOUNT_DASHBOARD_TITLE"); ?></h2>
 	<div class="row-fluid">
 		<div class="span7">
 			<p>Enjoy all the features that are available on your personal space to view, track and manage all your data.</p>
@@ -73,6 +35,8 @@ $user = $this->customer->_user;
 			</div>			
 		</div>
 	</div>
+
+	<?php DigiComSiteHelperDigicom::loadModules('digicom_footer','xhtml'); ?>
 
 </div>
 

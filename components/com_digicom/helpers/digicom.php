@@ -640,6 +640,15 @@ class DigiComSiteHelperDigicom {
 		
 	}
 
+	public static function loadModules($position, $style = 'raw')
+	{
+		jimport('joomla.application.module.helper');
+		$modules = JModuleHelper::getModules($position);
+		$params = array('style' => $style);
+		foreach ($modules as $module) {
+			echo JModuleHelper::renderModule($module, $params);
+		}
+	}
 
 	public static function get_country_options( $profile, $ship = false, $configs ) {
 
