@@ -23,37 +23,9 @@ if($product_itemid != "0"){
 ?>
 <div id="digicom">
 	 
-	<div class="navbar">
-		<div class="navbar-inner hidden-phone">
-			<ul class="nav hidden-phone">
-				<li class="active">
-					<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=downloads&Itemid=".$Itemid); ?>"><i class="ico-download"></i> <?php echo JText::_("DIGI_MY_DOWNLOADS"); ?></a>
-				</li>
-				<li class="divider-vertical"></li>
-				<li>
-					<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=orders&Itemid=".$Itemid); ?>"><i class="ico-list-alt"></i> <?php echo JText::_("DIGI_MY_ORDERS"); ?></a>
-				</li>
-				<li class="divider-vertical"></li>
-				<li>
-					<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=cart&task=showCart".$and_itemid); ?>"><i class="ico-shopping-cart"></i> <?php echo JText::_("DIGI_MY_CART"); ?></a>
-				</li>
-			</ul>
-		</div>
-		<ul class="nav nav-pills hidden-desktop">
-			<li class="active">
-				<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=downloads&Itemid=".$Itemid); ?>"><i class="ico-download hidden-phone"></i> <?php echo JText::_("DIGI_MY_DOWNLOADS"); ?></a>
-			</li>
-			<li class="divider-vertical"></li>
-			<li>
-				<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=orders&Itemid=".$Itemid); ?>"><i class="ico-list-alt hidden-phone"></i> <?php echo JText::_("DIGI_MY_ORDERS"); ?></a>
-			</li>
-			<li class="divider-vertical"></li>
-			<li>
-				<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=cart&task=showCart".$and_itemid); ?>"><i class="ico-shopping-cart hidden-phone"></i> <?php echo JText::_("DIGI_MY_CART"); ?></a>
-			</li>
-		</ul>
-	</div>
-		
+	<?php DigiComSiteHelperDigicom::loadModules('digicom_toolber'); ?>
+	
+	<h2><?php echo JText::_("COM_DIGICOM_MY_ACCOUNT_DOWNLOAD_TITLE"); ?></h2>
 	<div class="accordion" id="">
 		<?php foreach($this->products as $key=>$item): ?>
 		<div class="accordion-group">
@@ -96,6 +68,8 @@ if($product_itemid != "0"){
 		</div>
 		<?php endforeach; ?>
 	</div>
-	<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>
 
+	<?php DigiComSiteHelperDigicom::loadModules('digicom_footer','xhtml'); ?>
+	
 </div>
+	<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>
