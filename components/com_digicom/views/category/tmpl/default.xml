@@ -29,7 +29,18 @@
 				description="COM_DIGICOM_NUM_PRODUCTS_DESC"
 				label="COM_DIGICOM_NUM_PRODUCTS_LABEL" 
 				default="9" />
-				
+			<field
+				name="category_cols"
+				type="list"
+				label="DIGICOM_THEME_COLUMN_NO"
+			>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="6">6</option>
+			</field>
+			
 			<field name="show_cat_title" type="radio"
 				description="COM_DIGICOM_SHOW_CAT_TITLE_DESC"
 				label="COM_DIGICOM_SHOW_CAT_TITLE_LABEL"

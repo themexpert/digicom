@@ -17,14 +17,8 @@ if($this->configs->get('afteradditem',0) == "2"){
 }
 $cart_itemid = DigiComSiteHelperDigicom::getCartItemid();
 
-$bsGrid = array(
-	1 => 'span12',
-	2 => 'span6',
-	3 => 'span4',
-	4 => 'span3',
-	6 => 'span2'
-);
-
+$bsGrid = array(1 => 'span12', 2 => 'span6', 3 => 'span4', 4 => 'span3', 6 => 'span2');
+$column = $this->category->params->get('category_cols',3);
 ?>
 <div id="digicom">
 	<div class="digi-categories">
@@ -57,7 +51,7 @@ $bsGrid = array(
 	              <?php 
 				  $i=0;
 				  foreach($this->items as $key=>$item): 
-				 	if(! ($i % $this->configs->get('category_cols')) )  echo '</ul></div><div class="row-fluid"><ul class="thumbnails">';
+				 	if(! ($i % $column) )  echo '</ul></div><div class="row-fluid"><ul class="thumbnails">';
 				  	// echo ( $i == $this->configs->get('category_cols') ) ? '<div class="clearfix"></div>' : '';
 				 if($item->price > 0){
 					 $price = DigiComSiteHelperDigicom::format_price2($item->price, $this->configs->get('currency','USD'), true, $this->configs);
@@ -66,7 +60,7 @@ $bsGrid = array(
 				  }
 				  $link = JRoute::_(DigiComHelperRoute::getProductRoute($item->id, $item->catid, $item->language));
 				  ?>
-				  <li class="<?php echo $bsGrid[$this->configs->get('category_cols','3')]?>">
+				  <li class="<?php echo $bsGrid[$column]?>">
 	                <div class="thumbnail">
 	                	<!-- Product Image -->
 	                  	<?php if(!empty($item->images)): ?>
