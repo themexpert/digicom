@@ -15,8 +15,26 @@ class DigiComViewOrder extends JViewLegacy {
 	function display($tpl = null)
 	{
 		
-		$input = JFactory::getApplication()->input;
+		$customer = new DigiComSiteHelperSession();
+		$app = JFactory::getApplication();
+		$input = $app->input;
+		$Itemid = $input->get("Itemid", 0);
+		$return = base64_encode( JURI::getInstance()->toString() );
+
+		if($customer->_user->id < 1)
+		{
+			$app->Redirect(JRoute::_('index.php?option=com_users&view=login&return='.$return.'&Itemid='.$Itemid, false));
+			return true;
+		}
+
 		$order = $this->_models['order']->getOrder();
+
+		if($order->id < 1){
+			return JError::raiseError(404, JText::_('COM_DIGICOM_ORDER_NOT_FOUND'));
+		}elseif($order->id != $customer->_user->id){
+			return JError::raiseError(203, JText::_('COM_DIGICOM_ORDER_NOT_OWN'));
+		}
+
 		$this->assign("order", $order);
 		$configs = JComponentHelper::getComponent('com_digicom')->params;
 		$this->assign("configs", $configs);
