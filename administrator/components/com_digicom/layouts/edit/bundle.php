@@ -55,7 +55,7 @@ jQuery(function ($) {
 
 $document->addScriptDeclaration($js);
 JHtml::_('behavior.modal');
-$link = 'index.php?option=com_digicom&amp;view=products&amp;layout=modal&amp;tmpl=component&amp;' . JSession::getFormToken() . '=1';
+$link = 'index.php?option=com_digicom&amp;view=products&amp;filter[product_type]=reguler&amp;layout=modal&amp;tmpl=component&amp;' . JSession::getFormToken() . '=1';
 ?>
 
 <fieldset class="adminform">

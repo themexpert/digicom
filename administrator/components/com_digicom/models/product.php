@@ -343,6 +343,7 @@ class DigiComModelProduct extends JModelAdmin
 	            $bundleTable->bundle_type = 'category';
 
 	            foreach($bundle_category as $bundle){          
+	                $bundleTable->id = '';
 	                $bundleTable->product_id = $recordId;
 	                $bundleTable->bundle_id = $bundle;
 	                $bundleTable->store();
@@ -359,6 +360,7 @@ class DigiComModelProduct extends JModelAdmin
 	            $bundle_product = $data['bundle_product'];
 	            $bundleTable->bundle_type = 'product';
 	            foreach($bundle_product as $bundle){          
+	                $bundleTable->id = '';
 	                $bundleTable->product_id = $recordId;
 	                $bundleTable->bundle_id = $bundle;
 	                $bundleTable->store();
