@@ -29,11 +29,16 @@ $document = JFactory::getDocument();
 	<?php else : ?>
 	<div id="j-main-container" class="">
 	<?php endif;?>
+
+		<div class="alert alert-info">
+			<?php echo JText::_("COM_DIGICOM_DISCOUNTS_HEADER_NOTICE"); ?>
+		</div>
+		<br>
 		<div class="js-stools">
 			<div class="clearfix">
 				<div class="btn-wrapper input-append">
 					<?php $promosearch = JRequest::getVar("promosearch", ""); ?>
-					<input id="filter_search" type="text" name="promosearch" value="<?php echo trim($promosearch);?>" placeholder="<?php echo JText::_("DIGI_FIND");?>" />
+					<input id="filter_search" type="text" name="promosearch" value="<?php echo trim($promosearch);?>" placeholder="<?php echo JText::_("COM_DIGICOM_SEARCH");?>" />
 					<button type="submit" class="btn hasTooltip" title="" data-original-title="Search">
 						<i class="icon-search"></i>
 					</button>
@@ -43,28 +48,23 @@ $document = JFactory::getDocument();
 				</div>
 				<div class="btn-wrapper pull-right">
 					
-					<?php echo JText::_("VIEWPROMOPUBLISHED");?>:
+					<?php echo JText::_("COM_DIGICOM_PUBLISH");?>:
 					<select name="status" onchange="document.adminForm.task.value=''; document.adminForm.submit();">
-						<option value="" <?php if($this->status == ""){ echo 'selected="selected"';} ?> ><?php echo JText::_("DIGI_SELECT"); ?></option>
-						<option value="0" <?php if($this->status == "0"){ echo 'selected="selected"';} ?> ><?php echo JText::_("HELPERUNPUBLISHED"); ?></option>
-						<option value="1" <?php if($this->status == "1"){ echo 'selected="selected"';} ?> ><?php echo JText::_("PLAINPUBLISHED"); ?></option>
+						<option value="" <?php if($this->status == ""){ echo 'selected="selected"';} ?> ><?php echo JText::_("COM_DIGICOM_SELECT"); ?></option>
+						<option value="0" <?php if($this->status == "0"){ echo 'selected="selected"';} ?> ><?php echo JText::_("COM_DIGICOM_UNPUBLISHED"); ?></option>
+						<option value="1" <?php if($this->status == "1"){ echo 'selected="selected"';} ?> ><?php echo JText::_("COM_DIGICOM_PUBLISHED"); ?></option>
 					</select>
-					<?php echo JText::_("VIEWORDERSSTATUS");?>:
+					<?php echo JText::_("JSTATUS");?>:
 					<select name="condition" onchange="document.adminForm.task.value=''; document.adminForm.submit();">
-						<option value="-1" <?php if($this->condition == "-1"){ echo 'selected="selected"';} ?> ><?php echo JText::_("DIGI_SELECT"); ?></option>
-						<option value="0" <?php if($this->condition == "0"){ echo 'selected="selected"';} ?> ><?php echo JText::_("HELPEREXPIRE"); ?></option>
-						<option value="1" <?php if($this->condition == "1"){ echo 'selected="selected"';} ?> ><?php echo JText::_("HELPERACTIVE"); ?></option>
+						<option value="-1" <?php if($this->condition == "-1"){ echo 'selected="selected"';} ?> ><?php echo JText::_("COM_DIGICOM_SELECT"); ?></option>
+						<option value="0" <?php if($this->condition == "0"){ echo 'selected="selected"';} ?> ><?php echo JText::_("COM_DIGICOM_EXPIRED"); ?></option>
+						<option value="1" <?php if($this->condition == "1"){ echo 'selected="selected"';} ?> ><?php echo JText::_("COM_DIGICOM_ACTIVE"); ?></option>
 					</select>
 
 				</div>
 				
 			</div>
-		</div>
-		<br>
-			
-		<div class="alert alert-info">
-			<?php echo JText::_("HEADER_PROMOS"); ?>
-		</div>
+		</div>		
 
 		<table width="100%">
 			<tr>
@@ -84,35 +84,35 @@ $document = JFactory::getDocument();
 						</th>
 						
 						<th>
-							<?php echo JText::_("VIEWPROMOPUBLISHED");?>
+							<?php echo JText::_("COM_DIGICOM_PUBLISHED");?>
 						</th>
 
 						<th>
-							<?php echo JText::_('VIEWPROMOTITLE');?>
+							<?php echo JText::_('JGLOBAL_TITLE');?>
 						</th>
 
 						<th>
-							<?php echo JText::_('VIEWPROMOCODE');?>
+							<?php echo JText::_('COM_DIGICOM_DISCOUNT_CODE');?>
 						</th>
 
 						<th>
-							<?php echo JText::_('VIEWPROMODISCAMOUNT');?>
+							<?php echo JText::_('COM_DIGICOM_DISCOUNTS_DISCOUNT_AMOUNT');?>
 						</th>
 
 						<th>
-							<?php echo JText::_("VIEWORDERSSTATUS");?>
+							<?php echo JText::_("JSTATUS");?>
 						</th>
 
 						<th>
-							<?php echo JText::_('VIEWPROMOTIMEUSED');?>
+							<?php echo JText::_('COM_DIGICOM_DISCOUNTS_DISCOUNT_USED_TIMES');?>
 						</th>
 
 						<th>
-							<?php echo JText::_('VIEWPROMOUSAGESLIST');?>
+							<?php echo JText::_('COM_DIGICOM_DISCOUNTS_DISCOUNT_USAGE_LEFT');?>
 						</th>
 
 						<th width="20">
-							<?php echo JText::_('VIEWPROMOID');?>
+							<?php echo JText::_('JGRID_HEADING_ID');?>
 						</th>
 
 					</tr>
@@ -168,7 +168,7 @@ $document = JFactory::getDocument();
 						</td>
 
 						<td align="center">
-									<?php echo $promo->codelimit>0?($promo->codelimit - $promo->used):JText::_("DS_UNLIMITED");?>
+							<?php echo $promo->codelimit>0?($promo->codelimit - $promo->used):JText::_("COM_DIGICOM_UNLIMITED");?>
 						</td>
 
 						<td>

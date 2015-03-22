@@ -90,11 +90,11 @@ function submitbutton(pressbutton) {
 			'active'		=> 'general-settings'
 		);
 		echo JHtml::_('bootstrap.startTabSet', 'promo_settings', $options);
-		echo JHtml::_('bootstrap.addTab', 'promo_settings', 'general-settings', JText::_('VIEWPROMOPROMOCODESETTINGS') );
+		echo JHtml::_('bootstrap.addTab', 'promo_settings', 'general-settings', JText::_('COM_DIGICOM_DISCOUNT_TAB_TITLE_DISCOUNT_CODE_SETTINGS') );
 		?>
 		<div class="row-fluid">
 			<div class="span8">
-					<h3><?php echo JText::_('VIEWPROMOPROMOCODESETTINGS');?></h3>
+					<!--<h3><?php echo JText::_('COM_DIGICOM_DISCOUNT_TAB_TITLE_DISCOUNT_CODE_SETTINGS');?></h3>-->
 					<div class="form-horizontal">
 						<div class="control-group">
 							<label for="" class="control-label"><?php echo JText::_("VIEWPROMOTITLE");?></label>
