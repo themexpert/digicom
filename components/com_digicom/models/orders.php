@@ -28,7 +28,7 @@ class DigiComModelOrders extends JModelList
 				
 			$sql = "SELECT o.*, u.username"
 					." FROM #__digicom_orders o, #__digicom_orders_details od, #__users u"
-					." WHERE ".($search ? 'o.id = "'.$search.'" and ' : '')."o.userid=u.id and u.id=".$user->_user->id." group by o.id order by o.order_date desc";
+					." WHERE ".($search ? 'o.id = "'.$search.'" and ' : '')."o.userid=u.id and u.id=".$user->_user->id." group by o.id order by o.id desc";
 			$this->_orders = $this->_getList($sql);
 			
 			//print_r($this->_orders);die;
