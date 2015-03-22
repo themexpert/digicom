@@ -31,7 +31,7 @@ class DigiComViewOrder extends JViewLegacy {
 
 		if($order->id < 1){
 			return JError::raiseError(404, JText::_('COM_DIGICOM_ORDER_NOT_FOUND'));
-		}elseif($order->id != $customer->_user->id){
+		}elseif($order->userid != $customer->_user->id){
 			return JError::raiseError(203, JText::_('COM_DIGICOM_ORDER_NOT_OWN'));
 		}
 

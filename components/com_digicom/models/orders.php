@@ -22,13 +22,13 @@ class DigiComModelOrders extends JModelList
 	function getlistOrders(){
 		$input = JFactory::getApplication()->input;
 		$search = $input->get('search','');
-		$user = new DigiComSiteHelperSession();
+		$custommer = new DigiComSiteHelperSession();
 		$db = JFactory::getDBO();
 		if (empty ($this->_orders)) {
 				
 			$sql = "SELECT o.*, u.username"
 					." FROM #__digicom_orders o, #__digicom_orders_details od, #__users u"
-					." WHERE ".($search ? 'o.id = "'.$search.'" and ' : '')."o.userid=u.id and u.id=".$user->_user->id." group by o.id order by o.id desc";
+					." WHERE ".($search ? 'o.id = "'.$search.'" and ' : '')."o.userid=u.id and u.id=".$custommer->_user->id." group by o.id order by o.id desc";
 			$this->_orders = $this->_getList($sql);
 			
 			//print_r($this->_orders);die;
