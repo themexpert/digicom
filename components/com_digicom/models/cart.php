@@ -1102,7 +1102,7 @@ class DigiComModelCart extends JModelItem
 
 		$now = time();
 		$total = $tax['taxed'];
-		$licenses = $tax['licenses'];
+		$number_of_products = $tax['number_of_products'];
 
 		if ( $configs->get('afterpurchase',1) == 0 ) {
 			$controller = "downloads";
@@ -1113,7 +1113,7 @@ class DigiComModelCart extends JModelItem
 		/* fixed return after payment, before paypal IPN */
 		$plugin = JRequest::getVar( 'plugin', '' );
 		if ( $plugin != 'paypal' ) {
-			$this->dispatchMail( $orderid, $total, $licenses, $now, $items, $customer );
+			$this->dispatchMail( $orderid, $total, $number_of_products, $now, $items, $customer );
 			$cart->emptyCart( $sid );
 		}
 		
@@ -1273,7 +1273,7 @@ class DigiComModelCart extends JModelItem
 	}
 
 	//mail sending function
-	function dispatchMail( $orderid, $amount, $licenses, $timestamp, $items, $customer )
+	function dispatchMail( $orderid, $amount, $number_of_products, $timestamp, $items, $customer )
 	{
 		$app 	= JFactory::getApplication();
 		$db 	= JFactory::getDbo();
@@ -1284,8 +1284,6 @@ class DigiComModelCart extends JModelItem
 
 		if (is_object($customer) && isset($customer->_user->id))  $uid = $customer->_user->id;
 		if (is_array($customer)) $uid = $customer['userid'];
-
-//		$cust_info = $customer;
 
 		if ( !$sid ) return;
 
@@ -1304,15 +1302,6 @@ class DigiComModelCart extends JModelItem
 		$subject = $mes->subject;
 		
 		// Replace all variables in template
-		$promo = $cart->get_promo( $customer );
-		if ( $promo->id > 0 ) {
-			$promoid = $promo->id;
-			$promocode = $promo->code;
-		} else {
-			$promoid = '0';
-			$promocode = '0';
-		}
-
 		$uri = JURI::getInstance();
 		$sitename = (trim( $configs->get('store_name','DigiCom Store') ) != '') ? $configs->get('store_name','DigiCom Store') : $site_config->get( 'sitename' );
 		$siteurl = (trim( $configs->get('store_url','') ) != '') ? $configs->get('store_url','') : $uri->base();
@@ -1338,7 +1327,7 @@ class DigiComModelCart extends JModelItem
 		$message = str_replace( "[TODAY_DATE]", date( $configs->get('time_format','d-m-Y'), $timestamp), $message );
 		$message = str_replace( "[ORDER_ID]", $orderid, $message );
 		$message = str_replace( "[ORDER_AMOUNT]", $amount, $message );
-		$message = str_replace( "[NUMBER_OF_LICENSES]", $licenses, $message );
+		$message = str_replace( "[NUMBER_OF_LICENSES]", $number_of_products, $message );
 		$message = str_replace( "[PROMO]", $promo->code, $message );
 		$displayed = array();
 		$product_list = '';
@@ -1397,6 +1386,177 @@ class DigiComModelCart extends JModelItem
 		$subject = html_entity_decode( $subject, ENT_QUOTES );
 
 		$message = html_entity_decode( $message, ENT_QUOTES );
+
+		$app = JFactory::getApplication('site');
+
+		$mosConfig_mailfrom = $app->getCfg("mailfrom");
+		$mosConfig_fromname = $app->getCfg("fromname");
+
+		if ( $configs->get('usestoremail',1) == '1' && strlen( trim( $configs->get('store_name','DigiCom Store') ) ) > 0 && strlen( trim( $configs->get('store_email','') ) ) > 0 ) {
+			$adminName2 = $configs->get('store_name','DigiCom Store');
+			$adminEmail2 = $configs->get('store_email','');
+		} else{
+			$adminName2 = $mosConfig_fromname;
+			$adminEmail2 = $mosConfig_mailfrom;
+		}
+
+		$mailSender = JFactory::getMailer();
+		$mailSender->IsHTML( true );
+		$mailSender->addRecipient( $my->email );
+		$mailSender->setSender( array($adminEmail2, $adminName2) );
+		$mailSender->setSubject( $subject );
+		$mailSender->setBody( $message );
+		//		Log::write( $message );
+		if ( !$mailSender->Send() ) {
+			//<Your error code management>
+		}
+
+		if ( $configs->get('sendmailtoadmin',1) != 0 ) {
+			$mailSender = JFactory::getMailer();
+			$mailSender->IsHTML( true );
+			$mailSender->addRecipient( $adminEmail2 );
+			$mailSender->setSender( array($adminEmail2, $adminName2) );
+			$mailSender->setSubject( $subject );
+			$mailSender->setBody( $message );
+			//Log::write( $message );
+			if ( !$mailSender->Send() ) {
+				//error code
+			}
+		}
+		
+		return true;
+	}
+
+	function dispatchMailTesting($orderid= '180', $amount ='34.00', $number_of_products = 1,$type = 'new_order')
+	{
+		
+		$timestamp = time();
+		$customer = $this->customer;
+		$cart = $this->getInstance( "Cart", "digicomModel" );
+		$configs = $this->getInstance( "Config", "digicomModel" );
+		$configs = $configs->getConfigs();
+
+		$items = $cart->getCartItems( $customer, $configs );
+
+		$app 	= JFactory::getApplication();
+		$db 	= JFactory::getDbo();
+		$site_config = JFactory::getConfig();
+		// get sid & uid
+		if (is_object($customer)) $sid = $customer->_sid;
+		if (is_array($customer)) $sid = $customer['sid'];
+
+		if (is_object($customer) && isset($customer->_user->id))  $uid = $customer->_user->id;
+		if (is_array($customer)) $uid = $customer['userid'];
+
+		if ( !$sid ) return;
+
+
+		$my = JFactory::getUser($uid);
+
+		$database = JFactory::getDBO();
+		
+		// Replace all variables in template
+		$promo = $cart->get_promo( $customer );
+		if ( $promo->id > 0 ) {
+			$promoid = $promo->id;
+			$promocode = $promo->code;
+		} else {
+			$promoid = '0';
+			$promocode = '0';
+		}
+
+		$mes = $configs->get('email')->$type;
+		
+		$message = $mes->body;
+		$subject = $mes->subject;
+
+		// Replace all variables in template
+		$uri = JURI::getInstance();
+		$sitename = (trim( $configs->get('store_name','DigiCom Store') ) != '') ? $configs->get('store_name','DigiCom Store') : $site_config->get( 'sitename' );
+		$siteurl = (trim( $configs->get('store_url','') ) != '') ? $configs->get('store_url','') : $uri->base();
+
+		$message = str_replace( "[SITENAME]", $sitename, $message );
+
+		$message = str_replace( "../%5BSITEURL%5D", $siteurl, $message );
+		$message = str_replace( "%5BSITEURL%5D", $siteurl, $message );
+		$message = str_replace( "[SITEURL]", $siteurl, $message );
+
+		$query = "select lastname, company from #__digicom_customers where id=" . $my->id;
+		$db->setQuery( $query );
+		$customer_database = $db->loadAssocList();
+		$lastname = (isset($customer_database["0"]["lastname"]) ? $customer_database["0"]["lastname"] : '');
+		$copany = (isset($customer_database["0"]["copany"]) ? $customer_database["0"]["copany"] : '');
+
+		$message = str_replace("[CUSTOMER_COMPANY_NAME]", $copany, $message);
+		$message = str_replace( "[CUSTOMER_USER_NAME]", $my->username, $message );
+		$message = str_replace( "[CUSTOMER_FIRST_NAME]", $my->name, $message );
+		$message = str_replace( "[CUSTOMER_LAST_NAME]", $lastname, $message );
+		$message = str_replace( "[CUSTOMER_EMAIL]", $my->email, $message );
+
+		$message = str_replace( "[TODAY_DATE]", date( $configs->get('time_format','d-m-Y'), $timestamp), $message );
+		$message = str_replace( "[ORDER_ID]", $orderid, $message );
+		$message = str_replace( "[ORDER_AMOUNT]", $amount, $message );
+		$message = str_replace( "[NUMBER_OF_LICENSES]", $number_of_products, $message );
+		$message = str_replace( "[PROMO]", $promo->code, $message );
+		$displayed = array();
+		$product_list = '';
+
+
+		$counter = array();
+		foreach ( $items as $i => $item ) {
+			if ( $i < 0 )
+				continue;
+			if ( !isset( $counter[$item->id] ) )
+				$counter[$item->id] = 1;
+			$counter[$item->id]++;
+		}
+		foreach ( $items as $i => $item ) {
+			if ( $i < 0 )
+				continue;
+			$optionlist = '';
+			if ( !in_array( $item->name, $displayed ) ) {
+				//$product_list .= $counter[$item->id]." - ".$item->name.'<br />';
+				$product_list .= $item->quantity . " - " . $item->name . '<br />';
+			}
+			$displayed[] = $item->name;
+		}
+		$message = str_replace( "[PRODUCTS]", $product_list, $message );
+		$email = new stdClass();
+		$email->body = $message;
+
+		//subject
+		$subject = str_replace( "[SITENAME]", $sitename, $subject );
+		$subject = str_replace("[CUSTOMER_COMPANY_NAME]", $copany, $subject);
+		$subject = str_replace( "../%5BSITEURL%5D", $siteurl, $subject );
+		$subject = str_replace( "%5BSITEURL%5D", $siteurl, $subject );
+		$subject = str_replace( "[SITEURL]", $siteurl, $subject );
+
+		$subject = str_replace( "[CUSTOMER_USER_NAME]", $my->username, $subject );
+		$subject = str_replace( "[CUSTOMER_FIRST_NAME]", $my->name, $subject );
+		$subject = str_replace( "[CUSTOMER_LAST_NAME]", $lastname, $subject );
+		$subject = str_replace( "[CUSTOMER_EMAIL]", $my->email, $subject );
+
+		$subject = str_replace( "[TODAY_DATE]", date( $configs->get('time_format','d-m-Y'), $timestamp ), $subject );
+		$subject = str_replace( "[ORDER_ID]", $orderid, $subject );
+		$subject = str_replace( "[ORDER_AMOUNT]", $amount, $subject );
+		$subject = str_replace( "[NUMBER_OF_LICENSES]", $number_of_products, $subject );
+		$subject = str_replace( "[PROMO]", $promo->code, $subject );
+		$displayed = array();
+		$product_list = '';
+		foreach ( $items as $i => $item ) {
+			if ( $i < 0 )
+				continue;
+			if ( !in_array( $item->name, $displayed ) )
+				$product_list .= $item->name . '<br />';
+			$displayed[] = $item->name;
+		}
+		$subject = str_replace( "[PRODUCTS]", $product_list, $subject );
+
+		$subject = html_entity_decode( $subject, ENT_QUOTES );
+
+		$message = html_entity_decode( $message, ENT_QUOTES );
+
+		print_r($message);die;
 
 		$app = JFactory::getApplication('site');
 

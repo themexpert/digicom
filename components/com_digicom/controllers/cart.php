@@ -154,12 +154,12 @@ class DigiComControllerCart extends JControllerLegacy
 		else{
 			if($res < 0) {
 				$msg = JText::_("DSWRONGPRODID");
-				$link = "index.php?option=com_digicom&view=categories&cid=" . $cid . "&Itemid=" . $Itemid;
+				$link = "index.php?option=com_digicom&view=category&id=" . $cid . "&Itemid=" . $Itemid;
 				$this->setRedirect(JRoute::_($link, false), $msg);
 			}
 			elseif($res == 0){
 				$msg = JText::_("DSERRORUPDCARD");
-				$link = "index.php?option=com_digicom&view=categories&cid=" . $cid . "&Itemid=" . $Itemid;
+				$link = "index.php?option=com_digicom&view=category&id=" . $cid . "&Itemid=" . $Itemid;
 				$this->setRedirect(JRoute::_($link, false), $msg);
 			}
 
@@ -845,6 +845,13 @@ class DigiComControllerCart extends JControllerLegacy
 		echo JModuleHelper::renderModule($module);
 		exit();
 	}
+
+	function dispatchMailTesting(){
+		$res = $this->_model->dispatchMailTesting();
+		print_r($res);die;
+	}
+
+
 
 	/**
 	 * Proxy for getModel
