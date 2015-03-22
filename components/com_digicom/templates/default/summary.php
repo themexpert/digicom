@@ -72,32 +72,17 @@ if($configs->get('shopping_cart_style','') == "1"){
 ?>
 
 
-
-<table  class="adminlist" width="100%"  border="0" cellpadding="3" cellspacing="0" bordercolor="#cccccc" style="border-apse: apse">
-	<tr>
-		<td align="left" valign="top">
-<?php
-	$store_logo = $configs->get('store_logo','');
-	if(trim($store_logo) != "" && $configs->get('shopping_cart_style','') == "1"){
-?>
-		<img src="<?php echo JURI::root()."images/stories/digicom/store_logo/".trim($store_logo); ?>" alt="store_logo" border="0">
-<?php
-	}
-?>
-		</td>
-	</tr>
-</table>
-
 <?php $formlink = JRoute::_("index.php?option=com_digicom&controller=cart"."&Itemid=".$Itemid); ?>
-<table width="100%" cellspacing="0" id="digi_table">
+<table width="100%" cellspacing="0" id="digi_table" class="table">
 <h1><?php echo JText::_("DSSUMMARY")?></h1>
 	<tr ><?php // class was cart_heading ?>
 	  <th class="summary_header">
+	  	 <?php echo JText::_("DSPROD");?>
 	  </th>
-	  <th class="summary_header" <?php if ($configs->get('showcam',1) == 0) echo $invisible;?> >
+	  <th class="summary_header center" <?php if ($configs->get('showcam',1) == 0) echo $invisible;?> >
 		  <?php echo JText::_("DSQUANTITY");?>
 	  </th>
-	  <th class="summary_header">
+	  <th class="summary_header center">
 		<?php echo JText::_("DSPRICE");?>
 	  </th>
 	  <th class="summary_header" <?php if ($discount!=1) echo 'style="display:none"'?> >
@@ -116,7 +101,7 @@ if($configs->get('shopping_cart_style','') == "1"){
 	  </th>
 	</tr>
 	<?php $k=1;foreach ( $items as $itemnum => $item ) {
-			if ($itemnum < 0) continue;
+		if ($itemnum < 0) continue;
 	?>
 	<tr class="item_row">
 
@@ -126,37 +111,37 @@ if($configs->get('shopping_cart_style','') == "1"){
 		  <?php echo DigiComSiteHelperDigiCom::format_price2($item->price, $item->currency, true, $configs); ?>
 	  </td>
 	  <!-- Quantity -->
-	<td align="center" <?php if ($configs->get('showcam',1) == 0) echo $invisible;?> nowrap="nowrap">
-		<span class="digicom_details">
-			<strong>
-				<?php echo $item->quantity; ?>
-			</strong>
-		</span>
-	</td>
-	<!-- /End Quantity -->
-	<td class="item_column" style="text-align:center;"> <?php
-		echo  DigiComSiteHelperDigiCom::format_price($item->price, $item->currency, true, $configs);//sprintf($price_format,$item->product_price)." ".$item->currency;
-	?></td>
-	<td class="item_column" style="text-align:center; <?php if ($discount!=1) echo 'display:none;'?>"><?php
-		//echo (isset($item->discount)) ? $item->discount." %" : "N/A" ;
-		echo (isset($item->percent_discount)) ? $item->percent_discount  : "N/A" ;
-	?></td>
-	<td class="item_column"  <?php echo ($shippingexists >0 )?"style='text-align:center;'":'style="text-align:center; display:none;"';?>><?php
-if ($configs->shipping_price == 1) $item->shipping += $item->itemtax;
-echo (isset($item->shipping)&&$item->domainrequired==2? DigiComSiteHelperDigiCom::format_price($item->shipping, $item->currency, true, $configs):"N/A");
-	?></td>
+		<td class="center" <?php if ($configs->get('showcam',1) == 0) echo $invisible;?> nowrap="nowrap">
+			<span class="digicom_details">
+				<strong>
+					<?php echo $item->quantity; ?>
+				</strong>
+			</span>
+		</td>
+		<!-- /End Quantity -->
+		<td class="item_column" style="text-align:center;"> <?php
+			echo  DigiComSiteHelperDigiCom::format_price($item->price, $item->currency, true, $configs);//sprintf($price_format,$item->product_price)." ".$item->currency;
+		?></td>
+		<td class="item_column" style="text-align:center; <?php if ($discount!=1) echo 'display:none;'?>"><?php
+			//echo (isset($item->discount)) ? $item->discount." %" : "N/A" ;
+			echo (isset($item->percent_discount)) ? $item->percent_discount  : "N/A" ;
+		?></td>
+		<td class="item_column"  <?php echo ($shippingexists >0 )?"style='text-align:center;'":'style="text-align:center; display:none;"';?>><?php
+		if ($configs->shipping_price == 1) $item->shipping += $item->itemtax;
+			echo (isset($item->shipping)&&$item->domainrequired==2? DigiComSiteHelperDigiCom::format_price($item->shipping, $item->currency, true, $configs):"N/A");
+		?></td>
 
 
 	  <?php if ($totalfields > 0  ){ ?>
-	  <td  class="item_column" style="text-align:center;" nowrap="nowrap"><?php
-	  $i = 0;
+	 	 <td  class="item_column" style="text-align:center;" nowrap="nowrap"><?php
+		 	 $i = 0;
 
-	echo $lists[$item->cid]['attribs'];
-//   add_selector_to_cart($item, $optlen, $select_only, $i);
+			echo $lists[$item->cid]['attribs'];
+		//   add_selector_to_cart($item, $optlen, $select_only, $i);
 
-	?></td>
-	  <?php } ?>
-	  <td class="item_column" nowrap style="text-align:center;"><?php
+		?></td>
+		  <?php } ?>
+	  	<td class="item_column" nowrap style="text-align:center;"><?php
 	  /*
 									if ($configs->get('tax_price','') == 1)
 										echo  DigiComSiteHelperDigiCom::format_price($item->subtotal, $item->currency, true, $configs);
@@ -164,44 +149,44 @@ echo (isset($item->shipping)&&$item->domainrequired==2? DigiComSiteHelperDigiCom
 										echo  DigiComSiteHelperDigiCom::format_price($item->price, $item->currency, true, $configs);
 	   */
 			echo  DigiComSiteHelperDigiCom::format_price($item->subtotal, $item->currency, true, $configs);
-//print_r($item);
+		//print_r($item);
 	  ?>
-	</td>
-	</tr>
-	<?php
-		$total += $item->subtotal;//+$item->product_price;
-		$k = 1 - $k;}?>
+		</td>
+		</tr>
+		<?php
+			$total += $item->subtotal;//+$item->product_price;
+			$k = 1 - $k;}?>
 	<tr>
 
 	  <td colspan="<?php
-	  $span = 6;
-	  if ($totalfields > 0 && $shippingexists > 0) ;//echo '7';
-	  else if ($totalfields > 0 || $shippingexists > 0) $span--;//echo'6';
-	  else $span-=2;
-	  if ($discount != 1) $span--;
-	if ($configs->get('showcam',1) == 0) $span--;
-	if ($configs->get('showcremove',1) == 0) $span--;
+		  $span = 5;
+		  if ($totalfields > 0 && $shippingexists > 0) ;//echo '7';
+		  else if ($totalfields > 0 || $shippingexists > 0) $span--;//echo'6';
+		  else $span-=2;
+		  if ($discount != 1) $span--;
+		if ($configs->get('showcam',1) == 0) $span--;
+		if ($configs->get('showcremove',1) == 0) $span--;
 
-	  echo $span;
+		  echo $span;
 
-	  ?>" valign="top" class="item_column_right" nowrap  >
-	<span
-	  <?php
-	if (strlen(trim($this->promocode)))
-	  	echo JText::_("DSPROMO"). ":  ";
-	  ?><?php echo $this->promocode; ?>
-	  <?php
-//	  	echo JText::_("DSOPTIONAL");
-//	  	echo "<br /><span style='color:red'>".$this->promoerror."</span> <br />";
-?>
-</span>
-<span style="display:none" >
-<?php
-	  	if ($shippingexists) {
-		echo " <input type='radio' name='shipto' value='2' checked  />";
-	 	}
-	  ?>
-</span>
+		  ?>" valign="top" class="item_column_right" nowrap  >
+		<span
+			  <?php
+				if (strlen(trim($this->promocode)))
+				  	echo JText::_("DSPROMO"). ":  ";
+				  ?><?php echo $this->promocode; ?>
+				  <?php
+			//	  	echo JText::_("DSOPTIONAL");
+			//	  	echo "<br /><span style='color:red'>".$this->promoerror."</span> <br />";
+			?>
+		</span>
+		<span style="display:none" >
+		<?php
+		  	if ($shippingexists) {
+			echo " <input type='radio' name='shipto' value='2' checked  />";
+		 	}
+		  ?>
+			</span>
 	  </td>
 	  <td class="item_column_right"><?php
 
@@ -230,38 +215,38 @@ echo (isset($item->shipping)&&$item->domainrequired==2? DigiComSiteHelperDigiCom
 		 ?>
 		<?php echo JText::_("DSTOTAL");?><br />
 	  </td>
-	  <td class="item_column_right" nowrap style="text-align:center; padding-top:10px;">
+		  <td class="item_column_right" nowrap style="text-align:center; padding-top:10px;">
 
-		<?php
+			<?php
 				if ($configs->get('tax_summary',0) == 1){
-										if ($tax['promo'] > 0 && $tax['promoaftertax'] == '0')
-											echo DigiComSiteHelperDigiCom::format_price($tax['promo'], $tax['currency'], true, $configs)."<br />";
-											//echo $tax['promo']." ".$tax['currency'];
-										?>
-														  <?php
-										if ($tax['value'] > 0 && $customer->_user->id > 0)
-											echo DigiComSiteHelperDigiCom::format_price($tax['value'], $tax['currency'], true, $configs)."<br />";
-												//echo $tax['value']." ".$tax['currency'];
-										?>
+				if ($tax['promo'] > 0 && $tax['promoaftertax'] == '0')
+					echo DigiComSiteHelperDigiCom::format_price($tax['promo'], $tax['currency'], true, $configs)."<br />";
+					//echo $tax['promo']." ".$tax['currency'];
+				?>
+								  <?php
+				if ($tax['value'] > 0 && $customer->_user->id > 0)
+					echo DigiComSiteHelperDigiCom::format_price($tax['value'], $tax['currency'], true, $configs)."<br />";
+						//echo $tax['value']." ".$tax['currency'];
+				?>
 
-										<?php
-										if ($tax['shipping'] > 0 && $customer->_user->id > 0)
-											echo DigiComSiteHelperDigiCom::format_price($tax['shipping'], $tax['currency'], true, $configs)."<br />";
-											//echo $tax['shipping']." ".$tax['currency'];
-										?>
+				<?php
+				if ($tax['shipping'] > 0 && $customer->_user->id > 0)
+					echo DigiComSiteHelperDigiCom::format_price($tax['shipping'], $tax['currency'], true, $configs)."<br />";
+					//echo $tax['shipping']." ".$tax['currency'];
+				?>
 
-										<?php
-										if ($tax['promo'] > 0 && $tax['promoaftertax'] == '1')
-										echo DigiComSiteHelperDigiCom::format_price($tax['promo'], $tax['currency'], true, $configs)."<br />";
-											//echo $tax['promo']." ".$tax['currency'];
+				<?php
+				if ($tax['promo'] > 0 && $tax['promoaftertax'] == '1')
+				echo DigiComSiteHelperDigiCom::format_price($tax['promo'], $tax['currency'], true, $configs)."<br />";
+					//echo $tax['promo']." ".$tax['currency'];
 				}
-		?>
-	<?php
-		  echo DigiComSiteHelperDigiCom::format_price($tax['taxed'], $tax['currency'], true, $configs)."<br />";
-	?></td>
+			?>
+		<?php
+			  echo DigiComSiteHelperDigiCom::format_price($tax['taxed'], $tax['currency'], true, $configs)."<br />";
+		?></td>
 	</tr>
 	<tr>
-		<td><?php echo JText::_("DIGI_PAYMENT_METHOD"); ?></td>
+		<td colspan="3"><?php echo JText::_("DIGI_PAYMENT_METHOD"); ?></td>
 		<td><?php echo ucfirst($processor); ?></td>
 	</tr>
 	<tr>

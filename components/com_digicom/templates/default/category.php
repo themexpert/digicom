@@ -31,7 +31,7 @@ $column = $this->category->params->get('category_cols',3);
 			<h1 class="digi-page-title"><?php echo $this->category->title; ?></h1>
 			<?php endif; ?>
 
-			<?php if($this->category->params->get('show_cat_image',1) && !empty($this->category->params->get('image'))): ?>
+			<?php if($this->category->params->get('show_cat_image',1) AND ($this->category->params->get('image') !== NULL ) ): ?>
 			<div class="pull-left">
 				<img class="img-rounded" src="<?php echo $this->category->params->get('image'); ?>" />
 			</div>

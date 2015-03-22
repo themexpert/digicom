@@ -128,8 +128,8 @@ JHTML::_('behavior.modal');
 			<td>
 				<?php
 					$customer = $this->customer;
-					$customer->country = $country;
-					$country_option = DigiComHelper::get_country_options($customer, false, $configs);
+					$customer->country = $this->userinfo->country;
+					$country_option = DigiComSiteHelperDigiCom::get_country_options($customer, false, $configs);
 					echo $country_option;
 				?>
 			</td>
@@ -163,8 +163,8 @@ JHTML::_('behavior.modal');
 			<td>
 				<?php
 					$customer = $this->customer;
-					$customer->state = $state;
-					echo DigiComHelper::get_store_province($customer, false);
+					$customer->state = $this->userinfo->state;
+					echo DigiComSiteHelperDigiCom::get_store_province($customer, false);
 				?>
 			</td>
 		</tr>
