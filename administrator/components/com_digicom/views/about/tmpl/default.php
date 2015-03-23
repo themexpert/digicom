@@ -30,7 +30,7 @@ $input->set('layout', 'dgform');
 		
 		<?php echo JHtml::_('bootstrap.startTabSet', 'digicomTab', array('active' => 'about')); ?>
 
-			<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'about', JText::_('COM_DIGICOM_ABOUT_ABOUT', true)); ?>
+			<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'about', JText::_('COM_DIGICOM_ABOUT_TAB_TITLE_ABOUT', true)); ?>
 
 			<div class="about-dglogo">
 				<a href="#">Digicom Logo</a>
@@ -49,9 +49,9 @@ $input->set('layout', 'dgform');
 			global $counter;
 
 			$titles = array(
-				(JText::_("DSABOUTCOMPONENT")),
-				(JText::_('DSABOUTMODULES')),
-				(JText::_('DSABOUTPLUGIN'))
+				(JText::_("COM_DIGICOM_ABOUT_COMPONENT")),
+				(JText::_('COM_DIGICOM_ABOUT_MODULES')),
+				(JText::_('COM_DIGICOM_ABOUT_PLUGIN'))
 			);
 
 			$total_file_titles = array (
@@ -95,11 +95,11 @@ $input->set('layout', 'dgform');
 					$version = substr ($data, $pos1+strlen("<version>"), $pos2-$pos1-strlen("<version>"));
 
 				//  fclose( file ($f_data) );
-					echo "<tr><td width=\"20px\">&nbsp;</td><td width=\"90px\" align=\"left\"><font color=\"green\"><strong>".(JText::_('DSINSTALLED'))."</strong></font></td><td width=\"130px\" nowrap>+ ".$total_file_titles[$var]. "<td nowrap>version ";
+					echo "<tr><td width=\"20px\">&nbsp;</td><td width=\"90px\" align=\"left\"><font color=\"green\"><strong>".(JText::_('COM_DIGICOM_INSTALLED'))."</strong></font></td><td width=\"130px\" nowrap>+ ".$total_file_titles[$var]. "<td nowrap>version ";
 					echo $version;
 					echo "</td></tr>";
 				} else {
-					echo "<tr><td width=\"20px\">&nbsp;</td><td  nowrap width=\"90px\" align=\"left\"><font color=\"red\"><strong><nowrap>".(JText::_('DSNOTINSTALLED'))."</nowrap></strong></font></td><td width=\"130px\" nowrap>+ ".$total_file_titles[$var]. "<td nowrap>&nbsp;</td></tr>";
+					echo "<tr><td width=\"20px\">&nbsp;</td><td  nowrap width=\"90px\" align=\"left\"><font color=\"red\"><strong><nowrap>".(JText::_('COM_DIGICOM_NOT_INSTALLED'))."</nowrap></strong></font></td><td width=\"130px\" nowrap>+ ".$total_file_titles[$var]. "<td nowrap>&nbsp;</td></tr>";
 					array_push($notinstalled_parts,$var);
 				}
 			endforeach;
@@ -110,7 +110,7 @@ $input->set('layout', 'dgform');
 				</table>
 			";
 			echo "<tr><td> ";
-			echo JText::_("DSABOUTBODY");
+			echo JText::_("COM_DIGICOM_ABOUT_DIGICOM_DETAILS");
 			?>
 
 			</td></tr>
