@@ -244,43 +244,6 @@
 				description="COM_DIGICOM_THOUSANDS_GROUP_SYMBOL_DESC" />
 		</fieldset>
 		
-		<fieldset name="CONTENTS">
-			<field
-				name="content_spacer"
-				type="spacer"
-				class="title"
-				label="HEADER_CONTENT_SETTINGS"
-				/>
-			
-			<field 
-				name="thankshtml" 
-				label ="VIEWCONFIGSUCCTRANS" 
-				description ="COM_DIGICOM_TRANSACTIONTEMP_TIP" 
-				type="editor" 
-				width="100%" 
-				buttons="true"
-				height="200px" 
-				filter="safehtml" />
-			<field 
-				name="ftranshtml" 
-				label ="VIEWCONFIGERRTEMPLATE" 
-				description ="COM_DIGICOM_FAILEDTRANSACTION_TIP" 
-				type="editor" 
-				width="100%" 
-				buttons="true"
-				height="200px" 
-				filter="safehtml" />
-			<field 
-				name="pendinghtml" 
-				label ="VIEWCONFIGPENDINGTEMPLATE" 
-				description ="COM_DIGICOM_PENDINGTRANSACTION_TIP" 
-				type="editor" 
-				width="100%" 
-				buttons="true"
-				height="200px" 
-				filter="safehtml" />
-		</fieldset>
-		
 		<fieldset name="STORE">
 			<field
 				name="store_spacer"
