@@ -136,16 +136,10 @@ class DigiComViewCategories extends JViewLegacy
 			JToolbarHelper::addNew('category.add');
 		}
 
-		if ($canDo->get('core.edit') || $canDo->get('core.edit.own'))
-		{
-			JToolbarHelper::editList('category.edit');
-		}
-
 		if ($canDo->get('core.edit.state'))
 		{
 			JToolbarHelper::publish('categories.publish', 'JTOOLBAR_PUBLISH', true);
 			JToolbarHelper::unpublish('categories.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-			JToolbarHelper::archiveList('categories.archive');
 		}
 
 		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete', $component))
