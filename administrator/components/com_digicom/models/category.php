@@ -72,6 +72,89 @@ class DigiComModelCategory extends JModelAdmin
 	}
 
 	/**
+	 * Method to delete one or more records.
+	 *
+	 * @param   array  &$pks  An array of record primary keys.
+	 *
+	 * @return  boolean  True if successful, false if an error occurs.
+	 *
+	 * @since   12.2
+	 */
+	public function delete(&$pks)
+	{
+		$dispatcher = JEventDispatcher::getInstance();
+		$pks = (array) $pks;
+		$table = $this->getTable();
+
+		// Include the plugins for the delete events.
+		JPluginHelper::importPlugin($this->events_map['delete']);
+
+		// Iterate the items to delete each one.
+		foreach ($pks as $i => $pk)
+		{
+			if ($table->load($pk))
+			{
+				if ($this->canDelete($table))
+				{
+					
+					$context = $this->option . '.' . $this->name;
+
+					// Trigger the before delete event.
+					$result = $dispatcher->trigger($this->event_before_delete, array($context, $table));
+
+					if (in_array(false, $result, true))
+					{
+						$this->setError($table->getError());
+
+						return false;
+					}
+					
+					if (!$table->delete($pk))
+					{
+						
+						$this->setError($table->getError());
+
+						return false;
+					}
+
+					// Trigger the after event.
+					$dispatcher->trigger($this->event_after_delete, array($context, $table));
+				}
+				else
+				{
+					// Prune items that you can't change.
+					unset($pks[$i]);
+					$error = $this->getError();
+
+					if ($error)
+					{
+						JLog::add($error, JLog::WARNING, 'jerror');
+
+						return false;
+					}
+					else
+					{
+						JLog::add(JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), JLog::WARNING, 'jerror');
+
+						return false;
+					}
+				}
+			}
+			else
+			{
+				$this->setError($table->getError());
+
+				return false;
+			}
+		}
+
+		// Clear the component's cache
+		$this->cleanCache();
+
+		return true;
+	}
+
+	/**
 	 * Method to test whether a record can have its state changed.
 	 *
 	 * @param   object  $record  A record object.

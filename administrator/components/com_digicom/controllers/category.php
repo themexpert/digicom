@@ -136,7 +136,7 @@ class DigiComControllerCategory extends JControllerForm
 		$model = $this->getModel('Category');
 
 		// Preset the redirect
-		$this->setRedirect('index.php?option=com_digicom&view=categories&extension=' . $this->extension);
+		$this->setRedirect('index.php?option=com_digicom&view=categories&view=categories');
 
 		return parent::batch($model);
 	}
@@ -153,6 +153,7 @@ class DigiComControllerCategory extends JControllerForm
 	 */
 	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'id')
 	{
+		
 		$append = parent::getRedirectToItemAppend($recordId);
 		$append .= '&extension=' . $this->extension;
 

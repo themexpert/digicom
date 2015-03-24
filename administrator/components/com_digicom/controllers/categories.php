@@ -46,7 +46,7 @@ class DigiComControllerCategories extends JControllerAdmin
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		$extension = $this->input->get('extension');
-		$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=categories&extension=' . $extension, false));
+		$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=categories', false));
 
 		$model = $this->getModel();
 
@@ -126,7 +126,7 @@ class DigiComControllerCategories extends JControllerAdmin
 			// Make sure the item ids are integers
 			jimport('joomla.utilities.arrayhelper');
 			JArrayHelper::toInteger($cid);
-
+			
 			// Remove the items.
 			if ($model->delete($cid))
 			{
@@ -138,6 +138,6 @@ class DigiComControllerCategories extends JControllerAdmin
 			}
 		}
 
-		$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&extension=' . $extension, false));
+		$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=categories', false));
 	}
 }
