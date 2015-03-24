@@ -73,7 +73,7 @@ class DigiComViewOrders extends JViewLegacy
 		
 		JToolBarHelper::addNew('ordernew.add');
 		JToolBarHelper::divider();
-		JToolBarHelper::deleteList('orders.remove');
+		JToolBarHelper::deleteList(JText::_('COM_DIGICOM_ORDERS_ALERT_REMOVE'),'orders.remove');
 		JToolBarHelper::spacer();
 	}
 	

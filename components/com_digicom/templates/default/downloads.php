@@ -56,8 +56,7 @@ if($product_itemid != "0"){
 								<td><?php echo $file->filemtime; ?></td>
 								<td><?php echo $file->hits; ?></td>
 								<td>
-									<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=downloads&task=downloads.makeDownload&downloadid='.$file->downloadid.'&Itemid='.$Itemid);?>" class="btn btn-warning btn-mini"><?php echo JText::_('COM_DIGICOM_FILE_DOWNLOAD'); ?></a>
-									
+									<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=downloads&task=downloads.makeDownload&downloadid='.$file->downloadid.'&Itemid='.$Itemid);?>" class="btn btn-warning btn-mini"><?php echo JText::_('COM_DIGICOM_FILE_DOWNLOAD'); ?></a>	
 								</td>
 							</tr>
 							<?php endforeach; ?>

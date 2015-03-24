@@ -171,12 +171,18 @@ Joomla.submitbutton = function (pressbutton) {
 						</td>
 						<td align="center">
 							<?php
-								$a_style = "";
+								$class = 'badge badge-success';
 								if($order->status == "Pending"){
-									$a_style = 'style="color:red;"';
+									$class = 'badge badge-warning';
 								}
 							?>
-							<a href="<?php echo $orderstatuslink; ?>" <?php echo $a_style; ?> ><?php echo (trim( $order->status ) != "in_progres" ? $order->status : "Active"); ?></a>
+							<span class="<?php echo $class; ?>">
+								<?php echo (trim( $order->status ) != "in_progres" ? $order->status : "Active"); ?>
+							</span>
+							<a href="<?php echo $orderstatuslink; ?>" title="<?php echo JText::_('COM_DIGICOM_ORDER_STATUS_CHANGE');?>" class="hasTooltip">
+								<i class="icon-refresh"></i>
+							</a>
+							
 						</td>
 						<td align="center">
 							<?php echo $order->processor; ?>
