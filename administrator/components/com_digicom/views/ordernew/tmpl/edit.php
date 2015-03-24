@@ -114,7 +114,7 @@ JHtml::_('behavior.modal');
 JHtml::_('behavior.multiselect');
 JHtml::_('behavior.formvalidation');
 JHtml::_('formbehavior.chosen', 'select');
-JHTML::_('behavior.tooltip');
+JHTML::_('behavior.tooltip'); 
 ?>
 <script type="text/javascript">
 	
