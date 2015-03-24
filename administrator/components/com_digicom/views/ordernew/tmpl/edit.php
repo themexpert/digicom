@@ -120,8 +120,8 @@ JHTML::_('behavior.tooltip');
 	
 	Joomla.submitbutton = function(task)
 	{
-		if(task == 'save'){
-			var products = jQuery("input[id^='product_id']").val();
+		if(task == 'ordernew.save'){
+			var products = jQuery("input[id^='product_include_id']").val();
 			if(products === null || products === undefined || products === '' ){
 				message = Joomla.JText._('JLIB_FORM_FIELD_INVALID');
 				error = {};
@@ -133,7 +133,7 @@ JHTML::_('behavior.tooltip');
 				return false;
 			}
 		}
-		if (task == 'cancel' || document.formvalidator.isValid(document.id('adminForm')))
+		if (task == 'order.cancel' || document.formvalidator.isValid(document.id('adminForm')))
 		{
 			Joomla.submitform(task, document.getElementById('adminForm'));
 		}
@@ -158,38 +158,14 @@ JHTML::_('behavior.tooltip');
 			<div class="order-details">
 
 				<h3><?php echo JText::_( 'COM_DIGICOM_ORDER_DETAILS_HEADER_TITLE' ); ?></h3>
-				<div class="control-group">
-				    <label class="control-label" for="userid"><?php echo JText::_('COM_DIGICOM_ORDER_CREATE_NEW_FIELD_CUSTOMER_LABEL'); ?></label>
-				    <div class="controls">
-				      <?php echo $this->form->getInput('userid'); ?>
-				    </div>
-			  	</div>
+				
+				<?php echo $this->form->renderField('userid'); ?>
 
-			  	<div class="control-group">
-				    <label class="control-label" for="order_status"><?php echo JText::_( 'COM_DIGICOM_ORDER_CREATE_NEW_FIELD_ORDER_STATUS_LABEL' ); ?></label>
-				    <div class="controls">
-				      <?php echo $this->form->getInput('status'); ?>
-				    </div>
-			  	</div>
+			  	<?php echo $this->form->renderField('status'); ?>
 
-			  	<div class="control-group">
-				    <label class="control-label" for="order_date"><?php echo JText::_( 'COM_DIGICOM_ORDER_CREATE_NEW_FIELD_ORDER_DATE_LABEL' ); ?></label>
-				    <div class="controls">
-				      	<?php echo $this->form->getInput('order_date'); ?>
-				    </div>
-			  	</div>
+			  	<?php echo $this->form->renderField('order_date'); ?>
 
-			  	<div class="control-group">
-				    <label class="control-label" for="processor">
-				    	<?php echo JText::_( 'COM_DIGICOM_ORDER_CREATE_NEW_FIELD_PAYMENT_METHOD_LABEL' ); ?>
-				    	<?php
-							echo JHTML::tooltip(JText::_("COM_DIGICOM_ORDER_CREATE_NEW_FIELD_PAYMENT_METHOD_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
-						?>
-				    </label>
-				    <div class="controls">
-				   		 <?php echo $this->form->getInput('processor'); ?>
-				    </div>
-			  	</div>
+			  	<?php echo $this->form->renderField('processor'); ?>
 
 			</div>
 
@@ -221,37 +197,24 @@ JHTML::_('behavior.tooltip');
 				</div>
 				
 				<div class="promo-subtotal clearfix">
-					
+
 					<div class="promos">
-					    <label class="control-label" for="promocode">
-					    	<?php echo JText::_( 'COM_DIGICOM_PROMO_CODE' ); ?>
-							<?php
-								echo JHTML::tooltip(JText::_("COM_DIGICOM_ORDER_PROMO_CODE_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
-							?>
-					    </label>
-					    <div class="controls">
-					      	<?php 
-					      		echo $this->form->getInput('discount');
-					      		/*if(!empty($this->promocode)){
-						      		echo $this->promocode;
-					      		}else{
-					      			echo '<input type="hidden" value="" id="promocode"/>';
-					      		}*/
-				      		?>
-					    </div>
+
+					    <?php echo $this->form->renderField('discount'); ?>
+
 				  	</div>
 
 				  	<div class="subtotal">
-					    <label class="control-label" for="amount">
-					    	<?php echo JText::_( 'COM_DIGICOM_SUBTOTAL' ); ?>
-					      	<?php
-								echo JHTML::tooltip(JText::_("COM_DIGICOM_ORDER_SUBTOTAL_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
-							?>
-					    </label>
-					    <div class="controls">
-					    	<span id="amount">00.00 <?php echo $configs->get('currency','USD'); ?></span>
-					      	
-					    </div>
+					   <div class="control-group">
+							<div class="control-label">
+								<label id="jform_discount-lbl" for="jform_discount" class="hasTooltip" title="<?php echo JText::_( 'COM_DIGICOM_ORDER_SUBTOTAL_TIP' ); ?>">
+									<?php echo JText::_( 'COM_DIGICOM_SUBTOTAL' ); ?>
+								</label>
+							</div>
+							<div class="controls">
+								<span id="amount">00.00 <?php echo $configs->get('currency','USD'); ?></span>
+							</div>
+						</div>
 				  	</div>
 
 				</div>
@@ -275,11 +238,8 @@ JHTML::_('behavior.tooltip');
 			  	</div>
 
 			  	<div class="control-group">
-				    <label class="control-label" for="total">
-				    	<?php echo JText::_( 'COM_DIGICOM_TOTAL' ); ?> 
-						<?php
-							echo JHTML::tooltip(JText::_("COM_DIGICOM_ORDER_TOTAL_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
-						?>
+				   <label id="jform_discount-lbl" for="jform_total" class="hasTooltip control-label" title="<?php echo JText::_( 'COM_DIGICOM_ORDER_TOTAL_TIP' ); ?>">
+						<?php echo JText::_( 'COM_DIGICOM_TOTAL' ); ?>
 					</label>
 				    <div class="controls">
 						<span id="total">00.00 <?php echo $configs->get('currency','USD'); ?></span>
@@ -288,12 +248,10 @@ JHTML::_('behavior.tooltip');
 			  	</div>
 
 			  	<div class="control-group">
-				    <label class="control-label" for="amount_paid">
-				    	<?php echo JText::_( 'COM_DIGICOM_AMOUNT_PAID' ); ?>
-				      	<?php
-							echo JHTML::tooltip(JText::_("COM_DIGICOM_ORDER_AMOUNT_PAID_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
-						?>
-				    </label>
+				    <label id="jform_discount-lbl" for="jform_total" class="hasTooltip control-label" title="<?php echo JText::_( 'COM_DIGICOM_ORDER_AMOUNT_PAID_TIP' ); ?>">
+						<?php echo JText::_( 'COM_DIGICOM_AMOUNT_PAID' ); ?>
+					</label>
+
 				    <div class="controls">
 				      	<span id="currency_amount_paid" class="hide"></span><input id="amount_paid" name="jform[amount_paid]" type="text" value=""/>
 				    </div>
