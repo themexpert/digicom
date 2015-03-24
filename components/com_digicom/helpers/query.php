@@ -168,7 +168,7 @@ class DigiComSiteHelperQuery
 		{
 			// Calculate voting count
 			$select = ' , ROUND(v.rating_sum / v.rating_count) AS rating, v.rating_count';
-			$join = ' LEFT JOIN #__content_rating AS v ON a.id = v.content_id';
+			$join = ' LEFT JOIN #__digicom_products_rating AS v ON a.id = v.content_id';
 		}
 		else
 		{
