@@ -56,13 +56,13 @@ class digicomViewdigicom extends JViewLegacy {
 	 */
 	protected function addToolbar()
 	{
-		JToolBarHelper::title(JText::_('DIGICOM_DASHBOARD'), 'generic.png');
+		JToolBarHelper::title(JText::_('COM_DIGICOM_DASHBOARD_TOOLBAR_TITLE'), 'generic.png');
 		
 		$bar = JToolBar::getInstance('toolbar');
 		
 		$layout = new JLayoutFile('toolbar.title');
 		$title = array(
-			'title' => JText::_( 'DIGICOM_DASHBOARD' ),
+			'title' => JText::_( 'COM_DIGICOM_DASHBOARD_TOOLBAR_TITLE' ),
 			'class' => 'product'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');		

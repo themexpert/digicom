@@ -27,8 +27,8 @@
 		name="parent_id"
 		type="categoryedit"
 		parent="1"
-		label="COM_CATEGORIES_FIELD_PARENT_LABEL"
-		description="COM_CATEGORIES_FIELD_PARENT_DESC"/>
+		label="COM_DIGICOM_CATEGORY_FIELD_PARENT_LABEL"
+		description="COM_DIGICOM_CATEGORY_FIELD_PARENT_LABEL_DESC"/>
 
 	<field
 		name="lft"
@@ -95,7 +95,7 @@
 		name="description"
 		type="editor"
 		label="JGLOBAL_DESCRIPTION"
-		description="COM_CATEGORIES_DESCRIPTION_DESC"
+		description="COM_DIGICOM_CATEGORY_FIELD_DESCRIPTION_DESC"
 		filter="JComponentHelper::filterText"
 		buttons="true"
 		hide="readmore,pagebreak"/>
@@ -224,14 +224,14 @@
 			<field
 				name="image"
 				type="media"
-				label="COM_CATEGORIES_FIELD_IMAGE_LABEL"
-				description="COM_CATEGORIES_FIELD_IMAGE_DESC" />
+				label="COM_DIGICOM_CATEGORY_FIELD_IMAGE_LABEL"
+				description="COM_DIGICOM_CATEGORY_FIELD_IMAGE_LABEL_DESC" />
 
 			<field 
 				name="image_alt"
 				type="text"
-				label="COM_CATEGORIES_FIELD_IMAGE_ALT_LABEL"
-				description="COM_CATEGORIES_FIELD_IMAGE_ALT_DESC"
+				label="COM_DIGICOM_CATEGORY_FIELD_IMAGE_ALT_LABEL"
+				description="COM_DIGICOM_CATEGORY_FIELD_IMAGE_ALT_LABEL_DESC"
 				size="20" />
 
 		</fieldset>
