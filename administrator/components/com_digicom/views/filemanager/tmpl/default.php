@@ -9,7 +9,6 @@
 */
 
 defined ('_JEXEC') or die ("Go away.");
-
 $mosConfig_absolute_path = JPATH_ROOT;
 $max_upload = ini_get('upload_max_filesize');
 ?>
@@ -22,7 +21,7 @@ $max_upload = ini_get('upload_max_filesize');
 	<div id="j-main-container" class="">
 <?php endif;?>
 		<div class="alert alert-info">
-			<?php echo JText::sprintf("COM_DIGICOM_FILE_MANAGER_HEADER_NOTICE",DigiComHelperDigiCom::convertPHPSizeToBytes($max_upload)); ?>
+			<?php echo JText::sprintf("COM_DIGICOM_FILE_MANAGER_HEADER_NOTICE",ini_get('upload_max_filesize')); ?>
 		</div>
 					<script type="text/javascript">
 						jQuery(document).ready(function() {
