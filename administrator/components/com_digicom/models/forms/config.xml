@@ -448,8 +448,8 @@
 		</fieldset>
 
 		<fieldset name="email_settings" addfieldpath="/administrator/components/com_digicom/models/fields"
-			label="COM_DIGICOM_EMAIL_SETTINGS_FIELDSET_LABEL"
-			description="COM_DIGICOM_EMAIL_SETTINGS_FIELDSET_DESC">
+			label="COM_DIGICOM_SETTINGS_EMAIL_FIELDSET_LABEL"
+			description="COM_DIGICOM_SETTINGS_EMAIL_FIELDSET_LABEL_DESC">
 			
 			<field
 				name="email_from_name"
