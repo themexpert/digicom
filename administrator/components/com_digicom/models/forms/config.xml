@@ -145,15 +145,6 @@
 					<option value="2">VIEWCONFIGAFTERADDINGOPENGRAY</option>
 			</field>
 			<field
-				name="continue_shopping_url"
-				type="menuitem"
-				label="VIEWCONFIG_CONTINUE_SHOPPING_URL"
-				default="0"
-				description="COM_DIGICOM_CONTINUE_SHOPPING_TIP"
-				>
-				<option value="0">VIEWCONFIG_CONTINUE_SHOPPING_URL_DESC</option>
-			</field>
-			<field
 				name="default_payment"
 				type="sql" 
 				query="SELECT extension_id as id,name,element,enabled as published FROM #__extensions WHERE folder in ('digicom_pay') AND enabled=1" 

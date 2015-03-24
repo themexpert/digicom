@@ -125,8 +125,7 @@ function createPopUp(pid, cid, site, renew, renewlicid, itemid, to_cart)
 	var divfutter = document.createElement("div");
 	divfutter.id = "cart_futter";
 	divfutter.className = "modal-footer";
-	futter_content = '<a href="javascript:;" onclick="jQuery(\'#digicart_popup\').remove();" class="btn"><i class="ico-shopping-cart"></i> Continue Shopping</a>';
-	futter_content+= '<a href="javascript:;" onclick="document.getElementById(\'returnpage\').value=\'checkout\'; javascript:updateCart(); window.location.href=\''+to_cart+'\'" class="btn btn-warning">Checkout <i class="ico-ok-sign"></i></a>';
+	futter_content = '<a href="javascript:;" onclick="document.getElementById(\'returnpage\').value=\'checkout\'; javascript:updateCart(); window.location.href=\''+to_cart+'\'" class="btn btn-warning">Checkout <i class="ico-ok-sign"></i></a>';
 	divfutter.innerHTML = futter_content;
 
 	var modalparent = document.createElement("div");
