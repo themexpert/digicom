@@ -169,6 +169,10 @@ JFactory::getDocument()->addScriptDeclaration('
 
 								$action = $trashed ? 'untrash' : 'trash';
 								JHtml::_('actionsdropdown.' . $action, 'cb' . $i, 'products');
+
+								$action = $archived ? 'unarchive' : 'archive';
+								JHtml::_('actionsdropdown.' . $action, 'cb' . $i, 'products');
+								
 								echo JHtml::_('actionsdropdown.render', $this->escape($item->name));
 								?>
 							</div>

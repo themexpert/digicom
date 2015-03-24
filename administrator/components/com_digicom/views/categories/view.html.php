@@ -148,29 +148,6 @@ class DigiComViewCategories extends JViewLegacy
 			JToolbarHelper::archiveList('categories.archive');
 		}
 
-		if (JFactory::getUser()->authorise('core.admin'))
-		{
-			JToolbarHelper::checkin('categories.checkin');
-		}
-
-		// Add a batch button
-		if ($user->authorise('core.create', $extension) & $user->authorise('core.edit', $extension) && $user->authorise('core.edit.state', $extension))
-		{
-			JHtml::_('bootstrap.modal', 'collapseModal');
-			$title = JText::_('JTOOLBAR_BATCH');
-
-			// Instantiate a new JLayoutFile instance and render the batch button
-			$layout = new JLayoutFile('joomla.toolbar.batch');
-
-			$dhtml = $layout->render(array('title' => $title));
-			$bar->appendButton('Custom', $dhtml, 'batch');
-		}
-
-		if ($canDo->get('core.admin'))
-		{
-			JToolbarHelper::custom('categories.rebuild', 'refresh.png', 'refresh_f2.png', 'JTOOLBAR_REBUILD', false);
-		}
-
 		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete', $component))
 		{
 			JToolbarHelper::deleteList('', 'categories.delete', 'JTOOLBAR_EMPTY_TRASH');
@@ -179,31 +156,6 @@ class DigiComViewCategories extends JViewLegacy
 		{
 			JToolbarHelper::trash('categories.trash');
 		}
-
-		// Compute the ref_key if it does exist in the component
-		if (!$lang->hasKey($ref_key = strtoupper($component . ($section ? "_$section" : '')) . '_CATEGORIES_HELP_KEY'))
-		{
-			$ref_key = 'JHELP_COMPONENTS_' . strtoupper(substr($component, 4) . ($section ? "_$section" : '')) . '_CATEGORIES';
-		}
-
-		/*
-		 * Get help for the categories view for the component by
-		 * -remotely searching in a language defined dedicated URL: *component*_HELP_URL
-		 * -locally  searching in a component help file if helpURL param exists in the component and is set to ''
-		 * -remotely searching in a component URL if helpURL param exists in the component and is NOT set to ''
-		 */
-		if ($lang->hasKey($lang_help_url = strtoupper($component) . '_HELP_URL'))
-		{
-			$debug = $lang->setDebug(false);
-			$url = JText::_($lang_help_url);
-			$lang->setDebug($debug);
-		}
-		else
-		{
-			$url = null;
-		}
-
-		JToolbarHelper::help($ref_key, JComponentHelper::getParams($component)->exists('helpURL'), $url);
 
 		$layout = new JLayoutFile('toolbar.title');
 		$title = array(
