@@ -24,9 +24,9 @@ if($configs->get('shopping_cart_style','') == "1"){
 ?>
 		<div class="pagination pagination-centered">
 			<ul>
-				<li class="disabled"><span><?php echo JText::_("DIGI_STEP_ONE"); ?></span></li>
-				<li class="disabled"><span><?php echo JText::_("DIGI_STEP_TWO"); ?></span></li>
-				<li class="active"><span><?php echo JText::_("DIGI_STEP_THREE"); ?></span></li>
+				<li class="disabled"><span><?php echo JText::_("COM_DIGICOM_BUYING_PROCESS_STEP_ONE"); ?></span></li>
+				<li class="disabled"><span><?php echo JText::_("COM_DIGICOM_BUYING_PROCESS_STEP_TWO"); ?></span></li>
+				<li class="active"><span><?php echo JText::_("COM_DIGICOM_BUYING_PROCESS_STEP_THREE"); ?></span></li>
 			</ul>
 		</div>
 <?php
@@ -51,7 +51,7 @@ if($configs->get('shopping_cart_style','') == "1"){
 			?>
 <!-- 
 			<form name="cart_form" method="post" action="<?php echo $formlink;?>">
-			<input type="button"  class="button" name="continue" value="<?php echo JText::_("DSCONTINUESHOPING");?>" onClick="window.location='<?php
+			<input type="button"  class="button" name="continue" value="<?php echo JText::_("COM_DIGICOM_CONTINUE_SHOPPING");?>" onClick="window.location='<?php
 				//echo DigiComSiteHelperDigiCom::DisplayContinueUrl($configs,$cat_url);
 			 ?>';">
 			</form> -->
@@ -66,8 +66,8 @@ if($configs->get('shopping_cart_style','') == "1"){
 	//print_r($customer);
 		?>
 
- <?php if (!isset($customer->_user->id) || !$customer->_user->id ) {?><p style="font-size: 18px"><?php echo JText::_("DSRETURNCUSTMERSCLICK")?>
- <a href="<?php echo $login_link; ?>"><?php echo JText::_("DSHERE");?></a><?php echo ' '; ?><?php echo JText::_("DSTOLOGIN");?></p>
+ <?php if (!isset($customer->_user->id) || !$customer->_user->id ) {?><p style="font-size: 18px"><?php echo JText::_("COM_DIGICOM_SUMMARY_RETURN_CUSTMERS_CLICK")?>
+ <a href="<?php echo $login_link; ?>"><?php echo JText::_("COM_DIGICOM_SUMMARY_HERE");?></a><?php echo ' '; ?><?php echo JText::_("COM_DIGICOM_SUMMARY_TO_LOGIN");?></p>
 	<?php }
 ?>
 
@@ -90,29 +90,29 @@ if($configs->get('shopping_cart_style','') == "1"){
 
 <?php $formlink = JRoute::_("index.php?option=com_digicom&controller=cart"."&Itemid=".$Itemid); ?>
 <table width="100%" cellspacing="0" id="digi_table">
-<h1><?php echo JText::_("DSSUMMARY")?></h1>
+<h1><?php echo JText::_("COM_DIGICOM_SUMMARY_YOUR_ORDER")?></h1>
 	<tr ><?php // class was cart_heading ?>
 	  <th class="summary_header">
 	  </th>
 	  <th class="summary_header" <?php if ($configs->get('showcam',1) == 0) echo $invisible;?> >
-		  <?php echo JText::_("DSQUANTITY");?>
+		  <?php echo JText::_("COM_DIGICOM_QUANTITY");?>
 	  </th>
 	  <th class="summary_header">
-		<?php echo JText::_("DSPRICE");?>
+		<?php echo JText::_("COM_DIGICOM_PRODUCT_PRICE");?>
 	  </th>
 	  <th class="summary_header" <?php if ($discount!=1) echo 'style="display:none"'?> >
-		<?php echo JText::_("DSDISCOUNT");?>
+		<?php echo JText::_("COM_DIGICOM_DISCOUNT");?>
 	  </th>
 	  <th class="summary_header" <?php echo ($shippingexists >0 )?"":'style="display:none;"';?>>
-		<?php echo JText::_("DSSHIPPINGCOST"); ?>
+		<?php echo JText::_("COM_DIGICOM_SHIPPING_COST"); ?>
 	  </th>
 
 
 	  <?php if ($totalfields > 0  ){ ?>
-	  <th class="summary_header"><?php echo JText::_("DSATTR"); ?></th>
+	  <th class="summary_header"><?php echo JText::_("COM_DIGICOM_ATTRIBUTES"); ?></th>
 	  <?php } ?>
 	  <th nowrap class="summary_header">
-		<?php echo JText::_("DSSUBTOTAL");?>
+		<?php echo JText::_("COM_DIGICOM_SUBTOTAL");?>
 	  </th>
 	</tr>
 	<?php $k=1;foreach ( $items as $itemnum => $item ) {
@@ -122,8 +122,8 @@ if($configs->get('shopping_cart_style','') == "1"){
 
 	  <td class="item_column">
 		  <?php echo $item->name; ?>
-		  <br/>
-		  <?php echo DigiComSiteHelperDigiCom::format_price2($item->price, $item->currency, true, $configs); ?>
+		  <!-- <br/>
+		  <?php echo DigiComSiteHelperDigiCom::format_price2($item->price, $item->currency, true, $configs); ?> -->
 	  </td>
 	  <!-- Quantity -->
 	<td align="center" <?php if ($configs->get('showcam',1) == 0) echo $invisible;?> nowrap="nowrap">
@@ -188,7 +188,7 @@ echo (isset($item->shipping)&&$item->domainrequired==2? DigiComSiteHelperDigiCom
 	<span
 	  <?php
 	if (strlen(trim($this->promocode)))
-	  	echo JText::_("DSPROMO"). ":  ";
+	  	echo JText::_("COM_DIGICOM_DISCOUNT_CODE"). ":  ";
 	  ?><?php echo $this->promocode; ?>
 	  <?php
 //	  	echo JText::_("DSOPTIONAL");
@@ -209,7 +209,7 @@ echo (isset($item->shipping)&&$item->domainrequired==2? DigiComSiteHelperDigiCom
 		if ($configs->get('tax_summary',0) == 1){
 				   if ($tax['promo'] > 0 && $tax['promoaftertax'] == '0'):
 				?>
-				<?php echo JText::_("DSPROMODISCOUNT"); ?><br />
+				<?php echo JText::_("COM_DIGICOM_DISCOUNT"); ?><br />
 				<?php endif; ?>
 
 			  <?php
@@ -219,16 +219,16 @@ echo (isset($item->shipping)&&$item->domainrequired==2? DigiComSiteHelperDigiCom
 			}
 				if ($tax['shipping'] > 0 && $customer->_user->id > 0):
 				?>
-				<?php echo JText::_("DSSHIPING"); ?><br />
+				<?php echo JText::_("COM_DIGICOM_SHIPPING"); ?><br />
 				<?php endif; ?>
 				<?php
 				 if ($tax['promo'] > 0 && $tax['promoaftertax'] == '1'):
 				?>
-				<?php echo JText::_("DSPROMOCODEDISCOUNT"); ?><br />
+				<?php echo JText::_("COM_DIGICOM_DISCOUNT_CODE"); ?><br />
 				<?php endif;
 		}
 		 ?>
-		<?php echo JText::_("DSTOTAL");?><br />
+		<?php echo JText::_("COM_DIGICOM_TOTAL");?><br />
 	  </td>
 	  <td class="item_column_right" nowrap style="text-align:center; padding-top:10px;">
 
@@ -261,18 +261,18 @@ echo (isset($item->shipping)&&$item->domainrequired==2? DigiComSiteHelperDigiCom
 	?></td>
 	</tr>
 	<tr>
-		<td><?php echo JText::_("DIGI_PAYMENT_METHOD"); ?></td>
+		<td><?php echo JText::_("COM_DIGICOM_PAYMENT_METHOD"); ?></td>
 		<td><?php echo ucfirst($processor); ?></td>
 	</tr>
 	<tr>
 	  <td height="30" colspan="10" width="100%">
-	  <table width="100%"  border="0" cellspacing="0" cellpadding="2">
+	  <table width="100%"  border="0" cellspacing="0" cellpadding="2" style="margin-top: 15px;">
 		<tr>
 		  <td>
-		  	<a href="<?php echo $cart_url;?>" class="digicom_cancel btn btn-warning"><?php echo JText::_("DSEDITORDER")?></a>
+		  	<a href="<?php echo $cart_url;?>" class="digicom_cancel btn btn-warning"><?php echo JText::_("COM_DIGICOM_EDIT_ORDER")?></a>
+		  	<a href="<?php echo $checkout_url;?>" class="digicom_cancel btn btn-success" style="margin-left: 5px;"><?php echo JText::_("COM_DIGICOM_PLACE_ORDER")?></a>
 		  </td>
 		  <td class="item_column_right">
-		  	<a href="<?php echo $checkout_url;?>" class="digicom_cancel btn btn-success"><?php echo JText::_("DSPLACEORDER")?></a>
 		  </td>
 		</tr>
 	  </table>

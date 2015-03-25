@@ -21,17 +21,17 @@ $user = $this->customer->_user;
 
 	<?php DigiComSiteHelperDigicom::loadModules('digicom_toolber'); ?>
 
-	<h2><?php echo JText::_("COM_DIGICOM_MY_ACCOUNT_DASHBOARD_TITLE"); ?></h2>
+	<h2 class="digi-page-title"><?php echo JText::_("COM_DIGICOM_DASHBOARD_PAGE_TITLE"); ?></h2>
 	<div class="row-fluid">
 		<div class="span7">
-			<p>Enjoy all the features that are available on your personal space to view, track and manage all your data.</p>
+			<p><?php echo JText::_('COM_DIGICOM_DASHBOARD_HEADER_INTRO'); ?></p>
 		</div>
 		<div class="span5">
 			<div class="customer-info">
 				<h4><?php echo $customer->firstname; ?> <?php echo $customer->lastname; ?> </h4>
-				<p>Customer ID: <?php echo $customer->id; ?> <br>
-				Email: <?php echo $user->email; ?> <br>
-				Customer since <?php echo $customer->registerDate; ?>
+				<p><?php echo JText::_('COM_DIGICOM_CUSTOMER_ID'); ?>: <?php echo $customer->id; ?> <br>
+				<?php echo JText::_('COM_DIGICOM_EMAIL'); ?>: <?php echo $user->email; ?> <br>
+				<?php echo JText::_('COM_DIGICOM_CUSTOMER_SINCE') . $customer->registerDate; ?>
 			</div>			
 		</div>
 	</div>

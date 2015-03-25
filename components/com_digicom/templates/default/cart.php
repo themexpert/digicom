@@ -30,7 +30,7 @@ $items = $this->items;
 
 	if($user->id == 0 || $this->customer->_customer->country == "")
 	{
-		$button_value = "DSSAVEPROFILE";
+		$button_value = "COM_DIGICOM_CONTINUE";
 	}
 
 	if($configs->get('askterms',0) == '1')
@@ -349,7 +349,7 @@ $items = $this->items;
 						<!--<a href="<?php echo $cat_url; ?>" class="btn"><i class="icon-cart"></i> <?php echo JText::_("DSCONTINUESHOPING")?></a>-->
 					</div>
 					<div class="span4" style="margin-top: -34px;margin-bottom: 10px;">
-					<p><strong>Payment method</strong></p>
+					<p><strong><?php echo JText::_('COM_DIGICOM_PAYMENT_METHOD'); ?></strong></p>
 						<?php
 						$button_value = "COM_DIGICOM_CHECKOUT";
 						$onclick = "if(jQuery('#processor').val() == ''){ ShowPaymentAlert(); return false; }";
@@ -357,7 +357,7 @@ $items = $this->items;
 
 						if($user->id == 0 || $this->customer->_customer->country == "")
 						{
-							$button_value = "DSSAVEPROFILE";
+							$button_value = "COM_DIGICOM_CONTINUE";
 						}
 
 						if($configs->get('askterms',0) == '1')
@@ -371,7 +371,7 @@ $items = $this->items;
 
 						<?php echo $this->getPaymentPlugins($configs); ?>
 						<div id="html-container"></div>
-						<button type="button" class="btn btn-warning" style="float:right;margin-left:10px;" onclick="<?php echo $onclick; ?> "><?php echo JText::_($button_value);?> <i class="ico-ok-sign"></i></button>
+						<button type="button" class="btn btn-warning" style="float:right;margin-top:10px;" onclick="<?php echo $onclick; ?> "><?php echo JText::_($button_value);?> <i class="ico-ok-sign"></i></button>
 					</div>
 				</div>
 			<?php } ?>
@@ -483,7 +483,7 @@ $items = $this->items;
 
 			</div>
 			<div id="myModalFooter" class="modal-footer">
-				<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_("DIGI_CLOSE");?></button>
+				<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_("COM_DIGICOM_CLOSE");?></button>
 			</div>
 		</div>
 
@@ -491,14 +491,14 @@ $items = $this->items;
 		<div id="myModalTerms" class="modal" style="display:none;">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h3 style="line-height: 1;"><?php echo JText::_("DIGI_TERMS");?></h3>
+				<h3 style="line-height: 1;"><?php echo JText::_("COM_DIGICOM_TERMS");?></h3>
 			</div>
 			<div class="modal-body">
 				<?php echo $terms_content;?>
 			</div>
 			<div class="modal-footer">
-				<button class="action-agree btn btn-success" data-dismiss="modal" aria-hidden="true"><?php echo JText::_("COM_DIGICOM_CHECKOUT_TERMS_AGREE");?></button>
-				<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_("DIGI_CLOSE");?></button>
+				<button class="action-agree btn btn-success" data-dismiss="modal" aria-hidden="true"><?php echo JText::_("COM_DIGICOM_CART_AGREE_TERMS_BUTTON");?></button>
+				<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_("COM_DIGICOM_CLOSE");?></button>
 			</div>
 		</div>
 		<?php endif;?>
@@ -524,8 +524,8 @@ $items = $this->items;
 	{
 		if (document.cart_form.agreeterms.checked != true)
 		{
-			jQuery('#myModalLabel').html("<?php echo JText::_("DIGI_ATENTION");?>");
-			jQuery('#myModalBody').html("<p><?php echo JText::_("ACCEPT_TERMS_CONDITIONS");?></p>");
+			jQuery('#myModalLabel').html("<?php echo JText::_("COM_DIGICOM_WARNING");?>");
+			jQuery('#myModalBody').html("<p><?php echo JText::_("COM_DIGICOM_CART_ACCEPT_TERMS_CONDITIONS_REQUIRED_NOTICE");?></p>");
 			jQuery('#myModal').modal('show');
 			return false;
 		}
@@ -536,8 +536,8 @@ $items = $this->items;
 	}
 	function ShowPaymentAlert()
 	{
-		jQuery('#myModalLabel').html("<?php echo JText::_("DIGI_ATENTION");?>");
-		jQuery('#myModalBody').html("<p><?php echo JText::_("DIGI_PAYMENT_REQUIRED");?></p>");
+		jQuery('#myModalLabel').html("<?php echo JText::_("COM_DIGICOM_WARNING");?>");
+		jQuery('#myModalBody').html("<p><?php echo JText::_("COM_DIGICOM_PAYMENT_REQUIRED");?></p>");
 		jQuery('#myModal').modal('show');
 	}
 
