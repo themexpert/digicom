@@ -440,17 +440,17 @@ class DigiComHelperDigiCom extends JHelperContent{
 
 		$remain = $promo->codelimit - $promo->used;
 		if (($timeend > $now || $timeend == $nullDate )&& ($limit == 0 || $used < $limit) && $published == "1") {
-			$status = JText::_("HELPERACTIVE");
+			$status = JText::_("COM_DIGICOM_ACTIVE");
 		} else if ($published == "0") {
-			$status = "<span style='color:red'>".(JText::_("HELPERUNPUBLISHED"))." </span>";
+			$status = "<span style='color:red'>".(JText::_("COM_DIGICOM_UNPUBLISHED"))." </span>";
 		} else if ($limit >0  && $used  >= $limit) {
-			$status = "<span style='color:red'>".(JText::_("HELPEREXPIRE")).": (".(JText::_("Amount")).")</span>";
+			$status = "<span style='color:red'>".(JText::_("COM_DIGICOM_EXPIRED")).": (".(JText::_("Amount")).")</span>";
 		} else if ($timeend != $nullDate && $timeend < $now && ($remain < 1 && $promo->codelimit > 0)) {
-			$status = "<span style='color:red'>".(JText::_("HELPEREXPIRE")).": (".(JText::_("Date"))." ,".(JText::_("Amount")).")</span>";
+			$status = "<span style='color:red'>".(JText::_("COM_DIGICOM_EXPIRED")).": (".(JText::_("Date"))." ,".(JText::_("Amount")).")</span>";
 		} else if ($timeend < $now && $timeend != $nullDate){
-			$status = "<span style='color:red'>".(JText::_("HELPEREXPIRE")).": (".(JText::_("Date")).")</span>";
+			$status = "<span style='color:red'>".(JText::_("COM_DIGICOM_EXPIRED")).": (".(JText::_("Date")).")</span>";
 		} else {
-			$status = "<span style='color:red'>".(JText::_("HELPERPROMOERROR"))."</span>";
+			$status = "<span style='color:red'>".(JText::_("COM_DIGICOM_DISCOUNT_CODE_ERROR"))."</span>";
 		}
 	}
 	

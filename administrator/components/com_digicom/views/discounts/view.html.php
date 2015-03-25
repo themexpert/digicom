@@ -50,12 +50,12 @@ class DigiComViewDiscounts extends JViewLegacy
 		$text = $isNew?JText::_('New'):JText::_('Edit');
 		JHtml::_( 'behavior.modal' );
 
-		JToolBarHelper::title(JText::_('COM_DIGICOM_VIDEO_PROMO_MANAGER').":<small>[".$text."]</small>");
+		JToolBarHelper::title(JText::_('COM_DIGICOM_DISCOUNTS_TOOLBAR_TITLE').":<small>[".$text."]</small>");
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout
 		$layout = new JLayoutFile('toolbar.title');
 		$title=array(
-			'title' => JText::_( 'COM_DIGICOM_VIDEO_PROMO_MANAGER' ),
+			'title' => JText::_( 'COM_DIGICOM_DISCOUNTS_TOOLBAR_TITLE' ),
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
@@ -120,13 +120,13 @@ class DigiComViewDiscounts extends JViewLegacy
 	*/
 	protected function addToolbar()
 	{
-		JToolBarHelper::title(JText::_('COM_DIGICOM_VIDEO_PROMO_MANAGER'), 'generic.png');
+		JToolBarHelper::title(JText::_('COM_DIGICOM_DISCOUNTS_TOOLBAR_TITLE'), 'generic.png');
 
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout
 		$layout = new JLayoutFile('toolbar.title');
 		$title=array(
-			'title' => JText::_( 'COM_DIGICOM_VIDEO_PROMO_MANAGER' ),
+			'title' => JText::_( 'COM_DIGICOM_DISCOUNTS_TOOLBAR_TITLE' ),
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');

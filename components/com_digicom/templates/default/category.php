@@ -56,7 +56,7 @@ $column = $this->category->params->get('category_cols',3);
 				 if($item->price > 0){
 					 $price = DigiComSiteHelperDigicom::format_price2($item->price, $this->configs->get('currency','USD'), true, $this->configs);
 				  }else{
-				  	$price = '<span class="label label-success">'.JText::_('COM_DIGICOM_FREE_PRODUCT_PRICE').'</span>';
+				  	$price = '<span class="label label-success">'.JText::_('COM_DIGICOM_PRODUCT_PRICE_FREE').'</span>';
 				  }
 				  $link = JRoute::_(DigiComHelperRoute::getProductRoute($item->id, $item->catid, $item->language));
 				  ?>
@@ -72,7 +72,7 @@ $column = $this->category->params->get('category_cols',3);
 						<?php endif; ?>
 						
 						<?php if(!empty($item->bundle_source)):?>
-							<span class="bundle-label label label-warning"><?php echo JText::sprintf('COM_DIGICOM_CATEGORY_PRODUCT_TYPE_BUNDLE');?></span>
+							<span class="bundle-label label label-warning"><?php echo JText::sprintf('COM_DIGICOM_PRODUCT_TYPE_BUNDLE');?></span>
 						<?php endif; ?>
 
 					  	<!-- Product Name & Intro text -->
@@ -100,7 +100,7 @@ $column = $this->category->params->get('category_cols',3);
 							<!-- Price & Readmore Button -->
 		                    <div class="clearfix">
 								<span class="price"><?php echo $price; ?></span>
-		                    	<a href="<?php echo $link;?>" class="btn btn-primary read-more"><?php echo JText::_('COM_DIGICOM_PRODUCT_DETAILS'); ?></a>
+		                    	<a href="<?php echo $link;?>" class="btn btn-primary read-more"><?php echo JText::_('COM_DIGICOM_BUTTON_DETAILS'); ?></a>
 		                    </div> 
 	                  	</div>
 	                </div>

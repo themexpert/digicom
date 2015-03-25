@@ -90,93 +90,93 @@ function submitbutton(pressbutton) {
 			'active'		=> 'general-settings'
 		);
 		echo JHtml::_('bootstrap.startTabSet', 'promo_settings', $options);
-		echo JHtml::_('bootstrap.addTab', 'promo_settings', 'general-settings', JText::_('VIEWPROMOPROMOCODESETTINGS') );
+		echo JHtml::_('bootstrap.addTab', 'promo_settings', 'general-settings', JText::_('COM_DIGICOM_DISCOUNT_TAB_TITLE_DISCOUNT_CODE_SETTINGS') );
 		?>
 		<div class="row-fluid">
 			<div class="span8">
-					<h3><?php echo JText::_('VIEWPROMOPROMOCODESETTINGS');?></h3>
+					<!--<h3><?php echo JText::_('COM_DIGICOM_DISCOUNT_TAB_TITLE_DISCOUNT_CODE_SETTINGS');?></h3>-->
 					<div class="form-horizontal">
 						<div class="control-group">
-							<label for="" class="control-label"><?php echo JText::_("VIEWPROMOTITLE");?></label>
+							<label for="" class="control-label"><?php echo JText::_("JGLOBAL_TITLE");?></label>
 							<div class="controls">
 								<?php echo $this->form->getInput('title'); ?>
 								<?php
-									echo JHTML::tooltip(JText::_("COM_DIGICOM_PROMOTITLE_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
+									echo JHTML::tooltip(JText::_("COM_DIGICOM_DICOUNT_TITLE_DESC"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
 								?>
 							</div>
 						</div>
 
 						<div class="control-group">
-							<label for="" class="control-label"><?php echo JText::_("VIEWPROMOCODE");?></label>
+							<label for="" class="control-label"><?php echo JText::_("COM_DIGICOM_DISCOUNT_CODE");?></label>
 							<div class="controls">
 								<?php echo $this->form->getInput('code'); ?>
 						<?php
-							echo JHTML::tooltip(JText::_("COM_DIGICOM_PROMOCODE_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
+							echo JHTML::tooltip(JText::_("COM_DIGICOM_DISCOUNT_CODE_DESC"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
 						?>
 							</div>
 						</div>
 
 						<div class="control-group">
-							<label for="" class="control-label"><?php echo JText::_("VIEWPROMOUSAGELIMIT");?></label>
+							<label for="" class="control-label"><?php echo JText::_("COM_DIGICOM_DISCOUNT_CODE_USAGE_LIMIT");?></label>
 							<div class="controls">
 								<?php echo $this->form->getInput('codelimit'); ?>
 						<?php
-							echo JHTML::tooltip(JText::_("COM_DIGICOM_PROMOUSAGELIMIT_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
+							echo JHTML::tooltip(JText::_("COM_DIGICOM_DISCOUNT_CODE_USAGE_LIMIT_DESC"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
 						?>
 							</div>
 						</div>
 
 						<div class="control-group">
-							<label for="" class="control-label"><?php echo JText::_("VIEWPROMODISCAMOUNT");?></label>
+							<label for="" class="control-label"><?php echo JText::_("COM_DIGICOM_DISCOUNT_AMOUNT");?></label>
 							<div class="controls">
 								<?php echo $this->form->getInput('amount'); ?>
 								<?php echo $this->form->getInput('promotype'); ?>
 								
 						&nbsp;
 						<?php
-							echo JHTML::tooltip(JText::_("COM_DIGICOM_PROMODISCOUNT_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
+							echo JHTML::tooltip(JText::_("COM_DIGICOM_DISCOUNT_AMOUNT_DESC"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
 						?>
 							</div>
 						</div>
 
 						<div class="control-group">
-							<label for="" class="control-label"><?php echo JText::_("VIEWPROMOSTARTPUBLISH");?></label>
+							<label for="" class="control-label"><?php echo JText::_("COM_DIGICOM_DISCOUNT_CODE_START_PUBLISHIING");?></label>
 							<div class="controls">
 								<?php echo $this->form->getInput('codestart'); ?>
 								<?php
-									echo JHTML::tooltip(JText::_("COM_DIGICOM_PROMOSTARTPUB_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
+									echo JHTML::tooltip(JText::_("COM_DIGICOM_DISCOUNT_CODE_START_PUBLISHIING_DESC"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
 								?>
 							</div>
 						</div>
 
 						<div class="control-group">
-							<label for="" class="control-label"><?php echo JText::_("VIEWPROMOENDPUB");?></label>
+							<label for="" class="control-label"><?php echo JText::_("COM_DIGICOM_DISCOUNT_CODE_END_PUBLISHIING");?></label>
 							<div class="controls">
 								<?php echo $this->form->getInput('codeend'); ?>
 								<?php
-									echo JHTML::tooltip(JText::_("COM_DIGICOM_PROMOENDPUB_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
+									echo JHTML::tooltip(JText::_("COM_DIGICOM_DISCOUNT_CODE_END_PUBLISHIING_DESC"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
 								?>
 							</div>
 						</div>
 
 						<div class="control-group">
-							<label for="" class="control-label"><?php echo JText::_("VIEWPROMOPUBLISHING");?></label>
+							<label for="" class="control-label"><?php echo JText::_("JSTATUS");?></label>
 								
 							<div class="controls">
 								<?php echo $this->form->getInput('published'); ?>
 								<?php
-									echo JHTML::tooltip(JText::_("COM_DIGICOM_PROMOPUBLISHING_TIP"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
+									echo JHTML::tooltip(JText::_("COM_DIGICOM_DISCOUNT_CODE_STATUS_DESC"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
 								?>
 							</div>
 						</div>
 
 						<div class="control-group">
-							<label for="" class="control-label"><?php echo JText::_("VIEWPROMOVALIDFOR");?></label>
+							<label for="" class="control-label"><?php echo JText::_("COM_DIGICOM_DISCOUNT_CODE_APPLY_ON");?></label>
 							<div class="controls">
-								<?php echo JText::_("VIEWPROMOVALIDFORNEW"); ?> 
+								<?php echo JText::_("COM_DIGICOM_DISCOUNT_CODE_APPLY_ON_NEW"); ?> 
 								<?php echo $this->form->getInput('validfornew'); ?>
 
-								<?php echo JText::_("VIEWPROMOVALIDFORRENEWAL"); ?> 
+								<?php echo JText::_("COM_DIGICOM_DISCOUNT_CODE_APPLY_ON_RENEWAL"); ?> 
 								<?php echo $this->form->getInput('validforrenewal'); ?>
 							
 							</div>
@@ -186,18 +186,14 @@ function submitbutton(pressbutton) {
 			</div>
 
 			<div class="span4 well">
-				<div class="control-label">
-					<div class="control-label">
-						<label class="editlinktip hasTip" title="<?php echo JText::_('COM_DIGICOM_CART_FOR_ENTIRE_TIP'); ?>" ><?php echo JText::_('COM_DIGICOM_CART_FOR_ENTIRE_LABEL');?>:</label>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('discount_enable_range'); ?>
-					</div>
+				<div class="clearfix">
+					<label class="editlinktip hasTip" title="<?php echo JText::_('COM_DIGICOM_DISCOUNT_CODE_ENABLE_FOR_ALL_PRODUCTS_LABEL_DESC'); ?>" ><?php echo JText::_('COM_DIGICOM_DISCOUNT_CODE_ENABLE_FOR_ALL_PRODUCTS_LABEL');?></label>
+					<?php echo $this->form->getInput('discount_enable_range'); ?>
 				</div>
 				
 				<div id="discount_enable_range_product"<?php echo (($this->item->discount_enable_range == '1' || $this->item->discount_enable_range === null) ? " class='hide'":"");?>>
 				
-					<h3><?php echo JText::_( 'VIEWPROMOPROMOCODEPRODUCTS_TIP' ); ?></h3>
+					<h3><?php echo JText::_( 'COM_DIGICOM_DISCOUNT_CODE_PRODUCT_RESTRICTION_TITLE' ); ?></h3>
 
 					<table id="productincludes" class="table table-striped table-hover" id="productList">
 						<thead>
@@ -233,7 +229,7 @@ function submitbutton(pressbutton) {
 						<a class="btn btn-small btn-primary modal" title="Products" href="<?php echo $link; ?>" 
 						rel="{handler: 'iframe', size: {x: 800, y: 500}}">
 							<i class="icon-file-add"></i> 
-							<?php echo JText::_('VIEWPRODADDPRODUCT'); ?>
+							<?php echo JText::_('COM_DIGICOM_ADD_PRODUCT'); ?>
 						</a>
 
 					</div>
@@ -247,7 +243,7 @@ function submitbutton(pressbutton) {
 
 
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('VIEWPROMOSTATS');?></legend>
+			<legend><?php echo JText::_('COM_DIGICOM_DISCOUNT_REPORTS');?></legend>
 			<?php
 			if ($this->item->codeend != $nullDate) {
 				$period = $this->item->codeend - time(); //$promo->codestart;
@@ -258,24 +254,24 @@ function submitbutton(pressbutton) {
 
 			} else {
 				$period = 0;// $promo->codeend - time(); //$promo->codestart;
-				$days = JText::_("VIEWPROMOUNLIM");//(int ) ($period / (3600 * 24)) ;
-				$left = JText::_("VIEWPROMOUNLIM");//$period % (3600 * 24);
-				$hours = JText::_("VIEWPROMOUNLIM");//(int ) ($left / 3600 );
-				$mins = JText::_("VIEWPROMOUNLIM");//(int )(($left - $hours*3600)/60) ;//$left % (3600 );
+				$days = JText::_("COM_DIGICOM_UNLIMITED");//(int ) ($period / (3600 * 24)) ;
+				$left = JText::_("COM_DIGICOM_UNLIMITED");//$period % (3600 * 24);
+				$hours = JText::_("COM_DIGICOM_UNLIMITED");//(int ) ($left / 3600 );
+				$mins = JText::_("COM_DIGICOM_UNLIMITED");//(int )(($left - $hours*3600)/60) ;//$left % (3600 );
 			}
-			$codelimit = ($this->item->codelimit != 0)?$this->item->codelimit:JText::_("VIEWPROMOINF");
-			$codeleft = ($this->item->codelimit != 0)?($this->item->codelimit - $this->item->used):JText::_("VIEWPROMOINF");
+			$codelimit = ($this->item->codelimit != 0)?$this->item->codelimit:JText::_("COM_DIGICOM_INFINITE");
+			$codeleft = ($this->item->codelimit != 0)?($this->item->codelimit - $this->item->used):JText::_("COM_DIGICOM_INFINITE");
 			?>
 			<table class="table" border="0">
 				<tr>
-					<td><h3><?php echo JText::_("VIEWPROMOTOTALUSES")." <small>".$codelimit;?></small></h3></td>
-					<td><h3><?php echo JText::_("VIEWPROMOREMUSES")." <small>".$codeleft;?></small></h3></td>
-					<td><h3><?php echo JText::_("VIEWPROMOUSED")." <small>".$this->item->used;?></small></h3></td>
+					<td><h3><?php echo JText::_("COM_DIGICOM_DISCOUNT_REPORTS_TOTAL_USAGES")." <small>".$codelimit;?></small></h3></td>
+					<td><h3><?php echo JText::_("COM_DIGICOM_DISCOUNT_REPORTS_REMAINING_USAGES")." <small>".$codeleft;?></small></h3></td>
+					<td><h3><?php echo JText::_("COM_DIGICOM_DISCOUNT_REPORTS_TOTAL_USED")." <small>".$this->item->used;?></small></h3></td>
 				</tr>
 				<tr>
-					<td><?php echo JText::_("VIEWPROMOTTL") ." ". $days ." ". JText::_("VIEWPROMOTTLDAYS"); ?></td>
-					<td><?php echo $hours ." ". JText::_("VIEWPROMOTTLHOWRS"); ?></td>
-					<td><?php echo $mins ." ". JText::_("VIEWPROMOTTLMIN"); ?></td>
+					<td><?php echo JText::_("COM_DIGICOM_DISCOUNT_REPORTS_TIME_UNTIL_EXPIRE") ." ". $days ." ". JText::_("COM_DIGICOM_DAYS"); ?></td>
+					<td><?php echo $hours ." ". JText::_("COM_DIGICOM_HOURS"); ?></td>
+					<td><?php echo $mins ." ". JText::_("COM_DIGICOM_MINUTES"); ?></td>
 				</tr>
 
 			</table>

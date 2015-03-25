@@ -25,30 +25,30 @@ if($this->configs->get('afteradditem',0) == "2"){
 
 		<?php if(!$this->item->id): ?>
 		<div class="alert alert-warning">
-			<p><?php echo JText::_('DSPRODNOTAVAILABLE'); ?></p>
-			<p><a href="<?php echo JRoute::_(DigiComHelperRoute::getCategoryRoute($this->item->catid, $this->item->language)); ?>"><?php echo JText::_("DSCONTINUESHOPING"); ?></a></p>
+			<p><?php echo JText::_('COM_DIGICOM_PRODUCT_NOT_AVAILABLE_NOTICE'); ?></p>
+			<p><a href="<?php echo JRoute::_(DigiComHelperRoute::getCategoryRoute($this->item->catid, $this->item->language)); ?>"><?php echo JText::_("COM_DIGICOM_CONTINUE_SHOPPING"); ?></a></p>
 		</div>
 		<?php return true; ?>
 		<?php endif; ?>
 		
 		<?php if(($this->item->publish_up > $date_today) || ($this->item->publish_down != 0 && $this->item->publish_down < $date_today)): ?>
 		<div class="alert alert-warning">
-			<?php echo JText::_('COM_DIGICOM_PRODUCT_PUBLISH_DOWN'); ?>
+			<?php echo JText::_('COM_DIGICOM_PRODUCT_PUBLISH_DOWN_NOTICE'); ?>
 		</div>
 		<?php return true; ?>
 		<?php endif; ?>
 
 		<?php if($this->item->state == 0): ?>
 		<div class="alert alert-warning">
-			<p><?php echo JText::_('DIGI_PRODUCT_UNPUBLISHED'); ?></p>
-			<p><a href="<?php echo JRoute::_("index.php?option=com_digicom&view=categories&id=0"); ?>"><?php echo JText::_("DIGI_HOME_PAGE"); ?></a></p>
+			<p><?php echo JText::_('COM_DIGICOM_PRODUCT_UNPUBLISHED_NOTICE'); ?></p>
+			<p><a href="<?php echo JRoute::_("index.php?option=com_digicom&view=categories&id=0"); ?>"><?php echo JText::_("COM_DIGICOM_HOMEPAGE"); ?></a></p>
 		</div>
 		<?php return true; ?>
 		<?php endif; ?>
 
 		<?php
 
-		$addtocart = '<input type="submit" value="'.(JText::_("DSADDTOCART")).'" class="btn"/> ';
+		$addtocart = '<input type="submit" value="'.(JText::_("COM_DIGICOM_ADD_TO_CART")).'" class="btn"/> ';
 		?>
 
 		<form name="prod" id="product-form" action="<?php echo JRoute::_('index.php?option=com_digicom&view=cart');?>" method="post" style="width:100%;">
@@ -61,7 +61,7 @@ if($this->configs->get('afteradditem',0) == "2"){
 						if($this->item->price > 0){
 							 $price = '<span>'.JText::_('COM_DIGICOM_PRODUCT_PRICE').": ".DigiComSiteHelperDigicom::format_price2($this->item->price, $conf->get('currency','USD'), true, $conf).'</span>';
 						  }else{
-						  	$price = '<span>'.JText::_('COM_DIGICOM_FREE_PRODUCT_PRICE').'</span>';
+						  	$price = '<span>'.JText::_('COM_DIGICOM_PRODUCT_PRICE_FREE').'</span>';
 						  }
 					?>
 					<?php if(!empty($this->item->images)): ?>
@@ -81,7 +81,7 @@ if($this->configs->get('afteradditem',0) == "2"){
 					
 					<?php if(!empty($this->item->bundle_source)):?>
 					<div class="bundled-products">
-						<h3><?php echo JText::_('COM_DIGICOM_PRODUCT_BUNDLE_ITEMS');?></h3>
+						<h3><?php echo JText::_('COM_DIGICOM_PRODUCT_BUNDLE_ITEMS_TITLE');?></h3>
 						<ul>
 							<?php foreach($this->item->bundleitems as $key=>$bitem): 
 								  $link = JRoute::_(DigiComHelperRoute::getProductRoute($bitem->id,$bitem->catid, $bitem->language));
@@ -105,13 +105,13 @@ if($this->configs->get('afteradditem',0) == "2"){
 						<div class="addtocart-bar">
 							
 							<?php if($conf->get('afteradditem',2) == "2") {	?>
-								<button type="button" class="btn btn-warning" onclick="javascript:createPopUp(<?php echo $this->item->id; ?>, <?php echo $this->item->catid; ?>, '<?php echo JURI::root(); ?>', '', '', <?php echo $cart_itemid; ?>, '<?php echo JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$cart_itemid); ?>');"><i class="icon-cart"></i> <?php echo JText::_("DSADDTOCART");?></button>
+								<button type="button" class="btn btn-warning" onclick="javascript:createPopUp(<?php echo $this->item->id; ?>, <?php echo JRequest::getVar("cid", "0"); ?>, '<?php echo JURI::root(); ?>', '', '', <?php echo $cart_itemid; ?>, '<?php echo JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$cart_itemid); ?>');"><i class="icon-cart"></i> <?php echo JText::_("COM_DIGICOM_ADD_TO_CART");?></button>
 							<?php }else { ?>
-								<button type="submit" class="btn btn-warning"><i class="icon-cart"></i> <?php echo JText::_('DSADDTOCART'); ?></button>
+								<button type="submit" class="btn btn-warning"><i class="icon-cart"></i> <?php echo JText::_('COM_DIGICOM_ADD_TO_CART'); ?></button>
 							<?php } ?>
 
 							<?php if($conf->get('show_quantity',0) == "1") {	?>
-								<input id="quantity_<?php echo $this->item->id; ?>" type="number" name="qty" min="1" class="input-small" value="1" size="2" placeholder="<?php echo JText::_('DSQUANTITY'); ?>">
+								<input id="quantity_<?php echo $this->item->id; ?>" type="number" name="qty" min="1" class="input-small" value="1" size="2" placeholder="<?php echo JText::_('COM_DIGICOM_QUANTITY'); ?>">
 							<?php } ?>
 						
 					<?php endif; ?>

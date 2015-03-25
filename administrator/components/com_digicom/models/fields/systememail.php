@@ -51,7 +51,7 @@ class JFormFieldSystemEmail extends JFormField
 		$html = array();
 
 		// Description
-		$html[] = '<p class="alert alert-info">' . JText::_('COM_DIGICOM_SYSTEM_EMAIL_DESCRIPTION') . '</p>';
+		$html[] = '<p class="alert alert-info">' . JText::_('COM_DIGICOM_SETTINGS_SYSTEM_EMAIL_DESCRIPTION') . '</p>';
 
 		// Begin tabs
 		$html[] = '<div id="email_settings-sliders" class="tabbable tabs-left">';
@@ -98,13 +98,13 @@ class JFormFieldSystemEmail extends JFormField
 			$html[] = '<div class="control-group ">';
 
 			$html[] = '<div class="control-label">';
-			$html[] = '<label id="jform_subject-lbl" for="jform_subject" class="required" title="'.JText::_('COM_DIGICOM_EMAIL_SUBJECT_DESC').'">';
-			$html[] =  JText::_('COM_DIGICOM_EMAIL_SUBJECT_LABEL');
+			$html[] = '<label id="jform_subject-lbl" for="jform_subject" class="required" title="'.JText::_('COM_DIGICOM_SETTINGS_SYSTEM_EMAIL_SUBJECT_LABEL_DESC').'">';
+			$html[] =  JText::_('COM_DIGICOM_SETTINGS_SYSTEM_EMAIL_SUBJECT_LABEL');
 			$html[] =  '</label>';
 			$html[] =  '</div>';
 			
 			$html[] =  '<div class="controls">';
-			$html[] =  '<input type="text" class="input-xxlarge input-large-text required" value="'.$this->value[$group->value]['subject'].'" name="'.$this->name.'['. $group->value .'][subject]" size="60">';
+			$html[] =  '<input type="text" class="input-xxlarge required" value="'.$this->value[$group->value]['subject'].'" name="'.$this->name.'['. $group->value .'][subject]" size="60">';
 			$html[] =  '</div>';
 
 			$html[] =  '</div>';
@@ -114,8 +114,8 @@ class JFormFieldSystemEmail extends JFormField
 			$html[] = '<div class="control-group ">';
 
 			$html[] = '<div class="control-label">';
-			$html[] = '<label id="jform_body-lbl" for="jform_body" class="required" title="'.JText::_('COM_DIGICOM_EMAIL_BODY_DESC').'">';
-			$html[] =  JText::_('COM_DIGICOM_EMAIL_BODY_LABEL');
+			$html[] = '<label id="jform_body-lbl" for="jform_body" class="required" title="'.JText::_('COM_DIGICOM_SETTINGS_SYSTEM_EMAIL_BODY_LABEL_DESC').'">';
+			$html[] =  JText::_('COM_DIGICOM_SETTINGS_SYSTEM_EMAIL_BODY_LABEL');
 			$html[] =  '</label>';
 			$html[] =  '</div>';
 			
@@ -137,7 +137,7 @@ class JFormFieldSystemEmail extends JFormField
 		$html[] = '</div>'; //end tab
 
 		$html[] = '<div class="alert">';
-		$html[] = JText::_('COM_DIGICOM_EMAIL_BOTTOM_NOTICE');
+		$html[] = JText::_('COM_DIGICOM_SETTINGS_EMAIL_BOTTOM_NOTICE');
 		$html[] = '</div>';
 
 		return implode("\n", $html);
@@ -168,8 +168,8 @@ class JFormFieldSystemEmail extends JFormField
 		$options = new StdClass();
 		foreach($emailtype as $key=>$email){
 			$options->$email = new StdClass();
-			$options->$email->text = JText::_('COM_DIGICOM_EMAIL_'.strtoupper($email).'_LABEL');
-			$options->$email->desc = JText::_('COM_DIGICOM_EMAIL_'.strtoupper($email).'_DESC');
+			$options->$email->text = JText::_('COM_DIGICOM_SETTINGS_EMAIL_'.strtoupper($email).'_LABEL');
+			$options->$email->desc = JText::_('COM_DIGICOM_SETTINGS_EMAIL_'.strtoupper($email).'_DESC');
 			$options->$email->value = $email;
 		}
 

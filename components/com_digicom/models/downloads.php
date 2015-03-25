@@ -155,8 +155,8 @@ class DigiComModelDownloads extends JModelList
 							$item->filesize = DigiComSiteHelperDigiCom::FileSizeConvert($filesize);
 							$item->filemtime = date("d F Y", filemtime($fileLink));
 						}else{
-							$item->filesize = JText::_('COM_DIGICOM_FILE_DONT_EXIST');
-							$item->filemtime = JText::_('COM_DIGICOM_FILE_DONT_EXIST');
+							$item->filesize = JText::_('COM_DIGICOM_FILE_DOESNT_EXIST');
+							$item->filemtime = JText::_('COM_DIGICOM_FILE_DOESNT_EXIST');
 						}
 						
 					}

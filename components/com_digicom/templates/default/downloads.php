@@ -25,7 +25,7 @@ if($product_itemid != "0"){
 	 
 	<?php DigiComSiteHelperDigicom::loadModules('digicom_toolber'); ?>
 	
-	<h2><?php echo JText::_("COM_DIGICOM_MY_ACCOUNT_DOWNLOAD_TITLE"); ?></h2>
+	<h2 class="digi-page-title"><?php echo JText::_("COM_DIGICOM_DOWNLOADS_PAGE_TITLE"); ?></h2>
 	<div class="accordion" id="">
 		<?php foreach($this->products as $key=>$item): ?>
 		<div class="accordion-group">
@@ -41,11 +41,11 @@ if($product_itemid != "0"){
 					<table class="table table-bordered">
 						<thead>
 							<tr>
-								<th><?php echo JText::_('COM_DIGICOM_FILE_NAME'); ?></th>
-								<th><?php echo JText::_('COM_DIGICOM_FILE_SIZE'); ?></th>
-								<th><?php echo JText::_('COM_DIGICOM_FILE_UPDATES'); ?></th>
-								<th><?php echo JText::_('COM_DIGICOM_FILE_HITS'); ?></th>
-								<th><?php echo JText::_('COM_DIGICOM_FILE_DOWNLOAD_ACTION'); ?></th>
+								<th><?php echo JText::_('COM_DIGICOM_DOWNLOADS_FILE_NAME'); ?></th>
+								<th><?php echo JText::_('COM_DIGICOM_SIZE'); ?></th>
+								<th><?php echo JText::_('COM_DIGICOM_DOWNLOADS_FILE_UPDATED'); ?></th>
+								<th><?php echo JText::_('JGLOBAL_HITS'); ?></th>
+								<th><?php echo JText::_('COM_DIGICOM_ACTION'); ?></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -56,7 +56,7 @@ if($product_itemid != "0"){
 								<td><?php echo $file->filemtime; ?></td>
 								<td><?php echo $file->hits; ?></td>
 								<td>
-									<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=downloads&task=downloads.makeDownload&downloadid='.$file->downloadid.'&Itemid='.$Itemid);?>" class="btn btn-warning btn-mini"><?php echo JText::_('COM_DIGICOM_FILE_DOWNLOAD'); ?></a>	
+									<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=downloads&task=downloads.makeDownload&downloadid='.$file->downloadid.'&Itemid='.$Itemid);?>" class="btn btn-warning btn-mini"><?php echo JText::_('COM_DIGICOM_DOWNLOAD'); ?></a>
 								</td>
 							</tr>
 							<?php endforeach; ?>

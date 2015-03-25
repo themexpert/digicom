@@ -20,7 +20,7 @@
 		<field name="aftertax" type="hidden" />
 		
 		<field id="discount_enable_range" name="discount_enable_range" type="radio" class="btn-group" size="1" default="1" >
-			<option value="1"> JALL</option>
+			<option value="1"> JYES</option>
 			<option value="0"> JNO</option>
 		</field>
 
