@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 		<input type="hidden" name="business" value="<?php echo $vars->business ?>" />
 		<input type="hidden" name="custom" value="<?php echo $vars->order_id ?>" />
 		<input type="hidden" name="item_name" value="<?php echo $vars->item_name ?>" />
-		<input type="hidden" name="return" value="<?php echo $vars->return ?>" />
+		<input type="hidden" name="return" value="<?php echo $vars->url ?>" />
 		<input type="hidden" name="cancel_return" value="<?php echo $vars->cancel_return ?>" />
 		<input type="hidden" name="notify_url" value="<?php echo $vars->notify_url ?>" />
 		<input type="hidden" name="currency_code" value="<?php echo $vars->currency_code ?>" />
