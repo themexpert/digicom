@@ -75,12 +75,12 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 
 					        {
 					            label: "Monthly Report",
-					            fillColor: "rgba(151,187,205,0.2)",
-					            strokeColor: "rgba(151,187,205,1)",
-					            pointColor: "rgba(151,187,205,1)",
-					            pointStrokeColor: "#555",
-					            pointHighlightFill: "#555",
-					            pointHighlightStroke: "rgba(151,187,205,1)",
+					            fillColor: "#e6f3f9",
+					            strokeColor: "#24aeed",
+					            pointColor: "#24aeed",
+					            pointStrokeColor: "#24aeed",
+					            pointHighlightFill: "#e6f3f9",
+					            pointHighlightStroke: "24aeed",
 					            data: [<?php echo $monthlyPrice; ?>]
 					        }
 					    ]
@@ -129,7 +129,7 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 								</strong>
 							</td>
 							<td><span class="small pull-right"><?php echo DigiComHelperDigiCom::format_price($order->amount, $order->currency, true, $configs); ?></span></td>
-							<td><span class="small"><i class="icon-calendar"></i> <?php echo date("Y-m-d", $order->order_date); ?></span></td>
+							<td><span class="small"><?php echo date("Y-m-d", $order->order_date); ?></span></td>
 						</tr>
 						
 					<?php endforeach; ?>
@@ -148,7 +148,7 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 							<th>Name</th>
 							<th>Type</th>
 							<th>Price</th>
-							<th>Num Sold</th>
+							<th>Total Sold</th>
 						</tr>
 						</thead>
 						<?php foreach($this->most_sold AS $product) : ?>
