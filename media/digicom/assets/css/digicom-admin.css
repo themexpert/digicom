@@ -159,11 +159,9 @@ body.com_digicom .btn {
 }
 body.com_digicom .btn-primary {
   background: #24aeed;
-  border-color: #888;
 }
 body.com_digicom .btn-success {
   background: #4caf50;
-  border-color: #888;
 }
 body.com_digicom .btn-warning {
   background: #fbc02d;
@@ -172,6 +170,14 @@ body.com_digicom .btn-warning {
 body.com_digicom .btn-danger {
   background: #d32f2f;
   border-color: #888;
+}
+body.com_digicom .btn-group .newproduct {
+  border-radius: 0;
+}
+body.com_digicom .product-thumb {
+  width: 48px;
+  height: 48px;
+  overflow: hidden;
 }
 body.com_digicom header.header {
   display: none;

@@ -178,7 +178,9 @@ JFactory::getDocument()->addScriptDeclaration('
 						</td>
 						<td align="center">
 							<?php if(!empty($item->images)): ?>
-							<img src="<?php echo JUri::root() . $item->images; ?>" height="48" width="48">
+								<div class="product-thumb">
+									<img src="<?php echo JUri::root() . $item->images; ?>" >
+								</div>
 							<?php endif; ?>
 						</td>
 						<td class="has-context">
