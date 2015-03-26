@@ -1019,12 +1019,17 @@ class DigiComModelCart extends JModelItem
 	}
 	
 	function updateOrder($order_id,$result,$data,$pg_plugin){
-		//	$this->updateOrder($order_id,$result,$data);
-		$params = array($pg_plugin,$result,$data);
 		$table = $this->getTable('Order');
 		$table->load($order_id);
-		$table->comment = $result['comment'];
-		$table->params = json_encode($params);
+		$table->comment = $table->comment. ' '. $result['comment'];
+
+		$orderparams = json_decode($table->params);
+		$orderparams->paymentinfo = array();
+		$orderparams->paymentinfo[] = $pg_plugin;
+		$orderparams->paymentinfo[] = $result;
+		$orderparams->paymentinfo[] = $data;
+
+		$table->params = json_encode($orderparams);
 		$table->store();
 		return true;
 	}

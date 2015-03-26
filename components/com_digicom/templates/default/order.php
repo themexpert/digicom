@@ -68,6 +68,11 @@ if ($this->order->id < 1){
 				<td><strong><?php echo JText::_('COM_DIGICOM_AMOUNT_PAID'); ?></strong></td>
 				<td><?php echo DigiComSiteHelperDigiCom::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs);?></td>
 			</tr>
+			
+			<tr>
+				<td><strong><?php echo JText::_('COM_DIGICOM_ORDER_PAYMENT_INFORMATION'); ?></strong></td>
+				<td><p class="alert alert-info"><?php echo $order->comment;?></p></td>
+			</tr>
 
 		</tbody>
 	</table>
