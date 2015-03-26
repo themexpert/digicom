@@ -20,8 +20,8 @@ $max_upload = ini_get('upload_max_filesize');
 <?php else : ?>
 	<div id="j-main-container" class="">
 <?php endif;?>
-		<div class="alert alert-info">
-			<?php echo JText::sprintf("COM_DIGICOM_FILE_MANAGER_HEADER_NOTICE",ini_get('upload_max_filesize')); ?>
+		<div class="dg-alert dg-alert-with-icon">
+			<span class="icon-flag"></span><?php echo JText::sprintf("COM_DIGICOM_FILE_MANAGER_HEADER_NOTICE",ini_get('upload_max_filesize')); ?>
 		</div>
 					<script type="text/javascript">
 						jQuery(document).ready(function() {

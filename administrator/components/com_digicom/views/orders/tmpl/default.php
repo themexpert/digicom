@@ -50,8 +50,8 @@ Joomla.submitbutton = function (pressbutton) {
 <div id="j-main-container" class="">
 <?php endif;?>
 
-	<div class="alert alert-info">
-		<?php echo JText::_("COM_DIGICOM_ORDERS_HEADER_NOTICE"); ?>
+	<div class="dg-alert dg-alert-with-icon">
+		<span class="icon-support"></span><?php echo JText::_("COM_DIGICOM_ORDERS_HEADER_NOTICE"); ?>
 	</div>
 	<form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&view=orders'); ?>" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
 		<div class="js-stools">
