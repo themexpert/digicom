@@ -65,3 +65,4 @@ config.codekit
 /index.php
 /joomla.xml
 /*.txt
+/*.dist
