@@ -76,6 +76,11 @@ if($this->configs->get('afteradditem',0) == "2"){
 						<?php endif; ?>
 					</h1>
 					
+					<?php if (!empty($this->item->tags->itemTags)) : ?>
+						<?php $this->item->tagLayout = new JLayoutFile('joomla.content.tags'); ?>
+						<?php echo $this->item->tagLayout->render($this->item->tags->itemTags); ?>
+					<?php endif; ?>
+
 					<p class="short-desc"><?php echo $this->item->description; ?></p>
 					<div class="description"><?php echo $this->item->fulldescription; ?></div>
 					
