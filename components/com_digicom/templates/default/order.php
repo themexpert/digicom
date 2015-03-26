@@ -71,7 +71,11 @@ if ($this->order->id < 1){
 
 		</tbody>
 	</table>
-
+	<?php if(strtolower($order->status) === 'pending'): ?>
+		<div class="alert alert-warning">
+		  <?php echo JText::sprintf('COM_DIGICOM_ORDER_COMPLETE_NOTICE',JRoute::_('index.php?option=com_digicom&view=checkout&order_id='.$order->id.'&processor='.$order->processor.$this->Itemid)); ?>
+		</div>
+	<?php endif; ?>
 	<h3 class="digi-section-title"><?php echo JText::_('COM_DIGICOM_PRODUCTS'); ?></h3>
 	<table class="table table-striped table-hover table-bordered">
 		<thead>
