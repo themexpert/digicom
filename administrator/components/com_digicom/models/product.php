@@ -1,9 +1,9 @@
 <?php
 /**
  * @package		DigiCom
- * @copyright	Copyright (c)2010-2015 ThemeXpert
- * @license 	GNU General Public License version 3, or later
  * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
  * @since 		1.0.0
  */
 
@@ -13,9 +13,9 @@ use Joomla\Registry\Registry;
 use Joomla\String\String;
 
 /**
- * Weblinks model.
+ * Product model.
  *
- * @since  1.5
+ * @since  1.0.0
  */
 class DigiComModelProduct extends JModelAdmin
 {
@@ -23,7 +23,7 @@ class DigiComModelProduct extends JModelAdmin
 	 * The type alias for this content type.
 	 *
 	 * @var    string
-	 * @since  3.2
+	 * @since  1.0.0
 	 */
 	public $typeAlias = 'com_digicom.product';
 
@@ -31,7 +31,7 @@ class DigiComModelProduct extends JModelAdmin
 	 * The prefix to use with controller messages.
 	 *
 	 * @var    string
-	 * @since  1.6
+	 * @since  1.0.0
 	 */
 	protected $text_prefix = 'COM_DIGICOM_PRODUCTS';
 
@@ -42,7 +42,7 @@ class DigiComModelProduct extends JModelAdmin
 	 *
 	 * @return  boolean  True if allowed to delete the record. Defaults to the permission for the component.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function canDelete($record)
 	{
@@ -174,7 +174,7 @@ class DigiComModelProduct extends JModelAdmin
 	 *
 	 * @return  boolean  True if allowed to change the state of the record. Defaults to the permission for the component.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function canEditState($record)
 	{
@@ -195,7 +195,7 @@ class DigiComModelProduct extends JModelAdmin
 	 *
 	 * @return  JTable  A JTable object
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	public function getTable($type = 'Product', $prefix = 'Table', $config = array())
 	{
@@ -210,7 +210,7 @@ class DigiComModelProduct extends JModelAdmin
 	 *
 	 * @return  mixed  A JForm object on success, false on failure
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
@@ -259,7 +259,7 @@ class DigiComModelProduct extends JModelAdmin
 	 *
 	 * @return  array  The default data is an empty array.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function loadFormData()
 	{
@@ -294,7 +294,7 @@ class DigiComModelProduct extends JModelAdmin
 	 *
 	 * @return  mixed  Object on success, false on failure.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	public function getItem($pk = null)
 	{
@@ -334,7 +334,7 @@ class DigiComModelProduct extends JModelAdmin
 	 *
 	 * @return  void
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function prepareTable($table)
 	{
@@ -385,7 +385,7 @@ class DigiComModelProduct extends JModelAdmin
 	 *
 	 * @return  array  An array of conditions to add to ordering queries.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function getReorderConditions($table)
 	{
@@ -489,7 +489,7 @@ class DigiComModelProduct extends JModelAdmin
 	 *
 	 * @return  boolean  True if successful.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 * @throws  Exception
 	 */
 	public function duplicate(&$pks)

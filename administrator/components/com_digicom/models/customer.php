@@ -1,25 +1,24 @@
 <?php
 /**
  * @package		DigiCom
- * @copyright	Copyright (c)2010-2015 ThemeXpert
- * @license 	GNU General Public License version 3, or later
  * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
  * @since 		1.0.0
  */
 
 defined('_JEXEC') or die;
 
-
 class DigiComModelCustomer extends JModelAdmin {
 
 	protected $_context = 'com_digicom.customer';   
-	var $_customers;
-	var $_customer;
-	var $_id = null;
-	var $_total = 0;
-	var $_pagination = null;
+	protected $_customers;
+	protected $_customer;
+	protected $_id = null;
+	protected $_total = 0;
+	protected $_pagination = null;
 
-	function __construct () {
+	public function __construct () {
 		parent::__construct();
 		$cids = JRequest::getVar('id', 0);
 		$this->setId((int)$cids);
@@ -31,7 +30,7 @@ class DigiComModelCustomer extends JModelAdmin {
 		$this->_customer = null;
 	}
 
-	function populateState($ordering = NULL, $direction = NULL){
+	protected function populateState($ordering = NULL, $direction = NULL){
 		$app = JFactory::getApplication('administrator');
 		$this->setState('list.start', $app->getUserStateFromRequest($this->_context . '.list.start', 'limitstart', 0, 'int'));
 		$this->setState('list.limit', $app->getUserStateFromRequest($this->_context . '.list.limit', 'limit', $app->getCfg('list_limit', 25) , 'int'));
@@ -68,7 +67,7 @@ class DigiComModelCustomer extends JModelAdmin {
 		return $sql;
 	}
 
-	function getItems(){
+	public function getItems(){
 		$config = JFactory::getConfig();
 		$app = JFactory::getApplication('administrator');
 		$limistart = $app->getUserStateFromRequest($this->context.'.list.start', 'limitstart');
@@ -87,7 +86,7 @@ class DigiComModelCustomer extends JModelAdmin {
 		return $result;
 	}
 
-	function getCustomer() {
+	public function getCustomer() {
 
 		if (empty($this->_customer)) {
 			$this->_customer = $this->getTable("Customer");
@@ -103,26 +102,26 @@ class DigiComModelCustomer extends JModelAdmin {
 		return $this->_customer;
 	}
 
-	function getCustomerByID($id) {
+	public function getCustomerByID($id) {
 		$customer = $this->getTable("Customer");
 		$customer->load($id);
 
 		return $customer;
 	}
 
-	function getCustomerIDbyUserName($username) {
+	public function getCustomerIDbyUserName($username) {
 		$this->_db->setQuery("SELECT dc.id FROM #__digicom_customers dc inner join #__users u on(u.id = dc.id) WHERE u.username = '".$username."'");
 		$id = $this->_db->loadResult();
 		return $id;
 	}
 
-	function getUserByName($username) {
+	public function getUserByName($username) {
 		$this->_db->setQuery("SELECT * FROM #__users u WHERE u.username = '".$username."'");
 		$user = $this->_db->loadObject();
 		return $user;
 	}
 
-	function getUserByID($id) {
+	public function getUserByID($id) {
 		$this->_db->setQuery("SELECT * FROM #__users u WHERE u.id = '".$id."'");
 		$user = $this->_db->loadObject();
 		return $user;
@@ -232,14 +231,14 @@ class DigiComModelCustomer extends JModelAdmin {
 		}
 	}
 	*/
-	function getlistCustomerOrders ($userid) {
+	public function getlistCustomerOrders ($userid) {
 		$sql = "select * from #__digicom_orders where userid='".$userid."'order by id desc";
 		$db = JFactory::getDBO();
 		$db->setQuery($sql);
 		return ($db->loadObjectList());
 	}
 
-	function getCustomerId($username){
+	public function getCustomerId($username){
 		$db = JFactory::getDBO();
 		$sql = "select id from #__users where username='".trim($username)."'";
 		$db->setQuery($sql);
@@ -248,7 +247,7 @@ class DigiComModelCustomer extends JModelAdmin {
 		return $result;
 	}
 
-	function existUser($username_value){
+	public function existUser($username_value){
 		$db = JFactory::getDBO();
 		$sql = "select count(*) as total from #__users where username='".$username_value."'";
 		$db->setQuery($sql);
@@ -260,7 +259,7 @@ class DigiComModelCustomer extends JModelAdmin {
 		return true;
 	}
 
-	function existNewAuthor($username_value){
+	public function existNewAuthor($username_value){
 		$db = JFactory::getDBO();
 
 		$sql = "select id from #__users u where u.username='".addslashes(trim($username_value))."'";
@@ -278,7 +277,7 @@ class DigiComModelCustomer extends JModelAdmin {
 		return true;
 	}
 
-	function getUserId($username){
+	public function getUserId($username){
 		$db = JFactory::getDBO();
 		$sql = "select id from #__users where username='".$username."'";
 		$db->setQuery($sql);
@@ -287,12 +286,12 @@ class DigiComModelCustomer extends JModelAdmin {
 		return $result;
 	}
 
-	function getConfigs() {
+	public function getConfigs() {
 		$comInfo = JComponentHelper::getComponent('com_digicom');
 		return $comInfo->params;
 	}
 
-	function getUser(){
+	public function getUser(){
 		$id = JRequest::getVar("id");
 		if(intval($id) == "0"){
 			$id = JRequest::getVar("cid", array(), "array");

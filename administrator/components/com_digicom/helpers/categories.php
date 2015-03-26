@@ -1,9 +1,9 @@
 <?php
 /**
  * @package		DigiCom
- * @copyright	Copyright (c)2010-2015 ThemeXpert
- * @license 	GNU General Public License version 3, or later
  * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
  * @since 		1.0.0
  */
 
@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 /**
  * Categories helper.
  *
- * @since  1.6
+ * @since  1.0.0
  */
 class DigiComHelperCategories
 {
@@ -23,7 +23,7 @@ class DigiComHelperCategories
 	 *
 	 * @return  void
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	public static function addSubmenu($extension)
 	{
@@ -77,7 +77,7 @@ class DigiComHelperCategories
 	 *
 	 * @return  JObject
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 * @deprecated  3.2  Use JHelperContent::getActions() instead
 	 */
 	public static function getActions($extension, $categoryId = 0)

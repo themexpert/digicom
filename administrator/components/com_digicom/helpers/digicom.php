@@ -1,29 +1,26 @@
 <?php
 /**
  * @package		DigiCom
- * @copyright	Copyright (c)2010-2015 ThemeXpert
- * @license 	GNU General Public License version 3, or later
  * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
  * @since 		1.0.0
  */
 
 defined('_JEXEC') or die;
 
 /**
- * Weblinks helper.
+ * DigiCom helper.
  *
- * @since  1.6
+ * @since  1.0.0
  */
 class DigiComHelperDigiCom extends JHelperContent{
 	
 	/**
 	 * Configure the Linkbar.
-		*
 	 * @param   string  $vName  The name of the active view.
-		*
 	 * @return  void
-		*
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 
 	public static function addSubmenu($vName)
@@ -33,11 +30,6 @@ class DigiComHelperDigiCom extends JHelperContent{
 			'index.php?option=com_digicom',
 			$vName == 'digicom'
 		);
-		/*JHtmlSidebar::addEntry(
-			JText::_('VIEWTREESETTINGMANAGER'),
-			'index.php?option=com_digicom&controller=configs',
-			$vName == 'configs'
-		);*/
 		
 		JHtmlSidebar::addEntry(
 			JText::_('COM_DIGICOM_SIDEBAR_MENU_CATEGORIES'),
@@ -65,59 +57,19 @@ class DigiComHelperDigiCom extends JHelperContent{
 			'index.php?option=com_digicom&view=orders',
 			$vName == 'orders'
 		);
-		/*
-		JHtmlSidebar::addEntry(
-			JText::_('VIEWTREELICENCES'),
-			'index.php?option=com_digicom&controller=licenses',
-			$vName == 'licenses'
-		);
 		
-		JHtmlSidebar::addEntry(
-			JText::_('VIEWTREEATTR'),
-			'index.php?option=com_digicom&controller=attributes',
-			$vName == 'attributes'
-		);
-		*/
 		JHtmlSidebar::addEntry(
 			JText::_('COM_DIGICOM_SIDEBAR_MENU_DISCOUNTS'),
 			'index.php?option=com_digicom&view=discounts',
 			$vName == 'discounts'
 		);
-		/*
-		JHtmlSidebar::addEntry(
-			JText::_('VIEWTREESUBSCRIP'),
-			'index.php?option=com_digicom&controller=subscription',
-			$vName == 'subscription'
-		);
-		JHtmlSidebar::addEntry(
-			JText::_('VIEWTREETAX'),
-			'index.php?option=com_digicom&controller=tax',
-			$vName == 'logs'
-		);
 		
-		JHtmlSidebar::addEntry(
-			JText::_('VIEWTREEPSYSTEMEMAILS'),
-			'index.php?option=com_digicom&view=email',
-			$vName == 'email'
-		);
-		
-		JHtmlSidebar::addEntry(
-			JText::_('VIEWTREEEMAILREMINDER'),
-			'index.php?option=com_digicom&controller=emailreminders',
-			$vName == 'emailreminders'
-		);
-		*/
 		JHtmlSidebar::addEntry(
 			JText::_('COM_DIGICOM_SIDEBAR_MENU_REPORTS'),
 			'index.php?option=com_digicom&view=stats',
 			$vName == 'stats'
 		);
 		
-		/*JHtmlSidebar::addEntry(
-			JText::_('VIEWTREELOGS'),
-			'index.php?option=com_digicom&controller=logs',
-			$vName == 'logs'
-		);*/
 		JHtmlSidebar::addEntry(
 			JText::_('COM_DIGICOM_SIDEBAR_MENU_ABOUT'),
 			'index.php?option=com_digicom&view=about',
@@ -149,7 +101,7 @@ class DigiComHelperDigiCom extends JHelperContent{
 		
 	}
 	
-	
+	// TODO : change function name to camelCase
 	public static function format_price ($amount, $ccode, $add_sym = true, $configs) {
 
 		$db = JFactory::getDBO();

@@ -1,31 +1,30 @@
 <?php
 /**
  * @package		DigiCom
- * @copyright	Copyright (c)2010-2015 ThemeXpert
- * @license 	GNU General Public License version 3, or later
  * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
  * @since 		1.0.0
  */
 
 defined('_JEXEC') or die;
 
-
 class DigiComModelDiscounts extends JModelList {
 
 	protected $_context = 'com_digicom.discounts';
-	var $_valid_promos;
-	var $_promos;
-	var $_promo;
-	var $_id = null;
-	var $_pagination = null;
+	protected $_valid_promos;
+	protected $_promos;
+	protected $_promo;
+	protected $_id = null;
+	protected $_pagination = null;
 
-	function __construct () {
+	public function __construct () {
 		parent::__construct();
 		$cids = JRequest::getVar('cid', 0, '', 'array');
 		$this->setId((int)$cids[0]);
 	}
 
-	 function populateState($ordering = NULL, $direction = NULL){
+	protected function populateState($ordering = NULL, $direction = NULL){
 		$app = JFactory::getApplication('administrator');
 		$this->setState('list.start', $app->getUserStateFromRequest($this->_context . '.list.start', 'limitstart', 0, 'int'));
 		$this->setState('list.limit', $app->getUserStateFromRequest($this->_context . '.list.limit', 'limit', $app->getCfg('list_limit', 25) , 'int'));

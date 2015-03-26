@@ -1,9 +1,9 @@
 <?php
 /**
  * @package		DigiCom
- * @copyright	Copyright (c)2010-2015 ThemeXpert
- * @license 	GNU General Public License version 3, or later
  * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
  * @since 		1.0.0
  */
 
@@ -12,14 +12,14 @@ defined('_JEXEC') or die;
 class DigiComModelOrders extends JModelList{
 
 	protected $_context = 'com_digicom.order';
-	var $_orders;
-	var $_order;
-	var $_id = null;
-	var $_total = 0;
-	var $_pagination = null;
-	var $_statusList = array("Active", "Pending");
+	protected $_orders;
+	protected $_order;
+	protected $_id = null;
+	protected $_total = 0;
+	protected $_pagination = null;
+	protected $_statusList = array("Active", "Pending");
 
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		$cids = JRequest::getVar( 'cid', 0, '', 'array' );
 

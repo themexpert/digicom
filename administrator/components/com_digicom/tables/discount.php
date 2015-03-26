@@ -1,34 +1,33 @@
 <?php
 /**
  * @package		DigiCom
- * @copyright	Copyright (c)2010-2015 ThemeXpert
- * @license 	GNU General Public License version 3, or later
  * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
  * @since 		1.0.0
  */
 
 defined('_JEXEC') or die;
 
-
 class TableDiscount extends JTable
 {
-	var $id = null;
-	var $title = null;
-	var $code = null;
-	var $codelimit = null;
-	var $amount = null;
-	var $codestart = null;
-	var $codeend = null;
-	var $forexisting = null;
-	var $published = null;
-	var $aftertax = null;
-	var $promotype = null;
-	var $used = null;
-	var $ordering = null;
-	var $checked_out = null;
-	var $checked_out_time = null;
+	public $id = null;
+	public $title = null;
+	public $code = null;
+	public $codelimit = null;
+	public $amount = null;
+	public $codestart = null;
+	public $codeend = null;
+	public $forexisting = null;
+	public $published = null;
+	public $aftertax = null;
+	public $promotype = null;
+	public $used = null;
+	public $ordering = null;
+	public $checked_out = null;
+	public $checked_out_time = null;
 
-	function __construct (&$db) {
+	public function __construct (&$db) {
 		parent::__construct('#__digicom_promocodes', 'id', $db);
 	}
 

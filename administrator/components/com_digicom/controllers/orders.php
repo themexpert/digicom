@@ -75,13 +75,11 @@ class DigiComControllerOrders extends JControllerAdmin
 		$this->setRedirect($link_orders, $msg);
 	}
 
-	function calc(){
-		//$json = new Services_JSON;
+	function calc()
+	{
 		//decode incoming JSON string
 		$jsonRequest = JRequest::getVar("jsonString", "", "get");
-		//$jsonRequest = $json->decode($jsonRequest);
 		$jsonRequest = json_decode($jsonRequest);
-		//print_r($jsonRequest);die;
 		$calc_result = $this->_model->calcPrice($jsonRequest);
 		
 		$data = new stdclass();
@@ -94,7 +92,6 @@ class DigiComControllerOrders extends JControllerAdmin
 		$data->total = $calc_result['total'];
 		$data->total_value = $calc_result['total_value'];
 		$data->currency = $calc_result['currency'];
-		//echo $json->encode($jsonRequest);
 		
 		// Get the document object.
 		$document = JFactory::getDocument();

@@ -1,21 +1,19 @@
 <?php
 /**
  * @package		DigiCom
- * @copyright	Copyright (c)2010-2015 ThemeXpert
- * @license 	GNU General Public License version 3, or later
  * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
  * @since 		1.0.0
  */
 
-
-defined('JPATH_BASE') or die;
+defined('_JEXEC') or die;
 
 /**
  * Supports a modal article picker.
  *
- * @package     Joomla.Administrator
- * @subpackage  com_content
- * @since       1.6
+ * @package     DigiCom
+ * @since       1.0.0
  */
 class JFormFieldModal_DiGiUser extends JFormField
 {
@@ -23,7 +21,7 @@ class JFormFieldModal_DiGiUser extends JFormField
 	 * The form field type.
 	 *
 	 * @var		string
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected $type = 'Modal_DiGiUser';
 
@@ -31,7 +29,7 @@ class JFormFieldModal_DiGiUser extends JFormField
 	 * Method to get the field input markup.
 	 *
 	 * @return  string	The field input markup.
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function getInput()
 	{

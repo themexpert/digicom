@@ -1,26 +1,26 @@
 <?php
 /**
  * @package		DigiCom
- * @copyright	Copyright (c)2010-2015 ThemeXpert
- * @license 	GNU General Public License version 3, or later
  * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
  * @since 		1.0.0
  */
 
+// TODO : Translatable string
+
 defined('_JEXEC') or die;
 
-$app = JFactory::getApplication();
-$form = $displayData->getForm();
-$input = $app->input;
-$component = $input->getCmd('option', 'com_digicom');
-$document = JFactory::getDocument();
-$product = $displayData->get('item');
-$configs = $displayData->get('configs');
-//print_r($configs);die;
+$app 			= JFactory::getApplication();
+$form 			= $displayData->getForm();
+$input 			= $app->input;
+$component 		= $input->getCmd('option', 'com_digicom');
+$document 		= JFactory::getDocument();
+$product 		= $displayData->get('item');
+$configs 		= $displayData->get('configs');
+
 $link = 'index.php?option=com_digicom&amp;view=products&amp;layout=modal&amp;tmpl=component&amp;' . JSession::getFormToken() . '=1';
 
-//<a id="product_include_remove_1" class="btn btn-small btn-danger" href="javascript:void(0)" onclick="remove_product_include('<?php echo $key; 
-//
 $js = "
 function jSelectProduct(id, title, catid, object, link, lang,price)
 {
