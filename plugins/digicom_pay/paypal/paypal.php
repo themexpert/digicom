@@ -115,16 +115,15 @@ class  plgDigiCom_PayPaypal extends JPlugin
 		$payment_status = $this->translateResponse( $data['payment_status'] );
 
 		$result = array(
-						'order_id'=>$data['custom'],
-						'transaction_id'=>$data['txn_id'],
-						'buyer_email'=>$data['payer_email'],
-						'status'=>$payment_status,
-						'subscribe_id'=>$data['subscr_id'],
-						'txn_type'=>$data['txn_type'],
-						'total_paid_amt'=>$data['mc_gross'],
-						'raw_data'=>$data,
-						'error'=>$error,
-						);
+			'order_id'=>$data['custom'],
+			'transaction_id'=>$data['txn_id'],
+			'buyer_email'=>$data['payer_email'],
+			'status'=>$payment_status,
+			'txn_type'=>$data['txn_type'],
+			'total_paid_amt'=>$data['mc_gross'],
+			'raw_data'=>$data,
+			'processor'=>'paypal'
+		);
 		return $result;
 	}
 

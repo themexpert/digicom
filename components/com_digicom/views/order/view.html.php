@@ -45,7 +45,7 @@ class DigiComViewOrder extends JViewLegacy {
 		$this->assign("customer", $customer);
 		$this->assign("Itemid", $Itemid);
 
-		print_r(json_decode($order->params));die;
+		//print_r(json_decode($order->params));die;
 		
 		$layout = $input->get('layout','order');
 		$template = new DigiComSiteHelperTemplate($this);

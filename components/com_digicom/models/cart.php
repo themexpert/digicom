@@ -955,10 +955,10 @@ class DigiComModelCart extends JModelItem
 		JPluginHelper::importPlugin('digicom_pay', $pg_plugin);
 		$data = $dispatcher->trigger('onTP_Processpayment', array($result));
 
-		$this->storelog($pg_plugin, $result);
-		$this->storelog($pg_plugin, $data);
+		//$this->storelog($pg_plugin, $result);
+		//$this->storelog($pg_plugin, $data);
+		//$this->storelog($pg_plugin, $data);
 		$data=$data[0];
-		$this->storelog($pg_plugin, $data);
 		
 		//print_r($data);die;
 		
@@ -979,26 +979,14 @@ class DigiComModelCart extends JModelItem
 				$msg = JText::_("DIGI_THANK_YOU_FOR_PAYMENT_PANDING");
 			}
 			
-			//$items = $this->getCartItems( $customer, $configs );
-
 			$config = JFactory::getConfig();
 			$tzoffset = $config->get('offset');
 			$now = date('Y-m-d H:i:s', time() + $tzoffset);
 			$now = strtotime($now);
-			$this->updateOrder($order_id,$result,$data,$pg_plugin);
-			//$order_id = $this->addOrder($items, $customer, $now, $pg_plugin, $status);
+
+			$this->updateOrder($order_id,$result,$data,$pg_plugin,$status);
 			
-			
-			
-			//$this->addOrderDetails($items, $order_id, $now, $customer, $status);
-			
-			//$tax = $this->calc_price( $items, $customer, $configs );
-			//$total = $tax['taxed'];
-			//$number_of_products = $tax['number_of_products'];
-			//$this->dispatchMail( $order_id, $total, $number_of_products, $now, $items, $customer );
-			//$this->emptyCart($sid);
 		}
-		//$controller->setRedirect($return_url, $msg);
 
 		if($status == "Pending"){
 			JFactory::getApplication()->redirect(JURI::root()."index.php?option=com_digicom&view=order&id=".$order_id,$msg);
@@ -1018,10 +1006,35 @@ class DigiComModelCart extends JModelItem
 		return true;
 	}
 	
-	function updateOrder($order_id,$result,$data,$pg_plugin){
+	function updateOrder($order_id,$result,$data,$pg_plugin,$status){
 		$table = $this->getTable('Order');
 		$table->load($order_id);
+
+		//print_r($result);die;
+		//amount_paid
+		$table->amount_paid = $table->amount_paid + $data['total_paid_amt'];
+		//amound === amount_paid
+
+		//processor
+		$table->processor = $data['processor'];
+
+		//print_r($data);
+		//print_r($table->amount);
+		//print_r($table->amount_paid);
+		//die;
+
+		//status
+		if($table->amount == $table->amount_paid){
+			$table->status = $status;
+			$table->published = 1;
+		}else{
+			$table->status = 'Pending';
+		}
+		
 		$table->comment = $table->comment. ' '. $result['comment'];
+		if(empty($table->comment)){
+			$table->comment = $data['processor'];
+		}
 
 		$orderparams = json_decode($table->params);
 		$orderparams->paymentinfo = array();
