@@ -580,7 +580,7 @@ class DigiComModelCart extends JModelItem
 	function get_promo( $customer, $checkvalid = 1 )
 	{
 		
-		if(empty($customer->_sid) and empty($customer['sid']))
+		if(empty($customer->_sid))
 		{
 			$customer = new DigiComSiteHelperSession();
 		}
