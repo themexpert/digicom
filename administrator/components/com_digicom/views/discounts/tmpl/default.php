@@ -29,7 +29,8 @@ $document = JFactory::getDocument();
 	<div id="j-main-container" class="">
 	<?php endif;?>
 
-		<div class="alert alert-info">
+		<div class="dg-alert dg-alert-with-icon">
+			<span class="icon-support"></span>
 			<?php echo JText::_("COM_DIGICOM_DISCOUNTS_HEADER_NOTICE"); ?>
 		</div>
 		<br>

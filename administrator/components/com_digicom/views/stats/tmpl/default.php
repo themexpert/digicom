@@ -56,7 +56,7 @@ $document->addStyleSheet("components/com_digicom/assets/css/diagrams.css");
 <?php else : ?>
 	<div id="j-main-container" class="">
 <?php endif;?>
-		<p class="alert alert-danger">
+		<p class="dg-alert dg-alert-danger">
 			<?php echo JText::_(' Reports is now on the reactor and we need additional flux capacitor in ThemeXpert to generate 1.21 gigawatts reporting feature. Its coming with next Beta version.'); ?>
 		</p>
 		<?php echo JHtml::_('bootstrap.startTabSet', 'digicomTab', array('active' => 'sales')); ?>

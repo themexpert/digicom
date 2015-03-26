@@ -25,7 +25,9 @@ $n = count ($this->custs);
 <div id="j-main-container" class="">
 <?php endif;?>
 	<form id="adminForm" action="index.php" name="adminForm" method="post">
-		<div class="alert alert-info">
+
+		<div class="dg-alert dg-alert-with-icon">
+			<span class="icon-support"></span>
 			<?php echo JText::_("COM_DIGICOM_CUSTOMERS_HEADER_NOTICE"); ?>
 		</div>
 

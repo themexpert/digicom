@@ -68,15 +68,15 @@ JFactory::getDocument()->addScriptDeclaration('
 <?php else : ?>
 	<div id="j-main-container" class="">
 <?php endif;?>
+		<div class="dg-alert dg-alert-with-icon">
+			<span class="icon-support"></span><?php echo JText::_("COM_DIGICOM_PRODUCTS_HEADER_NOTICE"); ?>
+		</div>
+
 		<?php
 		// Search tools bar
 		echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 		?>
 
-		
-		<div class="alert alert-info">
-			<?php echo JText::_("COM_DIGICOM_PRODUCTS_HEADER_NOTICE"); ?>
-		</div>
 		<div id="editcell" >
 
 			<table class="adminlist table table-striped table-hover" id="productList">
