@@ -58,10 +58,13 @@ config.codekit
 !/plugins/digicom_pay/
 !/plugins/system/
 !/plugins/search/
+!/plugins/finder/
 /plugins/system/*
 /plugins/search/*
+/plugins/finder/*
 !/plugins/system/digicom_addtocart*
 !/plugins/search/digicom*
+!/plugins/finder/digicom*
 /templates/*
 /tmp/*
 /configuration.php
