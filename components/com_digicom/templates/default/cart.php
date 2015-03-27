@@ -138,7 +138,9 @@ $items = $this->items;
 				$formlink = JRoute::_("index.php?option=com_digicom&view=categories&cid=0&Itemid=".$Itemid);
 				$redirect_url = DigiComSiteHelperDigiCom::DisplayContinueUrl($configs, $cat_url);
 			?>
-						<tr><td colspan="5"><?php echo JText::_("COM_DIGICOM_CART_IS_EMPTY_NOTICE"); ?>. <a href="<?php echo $redirect_url; ?>"><?php echo JText::_("COM_DIGICOM_CLICK_HERE"); ?></a></td></tr>
+				<tr>
+					<td colspan="5"><?php echo JText::_("COM_DIGICOM_CART_IS_EMPTY_NOTICE"); ?></td>
+				</tr>
 			<?php
 			} else {
 				foreach($items as $itemnum => $item ){
