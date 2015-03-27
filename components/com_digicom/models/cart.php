@@ -1206,17 +1206,10 @@ class DigiComModelCart extends JModelItem
 		}
 
 		$tax = $cart->calc_price( $items, $customer, $configs );
-		//print_r($items);die;
 		
 		$now = time();
 		$total = $tax['taxed'];
 		$number_of_products = $tax['number_of_products'];
-
-		if ( $configs->get('afterpurchase',1) == 0 ) {
-			$controller = "downloads";
-		} else {
-			$controller = "orders";
-		}
 
 		/* fixed return after payment, before paypal IPN */
 		$plugin = JRequest::getVar( 'plugin', '' );
