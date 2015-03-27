@@ -396,22 +396,6 @@ class DigiComControllerCart extends JControllerLegacy
 	* seems gonna remove this function
 	* under checcking
 	* TODO: Remove
-	*/
-	function wait()
-	{
-		//$this->_model->proccessWait($this);
-		/*$view = $this->getView("Cart", "html");
-		$view->setModel($this->_model, true);
-		$view->setModel($this->_config);
-		$view->setLayout('wait');
-		$view->paymentwait();*/
-		$this->checkout();
-	}
-
-	/*
-	* seems gonna remove this function
-	* under checcking
-	* TODO: Remove
 	* under observation
 	*/
 
@@ -620,7 +604,7 @@ class DigiComControllerCart extends JControllerLegacy
 	*/
 	function processPayment_x()
 	{
-		$mainframe=JFactory::getApplication();
+		$mainframe	= JFactory::getApplication();
 		$post 		= JRequest::get('post');
 		$pg_plugin 	= JRequest::getCmd('processor');
 		$model 		= $this->getModel('cart');
@@ -632,130 +616,63 @@ class DigiComControllerCart extends JControllerLegacy
 
 	function processPayment()
 	{
-		if(JRequest::getVar('processor', '') == ''){
+		$app		= JFactory::getApplication();
+		$input 		= $app->input;
+		
+		$processor 	= $input->get('processor','');
+		$order_id 	= $input->get('order_id',0);
+		$sid 		= $input->get('sid','');
+		$pay 		= $input->get('pay','');
+		$post 		= $input->post->getArray();
+
+		if($processor == ''){
+			$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=cart', true);
+			$Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
+			$app->redirect('index.php?option=com_digicom&view=orders'.$Itemid,JText::_('COM_DIGICOM_PAYMENT_NO_PROCESSOR_SELECTED'));
 			return false;
 		}
-		$pay = JRequest::getVar("pay", "");
 
-		$db = JFactory::getDBO();
-		$user = JFactory::getUser();
-		$user_id = $user->id;
-
-		$_SESSION["creditCardNumber"] = JRequest::getVar("creditCardNumber", "");
-		$_SESSION["expDateMonth"] = JRequest::getVar("expDateMonth", "");
-		$_SESSION["expDateYear"] = JRequest::getVar("expDateYear", "");
-		$_SESSION["cvv2Number"] = JRequest::getVar("cvv2Number", "");
-
-		$processor = JRequest::getVar('processor', '');
-		$hidden_form = JRequest::getVar("hidden_form", "");
-		if($hidden_form == "" && $processor != "paypaypal" && $processor != "offline"){
-			include_once(JPATH_SITE.DS."components".DS."com_digicom".DS."helpers".DS."helper.php");
-			$form = DigiComSiteHelperDigiCom::getSubmitForm($this->_config, 'payauthorize');
-			$script = '<script type=\'text/javascript\'>var time=setTimeout("document.digiadminForm.submit()", 2000); </script>';
-			$form = $form.$script;
-			echo $form;
+		if($order_id == 0)
+		{
+			$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=cart', true);
+			$Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
+			$app->redirect("index.php?option=com_digicom&view=orders".$Itemid,JText::_('COM_DIGICOM_PAYMENT_NO_ORDER_PASSED'));
 		}
-		elseif($processor == "offline"){
-			$configs = $this->_config;
-			$customer = $this->_customer;
-			$cart = $this->_model;
-			$items = $cart->getCartItems($customer, $configs);
-			$now = time();
 
-			$order_id = $this->_model->addOrder($items, $customer, $now, $processor, "Pending");
-			$this->_model->addLicenses($items, $order_id, $now, $customer, "Pending");
-			$tax = $this->_model->calc_price( $items, $customer, $configs );
-			$total = $tax['taxed'];
-			$licenses = $tax['licenses'];
-			$this->_model->dispatchMail( $order_id, $total, $licenses, $now, $items, $customer );
-			$this->_model->emptyCart($order_id);
+		$param = array();
+		$param['params'] = JPluginHelper::getPlugin('digicom_pay', $processor)->params;
+		$param['handle'] = &$this;
 
-			$controller = "orders";
-			$task = "list";
-			$mosConfig_live_site = DigiComSiteHelperDigiCom::getLiveSite();
-			$success_url = $mosConfig_live_site . "/index.php?option=com_digicom&controller=" . $controller . "&task=" . $task . "&success=1&sid=" . $order_id;
+		$customer 	= $this->_customer;
+		$configs 	= $this->_config;
+		$cart 		= $this->_model;
+		$items 		= $cart->getCartItems($customer, $configs);
 
-			$msg = JText::_("DIGI_THANK_YOU_FOR_PAYMENT");
-			$this->setRedirect($success_url, $msg);
-		}
-		else{
-			
-			$dispatcher = JDispatcher::getInstance();
-			JPluginHelper::importPlugin('digicom_pay');
-			$params = JPluginHelper::getPlugin('digicom_pay', JRequest::getVar('processor'))->params;
-
-			$param = array_merge(JRequest::get('request'), array('params' => $params));
-			$param['handle'] = &$this;
-
-			$customer = $this->_customer;
-			$configs = $this->_config;
-			$cart = $this->_model;
-			$items = $cart->getCartItems($customer, $configs);
-			$products = array();
-			if(isset($items) && count($items) > 0){
-				foreach($items as $key=>$product){
-					if(trim($product->name) != ""){
-						$products[] = trim($product->name);
-					}
-				}
-			}
-			$param["cart_products"] = implode(" - ", $products);
-
-			$results_plugins = $dispatcher->trigger('onReceivePayment', array(& $param));
-
-			$result = array();
-			foreach($results_plugins as $result_plugin){
-				if(!empty($result_plugin)){
-					$result = $result_plugin;
-				}
-			}
-
-			if(empty($result['sid'])){
-				$result['sid'] = -1;
-			}
-
-			if(empty($result['pay'])){
-				$result['pay'] = 'fail';
-			}
-
-			/*
-			 * pay states (wait, success_stop) or (success, fail)
-			 */
-
-			if(isset($result) && !empty($result)){
-				// set sid if empty
-				if((!isset($result['sid']) || empty($result['sid'])) && !empty($result['order_id'])){
-					$result['sid'] = $result['order_id'];
-				}
-
-				if($processor != "paypaypal" && $processor != "offline"){
-					if($result['pay'] == "success"){
-						$result['pay'] = "ipn";
-					}
-				}
-
-				switch($result['pay']){
-					case 'success':
-						//$this->_model->proccessSuccess($this, $result);
-						$msg = JText::_("DIGI_THANK_YOU_FOR_PAYMENT");
-						$return_url = $this->_model->getReturnUrl(true);
-						$this->_model->emptyCart($result['sid']);
-						$this->setRedirect($return_url, $msg);
-						break;
-					case 'ipn':
-						$this->_model->proccessIPN($this, $result);
-						break;
-					case 'wait':
-						$this->_model->proccessWait($this, $result);
-						break;
-					case 'fail':
-						$this->_model->proccessFail($this, $result);
-						break;
-					default:
-						break;
+		$products = array();
+		if(isset($items) && count($items) > 0){
+			foreach($items as $key=>$product){
+				if(trim($product->name) != ""){
+					$products[] = trim($product->name);
 				}
 			}
 		}
+
+		// after recieved payment request, get the status info
+		
+		$dispatcher = JDispatcher::getInstance();
+		JPluginHelper::importPlugin('digicom_pay', $processor);
+		$data = $dispatcher->trigger('onTP_Processpayment', array($post));
+		
+		//after recieved payment, trigger any additional events
+		$param["cart_products"] = implode(" - ", $products);
+		$param["transaction"] = $data;
+
+		JPluginHelper::importPlugin('digicom_pay');
+		$results_plugins = $dispatcher->trigger('onReceivePayment', array(& $param));
+
+		$this->_model->proccessSuccess($post, $processor, $order_id, $sid,$data);
+		
+		return true;
 	}
 
 	function cancel()
