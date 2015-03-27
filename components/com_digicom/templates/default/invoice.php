@@ -39,7 +39,7 @@ if ($this->order->id < 1):
 				<div class="span12">
 					
 					<form action="index.php" name="adminForm" method="post" style="padding-left: 10px; padding-right:10px; padding-top:100px;">
-						<input id="print_button" class="btn" style="float:right;margin-bottom: 10px;" type="button" value="<?php echo JText::_("DSPRINT");?>" onclick="document.getElementById('print_button').style.display='none'; javascript:window.print(); return false;" />
+						<input id="print_button" class="btn" style="float:right;margin-bottom: 10px;" type="button" value="<?php echo JText::_("COM_DIGICOM_PRINT");?>" onclick="document.getElementById('print_button').style.display='none'; javascript:window.print(); return false;" />
 						
 						<table  class="table" width="100%"  border="0" cellpadding="3" cellspacing="0" bordercolor="#cccccc" style="border-collapse: collapse">
 							<tr>
@@ -104,10 +104,10 @@ if ($this->order->id < 1):
 
 							<tr>
 								<td align="left">
-									<h3 style="text-transform: uppercase;font-size: 30px;"><?php echo JText::_('COM_DIGICOM_ORDER_VIEW_INVOICE');?></h3>
-									<?php echo JText::_("DSMYORDER")." #".$order->id; ?>
+									<h3 style="text-transform: uppercase;font-size: 30px;"><?php echo JText::_('COM_DIGICOM_ORDER_PRINT_VIEW_INVOICE');?></h3>
+									<?php echo JText::_("COM_DIGICOM_MY_ORDERS")." #".$order->id; ?>
 									<br />
-									<?php echo JText::_("DSDATE")." ".date( $configs->get('time_format','d-m-Y'), $order->order_date);?>
+									<?php echo JText::_("JDATE")." ".date( $configs->get('time_format','d-m-Y'), $order->order_date);?>
 								</td>
 
 								<td style="font-weight:normal" align="right">
@@ -174,13 +174,13 @@ if ($this->order->id < 1):
 								<tr style="border-bottom: 3px solid #666;">
 									<th>#</th>
 									<th class="sectiontableheader"  <?php //if ($configs->showoipurch == 0) echo $invisible;?> >
-										<?php echo JText::_('DSPROD');?>
+										<?php echo JText::_('COM_DIGICOM_PRODUCT');?>
 									</th>
 									<th class="sectiontableheader"  <?php //if ($configs->showoipurch == 0) echo $invisible;?> >
-										<?php echo JText::_('COM_DIGICOM_PRODUCTS_TYPE'); ?>
+										<?php echo JText::_('COM_DIGICOM_TYPE'); ?>
 									</th>
 									<th style="text-align: right;">
-										<?php echo JText::_('COM_DIGICOM_ORDER_VIEW_PRODUCT_PRICE');?>
+										<?php echo JText::_('COM_DIGICOM_PRODUCT_PRICE');?>
 									</th>
 								</tr>
 
@@ -231,7 +231,7 @@ if ($this->order->id < 1):
 							<tbody>
 
 								<tr style="">
-									<td style="font-weight:bold;text-align: right;" width="70%"><?php echo JText::_("DSSUBTOTAL");?></td>
+									<td style="font-weight:bold;text-align: right;" width="70%"><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></td>
 									<td style="text-align: right;"><span style="white-space:nowrap;font-weight: bold;"><?php echo DigiComSiteHelperDigiCom::format_price($order->amount, $prod->currency, true, $configs);?></span></td>
 								</tr>
 
@@ -240,7 +240,7 @@ if ($this->order->id < 1):
 										$total = $total - $order->promocodediscount;
 								?>
 								<tr>
-									<td style="font-weight:bold;text-align: right;" width="70%"><?php echo JText::_("DSPROMO");?></td>
+									<td style="font-weight:bold;text-align: right;" width="70%"><?php echo JText::_("COM_DIGICOM_DISCOUNT");?></td>
 									<td style="text-align: right;"><span style="white-space:nowrap;font-weight: bold;"><?php echo DigiComSiteHelperDigiCom::format_price($order->promocodediscount, $prod->currency, true, $configs);?></span></td>
 								</tr>
 								<?php
@@ -248,7 +248,7 @@ if ($this->order->id < 1):
 								?>
 
 								<tr>
-							   		<td style="font-weight:bold;text-align: right;" width="70%"><?php echo JText::_("DSTOTAL");?></td>
+							   		<td style="font-weight:bold;text-align: right;" width="70%"><?php echo JText::_("COM_DIGICOM_TOTAL");?></td>
 									<?php
 										if($order->amount_paid != "" && $order->amount_paid != "-1" && $order->amount_paid != $total){
 											$total = $order->amount_paid;
