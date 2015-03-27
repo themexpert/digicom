@@ -50,13 +50,13 @@ class plgDigiCom_PayOffline extends JPlugin
 	function buildLayout($vars, $layout = 'default' )
 	{
 
-				//Load the layout & push variables
-				ob_start();
+		//Load the layout & push variables
+		ob_start();
 		$layout = $this->buildLayoutPath($layout);
 		include($layout);
 		$html = ob_get_contents(); 
 		ob_end_clean();
-				return $html;
+		return $html;
 	}
 
 	function onTP_GetHTML($vars)
@@ -81,33 +81,32 @@ class plgDigiCom_PayOffline extends JPlugin
 	function onTP_Processpayment($data)
 	{
 
-			$payment_status=$this->translateResponse('Pending');
+		$payment_status=$this->translateResponse('Pending');
 
-			$data['payment_status']=$payment_status;
-			$result = array('transaction_id'=>'',
-					'order_id'=>$data['order_id'],
-						'status'=>$payment_status,
-						'total_paid_amt'=>$data['total'],
-						'raw_data'=>json_encode($data),
-						'error'=>'',
-						'return'=>$data['return'],
-						);
+		$data['payment_status']=$payment_status;
+		$result = array('transaction_id'=>'',
+			'order_id'=>$data['order_id'],
+			'status'=>$payment_status,
+			'total_paid_amt'=>$data['total'],
+			'raw_data'=>json_encode($data),
+			'error'=>'',
+			'return'=>$data['return'],
+		);
 		return $result;
 	}
 	
 	function translateResponse($invoice_status){
 
 		foreach($this->responseStatus as $key=>$value)
-				{
-					if($key==$invoice_status)
-					return $value;
-				}
+		{
+			if($key==$invoice_status)
+			return $value;
+		}
 	}
 	
 	function onTP_Storelog($data)
 	{
-			$log = plgDigiCom_PayOfflineHelper::Storelog($this->_name,$data);
-
+		$log = plgDigiCom_PayOfflineHelper::Storelog($this->_name,$data);
 	}
 }
 
