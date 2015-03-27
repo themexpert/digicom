@@ -91,7 +91,7 @@ class DigiComViewCheckout extends JViewLegacy
 		{
 			$html[0] = $html[0] . 'jQuery(".akeeba-bootstrap").hide();';
 		}
-		$html[0] = $html[0] . 'jQuery(".akeeba-bootstrap form").submit();';
+		$html[0] = $html[0] . 'jQuery(window).load(function() {jQuery(".akeeba-bootstrap form").submit();});';
 		$html[0] = $html[0] . '</script>';
 
 		//echo $html[0];
