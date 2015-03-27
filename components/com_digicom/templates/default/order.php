@@ -17,6 +17,7 @@ $date = date( $configs->get('time_format','d M Y'), $order->order_date);
 if ($this->order->id < 1){
 	echo JText::_('DSEMPTYORDER');
 }
+$params = json_decode($this->order->params);
 ?>
 
 <div id="digicom">	
@@ -64,7 +65,12 @@ if ($this->order->id < 1){
 			</tr>
 
 			<tr>
-				<td><strong><?php echo JText::_('COM_DIGICOM_TOTAL_PAID'); ?></strong></td>
+				<td><strong><?php echo JText::_('COM_DIGICOM_TOTAL'); ?></strong></td>
+				<td><?php echo DigiComSiteHelperDigiCom::format_price($order->amount, $configs->get('currency','USD'), true, $configs);?></td>
+			</tr>
+
+			<tr>
+				<td><strong><?php echo JText::_('COM_DIGICOM_AMOUNT_PAID'); ?></strong></td>
 				<td><?php echo DigiComSiteHelperDigiCom::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs);?></td>
 			</tr>
 			
@@ -72,6 +78,13 @@ if ($this->order->id < 1){
 				<td><strong><?php echo JText::_('COM_DIGICOM_ORDER_PAYMENT_INFORMATION'); ?></strong></td>
 				<td><p class="alert alert-info"><?php echo $order->comment;?></p></td>
 			</tr>
+
+			<?php if(!empty($params->warning)): ?>
+			<tr>
+				<td><strong><?php echo JText::_('COM_DIGICOM_ORDER_PAYMENT_WARNING'); ?></strong></td>
+				<td><p class="alert alert-danger"><?php echo $params->warning;?></p></td>
+			</tr>
+			<?php endif; ?>
 
 		</tbody>
 	</table>

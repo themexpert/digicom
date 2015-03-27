@@ -903,79 +903,45 @@ class DigiComModelCart extends JModelItem
 
 	}
 
-	function proccessWait( $controller, $result )
-	{
-
-		if ( $this->checkSuccess( $result['sid'] ) ) {
-
-			$return_url = $this->getReturnUrl( true );
-
-		} else {
-
-			$count_redirect = JRequest::getInt( 'count_redirect', 0 );
-			$sid = $result['sid'];
-			$processor = $result['processor'];
-			$return_url = "index.php?option=com_digicom&controller=cart&task=wait&processor={$processor}&pay=wait&sid={$sid}&count_redirect={$count_redirect}";
-		}
-
-		$controller->setRedirect( $return_url, $msg );
-	}
-
-	function proccessIPN($controller, $result){
-		$this->proccessSuccess($controller, $result, true);
-	}
-
 	function storelog($name,$data)
 	{
-		return;
 		$data1=array();
 		$data1['raw_data']=isset($data['raw_data'])?$data['raw_data']:array();
 		$data1['JT_CLIENT']="com_digicom";
 		$dispatcher=JDispatcher::getInstance();
 		JPluginHelper::importPlugin('digicom_pay',$name);
-		$data=$dispatcher->trigger('onTP_Storelog',array($data1));
+		$dispatcher->trigger('onTP_Storelog',array($data1));
+		
+		return true;
 	}
 
-	function proccessSuccess($result, $pg_plugin, $order_id, $sid)
+	function proccessSuccess($post, $pg_plugin, $order_id, $sid,$responce)
 	{
-		
-		if($order_id == 0)
-		{
-			JFactory::getApplication()->redirect(JURI::root()."index.php?option=com_digicom&view=orders");
-		}
-
-		unset($_SESSION["creditCardNumber"]);
-		unset($_SESSION["expDateMonth"]);
-		unset($_SESSION["expDateYear"]);
-		unset($_SESSION["cvv2Number"]);
-
+		$app = JFactory::getApplication();
 		$dispatcher = JDispatcher::getInstance();
 
-		JPluginHelper::importPlugin('digicom_pay', $pg_plugin);
-		$data = $dispatcher->trigger('onTP_Processpayment', array($result));
+		$conf = $this->getInstance( "config", "digicomModel" );
+		$configs = $conf->getConfigs();
 
-		//$this->storelog($pg_plugin, $result);
-		//$this->storelog($pg_plugin, $data);
-		//$this->storelog($pg_plugin, $data);
-		$data=$data[0];
+		$result = $post;
+		$data=$responce[0];
+
+		$this->storelog($pg_plugin, $data);
 		
-		//print_r($data);die;
-		
-		if($data['status']=='C' || $data['status']=='P')//if payment status is confirmed
+		if(isset($data['status']))
 		{
 			$_SESSION['in_trans'] = 1;
 			$customer = $this->loadCustomer($sid);
-
-			$conf = $this->getInstance( "config", "digicomModel" );
-			$configs = $conf->getConfigs();
 			
-			$status = "";
 			if($data['status']=='C'){
-				$msg = JText::_("DIGI_THANK_YOU_FOR_PAYMENT");
+				$msg = JText::_("COM_DIGICOM_PAYMENT_SUCCESSFUL_THANK_YOU");
 				$status = "Active";
 			} elseif($data['status']=='P') {
 				$status = "Pending";
-				$msg = JText::_("DIGI_THANK_YOU_FOR_PAYMENT_PANDING");
+				$msg = JText::_("COM_DIGICOM_PAYMENT_PENDING_THANK_YOU");
+			}else{
+				$status = $data['status'];
+				$msg = JText::_("COM_DIGICOM_PAYMENT_WAITING_THANK_YOU");
 			}
 			
 			$config = JFactory::getConfig();
@@ -987,59 +953,65 @@ class DigiComModelCart extends JModelItem
 			
 		}
 
-		if($status == "Pending"){
-			JFactory::getApplication()->redirect(JURI::root()."index.php?option=com_digicom&view=order&id=".$order_id,$msg);
+		$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=orders', true);
+		$Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
+
+		if($status != "Active"){			
+			$app->redirect(JURI::root()."index.php?option=com_digicom&view=order&id=".$order_id.$Itemid,$msg);
 		}
 		
-		// downloads page
-		if ($configs->get('afterpurchase',1) == 0)
-		{
-			JFactory::getApplication()->redirect(JURI::root()."index.php?option=com_digicom&view=downloads",$msg);
-		}
 		// orders page
+		if ($configs->get('afterpurchase',1) == 1)
+		{
+			$app->redirect(JURI::root()."index.php?option=com_digicom&view=order&id=".$order_id.$Itemid,$msg);
+		}
+		// download page
 		else
 		{
-			JFactory::getApplication()->redirect(JURI::root()."index.php?option=com_digicom&view=orders",$msg);
+			$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=downloads', true);
+			$Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
+
+			$app->redirect(JURI::root()."index.php?option=com_digicom&view=downloads".$Itemid,$msg);
 		}
 		
 		return true;
 	}
 	
 	function updateOrder($order_id,$result,$data,$pg_plugin,$status){
+		
 		$table = $this->getTable('Order');
 		$table->load($order_id);
 
-		//print_r($result);die;
 		//amount_paid
 		$table->amount_paid = $table->amount_paid + $data['total_paid_amt'];
-		//amound === amount_paid
 
 		//processor
 		$table->processor = $data['processor'];
-
-		//print_r($data);
-		//print_r($table->amount);
-		//print_r($table->amount_paid);
-		//die;
+		$warning = '';
 
 		//status
-		if($table->amount == $table->amount_paid){
+		if($table->amount_paid >= $table->amount){
 			$table->status = $status;
-			$table->published = 1;
-		}else{
+		}else if(($table->amount_paid > 0) && ($table->amount_paid < $table->amount)){
+			$warning = JText::_('COM_DIGICOM_PAYMENT_FROUD_CASE_PAYMENT_MANUPULATION');
 			$table->status = 'Pending';
-		}
-		
-		$table->comment = $table->comment. ' '. $result['comment'];
-		if(empty($table->comment)){
-			$table->comment = $data['processor'];
+		}else{
+			$table->status = $status;
 		}
 
+		$comment = array();
+		$comment[] = $table->comment;
+		$comment[] = $result['comment'];
+
+
+		$table->comment = implode("\n", $comment);
+
 		$orderparams = json_decode($table->params);
-		$orderparams->paymentinfo = array();
+		$orderparams->paymentinfo 	= array();
 		$orderparams->paymentinfo[] = $pg_plugin;
 		$orderparams->paymentinfo[] = $result;
 		$orderparams->paymentinfo[] = $data;
+		$orderparams->warning 	= $warning;
 
 		$table->params = json_encode($orderparams);
 		$table->store();
@@ -1053,29 +1025,6 @@ class DigiComModelCart extends JModelItem
 		$table->params = json_encode($params);
 		$table->store();
 		return true;
-	}
-	
-	function proccessFail($controller, $result)
-	{
-		$msg = JText::_("DIGI_PAYMENT_FAIL");
-		$customer = $this->loadCustomer( $result['sid'] );
-		$conf = $this->getInstance( "config", "digicomModel" );
-		$configs = $conf->getConfigs();
-		$items = $this->getCartItems( $customer, $configs );
-		$tax = $this->calc_price( $items, $customer, $configs );
-		$this->storeTransactionData( $items, -1, $tax, $result['sid'] );
-		$return_url = $this->getReturnUrl(false);
-
-		if(isset($result['msg']) && !empty($result['msg'])){
-			$msg .= " :" . $result['msg'];
-		}
-
-		if($result["processor"] == "payauthorize"){
-			$return_url = "index.php?option=com_digicom&controller=cart&task=checkout";
-			$msg = JText::_("DIGI_ERROR_AUTHORIZE");
-		}
-
-		$controller->setRedirect($return_url, $msg);
 	}
 
 	function goToSuccessURL( $sid, $msg = '', $orderid = 0 )
@@ -1205,17 +1154,10 @@ class DigiComModelCart extends JModelItem
 		}
 
 		$tax = $cart->calc_price( $items, $customer, $configs );
-		//print_r($items);die;
 		
 		$now = time();
 		$total = $tax['taxed'];
 		$number_of_products = $tax['number_of_products'];
-
-		if ( $configs->get('afterpurchase',1) == 0 ) {
-			$controller = "downloads";
-		} else {
-			$controller = "orders";
-		}
 
 		/* fixed return after payment, before paypal IPN */
 		$plugin = JRequest::getVar( 'plugin', '' );
