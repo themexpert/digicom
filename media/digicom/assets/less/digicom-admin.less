@@ -193,6 +193,23 @@ body.com_digicom {
   	// Products page
   	.btn-group .newproduct{ border-radius: 0; }
 	.product-thumb{ width: 48px; height: 48px; overflow: hidden; }
+
+  	// Toolbar
+  	#toolbar-publish,
+	#toolbar-unpublish,
+	#toolbar-trash{
+	  display: none;
+	  opacity: 0;
+	  -webkit-transition: all .15s linear;
+	  -moz-transition : all .15s linear;
+	  transition : all .15s linear;
+
+	  &.in{
+		display: inline-block;
+		opacity: 1;
+
+	  }
+	}
 	
 	header.header {display: none;}
 	.subhead-collapse {z-index: 11;position: relative;}

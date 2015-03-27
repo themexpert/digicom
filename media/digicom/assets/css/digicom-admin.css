@@ -179,6 +179,21 @@ body.com_digicom .product-thumb {
   height: 48px;
   overflow: hidden;
 }
+body.com_digicom #toolbar-publish,
+body.com_digicom #toolbar-unpublish,
+body.com_digicom #toolbar-trash {
+  display: none;
+  opacity: 0;
+  -webkit-transition: all .15s linear;
+  -moz-transition: all .15s linear;
+  transition: all .15s linear;
+}
+body.com_digicom #toolbar-publish.in,
+body.com_digicom #toolbar-unpublish.in,
+body.com_digicom #toolbar-trash.in {
+  display: inline-block;
+  opacity: 1;
+}
 body.com_digicom header.header {
   display: none;
 }
