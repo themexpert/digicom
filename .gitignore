@@ -52,8 +52,8 @@ config.codekit
 /media/*
 !/media/digicom/
 /modules/*
-!/modules/mod_digicom_cart/*
-!/modules/mod_digicom_categories/*
+!/modules/mod_digicom_cart/
+!/modules/mod_digicom_categories/
 /plugins/*
 !/plugins/digicom_pay/
 !/plugins/system/
