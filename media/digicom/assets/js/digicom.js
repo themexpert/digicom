@@ -22,6 +22,7 @@ function openModal(a){
 }
 
 jQuery(document).ready(function() {
+
  jQuery("a[href*=#togglesidebar]").toggle(function () {
   jQuery("body").addClass("sidebar-collapse");
  }, function () {
@@ -33,40 +34,26 @@ jQuery(document).ready(function() {
  }, function () {
   jQuery("body").removeClass("sidebar-right-collapse");
  });
-});
-function toGGleToolberItems(none){
-  jQuery('#toolbar-publish,#toolbar-unpublish,#toolbar-trash').css('display',none);
-}
-jQuery(document).ready(function(){
-	
-	toGGleToolberItems('none');
 
-	jQuery("input[type='checkbox']").change(function() {
-	    if(this.checked) {
-	       toGGleToolberItems('inline-block');
-	    }else{
-	    	if(!jQuery("input[type='checkbox']").is(':checked')){
-	    		toGGleToolberItems('none');
-	    	}else{
-	    		
-				form = document.getElementById('adminForm');
-				// Toggle main toggle checkbox depending on checkbox selection
-			    var c = true, i, e;
-			    for (i = 0, n = form.elements.length; i < n; i++) {
-			        e = form.elements[i];
-			        if (e.type == 'checkbox') {
-			            if (e.name != 'checkall-toggle' && e.checked == false) {
-			                c = false;
-			                break;
-			            }
-			        }
-			    }
-			    if (c) {
-			        toGGleToolberItems('none');
-			    }
-	    	}
-	    }
+  // Toggle toolbar button
+  var btnSelector = jQuery('#toolbar-publish,#toolbar-unpublish,#toolbar-trash');
 
-	});
+  jQuery("input[type='checkbox']").change( function(){
+
+    if(!jQuery("input[type='checkbox']").is(':checked')){
+     btnSelector.removeClass('in');
+    }else{
+     btnSelector.addClass('in');
+    }
+
+    jQuery('input[name="checkall-toggle"]').change( function(){
+      if( this.checked){
+        btnSelector.removeClass('in');
+        btnSelector.addClass('in');
+      }else{
+       btnSelector.removeClass('in');
+      }
+    });
+  });
 
 });
