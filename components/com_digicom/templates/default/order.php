@@ -30,7 +30,7 @@ if ($this->order->id < 1){
 		<thead>
 			
 			<tr>
-				<th><?php echo JText::_('COM_DIGICOM_ORDER_ID'); ?></th>
+				<th><?php echo JText::_('JGRID_HEADING_ID'); ?></th>
 				<th><?php echo $order->id; ?></th>
 			</tr>
 		</thead>
@@ -38,7 +38,7 @@ if ($this->order->id < 1){
 		<tbody>
 
 			<tr>
-				<td><strong><?php echo JText::_('COM_DIGICOM_STATUS'); ?></strong></td>
+				<td><strong><?php echo JText::_('JSTATUS'); ?></strong></td>
 				<td>
 					<?php
 						$labelClass = '';
@@ -55,7 +55,7 @@ if ($this->order->id < 1){
 				<td><?php echo ucfirst( $order->processor ); ?></td>
 			</tr>
 			<tr>
-				<td><strong><?php echo JText::_('COM_DIGICOM_DATE'); ?></strong></td>
+				<td><strong><?php echo JText::_('JDATE'); ?></strong></td>
 				<td><?php echo $date; ?></td>
 			</tr>
 			
@@ -65,7 +65,7 @@ if ($this->order->id < 1){
 			</tr>
 
 			<tr>
-				<td><strong><?php echo JText::_('COM_DIGICOM_AMOUNT_PAID'); ?></strong></td>
+				<td><strong><?php echo JText::_('COM_DIGICOM_TOTAL_PAID'); ?></strong></td>
 				<td><?php echo DigiComSiteHelperDigiCom::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs);?></td>
 			</tr>
 			
@@ -85,10 +85,10 @@ if ($this->order->id < 1){
 	<table class="table table-striped table-hover table-bordered">
 		<thead>
 			<tr>
-				<th><?php echo JText::_('COM_DIGICOM_PRODUCTS_IMAGE'); ?></th>
-				<th><?php echo JText::_('COM_DIGICOM_PRODUCTS_NAME'); ?></th>
-				<th><?php echo JText::_('COM_DIGICOM_PRODUCTS_TYPE'); ?></th>
-				<th><?php echo JText::_('COM_DIGICOM_PRODUCTS_PRICE'); ?></th>
+				<th><?php echo JText::_('COM_DIGICOM_IMAGE'); ?></th>
+				<th><?php echo JText::_('JGLOBAL_TITLE'); ?></th>
+				<th><?php echo JText::_('COM_DIGICOM_TYPE'); ?></th>
+				<th><?php echo JText::_('COM_DIGICOM_PRODUCT_PRICE'); ?></th>
 			</tr>
 		</thead>
 
