@@ -134,7 +134,7 @@ class DigiComViewDiscounts extends JViewLegacy
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
 		
 		JToolBarHelper::addNew('discount.add');
-		JToolBarHelper::editList('discount.edit');
+//		JToolBarHelper::editList('discount.edit');
 		JToolBarHelper::divider();
 		JToolBarHelper::publishList('discounts.publish');
 		JToolBarHelper::unpublishList('discounts.unpublish');

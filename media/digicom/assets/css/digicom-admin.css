@@ -178,7 +178,9 @@ body.com_digicom .product-thumb {
 }
 body.com_digicom #toolbar-publish,
 body.com_digicom #toolbar-unpublish,
-body.com_digicom #toolbar-trash {
+body.com_digicom #toolbar-trash,
+body.com_digicom #toolbar-delete,
+body.com_digicom #toolbar-edit {
   display: none;
   opacity: 0;
   -webkit-transition: all .15s linear;
@@ -187,7 +189,9 @@ body.com_digicom #toolbar-trash {
 }
 body.com_digicom #toolbar-publish.in,
 body.com_digicom #toolbar-unpublish.in,
-body.com_digicom #toolbar-trash.in {
+body.com_digicom #toolbar-trash.in,
+body.com_digicom #toolbar-delete.in,
+body.com_digicom #toolbar-edit.in {
   display: inline-block;
   opacity: 1;
 }
@@ -254,7 +258,8 @@ body.com_digicom .subhead .btn-toolbar .icon-not-ok:before,
 body.com_digicom .subhead .btn-toolbar .icon-eye-close:before,
 body.com_digicom .subhead .btn-toolbar .icon-ban-circle:before,
 body.com_digicom .subhead .btn-toolbar .icon-minus-sign:before,
-body.com_digicom .subhead .btn-toolbar .icon-cancel:before {
+body.com_digicom .subhead .btn-toolbar .icon-cancel:before,
+body.com_digicom .subhead .btn-toolbar .icon-edit:before {
   color: inherit;
 }
 body.com_digicom .subhead #toolbar .btn-success {

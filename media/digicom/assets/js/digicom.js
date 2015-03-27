@@ -36,7 +36,7 @@ jQuery(document).ready(function() {
  });
 
   // Toggle toolbar button
-  var btnSelector = jQuery('#toolbar-publish,#toolbar-unpublish,#toolbar-trash');
+  var btnSelector = jQuery('#toolbar-publish,#toolbar-unpublish,#toolbar-trash,#toolbar-delete,#toolbar-edit');
 
   jQuery("input[type='checkbox']").change( function(){
 

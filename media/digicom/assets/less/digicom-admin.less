@@ -168,7 +168,7 @@ body.com_digicom {
 	-moz-transition: all 0.3s ease-in-out;
 	-o-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
-  
+
 	/* Button classes */
 	.btn {
 		background: @btn;
@@ -197,7 +197,9 @@ body.com_digicom {
   	// Toolbar
   	#toolbar-publish,
 	#toolbar-unpublish,
-	#toolbar-trash{
+	#toolbar-trash,
+	#toolbar-delete,
+	#toolbar-edit{
 	  display: none;
 	  opacity: 0;
 	  -webkit-transition: all .15s linear;
@@ -251,7 +253,8 @@ body.com_digicom {
 			.btn-small .caret {margin-top: 7px;}
 
 		  	.icon-publish:before, .icon-save:before, .icon-ok:before, .icon-save-new:before, .icon-save-copy:before, .icon-copy:before,
-			.icon-unpublish:before, .icon-not-ok:before, .icon-eye-close:before, .icon-ban-circle:before, .icon-minus-sign:before, .icon-cancel:before{ color: inherit}
+			.icon-unpublish:before, .icon-not-ok:before, .icon-eye-close:before, .icon-ban-circle:before, .icon-minus-sign:before, .icon-cancel:before,
+			.icon-edit:before{ color: inherit}
 		}
 	  #toolbar .btn-success{ width: auto; }
 	}
