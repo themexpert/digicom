@@ -76,11 +76,11 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 					        {
 					            label: "Monthly Report",
 					            fillColor: "#e6f3f9",
-					            strokeColor: "#24aeed",
-					            pointColor: "#24aeed",
-					            pointStrokeColor: "#24aeed",
+					            strokeColor: "#1562AD",
+					            pointColor: "#1562AD",
+					            pointStrokeColor: "#1562AD",
 					            pointHighlightFill: "#e6f3f9",
-					            pointHighlightStroke: "24aeed",
+					            pointHighlightStroke: "#1562AD",
 					            data: [<?php echo $monthlyPrice; ?>]
 					        }
 					    ]
@@ -168,6 +168,6 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 	</div>
 </form>
 
-<div class="alert alert-info text-center">
+<div class="dg-footer">
 	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
 </div>

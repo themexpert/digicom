@@ -291,3 +291,7 @@ function submitbutton(pressbutton) {
 	<input type="hidden" name="view" value="discount" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>
+
+<div class="dg-footer">
+	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>

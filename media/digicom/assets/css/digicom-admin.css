@@ -20,7 +20,7 @@ td.order input {
 /* General FIX */
 #content [class^="icon-"],
 #content [class*=" icon-"] {
-  color: #24aeed;
+  color: #1f82e0;
 }
 #content .btn [class^="icon-"],
 #content .btn [class*=" icon-"] {
@@ -28,7 +28,7 @@ td.order input {
 }
 span.label-ds,
 span.badge-ds {
-  background-color: #24aeed;
+  background-color: #1f82e0;
 }
 span.label-ds a,
 span.badge-ds a {
@@ -158,7 +158,7 @@ body.com_digicom .btn {
   text-shadow: none;
 }
 body.com_digicom .btn-primary {
-  background: #24aeed;
+  background: #1562ad;
 }
 body.com_digicom .btn-success {
   background: #4caf50;
@@ -170,9 +170,6 @@ body.com_digicom .btn-warning {
 body.com_digicom .btn-danger {
   background: #d32f2f;
   border-color: #888;
-}
-body.com_digicom .btn-group .newproduct {
-  border-radius: 0;
 }
 body.com_digicom .product-thumb {
   width: 48px;
@@ -203,8 +200,9 @@ body.com_digicom .subhead-collapse {
 }
 body.com_digicom .subhead {
   margin-bottom: 0;
-  background: #fff;
-  box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2);
+  background: #1562ad;
+  border-top: 3px solid #1f82e0;
+  box-shadow: 0 2px 0 #1e4973 inset;
   padding: 10px 0;
   border-bottom: 0;
   min-height: inherit;
@@ -227,23 +225,49 @@ body.com_digicom .subhead .btn-toolbar #toolbar-title {
 body.com_digicom .subhead .btn-toolbar #toolbar-title h3 {
   margin: 0;
   line-height: 26px;
+  color: #fff;
+  text-shadow: none;
 }
 body.com_digicom .subhead .btn-toolbar #toolbar-title h3 [class^="icon-"],
 body.com_digicom .subhead .btn-toolbar #toolbar-title h3 [class*=" icon-"] {
   margin-right: 15px;
 }
+body.com_digicom .subhead .btn-toolbar .btn {
+  background: transparent;
+  color: #fff;
+  text-shadow: none;
+  border-radius: 4px;
+  padding: 4px 10px;
+}
 body.com_digicom .subhead .btn-toolbar .btn-mini .caret,
 body.com_digicom .subhead .btn-toolbar .btn-small .caret {
   margin-top: 7px;
+}
+body.com_digicom .subhead .btn-toolbar .icon-publish:before,
+body.com_digicom .subhead .btn-toolbar .icon-save:before,
+body.com_digicom .subhead .btn-toolbar .icon-ok:before,
+body.com_digicom .subhead .btn-toolbar .icon-save-new:before,
+body.com_digicom .subhead .btn-toolbar .icon-save-copy:before,
+body.com_digicom .subhead .btn-toolbar .icon-copy:before,
+body.com_digicom .subhead .btn-toolbar .icon-unpublish:before,
+body.com_digicom .subhead .btn-toolbar .icon-not-ok:before,
+body.com_digicom .subhead .btn-toolbar .icon-eye-close:before,
+body.com_digicom .subhead .btn-toolbar .icon-ban-circle:before,
+body.com_digicom .subhead .btn-toolbar .icon-minus-sign:before,
+body.com_digicom .subhead .btn-toolbar .icon-cancel:before {
+  color: inherit;
+}
+body.com_digicom .subhead #toolbar .btn-success {
+  width: auto;
 }
 body.com_digicom .container-main {
   padding: 0 0 0;
 }
 body.com_digicom #j-sidebar-container {
-  background: #186293;
+  background: #343f51;
   margin-left: 0;
   width: 200px;
-  color: #dddddd;
+  color: #c9d1dd;
   position: fixed;
   top: 76px;
   bottom: 28px;
@@ -263,7 +287,7 @@ body.com_digicom #j-sidebar-container #sidebar #submenu {
 }
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a {
   padding: 5px 12px;
-  color: #dddddd;
+  color: #c9d1dd;
   font-size: 14px;
   line-height: 24px;
   text-shadow: none;
@@ -294,13 +318,13 @@ body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a:f
 }
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list [class^="icon-"],
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list [class*=" icon-"] {
-  color: #dddddd;
+  color: #c9d1dd;
   margin-right: 15px;
   width: auto;
   height: auto;
 }
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li.active > a {
-  background: #24aeed;
+  background: #1f82e0;
   color: #fefefe;
   position: relative;
 }
@@ -504,13 +528,13 @@ body.layout-dgform #j-main-container .form-inline .controls {
 body.layout-dgform #j-main-container .nav-tabs {
   margin-bottom: 0;
   border: 0;
-  background: #186293;
+  background: #343f51;
 }
 body.layout-dgform #j-main-container .nav-tabs > li > a {
   border: 0;
   border-radius: 0;
   padding: 15px;
-  color: #dddddd;
+  color: #c9d1dd;
 }
 body.layout-dgform #j-main-container .nav-tabs > li > a:hover,
 body.layout-dgform #j-main-container .nav-tabs > li > a:focus {
@@ -520,7 +544,7 @@ body.layout-dgform #j-main-container .nav-tabs > li > a:focus {
 body.layout-dgform #j-main-container .nav-tabs .active a,
 body.layout-dgform #j-main-container .nav-tabs .active a:hover,
 body.layout-dgform #j-main-container .nav-tabs .active a:focus {
-  border-top: 4px solid #24aeed;
+  border-top: 4px solid #1f82e0;
   color: #444;
   background: #fff;
 }
@@ -530,8 +554,8 @@ body.layout-dgform #j-main-container .tab-content {
 }
 /* Sidebar right styling */
 #toggle_settings_wrap {
-  background: #186293;
-  color: #dddddd;
+  background: #1562ad;
+  color: #c9d1dd;
   padding: 20px;
   position: fixed;
   top: 0;
@@ -549,8 +573,8 @@ body.layout-dgform #j-main-container .tab-content {
   color: #fbfbfb;
   font-size: 12px;
   text-transform: uppercase;
-  border-bottom: 1px solid #14537d;
-  box-shadow: 0 1px 0px #1c71a9;
+  border-bottom: 1px solid #125596;
+  box-shadow: 0 1px 0px #358ee3;
   padding-bottom: 5px;
   margin: 10px 0 5px;
 }
@@ -559,7 +583,7 @@ body.layout-dgform #j-main-container .tab-content {
   margin-left: 0px;
 }
 #toggle_settings_wrap ul li a {
-  color: #dddddd;
+  color: #f5f5f5;
   line-height: 30px;
   font-size: 14px;
   -webkit-transition: all 0.3s ease-in-out;
@@ -568,7 +592,7 @@ body.layout-dgform #j-main-container .tab-content {
   transition: all 0.3s ease-in-out;
 }
 #toggle_settings_wrap ul li a:hover {
-  color: #24aeed;
+  color: #333;
   text-decoration: none;
   padding-left: 5px;
 }
@@ -669,7 +693,7 @@ body.sidebar-right-collapse {
 .nav-charts li.active a,
 .nav-charts li.active a:focus,
 .nav-charts li.active a:hover {
-  background: #24aeed;
+  background: #1f82e0;
   color: #fff;
 }
 /* Product page Styling */
@@ -747,7 +771,7 @@ body.layout-neworder .add-product .btn-group {
 .product-details > h3 {
   margin: -10px -10px 10px;
   padding: 10px;
-  background: #186293;
+  background: #343f51;
   color: #ffffff;
   text-transform: uppercase;
   font-weight: normal;
@@ -877,4 +901,9 @@ body.layout-neworder .add-product .btn-group {
     word-wrap: break-word;
     overflow: hidden;
   }
+}
+.dg-footer {
+  text-align: right;
+  margin-bottom: 40px;
+  margin-right: 25px;
 }

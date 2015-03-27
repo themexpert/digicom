@@ -1,22 +1,23 @@
 // Color Variables
-@primary-blue : #186293;
-@secondary-blue : #24aeed;
+@primary-blue : #1562AD;
+@secondary-blue : #1F82E0;
+@dark-blue : #1E4973;
+
 @gray : #f5f5f5 ;
 
 @body-background: @gray;
-@sidebar-background: @primary-blue;
-@sidebar-active-background: @secondary-blue;
-@sidebar-text-color: #ddd;
+@sidebar-background: #343f51;
+@sidebar-active-background: @primary-blue;
+@sidebar-text-color: #c9d1dd;
 @sidebar-active-text-color: #fefefe;
 
 
 // Button override
 @btn: @sidebar-active-text-color;
-@btn-primary: @secondary-blue;
+@btn-primary: @primary-blue;
 @btn-success: #4CAF50;
 @btn-warning: #FBC02D;
 @btn-danger: #d32f2f;
-
 
 // Utility Classes
 .panel-box {
@@ -167,7 +168,7 @@ body.com_digicom {
 	-moz-transition: all 0.3s ease-in-out;
 	-o-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
-
+  
 	/* Button classes */
 	.btn {
 		background: @btn;
@@ -191,7 +192,6 @@ body.com_digicom {
 		border-color: #888;
 	}
   	// Products page
-  	.btn-group .newproduct{ border-radius: 0; }
 	.product-thumb{ width: 48px; height: 48px; overflow: hidden; }
 
   	// Toolbar
@@ -215,8 +215,9 @@ body.com_digicom {
 	.subhead-collapse {z-index: 11;position: relative;}
 	.subhead {
 		margin-bottom: 0;
-		background: #fff;
-		box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2);
+		background: @primary-blue;
+	  	border-top: 3px solid @secondary-blue;
+		box-shadow: 0 2px 0 @dark-blue inset;
 		padding: 10px 0;
 		border-bottom: 0;
 		min-height: inherit;
@@ -233,14 +234,26 @@ body.com_digicom {
 				h3 {
 					margin: 0;
 					line-height: 26px;
+				  	color: #fff;
+				  	text-shadow: none;
 					[class^="icon-"], 
 					[class*=" icon-"] {margin-right: 15px;}
 				}
 			}
-			
+		  	.btn{
+			  background: transparent;
+			  color: #fff;
+			  text-shadow: none;
+			  border-radius: 4px;
+			  padding: 4px 10px;
+			}
 			.btn-mini .caret, 
 			.btn-small .caret {margin-top: 7px;}
+
+		  	.icon-publish:before, .icon-save:before, .icon-ok:before, .icon-save-new:before, .icon-save-copy:before, .icon-copy:before,
+			.icon-unpublish:before, .icon-not-ok:before, .icon-eye-close:before, .icon-ban-circle:before, .icon-minus-sign:before, .icon-cancel:before{ color: inherit}
 		}
+	  #toolbar .btn-success{ width: auto; }
 	}
 
 	.container-main {
@@ -248,7 +261,7 @@ body.com_digicom {
 	}
 
 	#j-sidebar-container {
-		background: @primary-blue;
+		background: @sidebar-background;
 		margin-left: 0;
 		width: 200px;
 		color: @sidebar-text-color;
@@ -435,7 +448,7 @@ body.layout-dgform {
 		.nav-tabs {
 			margin-bottom: 0;
 			border: 0;
-			background: @primary-blue;
+			background: @sidebar-background;
 			> li {
 				> a {
 					border: 0;
@@ -485,7 +498,7 @@ body.layout-dgform {
 		font-size: 12px;
 		text-transform: uppercase;
 		border-bottom: 1px solid darken(@primary-blue, 5%);
-		box-shadow: 0 1px 0px lighten(@sidebar-background, 5%);
+		box-shadow: 0 1px 0px lighten(@secondary-blue, 5%);
 		padding-bottom: 5px;
 		margin: 10px 0 5px;
 	}
@@ -495,7 +508,7 @@ body.layout-dgform {
 		margin-left: 0px;
 
 		li a {
-			color: @sidebar-text-color;
+			color: @gray;
 			line-height: 30px;
 			font-size: 14px;
 			-webkit-transition: all 0.3s ease-in-out;
@@ -504,7 +517,7 @@ body.layout-dgform {
 			transition: all 0.3s ease-in-out;
 
 			&:hover {
-				color: @secondary-blue;
+				color: #333;
 				text-decoration: none;
 				padding-left: 5px;
 
@@ -840,3 +853,4 @@ body.layout-neworder {
 		}
 	}
 }
+.dg-footer{ text-align: right; margin-bottom: 40px; margin-right: 25px; }

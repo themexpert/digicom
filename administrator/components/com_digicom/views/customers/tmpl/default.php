@@ -133,3 +133,7 @@ $n = count ($this->custs);
 		<input type="hidden" name="view" value="customers" />
 	</form>
 </div>
+
+<div class="dg-footer">
+	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>

@@ -250,7 +250,7 @@ JFactory::getDocument()->addScriptDeclaration('
 
 				<tfoot>
 					<tr>
-						<td colspan="8">
+						<td colspan="11">
 							<?php echo $this->pagination->getListFooter(); ?>
 						</td>
 					</tr>
@@ -271,3 +271,6 @@ JFactory::getDocument()->addScriptDeclaration('
 	<?php echo JHtml::_('form.token'); ?>
 	
 </form>
+<div class="dg-footer">
+	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>

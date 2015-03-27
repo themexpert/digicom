@@ -277,3 +277,7 @@ JHTML::_('behavior.tooltip');
 	</fieldset>
 
 <div>
+
+<div class="dg-footer">
+	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>

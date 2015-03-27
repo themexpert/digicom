@@ -135,7 +135,10 @@ $input->set('layout', 'dgform');
 		<input type="hidden" name="return" value="<?php echo $input->getCmd('return'); ?>" />		
 		<?php echo JHtml::_('form.token'); ?>
 
-
 	</div>
 </div>
 </form>
+
+<div class="dg-footer">
+	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>

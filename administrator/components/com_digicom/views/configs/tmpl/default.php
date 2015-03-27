@@ -102,3 +102,6 @@ JHtml::_('formbehavior.chosen', 'select');
 <script type="text/javascript">
 	jQuery('#configTabs a:first').tab('show'); // Select first tab
 </script>
+<div class="dg-footer">
+	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>

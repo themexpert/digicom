@@ -160,3 +160,7 @@ $document->addStyleSheet("components/com_digicom/assets/css/diagrams.css");
 		<input type="hidden" name="task" value="showStats" />
 	</div>
 </form>
+
+<div class="dg-footer">
+	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>

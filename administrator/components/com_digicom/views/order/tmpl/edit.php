@@ -166,3 +166,7 @@ $date = date( $configs->get('time_format','d M Y'), $order->order_date);
 	<?php echo JHtml::_('form.token'); ?>
 </form>
 </div>
+
+<div class="dg-footer">
+	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>

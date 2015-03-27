@@ -199,3 +199,6 @@ if ($saveOrder)
 		<?php echo JHtml::_('form.token'); ?>
 	</div>
 </form>
+<div class="dg-footer">
+	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>

@@ -226,3 +226,7 @@ Joomla.submitbutton = function (pressbutton) {
 		<?php echo JHtml::_('form.token'); ?>
 	</form>
 </div>
+
+<div class="dg-footer">
+	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>

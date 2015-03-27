@@ -55,3 +55,7 @@ $max_upload = ini_get('upload_max_filesize');
 					</form>
 				
 	</div>
+
+		<div class="dg-footer">
+			<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+		</div>

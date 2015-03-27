@@ -270,3 +270,7 @@ $input->set('layout', 'dgform');
 	<input type="hidden" name="keyword" value="<?php echo $this->keyword; ?>" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>
+
+<div class="dg-footer">
+	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>
