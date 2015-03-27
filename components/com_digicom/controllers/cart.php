@@ -1,14 +1,13 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 419 $
- * @lastmodified	$LastChangedDate: 2013-11-16 10:52:05 +0100 (Sat, 16 Nov 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license
-*/
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
 
 class DigiComControllerCart extends JControllerLegacy
 {

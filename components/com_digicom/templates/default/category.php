@@ -1,13 +1,14 @@
 <?php
 /**
- * @package			com_digicom
- * @author			themexpert.com
- * @version			1.0beta1
- * @copyright		Copyright (C) 2010-2015 ThemeXpert. All rights reserved.
- * @license			GNU/GPLv3
-*/
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
 defined('_JEXEC') or die;
+
 // Load Jquery
 JHtml::_('jquery.framework');
 // We'll only load this js if show cart in popup option is set from admin setting

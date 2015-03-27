@@ -1,14 +1,15 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 341 $
- * @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
+
+// TODO : PHP visibility and proper naming convention
 
 class DigiComSiteHelperTemplate extends JViewLegacy {
 	
@@ -49,10 +50,10 @@ class DigiComSiteHelperTemplate extends JViewLegacy {
 		}
 		
 		// CUSTOM CSS
-		if (is_file(JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_digicom'.DS.$params->get('template','default') . '/css/style.css')) {
-			$this->addStyleSheet(JUri::root(true).DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_digicom'.DS.$params->get('template','default') . '/css/style.css');
-		}elseif(is_file(JPATH_COMPONENT.DS.'templates'.DS.$params->get('template','default') . '/css/style.css')) {
-			$this->addStyleSheet(JUri::root(true).DS.'components'.DS.'com_digicom'.DS.'templates'.DS.$params->get('template','default') . '/css/style.css');
+		if (is_file(JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_digicom'.DS.$params->get('template','default') . '/css/style.sample.css')) {
+			$this->addStyleSheet(JUri::root(true).DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_digicom'.DS.$params->get('template','default') . '/css/style.sample.css');
+		}elseif(is_file(JPATH_COMPONENT.DS.'templates'.DS.$params->get('template','default') . '/css/style.sample.css')) {
+			$this->addStyleSheet(JUri::root(true).DS.'components'.DS.'com_digicom'.DS.'templates'.DS.$params->get('template','default') . '/css/style.sample.css');
 		}
 
 		// CUSTOM JS

@@ -1,14 +1,13 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 457 $
- * @lastmodified	$LastChangedDate: 2014-01-26 08:51:32 +0100 (Sun, 26 Jan 2014) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license
-*/
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
 
 class DigiComModelCheckout extends JModelItem
 {

@@ -1,10 +1,10 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  com_digicom
- *
- * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
  */
 
 defined('_JEXEC') or die;
@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 use Joomla\Registry\Registry;
 
 /**
- * HTML View class for the Content component
+ * HTML View class
  *
  * @since  1.5
  */

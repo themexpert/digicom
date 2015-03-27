@@ -1,14 +1,13 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 341 $
- * @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
 
 $invisible = 'style="display:none;"';
 $k = 0;
@@ -114,59 +113,6 @@ if ($this->order->id < 1):
 									
 								</td>
 							</tr>
-
-							<!-- <tr>
-							
-								<td align="left">
-									
-									<table>
-										
-										<tr>
-											<td style="border: 0;">
-												<?php echo JText::_('DSADDRESS');?>:</td><td> <?php ?>
-											</td>
-										</tr>
-										
-										<tr>
-											<td style="border: 0;"></td>
-											<td style="border: 0;">
-												
-												<?php ?>
-											</td>
-										</tr>
-										<?php
-										
-							
-										
-										?>
-										<tr>
-											<td style="border: 0;"></td>
-											<td style="border: 0;">
-												
-											</td>
-										</tr>
-										<?php
-									
-										?>
-									</table>
-									
-								</td>
-							
-								<td></td>
-							</tr> -->
-
-		
-
-							<!-- <tr>
-								<th align="left">
-									<?php echo JText::_("DSBILLEDTO");?>
-								</th>
-							
-								<th align="right">
-							
-								</th>
-							</tr> -->
-							
 						</table>
 						
 						<table class="table" style="margin-bottom: 40px;">

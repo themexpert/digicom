@@ -1,20 +1,19 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  com_weblinks
- *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
  */
 
 defined('_JEXEC') or die;
 
 /**
- * Content categories view.
+ * DigiCom categories view.
  *
- * @package     Joomla.Site
- * @subpackage  com_weblinks
- * @since       1.5
+ * @package     DigiCom
+ * @since       1.0.0
  */
 class DigiComViewCategories extends JViewCategories
 {
