@@ -106,6 +106,18 @@ $date = date( $configs->get('time_format','d M Y'), $order->order_date);
 			endforeach; ?>
 
 			<tr style="border-style:none;"><td style="border-style:none;" colspan="4"><hr /></td></tr>
+			
+			<tr>
+				<td colspan="2" width="50%"><?php echo $this->form->getLabel('status'); ?></td>
+				<td colspan="2"><?php echo $this->form->getInput('status'); ?></td>
+			</tr>
+			<tr>
+				<td colspan="2" width="50%"><?php echo $this->form->getLabel('amount_paid'); ?></td>
+				<td colspan="2"><?php echo $this->form->getInput('amount_paid'); ?></td>
+			</tr>
+
+			<tr style="border-style:none;"><td style="border-style:none;" colspan="4"><hr /></td></tr>
+
 			<tr><td colspan="2" ></td>
 				<td style="font-weight:bold"><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></td>
 				<td>
