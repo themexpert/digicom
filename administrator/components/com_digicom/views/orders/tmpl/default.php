@@ -178,7 +178,7 @@ Joomla.submitbutton = function (pressbutton) {
 							<span class="<?php echo $class; ?>">
 								<?php echo (trim( $order->status ) != "in_progres" ? $order->status : "Active"); ?>
 							</span>
-							<a href="<?php echo $orderstatuslink; ?>" title="<?php echo JText::_('COM_DIGICOM_ORDER_STATUS_CHANGE');?>" class="hasTooltip">
+							<a href="<?php echo $orderstatuslink; ?>" title="<?php echo JText::_('COM_DIGICOM_ORDER_STATUS_CHANGE_FROM_'.strtoupper($order->status));?>" class="hasTooltip">
 								<i class="icon-refresh"></i>
 							</a>
 							

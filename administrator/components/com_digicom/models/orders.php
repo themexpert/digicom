@@ -720,6 +720,8 @@ class DigiComModelOrders extends JModelList{
 	function cycleStatus(){
 		$db = JFactory::getDBO();
 		$cids = JRequest::getVar( 'id');
+		$res = true;
+
 		$sql = "select status from #__digicom_orders where id ='" . $cids . "'";
 		$db->setQuery( $sql );
 
@@ -736,24 +738,23 @@ class DigiComModelOrders extends JModelList{
 		if ( $statid > $max_status )
 			$statid = 0;
 		$status = $this->_statusList[$statid];
-		$sql = "update #__digicom_orders set status='" . $status . "' where id in ('" . $cids . "')";
-		$db->setQuery($sql);
-		$res = true;
 
-		if(!$db->query()){
+		$table = $this->getTable('order');
+		$table->load($cids);
+		$table->status = $status;
+		$table->amount_paid = $table->amount;
+		if(!$table->store()){
 			$res = false;
 		}
 
-		if($status == "Pending"){
+		if($res && $status == "Pending"){
 			$sql = "update #__digicom_orders_details set published=0 where orderid in ('".$cids."')";
 
 		}
 		elseif($status == "Active"){
 			$sql = "update #__digicom_orders_details set published=1 where orderid in ('" . $cids  . "')";
-			/*foreach($cids as $cid){
-				$this->sendApprovedEmail($cid);
-			}*/
 		}
+		
 		$db->setQuery($sql);
 		if(!$db->query()){
 			$res = false;
