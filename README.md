@@ -1,6 +1,5 @@
-# Digicom
+# Digicom [![Join the chat at https://gitter.im/themexpert/digicom](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/themexpert/digicom?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[![Join the chat at https://gitter.im/themexpert/digicom](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/themexpert/digicom?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Welcome to the DigiCom repository on GitHub. DigiCom is next generation ecommerce extension for selling digital product with Joomla!. Our aim to create modular, lightweight and extendable ecommerce solution for Joomla.
 
 * [Homepage](http://www.themexpert.com/digicom) - Learn more about DigiCom
