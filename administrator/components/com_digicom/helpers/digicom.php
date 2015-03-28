@@ -441,6 +441,49 @@ class DigiComHelperDigiCom extends JHelperContent{
 		return true;
 	}
 
+	public static function getChargebacks($order)
+	{
+		$db = JFactory::getDBO();
+		$sql = "SELECT SUM(`cancelled_amount`)
+				FROM `#__digicom_orders_details`
+				WHERE `cancelled`=1
+				  AND `orderid`=" . (int) $order;
+		$db->setQuery($sql);
+		return $db->loadResult();
+	}
+
+	public static function getRefunds($order)
+	{
+		$db = JFactory::getDBO();
+		$sql = "SELECT SUM(`cancelled_amount`)
+				FROM `#__digicom_orders_details`
+				WHERE `cancelled`=2
+				  AND `orderid`=" . (int) $order;
+		$db->setQuery($sql);
+		return $db->loadResult();
+	}
+
+	public static function getDeleted($order, $license=0)
+	{
+		$db = JFactory::getDBO();
+		$sql = "SELECT SUM(`amount_paid`)
+				FROM `#__digicom_orders_details`
+				WHERE `cancelled`=3
+				  AND `orderid`=" . (int) $order;
+		$db->setQuery($sql);
+		return $db->loadResult();
+	}
+
+	public static function isProductDeleted($id)
+	{
+		$db = JFactory::getDBO();
+		$sql = "SELECT `cancelled`
+				FROM `#__digicom_orders_details`
+				WHERE `id`='" . $id . "'";
+		$db->setQuery($sql);
+		return $db->loadResult();
+	}
+
 	public static function addAdminStyles(){
 		
 		// load core script

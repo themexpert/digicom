@@ -356,14 +356,20 @@ function changeProvince_cb_ship(province_option) {
 
  }
  function ChangeLogOption(value){
-		if(value == 0){
-			document.getElementById("log_form").style.display = "block";
-			document.getElementById("reg_form").style.display = "none";
-			document.getElementById("continue_button").style.display = "none";
-		}
-		else if(value == 1){
-			document.getElementById("log_form").style.display = "none";
-			document.getElementById("reg_form").style.display = "block";
-			document.getElementById("continue_button").style.display = "block";
-		}
+	if(value == 0){
+		document.getElementById("log_form").style.display = "block";
+		document.getElementById("reg_form").style.display = "none";
+		document.getElementById("continue_button").style.display = "none";
 	}
+	else if(value == 1){
+		document.getElementById("log_form").style.display = "none";
+		document.getElementById("reg_form").style.display = "block";
+		document.getElementById("continue_button").style.display = "block";
+	}
+}
+function closePopupLogin(div) {
+	if(document.getElementById(div)){
+		for_delete = document.getElementById(div);
+		for_delete.parentNode.removeChild(for_delete);
+	}
+}

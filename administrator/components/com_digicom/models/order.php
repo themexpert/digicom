@@ -169,49 +169,25 @@ class DigiComModelOrder extends JModelAdmin
 		return $db->loadObjectList();
 	}
 
-	public static function getChargebacks($order)
+	/**
+	 * Method to validate the form data.
+	 *
+	 * @param   JForm   $form   The form to validate against.
+	 * @param   array   $data   The data to validate.
+	 * @param   string  $group  The name of the field group to validate.
+	 *
+	 * @return  mixed  Array of filtered data if valid, false otherwise.
+	 *
+	 * @see     JFormRule
+	 * @see     JFilterInput
+	 * @since   12.2
+	 */
+	public function validate($form, $data, $group = null)
 	{
-		$db = JFactory::getDBO();
-		$sql = "SELECT SUM(`cancelled_amount`)
-				FROM `#__digicom_orders_details`
-				WHERE `cancelled`=1
-				  AND `orderid`=" . (int) $order;
-		$db->setQuery($sql);
-		return $db->loadResult();
+
+		return $data;
 	}
 
-	public static function getRefunds($order)
-	{
-		$db = JFactory::getDBO();
-		$sql = "SELECT SUM(`cancelled_amount`)
-				FROM `#__digicom_orders_details`
-				WHERE `cancelled`=2
-				  AND `orderid`=" . (int) $order;
-		$db->setQuery($sql);
-		return $db->loadResult();
-	}
-
-	public static function getDeleted($order, $license=0)
-	{
-		$db = JFactory::getDBO();
-		$sql = "SELECT SUM(`amount_paid`)
-				FROM `#__digicom_orders_details`
-				WHERE `cancelled`=3
-				  AND `orderid`=" . (int) $order;
-		$db->setQuery($sql);
-		return $db->loadResult();
-	}
-
-	public static function isLicenseDeleted($id)
-	{
-		$db = JFactory::getDBO();
-		$sql = "SELECT `cancelled`
-				FROM `#__digicom_orders_details`
-				WHERE `id`='" . $id . "'";
-		$db->setQuery($sql);
-		return $db->loadResult();
-	}
-	
 	/**
 	 * Method to save the form data.
 	 *
@@ -221,155 +197,13 @@ class DigiComModelOrder extends JModelAdmin
 	 *
 	 * @since	3.1
 	 */
+
 	public function save($data)
 	{
-		
-		$app = JFactory::getApplication();
 
-		// Alter the name for save as copy
-		if ($app->input->get('task') == 'save2copy')
-		{
-			list($name, $alias) = $this->generateNewTitle($data['catid'], $data['alias'], $data['name']);
-			$data['name']	= $name;
-			$data['alias']	= $alias;
-			$data['state']	= 0;
-		}
-		if(parent::save($data)){
-			//hook the files here
-			$recordId = $this->getState('order.id');
-
-			if (isset($data['file']) && is_array($data['file']))
-	        {
-	            $files = $data['file'];
-	            foreach($files as $key => $file){
-	                $filesTable = $this->getTable('Files');
-	                $filesTable->product_id = $recordId;
-	                $filesTable->name = ($file['name'] ? $file['name'] : $file['url']);
-	                $filesTable->url = $file['url'];
-	                $filesTable->store();
-	            }
-	            if (isset($data['files_remove_id']) && !empty($data['files_remove_id'])){
-	                $filesTable = JTable::getInstance('Files', 'Table');
-	                $filesTable->removeUnmatch($data['files_remove_id'],$recordId);
-	            }
-	        }
-
-	        // hook bundle item
-			if (isset($data['bundle_category']) && is_array($data['bundle_category']))
-	        {
-	            $bTable = $this->getTable('Bundle');
-	            $bTable->removeUnmatchBundle($data['bundle_category'],$recordId);
-
-	            $bundleTable = $this->getTable('Bundle');
-	            $bundle_category = $data['bundle_category'];
-	            $bundleTable->bundle_type = 'category';
-
-	            foreach($bundle_category as $bundle){          
-	                $bundleTable->product_id = $recordId;
-	                $bundleTable->bundle_id = $bundle;
-	                $bundleTable->store();
-	            }
-	        }
-
-	        if (isset($data['bundle_product']) && is_array($data['bundle_product']))
-	        {
-	            
-	            $bTable = $this->getTable('Bundle');
-	            $bTable->removeUnmatchBundle($data['bundle_product'],$recordId,'order');
-
-	            $bundleTable = $this->getTable('Bundle');
-	            $bundle_product = $data['bundle_product'];
-	            $bundleTable->bundle_type = 'order';
-	            foreach($bundle_product as $bundle){          
-	                $bundleTable->product_id = $recordId;
-	                $bundleTable->bundle_id = $bundle;
-	                $bundleTable->store();
-	            }
-		
-	        }			
-
-	        return true;
-
-		}
-
-		return false;
+		$app = JFactory::getApplication();	
+		return parent::save($data);
 	
-	}
-
-	/**
-	 * Method to change the name & alias.
-	 *
-	 * @param   integer  $category_id  The id of the parent.
-	 * @param   string   $alias        The alias.
-	 * @param   string   $name         The name.
-	 *
-	 * @return  array  Contains the modified name and alias.
-	 *
-	 * @since   3.1
-	 */
-	protected function generateNewTitle($category_id, $alias, $name)
-	{
-		// Alter the name & alias
-		$table = $this->getTable();
-
-		while ($table->load(array('alias' => $alias, 'catid' => $category_id)))
-		{
-			if ($name == $table->name)
-			{
-				$name = String::increment($name);
-			}
-
-			$alias = String::increment($alias, 'dash');
-		}
-
-		return array($name, $alias);
-	}
-
-	/**
-	 * Method to toggle the featured setting of articles.
-	 *
-	 * @param   array    $pks    The ids of the items to toggle.
-	 * @param   integer  $value  The value to toggle to.
-	 *
-	 * @return  boolean  True on success.
-	 */
-	public function featured($pks, $value = 0)
-	{
-		// Sanitize the ids.
-		$pks = (array) $pks;
-		JArrayHelper::toInteger($pks);
-
-		if (empty($pks))
-		{
-			$this->setError(JText::_('COM_DIGICOM_NO_ITEM_SELECTED'));
-
-			return false;
-		}
-
-		$table = $this->getTable();
-
-		try
-		{
-			$db = $this->getDbo();
-			$query = $db->getQuery(true)
-						->update($db->quoteName('#__digicom_products'))
-						->set('featured = ' . (int) $value)
-						->where('id IN (' . implode(',', $pks) . ')');
-			$db->setQuery($query);
-			$db->execute();
-
-		}
-		catch (Exception $e)
-		{
-			$this->setError($e->getMessage());
-			return false;
-		}
-
-		$table->reorder();
-
-		$this->cleanCache();
-
-		return true;
 	}
 
 	function getConfigs() {

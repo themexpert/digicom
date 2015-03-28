@@ -46,6 +46,8 @@ class DigiComViewOrder extends JViewLegacy
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
 		
+		JToolBarHelper::apply('order.apply');
+		JToolBarHelper::save('order.save');
 		JToolBarHelper::Cancel('order.cancel');
 		
 		DigiComHelperDigiCom::addSubmenu('orders');

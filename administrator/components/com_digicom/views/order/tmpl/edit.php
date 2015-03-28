@@ -16,9 +16,9 @@ $n = count ($this->item->products);
 //Log::debug($n);
 $configs = $this->configs;
 $order = $this->item;
-$refunds = DigiComModelOrder::getRefunds($order->id);
-$chargebacks = DigiComModelOrder::getChargebacks($order->id);
-$deleted = DigiComModelOrder::getDeleted($order->id);
+$refunds = DigiComHelperDigiCom::getRefunds($order->id);
+$chargebacks = DigiComHelperDigiCom::getChargebacks($order->id);
+$deleted = DigiComHelperDigiCom::getDeleted($order->id);
 $date = date( $configs->get('time_format','d M Y'), $order->order_date);
 
 	?>
@@ -31,7 +31,7 @@ $date = date( $configs->get('time_format','d M Y'), $order->order_date);
 <?php else : ?>
 <div id="j-main-container" class="">
 <?php endif;?>
-<form id="adminForm" action="index.php" name="adminForm" method="post">
+<form id="adminForm" action="index.php?option=com_digicom&view=order&id=<?php echo $order->id; ?>" name="adminForm" method="post">
 
 <div id="contentpane" >
 <p class="alert alert-info">
@@ -75,9 +75,9 @@ $date = date( $configs->get('time_format','d M Y'), $order->order_date);
 				
 				$licenseid = $prod->id;
 				//print_r($prod);die;
-				$refund = DigiComModelOrder::getRefunds($order->id, $prod->id);
-				$chargeback = DigiComModelOrder::getChargebacks($order->id, $prod->id);
-				$cancelled = DigiComModelOrder::isLicenseDeleted($prod->id);?>
+				$refund = DigiComHelperDigiCom::getRefunds($order->id, $prod->id);
+				$chargeback = DigiComHelperDigiCom::getChargebacks($order->id, $prod->id);
+				$cancelled = DigiComHelperDigiCom::isProductDeleted($prod->id);?>
 				<tr class="row<?php echo $k;?> sectiontableentry<?php echo ($i%2 + 1);?>">
 					<td style="<?php echo $cancelled == 3 ? 'text-decoration: line-through;' : '';?>"><?php echo $i+1; ?></td>
 					<td style="<?php echo $cancelled == 3 ? 'text-decoration: line-through;' : '';?>">
@@ -155,10 +155,16 @@ $date = date( $configs->get('time_format','d M Y'), $order->order_date);
 					<td style="font-weight:bold"><?php echo JText::_("COM_DIGICOM_TOTAL");?></td>
 				<td>
 					<?php
+						$value = $order->amount;
+						echo DigiComHelperDigiCom::format_price($value, $order->currency, true, $configs);
+					?>
+				</td>
+			</tr>
+			<tr><td colspan="2"></td>
+					<td style="font-weight:bold"><?php echo JText::_("COM_DIGICOM_AMOUNT_PAID");?></td>
+				<td>
+					<?php
 						$value = $order->amount_paid;
-						if($value == "-1"){
-							$value = $order->amount;
-						}
 						$value = $value - $refunds - $chargebacks;
 						echo DigiComHelperDigiCom::format_price($value, $order->currency, true, $configs);
 					?>
@@ -175,6 +181,7 @@ $date = date( $configs->get('time_format','d M Y'), $order->order_date);
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="view" value="order" />
+	<input type="hidden" name="jform[id]" value="<?php echo $order->id; ?>" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>
 </div>
