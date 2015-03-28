@@ -8,16 +8,7 @@
 				class="title"
 				label="COM_DIGICOM_SETTINGS_GENERAL_FIELD_LABEL"
 				/>
-			<field
-				name="showpowered"
-				type="radio"
-				class="btn-group"
-				label="COM_DIGICOM_SETTINGS_GENERAL_SHOW_POWERED"
-				default="1"
-				description="COM_DIGICOM_SETTINGS_GENERAL_SHOW_POWERED_DESC">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-			</field>
+			
 			<field
 				name="catalogue"
 				type="radio"
@@ -25,6 +16,16 @@
 				label="COM_DIGICOM_SETTINGS_GENERAL_CATALOGUE_MODE"
 				default="0"
 				description="COM_DIGICOM_SETTINGS_GENERAL_CATALOGUE_MODE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+			</field>
+			<field 
+				name="show_quantity"
+				type="radio"
+				class="btn-group"
+				label="COM_DIGICOM_SETTINGS_SHOW_QUANTITY_LABEL"
+				description="COM_DIGICOM_SETTINGS_SHOW_QUANTITY_DESC"
+				default="0">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 			</field>
