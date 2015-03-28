@@ -1,18 +1,34 @@
 <?php
 /**
-  @version		$Id: default.php 341 2013-10-10 12:28:28Z thongta $
- * @package		obRSS Feed Creator for Joomla.
- * @copyright	(C) 2007-2012 themexpert.com. All rights reserved.
- * @author		themexpert.com
- * @license		GNU/GPLv3, see LICENSE
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
  */
-// no direct access
-defined('_JEXEC') or die('Restricted access');
 
-echo '<ul class="nav nav-menu">';
-foreach ($categories AS $category) {
-	echo '
-		<li><a href="index.php?option=com_digicom&view=categories&cid='.$category->id.'&Itemid='.$itemid.'">'.$category->title.'</a></li>
-	';
-}
-echo '</ul>';
+defined('_JEXEC') or die;
+?>
+<ul class="nav nav-menu <?php echo $moduleclass_sfx; ?>">
+	<?php foreach($list as $item) :?>
+		<li <?php if ($_SERVER['REQUEST_URI'] == JRoute::_(DigiComHelperRoute::getCategoryRoute($item->id))) echo ' class="active"';?>>
+			<a href="<?php echo JRoute::_(DigiComHelperRoute::getCategoryRoute($item->id)); ?>">
+				<?php echo $item->title; ?>
+					<?php if ($params->get('numitems')) : ?>
+						(<?php echo $item->numitems; ?>)
+					<?php endif; ?>
+			</a>
+
+			<?php if ($params->get('show_children', 0) && (($params->get('maxlevel', 0) == 0)
+					|| ($params->get('maxlevel') >= ($item->level - $startLevel)))
+				&& count($item->getChildren())) : ?>
+				<?php echo '<ul>'; ?>
+				<?php $temp = $list; ?>
+				<?php $list = $item->getChildren(); ?>
+				<?php require JModuleHelper::getLayoutPath('mod_digicom_categories', $params->get('layout', 'default')); ?>
+				<?php $list = $temp; ?>
+				<?php echo '</ul>'; ?>
+			<?php endif; ?>
+		</li>
+	<?php endforeach; ?>
+</ul>
