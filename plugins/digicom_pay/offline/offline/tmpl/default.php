@@ -9,13 +9,12 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access'); 
 
-$document = JFactory::getDocument();
-defined('_JEXEC') or die('Restricted access');
 JHtml::_('jquery.framework');
 JHTML::_('behavior.formvalidation');
-	 
+
+$document = JFactory::getDocument();	 
 if($vars->custom_email=="")
-	$email = JText::_('NO_ADDRS');
+	$email = JText::_('PLG_DIGICOM_PAY_OFFLINE_AFTER_PAYMENT_CONTACT_NO_ADDRS');
 else
 	$email = $vars->custom_email;
 
@@ -28,7 +27,7 @@ function myValidate(f)
 		return true; 
 	}
 	else {
-		var msg = 'Some values are not acceptable.  Please retry.';
+		var msg = '<?php echo JText::_('PLG_DIGICOM_PAY_OFFLINE_ERROR');?> '
 		alert(msg);
 	}
 	return false;
@@ -41,16 +40,16 @@ function myValidate(f)
 	<div>
 		<div class="control-group">
 			<label for="cardfname" class="control-label"><?php  echo JText::_( 'PLG_DIGICOM_PAY_OFFLINE_ORDER_INFORMATION_LABEL' );?></label>
-			<div class="controls">	<?php  echo JText::sprintf( 'ORDER_INFO', $vars->custom_name);?></div>
+			<div class="controls">	<?php  echo JText::sprintf( 'PLG_DIGICOM_PAY_OFFLINE_ORDER_INFO', $vars->custom_name);?></div>
 		</div>
 
 		<div class="control-group">
-			<label for="cardlname" class="control-label"><?php echo JText::_( 'COMMENT' ); ?></label>
+			<label for="cardlname" class="control-label"><?php echo JText::_( 'PLG_DIGICOM_PAY_OFFLINE_COMMENT' ); ?></label>
 			<div class="controls"><textarea id='comment' name='comment' class="inputbox required" rows='3' maxlength='135' size='28'></textarea></div>
 		</div>
 
 		<div class="control-group">
-			<label for="cardaddress1" class="control-label"><?php echo JText::_( 'CON_PAY_PRO' ) ?></label>
+			<label for="cardaddress1" class="control-label"><?php echo JText::_( 'PLG_DIGICOM_PAY_OFFLINE_AFTER_PAYMENT_CONTACT_LABEL' ) ?></label>
 			<div class="controls"><?php  echo $email;?>
 				<input type='hidden' name='mail_addr' value="<?php echo $email;?>" />
 			</div>
@@ -62,7 +61,7 @@ function myValidate(f)
 			<input type="hidden" name="user_id" size="10" value="<?php echo $vars->user_id;?>" />
 			<input type='hidden' name='return' value="<?php echo $vars->return;?>" >
 			<input type="hidden" name="plugin_payment_method" value="onsite" />
-			<input type='submit' name='btn_check' id='btn_check' class="btn btn-success btn-large"  value="<?php echo JText::_('SUBMIT'); ?>">
+			<input type='submit' name='btn_check' id='btn_check' class="btn btn-success btn-large"  value="<?php echo JText::_('PLG_DIGICOM_PAY_OFFLINE_SUBMIT'); ?>">
 		</div>
 	</div>
 </form>

@@ -23,6 +23,7 @@ config.codekit
 !/administrator/language/en-GB/en-GB.com_digicom.ini
 !/administrator/language/en-GB/en-GB.com_digicom.sys.ini
 !/administrator/language/en-GB/en-GB.plg_system_digicom_addtocart.ini
+!/administrator/language/en-GB/en-GB.plg_digicom_pay_offline.ini
 /administrator/manifests/*
 /administrator/modules/*
 /administrator/templates/*
