@@ -15,9 +15,6 @@ JHtml::_('formbehavior.chosen', 'select');
 
 $invisible = 'style="display:none;"';
 
-$document = JFactory::getDocument();
-//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
-
 $k = 0;
 $n = count( $this->orders );
 $configs = JComponentHelper::getComponent('com_digicom')->params;
@@ -104,6 +101,9 @@ Joomla.submitbutton = function (pressbutton) {
 						<?php echo JText::_( 'COM_DIGICOM_PRICE' ); ?>
 					</th>
 					<th>
+						<?php echo JText::_( 'COM_DIGICOM_AMOUNT_PAID' ); ?>
+					</th>
+					<th>
 						<?php echo JText::_( 'COM_DIGICOM_USER_NAME' ); ?>
 					</th>
 					<th>
@@ -152,14 +152,15 @@ Joomla.submitbutton = function (pressbutton) {
 						</td>
 						<td align="center">
 							<?php 
-								
-								if ($order->amount_paid == "-1") $order->amount_paid = $order->amount;
-								//$refunds = DigiComAdminModelOrder::getRefunds($order->id);
-								//$chargebacks = DigiComAdminModelOrder::getChargebacks($order->id);
-								//$order->amount_paid = $order->amount_paid - $refunds - $chargebacks;
-								$order->amount_paid = $order->amount_paid;
+								echo DigiComHelperDigiCom::format_price($order->amount, $configs->get('currency','USD'), true, $configs); 
+							?>
+						</td>
+						<td align="center">
+							<?php 
+								$refunds = DigiComHelperDigiCom::getRefunds($order->id);
+								$chargebacks = DigiComHelperDigiCom::getChargebacks($order->id);
+								$order->amount_paid = $order->amount_paid - $refunds - $chargebacks;
 								echo DigiComHelperDigiCom::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs); 
-								
 							?>
 						</td>
 						<td align="center">
