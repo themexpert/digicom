@@ -155,10 +155,16 @@ $date = date( $configs->get('time_format','d M Y'), $order->order_date);
 					<td style="font-weight:bold"><?php echo JText::_("COM_DIGICOM_TOTAL");?></td>
 				<td>
 					<?php
+						$value = $order->amount;
+						echo DigiComHelperDigiCom::format_price($value, $order->currency, true, $configs);
+					?>
+				</td>
+			</tr>
+			<tr><td colspan="2"></td>
+					<td style="font-weight:bold"><?php echo JText::_("COM_DIGICOM_AMOUNT_PAID");?></td>
+				<td>
+					<?php
 						$value = $order->amount_paid;
-						if($value == "-1"){
-							$value = $order->amount;
-						}
 						$value = $value - $refunds - $chargebacks;
 						echo DigiComHelperDigiCom::format_price($value, $order->currency, true, $configs);
 					?>
