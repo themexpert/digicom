@@ -371,7 +371,8 @@ $items = $this->items;
 							$onclick.= "jQuery('#cart_form').submit();";
 						} ?>
 
-						<?php echo $this->getPaymentPlugins($configs); ?>
+						<?php echo DigiComSiteHelperDigicom::getPaymentPlugins($configs); ?>
+						
 						<div id="html-container"></div>
 						<button type="button" class="btn btn-warning" style="float:right;margin-top:10px;" onclick="<?php echo $onclick; ?> "><?php echo JText::_($button_value);?> <i class="ico-ok-sign"></i></button>
 					</div>

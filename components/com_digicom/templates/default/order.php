@@ -88,10 +88,24 @@ $params = json_decode($this->order->params);
 
 		</tbody>
 	</table>
-	<?php if(strtolower($order->status) === 'pending'): ?>
+	<?php if(strtolower($order->status) === 'pending'): 
+	$u = JURI::getInstance();
+	$item = JFactory::getApplication()->getMenu()->getItems('link', 'index.php?option=com_digicom&view=checkout', true);
+	$Itemid = isset($item->id) ? $item->id : '';
+	?>
 		<div class="alert alert-warning">
-		  <?php echo JText::sprintf('COM_DIGICOM_ORDER_COMPLETE_NOTICE',JRoute::_('index.php?option=com_digicom&view=checkout&order_id='.$order->id.'&processor='.$order->processor.$this->Itemid)); ?>
-		</div>
+  			<p><?php echo JText::sprintf('COM_DIGICOM_ORDER_COMPLETE_NOTICE'); ?></p>
+			<form method="get" class="well well-small form-inline" action="<?php echo $u->toString(); ?>">
+  				<input type="hidden" name="option" value="com_digicom">
+				<input type="hidden" name="view" value="checkout">
+
+				<?php echo DigiComSiteHelperDigicom::getPaymentPlugins($configs); ?>
+
+				<button class="btn pull-right" type="submit">Pay Now</button>
+				<input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>">
+ 			</form>
+ 		</div>
+
 	<?php endif; ?>
 	<h3 class="digi-section-title"><?php echo JText::_('COM_DIGICOM_PRODUCTS'); ?></h3>
 	<table class="table table-striped table-hover table-bordered">

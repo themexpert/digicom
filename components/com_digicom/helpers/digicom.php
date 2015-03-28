@@ -685,4 +685,39 @@ class DigiComSiteHelperDigicom {
 
 	}
 
+	public static function getPaymentPlugins($configs){
+		
+		$db = JFactory::getDBO();
+
+		$condtion = array(0 => '\'digicom_pay\'');
+		$condtionatype = join(',',$condtion);
+		if(JVERSION >= '1.6.0')
+		{
+			$query = "SELECT extension_id as id,name,element,enabled as published
+					  FROM #__extensions
+					  WHERE folder in ($condtionatype) AND enabled=1";
+		}
+		else
+		{
+			$query = "SELECT id,name,element,published
+					  FROM #__plugins
+					  WHERE folder in ($condtionatype) AND published=1";
+		}
+		$db->setQuery($query);
+		$gatewayplugin = $db->loadobjectList();
+
+		$lang = JFactory::getLanguage();
+		$options = array();
+		$options[] = JHTML::_('select.option', '', 'Select payment gateway');
+		foreach($gatewayplugin as $gateway)
+		{
+			$gatewayname = strtoupper(str_replace('plugpayment', '',$gateway->element));
+			$lang->load('plg_digicom_pay_' . strtolower($gatewayname), JPATH_ADMINISTRATOR);
+			$options[] = JHTML::_('select.option',$gateway->element, JText::_($gatewayname));
+		}
+
+		return JHTML::_('select.genericlist', $options, 'processor', 'class="inputbox required"', 'value', 'text', $configs->get('default_payment','offline'), 'processor' );
+
+	}
+
 }
