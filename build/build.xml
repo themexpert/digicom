@@ -10,14 +10,13 @@
         <echo>Use `$ phing -l` to list the available targets.</echo>
     </target>
 
-    <fileset dir="../administrator/components/" id="com-admin">
-        <exclude name="**" />
-        <include name="com_digicom/**" />
+    <fileset dir="../administrator/components/com_digicom" id="com-admin">
+        <!--<exclude name="**" />-->
+        <include name="**" />
     </fileset>
 
-    <fileset dir="../components/" id="com-side">
-        <exclude name="**" />
-        <include name="com_digicom/**" />
+    <fileset dir="../components/com_digicom" id="com-site">
+        <include name="**" />
     </fileset>
 
     <target name="make-dev" description="Builds the extension release package for development testing." depends="rebuild-extension-archives">
@@ -36,10 +35,30 @@
         </zip>
     </target>
 
-    <target name="make" description="Builds the extension release package for a version.">
+    <target name="component" description="Build Component release package for a version">
+
+        <copy todir="temp/com_digicom/admin" overwrite="true">
+            <fileset refid="com-admin" />
+        </copy>
+
+        <copy todir="temp/com_digicom/site" overwrite="true">
+            <fileset refid="com-site" />
+        </copy>
+
+        <move file="temp/com_digicom/admin/digicom.xml" todir="temp/com_digicom" />
+
+        <zip
+            destfile="release/com_digicom.zip"
+            basedir="temp/com_digicom" />
+
+        <delete dir="temp/com_digicom" quiet="yes" includeemptydirs="false" />
+
+    </target>
+
+    <target name="make" description="Builds the extension release package for a version." depends="component">
         <echo msg="Making the ${package} package for version ${version}." />
 
-        <mkdir dir="build" />
+
 
         <!--<zip destfile="releases/pkg_${package}_${version}.zip">-->
             <!--<fileset dir="build">-->
