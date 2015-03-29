@@ -10,87 +10,142 @@
         <echo>Use `$ phing -l` to list the available targets.</echo>
     </target>
 
-    <target name="make-dev" description="Builds the extension release package for development testing." depends="rebuild-extension-archives">
-        <echo msg="Deleting old development build." />
-        <delete quiet="yes" includeemptydirs="true">
-            <fileset dir="release">
-                <include name="pkg_${package}_dev.zip" />
-            </fileset>
-        </delete>
-
-        <echo msg="Making the development ${package} package ." />
-        <zip destfile="release/pkg_${package}_dev.zip">
-            <fileset dir="build">
-                <include name="**" />
-            </fileset>
-        </zip>
-    </target>
-
     <target name="clean" description="Cleaning build dir and preapering for package">
         <delete dir="release" quiet="yes" includeemptydirs="false" />
         <mkdir dir="release" />
     </target>
 
     <target name="component" description="Build Component release package for a version">
-
-        <fileset dir="../administrator/components/com_digicom" id="com-admin">
-            <include name="**" />
-        </fileset>
-
-        <fileset dir="../administrator/language/en-GB" id="com-admin-lang">
-            <include name="en-GB.com_digicom.ini" />
-            <include name="en-GB.com_digicom.sys.ini" />
-        </fileset>
-
-        <fileset dir="../components/com_digicom" id="com-site">
-            <include name="**" />
-        </fileset>
-
-        <fileset dir="../language/en-GB" id="com-site-lang">
-            <include name="en-GB.com_digicom.ini" />
-            <include name="en-GB.com_digicom.sys.ini" />
-        </fileset>
-
+        <!--Admin dir move start-->
         <copy todir="temp/com_digicom/admin" overwrite="true">
-            <fileset refid="com-admin" />
+            <fileset dir="../administrator/components/com_digicom" id="com-admin">
+                <include name="**" />
+            </fileset>
         </copy>
         <copy todir="temp/com_digicom/admin/language/en-GB" overwrite="true">
-            <fileset refid="com-admin-lang" />
+            <fileset dir="../administrator/language/en-GB" id="com-admin-lang">
+                <include name="en-GB.com_digicom.ini" />
+                <include name="en-GB.com_digicom.sys.ini" />
+            </fileset>
         </copy>
-
+        <!--Admin dir move end-->
+        <!--Site dir move start-->
         <copy todir="temp/com_digicom/site" overwrite="true">
-            <fileset refid="com-site" />
+            <fileset dir="../components/com_digicom" id="com-site">
+                <include name="**" />
+            </fileset>
         </copy>
         <copy todir="temp/com_digicom/site/language/en-GB" overwrite="true">
-            <fileset refid="com-site-lang" />
+            <fileset dir="../language/en-GB" id="com-site-lang">
+                <include name="en-GB.com_digicom.ini" />
+                <include name="en-GB.com_digicom.sys.ini" />
+            </fileset>
         </copy>
+        <!--Site dir move end-->
 
+        <!--Move component mainfest to temp root-->
         <move file="temp/com_digicom/admin/digicom.xml" todir="temp/com_digicom" />
-
+        <!--Build it-->
         <zip
             destfile="release/com_digicom.zip"
             basedir="temp/com_digicom" />
-
+        <!--Remove temp-->
         <delete dir="temp/com_digicom" quiet="yes" includeemptydirs="false" />
 
     </target>
 
-    <target name="modules">
+    <target name="modules" description="Iterate all site module and build package">
         <property name="site-modules" value="mod_digicom_cart,mod_digicom_categories" />
         <foreach list="${site-modules}" param="extension" target="build-module-archive" />
     </target>
 
     <target name="build-module-archive">
-
+        <!--Copy module files to temp-->
         <copy todir="temp" overwrite="true">
             <fileset dir="../modules">
                 <include name="${extension}/**" />
             </fileset>
         </copy>
+        <!--Copy associated language file-->
+        <copy todir="temp/${extension}/language/en-GB" overwrite="true">
+            <fileset dir="../language/en-GB/">
+                <include name="en-GB.${extension}.ini" />
+                <include name="en-GB.${extension}.sys.ini" />
+            </fileset>
+        </copy>
+        <!--Build it-->
         <zip destfile="release/${extension}.zip" basedir="temp/${extension}" />
+        <!--Remove temp-->
+        <delete dir="temp/${extension}" quiet="yes" includeemptydirs="false" />
     </target>
 
-    <target name="make" description="Builds the extension release package for a version." depends="clean, component, modules">
+    <!--
+	====================================================================================================
+	Plugins taks
+	====================================================================================================
+	-->
+    <target name="plugins" depends="plugin-pay,plugin-finder,plugin-system,plugin-editor" description="Loop through all plugins and build package">
+        <echo>Lets Build all plugin</echo>
+    </target>
+
+    <target name="plugin-pay" description="Payment Plugins">
+        <!---
+        =====================
+        Offline plugin
+        =====================
+        -->
+        <!--Copy offline files to temp-->
+        <copy todir="temp" overwrite="true">
+            <fileset dir="../plugins/digicom_pay">
+                <include name="offline/**" />
+            </fileset>
+        </copy>
+        <!--Copy associated language file-->
+        <copy todir="temp/offline/language/en-GB" overwrite="true">
+            <fileset dir="../administrator/language/en-GB/">
+                <include name="en-GB.plg_digicom_pay_offline.ini" />
+                <include name="en-GB.plg_digicom_pay_offline.sys.ini" />
+            </fileset>
+        </copy>
+        <!--Build it-->
+        <zip destfile="release/plg_digicom_pay_offline.zip" basedir="temp/offline" />
+        <delete dir="temp/offline" quiet="yes" includeemptydirs="false" />
+
+        <!---
+       =====================
+       Paypal plugin
+       =====================
+       -->
+        <!--Copy paypa; files to temp-->
+        <copy todir="temp" overwrite="true">
+            <fileset dir="../plugins/digicom_pay">
+                <include name="paypal/**" />
+            </fileset>
+        </copy>
+        <!--Copy associated language file-->
+        <copy todir="temp/paypal/language/en-GB" overwrite="true">
+            <fileset dir="../administrator/language/en-GB/">
+                <include name="en-GB.plg_digicom_pay_paypal.ini" />
+                <include name="en-GB.plg_digicom_pay_paypal.sys.ini" />
+            </fileset>
+        </copy>
+        <!--Build it-->
+        <zip destfile="release/plg_digicom_pay_paypal.zip" basedir="temp/paypal" />
+        <delete dir="temp/paypal" quiet="yes" includeemptydirs="false" />
+    </target>
+
+    <target name="plugin-finder" description="Finder Plugins">
+
+    </target>
+    <target name="plugin-system" description="System Plugins">
+
+    </target>
+    <target name="plugin-editor" description="Editor Plugins">
+
+    </target>
+
+    <target name="make" description="Builds the extension release package for a version."
+            depends="clean, component, modules, plugins">
         <echo msg="Making the ${package} package for version ${version}." />
 
 
