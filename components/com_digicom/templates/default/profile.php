@@ -102,6 +102,15 @@ $Itemid = JRequest::getVar("Itemid", "0");
 			</div>
 			<div class="row-fluid">
 				<div class="control-group">
+					<label class="control-label" for="customerlocation"><?php echo JText::_("COM_DIGICOM_STATE"); ?> <span class="error">*</span></label>
+					<div class="controls" style="display:inherit;">
+						<?php echo $this->lists['customerlocation']; ?>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row-fluid">
+				<div class="control-group">
 					<label class="control-label" for="address"><?php echo JText::_("COM_DIGICOM_ADDRESS"); ?> <span class="error">*</span></label>
 					<div class="controls" style="display:inherit;">
 						<input name="address" type="text" id="address" value="<?php echo $cust->address; ?>" />
@@ -113,14 +122,6 @@ $Itemid = JRequest::getVar("Itemid", "0");
 					<label class="control-label" for="city"><?php echo JText::_("COM_DIGICOM_CITY"); ?> <span class="error">*</span></label>
 					<div class="controls" style="display:inherit;">
 						<input name="city" type="text" id="city" value="<?php echo $cust->city; ?>" />
-					</div>
-				</div>
-			</div>
-			<div class="row-fluid">
-				<div class="control-group">
-					<label class="control-label" for="customerlocation"><?php echo JText::_("COM_DIGICOM_STATE"); ?> <span class="error">*</span></label>
-					<div class="controls" style="display:inherit;">
-						<?php echo $this->lists['customerlocation']; ?>
 					</div>
 				</div>
 			</div>
@@ -180,11 +181,9 @@ $Itemid = JRequest::getVar("Itemid", "0");
 			<input type="hidden" name="images" value="" />
 			<input type="hidden" name="option" value="com_digicom" />
 			<input type="hidden" name="id" value="<?php echo $cust->id; ?>" />
-			<input type="hidden" name="task" value="saveCustomer" />
-			<input type="hidden" name="pid" value="<?php echo (JRequest::getVar("pid", "", 'request'));?>" />
-			<input type="hidden" name="cid" value="<?php echo (JRequest::getVar("cid", "", 'request'));?>" />
-			<input type="hidden" name="returnpage" value="<?php echo (JRequest::getVar("returnpage", "", 'request')); ?>" />
-			<input type="hidden" name="controller" value="Profile" />
+			<input type="hidden" name="task" value="profile.save" />
+			<input type="hidden" name="returnpage" value="<?php echo (JRequest::getVar("returnpage", "profile", 'request')); ?>" />
+			<input type="hidden" name="view" value="profile" />
 		</form>
 	</div>
 

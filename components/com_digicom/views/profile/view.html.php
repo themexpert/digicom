@@ -31,21 +31,10 @@ class DigiComViewProfile extends JViewLegacy {
 		$this->askforbilling = $configs->get('askforbilling',1);
 		$this->askforcompany = $configs->get('askforcompany',1);
 		
-		$country_option = DigiComSiteHelperDigiCom::get_country_options($customer, false, $configs);
+		$country_option = DigiComSiteHelperDigiCom::get_country_options($customer->_customer, false, $configs);
 		$lists['country_option'] = $country_option;
 
-		$profile = new StdClass();
-		$profile->country = @$customer->country;
-		$profile->state = @$customer->state;
-		$shipcountry_option = DigiComSiteHelperDigiCom::get_country_options($profile, true, $configs);
-		$lists['shipcountry_options'] = $shipcountry_option;
-
-		$lists['customerlocation'] = DigiComSiteHelperDigiCom::get_store_province($profile, false);
-
-		$profile = new StdClass();
-		$profile->country = @$customer->country;
-		$profile->state = @$customer->state;
-		$lists['customershippinglocation'] = DigiComSiteHelperDigiCom::get_store_province($profile, true);
+		$lists['customerlocation'] = DigiComSiteHelperDigiCom::get_store_province($customer->_customer, false);
 
 		$sql = "select * from #__digicom_states where eumember='1'";
 		$db->setQuery($sql);

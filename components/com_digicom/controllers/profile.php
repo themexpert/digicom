@@ -185,6 +185,10 @@ class DigiComControllerProfile extends JControllerLegacy
 			case "cart":
 				$link = "index.php?option=com_digicom&view=cart"."&Itemid=".$Itemid . "&processor=" . $processor;
 				break;
+			
+			case "profile":
+				$link = "index.php?option=com_digicom&view=profile"."&Itemid=".$Itemid;
+				break;
 
 			case "order":
 			case "orders":

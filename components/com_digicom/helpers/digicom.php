@@ -573,92 +573,102 @@ class DigiComSiteHelperDigicom {
 
 	public static function get_country_options( $profile, $ship = false, $configs ) {
 
-		$db           = JFactory::getDBO();
-		$country_word = 'country';
-		if ( ! $profile ) {
-			$profile = new stdClass();
-		}
-		if ( $ship ) {
-			$country_word = 'ship' . $country_word;
-		}
-		if ( ! isset( $profile->$country_word ) ) {
-			$profile->$country_word = '';
-		}
-		$query = "SELECT country"
-		         . "\n FROM #__digicom_states"
-		         . "\n GROUP BY country"
-		         . "\n ORDER BY country ASC";
-		$db->setQuery( $query );
+		$db 	= JFactory::getDBO();
+		$query = $db->getQuery(true)
+					->select('country')
+					->from('#__digicom_states')
+					->group('country')
+					->order('country ASC');
+		$db->setQuery($query);
 		$countries = $db->loadObjectList();
 
+		if ( ! $profile ) $profile = new stdClass();
+		if ( ! isset( $profile->country ) ) $profile->country = '';
 
-		$country_option = "<select name='" . $country_word . "' id='" . $country_word . "' onChange='changeProvince" . ( $ship ? '_ship' : '' ) . "();' style='width:15.5em;'>";
-		$country_option .= '<option value="" ';
-		if ( ! $profile->$country_word ) {
-			$country_option .= 'selected';
-		}
-		$country_option .= '>' . ( JText::_( 'DSSELECTCOUNTRY' ) ) . '</option>';
-		$country_option .= '<option value="" ></option>';
+		$default = $profile->country;
+
+		## Initialize array to store dropdown options ##
+		$options = array();
+
+		#Top Countries#
 		$topcountries = $configs->get('topcountries','');
+
+	    $options[] = JHTML::_('select.optgroup', JText::_('COM_DIGICOM_SELECT_FAVORITE_COUNTRY_TITLE'));
 
 		if ( count( $topcountries ) > 0 ) {
 
-			foreach ( $topcountries as $topcountry ) {
-				if ( $topcountry != '0' ) {
-					$country_option .= '<option value="' . $topcountry . '" ';
-					if ( $profile->$country_word == $topcountry && strlen( trim( $topcountry ) ) > 0 ) {
-						$country_option .= 'selected';
-					}
-					$country_option .= ' >' . $topcountry . '</option>';
-				}
-			}
+			foreach($topcountries as $key=>$value) :
+				## Create $value ##
+				$options[] = JHTML::_('select.option', $value, $value);
+			endforeach;
+			
+		}else{
 
-		} else {
-
-			$country_option .= '<option value="United-States" ';
-			if ( $profile->$country_word == 'United-States' ) {
-				$country_option .= 'selected';
-			}
-			$country_option .= ' >United-States</option>';
-
-			$country_option .= '<option value="Canada" ';
-			if ( $profile->$country_word == 'Canada' ) {
-				$country_option .= 'selected';
-
-				$country_option .= '  >Canada</option>';
-
-			}
-
+			$options[] = JHTML::_('select.option', 'United-States', 'United-States');
+			$options[] = JHTML::_('select.option', 'Canada', 'Canada');
+			$options[] = JHTML::_('select.option', 'Bangladesh', 'Bangladesh');
+		
 		}
 
-		$country_option .= '<option value=""  >-------</option>';
-		foreach ( $countries as $country ) {
-			if ( ( $country->country != 'United-States' && $country->country != 'Canada' && count( $topcountries ) < 1 ) || ( count( $topcountries ) > 0 && ! in_array( $country->country, $topcountries ) ) ) {
-				$country_option .= "<option value='" . $country->country . "' ";
 
-				if ( $country->country == $profile->$country_word ) {
-					$country_option .= "selected";
-				}
+		$options[] = JHTML::_('select.optgroup', '');
+		$options[] = JHTML::_('select.optgroup', JText::_('COM_DIGICOM_SELECT_COUNTRY_TITLE'));
 
-				$country_option .= " >" . $country->country . "</option>";
-			}
-		}
-		$country_option .= "</select>";
+		foreach($countries as $key=>$value) :
+			## Create $value ##
+			$options[] = JHTML::_('select.option', $value->country, $value->country);
+		endforeach;
 
-		return $country_option;
+
+		## Create <select name="country" class="inputbox"></select> ##
+		return JHTML::_('select.genericlist', $options, 'country', 'id="country" class="inputbox" onChange="changeProvince();"', 'value', 'text', $default);		
 
 	}
 
 	public static function get_store_province( $custommer, $ship = 0 ) {
-		$db            = JFactory::getDBO();
-		$province_word = "province";
-		$state_word    = "state";
-		$shipword      = '';
-		if ( $ship ) {
-			$province_word = 'ship' . $province_word;
-			$shipword      = "ship";
-			$state_word    = "ship" . $state_word;
+		
+		## Initialize array to store dropdown options ##
+		$options = array();
+		$html = array();
+		$html[] = '<div id="province">';
+		if ($custommer->state) {
+
+			$db 	= JFactory::getDBO();
+			$query = $db->getQuery(true)
+						->select('state')
+						->from('#__digicom_states')
+						->where($db->quoteName('country') . ' = ' . $db->quote($custommer->country) )
+						->order('state ASC');
+			$db->setQuery($query);
+			$province = $db->loadObjectList();
+
+			$default = $custommer->state;
+
+			foreach($province as $key=>$value) :
+				## Create $value ##
+				$options[] = JHTML::_('select.option', $value->state, $value->state);
+			endforeach;
+
+			## Create <select name="country" class="inputbox"></select> ##
+			$html[] = JHTML::_('select.genericlist', $options, 'state', 'id="state" class="inputbox"', 'value', 'text', $default);	
+
+		}else{
+
+			$options[] = JHTML::_('select.option', '', JText::_( 'COM_DIGICOM_SELECT_COUNTRY_FIRST' ));
+			## Create <select name="country" class="inputbox"></select> ##
+			$html[] = JHTML::_('select.genericlist', $options, 'state', 'id="state" class="inputbox"', 'value', 'text', '');	
+
 		}
+		$html[] = '</div>';
+
+		return implode("\n", $html);
+
+		$province_word = "province";
+		$state_word = 'state';
+		$db            = JFactory::getDBO();
+		
+		$shipword      = '';
+		
 		if ($custommer->state) {
 			$query = "SELECT state FROM #__digicom_states WHERE country='" . $custommer->country . "' order by `state`";
 			$db->setQuery( $query );
