@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Weblinks" default="make" basedir=".">
+    <tstamp>
+        <format property="build.date" pattern="%Y-%m-%d" />
+    </tstamp>
+
+    <property file="build.ini" />
+
+    <target name="help">
+        <echo>Use `$ phing -l` to list the available targets.</echo>
+    </target>
+
+    <fileset dir="../administrator/components/" id="com-admin">
+        <exclude name="**" />
+        <include name="com_digicom/**" />
+    </fileset>
+
+    <fileset dir="../components/" id="com-side">
+        <exclude name="**" />
+        <include name="com_digicom/**" />
+    </fileset>
+
+    <target name="make-dev" description="Builds the extension release package for development testing." depends="rebuild-extension-archives">
+        <echo msg="Deleting old development build." />
+        <delete quiet="yes" includeemptydirs="true">
+            <fileset dir="release">
+                <include name="pkg_${package}_dev.zip" />
+            </fileset>
+        </delete>
+
+        <echo msg="Making the development ${package} package ." />
+        <zip destfile="release/pkg_${package}_dev.zip">
+            <fileset dir="build">
+                <include name="**" />
+            </fileset>
+        </zip>
+    </target>
+
+    <target name="make" description="Builds the extension release package for a version.">
+        <echo msg="Making the ${package} package for version ${version}." />
+
+        <mkdir dir="build" />
+
+        <!--<zip destfile="releases/pkg_${package}_${version}.zip">-->
+            <!--<fileset dir="build">-->
+                <!--<include name="**" />-->
+            <!--</fileset>-->
+        <!--</zip>-->
+    </target>
+
+    <target name="rebuild-extension-archives" description="Rebuilds the archive (zip) files for each extension.">
+        <mkdir dir="build" />
+        <mkdir dir="releases" />
+
+        <echo msg="Cleaning build directory." />
+        <delete quiet="yes" includeemptydirs="true">
+            <fileset dir="*">
+                <include name="build" />
+            </fileset>
+        </delete>
+
+        <echo msg="Creating extension archives (zip files)." />
+        <foreach param="extension" target="build-archive">
+            <fileset dir="src">
+                <include name="com_*" />
+                <include name="mod_*" />
+                <include name="plg_*" />
+                <include name="tpl_*" />
+            </fileset>
+        </foreach>
+
+        <copy todir="build" >
+            <fileset dir="src">
+                <include name="language/**" />
+                <include name="pkg_${package}.xml" />
+            </fileset>
+        </copy>
+    </target>
+
+</project>
