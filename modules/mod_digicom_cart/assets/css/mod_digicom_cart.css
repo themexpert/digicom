@@ -1,0 +1,14 @@
+/**
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
+
+.dg-cart-list{ list-style: none; margin: 0;}
+.dg-cart-list li{ padding: 1em 0; border-bottom: 1px solid #eee; }
+.dg-cart-list img{ float: right; max-width: 2.618em; height: 40px; width: 40px; }
+.dg-cart-list .dg-quantity{ display: block; color: #aeb2b7; }
+
+.dg-total{ background: #fff; padding: 1em 0; margin: 0; text-align: center; box-shadow: 0 0 2px #ddd inset; }
