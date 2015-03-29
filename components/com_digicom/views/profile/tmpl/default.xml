@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="DIGICOM_PROFILE">
+	<layout title="COM_DIGICOM_MENU_ITEM_TYPE_USER_PROFILE">
 		<message>
-			<![CDATA[DIGICOM_PROFILE TIP]]>
+			<![CDATA[COM_DIGICOM_MENU_ITEM_TYPE_USER_PROFILE_DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>DIGICOM_PROFILE</name>
-		<description>DIGICOM_PROFILE DESC</description>
+		<name>COM_DIGICOM_MENU_ITEM_TYPE_USER_PROFILE</name>
+		<description>COM_DIGICOM_MENU_ITEM_TYPE_USER_PROFILE_DESC</description>
 		<params>
 		</params>
 	</state>
