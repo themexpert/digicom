@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<view title="DIGICOM CATEGORIES">
+	<view title="COM_DIGICOM_MENU_ITEM_TYPE_CATEGORIES_LIST">
 		<message>
-			<![CDATA[DIGICOM CATEGORIES TIP]]>
+			<![CDATA[COM_DIGICOM_MENU_ITEM_TYPE_CATEGORIES_LIST_DESC]]>
 		</message>
 	</view>
 </metadata>
