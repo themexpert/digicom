@@ -135,10 +135,40 @@
     </target>
 
     <target name="plugin-finder" description="Finder Plugins">
-
+        <!--Copy finder/digicom files to temp-->
+        <copy todir="temp" overwrite="true">
+            <fileset dir="../plugins/finder">
+                <include name="digicom/**" />
+            </fileset>
+        </copy>
+        <!--Copy associated language file-->
+        <copy todir="temp/digicom/language/en-GB" overwrite="true">
+            <fileset dir="../administrator/language/en-GB/">
+                <include name="en-GB.plg_finder_digicom.ini" />
+                <include name="en-GB.plg_finde_digicom.sys.ini" />
+            </fileset>
+        </copy>
+        <!--Build it-->
+        <zip destfile="release/plg_finder_digicom.zip" basedir="temp/digicom" />
+        <delete dir="temp/digicom" quiet="yes" includeemptydirs="false" />
     </target>
     <target name="plugin-system" description="System Plugins">
-
+        <!--Copy finder/digicom files to temp-->
+        <copy todir="temp" overwrite="true">
+            <fileset dir="../plugins/system">
+                <include name="digicom_addtocart/**" />
+            </fileset>
+        </copy>
+        <!--Copy associated language file-->
+        <copy todir="temp/digicom_addtocart/language/en-GB" overwrite="true">
+            <fileset dir="../administrator/language/en-GB/">
+                <include name="en-GB.plg_system_digicom_addtocart.ini" />
+                <include name="en-GB.plg_system_digicom_addtocart.sys.ini" />
+            </fileset>
+        </copy>
+        <!--Build it-->
+        <zip destfile="release/plg_system_digicom_addtocart.zip" basedir="temp/digicom_addtocart" />
+        <delete dir="temp/digicom_addtocart" quiet="yes" includeemptydirs="false" />
     </target>
     <target name="plugin-editor" description="Editor Plugins">
 
@@ -148,42 +178,9 @@
             depends="clean, component, modules, plugins">
         <echo msg="Making the ${package} package for version ${version}." />
 
+        <copy file="pkg_digicom.xml" todir="release" overwrite="true" />
+        <zip destfile="release/pkg_digicom_${version}.zip" basedir="release" />
 
-
-        <!--<zip destfile="releases/pkg_${package}_${version}.zip">-->
-            <!--<fileset dir="build">-->
-                <!--<include name="**" />-->
-            <!--</fileset>-->
-        <!--</zip>-->
-    </target>
-
-    <target name="rebuild-extension-archives" description="Rebuilds the archive (zip) files for each extension.">
-        <mkdir dir="build" />
-        <mkdir dir="releases" />
-
-        <echo msg="Cleaning build directory." />
-        <delete quiet="yes" includeemptydirs="true">
-            <fileset dir="*">
-                <include name="build" />
-            </fileset>
-        </delete>
-
-        <echo msg="Creating extension archives (zip files)." />
-        <foreach param="extension" target="build-archive">
-            <fileset dir="src">
-                <include name="com_*" />
-                <include name="mod_*" />
-                <include name="plg_*" />
-                <include name="tpl_*" />
-            </fileset>
-        </foreach>
-
-        <copy todir="build" >
-            <fileset dir="src">
-                <include name="language/**" />
-                <include name="pkg_${package}.xml" />
-            </fileset>
-        </copy>
     </target>
 
 </project>
