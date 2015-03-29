@@ -28,7 +28,7 @@ $Itemid = JRequest::getInt("Itemid", 0);
 		</div>
 	<?php } ?>
 
-	<h1 class="digi-page-title"><?php echo JText::_("DSREGORLOG");?></h1>
+	<h1 class="digi-page-title"><?php echo JText::_("COM_DIGICOM_LOGIN_REGISTER");?></h1>
 
 	<?php
 		$checked = "";
@@ -55,7 +55,7 @@ $Itemid = JRequest::getInt("Itemid", 0);
 		<div class="accordion-group">
 			<div class="accordion-heading">
 			  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-			    <?php echo JText::_("DIGI_LOGIN_BELOW"); ?>
+			    <?php echo JText::_("COM_DIGICOM_REGISTER_LOGIN_BELOW"); ?>
 			  </a>
 			</div>
 			<div id="collapseOne" class="accordion-body collapse in">
@@ -64,19 +64,19 @@ $Itemid = JRequest::getInt("Itemid", 0);
 			    	<form name="login" id="login" method="post" action="<?php echo JRoute::_('index.php?optioncom_digicom&view=profile&Itemid='.$Itemid); ?>">
 						<table width="100%" style="border-collapse:separate !important;">
 							<tr>
-								<td class="field-login"><?php echo JText::_("DSUSERNAME");?>:
+								<td class="field-login"><?php echo JText::_("COM_DIGICOM_USERNAME");?>:
 									<input type="text" size="30" class="digi_textbox" id="user_name" name="username"  />
 								</td>
 							</tr>
 							<tr>
-								<td class="field-login"><?php echo JText::_("DSPASS");?>:
+								<td class="field-login"><?php echo JText::_("COM_DIGICOM_PASSWORD");?>:
 									<?php $link = JRoute::_("index.php?option=com_users&view=reset"); ?>
-									<input type="password" size="30" class="digi_textbox" id="passwd" name="passwd" /> (<a href="<?php echo $link;?>"><?php echo JText::_("DIGI_PROFILE_FRG_PSW");?></a>)
+									<input type="password" size="30" class="digi_textbox" id="passwd" name="passwd" /> (<a href="<?php echo $link;?>"><?php echo JText::_("COM_DIGICOM_REGISTER_LOGIN_FORGET_PASSWORD");?></a>)
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<input type="checkbox" value="1" name="rememeber"> <span class="general_text_larger"><?php echo JText::_("DIGI_PROFILE_REMEMBER_ME");?></span>
+									<input type="checkbox" value="1" name="rememeber"> <span class="general_text_larger"><?php echo JText::_("COM_DIGICOM_REMEMBER_ME");?></span>
 								</td>
 							</tr>
 							<tr>
@@ -100,7 +100,7 @@ $Itemid = JRequest::getInt("Itemid", 0);
 		<div class="accordion-group">
 			<div class="accordion-heading">
 			  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-			    <?php echo JText::_("DIGI_REGISTER_BELOW"); ?>
+			    <?php echo JText::_("COM_DIGICOM_REGISTER_REGISTER_BELOW"); ?>
 			  </a>
 			</div>
 
