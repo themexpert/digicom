@@ -521,13 +521,17 @@ class DigiComSiteHelperDigicom {
 	* images (string): image path like : /images/digicom.png
 	*/
 	public static function getThumbnail($image){
+		jimport( 'joomla.filesystem.folder' );
+		jimport( 'joomla.filesystem.file' );
+
 		$params = JComponentHelper::getComponent('com_digicom')->params;
 
 		if(empty($image)) return '';
-		if($params->get('image_thumb_enable')){
-			jimport( 'joomla.filesystem.folder' );
-			jimport( 'joomla.filesystem.file' );
 
+		if(!JFile::exists($image)) return $image;
+
+		if($params->get('image_thumb_enable')){
+			
 			$image_thumb_width = $params->get('image_thumb_width');
 			$image_thumb_height = $params->get('image_thumb_height');
 			$image_thumb_method = $params->get('image_thumb_method',6);
