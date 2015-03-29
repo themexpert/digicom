@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Weblinks" default="make" basedir=".">
+<project name="DigiCom" default="make" basedir=".">
     <tstamp>
         <format property="build.date" pattern="%Y-%m-%d" />
     </tstamp>
@@ -9,15 +9,6 @@
     <target name="help">
         <echo>Use `$ phing -l` to list the available targets.</echo>
     </target>
-
-    <fileset dir="../administrator/components/com_digicom" id="com-admin">
-        <!--<exclude name="**" />-->
-        <include name="**" />
-    </fileset>
-
-    <fileset dir="../components/com_digicom" id="com-site">
-        <include name="**" />
-    </fileset>
 
     <target name="make-dev" description="Builds the extension release package for development testing." depends="rebuild-extension-archives">
         <echo msg="Deleting old development build." />
@@ -35,7 +26,20 @@
         </zip>
     </target>
 
+    <target name="clean" description="Cleaning build dir and preapering for package">
+        <delete dir="release" quiet="yes" includeemptydirs="false" />
+        <mkdir dir="release" />
+    </target>
+
     <target name="component" description="Build Component release package for a version">
+
+        <fileset dir="../administrator/components/com_digicom" id="com-admin">
+            <include name="**" />
+        </fileset>
+
+        <fileset dir="../components/com_digicom" id="com-site">
+            <include name="**" />
+        </fileset>
 
         <copy todir="temp/com_digicom/admin" overwrite="true">
             <fileset refid="com-admin" />
@@ -55,7 +59,11 @@
 
     </target>
 
-    <target name="make" description="Builds the extension release package for a version." depends="component">
+    <target name="modules">
+
+    </target>
+
+    <target name="make" description="Builds the extension release package for a version." depends="clean, component">
         <echo msg="Making the ${package} package for version ${version}." />
 
 
