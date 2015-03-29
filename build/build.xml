@@ -37,16 +37,32 @@
             <include name="**" />
         </fileset>
 
+        <fileset dir="../administrator/language/en-GB" id="com-admin-lang">
+            <include name="en-GB.com_digicom.ini" />
+            <include name="en-GB.com_digicom.sys.ini" />
+        </fileset>
+
         <fileset dir="../components/com_digicom" id="com-site">
             <include name="**" />
+        </fileset>
+
+        <fileset dir="../language/en-GB" id="com-site-lang">
+            <include name="en-GB.com_digicom.ini" />
+            <include name="en-GB.com_digicom.sys.ini" />
         </fileset>
 
         <copy todir="temp/com_digicom/admin" overwrite="true">
             <fileset refid="com-admin" />
         </copy>
+        <copy todir="temp/com_digicom/admin/language/en-GB" overwrite="true">
+            <fileset refid="com-admin-lang" />
+        </copy>
 
         <copy todir="temp/com_digicom/site" overwrite="true">
             <fileset refid="com-site" />
+        </copy>
+        <copy todir="temp/com_digicom/site/language/en-GB" overwrite="true">
+            <fileset refid="com-site-lang" />
         </copy>
 
         <move file="temp/com_digicom/admin/digicom.xml" todir="temp/com_digicom" />
@@ -60,10 +76,21 @@
     </target>
 
     <target name="modules">
-
+        <property name="site-modules" value="mod_digicom_cart,mod_digicom_categories" />
+        <foreach list="${site-modules}" param="extension" target="build-module-archive" />
     </target>
 
-    <target name="make" description="Builds the extension release package for a version." depends="clean, component">
+    <target name="build-module-archive">
+
+        <copy todir="temp" overwrite="true">
+            <fileset dir="../modules">
+                <include name="${extension}/**" />
+            </fileset>
+        </copy>
+        <zip destfile="release/${extension}.zip" basedir="temp/${extension}" />
+    </target>
+
+    <target name="make" description="Builds the extension release package for a version." depends="clean, component, modules">
         <echo msg="Making the ${package} package for version ${version}." />
 
 
