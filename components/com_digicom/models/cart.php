@@ -150,7 +150,7 @@ class DigiComModelCart extends JModelItem
 					ORDER BY `p`.`ordering`";
 		$db->setQuery($sql);
 		$items = $db->loadObjectList();
-		
+
 		//change the price of items if needed
 		for ( $i = 0; $i < count( $items ); $i++ )
 		{
@@ -177,7 +177,6 @@ class DigiComModelCart extends JModelItem
 				}
 			}
 		}
-		
 		return $this->_items;
 	}
 
