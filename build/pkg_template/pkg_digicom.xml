@@ -35,6 +35,6 @@
     </languages>
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
-        <server type="extension" name="DigiCom Update Site">https://raw.githubusercontent.com/themexpert/digicom/master/updatemanifest.xml</server>
+        <server type="extension" name="DigiCom Update Site">https://raw.githubusercontent.com/themexpert/digicom/master/updates.xml</server>
     </updateservers>
 </extension>
