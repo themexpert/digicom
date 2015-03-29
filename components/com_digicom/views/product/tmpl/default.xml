@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="com_digicom_product_view_default_title" option="com_digicom_product_view_default_option">
+	<layout title="COM_DIGICOM_MENU_ITEM_TYPE_SINGLE_PRODUCT" option="com_digicom_product_view_default_option">
 		<help
 			key = "JHELP_MENUS_MENU_ITEM_PRODUCT_SINGLE_PRODUCT"
 		/>
 		<message>
-			<![CDATA[com_digicom_product_view_default_desc]]>
+			<![CDATA[COM_DIGICOM_MENU_ITEM_TYPE_SINGLE_PRODUCT_DESC]]>
 		</message>
 	</layout>
 
@@ -29,7 +29,7 @@
 
 		<!-- Basic options. -->
 		<fieldset name="basic"
-			label="COM_DIGICOM_ATTRIBS_PRODUCT_SETTINGS_LABEL">
+			label="COM_DIGICOM_MENU_ITEM_PRODUCT_SETTINGS_LABEL">
 
 		<field
 			name="show_title"
@@ -267,8 +267,8 @@
 			name="urls_position"
 			type="radio"
 			class="btn-group"
-		    	label="COM_DIGICOM_FIELD_URLSPOSITION_LABEL"
-			description="COM_DIGICOM_FIELD_URLSPOSITION_DESC">
+		    	label="COM_DIGICOM_FIELD_URLS_POSITION_LABEL"
+			description="COM_DIGICOM_FIELD_URLS_POSITION_DESC">
 			<option value="">JGLOBAL_USE_GLOBAL</option>
 			<option value="0">COM_DIGICOM_FIELD_OPTION_ABOVE</option>
 			<option value="1">COM_DIGICOM_FIELD_OPTION_BELOW</option>
