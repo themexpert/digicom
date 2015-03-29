@@ -15,19 +15,26 @@
     <description>PKG_DIGICOM_XML_DESCRIPTION</description>
     <files>
         <!-- The id for each extension is the element stored in the DB -->
+        <!-- Administration component -->
         <file type="component" id="com_digicom">com_digicom.zip</file>
+        <!-- Module - Shopping cart -->
         <file type="module" id="mod_digicom_cart" client="site">mod_digicom_cart.zip</file>
+        <!-- Module - Categories List -->
         <file type="module" id="mod_digicom_categories" client="site">mod_digicom_categories.zip</file>
+        <!-- Payment Plugin - paypal -->
         <file type="plugin" id="paypal" group="digicom_pay">plg_digicom_pay_paypal.zip</file>
+        <!-- Payment plugin - offline -->
         <file type="plugin" id="offline" group="digicom_pay">plg_digicom_pay_offline.zip</file>
+        <!-- Search plugin - finder-->
         <file type="plugin" id="digicom" group="finder">plg_finder_digicom.zip</file>
+        <!-- System plugin - addtocart-->
         <file type="plugin" id="digicom_addtocart" group="system">plg_system_digicom_addtocart.zip</file>
     </files>
     <languages folder="language">
-        <language tag="en-GB">en-GB/en-GB.pkg_weblinks.sys.ini</language>
+        <language tag="en-GB">en-GB/en-GB.pkg_digicom.sys.ini</language>
     </languages>
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
-        <!--<server type="extension" name="Weblinks Update Site">https://raw.githubusercontent.com/joomla-extensions/weblinks/master/manifest.xml</server>-->
+        <server type="extension" name="DigiCom Update Site">https://raw.githubusercontent.com/themexpert/digicom/master/updatemanifest.xml</server>
     </updateservers>
 </extension>

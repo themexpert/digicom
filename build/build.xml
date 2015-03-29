@@ -13,6 +13,9 @@
     <target name="clean" description="Cleaning build dir and preapering for package">
         <delete dir="release" quiet="yes" includeemptydirs="false" />
         <mkdir dir="release" />
+
+        <delete dir="temp" quiet="yes" includeemptydirs="false" />
+        <mkdir dir="temp" />
     </target>
 
     <target name="component" description="Build Component release package for a version">
@@ -46,11 +49,11 @@
         <!--Move component mainfest to temp root-->
         <move file="temp/com_digicom/admin/digicom.xml" todir="temp/com_digicom" />
         <!--Build it-->
-        <zip
-            destfile="release/com_digicom.zip"
-            basedir="temp/com_digicom" />
+        <!--<zip-->
+            <!--destfile="release/com_digicom.zip"-->
+            <!--basedir="temp/com_digicom" />-->
         <!--Remove temp-->
-        <delete dir="temp/com_digicom" quiet="yes" includeemptydirs="false" />
+        <!--<delete dir="temp/com_digicom" quiet="yes" includeemptydirs="false" />-->
 
     </target>
 
@@ -74,9 +77,9 @@
             </fileset>
         </copy>
         <!--Build it-->
-        <zip destfile="release/${extension}.zip" basedir="temp/${extension}" />
+        <!--<zip destfile="release/${extension}.zip" basedir="temp/${extension}" />-->
         <!--Remove temp-->
-        <delete dir="temp/${extension}" quiet="yes" includeemptydirs="false" />
+        <!--<delete dir="temp/${extension}" quiet="yes" includeemptydirs="false" />-->
     </target>
 
     <!--
@@ -95,21 +98,21 @@
         =====================
         -->
         <!--Copy offline files to temp-->
-        <copy todir="temp" overwrite="true">
-            <fileset dir="../plugins/digicom_pay">
-                <include name="offline/**" />
+        <copy todir="temp/plg_digicom_pay_offline" overwrite="true">
+            <fileset dir="../plugins/digicom_pay/offline">
+                <include name="**" />
             </fileset>
         </copy>
         <!--Copy associated language file-->
-        <copy todir="temp/offline/language/en-GB" overwrite="true">
+        <copy todir="temp/plg_digicom_pay_offline/language/en-GB" overwrite="true">
             <fileset dir="../administrator/language/en-GB/">
                 <include name="en-GB.plg_digicom_pay_offline.ini" />
                 <include name="en-GB.plg_digicom_pay_offline.sys.ini" />
             </fileset>
         </copy>
         <!--Build it-->
-        <zip destfile="release/plg_digicom_pay_offline.zip" basedir="temp/offline" />
-        <delete dir="temp/offline" quiet="yes" includeemptydirs="false" />
+        <!--<zip destfile="release/plg_digicom_pay_offline.zip" basedir="temp/offline" />-->
+        <!--<delete dir="temp/offline" quiet="yes" includeemptydirs="false" />-->
 
         <!---
        =====================
@@ -117,70 +120,136 @@
        =====================
        -->
         <!--Copy paypa; files to temp-->
-        <copy todir="temp" overwrite="true">
-            <fileset dir="../plugins/digicom_pay">
-                <include name="paypal/**" />
+        <copy todir="temp/plg_digicom_pay_paypal" overwrite="true">
+            <fileset dir="../plugins/digicom_pay/paypal">
+                <include name="**" />
             </fileset>
         </copy>
         <!--Copy associated language file-->
-        <copy todir="temp/paypal/language/en-GB" overwrite="true">
+        <copy todir="temp/plg_digicom_pay_paypal/language/en-GB" overwrite="true">
             <fileset dir="../administrator/language/en-GB/">
                 <include name="en-GB.plg_digicom_pay_paypal.ini" />
                 <include name="en-GB.plg_digicom_pay_paypal.sys.ini" />
             </fileset>
         </copy>
         <!--Build it-->
-        <zip destfile="release/plg_digicom_pay_paypal.zip" basedir="temp/paypal" />
-        <delete dir="temp/paypal" quiet="yes" includeemptydirs="false" />
+        <!--<zip destfile="release/plg_digicom_pay_paypal.zip" basedir="temp/paypal" />-->
+        <!--<delete dir="temp/paypal" quiet="yes" includeemptydirs="false" />-->
     </target>
 
     <target name="plugin-finder" description="Finder Plugins">
         <!--Copy finder/digicom files to temp-->
-        <copy todir="temp" overwrite="true">
-            <fileset dir="../plugins/finder">
-                <include name="digicom/**" />
+        <copy todir="temp/plg_finder_digicom" overwrite="true">
+            <fileset dir="../plugins/finder/digicom">
+                <include name="**" />
             </fileset>
         </copy>
         <!--Copy associated language file-->
-        <copy todir="temp/digicom/language/en-GB" overwrite="true">
+        <copy todir="temp/plg_finder_digicom/language/en-GB" overwrite="true">
             <fileset dir="../administrator/language/en-GB/">
                 <include name="en-GB.plg_finder_digicom.ini" />
                 <include name="en-GB.plg_finde_digicom.sys.ini" />
             </fileset>
         </copy>
         <!--Build it-->
-        <zip destfile="release/plg_finder_digicom.zip" basedir="temp/digicom" />
-        <delete dir="temp/digicom" quiet="yes" includeemptydirs="false" />
+        <!--<zip destfile="release/plg_finder_digicom.zip" basedir="temp/digicom" />-->
+        <!--<delete dir="temp/digicom" quiet="yes" includeemptydirs="false" />-->
     </target>
     <target name="plugin-system" description="System Plugins">
         <!--Copy finder/digicom files to temp-->
-        <copy todir="temp" overwrite="true">
-            <fileset dir="../plugins/system">
-                <include name="digicom_addtocart/**" />
+        <copy todir="temp/plg_system_digicom_addtocart" overwrite="true">
+            <fileset dir="../plugins/system/digicom_addtocart">
+                <include name="**" />
             </fileset>
         </copy>
         <!--Copy associated language file-->
-        <copy todir="temp/digicom_addtocart/language/en-GB" overwrite="true">
+        <copy todir="temp/plg_system_digicom_addtocart/language/en-GB" overwrite="true">
             <fileset dir="../administrator/language/en-GB/">
                 <include name="en-GB.plg_system_digicom_addtocart.ini" />
                 <include name="en-GB.plg_system_digicom_addtocart.sys.ini" />
             </fileset>
         </copy>
         <!--Build it-->
-        <zip destfile="release/plg_system_digicom_addtocart.zip" basedir="temp/digicom_addtocart" />
-        <delete dir="temp/digicom_addtocart" quiet="yes" includeemptydirs="false" />
+        <!--<zip destfile="release/plg_system_digicom_addtocart.zip" basedir="temp/digicom_addtocart" />-->
+        <!--<delete dir="temp/digicom_addtocart" quiet="yes" includeemptydirs="false" />-->
     </target>
     <target name="plugin-editor" description="Editor Plugins">
 
     </target>
 
     <target name="make" description="Builds the extension release package for a version."
-            depends="clean, component, modules, plugins">
-        <echo msg="Making the ${package} package for version ${version}." />
+            depends="clean, component, modules, plugins, rebuild-extension-archives">
+        <echo msg="Making the ${package} package for version ${version}" />
 
-        <copy file="pkg_digicom.xml" todir="release" overwrite="true" />
         <zip destfile="release/pkg_digicom_${version}.zip" basedir="release" />
 
+        <delete dir="temp" includeemptydirs="true"/>
+        <delete quiet="true">
+            <fileset dir="release">
+                <include name="**" />
+                <exclude name="pkg_digicom_${version}.zip" />
+            </fileset>
+        </delete>
+        <delete dir="release/language" quiet="true" />
+
+    </target>
+
+    <target name="rebuild-extension-archives" description="Rebuilds the archive (zip) files for each extension."
+            depends="set-version">
+        <echo msg="Creating extension archives (zip files)." />
+        <foreach param="extension" target="build-archive">
+            <fileset dir="temp">
+                <include name="com_*" />
+                <include name="mod_*" />
+                <include name="plg_*" />
+                <include name="tpl_*" />
+            </fileset>
+        </foreach>
+
+        <copy todir="release" >
+            <fileset dir="./pkg_template">
+                <include name="language/**" />
+                <include name="pkg_${package}.xml" />
+            </fileset>
+        </copy>
+        <!--Change version num of pkg_digicom.xml-->
+        <reflexive>
+            <fileset dir=".">
+                <include pattern="release/*.xml" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp pattern="&lt;version&gt;(.*?)&lt;/version&gt;"
+                            replace="&lt;version&gt;${version}&lt;/version&gt;"/>
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+    </target>
+
+    <target name="build-archive" description="Builds an archive for a single extension.">
+        <zip destfile="release/${extension}.zip" basedir="temp/${extension}" />
+    </target>
+
+    <target name="set-version" description="Sets the &lt;version&gt; tag in all XML files with the version from the build.ini file.">
+        <phingcall target="replace-xml">
+            <property name="tag" value="version" />
+            <property name="tagValue" value="${version}" />
+        </phingcall>
+    </target>
+
+    <target name="replace-xml" description="[PRIVATE] Sets an XML tag with a new value.">
+        <echo message="Replacing '${tag}' tag with '${tagValue}'."/>
+        <reflexive>
+            <fileset dir=".">
+                <include pattern="temp/**/*.xml" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp pattern="&lt;${tag}&gt;(.*?)&lt;/${tag}&gt;"
+                            replace="&lt;${tag}&gt;${tagValue}&lt;/${tag}&gt;"/>
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
     </target>
 
 </project>
