@@ -826,7 +826,8 @@ class DigiComModelCart extends JModelItem
 		$shipping = $tax['shipping'];
 		$orderid = $this->addOrder($items, $customer, $now, 'free');
 		$this->addOrderDetails($items, $orderid, $now, $customer);
-		$this->goToSuccessURL($customer->_sid, '', $orderid);
+		$type = 'complete_order';
+		$this->goToSuccessURL($customer->_sid, '', $orderid , $type);
 		return $orderid;
 	}
 	
@@ -843,6 +844,7 @@ class DigiComModelCart extends JModelItem
 		$shipping = $tax['shipping'];
 		$orderid = $this->addOrder($items, $customer, $now, $prosessor,$status);
 		$this->addOrderDetails($items, $orderid, $now, $customer,$status);
+
 		return $orderid;
 	}
 
@@ -914,7 +916,7 @@ class DigiComModelCart extends JModelItem
 		return true;
 	}
 
-	function proccessSuccess($post, $pg_plugin, $order_id, $sid,$responce)
+	function proccessSuccess($post, $pg_plugin, $order_id, $sid,$responce,$items)
 	{
 		$app = JFactory::getApplication();
 		$dispatcher = JDispatcher::getInstance();
@@ -948,7 +950,7 @@ class DigiComModelCart extends JModelItem
 			$now = date('Y-m-d H:i:s', time() + $tzoffset);
 			$now = strtotime($now);
 
-			$this->updateOrder($order_id,$result,$data,$pg_plugin,$status);
+			$this->updateOrder($order_id,$result,$data,$pg_plugin,$status,$items,$customer);
 			
 		}
 
@@ -976,7 +978,7 @@ class DigiComModelCart extends JModelItem
 		return true;
 	}
 	
-	function updateOrder($order_id,$result,$data,$pg_plugin,$status){
+	function updateOrder($order_id,$result,$data,$pg_plugin,$status,$items,$customer){
 		
 		$table = $this->getTable('Order');
 		$table->load($order_id);
@@ -987,20 +989,22 @@ class DigiComModelCart extends JModelItem
 		//processor
 		$table->processor = $data['processor'];
 		$warning = '';
-
+		$type = 'process_order';
 		//status
 		if($table->amount_paid >= $table->amount){
 			$table->status = $status;
+			$type = 'complete_order';
 		}else if(($table->amount_paid > 0) && ($table->amount_paid < $table->amount)){
 			$warning = JText::_('COM_DIGICOM_PAYMENT_FROUD_CASE_PAYMENT_MANUPULATION');
 			$table->status = 'Pending';
 		}else{
 			$table->status = $status;
+
 		}
 
 		$comment = array();
 		$comment[] = $table->comment;
-		$comment[] = $result['comment'];
+		$comment[] = (isset($result['comment']) ? $result['comment'] : '');
 
 
 		$table->comment = implode("\n", $comment);
@@ -1014,6 +1018,15 @@ class DigiComModelCart extends JModelItem
 
 		$table->params = json_encode($orderparams);
 		$table->store();
+
+		//triggere email
+		$config = JFactory::getConfig();
+		$tzoffset = $config->get('offset');
+		$now = date('Y-m-d H:i:s', time() + $tzoffset);
+		$now = strtotime($now);
+
+		$this->dispatchMail( $order_id, $table->amount_paid, $table->number_of_products, $now, $items, $customer , $type, $status);
+
 		return true;
 	}
 	
@@ -1026,12 +1039,10 @@ class DigiComModelCart extends JModelItem
 		return true;
 	}
 
-	function goToSuccessURL( $sid, $msg = '', $orderid = 0 )
+	function goToSuccessURL( $sid, $msg = '', $orderid = 0 , $type = 'new_order')
 	{
 
 		global $Itemid;
-
-		$mosConfig_live_site = DigiComSiteHelperDigiCom::getLiveSite(); //$jconf->live_site;
 
 		$conf = $this->getInstance( "config", "digicomModel" );
 		$configs = $conf->getConfigs();
@@ -1042,7 +1053,6 @@ class DigiComModelCart extends JModelItem
 				$cart_total = $cust_info['cart']['total'];
 			if ( isset( $cust_info['cart']['items'] ) )
 				$cart_items = unserialize( $cust_info['cart']['items'] );
-			//debug($cart_items);
 		}
 
 		$customer = new DigiComSiteHelperSession();
@@ -1069,63 +1079,17 @@ class DigiComModelCart extends JModelItem
 		$total = $tax['taxed'];
 		$number_of_products = $tax['number_of_products'];
 
-		if ( $configs->get('afterpurchase',1) == 0 ) {
-			$controller = "downloads";
-		} else {
-			$controller = "orders";
-		}
-
-		/* fixed return after payment, before paypal IPN */
-		$plugin = JRequest::getVar( 'plugin', '' );
-		if ( $plugin != 'paypal' ) {
-			$this->dispatchMail( $orderid, $total, $number_of_products, $now, $items, $customer );
-			$cart->emptyCart( $sid );
-		}
+		$this->dispatchMail( $orderid, $total, $number_of_products, $now, $items, $customer , $type);
+		$cart->emptyCart( $sid );
 		
-		// Get return urls
-		$success_url = /* $mosConfig_live_site. */JRoute::_( "index.php?option=com_digicom&view=" . $controller . "&success=1&sid=" . intval($sid) . '&Itemid=' . $_Itemid, false, false );
-		$failed_url = /* $mosConfig_live_site. */JRoute::_( "index.php?option=com_digicom&view=" . $controller . "&success=0&sid=" . intval($sid) . '&Itemid=' . $_Itemid, false, false );
-
-		$uri = JURI::getInstance();
-		$prefix = $uri->toString( array('host', 'port') );
-
-		// Get Full url with host and port
-		$success_url = 'http://' . $prefix . $success_url;
-		$failed_url = 'http://' . $prefix . $failed_url;
-
-		if ( empty( $msg ) && $orderid > 0 )
-			$msg = JText::_( "DSREFERENCEOID" ) . " " . $orderid;
-
-		// Encode return urls
-		$success_url = base64_encode( $success_url );
-		$failed_url = base64_encode( $failed_url );
-
-		$content = '
-			<form name="digicomform" method="post" action="' . JRoute::_("index.php?option=com_digicom&view=cart&task=showCart", false, false ) . '">
-				<input type="hidden" name="success_url" value="' . $success_url . '" />
-				<input type="hidden" name="failed_url" value="' . $failed_url . '" />
-				<input type="hidden" name="msg" value="' . $msg . '" />
-				<input type="hidden" name="sid" value="' . $sid . '" />
-				<input type="hidden" name="orderid" value="' . $orderid . '" />
-				<input type="hidden" name="plugin" value="' . $plugin . '" />
-				<input type="hidden" name="option" value="com_digicom" />
-				<input type="hidden" name="view" value="cart" />
-				<input type="hidden" name="task" value="landingSuccessPage" />
-				<input type="hidden" name="Itemid" value="' . $_Itemid . '" />
-			</form>
-			<script>document.digicomform.submit();</script>
-		';
-
-		echo $content;
+		return true;
 
 	}
 	
-	function getFinalize( $sid, $msg = '', $orderid = 0 )
+	function getFinalize( $sid, $msg = '', $orderid = 0 , $type)
 	{
 
 		global $Itemid;
-
-		$mosConfig_live_site = DigiComSiteHelperDigiCom::getLiveSite(); //$jconf->live_site;
 
 		$conf = $this->getInstance( "config", "digicomModel" );
 		$configs = $conf->getConfigs();
@@ -1160,7 +1124,7 @@ class DigiComModelCart extends JModelItem
 
 		/* fixed return after payment, before paypal IPN */
 		$plugin = JRequest::getVar( 'plugin', '' );
-		$this->dispatchMail( $orderid, $total, $number_of_products, $now, $items, $customer );
+		$this->dispatchMail( $orderid, $total, $number_of_products, $now, $items, $customer , $type);
 		$cart->emptyCart( $sid );
 		
 		return true;
@@ -1231,8 +1195,10 @@ class DigiComModelCart extends JModelItem
 	}
 
 	//mail sending function
-	function dispatchMail( $orderid, $amount, $number_of_products, $timestamp, $items, $customer )
+	
+	function dispatchMail($orderid, $amount, $number_of_products, $timestamp, $items, $customer, $type = 'new_order', $status = '')
 	{
+		
 		$app 	= JFactory::getApplication();
 		$db 	= JFactory::getDbo();
 		$site_config = JFactory::getConfig();
@@ -1251,13 +1217,12 @@ class DigiComModelCart extends JModelItem
 		$cart = $this->getInstance( "Cart", "digicomModel" );
 		$configs = $this->getInstance( "Config", "digicomModel" );
 		$configs = $configs->getConfigs();
-
-		$sql = "SELECT * FROM #__digicom_mailtemplates where `type`='order'";
-		$db->setQuery( $sql );
-		$mes = $db->loadObject();
+		$tax = $cart->calc_price( $items, $customer, $configs );
+		//echo $type;die;
+		$email = $configs->get('email');
 		
-		$message = $mes->body;
-		$subject = $mes->subject;
+		$message = $email->$type->body;
+		$subject = $email->$type->subject;
 		
 		// Replace all variables in template
 		$uri = JURI::getInstance();
@@ -1285,8 +1250,9 @@ class DigiComModelCart extends JModelItem
 		$message = str_replace( "[TODAY_DATE]", date( $configs->get('time_format','d-m-Y'), $timestamp), $message );
 		$message = str_replace( "[ORDER_ID]", $orderid, $message );
 		$message = str_replace( "[ORDER_AMOUNT]", $amount, $message );
-		$message = str_replace( "[NUMBER_OF_LICENSES]", $number_of_products, $message );
-		$message = str_replace( "[PROMO]", $promo->code, $message );
+		$message = str_replace( "[NUMBER_OF_PRODUCTS]", $number_of_products, $message );
+		$message = str_replace( "[PROMO]", $tax['promo'], $message );
+		$message = str_replace( "[STATUS]", $status, $message );
 		$displayed = array();
 		$product_list = '';
 
@@ -1328,8 +1294,9 @@ class DigiComModelCart extends JModelItem
 		$subject = str_replace( "[TODAY_DATE]", date( $configs->get('time_format','d-m-Y'), $timestamp ), $subject );
 		$subject = str_replace( "[ORDER_ID]", $orderid, $subject );
 		$subject = str_replace( "[ORDER_AMOUNT]", $amount, $subject );
-		$subject = str_replace( "[NUMBER_OF_LICENSES]", $licenses, $subject );
-		$subject = str_replace( "[PROMO]", $promo->code, $subject );
+		$subject = str_replace( "[NUMBER_OF_PRODUCTS]", $number_of_products, $subject );
+		$subject = str_replace( "[PROMO]", $tax['promo'], $subject );
+		$subject = str_replace( "[STATUS]", $status, $subject );
 		$displayed = array();
 		$product_list = '';
 		foreach ( $items as $i => $item ) {
@@ -1340,6 +1307,8 @@ class DigiComModelCart extends JModelItem
 			$displayed[] = $item->name;
 		}
 		$subject = str_replace( "[PRODUCTS]", $product_list, $subject );
+
+		//echo $message;die;
 
 		$subject = html_entity_decode( $subject, ENT_QUOTES );
 
@@ -1364,7 +1333,7 @@ class DigiComModelCart extends JModelItem
 		$mailSender->setSender( array($adminEmail2, $adminName2) );
 		$mailSender->setSubject( $subject );
 		$mailSender->setBody( $message );
-		//		Log::write( $message );
+		//Log::write( $message );
 		if ( !$mailSender->Send() ) {
 			//<Your error code management>
 		}
@@ -1376,177 +1345,7 @@ class DigiComModelCart extends JModelItem
 			$mailSender->setSender( array($adminEmail2, $adminName2) );
 			$mailSender->setSubject( $subject );
 			$mailSender->setBody( $message );
-			//Log::write( $message );
-			if ( !$mailSender->Send() ) {
-				//error code
-			}
-		}
-		
-		return true;
-	}
-
-	function dispatchMailTesting($orderid= '180', $amount ='34.00', $number_of_products = 1,$type = 'new_order')
-	{
-		
-		$timestamp = time();
-		$customer = $this->customer;
-		$cart = $this->getInstance( "Cart", "digicomModel" );
-		$configs = $this->getInstance( "Config", "digicomModel" );
-		$configs = $configs->getConfigs();
-
-		$items = $cart->getCartItems( $customer, $configs );
-
-		$app 	= JFactory::getApplication();
-		$db 	= JFactory::getDbo();
-		$site_config = JFactory::getConfig();
-		// get sid & uid
-		if (is_object($customer)) $sid = $customer->_sid;
-		if (is_array($customer)) $sid = $customer['sid'];
-
-		if (is_object($customer) && isset($customer->_user->id))  $uid = $customer->_user->id;
-		if (is_array($customer)) $uid = $customer['userid'];
-
-		if ( !$sid ) return;
-
-
-		$my = JFactory::getUser($uid);
-
-		$database = JFactory::getDBO();
-		
-		// Replace all variables in template
-		$promo = $cart->get_promo( $customer );
-		if ( $promo->id > 0 ) {
-			$promoid = $promo->id;
-			$promocode = $promo->code;
-		} else {
-			$promoid = '0';
-			$promocode = '0';
-		}
-
-		$mes = $configs->get('email')->$type;
-		
-		$message = $mes->body;
-		$subject = $mes->subject;
-
-		// Replace all variables in template
-		$uri = JURI::getInstance();
-		$sitename = (trim( $configs->get('store_name','DigiCom Store') ) != '') ? $configs->get('store_name','DigiCom Store') : $site_config->get( 'sitename' );
-		$siteurl = (trim( $configs->get('store_url','') ) != '') ? $configs->get('store_url','') : $uri->base();
-
-		$message = str_replace( "[SITENAME]", $sitename, $message );
-
-		$message = str_replace( "../%5BSITEURL%5D", $siteurl, $message );
-		$message = str_replace( "%5BSITEURL%5D", $siteurl, $message );
-		$message = str_replace( "[SITEURL]", $siteurl, $message );
-
-		$query = "select lastname, company from #__digicom_customers where id=" . $my->id;
-		$db->setQuery( $query );
-		$customer_database = $db->loadAssocList();
-		$lastname = (isset($customer_database["0"]["lastname"]) ? $customer_database["0"]["lastname"] : '');
-		$copany = (isset($customer_database["0"]["copany"]) ? $customer_database["0"]["copany"] : '');
-
-		$message = str_replace("[CUSTOMER_COMPANY_NAME]", $copany, $message);
-		$message = str_replace( "[CUSTOMER_USER_NAME]", $my->username, $message );
-		$message = str_replace( "[CUSTOMER_FIRST_NAME]", $my->name, $message );
-		$message = str_replace( "[CUSTOMER_LAST_NAME]", $lastname, $message );
-		$message = str_replace( "[CUSTOMER_EMAIL]", $my->email, $message );
-
-		$message = str_replace( "[TODAY_DATE]", date( $configs->get('time_format','d-m-Y'), $timestamp), $message );
-		$message = str_replace( "[ORDER_ID]", $orderid, $message );
-		$message = str_replace( "[ORDER_AMOUNT]", $amount, $message );
-		$message = str_replace( "[NUMBER_OF_LICENSES]", $number_of_products, $message );
-		$message = str_replace( "[PROMO]", $promo->code, $message );
-		$displayed = array();
-		$product_list = '';
-
-
-		$counter = array();
-		foreach ( $items as $i => $item ) {
-			if ( $i < 0 )
-				continue;
-			if ( !isset( $counter[$item->id] ) )
-				$counter[$item->id] = 1;
-			$counter[$item->id]++;
-		}
-		foreach ( $items as $i => $item ) {
-			if ( $i < 0 )
-				continue;
-			$optionlist = '';
-			if ( !in_array( $item->name, $displayed ) ) {
-				//$product_list .= $counter[$item->id]." - ".$item->name.'<br />';
-				$product_list .= $item->quantity . " - " . $item->name . '<br />';
-			}
-			$displayed[] = $item->name;
-		}
-		$message = str_replace( "[PRODUCTS]", $product_list, $message );
-		$email = new stdClass();
-		$email->body = $message;
-
-		//subject
-		$subject = str_replace( "[SITENAME]", $sitename, $subject );
-		$subject = str_replace("[CUSTOMER_COMPANY_NAME]", $copany, $subject);
-		$subject = str_replace( "../%5BSITEURL%5D", $siteurl, $subject );
-		$subject = str_replace( "%5BSITEURL%5D", $siteurl, $subject );
-		$subject = str_replace( "[SITEURL]", $siteurl, $subject );
-
-		$subject = str_replace( "[CUSTOMER_USER_NAME]", $my->username, $subject );
-		$subject = str_replace( "[CUSTOMER_FIRST_NAME]", $my->name, $subject );
-		$subject = str_replace( "[CUSTOMER_LAST_NAME]", $lastname, $subject );
-		$subject = str_replace( "[CUSTOMER_EMAIL]", $my->email, $subject );
-
-		$subject = str_replace( "[TODAY_DATE]", date( $configs->get('time_format','d-m-Y'), $timestamp ), $subject );
-		$subject = str_replace( "[ORDER_ID]", $orderid, $subject );
-		$subject = str_replace( "[ORDER_AMOUNT]", $amount, $subject );
-		$subject = str_replace( "[NUMBER_OF_LICENSES]", $number_of_products, $subject );
-		$subject = str_replace( "[PROMO]", $promo->code, $subject );
-		$displayed = array();
-		$product_list = '';
-		foreach ( $items as $i => $item ) {
-			if ( $i < 0 )
-				continue;
-			if ( !in_array( $item->name, $displayed ) )
-				$product_list .= $item->name . '<br />';
-			$displayed[] = $item->name;
-		}
-		$subject = str_replace( "[PRODUCTS]", $product_list, $subject );
-
-		$subject = html_entity_decode( $subject, ENT_QUOTES );
-
-		$message = html_entity_decode( $message, ENT_QUOTES );
-
-		print_r($message);die;
-
-		$app = JFactory::getApplication('site');
-
-		$mosConfig_mailfrom = $app->getCfg("mailfrom");
-		$mosConfig_fromname = $app->getCfg("fromname");
-
-		if ( $configs->get('usestoremail',1) == '1' && strlen( trim( $configs->get('store_name','DigiCom Store') ) ) > 0 && strlen( trim( $configs->get('store_email','') ) ) > 0 ) {
-			$adminName2 = $configs->get('store_name','DigiCom Store');
-			$adminEmail2 = $configs->get('store_email','');
-		} else{
-			$adminName2 = $mosConfig_fromname;
-			$adminEmail2 = $mosConfig_mailfrom;
-		}
-
-		$mailSender = JFactory::getMailer();
-		$mailSender->IsHTML( true );
-		$mailSender->addRecipient( $my->email );
-		$mailSender->setSender( array($adminEmail2, $adminName2) );
-		$mailSender->setSubject( $subject );
-		$mailSender->setBody( $message );
-		//		Log::write( $message );
-		if ( !$mailSender->Send() ) {
-			//<Your error code management>
-		}
-
-		if ( $configs->get('sendmailtoadmin',1) != 0 ) {
-			$mailSender = JFactory::getMailer();
-			$mailSender->IsHTML( true );
-			$mailSender->addRecipient( $adminEmail2 );
-			$mailSender->setSender( array($adminEmail2, $adminName2) );
-			$mailSender->setSubject( $subject );
-			$mailSender->setBody( $message );
+			
 			//Log::write( $message );
 			if ( !$mailSender->Send() ) {
 				//error code

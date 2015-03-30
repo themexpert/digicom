@@ -11,6 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 
 JHtml::_('jquery.framework');
 JHTML::_('behavior.formvalidation');
+$configs = JComponentHelper::getComponent('com_digicom')->params;
 
 $document = JFactory::getDocument();	 
 if($vars->custom_email=="")
@@ -44,6 +45,11 @@ function myValidate(f)
 		</div>
 
 		<div class="control-group">
+			<label for="cardlname" class="control-label"><?php echo JText::_( 'PLG_DIGICOM_PAY_OFFLINE_PAYABLE_AMOUNT' ); ?></label>
+			<div class="controls"><span class="label label-success"><?php echo DigiComSiteHelperDigiCom::format_price( $vars->amount, $configs->get('currency','USD'), true, $configs ); ?></span></div>
+		</div>
+	
+		<div class="control-group">
 			<label for="cardlname" class="control-label"><?php echo JText::_( 'PLG_DIGICOM_PAY_OFFLINE_COMMENT' ); ?></label>
 			<div class="controls"><textarea id='comment' name='comment' class="inputbox required" rows='3' maxlength='135' size='28'></textarea></div>
 		</div>
@@ -57,7 +63,7 @@ function myValidate(f)
 
 		<div class="form-actions">
 			<input type='hidden' name='order_id' value="<?php echo $vars->order_id;?>" />
-			<input type='hidden' name="total" value="<?php echo sprintf('%02.2f',$vars->amount) ?>" />
+			<input type='hidden' name="total" value="<?php //echo sprintf('%02.2f',$vars->amount) ?>" />
 			<input type="hidden" name="user_id" size="10" value="<?php echo $vars->user_id;?>" />
 			<input type='hidden' name='return' value="<?php echo $vars->return;?>" >
 			<input type="hidden" name="plugin_payment_method" value="onsite" />

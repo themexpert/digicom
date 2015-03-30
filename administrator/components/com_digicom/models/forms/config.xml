@@ -257,7 +257,7 @@
 				type="text"
 				class="btn-group"
 				label="COM_DIGICOM_SETTINGS_STORE_URL"
-				default="DigiCom Store"
+				default=""
 				description="COM_DIGICOM_SETTINGS_STORE_URL_DESC" />
 			
 			<field 

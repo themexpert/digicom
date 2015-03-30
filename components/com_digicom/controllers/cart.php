@@ -323,7 +323,17 @@ class DigiComControllerCart extends JControllerLegacy
 		if( (double)$total == 0 ) {
 			if(count($items) != "0"){
 				$orderid = $cart->addFreeProduct($items, $customer, $tax);
-				$this->setRedirect("index.php?option=com_digicom&view=order&id=".$orderid.$Itemid, JText::_("DSSUCCESSFULPAYMENT"));
+
+				// Order complete, now redirect to the original page
+				if ( $configs->get('afterpurchase',1) == 1 ) {
+					$link = 'index.php?option=com_digicom&view=orders'.$Itemid;
+				} else {
+					$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=downloads', true);
+					$Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
+					$link = 'index.php?option=com_digicom&view=downloads'.$Itemid;
+				}
+
+				$this->setRedirect($link, JText::_("COM_DIGICOM_PAYMENT_FREE_PRUCHASE_COMPLETE_MESSAGE"));
 			}
 		}
 		else
@@ -344,7 +354,7 @@ class DigiComControllerCart extends JControllerLegacy
 			
 			//store order
 			$order_id = $cart->addOrderInfo($items, $customer, $tax, $status = 'Pending', $prosessor);
-			$cart->getFinalize($this->_customer->_sid, $msg = '', $order_id );
+			$cart->getFinalize($this->_customer->_sid, $msg = '', $order_id, $type= 'new_order');
 			
 			/* Prepare params*/
 			$params = array();
@@ -520,7 +530,7 @@ class DigiComControllerCart extends JControllerLegacy
 		JPluginHelper::importPlugin('digicom_pay');
 		$results_plugins = $dispatcher->trigger('onReceivePayment', array(& $param));
 
-		$this->_model->proccessSuccess($post, $processor, $order_id, $sid,$data);
+		$this->_model->proccessSuccess($post, $processor, $order_id, $sid,$data, $items);
 		
 		return true;
 	}
@@ -561,15 +571,6 @@ class DigiComControllerCart extends JControllerLegacy
 		echo JModuleHelper::renderModule($module);
 		JFactory::getApplication()->close();
 	}
-
-	/*
-	* testing perpose only
-	*/
-	function dispatchMailTesting(){
-		$res = $this->_model->dispatchMailTesting();
-		print_r($res);die;
-	}
-
 
 
 	/**
