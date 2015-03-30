@@ -70,7 +70,7 @@ $params = json_decode($this->order->params);
 			</tr>
 
 			<tr>
-				<td><strong><?php echo JText::_('COM_DIGICOM_AMOUNT_PAID'); ?></strong></td>
+				<td><strong><?php echo JText::_('COM_DIGICOM_TOTAL_PAID'); ?></strong></td>
 				<td><?php echo DigiComSiteHelperDigiCom::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs);?></td>
 			</tr>
 			

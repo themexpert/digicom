@@ -458,7 +458,7 @@ $tax = $this->tax;
 		function ShowPaymentAlert()
 		{
 			jQuery('#myModalLabel').html("<?php echo JText::_("COM_DIGICOM_WARNING");?>");
-			jQuery('#myModalBody').html("<p><?php echo JText::_("COM_DIGICOM_PAYMENT_REQUIRED");?></p>");
+			jQuery('#myModalBody').html("<p><?php echo JText::_("COM_DIGICOM_CART_PAYMENT_METHOD_REQUIRED_NOTICE");?></p>");
 			jQuery('#myModal').modal('show');
 		}
 
