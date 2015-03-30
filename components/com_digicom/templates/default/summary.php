@@ -109,7 +109,7 @@ $checkout_url = JRoute::_("index.php?option=com_digicom&task=cart.checkout&froms
 			<?php echo JText::_("COM_DIGICOM_SUBTOTAL"); ?>
   		</td>
 
-		<td class="item_column_right">
+		<td class="item_column_right" style="text-align:center;">
 	  		<?php echo DigiComSiteHelperDigiCom::format_price($total, $tax['currency'], true, $configs);	?>
 		</td>
 	</tr>
@@ -122,7 +122,7 @@ $checkout_url = JRoute::_("index.php?option=com_digicom&task=cart.checkout&froms
 			<?php echo JText::sprintf("COM_DIGICOM_DISCOUNT",$this->promocode); ?>
   		</td>
 
-		<td class="item_column_right">
+		<td class="item_column_right" style="text-align:center;">
 	  		<?php echo DigiComSiteHelperDigiCom::format_price($tax['promo'], $tax['currency'], true, $configs);	?>
 		</td>
 	</tr>
@@ -133,13 +133,13 @@ $checkout_url = JRoute::_("index.php?option=com_digicom&task=cart.checkout&froms
 			<?php echo JText::_("COM_DIGICOM_TOTAL");?><br />
 		</td>
 		<td class="item_column_right" nowrap style="text-align:center; padding-top:10px;">
-			<?php echo DigiComSiteHelperDigiCom::format_price($tax['value'], $tax['currency'], true, $configs); ?>
+			<span class="label label-success"><?php echo DigiComSiteHelperDigiCom::format_price($tax['taxed'], $tax['currency'], true, $configs); ?></span>
 		</td>
 	</tr>
 
 	<tr>
 		<td colspan="<?php echo ($discount ? '4' : '3'); ?>"><?php echo JText::_("COM_DIGICOM_PAYMENT_METHOD"); ?></td>
-		<td><?php echo ucfirst($processor); ?></td>
+		<td style="text-align:center;"><span class="label label-info"><?php echo ucfirst($processor); ?></span></td>
 	</tr>
 	<tr>
 		<td height="30" colspan="<?php echo ($discount ? '5' : '4'); ?>" width="100%">
