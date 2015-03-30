@@ -323,7 +323,17 @@ class DigiComControllerCart extends JControllerLegacy
 		if( (double)$total == 0 ) {
 			if(count($items) != "0"){
 				$orderid = $cart->addFreeProduct($items, $customer, $tax);
-				$this->setRedirect("index.php?option=com_digicom&view=order&id=".$orderid.$Itemid, JText::_("DSSUCCESSFULPAYMENT"));
+				
+				// Order complete, now redirect to the original page
+				if ( $configs->get('afterpurchase',1) == 1 ) {
+					$link = 'index.php?option=com_digicom&view=orders'.$Itemid;
+				} else {
+					$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=downloads', true);
+					$Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
+					$link = 'index.php?option=com_digicom&view=downloads'.$Itemid;
+				}
+
+				$this->setRedirect($link, JText::_("COM_DIGICOM_PAYMENT_FREE_PRUCHASE_COMPLETE_MESSAGE"));
 			}
 		}
 		else

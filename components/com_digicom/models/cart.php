@@ -1042,7 +1042,6 @@ class DigiComModelCart extends JModelItem
 				$cart_total = $cust_info['cart']['total'];
 			if ( isset( $cust_info['cart']['items'] ) )
 				$cart_items = unserialize( $cust_info['cart']['items'] );
-			//debug($cart_items);
 		}
 
 		$customer = new DigiComSiteHelperSession();
@@ -1075,12 +1074,8 @@ class DigiComModelCart extends JModelItem
 			$controller = "orders";
 		}
 
-		/* fixed return after payment, before paypal IPN */
-		$plugin = JRequest::getVar( 'plugin', '' );
-		if ( $plugin != 'paypal' ) {
-			$this->dispatchMail( $orderid, $total, $number_of_products, $now, $items, $customer );
-			$cart->emptyCart( $sid );
-		}
+		$this->dispatchMail( $orderid, $total, $number_of_products, $now, $items, $customer );
+		$cart->emptyCart( $sid );
 		
 		// Get return urls
 		$success_url = /* $mosConfig_live_site. */JRoute::_( "index.php?option=com_digicom&view=" . $controller . "&success=1&sid=" . intval($sid) . '&Itemid=' . $_Itemid, false, false );
