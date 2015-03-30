@@ -21,8 +21,8 @@
 	<config name="params">
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="plugin_name" type="text" default="PayBy Purchase Order" label="PLG_NAME" description="" />	
-				<field name="plugin_mail" type="textarea" default="" label="PLG_MAIL" description="PLG_MAIL_DES" rows="5" cols="20"  />
+				<field name="plugin_name" type="text" default="PayBy Purchase Order" label="PLG_DIGICOM_PAY_OFFLINE_PLUGIN_NAME" description="" />	
+				<field name="plugin_mail" type="textarea" default="" label="PLG_DIGICOM_PAY_OFFLINE_MAIL_ADDRESS" description="PLG_DIGICOM_PAY_OFFLINE_MAIL_ADDRESS_DESC" rows="5" cols="20"  />
 			</fieldset>
 		</fields>
 	</config>

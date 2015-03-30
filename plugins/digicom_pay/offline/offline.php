@@ -88,11 +88,12 @@ class plgDigiCom_PayOffline extends JPlugin
 			'transaction_id'	=>	$this->getUniqueTransactionId($data['order_id']),
 			'order_id'			=>	$data['order_id'],
 			'status'			=>	$payment_status,
-			'total_paid_amt'	=>	$data['total'],
+			'total_paid_amt'	=>	'',
 			'raw_data'			=>	json_encode($data),
 			'error'				=>	'',
 			'return'			=>	$data['return'],
-			'comment'			=>	$data['comment']
+			'comment'			=>	$data['comment'],
+			'processor'			=>	'offline'
 		);
 		return $result;
 	}
