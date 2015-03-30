@@ -48,13 +48,6 @@
 
         <!--Move component mainfest to temp root-->
         <move file="temp/com_digicom/admin/digicom.xml" todir="temp/com_digicom" />
-        <!--Build it-->
-        <!--<zip-->
-            <!--destfile="release/com_digicom.zip"-->
-            <!--basedir="temp/com_digicom" />-->
-        <!--Remove temp-->
-        <!--<delete dir="temp/com_digicom" quiet="yes" includeemptydirs="false" />-->
-
     </target>
 
     <target name="modules" description="Iterate all site module and build package">
@@ -76,10 +69,6 @@
                 <include name="en-GB.${extension}.sys.ini" />
             </fileset>
         </copy>
-        <!--Build it-->
-        <!--<zip destfile="release/${extension}.zip" basedir="temp/${extension}" />-->
-        <!--Remove temp-->
-        <!--<delete dir="temp/${extension}" quiet="yes" includeemptydirs="false" />-->
     </target>
 
     <!--
@@ -110,9 +99,6 @@
                 <include name="en-GB.plg_digicom_pay_offline.sys.ini" />
             </fileset>
         </copy>
-        <!--Build it-->
-        <!--<zip destfile="release/plg_digicom_pay_offline.zip" basedir="temp/offline" />-->
-        <!--<delete dir="temp/offline" quiet="yes" includeemptydirs="false" />-->
 
         <!---
        =====================
@@ -132,9 +118,6 @@
                 <include name="en-GB.plg_digicom_pay_paypal.sys.ini" />
             </fileset>
         </copy>
-        <!--Build it-->
-        <!--<zip destfile="release/plg_digicom_pay_paypal.zip" basedir="temp/paypal" />-->
-        <!--<delete dir="temp/paypal" quiet="yes" includeemptydirs="false" />-->
     </target>
 
     <target name="plugin-finder" description="Finder Plugins">
@@ -151,9 +134,6 @@
                 <include name="en-GB.plg_finde_digicom.sys.ini" />
             </fileset>
         </copy>
-        <!--Build it-->
-        <!--<zip destfile="release/plg_finder_digicom.zip" basedir="temp/digicom" />-->
-        <!--<delete dir="temp/digicom" quiet="yes" includeemptydirs="false" />-->
     </target>
     <target name="plugin-system" description="System Plugins">
         <!--Copy finder/digicom files to temp-->
@@ -169,9 +149,6 @@
                 <include name="en-GB.plg_system_digicom_addtocart.sys.ini" />
             </fileset>
         </copy>
-        <!--Build it-->
-        <!--<zip destfile="release/plg_system_digicom_addtocart.zip" basedir="temp/digicom_addtocart" />-->
-        <!--<delete dir="temp/digicom_addtocart" quiet="yes" includeemptydirs="false" />-->
     </target>
     <target name="plugin-editor" description="Editor Plugins">
 
