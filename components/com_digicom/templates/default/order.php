@@ -98,6 +98,7 @@ $params = json_decode($this->order->params);
 			<form method="get" class="well well-small form-inline" action="<?php echo $u->toString(); ?>">
   				<input type="hidden" name="option" value="com_digicom">
 				<input type="hidden" name="view" value="checkout">
+				<input type="hidden" name="order_id" value="<?php echo $order->id; ?>">
 
 				<?php echo DigiComSiteHelperDigicom::getPaymentPlugins($configs); ?>
 
