@@ -8,7 +8,12 @@
 imgpath = "";
 // Media manager
 function elFinderUpdate(fieldID, value) {
-	jQuery('#' + fieldID).val(value);
+  var fileNameIndex = value.lastIndexOf("/") + 1;
+  var filename = value.substr(fileNameIndex);
+  var filenameID = fieldID.replace("url", "name");
+
+  jQuery('#' + fieldID).val(value);
+	jQuery('#' + filenameID).val(filename);
 	if (typeof SqueezeBox !== 'undefined' && jQuery.isFunction(SqueezeBox)) {
 		SqueezeBox.close();
 	} else {

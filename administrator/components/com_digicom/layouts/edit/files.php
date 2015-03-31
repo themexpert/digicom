@@ -43,7 +43,7 @@ jQuery(function(){
 					<td width="1%"><span class="move"><i class="icon-move"></i></span></td>
 					
 					<td width="10%">
-						<input type="text" name="jform[file][{{row-count-placeholder}}][name]" placeholder="File Name"/>
+						<input type="text" name="jform[file][{{row-count-placeholder}}][name]" id="files_row_count_placeholder_id_name" placeholder="File Name"/>
 					</td>
 					
 					<td width="70%">
@@ -71,7 +71,7 @@ jQuery(function(){
 						</td>
 						
 						<td width="10%">
-							<input type="text" 
+							<input type="text" id="files_<?php echo $key; ?>_name"
 							name="jform[file][<?php echo $key; ?>][name]" placeholder="File Name" value="<?php echo $value->name; ?>"/>
 						</td>
 						
