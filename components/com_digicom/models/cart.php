@@ -1247,11 +1247,11 @@ class DigiComModelCart extends JModelItem
 		$message = str_replace( "[CUSTOMER_LAST_NAME]", $lastname, $message );
 		$message = str_replace( "[CUSTOMER_EMAIL]", $my->email, $message );
 
-		$message = str_replace( "[TODAY_DATE]", date( $configs->get('time_format','d-m-Y'), $timestamp), $message );
+		$message = str_replace( "[ORDER_DATE]", date( $configs->get('time_format','d-m-Y'), $timestamp), $message );
 		$message = str_replace( "[ORDER_ID]", $orderid, $message );
 		$message = str_replace( "[ORDER_AMOUNT]", $amount, $message );
 		$message = str_replace( "[NUMBER_OF_PRODUCTS]", $number_of_products, $message );
-		$message = str_replace( "[PROMO]", $tax['promo'], $message );
+		$message = str_replace( "[DISCOUNT_AMOUNT]", $tax['promo'], $message );
 		$message = str_replace( "[STATUS]", $status, $message );
 		$displayed = array();
 		$product_list = '';
@@ -1291,11 +1291,11 @@ class DigiComModelCart extends JModelItem
 		$subject = str_replace( "[CUSTOMER_LAST_NAME]", $lastname, $subject );
 		$subject = str_replace( "[CUSTOMER_EMAIL]", $my->email, $subject );
 
-		$subject = str_replace( "[TODAY_DATE]", date( $configs->get('time_format','d-m-Y'), $timestamp ), $subject );
+		$subject = str_replace( "[ORDER_DATE]", date( $configs->get('time_format','d-m-Y'), $timestamp ), $subject );
 		$subject = str_replace( "[ORDER_ID]", $orderid, $subject );
 		$subject = str_replace( "[ORDER_AMOUNT]", $amount, $subject );
 		$subject = str_replace( "[NUMBER_OF_PRODUCTS]", $number_of_products, $subject );
-		$subject = str_replace( "[PROMO]", $tax['promo'], $subject );
+		$subject = str_replace( "[DISCOUNT_AMOUNT]", $tax['promo'], $subject );
 		$subject = str_replace( "[STATUS]", $status, $subject );
 		$displayed = array();
 		$product_list = '';
