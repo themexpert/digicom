@@ -1,14 +1,9 @@
---
--- Insert data into table `#__content_types` for UCM functions
---
+
 
 INSERT INTO `#__content_types` (`type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`, `content_history_options`) VALUES
 ('Digicom Product', 'com_digicom.product', '{"special":{"dbtable":"#__digicom_products","key":"id","type":"product","prefix":"Table","config":"array()"},"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}', '', '{"common":{"core_content_item_id":"id","core_title":"name","core_state":"state","core_alias":"alias","core_created_time":"created","core_modified_time":"modified","core_body":"description", "core_hits":"hits","core_publish_up":"publish_up","core_publish_down":"publish_down","core_access":"access", "core_params":"params", "core_featured":"featured", "core_metadata":"metadata", "core_language":"language", "core_images":"images", "core_urls":"urls", "core_version":"version", "core_ordering":"ordering", "core_metakey":"metakey", "core_metadesc":"metadesc", "core_catid":"catid", "core_xreference":"xreference", "asset_id":"null"}, "special":{}}', 'DigiComHelperRoute::getProductRoute', '{"formFile":"administrator\\/components\\/com_digicom\\/models\\/forms\\/product.xml", "hideFields":["asset_id","checked_out","checked_out_time","version","featured","images"], "ignoreChanges":["modified_by", "modified", "checked_out", "checked_out_time", "version", "hits"], "convertToInt":["publish_up", "publish_down", "featured", "ordering"], "displayLookup":[{"sourceColumn":"catid","targetTable":"#__categories","targetColumn":"id","displayColumn":"title"},{"sourceColumn":"created_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"access","targetTable":"#__viewlevels","targetColumn":"id","displayColumn":"title"},{"sourceColumn":"modified_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"} ]}'),
 ('Digicom Category', 'com_digicom.category', '{"special":{"dbtable":"#__categories","key":"id","type":"Category","prefix":"JTable","config":"array()"},"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}', '', '{"common":{"core_content_item_id":"id","core_title":"title","core_state":"published","core_alias":"alias","core_created_time":"created_time","core_modified_time":"modified_time","core_body":"description", "core_hits":"hits","core_publish_up":"null","core_publish_down":"null","core_access":"access", "core_params":"params", "core_featured":"null", "core_metadata":"metadata", "core_language":"language", "core_images":"null", "core_urls":"null", "core_version":"version", "core_ordering":"null", "core_metakey":"metakey", "core_metadesc":"metadesc", "core_catid":"parent_id", "core_xreference":"null", "asset_id":"asset_id"}, "special":{"parent_id":"parent_id","lft":"lft","rgt":"rgt","level":"level","path":"path","extension":"extension","note":"note"}}', 'DigiComHelperRoute::getCategoryRoute', '{"formFile":"administrator\\/components\\/com_categories\\/models\\/forms\\/category.xml", "hideFields":["asset_id","checked_out","checked_out_time","version","lft","rgt","level","path","extension"], "ignoreChanges":["modified_user_id", "modified_time", "checked_out", "checked_out_time", "version", "hits", "path"],"convertToInt":["publish_up", "publish_down"], "displayLookup":[{"sourceColumn":"created_user_id","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"access","targetTable":"#__viewlevels","targetColumn":"id","displayColumn":"title"},{"sourceColumn":"modified_user_id","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"parent_id","targetTable":"#__categories","targetColumn":"id","displayColumn":"title"}]}');
 
---
--- Table structure for table #__digicom_cart
---
 
 CREATE TABLE IF NOT EXISTS `#__digicom_cart` (
   `cid` int(11) NOT NULL AUTO_INCREMENT,
@@ -21,9 +16,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_cart` (
   KEY `productid` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Table structure for table #__digicom_currencies
---
 
 CREATE TABLE IF NOT EXISTS `#__digicom_currencies` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -33,9 +25,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_currencies` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table #__digicom_currencies
---
 
 INSERT INTO `#__digicom_currencies` (`id`, `pluginid`, `currency_name`, `currency_full`)
 VALUES
@@ -65,9 +54,6 @@ VALUES
   (24,'1','THB','Thai Baht (THB)'),
   (25,'1','TRY','Turkish Lira (TRY)');
 
---
--- Table structure for table #__digicom_customers
---
 
 CREATE TABLE IF NOT EXISTS `#__digicom_customers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -89,9 +75,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_customers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
---
--- Table structure for table #__digicom_orders
---
 
 CREATE TABLE IF NOT EXISTS `#__digicom_orders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -113,9 +96,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_orders` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Table structure for table #__digicom_orders_details
---
 
 CREATE TABLE IF NOT EXISTS `#__digicom_orders_details` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -134,9 +114,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_orders_details` (
   PRIMARY KEY (`id`),
   KEY `orderid` (`orderid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-# Dump of table #__digicom_products
-# ------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `#__digicom_products` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -167,35 +144,13 @@ CREATE TABLE IF NOT EXISTS `#__digicom_products` (
   `metadata` text NOT NULL,
   `access` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `featured` int(11) NOT NULL DEFAULT '0',
-  `xreference` varchar(50) NOT NULL COMMENT 'A reference to enable linkages to external data sets.',
   `hide_public` tinyint(1) NOT NULL DEFAULT '0',
   `hits` int(11) NOT NULL,
   `attribs` varchar(5120) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `published` (`published`),
-  KEY `idx_access` (`access`),
-  KEY `idx_checkout` (`checked_out`),
-  KEY `idx_state` (`state`),
-  KEY `idx_catid` (`catid`),
-  KEY `idx_createdby` (`created_by`),
-   KEY `idx_language` (`language`),
-  KEY `idx_xreference` (`xreference`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `published` (`published`)
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8;
 
-/*
-  KEY `idx_access` (`access`),
-  KEY `idx_checkout` (`checked_out`),
-  KEY `idx_state` (`state`),
-  KEY `idx_catid` (`catid`),
-  KEY `idx_createdby` (`created_by`),
-  KEY `idx_featured_catid` (`featured`,`catid`),
-  KEY `idx_language` (`language`),
-  KEY `idx_xreference` (`xreference`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-*/
-
-# Dump of table #__digicom_products_bundle
-# ------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `#__digicom_products_bundle` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -207,10 +162,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_products_bundle` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-
-# Dump of table #__digicom_products_files
-# ------------------------------------------------------------
-
 CREATE TABLE IF NOT EXISTS `#__digicom_products_files` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` int(11) NOT NULL,
@@ -221,8 +172,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_products_files` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-# Dump of table #__digicom_products_rating
-# ------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `#__digicom_products_rating` (
   `content_id` int(11) NOT NULL DEFAULT '0',
@@ -232,8 +181,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_products_rating` (
   PRIMARY KEY (`content_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-# Dump of table #__digicom_promocodes
-# ------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `#__digicom_promocodes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -260,9 +207,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_promocodes` (
 
 
 
-# Dump of table #__digicom_promocodes_products
-# ------------------------------------------------------------
-
 CREATE TABLE IF NOT EXISTS `#__digicom_promocodes_products` (
   `productid` int(11) NOT NULL,
   `promoid` int(11) NOT NULL,
@@ -271,8 +215,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_promocodes_products` (
 
 
 
-# Dump of table #__digicom_sendmails
-# ------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `#__digicom_sendmails` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -283,10 +225,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_sendmails` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
-
-# Dump of table #__digicom_session
-# ------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `#__digicom_session` (
   `sid` int(11) NOT NULL AUTO_INCREMENT,
@@ -299,10 +237,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_session` (
   PRIMARY KEY (`sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
-
-# Dump of table #__digicom_states
-# ------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `#__digicom_states` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

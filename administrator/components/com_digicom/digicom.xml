@@ -44,7 +44,7 @@
 	</files>
 	
 	<media folder="media" destination="digicom">
-		<filename>index.html</filename>
+		<!--<filename>index.html</filename>-->
 		<folder>assets</folder>
 	</media>
 

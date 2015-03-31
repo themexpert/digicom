@@ -14,7 +14,8 @@
 		<filename plugin="paypal">paypal.xml</filename>
 		<folder>paypal</folder>
 	</files>
-	<languages> 
+
+	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.plg_digicom_pay_paypal.ini</language>
 	</languages>
 

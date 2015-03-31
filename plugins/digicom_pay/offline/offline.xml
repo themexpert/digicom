@@ -14,7 +14,7 @@
 		<folder>offline</folder>
 		<folder>language</folder>
 	</files>
-		<languages folder="language"> 
+	<languages folder="language">
 			<language tag="en-GB">en-GB/en-GB.plg_digicom_pay_offline.ini</language>
   	</languages>
 	<!-- Fields for Joomla 1.6.x and onwards -->
