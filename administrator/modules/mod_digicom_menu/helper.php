@@ -24,7 +24,8 @@ abstract class ModDigiComMenuHelper {
 		$titles = self::getArraytitle();
 		$links = self::getArrayLinks();
 
-		for($i=0;$i<10;$i++){
+		for($i=0;$i<count(self::getArraytitle());$i++)
+		{
 			$menuitems->submenu->$i = new StdClass();
 			$menuitems->submenu->$i->text = $titles[$i];
 			$menuitems->submenu->$i->link = $links[$i];
@@ -66,31 +67,28 @@ abstract class ModDigiComMenuHelper {
 	public static function getArraytitle(){
 		return array(
 			0 => JText::_('MOD_DIGICOM_MENU_DASHBOARD'),
-			1 => JText::_('MOD_DIGICOM_MENU_CATEGORIES'),
-			2 => JText::_('MOD_DIGICOM_MENU_PRODUCTS'),
+			1 => JText::_('MOD_DIGICOM_MENU_PRODUCTS'),
+			2 => JText::_('MOD_DIGICOM_MENU_CATEGORIES'),
 			3 => JText::_('MOD_DIGICOM_MENU_FILE_MANAGER'),
 			4 => JText::_('MOD_DIGICOM_MENU_CUSTOMERS'),
 			5 => JText::_('MOD_DIGICOM_MENU_ORDERS'),
 			6 => JText::_('MOD_DIGICOM_MENU_DISCOUNTS'),
 			7 => JText::_('MOD_DIGICOM_MENU_REPORTS'),
-			7 => JText::_('MOD_DIGICOM_MENU_REPORTS'),
-			8 => JText::_('MOD_DIGICOM_MENU_SETTINGS'),
-			9 => JText::_('MOD_DIGICOM_MENU_ABOUT')
+			8 => JText::_('MOD_DIGICOM_MENU_SETTINGS')
 		);
 	}
 
 	static public function getArrayLinks(){
 		return array(
 			0 => 'index.php?option=com_digicom',
-			1 => 'index.php?option=com_digicom&view=categories',
-			2 => 'index.php?option=com_digicom&view=products',
+			1 => 'index.php?option=com_digicom&view=products',
+			2 => 'index.php?option=com_digicom&view=categories',
 			3 => 'index.php?option=com_digicom&view=filemanager',
 			4 => 'index.php?option=com_digicom&view=customers',
 			5 => 'index.php?option=com_digicom&view=orders',
 			6 => 'index.php?option=com_digicom&view=discounts',
 			7 => 'index.php?option=com_digicom&view=stats',
-			8 => 'index.php?option=com_digicom&view=configs',
-			9 => 'index.php?option=com_digicom&view=about',
+			8 => 'index.php?option=com_digicom&view=configs'
 		);
 	}
 
