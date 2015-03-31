@@ -80,7 +80,7 @@ $document = JFactory::getDocument();
 
 					<tr>
 						<th width="5">
-							<input type="checkbox" onclick="checkAll(<?php echo $n; ?>)" name="toggle" value="" />
+							<?php echo JHtml::_('grid.checkall'); ?>
 						</th>
 						
 						<th>
