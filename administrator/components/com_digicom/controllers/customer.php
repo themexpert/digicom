@@ -67,7 +67,7 @@ class DigiComControllerCustomer extends JControllerForm {
 		$username = JRequest::getVar("username", "");
 		if($this->_model->existUser($username) !== TRUE){
 			if($this->_model->store($error)){
-				$msg = JText::_('CUSTSAVED');
+				$msg = JText::_('COM_DIGICOM_CUSTOMER_NOTICE_CUSTOMER_SAVE_SUCCESSFUL');
 				$keyword = JRequest::getVar("keyword", "", "request");
 				if(JRequest::getVar('task','') == 'save'){
 					$link = "index.php?option=com_digicom&view=customers".(strlen(trim($keyword)) > 0 ? "&keyword=".$keyword:"");
@@ -78,7 +78,7 @@ class DigiComControllerCustomer extends JControllerForm {
 				}
 			}
 			else{
-				$msg = JText::_('CUSTSAVEFAILED');
+				$msg = JText::_('COM_DIGICOM_CUSTOMER_NOTICE_CUSTOMER_SAVE_FAILED');
 				$msg .= " " . JText::_($error);
 				$link = "index.php?option=com_digicom&view=customer&task=customer.add&id=" . $cust_id;
 			}

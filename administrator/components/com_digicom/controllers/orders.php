@@ -26,9 +26,9 @@ class DigiComControllerOrders extends JControllerAdmin
 	function remove()
 	{
 		if ( !$this->_model->delete() ) {
-			$msg = JText::_( 'ORDREMERR' );
+			$msg = JText::_( 'COM_DIGICOM_ORDERS_NOTICE_ORDER_REMOVE_ERROR' );
 		} else {
-			$msg = JText::_( 'ORDREMSUCC' );
+			$msg = JText::_( 'COM_DIGICOM_ORDERS_NOTICE_ORDER_REMOVE_SUCCESS' );
 		}
 
 		$link = "index.php?option=com_digicom&view=orders";

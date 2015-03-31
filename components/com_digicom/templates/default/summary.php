@@ -52,7 +52,7 @@ $checkout_url = JRoute::_("index.php?option=com_digicom&task=cart.checkout&froms
 <table width="100%" cellspacing="0" id="digi_table" class="table table-bordered">
 	<tr ><?php // class was cart_heading ?>
 	  <th class="summary_header">
-	  	 <?php echo JText::_("DSPROD");?>
+	  	 <?php echo JText::_("COM_DIGICOM_PRODUCT");?>
 	  </th>
 	  <th class="summary_header" <?php if ($configs->get('showcam',1) == 0) echo $invisible;?> >
 		  <?php echo JText::_("COM_DIGICOM_QUANTITY");?>
