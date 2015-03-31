@@ -10,6 +10,7 @@ imgpath = "";
 function elFinderUpdate(fieldID, value) {
   var fileNameIndex = value.lastIndexOf("/") + 1;
   var filename = value.substr(fileNameIndex);
+  filename = filename.replace(/\.[^/.]+$/, "");
   var filenameID = fieldID.replace("url", "name");
 
   jQuery('#' + fieldID).val(value);
