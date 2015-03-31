@@ -427,7 +427,7 @@ class DigiComModelProduct extends JModelAdmin
 	            foreach($files as $key => $file){
 	                $filesTable = $this->getTable('Files');
 	                $filesTable->product_id = $recordId;
-	                $filesTable->name = ($file['name'] ? $file['name'] : $file['url']);
+	                $filesTable->name = ($file['name'] ? $file['name'] : JText::sprintf('COM_DIGICOM_PRODUCT_FILE_NAME',$key));
 	                $filesTable->url = $file['url'];
 	                $filesTable->store();
 	            }
