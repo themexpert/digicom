@@ -1478,15 +1478,6 @@ class DigiComModelCart extends JModelItem
 				//echo $sql;die;
 				$database->setQuery($sql);
 				$database->query();
-
-				$site_config = JFactory::getConfig();
-				$tzoffset = $site_config->get('offset');
-				$buy_date = date('Y-m-d H:i:s', time() + $tzoffset);
-				$sql = "insert into #__digicom_logs (`userid`, `productid`, `buy_date`, `buy_type`)
-						values (".$user_id.", ".$item->item_id.", '".$buy_date."', 'new')";
-				$database->setQuery($sql);
-				$database->query();
-				
 				
 				$sql = "update #__digicom_products set used=used+1 where id = '" . $item->item_id . "'";
 				$database->setQuery( $sql );
