@@ -48,6 +48,15 @@
 
         <!--Move component mainfest to temp root-->
         <move file="temp/com_digicom/admin/digicom.xml" todir="temp/com_digicom" />
+
+        <!--Copy media folder-->
+        <copy todir="temp/com_digicom/media" overwrite="true">
+            <fileset dir="../media">
+                <include name="digicom/**"/>
+                <exclude name="digicom/config.codekit" />
+                <exclude name="digicom/.codekit-cache" />
+            </fileset>
+        </copy>
     </target>
 
     <target name="modules" description="Iterate all site module and build package">
@@ -67,6 +76,21 @@
             <fileset dir="../language/en-GB/">
                 <include name="en-GB.${extension}.ini" />
                 <include name="en-GB.${extension}.sys.ini" />
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="admin-modules" description="Copy all admin modules">
+        <copy todir="temp/mod_digicom_menu" overwrite="true">
+            <fileset dir="../administrator/modules/mod_digicom_menu">
+                <include name="**"/>
+            </fileset>
+        </copy>
+        <!--Copy associated language file-->
+        <copy todir="temp/mod_digicom_menu/language/en-GB" overwrite="true">
+            <fileset dir="../administrator/language/en-GB/">
+                <include name="en-GB.mod_digicom_menu.ini" />
+                <include name="en-GB.mod_digicom_menu.sys.ini" />
             </fileset>
         </copy>
     </target>
@@ -155,7 +179,7 @@
     </target>
 
     <target name="make" description="Builds the extension release package for a version."
-            depends="clean, component, modules, plugins, rebuild-extension-archives">
+            depends="clean, component, modules, admin-modules, plugins, rebuild-extension-archives">
         <echo msg="Making the ${package} package for version ${version}" />
 
         <zip destfile="release/pkg_digicom_${version}.zip" basedir="release" />
