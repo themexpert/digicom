@@ -54,7 +54,7 @@ class DigiComModelDiscounts extends JModelList {
 	{
 		$promosearch = JRequest::getVar("promosearch", "");
 		$condition = JRequest::getVar("condition", '1');
-		$status = JRequest::getVar("status", '1');
+		$status = JRequest::getVar("status", '');
 		$where = array();
 
 		if(trim($promosearch) != "")
@@ -101,23 +101,6 @@ class DigiComModelDiscounts extends JModelList {
 		$result	= $db->loadObjectList();
 		return $result;
 	}
-
-	/*function getlistPromos () {
-		if(empty ($this->_promos)){
-			$promosearch = JRequest::getVar("promosearch", "");
-			$and = "";
-			if(trim($promosearch) != ""){
-				$and .= " where (title like '%".trim($promosearch)."%' or code like '%".trim($promosearch)."%') ";
-			}
-
-			$sql = "select * from #__digicom_promocodes ".$and." order by id desc";
-			$this->_total = $this->_getListCount($sql);
-			if ($this->getState('limitstart') > $this->_total) $this->setState('limitstart', 0);
-			if ($this->getState('limitstart') > 0 & $this->getState('limit') == 0)  $this->setState('limitstart', 0);
-			$this->_promos = $this->_getList($sql, $this->getState('limitstart'), $this->getState('limit'));
-		}
-		return $this->_promos;
-	}*/
 
 	function getlistPromosValid () {
 		if (empty ($this->_valid_promos)) {
@@ -266,29 +249,6 @@ class DigiComModelDiscounts extends JModelList {
 		}
 		return true;
 	}
-
-	/*
-
-	function publish () {
-		$db = JFactory::getDBO();
-		$cids = JRequest::getVar('cid', array(0), 'post', 'array');
-		$task = JRequest::getVar('task', '', 'post');
-		$item = $this->getTable('Discount');
-		$res = 0;
-		if ($task == 'publish'){
-			$res = 1;
-			$sql = "update #__digicom_promocodes set published='1' where id in ('".implode("','", $cids)."')";
-		} else {
-			$res = -1;
-			$sql = "update #__digicom_promocodes set published='0' where id in ('".implode("','", $cids)."')";
-		}
-		$db->setQuery($sql);
-		if (!$db->query() ){
-			$this->setError($db->getErrorMsg());
-		}
-		return $res;
-	}
-	*/
 	
 	function getConfigs() {
 		$comInfo = JComponentHelper::getComponent('com_digicom');

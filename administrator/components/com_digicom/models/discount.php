@@ -48,11 +48,7 @@ class DigiComModelDiscount extends JModelAdmin
 	{
 		if (!empty($record->id))
 		{
-			if ($record->state != -2)
-			{
-				return;
-			}
-
+			
 			if ($record->catid)
 			{
 				return JFactory::getUser()->authorise('core.delete', 'com_digicom.discount.' . (int) $record->catid);
