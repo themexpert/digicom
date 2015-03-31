@@ -15,27 +15,15 @@ $n = count ($this->order->products);
 $configs = $this->configs;
 $order = $this->order;
 $user = $this->customer->_customer;
-global $Itemid;
-
-if ($this->order->id < 1):
-
-	echo JText::_('DSEMPTYORDER');
 ?>
-
-	<form action="<?php echo JRoute::_("index.php?option=com_digicom&controller=orders&task=list"."&Itemid=".$Itemid); ?>" name="adminForm" method="post">
-	  	<input type="hidden" name="option" value="com_digicom" />
-		<input type="submit" value="<?php echo JText::_("DSVIEWORDERS");?>" />
-	</form>
-
-<?php
-	else:
-?>
-
 <div id="digicom">
 	<div class="digi-view-order">	
 		<div class="container">
 			<div class="row-fluid">
 				<div class="span12">
+					<?php if ($this->order->id < 1): ?>
+						<div class="alert alert-danger"><?php echo JText::_('COM_DIGICOM_ORDERS_NO_ORDER_FOUND_NOTICE'); ?></div>
+					<?php else: ?>
 					
 					<form action="index.php" name="adminForm" method="post" style="padding-left: 10px; padding-right:10px; padding-top:100px;">
 						<input id="print_button" class="btn" style="float:right;margin-bottom: 10px;" type="button" value="<?php echo JText::_("COM_DIGICOM_PRINT");?>" onclick="document.getElementById('print_button').style.display='none'; javascript:window.print(); return false;" />
@@ -53,30 +41,19 @@ if ($this->order->id < 1):
 									?>
 								</td>
 								<td align="right" valign="top" style="text-align: right;font-size: 13px;">
-									<b><?php echo trim($configs->get('store_name','DigiCom Store')) != "" ? $configs->get('store_name','DigiCom Store') : ""; ?></b>
-									<br />								
-									<?php if(trim($configs->get('address')) != "") {
-										echo $configs->get('address','');
-										} ?>
-									<br />
-									<?php if(!empty($configs->city)) : ?>
-									<?php echo $configs->city;?>,&nbsp;
-									<?php endif; ?>
-									<?php if(trim($configs->get('state','')) != ""){
-										echo $configs->get('state','');
-									} ?>,&nbsp;
-									<?php if(!empty($configs->zip)) : ?>
-									<?php echo $configs->zip;?>,&nbsp;
-									<?php endif; ?>
-									<?php if(trim($configs->get('country','')) != ""){ 
-										echo $configs->get('country','');
-									} ?>
-									<br />																
-									<?php echo trim($configs->get('phone')) != "" ? JText::_("PHONE").":".$configs->get('phone') : ""; ?>
-									<br />
-									<?php echo trim($configs->get('fax')) != "" ? JText::_("FAX").":".$configs->get('fax') : ""; ?>
-									<br />
-									<?php echo trim($configs->get('store_url','') != "") ? "".$configs->get('store_url','') : ""; ?>
+									<address>
+										<strong>
+											<?php echo trim($configs->get('store_name','DigiCom Store')) != "" ? $configs->get('store_name','DigiCom Store') : ""; ?>
+										</strong>
+										<br />								
+										<?php if(trim($configs->get('address')) != "") { echo $configs->get('address','') . '<br />';} ?>
+									
+										<?php if(trim($configs->get('store_info')) != "") { echo $configs->get('store_info','') . '<br />'; } ?>
+										
+										<?php echo trim($configs->get('phone')) != "" ? JText::_("PHONE").":".$configs->get('phone') . '<br />' : ""; ?>
+									
+										<a href="<?php echo JUri::root(); ?>" title="?php echo $configs->get('store_name','DigiCom Store'); ?>"><?php echo $configs->get('store_name','DigiCom Store'); ?></a>
+									</address>
 								</td>
 							</tr>
 
@@ -135,7 +112,7 @@ if ($this->order->id < 1):
 							<tbody>
 
 							<?php
-								$total = "0";
+								$total = 0;
 
 								for ($i = 0; $i < $n; $i++):
 									$prod = $order->products[$i];
@@ -149,24 +126,22 @@ if ($this->order->id < 1):
 										?>
 									</td>
 
-									<td <?php //if($configs->showoipurch == 0) echo $invisible;?>>
+									<td>
 									 	<?php echo $prod->name;?>
 									</td>
 
-									<td <?php //if($configs->showoipurch == 0) echo $invisible;?>>
+									<td>
 									 	<?php echo ucfirst( $prod->package_type ); ?>
 									</td>
 
 									<td style="text-align: right;">
-										<?php echo $prod->price;?>
+										<?php echo DigiComSiteHelperDigiCom::format_price($prod->price, $prod->currency, true, $configs);?>
 									</td>
 								</tr>
 							<?php
+									$total += $prod->price;
 									$k = 1 - $k;
 								endfor;
-
-								$colspan=5;
-								$colspan--;
 							?>	
 							</tbody>
 						</table>
@@ -178,7 +153,7 @@ if ($this->order->id < 1):
 
 								<tr style="">
 									<td style="font-weight:bold;text-align: right;" width="70%"><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></td>
-									<td style="text-align: right;"><span style="white-space:nowrap;font-weight: bold;"><?php echo DigiComSiteHelperDigiCom::format_price($order->amount, $prod->currency, true, $configs);?></span></td>
+									<td style="text-align: right;"><span style="white-space:nowrap;font-weight: bold;"><?php echo DigiComSiteHelperDigiCom::format_price($total, $prod->currency, true, $configs);?></span></td>
 								</tr>
 
 								<?php
@@ -186,7 +161,7 @@ if ($this->order->id < 1):
 										$total = $total - $order->promocodediscount;
 								?>
 								<tr>
-									<td style="font-weight:bold;text-align: right;" width="70%"><?php echo JText::_("COM_DIGICOM_DISCOUNT");?></td>
+									<td style="font-weight:bold;text-align: right;" width="70%"><?php echo JText::sprintf("COM_DIGICOM_DISCOUNT",$order->promocode);?></td>
 									<td style="text-align: right;"><span style="white-space:nowrap;font-weight: bold;"><?php echo DigiComSiteHelperDigiCom::format_price($order->promocodediscount, $prod->currency, true, $configs);?></span></td>
 								</tr>
 								<?php
@@ -211,13 +186,8 @@ if ($this->order->id < 1):
 						<input type="hidden" name="boxchecked" value="0" />
 						<input type="hidden" name="controller" value="Orders" />
 					</form>
-					<?php
-
-					endif;
-
-					echo DigiComSiteHelperDigiCom::powered_by(); ?>
-
-
+					<?php endif; ?>
+					<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>
 				</div><!-- End of span12 -->
 				
 			</div><!-- End of row-fluid -->

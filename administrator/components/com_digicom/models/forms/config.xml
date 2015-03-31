@@ -255,14 +255,12 @@
 			<field 
 				name="address"
 				type="textarea"
-				class="btn-group"
 				label="COM_DIGICOM_SETTINGS_STORE_ADDRESS"
 				description="COM_DIGICOM_SETTINGS_STORE_ADDRESS_DESC" />
 			
 			<field 
 				name="store_info"
 				type="textarea"
-				class="btn-group"
 				label="COM_DIGICOM_SETTINGS_STORE_STORE_INFO_LABEL"
 				description="COM_DIGICOM_SETTINGS_STORE_STORE_INFO_DESC" />
 
