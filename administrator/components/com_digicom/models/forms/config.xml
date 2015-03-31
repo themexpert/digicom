@@ -324,7 +324,6 @@
 			<field 
 				name="storedesc"
 				type="textarea"
-				class="btn-group"
 				label="COM_DIGICOM_SETTINGS_STORE_DESCRIPTION"
 				description="COM_DIGICOM_SETTINGS_STORE_DESCRIPTION_DESC" />
 		</fieldset>
