@@ -2,7 +2,8 @@
 <extension
 	type="module"
 	version="3.0"
-	client="administrator">
+	client="administrator"
+    method="upgrade">
 	<name>mod_digicom_menu</name>
     <creationDate>March 03 2015</creationDate>
     <author>ThemeXpert</author>
