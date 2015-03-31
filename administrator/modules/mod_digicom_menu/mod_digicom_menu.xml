@@ -13,6 +13,8 @@
     <version>1.0.0</version>
 	<description>MOD_DIGICOM_MENU_XML_DESCRIPTION</description>
     
+    <scriptfile>script.php</scriptfile>
+
     <languages folder="language">
         <language tag="en-GB">en-GB/en-GB.mod_digicom_menu.ini</language>
         <language tag="en-GB">en-GB/en-GB.mod_digicom_menu.sys.ini</language>
@@ -20,7 +22,8 @@
 
 	<files>
 		<filename module="mod_digicom_menu">mod_digicom_menu.php</filename>
-		<filename>helper.php</filename>
+        <filename>helper.php</filename>
+		<filename>script.php</filename>
         <folder>language</folder>
 		<folder>tmpl</folder>
 	</files>
