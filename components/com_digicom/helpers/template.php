@@ -21,11 +21,11 @@ class DigiComSiteHelperTemplate extends JViewLegacy {
 
 		$this->view = $view;
 		$this->addScriptDeclaration('var digicom_site = "'. JUri::root() . '";');
-		$this->addScriptDeclaration('var DIGI_ATENTION = "'. JText::_("DIGI_ATENTION") . '";');
-		$this->addScriptDeclaration('var DSALL_REQUIRED_FIELDS = "'. JText::_("DSALL_REQUIRED_FIELDS") . '";');
-		$this->addScriptDeclaration('var DSCONFIRM_PASSWORD_MSG = "'. JText::_("DSCONFIRM_PASSWORD_MSG") . '";');
-		$this->addScriptDeclaration('var DSINVALID_EMAIL = "'. JText::_("DSINVALID_EMAIL") . '";');
-		$this->addScriptDeclaration('var ACCEPT_TERMS_CONDITIONS = "'. JText::_("ACCEPT_TERMS_CONDITIONS") . '";');
+		$this->addScriptDeclaration('var DIGI_ATENTION = "'. JText::_("COM_DIGICOM_REGISTER_NOTICE_ATTENTION") . '";');
+		$this->addScriptDeclaration('var DSALL_REQUIRED_FIELDS = "'. JText::_("COM_DIGICOM_REGISTER_NOTICE_ALL_REQUIRED_FIELDS") . '";');
+		$this->addScriptDeclaration('var DSCONFIRM_PASSWORD_MSG = "'. JText::_("COM_DIGICOM_REGISTER_NOTICE_CONFIRM_PASSWORD_UNMATCHED") . '";');
+		$this->addScriptDeclaration('var DSINVALID_EMAIL = "'. JText::_("COM_DIGICOM_REGISTER_NOTICE_INVALID_EMAIL") . '";');
+		$this->addScriptDeclaration('var ACCEPT_TERMS_CONDITIONS = "'. JText::_("COM_DIGICOM_REGISTER_NOTICE_ACCEPT_TERMS_CONDITIONS") . '";');
 
 	}
 	public function rander($layout = 'products'){
