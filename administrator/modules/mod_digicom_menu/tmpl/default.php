@@ -22,8 +22,21 @@ defined('_JEXEC') or die;
 		<?php if (!$hideMainmenu) : ?>
 			<?php if (count($menuItems->submenu) > 0) : ?>
 				<ul class="dropdown-menu">
-					<?php foreach ($menuItems->submenu as $sub) { ?>
-						<li><a href="<?php echo $sub->link; ?>"><?php echo $sub->text; ?></a></li>
+					<?php foreach ($menuItems->submenu as $sub) { 
+						$child = ($sub->child ? true : false);
+					?>
+						<li<?php echo ($child ? ' class="dropdown-submenu"' : ''); ?>>
+							<a href="<?php echo $sub->link; ?>" <?php echo ($child ? ' class="dropdown-toggle" data-toggle="dropdown"' : ''); ?>><?php echo $sub->text; ?></a>
+							<?php if($child) : ?>
+
+								<ul id="product-submenu-com-digicom" class="dropdown-menu mod-menu-digicom">
+									<?php foreach ($sub->childitems as $key => $item) { ?>
+										<li><a href="<?php echo $item['link']; ?>"><?php echo $item['title']; ?></a></li>
+									<?php }?>
+								</ul>
+
+							<?php endif; ?>
+						</li>
 					<?php } ?>
 				</ul>
 			<?php endif; ?>

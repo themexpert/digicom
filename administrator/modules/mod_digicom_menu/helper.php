@@ -24,26 +24,58 @@ abstract class ModDigiComMenuHelper {
 		$titles = self::getArraytitle();
 		$links = self::getArrayLinks();
 
-		for($i=0;$i<9;$i++){
+		for($i=0;$i<10;$i++){
 			$menuitems->submenu->$i = new StdClass();
 			$menuitems->submenu->$i->text = $titles[$i];
 			$menuitems->submenu->$i->link = $links[$i];
+
+			$child = self::checkChild($links[$i]);
+			if($child){
+				$menuitems->submenu->$i->child = true;
+				$menuitems->submenu->$i->childitems = self::getChild($links[$i]);
+			}else{
+				$menuitems->submenu->$i->child = false;
+			}
 		}
 		
 		return $menuitems;
 	}
 
+	public static function checkChild($link){
+		if($link == 'index.php?option=com_digicom&view=products') return true;
+		return false;
+	}
+	
+	public static function getChild($link){
+		if($link != 'index.php?option=com_digicom&view=products') return true;;
+		$child = array();
+		
+		$child[] = array(
+			'title' => JText::_('MOD_DIGICOM_MENU_PRODUCTS_CHILD_ADD_PRODUCT'),
+			'link'	=>	'index.php?option=com_digicom&task=product.add&product_type=reguler'
+		);
+		$child[] = array(
+			'title' => JText::_('MOD_DIGICOM_MENU_PRODUCTS_CHILD_ADD_BUNDLE'),
+			'link'	=>	'index.php?option=com_digicom&task=product.add&product_type=bundle'
+		);
+
+		return $child;
+	}
+
+
 	public static function getArraytitle(){
 		return array(
-			0 => JText::_('COM_DIGICOM_SIDEBAR_MENU_DASHBOARD'),
-			1 => JText::_('COM_DIGICOM_SIDEBAR_MENU_CATEGORIES'),
-			2 => JText::_('COM_DIGICOM_SIDEBAR_MENU_PRODUCTS'),
-			3 => JText::_('COM_DIGICOM_SIDEBAR_MENU_FILE_MANAGER'),
-			4 => JText::_('COM_DIGICOM_SIDEBAR_MENU_CUSTOMERS'),
-			5 => JText::_('COM_DIGICOM_SIDEBAR_MENU_ORDERS'),
-			6 => JText::_('COM_DIGICOM_SIDEBAR_MENU_DISCOUNTS'),
-			7 => JText::_('COM_DIGICOM_SIDEBAR_MENU_REPORTS'),
-			8 => JText::_('COM_DIGICOM_SIDEBAR_MENU_ABOUT')
+			0 => JText::_('MOD_DIGICOM_MENU_DASHBOARD'),
+			1 => JText::_('MOD_DIGICOM_MENU_CATEGORIES'),
+			2 => JText::_('MOD_DIGICOM_MENU_PRODUCTS'),
+			3 => JText::_('MOD_DIGICOM_MENU_FILE_MANAGER'),
+			4 => JText::_('MOD_DIGICOM_MENU_CUSTOMERS'),
+			5 => JText::_('MOD_DIGICOM_MENU_ORDERS'),
+			6 => JText::_('MOD_DIGICOM_MENU_DISCOUNTS'),
+			7 => JText::_('MOD_DIGICOM_MENU_REPORTS'),
+			7 => JText::_('MOD_DIGICOM_MENU_REPORTS'),
+			8 => JText::_('MOD_DIGICOM_MENU_SETTINGS'),
+			9 => JText::_('MOD_DIGICOM_MENU_ABOUT')
 		);
 	}
 
@@ -57,7 +89,8 @@ abstract class ModDigiComMenuHelper {
 			5 => 'index.php?option=com_digicom&view=orders',
 			6 => 'index.php?option=com_digicom&view=discounts',
 			7 => 'index.php?option=com_digicom&view=stats',
-			8 => 'index.php?option=com_digicom&view=about',
+			8 => 'index.php?option=com_digicom&view=configs',
+			9 => 'index.php?option=com_digicom&view=about',
 		);
 	}
 
