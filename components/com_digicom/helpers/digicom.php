@@ -663,71 +663,25 @@ class DigiComSiteHelperDigicom {
 
 		return implode("\n", $html);
 
-		$province_word = "province";
-		$state_word = 'state';
-		$db            = JFactory::getDBO();
-		
-		$shipword      = '';
-		
-		if ($custommer->state) {
-			$query = "SELECT state FROM #__digicom_states WHERE country='" . $custommer->country . "' order by `state`";
-			$db->setQuery( $query );
-			$res    = $db->loadObjectList();
-			$output = '
-						<div id="' . $province_word . '">
-							<select name="' . $state_word . '" id="' . $shipword . 'sel_province" style="width:15.5em;">';
-			foreach ( $res as $i => $v ) {
-				$output .= '<option value="' . $v->state . '" ';
-				if ( $v->state == $custommer->state ) {
-					$output .= 'selected';
-				}
-				$output .= '>' . $v->state . '</option>';
-
-
-			}
-
-			$output .= '</select></div>';
-		} else {
-			$output = '<div id="' . $province_word . '">
-		 			   <select style="width:15.5em;"><option>' . ( JText::_( 'DSSELECTCOUNTRYFIRST' ) ) . '</option></select>
-					</div>
-					';
-
-		}
-
-		return $output;
-
 	}
 
 	public static function getPaymentPlugins($configs){
 		
 		$db = JFactory::getDBO();
-
-		$condtion = array(0 => '\'digicom_pay\'');
-		$condtionatype = join(',',$condtion);
-		if(JVERSION >= '1.6.0')
-		{
-			$query = "SELECT extension_id as id,name,element,enabled as published
-					  FROM #__extensions
-					  WHERE folder in ($condtionatype) AND enabled=1";
-		}
-		else
-		{
-			$query = "SELECT id,name,element,published
-					  FROM #__plugins
-					  WHERE folder in ($condtionatype) AND published=1";
-		}
+		$query = $db->getQuery(true)
+					->select('extension_id as id , name, element,enabled as published, params')
+					->from('#__extensions')
+					->where($db->quoteName('folder') . ' in (' . $db->quote('digicom_pay') .')')
+					->where($db->quoteName('enabled') . ' = 1 ');
 		$db->setQuery($query);
 		$gatewayplugin = $db->loadobjectList();
 
 		$lang = JFactory::getLanguage();
 		$options = array();
-		$options[] = JHTML::_('select.option', '', 'Select payment gateway');
 		foreach($gatewayplugin as $gateway)
 		{
-			$gatewayname = strtoupper(str_replace('plugpayment', '',$gateway->element));
-			$lang->load('plg_digicom_pay_' . strtolower($gatewayname), JPATH_ADMINISTRATOR);
-			$options[] = JHTML::_('select.option',$gateway->element, JText::_($gatewayname));
+			$params = json_decode($gateway->params);
+			$options[] = JHTML::_('select.option',$gateway->element, $params->plugin_name);
 		}
 
 		return JHTML::_('select.genericlist', $options, 'processor', 'class="inputbox required"', 'value', 'text', $configs->get('default_payment','offline'), 'processor' );
