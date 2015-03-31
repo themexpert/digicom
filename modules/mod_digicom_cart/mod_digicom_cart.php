@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 require_once JPATH_SITE . '/components/com_digicom/helpers/route.php';
 
 JLoader::discover('DigiComSiteHelper', JPATH_SITE . '/components/com_digicom/helpers');
+JTable::addIncludePath(JPATH_SITE . '/components/com_digicom/tables', 'Table');
 JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_digicom/models', 'DigiComModel');
 
 // Lets cache some variable
