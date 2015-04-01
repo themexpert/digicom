@@ -118,8 +118,11 @@ if($this->configs->get('afteradditem',0) == "2"){
 							<?php if($conf->get('show_quantity',0) == "1") {	?>
 								<input id="quantity_<?php echo $this->item->id; ?>" type="number" name="qty" min="1" class="input-small" value="1" size="2" placeholder="<?php echo JText::_('COM_DIGICOM_QUANTITY'); ?>">
 							<?php } ?>
-						
+
+						</div>
+					</div>	
 					<?php endif; ?>
+					
 				</div>
 			</div>
 			<input type="hidden" name="option" value="com_digicom"/>
