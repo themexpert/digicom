@@ -579,7 +579,7 @@ class DigiComModelOrders extends JModelList{
 	/*
 	* $type = process_order, new_order, cancel_order;
 	*/
-	function sendApprovedEmail( $cid = 0 , $type = 'complete_order', $status = 'Active')
+	function sendApprovedEmail( $cid = 0 , $type = 'complete_order', $status = 'Active', $paid = '')
 	{
 		if ( $cid < 1 )
 			return;
@@ -611,7 +611,7 @@ class DigiComModelOrders extends JModelList{
 			$promocode = '0';
 		}
 
-		$amount = DigiComHelperDigiCom::format_price( $order->amount, $configs->get('currency','USD'), true, $configs );
+		$amount = DigiComHelperDigiCom::format_price( ($paid ? $paid : $order->amount), $configs->get('currency','USD'), true, $configs );
 
 		$timestamp = time();
 
