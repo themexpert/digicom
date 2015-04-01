@@ -21,12 +21,6 @@
 			<file charset="utf8" driver="mysql">sql/uninstall.mysql.sql</file>
 		</sql>
 	</uninstall>
-	<update>
-		<schemas>
-			<schemapath type="mysql">sql/updates/mysql</schemapath>
-		</schemas>
-	</update>
-
 	<files folder="site">
 		<filename>digicom.php</filename>
 		<filename>controller.php</filename>
@@ -44,7 +38,6 @@
 	</files>
 	
 	<media folder="media" destination="digicom">
-		<!--<filename>index.html</filename>-->
 		<folder>assets</folder>
 	</media>
 

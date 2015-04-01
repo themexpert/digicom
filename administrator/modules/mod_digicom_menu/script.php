@@ -101,14 +101,14 @@ class mod_digicom_menuInstallerScript
 		// Now we need to handle the module assignments
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true)
-			->select($db->quoteName('menuid'))
+			->select($db->quoteName('moduleid'))
 			->from($db->quoteName('#__modules_menu'))
 			->where($db->quoteName('moduleid') . ' = ' . $pk);
 		$db->setQuery($query);
 		$menus = $db->loadObject();
 
 		// Insert the new records into the table
-		if(!$menus->menuid)
+		if(!$menus->moduleid)
 		{
 			$query->clear()
 				->insert($db->quoteName('#__modules_menu'))
