@@ -19,7 +19,7 @@
 		<folder>tmpl</folder>
 		<filename>index.html</filename>
 	</files>
-	<languages folder="languages">
+	<languages folder="language">
 			<language tag="en-GB">en-GB/en-GB.mod_digicom_cart.ini</language>
 	</languages>
 	
