@@ -115,13 +115,25 @@ class Com_DigiComInstallerScript
 	/*
 	* create digicom folder at root filemanager folder
 	*/
-	function createUploadDirectory(){
+	function createUploadDirectory()
+	{
 		//Import filesystem libraries. Perhaps not necessary, but does not hurt
 		jimport('joomla.filesystem.file');
-		
-		$file_exist = JFolder::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'digicom');
-		if(! JFolder::create(JPATH_SITE.DIRECTORY_SEPARATOR.'digicom') ){
-			JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_DIGICOM_ERROR_CREATE_FOLDER', 'digicom'));
+
+		$defaultPath = JPATH_ROOT . DIRECTORY_SEPARATOR . 'digicom';
+
+		// Create folder if doesn't exisit
+
+		if( !JFolder::exists($defaultPath) )
+		{
+			try{
+				JFolder::create($defaultPath);
+			}
+			catch (Exception $e)
+			{
+				echo JText::sprintf('COM_DIGICOM_ERROR_CREATE_FOLDER', $e->getCode(), $e->getMessage()) . '<br />';
+				return;
+			}
 		}
 
 		return true;
