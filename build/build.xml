@@ -48,6 +48,8 @@
 
         <!--Move component mainfest to temp root-->
         <move file="temp/com_digicom/admin/digicom.xml" todir="temp/com_digicom" />
+        <!--Move Script file-->
+        <move file="temp/com_digicom/admin/script.php" todir="temp/com_digicom" />
 
         <!--Copy media folder-->
         <copy todir="temp/com_digicom/media" overwrite="true">
