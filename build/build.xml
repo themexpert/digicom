@@ -155,7 +155,7 @@
         <copy todir="temp/plg_finder_digicom/language/en-GB" overwrite="true">
             <fileset dir="../administrator/language/en-GB/">
                 <include name="en-GB.plg_finder_digicom.ini" />
-                <include name="en-GB.plg_finde_digicom.sys.ini" />
+                <include name="en-GB.plg_finder_digicom.sys.ini" />
             </fileset>
         </copy>
     </target>
