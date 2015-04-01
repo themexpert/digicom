@@ -21,6 +21,8 @@
         <file type="module" id="mod_digicom_cart" client="site">mod_digicom_cart.zip</file>
         <!-- Module - Categories List -->
         <file type="module" id="mod_digicom_categories" client="site">mod_digicom_categories.zip</file>
+        <!-- Module - Admin menu -->
+        <file type="module" id="mod_digicom_menu" client="admin">mod_digicom_menu.zip</file>
         <!-- Payment Plugin - paypal -->
         <file type="plugin" id="paypal" group="digicom_pay">plg_digicom_pay_paypal.zip</file>
         <!-- Payment plugin - offline -->
