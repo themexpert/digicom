@@ -60,7 +60,6 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 				<h3 class="panel-title"><span class="icon-bars"></span> <?php echo JText::_('COM_DIGICOM_REPORTS_SALES_ANALYTICS'); ?></h3>
 			</div>
 			<?php
-				$chart = DigiComHelperChart::test();
 				$monthlyDay = DigiComHelperChart::getMonthLabelDay();
 				
 				$monthlyPrice = DigiComHelperChart::getMonthLabelPrice($monthlyDay);
