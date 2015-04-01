@@ -15,6 +15,7 @@ defined('_JEXEC') or die;
 <ul id="menu" class="nav<?php echo ($hideMainmenu ? ' disabled' : ''); ?>" >
 	<li class="dropdown<?php echo ($hideMainmenu ? ' disabled' : ''); ?>" >
 		<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+			<span class="icon-cart" style="color: #1f82e0;"></span>
 			<?php echo $menuItems->text;?>
 			<span class="caret"></span>
 		</a>
