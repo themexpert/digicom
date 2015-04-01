@@ -1000,10 +1000,13 @@ class DigiComModelCart extends JModelItem
 		$my = JFactory::getUser($uid);
 
 		$database = JFactory::getDBO();
-		$cart = $this->getInstance( "Cart", "digicomModel" );
+		//$cart = $this->getInstance( "Cart", "digicomModel" );
 		$configs = $this->getInstance( "Config", "digicomModel" );
 		$configs = $configs->getConfigs();
-		$tax = $cart->calc_price( $items, $customer, $configs );
+		//$tax = $cart->calc_price( $items, $customer, $configs );
+		$order = $this->getTable( "Order" );
+		$order->load( $orderid );
+		
 		//echo $type;die;
 		$email = $configs->get('email');
 		
@@ -1037,7 +1040,7 @@ class DigiComModelCart extends JModelItem
 		$message = str_replace( "[ORDER_ID]", $orderid, $message );
 		$message = str_replace( "[ORDER_AMOUNT]", $amount, $message );
 		$message = str_replace( "[NUMBER_OF_PRODUCTS]", $number_of_products, $message );
-		$message = str_replace( "[DISCOUNT_AMOUNT]", $tax['promo'], $message );
+		$message = str_replace( "[DISCOUNT_AMOUNT]", $order->promocodediscount, $message );
 		$message = str_replace( "[ORDER_STATUS]", $status, $message );
 		$displayed = array();
 		$product_list = '';
@@ -1081,7 +1084,7 @@ class DigiComModelCart extends JModelItem
 		$subject = str_replace( "[ORDER_ID]", $orderid, $subject );
 		$subject = str_replace( "[ORDER_AMOUNT]", $amount, $subject );
 		$subject = str_replace( "[NUMBER_OF_PRODUCTS]", $number_of_products, $subject );
-		$subject = str_replace( "[DISCOUNT_AMOUNT]", $tax['promo'], $subject );
+		$subject = str_replace( "[DISCOUNT_AMOUNT]", $order->promocodediscount, $subject );
 		$subject = str_replace( "[ORDER_STATUS]", $status, $subject );
 		$displayed = array();
 		$product_list = '';
@@ -1260,7 +1263,7 @@ class DigiComModelCart extends JModelItem
 		$configs = $this->configs;
 		$customer = new DigiComSiteHelperSession();
 		$db 	= JFactory::getDbo();
-		$sql 	= 'SELECT `p`.*, `od`.* FROM
+		$sql 	= 'SELECT `p`.*, `od`.quantity FROM
 					`#__digicom_products` AS `p`
 						INNER JOIN
 					`#__digicom_orders_details` AS `od` ON (`od`.`productid` = `p`.`id`)
@@ -1268,7 +1271,6 @@ class DigiComModelCart extends JModelItem
 
 		$db->setQuery($sql);
 		$items = $db->loadObjectList();
-
 
 		//change the price of items if needed
 		for ( $i = 0; $i < count( $items ); $i++ )
@@ -1285,18 +1287,7 @@ class DigiComModelCart extends JModelItem
 			$item->subtotal = $item->price * $item->quantity;
 		}
 		
-		
-		$this->_items = $items;
-
-		if(count($items) > 0){
-			$this->calc_price($items, $customer, $configs);
-			foreach($items as $i => $v){
-				if($i < 0){
-					continue;
-				}
-			}
-		}
-		return $this->_items;
+		return $items ;
 
 	}
 
