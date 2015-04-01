@@ -200,9 +200,9 @@ class DigiComHelperDigiCom extends JHelperContent{
 	{
 		if (file_exists($dir))
 		{
-			if (!file_exists($dir.DS."index.html"))
+			if (!file_exists($dir . "/index.html"))
 			{
-				$handle = @fopen($dir.DS."index.html", "w");
+				$handle = @fopen($dir . "/index.html", "w");
 				@fwrite($handle, '<html><body bgcolor="#FFFFFF"></body></html>');
 				@fclose($handle);
 			}
@@ -437,7 +437,7 @@ class DigiComHelperDigiCom extends JHelperContent{
 		$ajax = $input->get('ajax','');
 		if($tmpl == 'component' or $ajax =='1') return;
 		
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'layouts'.DS.'toolbar'.DS.'sidebar-right.php');
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.'/layouts/toolbar/sidebar-right.php');
 		return true;
 	}
 

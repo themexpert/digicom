@@ -152,7 +152,7 @@ class DigiComViewOrder extends JViewLegacy
 		JToolBarHelper::title( JText::_( 'Create Order' ), 'generic.png' );
 		JToolBarHelper::cancel();
 
-		require_once( JPATH_COMPONENT.DS.'helpers'.DS.'sajax.php' );
+		require_once( JPATH_COMPONENT . '/helpers/sajax.php' );
 		$db = JFactory::getDBO();
 
 		$username = JRequest::getVar('username','');

@@ -32,35 +32,35 @@ class DigiComSiteHelperTemplate extends JViewLegacy {
 		
 		$this->view->setLayout($layout);
 		
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$params = JComponentHelper::getParams('com_digicom');
 		// Look for template files in component folders
-		$this->view->_addPath('template', JPATH_COMPONENT.DS.'templates');
-		$this->view->_addPath('template', JPATH_COMPONENT.DS.'templates'.DS.'default');
+		$this->view->_addPath('template', JPATH_COMPONENT . '/templates');
+		$this->view->_addPath('template', JPATH_COMPONENT . '/templates/default');
 
 		// Look for overrides in template folder (Joomla! template structure)
-		$this->view->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_digicom'.DS.'default');
-		$this->view->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_digicom');
+		$this->view->_addPath('template', JPATH_SITE . '/templates/' . $app->getTemplate() . '/html/com_digicom/default');
+		$this->view->_addPath('template', JPATH_SITE . '/templates/' . $app->getTemplate() . '/html/com_digicom');
 		
 		// Look for specific DigiCom theme files
 		if ($params->get('template','default'))
 		{
-			$this->view->_addPath('template', JPATH_COMPONENT.DS.'templates'.DS.$params->get('template','default'));
-			$this->view->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_digicom'.DS.$params->get('template','default'));
+			$this->view->_addPath('template', JPATH_COMPONENT . '/templates/' . $params->get('template','default'));
+			$this->view->_addPath('template', JPATH_SITE . '/templates/' . $app->getTemplate() . '/html/com_digicom/' . $params->get('template','default'));
 		}
 		
 		// CUSTOM CSS
-		if (is_file(JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_digicom'.DS.$params->get('template','default') . '/css/style.sample.css')) {
-			$this->addStyleSheet(JUri::root(true).DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_digicom'.DS.$params->get('template','default') . '/css/style.sample.css');
-		}elseif(is_file(JPATH_COMPONENT.DS.'templates'.DS.$params->get('template','default') . '/css/style.sample.css')) {
-			$this->addStyleSheet(JUri::root(true).DS.'components'.DS.'com_digicom'.DS.'templates'.DS.$params->get('template','default') . '/css/style.sample.css');
+		if (is_file( JPATH_SITE . '/templates/' . $app->getTemplate() . '/html/com_digicom/' . $params->get('template','default') . '/css/style.css')) {
+			$this->addStyleSheet( JUri::root(true) . '/templates/' . $app->getTemplate() . '/html/com_digicom/' . $params->get('template','default') . '/css/style.css');
+		}elseif( is_file(JPATH_COMPONENT . '/templates/' . $params->get('template','default') . '/css/style.css') ) {
+			$this->addStyleSheet( JUri::root(true) . '/components/com_digicom/templates/' . $params->get('template','default') . '/css/style.css');
 		}
 
 		// CUSTOM JS
-		if (is_file(JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_digicom'.DS.$params->get('template','default') . '/js/script.js')) {
-			$this->addScript(JUri::root(true).DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_digicom'.DS.$params->get('template','default') . '/js/script.js');
-		}elseif(is_file(JPATH_COMPONENT.DS.'templates'.DS.$params->get('template','default') . '/js/script.js')) {
-			$this->addScript(JUri::root(true).DS.'components'.DS.'com_digicom'.DS.'templates'.DS.$params->get('template','default') . '/js/script.js');
+		if (is_file(JPATH_SITE .'/templates/' . $app->getTemplate() . '/html/com_digicom/' . $params->get('template','default') . '/js/script.js')) {
+			$this->addScript(JUri::root(true) . '/templates/' . $app->getTemplate() . '/html/com_digicom/' . $params->get('template','default') . '/js/script.js');
+		}elseif( is_file( JPATH_COMPONENT . '/templates/' . $params->get('template','default') . '/js/script.js')) {
+			$this->addScript(JUri::root(true) . '/components/com_digicom/templates/' . $params->get('template','default') . '/js/script.js');
 		}
 		
 	}

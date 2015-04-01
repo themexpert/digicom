@@ -1,12 +1,10 @@
 <?php
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
-defined('DS') or define ('DS',DIRECTORY_SEPARATOR);
+
 // Import library dependencies
 jimport('joomla.event.plugin');
-//$mainframe->registerEvent( 'onPrepareContent', 'botMosDigiCom'  );
-//error_reporting(0);
-require_once JPATH_SITE.DS.'components'.DS.'com_digicom'.DS.'helpers'.DS.'digicom.php';
+require_once JPATH_SITE . '/components/com_digicom/helpers/digicom.php';
 
 class plgSystemDigiCom_Addtocart extends JPlugin{
 	

@@ -13,8 +13,9 @@ jimport ("joomla.application.component.view");
 
 class DigiComAdminViewSajax extends DigiComView {
 
-	function display ($tpl =  null ) {
-		require_once( JPATH_COMPONENT.DS.'helpers'.DS.'sajax.php' );
+	function display ($tpl =  null )
+	{
+		require_once( JPATH_COMPONENT . '/helpers/sajax.php' );
 
 		parent::display($tpl);
 

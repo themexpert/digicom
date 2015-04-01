@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 JHtml::_('behavior.formvalidation');
 $Itemid = JRequest::getInt("Itemid", 0);
 
-require_once( JPATH_COMPONENT.DS.'helpers'.DS.'sajax.php' );
+require_once( JPATH_COMPONENT . '/helpers/sajax.php' );
 $configs = $this->configs;
 JHTML::_('behavior.modal');
 	$login_link = JRoute::_("index.php?option=com_digicom&view=register&task=register.login&returnpage=cart&tmpl=component&returnpage=cart&graybox=true");

@@ -54,7 +54,7 @@ class DigiComControllerDownloads extends JControllerLegacy
 		
 		$parsed = parse_url($fileInfo->url);
 		if (empty($parsed['scheme'])) {
-			$fileLink = JPATH_BASE.DS.$fileInfo->url;
+			$fileLink = JPATH_BASE . '/' . $fileInfo->url;
 		}else{
 			$fileLink = $fileInfo->url;
 		}

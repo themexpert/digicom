@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 class DigiComViewSAjax extends JViewLegacy {
 
 	function display ($tpl =  null) {
-		require_once( JPATH_COMPONENT.DS.'helpers'.DS.'sajax.php' );
+		require_once( JPATH_COMPONENT . '/helpers/sajax.php' );
 
 		parent::display($tpl);
 

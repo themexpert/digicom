@@ -16,9 +16,11 @@ if($task == "user.login" || $task == "user.logout"){
 	$username = JRequest::getVar("username", "");
 	$password = JRequest::getVar("password", "");
 	$return = JRequest::getVar("return", "");
-	define(JPATH_COMPONENT, JPATH_SITE.DS."components".DS."com_users");
 
-	require_once(JPATH_SITE.DS."components".DS."com_users".DS."controllers".DS."user.php");
+	define( JPATH_COMPONENT, JPATH_SITE ."/components/com_users");
+
+	require_once( JPATH_SITE . "/components/com_users/controllers/user.php");
+
 	if($task == "user.login"){
 		UsersControllerUser::login();
 	}

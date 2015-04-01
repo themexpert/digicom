@@ -11,10 +11,6 @@ defined('_JEXEC') or die;
 
 class DigiComHelperChart {
 
-	public static function test(){
-		return 'working';
-	}
-
 	public static function getMonthLabelDay(){
 		$days = '';
 		$prefix = '';

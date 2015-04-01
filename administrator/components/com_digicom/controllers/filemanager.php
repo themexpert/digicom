@@ -35,12 +35,12 @@ class DigiComControllerFileManager extends JControllerAdmin
 		JRequest::setVar('debug', false);
 		
 		$url = JURI::root(true).'/'.$folder;
-		$path = JPATH_SITE.DS.JPath::clean($folder);
+		$path = JPATH_SITE . '/' . JPath::clean($folder);
         JPath::check($path);
-		include_once JPATH_COMPONENT_ADMINISTRATOR.DS.'libs'.DS.'elfinder'.DS.'elFinderConnector.class.php';
-		include_once JPATH_COMPONENT_ADMINISTRATOR.DS.'libs'.DS.'elfinder'.DS.'elFinder.class.php';
-		include_once JPATH_COMPONENT_ADMINISTRATOR.DS.'libs'.DS.'elfinder'.DS.'elFinderVolumeDriver.class.php';
-		include_once JPATH_COMPONENT_ADMINISTRATOR.DS.'libs'.DS.'elfinder'.DS.'elFinderVolumeLocalFileSystem.class.php';
+		include_once JPATH_COMPONENT_ADMINISTRATOR . '/libs/elfinder/elFinderConnector.class.php';
+		include_once JPATH_COMPONENT_ADMINISTRATOR . '/libs/elfinder/elFinder.class.php';
+		include_once JPATH_COMPONENT_ADMINISTRATOR . '/libs/elfinder/elFinderVolumeDriver.class.php';
+		include_once JPATH_COMPONENT_ADMINISTRATOR . '/libs/elfinder/elFinderVolumeLocalFileSystem.class.php';
 		
 		function access($attr, $path, $data, $volume)
 		{

@@ -41,7 +41,7 @@ class JFormFieldThemelayout extends JFormField
 		jimport('joomla.filesystem.folder');
         $mainframe = JFactory::getApplication();
         $fieldName = $this->name;
-        $componentPath = JPATH_SITE.DS.'components'.DS.'com_digicom'.DS.'templates';
+        $componentPath = JPATH_SITE .'/components/com_digicom/templates';
         $componentFolders = JFolder::folders($componentPath);
 		
         $db = JFactory::getDBO();
@@ -49,13 +49,13 @@ class JFormFieldThemelayout extends JFormField
         $db->setQuery($query);
         $defaultemplate = $db->loadResult();
 
-        if (JFolder::exists(JPATH_SITE.DS.'templates'.DS.$defaultemplate.DS.'html'.DS.'com_digicom'.DS.'templates'))
+        if (JFolder::exists(JPATH_SITE . '/templates/' . $defaultemplate . '/html/com_digicom/templates'))
         {
-            $templatePath = JPATH_SITE.DS.'templates'.DS.$defaultemplate.DS.'html'.DS.'com_digicom'.DS.'templates';
+            $templatePath = JPATH_SITE . '/templates/' . $defaultemplate . '/html/com_digicom/templates';
         }
         else
         {
-            $templatePath = JPATH_SITE.DS.'templates'.DS.$defaultemplate.DS.'html'.DS.'com_digicom';
+            $templatePath = JPATH_SITE . '/templates/' . $defaultemplate . '/html/com_digicom';
         }
 
         if (JFolder::exists($templatePath))

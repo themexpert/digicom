@@ -13,7 +13,7 @@ defined( 'DS' ) or define( 'DS', DIRECTORY_SEPARATOR);
 
 jimport( 'joomla.plugin.plugin' );
 
-require_once(dirname(__FILE__).DS.'paypal'.DS.'helper.php');
+require_once(dirname(__FILE__) . '/paypal/helper.php');
 
 class  plgDigiCom_PayPaypal extends JPlugin
 {
@@ -48,8 +48,9 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	function buildLayoutPath($layout) {
 		jimport('joomla.filesystem.file');
 		$app = JFactory::getApplication();
-		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.'default.php';
-		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
+		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
+		$override	= JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout . '.php';
+
 		if(JFile::exists($override))
 		{
 			return $override;

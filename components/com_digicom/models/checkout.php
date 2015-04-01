@@ -1400,7 +1400,7 @@ class DigiComModelCheckout extends JModelItem
 	}
 
 	function addUserToList($user_id, $product_id){
-		require_once(JPATH_COMPONENT.DS.'helpers'.DS.'MCAPI.class.php');
+		require_once(JPATH_COMPONENT . '/helpers/MCAPI.class.php');
 		$db = JFactory::getDBO();
 		$sql = "select p.mailchimpapi, p.mailchimplist, p.mailchimpregister, p.mailchimpgroupid, u.email, c.firstname, c.lastname from #__users u, #__digicom_products p, #__digicom_customers c where u.id=c.id and u.id=".intval($user_id)." and p.id=".intval($product_id);
 		$db->setQuery($sql);

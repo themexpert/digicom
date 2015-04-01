@@ -194,21 +194,5 @@ class DigiComModelDownloads extends JModelList
 		return $db->loadObject();		
 		
 	}
-	
-	function getPackageContents($license, $product) {
-
-		jimport("joomla.filesystem.file");
-
-		define( 'PCLZIP_TEMPORARY_DIR', JPATH_ROOT.DS.'administrator/components/digicom_product_uploads/tmp/' );
-
-		DigiComSiteHelperDigiCom::CreateIndexFile(JPATH_ROOT.DS.'administrator/components/digicom_product_uploads/');
-		DigiComSiteHelperDigiCom::CreateIndexFile(JPATH_ROOT.DS."components/com_digicom/download/");
-		DigiComSiteHelperDigiCom::CreateIndexFile(JPATH_ROOT.DS."components/com_digicom/download/".$license->userid."/");
-
-		require_once (JPATH_ROOT.DS."administrator".DS."includes".DS."pcl".DS."pclzip.lib.php");
-
-		$srcZip = new PclZip(JPATH_ROOT.DS."components/com_digicom/download/".$license->userid."/".$product->file);
-		return ($srcZip->listContent());
-	}
 
 }
