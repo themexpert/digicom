@@ -27,12 +27,11 @@ class Com_DigiComInstallerScript
 	 *
 	 * @since   3.4
 	 */
-	public function install($parent)
+	public function postflight($parent)
 	{
 		// Initialize a new category
 		/** @type  JTableCategory  $category  */
 		$category = JTable::getInstance('Category');
-
 		// Check if the Uncategorised category exists before adding it
 		if (!$category->load(array('extension' => 'com_digicom', 'title' => 'Uncategorised')))
 		{
@@ -69,8 +68,9 @@ class Com_DigiComInstallerScript
 		}
 
 		self::createDigiComMenu();
+		self::createUploadDirectory();
 
-
+		return;
 	}
 
 	/**
@@ -109,5 +109,21 @@ class Com_DigiComInstallerScript
 				}
 			}
 		}
+
+		return true;
+	}
+	/*
+	* create digicom folder at root filemanager folder
+	*/
+	function createUploadDirectory(){
+		//Import filesystem libraries. Perhaps not necessary, but does not hurt
+		jimport('joomla.filesystem.file');
+		
+		$file_exist = JFolder::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'digicom');
+		if(! JFolder::create(JPATH_SITE.DIRECTORY_SEPARATOR.'digicom') ){
+			JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_DIGICOM_ERROR_CREATE_FOLDER', 'digicom'));
+		}
+
+		return true;
 	}
 }
