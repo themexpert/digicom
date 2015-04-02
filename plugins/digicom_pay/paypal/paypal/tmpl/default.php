@@ -1,11 +1,13 @@
-<?php 
+<?php
 /**
- * @package Social Ads
- * @copyright Copyright (C) 2009 -2010 themexpert.com, Tekdi Web Solutions . All rights reserved.
- * @license GNU GPLv2 <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>
- * @link     http://www.themexpert.com.com
- */
-defined('_JEXEC') or die('Restricted access'); 
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
+
+defined('_JEXEC') or die; 
 ?>
 <div class="akeeba-bootstrap">
 	<form action="<?php echo $vars->action_url ?>" class="form-horizontal" method="post">

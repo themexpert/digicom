@@ -1,13 +1,13 @@
-<?php 
+<?php
 /**
- * @package Social Ads
- * @copyright Copyright (C) 2009 -2010 themexpert.com, Tekdi Web Solutions . All rights reserved.
- * @license GNU GPLv2 <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>
- * @link     http://www.themexpert.com.com
- */
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
-// no direct access
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die;
 
 JHtml::_('jquery.framework');
 JHTML::_('behavior.formvalidation');

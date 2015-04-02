@@ -16,11 +16,13 @@
 			<file charset="utf8" driver="mysql">sql/install.mysql.sql</file>
 		</sql>
 	</install>
+
 	<uninstall>
 		<sql>
 			<file charset="utf8" driver="mysql">sql/uninstall.mysql.sql</file>
 		</sql>
 	</uninstall>
+	
 	<files folder="site">
 		<filename>digicom.php</filename>
 		<filename>controller.php</filename>

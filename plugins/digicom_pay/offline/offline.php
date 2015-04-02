@@ -1,6 +1,13 @@
 <?php
-/** ensure this file is being included by a parent file */
-defined( '_JEXEC' ) or die( 'Restricted access' );
+/**
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
+
+defined('_JEXEC') or die;
 //Import filesystem libraries. Perhaps not necessary, but does not hurt
 jimport('joomla.filesystem.file');
 

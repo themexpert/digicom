@@ -54,25 +54,21 @@ $input->set('layout', 'dgform');
 			);
 
 			$total_file_titles = array (
-				"component"	=>"DigiCom",
-				"module1"	=>"DigiCom Manager",
-				"module2"	=>"DigiCom Shopping Cart"
-			// 	"module3"=>"DigiCom Categories",
-			// 	"module4"=>"Featured Article",
-			// 	"module5"=>"Current Articles",
-			// 	"module6"=>"Author List",
-			// 	"plugin"=>"Magazine"
+				"component"	=> "DigiCom",
+				"module1"	=> "DigiCom Categories",
+				"module2"	=> "DigiCom Shopping Cart",
+			 	"plugin1"	=> "Add to Cart System Plugin",
+			 	"plugin2"	=> "Offline Payment Plugin",
+			 	"plugin3"	=> "Paypal Payment Plugin"
 			);
 
 			$total_file_paths = array(
 				"component"	=> "/administrator/components/com_digicom/digicom.xml",
-				"module1"	=> "/modules/mod_digicom_manager/mod_digicom_manager.xml",
-				"module2"	=> "/modules/mod_digicom_cart/mod_digicom_cart.xml"
-			//	"module3"	=> "/modules/mod_digicom_categories.xml",
-			//	"module4"	=> "/modules/mod_featured_article.xml",
-			//	"module5"	=> "/modules/mod_current_articles.xml",
-			//	"module6"	=> "/modules/mod_author_list.xml",
-			//	"plugin"	=> "/mambots/content/mos_magazine.xml"
+				"module1"	=> "/modules/mod_digicom_categories/mod_digicom_categories.xml",
+				"module2"	=> "/modules/mod_digicom_cart/mod_digicom_cart.xml",
+				"plugin1"	=> "/plugins/system/digicom_addtocart/digicom_addtocart.xml",
+				"plugin2"	=> "/plugins/digicom_pay/offline/offline.xml",
+				"plugin3"	=> "/plugins/digicom_pay/paypal/paypal.xml"
 			);
 
 			foreach ($total_file_paths as $var=>$val) :
@@ -81,7 +77,7 @@ $input->set('layout', 'dgform');
 					echo "<td colspan=\"4\"><strong>".$titles[0]."</strong></td>";
 				} else if ($counter == 2) {
 					echo "<td colspan=\"4\"><strong>".$titles[1]."</strong></td>";
-				} else if ($counter == 8 ) {
+				} else if ($counter == 4 ) {
 					echo "<td colspan=\"4\"><strong>".$titles[2]."</strong></td>";
 				}
 				echo "</tr>";
