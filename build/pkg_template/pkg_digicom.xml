@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension type="package" version="3.0" method="upgrade">
+
     <name>pkg_digicom</name>
     <packagename>digicom</packagename>
     <creationDate>March 2015</creationDate>
@@ -13,6 +14,7 @@
     <version>1.0.0</version>
     <license>GNU General Public License version 3 or later;</license>
     <description>PKG_DIGICOM_XML_DESCRIPTION</description>
+
     <files>
         <!-- The id for each extension is the element stored in the DB -->
         <!-- Administration component -->
@@ -32,11 +34,14 @@
         <!-- System plugin - addtocart-->
         <file type="plugin" id="digicom_addtocart" group="system">plg_system_digicom_addtocart.zip</file>
     </files>
+
     <languages folder="language">
         <language tag="en-GB">en-GB/en-GB.pkg_digicom.sys.ini</language>
     </languages>
+
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
-        <server type="extension" name="DigiCom Update Site">https://raw.githubusercontent.com/themexpert/digicom/master/updates.xml</server>
+        <server type="extension" name="DigiCom Update Site">https://raw.githubusercontent.com/themexpert/digicom/develop/manifest.xml</server>
     </updateservers>
+
 </extension>
