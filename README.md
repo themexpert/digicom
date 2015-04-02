@@ -2,14 +2,23 @@
 
 Welcome to the DigiCom repository on GitHub. DigiCom is next generation ecommerce extension for selling digital product with Joomla!. Our aim to create modular, lightweight and extendable ecommerce solution for Joomla.
 
-* [Homepage](http://www.themexpert.com/digicom) - Learn more about DigiCom
-* [Demo](http://digicom.themexpert.com) - Live Demo
+[Homepage](http://www.themexpert.com/digicom) - Learn more about DigiCom 
+
+Demo (Frontend & Backend)
+--------
+[Demo](http://digicom.themexpert.com) - Live Demo
+
+Backend Admin Login: username=demo, password=demo
+
+Download 
+--------
+Lastest Builds: [1.0.0-beta.1](https://github.com/themexpert/digicom/releases/tag/1.0.0-beta.1)
 
 ## Documenation
 Coming soon...
 
 ## Getting Started
-Download the [latest release](http://www.themexpert.com/digicom) and install it as regular Joomla! extension.
+Download the [latest release](https://github.com/themexpert/digicom/releases/download/1.0.0-beta.1/pkg_digicom_1.0.0-beta.1.zip) and install it as regular Joomla! extension.
 
 ## Developers
 
