@@ -98,13 +98,13 @@ class JFormFieldSystemEmail extends JFormField
 			$html[] = '<div class="control-group ">';
 
 			$html[] = '<div class="control-label">';
-			$html[] = '<label id="jform_subject-lbl" for="jform_subject" class="required" title="'.JText::_('COM_DIGICOM_SETTINGS_SYSTEM_EMAIL_SUBJECT_LABEL_DESC').'">';
+			$html[] = '<label id="jform_subject-lbl" for="jform_subject" title="'.JText::_('COM_DIGICOM_SETTINGS_SYSTEM_EMAIL_SUBJECT_LABEL_DESC').'">';
 			$html[] =  JText::_('COM_DIGICOM_SETTINGS_SYSTEM_EMAIL_SUBJECT_LABEL');
 			$html[] =  '</label>';
 			$html[] =  '</div>';
 			
 			$html[] =  '<div class="controls">';
-			$html[] =  '<input type="text" class="input-xxlarge required" value="'.$this->value[$group->value]['subject'].'" name="'.$this->name.'['. $group->value .'][subject]" size="60">';
+			$html[] =  '<input type="text" class="input-xxlarge" value="'.$this->value[$group->value]['subject'].'" name="'.$this->name.'['. $group->value .'][subject]" size="60">';
 			$html[] =  '</div>';
 
 			$html[] =  '</div>';
@@ -114,7 +114,7 @@ class JFormFieldSystemEmail extends JFormField
 			$html[] = '<div class="control-group ">';
 
 			$html[] = '<div class="control-label">';
-			$html[] = '<label id="jform_body-lbl" for="jform_body" class="required" title="'.JText::_('COM_DIGICOM_SETTINGS_SYSTEM_EMAIL_BODY_LABEL_DESC').'">';
+			$html[] = '<label id="jform_body-lbl" for="jform_body" title="'.JText::_('COM_DIGICOM_SETTINGS_SYSTEM_EMAIL_BODY_LABEL_DESC').'">';
 			$html[] =  JText::_('COM_DIGICOM_SETTINGS_SYSTEM_EMAIL_BODY_LABEL');
 			$html[] =  '</label>';
 			$html[] =  '</div>';
