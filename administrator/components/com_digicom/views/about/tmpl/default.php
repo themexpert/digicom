@@ -57,18 +57,22 @@ $input->set('layout', 'dgform');
 				"component"	=> "DigiCom",
 				"module1"	=> "DigiCom Categories",
 				"module2"	=> "DigiCom Shopping Cart",
+				"module3"	=> "Admin Quick Links Menu DigiCom",
 			 	"plugin1"	=> "Add to Cart System Plugin",
 			 	"plugin2"	=> "Offline Payment Plugin",
-			 	"plugin3"	=> "Paypal Payment Plugin"
+			 	"plugin3"	=> "Paypal Payment Plugin",
+			 	"plugin4"	=> "Finder Plugin DigiCom"
 			);
 
 			$total_file_paths = array(
 				"component"	=> "/administrator/components/com_digicom/digicom.xml",
 				"module1"	=> "/modules/mod_digicom_categories/mod_digicom_categories.xml",
 				"module2"	=> "/modules/mod_digicom_cart/mod_digicom_cart.xml",
+				"module3"	=> "/administrator/modules/mod_digicom_menu/mod_digicom_menu.xml",
 				"plugin1"	=> "/plugins/system/digicom_addtocart/digicom_addtocart.xml",
 				"plugin2"	=> "/plugins/digicom_pay/offline/offline.xml",
-				"plugin3"	=> "/plugins/digicom_pay/paypal/paypal.xml"
+				"plugin3"	=> "/plugins/digicom_pay/paypal/paypal.xml",
+				"plugin4"	=> "/plugins/finder/digicom/digicom.xml"
 			);
 
 			foreach ($total_file_paths as $var=>$val) :
@@ -77,7 +81,7 @@ $input->set('layout', 'dgform');
 					echo "<td colspan=\"4\"><strong>".$titles[0]."</strong></td>";
 				} else if ($counter == 2) {
 					echo "<td colspan=\"4\"><strong>".$titles[1]."</strong></td>";
-				} else if ($counter == 4 ) {
+				} else if ($counter == 5 ) {
 					echo "<td colspan=\"4\"><strong>".$titles[2]."</strong></td>";
 				}
 				echo "</tr>";
