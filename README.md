@@ -6,19 +6,17 @@ Welcome to the DigiCom repository on GitHub. DigiCom is next generation ecommerc
 
 Demo (Frontend & Backend)
 --------
-[Demo](http://digicom.themexpert.com) - Live Demo
-
-Backend Admin Login: username=demo, password=demo
+[Demo](http://digicom.themexpert.com) - DigiCom Live Demo
 
 Download 
 --------
-Lastest Builds: [1.0.0-beta.1](https://github.com/themexpert/digicom/releases/tag/1.0.0-beta.1)
+Lastest Builds: [Release](https://github.com/themexpert/digicom/releases)
+
+## Getting Started
+Download the [latest release](http://www.themexpert.com/digicom) and install it as regular Joomla! extension.
 
 ## Documenation
 Coming soon...
-
-## Getting Started
-Download the [latest release](https://github.com/themexpert/digicom/releases/download/1.0.0-beta.1/pkg_digicom_1.0.0-beta.1.zip) and install it as regular Joomla! extension.
 
 ## Developers
 
