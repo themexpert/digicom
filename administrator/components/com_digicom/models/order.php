@@ -202,13 +202,16 @@ class DigiComModelOrder extends JModelAdmin
 	{
 		$app = JFactory::getApplication();	
 		if(parent::save($data)){
+			
 			$orders = $this->getInstance( "Orders", "DigiComModel" );
+
 			if($data['status'] == 'Pending'){
 				$type = 'process_order';
 			}else{
 				$type = 'complete_order';
 			}
-			$orders->sendApprovedEmail($data['id'], $type, $data['status'],$data['amount_paid']);
+
+			$orders->sendApprovedEmail( $data['id'], $type, $data['status'], $data['amount_paid'] );
 		}
 
 		return true;
