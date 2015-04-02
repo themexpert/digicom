@@ -20,7 +20,7 @@ In order to build the installation packages of this component you will need to h
 * A command line environment. Using Bash under Linux / Mac OS X works best. On Windows you will need to run most tools through an elevated privileges (administrator) command prompt on an NTFS filesystem due to the use of symlinks.
 * A PHP CLI binary in your path
 * Command line Git executables
-* PEAR and Phing installed, with VersionControl_SVN PEAR packages installed
+* Phing - PHP Archive(phar) is inside the build dir.
 
 ### Build Installable `zip` 
 
@@ -32,8 +32,9 @@ In order to build the installation packages of this component you will need to h
 2. Run this command
 
 	```
-	phing
+	php phing.phar
 	```
+You will find installable package on `build/release` folder.
 
 ## Contributing to DigiCom
 
