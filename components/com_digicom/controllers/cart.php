@@ -506,13 +506,16 @@ class DigiComControllerCart extends JControllerLegacy
 		$customer 	= $this->_customer;
 		$configs 	= $this->_config;
 		$cart 		= $this->_model;
-		$items 		= $cart->getCartItems($customer, $configs);
-
+		$items 		= $cart->getOrderItems($order_id, $configs);
+		
 		$products = array();
 		if(isset($items) && count($items) > 0){
 			foreach($items as $key=>$product){
-				if(trim($product->name) != ""){
-					$products[] = trim($product->name);
+				if($key >= 0)
+				{
+					if(trim($product->name) != ""){
+						$products[] = trim($product->name);
+					}
 				}
 			}
 		}

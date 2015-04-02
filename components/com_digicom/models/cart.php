@@ -345,189 +345,6 @@ class DigiComModelCart extends JModelItem
 		return $payprocess;
 	}
 
-	function calc_price_backup($items,$cust_info,$configs)
-	{
-		
-		if(isset($items[-1]) && $items[-1] == "PayProcessed"){
-			return $items[-2];
-		}
-		
-		$db = JFactory::getDBO();
-		$user = JFactory::getUser();
-		if (is_object($cust_info))	$sid = $cust_info->_sid;
-		if (is_array($cust_info))	$sid = $cust_info['sid'];
-		$customer = $cust_info;
-
-		if ( null != $configs->get('totaldigits','') ) {
-			$configs = $this->getInstance( "Config", "digicomModel" );
-			$configs = $configs->getConfigs();
-		}
-
-		if(isset($cust_info->_customer) && !isset($cust_info->_customer->country)){
-			$cust_info->_customer->country = '';
-		}
-		if(isset($cust_info->_customer) && !isset($cust_info->_customer->state)){
-			$cust_info->_customer->state = '';
-		}
-		$pay_flag = false;
-		$can_promo = true;
-		$payprocess = array();
-		
-		$total = 0;
-		$price_format = '%' . $configs->get('totaldigits','') . '.' . $configs->get('decimaldigits','2') . 'f';
-		//$payprocess['licenses'] = 0;
-		$payprocess['number_of_products'] = 0;
-		$payprocess['shipping'] = 0;
-		$payprocess['currency'] = $configs->get('currency','USD');
-		
-		//print_r($items);die;
-		foreach ( $items as $item )
-		{
-			//debug($item);
-			$total += $item->subtotal;
-			$payprocess['currency'] = $item->currency;
-			$payprocess['number_of_products'] += $item->quantity;
-			$shipping = 0;
-		}
-		$payprocess['payable_amount'] = $total;
-		
-		$promo = $this->get_promo( $cust_info );
-		if ($promo->id > 0) {
-			$promoid = $promo->id;
-			$promocode = $promo->code;
-		} else {
-			$promoid = '0';
-			$promocode = '';
-		}
-
-		$promo_applied = -1; //no need for promo
-		$payprocess['promo'] = 0;
-		$payprocess['promo_order'] = 0;
-
-		if($promo->id > 0 && $can_promo) { //valid promocode was provided
-			$payprocess['promoaftertax'] = $promo->aftertax;
-			
-
-			if($promo->codelimit <= $promo->used && $promo->codelimit > 0 ){
-				//nothing to do now
-			} else {
-				if($promo->aftertax == '0'){//promo discount should be applied before taxation
-					
-					$promo_applied = 1; //all discounts are applied
-					
-					//$restricted_order = (int) $this->havePreviousOrderOfProduct($promo);
-					// If there are restrictions must check line per line in the products
-					//if (count($promo->products) || count($promo->orders))
-					if (count($promo->products))
-					{
-						$payprocess['promo_order'] = 0;
-
-						foreach ($items as $item)
-						{
-							$restricted_product = (int) $this->isRestrictedProduct($item, $promo->products);
-							$have_discount = 0;
-							$item->discount = 0;
-							/*if ($restricted_order && count($promo->orders) && $restricted_product && count($promo->products))
-							{
-								$have_discount = 1;
-							}*/
-							if ($restricted_product && count($promo->products) && count($promo->orders) == 0)
-							{
-								$have_discount = 1;
-							}
-							/*if ($restricted_order && count($promo->orders) && count($promo->products) == 0)
-							{
-								$have_discount = 1;
-							}
-							*/
-							if (count($promo->products) == 0 && count($promo->orders) == 0)
-							{
-								$have_discount = 1;
-							}
-							if ($have_discount)
-							{
-								if ($promo->promotype == '0')
-								{
-									// Use absolute values
-									$total -= $promo->amount;
-									$payprocess['promo'] += $promo->amount;
-									$item->discount += $promo->amount;
-									$payprocess['discount_calculated'] = 1;
-								}
-								else
-								{
-									// Use percentage
-									$total -= ($item->price * $promo->amount) / 100;
-									$payprocess['promo'] += (($item->price * $promo->amount) / 100);
-									$item->discount = ($item->price * $promo->amount) / 100;
-									$payprocess['discount_calculated'] = 1;
-								}
-							}
-						}
-					}
-					else
-					{
-						if($promo->promotype == '0'){//use absolute values
-							$total -= $promo->amount;
-							$payprocess['promo'] += $promo->amount;
-							$payprocess['promo_order'] = 1;
-						}
-						else{ //use percentage
-							$payprocess['promo'] += ($promo->amount * $total) / 100;
-							$total -= ($promo->amount * $total) / 100;
-							$payprocess['promo_order'] = 1;
-						}
-					}
-				}
-				else{//promo discount should be applied after tax
-					$promo_applied = 0; //we should apply promo later
-					//nothing to do here - tax is not calculated yet
-				}
-			}
-		}
-
-		//final price calculations
-		$tmp_customer = $customer;
-
-		if (is_object($customer) && isset($customer->_customer) && !empty($customer->_customer)) $tmp_customer = $customer->_customer;
-		if (is_array($customer)) $tmp_customer = $customer;
-		$customer = $tmp_customer;
-		//final calculations end here
-		
-		if(!isset($payprocess['value'])) $payprocess['value'] = 0;
-		$sum_tax = $total + $payprocess['value']; //$vat_tax + $state_tax;//total tax
-		
-		//now lets apply promo discounts if there are any
-		if ( $promo_applied == 0 )
-			if ( $promo->promotype == '0' ) {//use absolute values
-				$sum_tax -= $promo->amount;
-				$payprocess['promo'] = $promo->amount;
-			} else { //use percentage
-				$payprocess['promo'] = $sum_tax * $promo->amount / 100;
-				$sum_tax *= 1 - $promo->amount / 100;
-			}
-
-			// Fixed PromoCode > Total Price
-			if ( $sum_tax < 0 )
-				$sum_tax = 0;
-
-		$payprocess['promo_error'] = (!$user->id && isset($promo->orders) && count($promo->orders) ? JText::_("DIGI_PROMO_LOGIN") : '');
-		$payprocess['total'] = $total;
-		
-		$payprocess['taxed'] = $payprocess['shipping'] + $sum_tax;
-		$payprocess['discount_calculated'] = (isset($payprocess['discount_calculated']) ? $payprocess['discount_calculated'] : 0);
-		$payprocess['shipping'] = DigiComSiteHelperDigiCom::format_price( $payprocess['shipping'], $payprocess['currency'], false, $configs ); //sprintf($price_format, $payprocess['shipping']);
-		$payprocess['taxed'] = DigiComSiteHelperDigiCom::format_price( $payprocess['taxed'], $payprocess['currency'], false, $configs ); //sprintf($price_format, $payprocess['taxed']);//." ".$payprocess['currency'];
-		$payprocess['type'] = 'TAX';
-
-		$this->_tax = $payprocess;
-		if(count($items) > 0){
-			$items[-1] = "PayProcessed";
-			$items[-2] = $payprocess;
-		}
-		return $payprocess;
-	}
-
 	// Check if product is in the promotion restriction
 	function isRestrictedProduct($item, $products)
 	{
@@ -537,37 +354,6 @@ class DigiComModelCart extends JModelItem
 			{
 				return true;
 			}
-		}
-
-		return false;
-	}
-
-	// Check required products in previous order(s)
-	function havePreviousOrderOfProduct($promo)
-	{
-		$db = JFactory::getDBO();
-		$user = JFactory::getUser();
-
-		if (count($promo->orders) == 0)
-			return true;
-
-		$previous_order = '';
-		for ($i=0; $i<count($promo->orders); $i++)
-		{
-			$previous_order.= "l.`productid`=".$promo->orders[$i]->productid.' OR ';
-		}
-
-		$sql = "SELECT COUNT(*)
-				FROM `#__digicom_promocodes_orders` AS o
-					 INNER JOIN `#__digicom_licenses` AS l ON l.`productid`=o.`productid`
-				WHERE l.`published`=1
-				  AND (".substr($previous_order,0,strlen($previous_order)-4).")
-				  AND l.`userid`=".$user->id."";
-		// AND l.`expires`>='" . date("Y-m-d H:i:s") . "'
-		$db->setQuery($sql);
-		if ($db->loadResult())
-		{
-			return true;
 		}
 
 		return false;
@@ -1214,10 +1000,13 @@ class DigiComModelCart extends JModelItem
 		$my = JFactory::getUser($uid);
 
 		$database = JFactory::getDBO();
-		$cart = $this->getInstance( "Cart", "digicomModel" );
+		//$cart = $this->getInstance( "Cart", "digicomModel" );
 		$configs = $this->getInstance( "Config", "digicomModel" );
 		$configs = $configs->getConfigs();
-		$tax = $cart->calc_price( $items, $customer, $configs );
+		//$tax = $cart->calc_price( $items, $customer, $configs );
+		$order = $this->getTable( "Order" );
+		$order->load( $orderid );
+		
 		//echo $type;die;
 		$email = $configs->get('email');
 		
@@ -1251,8 +1040,8 @@ class DigiComModelCart extends JModelItem
 		$message = str_replace( "[ORDER_ID]", $orderid, $message );
 		$message = str_replace( "[ORDER_AMOUNT]", $amount, $message );
 		$message = str_replace( "[NUMBER_OF_PRODUCTS]", $number_of_products, $message );
-		$message = str_replace( "[DISCOUNT_AMOUNT]", $tax['promo'], $message );
-		$message = str_replace( "[STATUS]", $status, $message );
+		$message = str_replace( "[DISCOUNT_AMOUNT]", $order->promocodediscount, $message );
+		$message = str_replace( "[ORDER_STATUS]", $status, $message );
 		$displayed = array();
 		$product_list = '';
 
@@ -1295,8 +1084,8 @@ class DigiComModelCart extends JModelItem
 		$subject = str_replace( "[ORDER_ID]", $orderid, $subject );
 		$subject = str_replace( "[ORDER_AMOUNT]", $amount, $subject );
 		$subject = str_replace( "[NUMBER_OF_PRODUCTS]", $number_of_products, $subject );
-		$subject = str_replace( "[DISCOUNT_AMOUNT]", $tax['promo'], $subject );
-		$subject = str_replace( "[STATUS]", $status, $subject );
+		$subject = str_replace( "[DISCOUNT_AMOUNT]", $order->promocodediscount, $subject );
+		$subject = str_replace( "[ORDER_STATUS]", $status, $subject );
 		$displayed = array();
 		$product_list = '';
 		foreach ( $items as $i => $item ) {
@@ -1308,10 +1097,8 @@ class DigiComModelCart extends JModelItem
 		}
 		$subject = str_replace( "[PRODUCTS]", $product_list, $subject );
 
-		//echo $message;die;
-
 		$subject = html_entity_decode( $subject, ENT_QUOTES );
-
+		
 		$message = html_entity_decode( $message, ENT_QUOTES );
 
 		$app = JFactory::getApplication('site');
@@ -1355,37 +1142,7 @@ class DigiComModelCart extends JModelItem
 		return true;
 	}
 
-	//integrate with idev_affiliate
-	function affiliate( $total, $orderid, $configs )
-	{
-
-		$mosConfig_live_site = DigiComSiteHelperDigiCom::getLiveSite();
-
-		$my = JFactory::getUser();
-		if ( $configs->get('idevaff','notapplied') == 'notapplied' )
-			return;
-		@session_start();
-		$idev_psystems_1 = $total;
-		$idev_psystems_2 = $orderid;
-		$name = "iJoomla Products";
-		$email = $my->email; //"cust@cust.cust";
-		$item_number = 1;
-		$ip_address = $_SERVER['REMOTE_ADDR'];
-		if ( $configs->get('idevaff','notapplied') == 'standalone' && file_exists( JPATH_SITE . "/" . $configs->get('idevpath','notapplied') . "/sale.php" ) )
-		{
-			$ch = curl_init();
-			curl_setopt( $ch, CURLOPT_URL, $mosConfig_live_site . "/" . $configs->get('idevpath','notapplied') . "/sale.php?profile=72198&idev_saleamt=" . $total . "&idev_ordernum=" . $orderid . "&ip_address=" . $ip_address );
-			curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-			curl_exec( $ch );
-			curl_close( $ch );
-		} else if ( $configs->get('idevaff','notapplied') == 'component' ) {
-			$orderidvar = $configs->get('orderidvar','');
-			$ordersubtotvar = $configs->get('ordersubtotalvar','');
-			echo '<img border="0" src="' . $mosConfig_live_site . '/components/com_idevaffiliate/sale.php?' . $ordersubtotvar . '=' . sprintf( "%.2f", $total ) . '&' . $orderidvar . '=' . $orderid . '" width="1" height="1">';
-		}
-
-	}
-
+	
 	function addOrder( $items, $cust_info, $now, $paymethod, $status = "Active" )
 	{
 		$cart = $this;
@@ -1490,183 +1247,6 @@ class DigiComModelCart extends JModelItem
 		return true;
 	}
 
-	function addUserToList($user_id, $product_id){
-		require_once(JPATH_COMPONENT . '/helpers/MCAPI.class.php');
-		$db = JFactory::getDBO();
-		$sql = "select p.mailchimpapi, p.mailchimplist, p.mailchimpregister, p.mailchimpgroupid, u.email, c.firstname, c.lastname from #__users u, #__digicom_products p, #__digicom_customers c where u.id=c.id and u.id=".intval($user_id)." and p.id=".intval($product_id);
-		$db->setQuery($sql);
-		$db->query();
-		$result = $db->loadAssocList();
-
-		if(isset($result) && count($result) > 0){
-			$mc_username = $result["0"]["mailchimpapi"];
-			$mc_listid  = $result["0"]["mailchimplist"];
-			$mc_autoregister = $result["0"]["mailchimpregister"] == 0 ? FALSE : TRUE;
-			$mc_groupid = $result["0"]["mailchimpgroupid"];
-			$mc_email = $result["0"]["email"];
-
-			if(trim($mc_username) == ""){
-				$sql = "select `mailchimpapi` from #__digicom_settings";
-				$db->setQuery($sql);
-				$db->query();
-				$mc_username = $db->loadResult();
-			}
-
-			if(trim($mc_listid) == ""){
-				$sql = "select `mailchimplist` from #__digicom_settings";
-				$db->setQuery($sql);
-				$db->query();
-				$mc_listid = $db->loadResult();
-			}
-
-			if(trim($mc_username) != "" && trim($mc_listid) != ""){
-				$api = new MCAPI($mc_username);
-				$user_info = $api->listMemberInfo($mc_listid, $mc_email);
-
-				if($user_info === FALSE){//add new user
-					$mergeVars = array('FNAME'=>$result["0"]["firstname"], 'LNAME'=>$result["0"]["lastname"]);
-					if(trim($mc_groupid) != ""){
-						$mergeVars["INTERESTS"] = trim($mc_groupid);
-					}
-					$api->listSubscribe($mc_listid, $mc_email, $mergeVars, 'html', $mc_autoregister, true);
-				}
-				else{//already exist and update user group
-					if(trim($mc_groupid) != ""){
-						$user_group_string = $user_info["merges"]["INTERESTS"];
-						$user_group_array = explode(",", $user_group_string);
-						$exist = FALSE;
-						foreach($user_group_array as $key=>$group){
-							if(trim($group) == trim($mc_groupid)){
-								$exist = TRUE;
-							}
-						}
-
-						if($exist === FALSE){
-							$new_group_list = trim($user_group_string);
-							if(trim($new_group_list) != ""){
-								$new_group_list = trim($user_group_string).", ".trim($mc_groupid);
-							}
-							else{
-								$new_group_list = trim($mc_groupid);
-							}
-							$mergeVars = array('INTERESTS' => $new_group_list);
-
-							$name = "";
-							$groups = $api->listInterestGroupings($mc_listid);
-							if(isset($groups) && count($groups) > 0){
-								foreach($groups as $key_group=>$group){
-									if(isset($group["groups"]) && count($group["groups"]) > 0){
-										foreach($group["groups"] as $key_subgroup=>$subgroup){
-											if(trim($subgroup["name"]) == trim($mc_groupid)){
-												$name = $group["name"];
-												break;
-											}
-										}
-									}
-								}
-							}
-							if(trim($name) != ""){
-								$mergeVars = array('INTERESTS' => $new_group_list, 'GROUPINGS'=>array(array('name'=>$name, 'groups'=>$new_group_list)));
-							}
-							$api->listUpdateMember($mc_listid, $mc_email, $mergeVars, 'html', false);
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	function addLicensePackage($package_id,$orderid, $userid, $published){
-		$db = JFactory::getDbo();
-		$sql = 'SELECT  
-					`p`.`id` AS `productid` , 
-					`p`.`domainrequired`
-					
-				FROM `#__digicom_products` AS  `p`
-				WHERE 
-					`p`.`id`='.$package_id.'
-				LIMIT 1';
-		$db->setQuery($sql);
-		$res = $db->loadObject();
-		if( $res && $res->domainrequired==3 ) {
-			$this->createLicense($orderid, $res, $userid , 0, $published);
-		}
-	}
-
-	/**
-	 * Create license for product or package
-	 */
-	public function createLicense( $order_id, $product4sell, $user_id=null, $package_item=0, $published=0 ) {
-		if( $product4sell->domainrequired==3 ) {
-			$items = $this->getSubProduct($product4sell->productid);
-			if( $items && count($items) ) {
-				foreach( $items as $item ) {
-					$this->createLicense( $order_id, $item,  $user_id, $product4sell->productid, $published );
-				}
-			}
-		} else {
-			$this->createLicense2( $order_id, $product4sell, $user_id, $package_item, $published );
-		}
-	}
-	
-	/**
-	 * Create license for end product (not package)
-	 */
-	public function createLicense2( $order_id, $product, $user_id=null, $package_item=0, $published ){
-		$db 	= JFactory::getDbo();
-		$app 	= JFactory::getApplication();
-		$order 		= $this->getOrder($order_id);
-		$order_date = $order->order_date;
-		$licenseid = $this->getNewLicenseId();
-		$ltype = ($package_item)?'package_item':'common';
-		if(!$user_id){
-			$user_id = $order->userid;
-		}
-		$expires = "";
-		$time_unit = array( 1=>'HOUR', 2=>'DAY', 3=>'MONTH', 4=>'YEAR' );
-		if( $product->duration_type!=0 && $product->duration_count!= -1 ) {
-			$expires = ' DATE_ADD(FROM_UNIXTIME('.$order->order_date.'), INTERVAL '.$product->duration_count.' '.$time_unit[$product->duration_type].') ';
-		} else {
-			$expires = ' "0000-00-00 00:00:00" ';
-		}
-		$sql = 'INSERT INTO `#__digicom_licenses`
-					( `licenseid`, `userid`, `productid`, `domain`, `amount_paid`, `orderid`, `dev_domain`, `hosting_service`, `published`, `ltype`, `package_id`, `purchase_date`, `expires`, `renew`, `download_count`, `plan_id`)
-						VALUES
-					("'.$licenseid.'", '.$user_id.', '.$product->productid.', "", '.$product->price.', '.$order_id.', "", "", '.$published.', "'.$ltype.'",'.$package_item.', FROM_UNIXTIME('.$order->order_date.'), '.$expires.', 0, 0, '.$product->plan_id.')';
-		$db->setQuery($sql);
-		$db->query();
-		if($db->getErrorNum()){
-			$app->enqueuemessage($db->getErrorMsg(), 'error');
-		}
-	}
-
-	public function getSubProduct( $package_id ) {
-		if( !isset( $this->packages[$package_id] ) ) {
-			$db = JFactory::getDbo();
-			$sql = 'SELECT  
-						`f`.`featuredid` AS `productid` , 
-						`pp`.`price` , 
-						`p`.`domainrequired` , 
-						`pl`.`duration_count`, 
-						`pl`.`duration_type`,
-						`pl`.`id` AS `plan_id`
-						
-					FROM `#__digicom_featuredproducts` AS  `f` 
-							INNER JOIN  
-						`#__digicom_products` AS  `p` ON  `f`.`featuredid` =  `p`.`id` 
-							LEFT JOIN  
-						`#__digicom_products_plans` AS `pp` ON (`f`.`featuredid` =`pp`.`product_id` AND `f`.`planid` = `pp`.`plan_id` )
-							LEFT JOIN 
-						`#__digicom_plans` AS `pl` ON `f`.`planid` = `pl`.`id`
-					WHERE 
-						`f`.`productid`='.$package_id;
-			$db->setQuery($sql);
-			$res = $db->loadObjectList();
-			$this->packages[$package_id] = $res;
-		}
-		return $this->packages[$package_id];
-	}
-
 	public function getOrder( $order_id ){
 		if(!isset( $this->orders[$order_id] )) {
 			$db 	= JFactory::getDbo();
@@ -1678,59 +1258,37 @@ class DigiComModelCart extends JModelItem
 		return $this->orders[$order_id];
 	}
 
-	public function getNewLicenseId(){
+	public function getOrderItems( $order_id ){
+		
+		$configs = $this->configs;
+		$customer = new DigiComSiteHelperSession();
 		$db 	= JFactory::getDbo();
-		$sql 	= "SELECT max(licenseid) FROM `#__digicom_licenses` WHERE CONCAT('',`licenseid`*1)=`licenseid`";
-		$db->setQuery( $sql );
-		$licenseid = $db->loadResult();
-		if(isset($licenseid) && intval($licenseid) != "0"){
-			$licenseid = intval($licenseid)+1;
-		} else {
-			$licenseid = 100000001;
-		}
-		return $licenseid;
-	}
-	
-	protected function getPlanId($product_id, $plan_id=0, $renew=0){
-		if ($renew == 0 )
+		$sql 	= 'SELECT `p`.*, `od`.quantity FROM
+					`#__digicom_products` AS `p`
+						INNER JOIN
+					`#__digicom_orders_details` AS `od` ON (`od`.`productid` = `p`.`id`)
+				WHERE `orderid` ='.$order_id;
+
+		$db->setQuery($sql);
+		$items = $db->loadObjectList();
+
+		//change the price of items if needed
+		for ( $i = 0; $i < count( $items ); $i++ )
 		{
-			$sql = "SELECT pl.id as value, pl.name as text, pp.price, pp.default
-					FROM #__digicom_products_plans pp
-						 LEFT JOIN #__digicom_plans pl ON ( pp.plan_id = pl.id )
-					WHERE pp.product_id = ".$product_id;
-		} else {
-			$sql = "SELECT pl.id as value, pl.name as text, pp.price, pp.default
-					FROM #__digicom_products_renewals pp
-						 LEFT JOIN #__digicom_plans pl ON ( pp.plan_id = pl.id )
-					WHERE pp.product_id = " .$product_id;
-		}
+			$item = &$items[$i];
+			$item->discount = 0;
+			$item->currency = $configs->get('currency','USD');
+			$item->price = DigiComSiteHelperDigiCom::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
+			$item->subtotal = DigiComSiteHelperDigiCom::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
 
-		$db->setQuery( $sql );
-		$item_plains = $db->loadObjectList('value');
-		if (empty($item_plains))
-		{
-			$sql = "SELECT pl.id as value, pl.name as text, pp.price, pp.default
-					FROM #__digicom_products_plans pp
-						 LEFT JOIN #__digicom_plans pl ON ( pp.plan_id = pl.id )
-					WHERE pp.product_id = ".$product_id;
-			$db->setQuery( $sql );
-			$item_plains = $db->loadObjectList('value');
+			$item->price_formated = DigiComSiteHelperDigiCom::format_price2( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
+			$item->subtotal_formated = DigiComSiteHelperDigiCom::format_price2( $item->subtotal, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
+		
+			$item->subtotal = $item->price * $item->quantity;
 		}
+		
+		return $items ;
 
-		if( !$plan_id || !isset($item_plains[$plan_id]) ){
-			$plain_default_value = null;
-			foreach ($item_plains as $plain_key => $plain_item)
-			{
-				if($plain_item->default == 1)
-				{
-					$plain_default_value = &$item_plains[$plain_key];
-					$plan_id = $plain_key;
-					break;
-				}
-			}
-		}
-
-		return $plan_id;
 	}
 
 }

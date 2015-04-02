@@ -222,94 +222,6 @@ class DigiComModelOrders extends JModelList{
 		
 		return true;
 	}
-	
-	function _getRate($ptc, $pc, $cust)
-	{
-		$configs = $this->getInstance("Config", "DigiComModelConfig");
-		$configs = $configs->getConfigs();
-		$db = JFactory::getDBO();
-
-		$sql = "select tra.rate
-				from #__digicom_tax_rate tra, #__digicom_tax_rule tru
-				where tru.trate=tra.id
-				  and tru.pclass=".intval($ptc);
-		$db->setQuery($sql);
-		$db->query();
-		$res = $db->loadResult();
-
-		// EU Rule
-		if ($configs->get('tax_eumode',0))
-		{
-			// Get customer country percentage
-			$sql = "select rate
-					from #__digicom_tax_rate
-					where country='" . $cust->country . "'";
-			$db->setQuery($sql);
-			$db->query();
-			$ratecountry = $db->loadResult();
-
-			if (!(int)$cust->person && $cust->country != $configs->get('country',''))
-			{
-				$res = 0;
-			}
-			else
-			{
-				$res = $ratecountry;
-			}
-		}
-
-		if(!isset($res))
-		{
-			$res = 0;
-		}
-
-		return $res;
-	}
-
-	function getTax( $product_id, $cust_id, &$price ){
-		$db = JFactory::getDBO();
-
-		$configs = $this->getInstance("Config", "DigiComModelConfig");
-		$configs = $configs->getConfigs();
-
-		$sql = "select * from #__digicom_tax_productclass order by ordering asc";
-		$db->setQuery($sql);
-		$taxpclass = $db->loadObjectList();
-
-		$sql = "select * from #__digicom_productclass order by ordering asc";
-		$db->setQuery($sql);
-		$pclass = $db->loadObjectList();
-
-		$taxvalue = 0;
-
-		$sql = "select * from #__digicom_products where id = ".$product_id;
-		$db->setQuery($sql);
-		$item = $db->loadObject();
-
-		$sql ="SELECT * FROM #__digicom_customers WHERE id=".$cust_id;
-		$db->setQuery($sql);
-		$cust = $db->loadObject();
-
-		
-			$itemtax = 0;
-			//product tax class
-			$ptc = $item->taxclass > 0 ? $item->taxclass : $taxpclass[0]->id;
-			//product class
-			$pc = $item->class > 0 ? $item->class : $pclass[0]->id;
-			$rate = $this->_getRate($ptc, $pc, $cust);
-
-			if($configs->get('tax_catalog','0') == 0){
-				$itemtax = $price * $rate/100;
-			}
-			else{
-				$itemtax = $price /(1 + $rate/100);		
-			}
-			$taxvalue = $itemtax;
-		
-		$price = $price - $taxvalue;
-		return $taxvalue;
-	}
-
 
 	function calcPrice($req){
 		$configs = JComponentHelper::getComponent('com_digicom')->params;
@@ -560,52 +472,7 @@ class DigiComModelOrders extends JModelList{
 		return $db->loadResult();
 	}
 
-	/*function getlistOrders(){
-		if ( empty( $this->_orders ) ) {
-			$c = $this->getInstance( "Config", "DigiComModelConfig" );
-			$configs = $c->getConfigs();
-
-			$startdate = JRequest::getVar("startdate", "", "request");
-			$startdate = strtotime($startdate);
-
-			$enddate = JRequest::getVar("enddate", "", "request");
-			$enddate = strtotime($enddate);
-
-			$keyword = JRequest::getVar( "keyword", "", "request" );
-			$keyword_where = " and (u.username like '%" . $keyword . "%' or c.firstname like '%" . $keyword . "%' or c.lastname like '%" . $keyword . "%'
-							or o.id like '%" . $keyword . "%')";
-
-			$db = JFactory::getDBO();
-
-			$sql = "select o.*, u.username, c.firstname, c.lastname from #__digicom_orders o, #__users u, #__digicom_customers c "
-			. " where u.id=o.userid and c.id=u.id "
-			. ($startdate > 0 ? " and o.order_date > " . $startdate . " " : "")
-			. ($enddate > 0 ? " and o.order_date < " . $enddate . " " : "")
-			. (strlen( trim( $keyword ) ) > 0 ? $keyword_where . " " : "")
-			. " order by o.id desc";
-
-			$this->_total = $this->_getListCount( $sql );
-			if ( $this->getState( 'limitstart' ) > $this->_total )
-				$this->setState( 'limitstart', 0 );
-			if ( $this->getState( 'limitstart' ) > 0 & $this->getState( 'limit' ) == 0 )
-				$this->setState( 'limitstart', 0 );
-
-			if($this->getState('limit') == 0){
-				$this->setState('limit', 100);
-			}
-
-			$this->_orders = $this->_getList( $sql, $this->getState( 'limitstart' ), $this->getState( 'limit' ) );
-
-			foreach ( $this->_orders as $i => $v ) {
-				$sql = "select count(*) from #__digicom_licenses where orderid=" . $v->id;
-				$db->setQuery( $sql );
-				$this->_orders[$i]->licensenum = $db->loadResult();
-			}
-		}
-
-		return $this->_orders;
-	}*/
-
+	
 	function getOrder($id = 0){
 		if(empty($this->_order)){
 			
@@ -629,29 +496,7 @@ class DigiComModelOrders extends JModelList{
 		return $this->_order;
 	}
 
-	function store()
-	{
-		dsdebug();
-
-		$item = $this->getTable( 'Order' );
-		$data = JRequest::get( 'post' );
-		if ( !$item->bind( $data ) ) {
-		//$this->setError($item->getErrorMsg());
-			return false;
-		}
-
-		if ( !$item->check() ) {
-		//			$this->setError($item->getErrorMsg());
-			return false;
-		}
-
-		if ( !$item->store() ) {
-			//			$this->setError($item->getErrorMsg());
-			return false;
-		}
-		return true;
-
-	}
+	
 
 	function delete()
 	{
@@ -680,43 +525,7 @@ class DigiComModelOrders extends JModelList{
 		return true;
 	}
 
-	function publish()
-	{
-		$db = JFactory::getDBO();
-		$cids = JRequest::getVar( 'cid', array(0), 'post', 'array' );
-
-		$task = JRequest::getVar( 'task', '', 'post' );
-		$item = $this->getTable( 'Order' );
-
-		// Orders
-		if ( $task == 'publish' ) {
-			$sql = "update #__digicom_orders set published='1' where id in ('" . implode( "','", $cids ) . "')";
-			$return = 1;
-		} else {
-			$sql = "update #__digicom_orders set published='0' where id in ('" . implode( "','", $cids ) . "')";
-			$return = -1;
-		}
-		$db->setQuery( $sql );
-		if ( !$db->query() ) {
-			$this->setError( $db->getErrorMsg() );
-			return 0;
-		}
-
-		// Licenses
-		if ( $task == 'publish' ) {
-			$sql = "update #__digicom_licenses set published='1' where orderid in ('" . implode( "','", $cids ) . "')";
-		} else {
-			$sql = "update #__digicom_licenses set published='0' where orderid in ('" . implode( "','", $cids ) . "')";
-		}
-		$db->setQuery( $sql );
-		if ( !$db->query() ) {
-			$this->setError( $db->getErrorMsg() );
-			return 0;
-		}
-
-		return $return;
-	}
-
+	
 	function cycleStatus(){
 		$db = JFactory::getDBO();
 		$cids = JRequest::getVar( 'id');
@@ -749,20 +558,28 @@ class DigiComModelOrders extends JModelList{
 
 		if($res && $status == "Pending"){
 			$sql = "update #__digicom_orders_details set published=0 where orderid in ('".$cids."')";
-
+			$type = 'process_order';
 		}
 		elseif($status == "Active"){
 			$sql = "update #__digicom_orders_details set published=1 where orderid in ('" . $cids  . "')";
+			$type = 'complete_order';
 		}
 		
 		$db->setQuery($sql);
 		if(!$db->query()){
 			$res = false;
 		}
+
+		$this->sendApprovedEmail($cids, $type, $status);
+
 		return $res;
 	}
 
-	function sendApprovedEmail( $cid = 0 )
+
+	/*
+	* $type = process_order, new_order, cancel_order;
+	*/
+	function sendApprovedEmail( $cid = 0 , $type = 'complete_order', $status = 'Active', $paid = '')
 	{
 		if ( $cid < 1 )
 			return;
@@ -770,37 +587,19 @@ class DigiComModelOrders extends JModelList{
 		$order = $this->getTable( "Order" );
 		$order->load( $cid );
 
-		$c = $this->getInstance( "Config", "DigiComModelConfig" );
-		$configs = $c->getConfigs();
+		$configs = JComponentHelper::getComponent('com_digicom')->params;
 
 		$cust_info = $this->getTable( "Customer" );
 		$cust_info->load( $order->userid );
 
 		$my = $cust_info;
 
-		$database = JFactory::getDBO();
+		$emailinfo = $configs->get('email');
+		$message = $emailinfo->$type->body;
+		$subject = $emailinfo->$type->subject;
 
 		$mes = new stdClass();
 
-		$mes->body = "Template is empty";
-		$sql = "SELECT * FROM #__digicom_mailtemplates where `type`='approved'";
-		$database->setQuery( $sql );
-		$db = JFactory::getDBO();
-		$db->setQuery( $sql );
-		$mes = $db->loadObjectList();
-		$mes = $mes[0];
-		$message = $mes->body;
-
-		$timestamp = time();
-//		$email = $this->getTable("Mail");
-		$email->date = $timestamp;
-		$email->flag = "order";
-		$email->email = trim( $my->email );
-
-
-		$subject = $mes->subject;
-		// Replace all variables in template
-		$flag = "approved";
 		$promo = new stdClass(); //$cart->get_promo($cust_info);
 		$promo->id = $order->promocodeid;
 		$promo->code = $order->promocode;
@@ -812,9 +611,13 @@ class DigiComModelOrders extends JModelList{
 			$promocode = '0';
 		}
 
-		global $mainframe;
-		$sitename = (trim( $configs->get('store_name','DigiCom Store') ) != '') ? $configs->get('store_name','DigiCom Store') : $mainframe->getCfg( 'sitename' );
-		$siteurl = (trim( $configs->get('store_url',JURI::root()) ) != '') ? $configs->get('store_url',JURI::root()) : $mosConfig_live_site;
+		$amount = DigiComHelperDigiCom::format_price( ($paid ? $paid : $order->amount), $configs->get('currency','USD'), true, $configs );
+
+		$timestamp = time();
+
+		$app = JFactory::getApplication('administrator');
+		$sitename = (trim( $configs->get('store_name','DigiCom Store') ) != '') ? $configs->get('store_name','DigiCom Store') : $app->getCfg( 'sitename' );
+		$siteurl = (trim( $configs->get('store_url',JURI::root()) ) != '') ? $configs->get('store_url',JURI::root()) : JURI::root();
 
 		$message = str_replace( "[SITENAME]", $sitename, $message );
 
@@ -828,66 +631,46 @@ class DigiComModelOrders extends JModelList{
 		$message = str_replace( "[CUSTOMER_LAST_NAME]", $my->lastname, $message );
 		$message = str_replace( "[CUSTOMER_EMAIL]", $my->email, $message );
 
-		$message = str_replace( "[TODAY_DATE]", date( $configs->get('time_format','DD-MM-YYYY'), $timestamp ), $message );
+		$message = str_replace( "[ORDER_DATE]", date( $configs->get('time_format','DD-MM-YYYY'), $timestamp ), $message );
 		$message = str_replace( "[ORDER_ID]", $cid, $message );
-		$message = str_replace( "[ORDER_AMOUNT]", $order->amount, $message );
-		$message = str_replace( "[NUMBER_OF_LICENSES]", $order->number_of_licenses, $message );
-		$message = str_replace( "[PROMO]", $promo->code, $message );
-
+		$message = str_replace( "[ORDER_AMOUNT]", $amount, $message );
+		$message = str_replace( "[NUMBER_OF_PRODUCTS]", $order->number_of_products, $message );
+		$message = str_replace( "[DISCOUNT_AMOUNT]", $order->promocodediscount, $message );
+		$message = str_replace( "[ORDER_STATUS]", $status, $message );
 
 		$displayed = array();
 		$product_list = '';
 
-		$sql = "select l.*, p.name, p.sendmail from #__digicom_licenses l, #__digicom_products p where l.productid=p.id and l.orderid=" . $cid;
+		$sql = "select od.*, p.name from #__digicom_orders_details od, #__digicom_products p where od.productid=p.id and od.orderid=" . $cid;
 		$db->setQuery( $sql );
 		$items = $db->loadObjectList();
 
 		$product_list = "";
 		foreach ( $items as $item ) {
-			$sql = "select * from #__digicom_license_fields where licenseid=" . $item->id;
-			$db->setQuery( $sql );
-			$fields = $db->loadObjectList();
-			$optionlist = '';
-			if ( count( $fields ) > 0 )
-				foreach ( $fields as $v ) {
-					$optionlist .= $v->fieldname . ": " . $v->optionname . "<br />";
-				}
-			if ( !in_array( $item->name, $displayed ) ) {
-				$product_list .= $item->name . '<br />';
-				$product_list .= $optionlist . '<br />';
-			}
-
-			$displayed[] = $item->name;
+			$product_list .= $item->quantity . " - " . $item->name . '<br />';
 		}
-		$message = str_replace( "[PRODUCTS]", $product_list, $message );
-		$email->body = $message;
 
+		$message = str_replace( "[PRODUCTS]", $product_list, $message );
 
 		//subject
 		$subject = str_replace( "[SITENAME]", $sitename, $subject );
-
 		$subject = str_replace( "../%5BSITEURL%5D", $siteurl, $subject );
 		$subject = str_replace( "%5BSITEURL%5D", $siteurl, $subject );
 		$subject = str_replace( "[SITEURL]", $siteurl, $subject );
 
-		$message = str_replace( "[CUSTOMER_USER_NAME]", $my->username, $message );
-		$message = str_replace( "[CUSTOMER_FIRST_NAME]", $my->firstname, $message );
-		$message = str_replace( "[CUSTOMER_LAST_NAME]", $my->lastname, $message );
-		$message = str_replace( "[CUSTOMER_EMAIL]", $my->email, $message );
+		$subject = str_replace( "[CUSTOMER_USER_NAME]", $my->username, $subject );
+		$subject = str_replace( "[CUSTOMER_FIRST_NAME]", $my->firstname, $subject );
+		$subject = str_replace( "[CUSTOMER_LAST_NAME]", $my->lastname, $subject );
+		$subject = str_replace( "[CUSTOMER_EMAIL]", $my->email, $subject );
 
 
-		$message = str_replace( "[TODAY_DATE]", date( $configs->get('time_format','DD-MM-YYYY'), $timestamp ), $message );
-		$message = str_replace( "[ORDER_ID]", $cid, $message );
-		$message = str_replace( "[ORDER_AMOUNT]", $order->amount, $message );
-		$message = str_replace( "[NUMBER_OF_LICENSES]", $order->number_of_licenses, $message );
-		$subject = str_replace( "[PROMO]", $promo->code, $subject );
-		$displayed = array();
-		$product_list = '';
-		foreach ( $items as $item ) {
-			if ( !in_array( $item->name, $displayed ) )
-				$product_list .= $item->name . '<br />';
-			$displayed[] = $item->name;
-		}
+		$subject = str_replace( "[ORDER_DATE]", date( $configs->get('time_format','DD-MM-YYYY'), $timestamp ), $subject );
+		$subject = str_replace( "[ORDER_ID]", $cid, $subject );
+		$subject = str_replace( "[ORDER_AMOUNT]", $amount, $subject );
+		$subject = str_replace( "[NUMBER_OF_PRODUCTS]", $order->number_of_products, $subject );
+		$subject = str_replace( "[DISCOUNT_AMOUNT]", $order->promocodediscount, $subject );
+		$subject = str_replace( "[ORDER_STATUS]", $status, $subject );
+
 		$subject = str_replace( "[PRODUCTS]", $product_list, $subject );
 
 		$subject = html_entity_decode( $subject, ENT_QUOTES );
@@ -895,10 +678,10 @@ class DigiComModelOrders extends JModelList{
 		$message = html_entity_decode( $message, ENT_QUOTES );
 
 		// Send email to user
-//			global $mosConfig_mailfrom, $mosConfig_fromname, $configs;
+		//global $mosConfig_mailfrom, $mosConfig_fromname, $configs;
 
-		$mosConfig_mailfrom = $mainframe->getCfg( "mailfrom" );
-		$mosConfig_fromname = $mainframe->getCfg( "fromname" );
+		$mosConfig_mailfrom = $app->getCfg( "mailfrom" );
+		$mosConfig_fromname = $app->getCfg( "fromname" );
 		if ( $configs->get('usestoremail',0) == '1' && strlen( trim( $configs->get('store_name','DigiCom Store') ) ) > 0 && strlen( trim( $configs->get('store_email',JFactory::getConfig()->get('mailfrom')) ) ) > 0 ) {
 			$adminName2 = $configs->get('store_name','DigiCom Store');
 			$adminEmail2 = $configs->get('store_email',JFactory::getConfig()->get('mailfrom'));
@@ -929,11 +712,10 @@ class DigiComModelOrders extends JModelList{
 
 		if ( !$mailSender->Send() ) {
 
-//			<Your error code management>
+			//<Your error code management>
 		}
-//			mosMail( $adminEmail2, $adminName2, $my->email, $subject, $message, 1 ); // Send mail
+		//	mosMail( $adminEmail2, $adminName2, $my->email, $subject, $message, 1 ); // Send mail
 		if ( $configs->get('sendmailtoadmin',0) != 0 ) {
-
 
 			$mailSender = JFactory::getMailer();
 			$mailSender->IsHTML( true );
@@ -942,82 +724,12 @@ class DigiComModelOrders extends JModelList{
 			$mailSender->setSubject( $subject );
 			$mailSender->setBody( $message );
 			if ( !$mailSender->Send() ) {
-//					<Your error code management>
+				//<Your error code management>
 			}
-//				mosMail( $adminEmail2, $adminName2, $adminEmail2, $subject, $message, 1 ); // Send mail
+			//mosMail( $adminEmail2, $adminName2, $adminEmail2, $subject, $message, 1 ); // Send mail
 		}
 
-//###
-		//$email->store(); // Nik (10/23/2006): Save in #__digicom_sendmails
-
-		$sent = array();
-
-		//send per product emails
-		foreach ( $items as $item ) {
-			if ( !in_array( $item->name, $sent ) && $item->sendmail == '1' ) {
-				$subject = $item->productemailsubject;
-				$subject = str_replace( "[SITENAME]", $sitename, $subject );
-
-				$subject = str_replace( "../%5BSITEURL%5D", $siteurl, $subject );
-				$subject = str_replace( "%5BSITEURL%5D", $siteurl, $subject );
-				$subject = str_replace( "[SITEURL]", $siteurl, $subject );
-
-				//$query = "select lastname from #__digicom_customer where userid=".$my->id;
-				//$database->setQuery($query);
-				//$lastname = $database->loadResult();
-
-				$subject = str_replace( "[CUSTOMER_USER_NAME]", $my->username, $subject );
-				$subject = str_replace( "[CUSTOMER_FIRST_NAME]", $my->firstname, $subject );
-				$subject = str_replace( "[CUSTOMER_LAST_NAME]", $my->lastname, $subject );
-				$subject = str_replace( "[CUSTOMER_EMAIL]", $my->email, $subject );
-
-				$subject = str_replace( "[TODAY_DATE]", date( $configs->get('time_format','DD-MM-YYYY'), $timestamp ), $subject );
-
-				$message = $item->productemail;
-				$message = str_replace( "[SITENAME]", $sitename, $message );
-
-				$message = str_replace( "../%5BSITEURL%5D", $siteurl, $message );
-				$message = str_replace( "%5BSITEURL%5D", $siteurl, $message );
-				$message = str_replace( "[SITEURL]", $siteurl, $message );
-
-				$message = str_replace( "[CUSTOMER_USER_NAME]", $my->username, $message );
-				$message = str_replace( "[CUSTOMER_FIRST_NAME]", $my->firstname, $message );
-				$message = str_replace( "[CUSTOMER_LAST_NAME]", $my->lastname, $message );
-				$message = str_replace( "[CUSTOMER_EMAIL]", $my->email, $message );
-
-				$message = str_replace( "[TODAY_DATE]", date( $configs->get('time_format','DD-MM-YYYY'), $timestamp ), $message );
-
-				$optionlist = '';
-
-
-				$sql = "select * from #__digicom_license_fields where licenseid=" . $item->id;
-				$db->setQuery( $sql );
-				$fields = $db->loadObjectList();
-				$optionlist = '';
-				if ( count( $fields ) > 0 )
-					foreach ( $fields as $v ) {
-						$optionlist .= $v->fieldname . ": " . $v->optionname . "<br />";
-					}
-
-				$message = str_replace( "[ATTRIBUTES]", $optionlist, $message );
-				$message = str_replace( "[PRODUCT_NAME]", $item->name, $message );
-
-				$subject = str_replace( "[ATTRIBUTES]", $optionlist, $subject );
-				$subject = str_replace( "[PRODUCT_NAME]", $item->name, $subject );
-				$mailSender = JFactory::getMailer();
-				$mailSender->IsHTML( true );
-				$mailSender->addRecipient( $my->email );
-				$mailSender->setSender( array($adminEmail2, $adminName2) );
-				$mailSender->setSubject( $subject );
-				$mailSender->setBody( $message );
-				if ( !$mailSender->Send() ) {
-//						<Your error code management>
-				}
-
-				//		mosMail( $adminEmail2, $adminName2, $my->email, $subject, $message, 1 ); // Send mail
-				$sent[] = $item->name;
-			}
-		}
+		return true;
 
 	}
 
