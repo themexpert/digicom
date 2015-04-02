@@ -591,7 +591,7 @@ class DigiComSiteHelperDigicom {
 		$options = array();
 
 		#Top Countries#
-		$topcountries = $configs->get('topcountries','');
+		$topcountries = $configs->get('topcountries', array());
 
 	    $options[] = JHTML::_('select.optgroup', JText::_('COM_DIGICOM_SELECT_FAVORITE_COUNTRY_TITLE'));
 
