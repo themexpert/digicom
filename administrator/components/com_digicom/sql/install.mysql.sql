@@ -152,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `#__digicom_products` (
   `attribs` varchar(5120) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `published` (`published`)
-) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE IF NOT EXISTS `#__digicom_products_bundle` (
