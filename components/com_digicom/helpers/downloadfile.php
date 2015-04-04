@@ -1,14 +1,14 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 398 $
- * @lastmodified	$LastChangedDate: 2013-11-04 05:07:10 +0100 (Mon, 04 Nov 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license
-*/
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
+
 /*
  * Class has simple interface to download any file from a server
  * without displaying the location of the file
@@ -20,6 +20,7 @@ defined ('_JEXEC') or die ("Go away.");
  *
  */
 
+// TODO : PHP property visibility update
 
 class DigiComSiteHelperDownloadFile {
 	var $df_path = "";

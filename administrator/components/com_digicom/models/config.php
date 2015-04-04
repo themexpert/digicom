@@ -1,9 +1,9 @@
 <?php
 /**
  * @package		DigiCom
- * @copyright	Copyright (c)2010-2015 ThemeXpert
- * @license 	GNU General Public License version 3, or later
  * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
  * @since 		1.0.0
  */
 
@@ -20,7 +20,7 @@ class DigiComModelConfig extends JModelForm
 	 *
 	 * @return  mixed  A JForm object on success, false on failure
 	 *
-	 * @since	3.2
+	 * @since	1.0.0
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
@@ -39,7 +39,7 @@ class DigiComModelConfig extends JModelForm
 	 *
 	 * @return	object
 	 *
-	 * @since	3.2
+	 * @since	1.0.0
 	 */
 	public function getComponent()
 	{
@@ -62,7 +62,7 @@ class DigiComModelConfig extends JModelForm
 	 *
 	 * @return  boolean  True on success, false on failure.
 	 *
-	 * @since	3.2
+	 * @since	1.0.0
 	 * @throws  RuntimeException
 	 */
 	public function save($data)

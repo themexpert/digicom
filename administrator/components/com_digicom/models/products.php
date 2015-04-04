@@ -1,14 +1,13 @@
 <?php
 /**
  * @package		DigiCom
- * @copyright	Copyright (c)2010-2015 ThemeXpert
- * @license 	GNU General Public License version 3, or later
  * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
  * @since 		1.0.0
  */
 
 defined('_JEXEC') or die;
-
 
 /**
  * Methods supporting a list of product records.
@@ -92,6 +91,9 @@ class DigiComModelProducts extends JModelList
 		$categoryId = $this->getUserStateFromRequest($this->context . '.filter.category_id', 'filter_category_id');
 		$this->setState('filter.category_id', $categoryId);
 
+		$product_type = $this->getUserStateFromRequest($this->context . '.filter.product_type', 'filter_product_type');
+		$this->setState('filter.product_type', $product_type);
+
 		$level = $this->getUserStateFromRequest($this->context . '.filter.level', 'filter_level');
 		$this->setState('filter.level', $level);
 
@@ -134,6 +136,7 @@ class DigiComModelProducts extends JModelList
 		$id .= ':' . $this->getState('filter.access');
 		$id .= ':' . $this->getState('filter.published');
 		$id .= ':' . $this->getState('filter.category_id');
+		$id .= ':' . $this->getState('filter.product_type');
 		$id .= ':' . $this->getState('filter.author_id');
 		$id .= ':' . $this->getState('filter.language');
 
@@ -215,6 +218,14 @@ class DigiComModelProducts extends JModelList
 		elseif ($published === '')
 		{
 			$query->where('(a.published = 0 OR a.published = 1)');
+		}
+
+		// Filter by published state
+		$product_type = $this->getState('filter.product_type');
+
+		if (!empty($product_type))
+		{
+			$query->where('a.product_type = "' . $product_type .'"');
 		}
 
 		// Filter by a single or group of categories.

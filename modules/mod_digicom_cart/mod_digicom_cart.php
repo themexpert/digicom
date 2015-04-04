@@ -1,98 +1,38 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 428 $
- * @lastmodified	$LastChangedDate: 2013-11-18 02:23:53 +0100 (Mon, 18 Nov 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
-defined ( 'DS' ) or define( 'DS', DIRECTORY_SEPARATOR );
+defined('_JEXEC') or die;
 
-global $isJ25;
-$jv = new JVersion();
-$isJ25 = $jv->RELEASE == '2.5';
-if ($isJ25) {
-	jimport( 'joomla.application.component.controller' );
-	jimport('joomla.application.component.model');
-	jimport( 'joomla.application.component.view');
-	if (!class_exists('DigiComController')) {
-		class DigiComController	extends JController {}
-	}
-	if (!class_exists('DigiComModel')) {
-		class DigiComModel		extends JModel {}
-	}
-	if (!class_exists('oDigiComView')) {
-		class DigiComView		extends JView {}
-	}
-} else {
-	if (!class_exists('DigiComController')) {
-		class DigiComController	extends JControllerLegacy {}
-	}
-	if (!class_exists('DigiComModel')) {
-		class DigiComModel		extends JModelLegacy {}
-	}
-	if (!class_exists('DigiComView')) {
-		class DigiComView		extends JViewLegacy {}
-	}
-}
-$class_sfx = $params->get("moduleclass_sfx", '');
+require_once JPATH_SITE . '/components/com_digicom/helpers/route.php';
 
+JLoader::discover('DigiComSiteHelper', JPATH_SITE . '/components/com_digicom/helpers');
+JTable::addIncludePath(JPATH_SITE . '/components/com_digicom/tables', 'Table');
+JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_digicom/models', 'DigiComModel');
 
-$my	  			 		 = JFactory::getUser();
-$mosConfig_absolute_path =JPATH_BASE; 
-$mosConfig_live_site	 =JURI::base();
-$database				= JFactory :: getDBO();
+// Lets cache some variable
+$app				= JFactory :: getApplication();
+$input				= $app->input;
+$doc 				= JFactory::getDocument();
 
-$http_host = explode(':', $_SERVER['HTTP_HOST'] );
+$customer	= new DigiComSiteHelperSession();
+$cart		= JModelLegacy::getInstance('Cart', 'DigiComModel', array('ignore_request' => true));
+$configs	= JComponentHelper::getComponent('com_digicom')->params;
 
-if( (!empty( $_SERVER['HTTPS'] ) && strtolower( $_SERVER['HTTPS'] ) != 'off' || isset( $http_host[1] ) && $http_host[1] == 443) && substr( $mosConfig_live_site, 0, 8 ) != 'https://' ) {
-	$mosConfig_live_site1 = 'https://'.substr( $mosConfig_live_site, 7 );
-} else {
-	$mosConfig_live_site1 = $mosConfig_live_site;
-}
+$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+$price_format = '%'.$configs->get('totaldigits').'.'.$configs->get('decimaldigits').'f';
 
-//show the shopping cart
-jimport('joomla.application.component.model');
-include_once JPATH_SITE.DS.'components'.DS.'com_digicom'.DS.'models'.DS.'cart.php';
-include_once JPATH_SITE.DS.'components'.DS.'com_digicom'.DS.'models'.DS.'tax.php';
+$list = $cart->getCartItems ($customer, $configs);
 
-if(!class_exists("TablePromo")){
-	include_once(JPATH_SITE.DS.'components'.DS.'com_digicom'.DS.'tables'.DS.'promo.php');
-}
+$item = $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=cart', true);
+$Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
 
-include_once(JPATH_SITE.DS.'components'.DS.'com_digicom'.DS.'models'.DS.'config.php');
-include_once(JPATH_SITE.DS.'components'.DS.'com_digicom'.DS.'helpers'.DS.'session.php');
-include_once(JPATH_SITE.DS.'components'.DS.'com_digicom'.DS.'helpers'.DS.'helper.php');
-$customer	= new DigiComSessionHelper();
-$cart		= new DigiComModelCart();
-$helper		= new DigiComHelper();
-$config		= new DigiComModelConfig();
-$configs	= $config->getConfigs();
+// Load style file
+$doc->addStyleSheet( JUri::root(true). '/modules/mod_digicom_cart/assets/css/mod_digicom_cart.css');
 
-
-$price_format = '%'.$configs->get('totaldigits').'.'.$configs->get('decimaldigits').'f'; 
-$categ_digicom = $params->get( 'digicom_category', '' );
-
-if($categ_digicom != ''){
-	$sql = "SELECT id FROM #__digicom_categories WHERE title LIKE '".$categ_digicom."' OR name LIKE '".$categ_digicom."'";
-	$database->setQuery($sql);
-	$id = $database->loadResult();	
-	$cat_url = (isset($configs->continue_shopping_url) && $configs->continue_shopping_url != '')?$configs->continue_shopping_url : "index.php?option=com_digicom&view=products&task=list&cid=" . $id;
-} else {
-	$cat_url = (isset($configs->continue_shopping_url) && $configs->continue_shopping_url != '')?$configs->continue_shopping_url : "index.php?option=com_digicom&view=categories&cid=0";		
-}
-
-$items = $cart->getCartItems ($customer, $configs);
-
-$cart_itemid = DigiComHelper::getCartItemid();
-$and_itemid = "";
-if ($cart_itemid != "0") {
-	$and_itemid = "&Itemid=".$cart_itemid;
-}
-
-
-$layout = $params->get('layout','default');
-require JModuleHelper::getLayoutPath('mod_digicom_cart', $layout);
+require JModuleHelper::getLayoutPath('mod_digicom_cart', $params->get('layout', 'default'));

@@ -1,29 +1,26 @@
 <?php
 /**
  * @package		DigiCom
- * @copyright	Copyright (c)2010-2015 ThemeXpert
- * @license 	GNU General Public License version 3, or later
  * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
  * @since 		1.0.0
  */
 
 defined('_JEXEC') or die;
 
 /**
- * Weblinks helper.
+ * DigiCom helper.
  *
- * @since  1.6
+ * @since  1.0.0
  */
 class DigiComHelperDigiCom extends JHelperContent{
 	
 	/**
 	 * Configure the Linkbar.
-		*
 	 * @param   string  $vName  The name of the active view.
-		*
 	 * @return  void
-		*
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 
 	public static function addSubmenu($vName)
@@ -33,11 +30,6 @@ class DigiComHelperDigiCom extends JHelperContent{
 			'index.php?option=com_digicom',
 			$vName == 'digicom'
 		);
-		/*JHtmlSidebar::addEntry(
-			JText::_('VIEWTREESETTINGMANAGER'),
-			'index.php?option=com_digicom&controller=configs',
-			$vName == 'configs'
-		);*/
 		
 		JHtmlSidebar::addEntry(
 			JText::_('COM_DIGICOM_SIDEBAR_MENU_CATEGORIES'),
@@ -65,59 +57,19 @@ class DigiComHelperDigiCom extends JHelperContent{
 			'index.php?option=com_digicom&view=orders',
 			$vName == 'orders'
 		);
-		/*
-		JHtmlSidebar::addEntry(
-			JText::_('VIEWTREELICENCES'),
-			'index.php?option=com_digicom&controller=licenses',
-			$vName == 'licenses'
-		);
 		
-		JHtmlSidebar::addEntry(
-			JText::_('VIEWTREEATTR'),
-			'index.php?option=com_digicom&controller=attributes',
-			$vName == 'attributes'
-		);
-		*/
 		JHtmlSidebar::addEntry(
 			JText::_('COM_DIGICOM_SIDEBAR_MENU_DISCOUNTS'),
 			'index.php?option=com_digicom&view=discounts',
 			$vName == 'discounts'
 		);
-		/*
-		JHtmlSidebar::addEntry(
-			JText::_('VIEWTREESUBSCRIP'),
-			'index.php?option=com_digicom&controller=subscription',
-			$vName == 'subscription'
-		);
-		JHtmlSidebar::addEntry(
-			JText::_('VIEWTREETAX'),
-			'index.php?option=com_digicom&controller=tax',
-			$vName == 'logs'
-		);
 		
-		JHtmlSidebar::addEntry(
-			JText::_('VIEWTREEPSYSTEMEMAILS'),
-			'index.php?option=com_digicom&view=email',
-			$vName == 'email'
-		);
-		
-		JHtmlSidebar::addEntry(
-			JText::_('VIEWTREEEMAILREMINDER'),
-			'index.php?option=com_digicom&controller=emailreminders',
-			$vName == 'emailreminders'
-		);
-		*/
 		JHtmlSidebar::addEntry(
 			JText::_('COM_DIGICOM_SIDEBAR_MENU_REPORTS'),
 			'index.php?option=com_digicom&view=stats',
 			$vName == 'stats'
 		);
 		
-		/*JHtmlSidebar::addEntry(
-			JText::_('VIEWTREELOGS'),
-			'index.php?option=com_digicom&controller=logs',
-			$vName == 'logs'
-		);*/
 		JHtmlSidebar::addEntry(
 			JText::_('COM_DIGICOM_SIDEBAR_MENU_ABOUT'),
 			'index.php?option=com_digicom&view=about',
@@ -149,7 +101,7 @@ class DigiComHelperDigiCom extends JHelperContent{
 		
 	}
 	
-	
+	// TODO : change function name to camelCase
 	public static function format_price ($amount, $ccode, $add_sym = true, $configs) {
 
 		$db = JFactory::getDBO();
@@ -248,9 +200,9 @@ class DigiComHelperDigiCom extends JHelperContent{
 	{
 		if (file_exists($dir))
 		{
-			if (!file_exists($dir.DS."index.html"))
+			if (!file_exists($dir . "/index.html"))
 			{
-				$handle = @fopen($dir.DS."index.html", "w");
+				$handle = @fopen($dir . "/index.html", "w");
 				@fwrite($handle, '<html><body bgcolor="#FFFFFF"></body></html>');
 				@fclose($handle);
 			}
@@ -440,20 +392,44 @@ class DigiComHelperDigiCom extends JHelperContent{
 
 		$remain = $promo->codelimit - $promo->used;
 		if (($timeend > $now || $timeend == $nullDate )&& ($limit == 0 || $used < $limit) && $published == "1") {
-			$status = JText::_("HELPERACTIVE");
+			$status = JText::_("COM_DIGICOM_ACTIVE");
 		} else if ($published == "0") {
-			$status = "<span style='color:red'>".(JText::_("HELPERUNPUBLISHED"))." </span>";
+			$status = "<span style='color:red'>".(JText::_("COM_DIGICOM_UNPUBLISHED"))." </span>";
 		} else if ($limit >0  && $used  >= $limit) {
-			$status = "<span style='color:red'>".(JText::_("HELPEREXPIRE")).": (".(JText::_("Amount")).")</span>";
+			$status = "<span style='color:red'>".(JText::_("COM_DIGICOM_EXPIRED")).": (".(JText::_("Amount")).")</span>";
 		} else if ($timeend != $nullDate && $timeend < $now && ($remain < 1 && $promo->codelimit > 0)) {
-			$status = "<span style='color:red'>".(JText::_("HELPEREXPIRE")).": (".(JText::_("Date"))." ,".(JText::_("Amount")).")</span>";
+			$status = "<span style='color:red'>".(JText::_("COM_DIGICOM_EXPIRED")).": (".(JText::_("Date"))." ,".(JText::_("Amount")).")</span>";
 		} else if ($timeend < $now && $timeend != $nullDate){
-			$status = "<span style='color:red'>".(JText::_("HELPEREXPIRE")).": (".(JText::_("Date")).")</span>";
+			$status = "<span style='color:red'>".(JText::_("COM_DIGICOM_EXPIRED")).": (".(JText::_("Date")).")</span>";
 		} else {
-			$status = "<span style='color:red'>".(JText::_("HELPERPROMOERROR"))."</span>";
+			$status = "<span style='color:red'>".(JText::_("COM_DIGICOM_DISCOUNT_CODE_ERROR"))."</span>";
 		}
 	}
 	
+	//This function transforms the php.ini notation for numbers (like '2M') to an integer (2*1024*1024 in this case)  
+	public static function convertPHPSizeToBytes($sSize)  
+	{  
+	    if ( is_numeric( $sSize) ) {
+	       return $sSize;
+	    }
+	    $sSuffix = substr($sSize, -1);  
+	    $iValue = substr($sSize, 0, -1);  
+	    switch(strtoupper($sSuffix)){  
+	    case 'P':  
+	        $iValue *= 1024;  
+	    case 'T':  
+	        $iValue *= 1024;  
+	    case 'G':  
+	        $iValue *= 1024;  
+	    case 'M':  
+	        $iValue *= 1024;  
+	    case 'K':  
+	        $iValue *= 1024;  
+	        break;  
+	    }  
+	    return $iValue;  
+	}  
+
 	public static function setSidebarRight(){
 		
 		$input = JFactory::getApplication()->input;
@@ -461,8 +437,51 @@ class DigiComHelperDigiCom extends JHelperContent{
 		$ajax = $input->get('ajax','');
 		if($tmpl == 'component' or $ajax =='1') return;
 		
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'layouts'.DS.'toolbar'.DS.'sidebar-right.php');
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.'/layouts/toolbar/sidebar-right.php');
 		return true;
+	}
+
+	public static function getChargebacks($order)
+	{
+		$db = JFactory::getDBO();
+		$sql = "SELECT SUM(`cancelled_amount`)
+				FROM `#__digicom_orders_details`
+				WHERE `cancelled`=1
+				  AND `orderid`=" . (int) $order;
+		$db->setQuery($sql);
+		return $db->loadResult();
+	}
+
+	public static function getRefunds($order)
+	{
+		$db = JFactory::getDBO();
+		$sql = "SELECT SUM(`cancelled_amount`)
+				FROM `#__digicom_orders_details`
+				WHERE `cancelled`=2
+				  AND `orderid`=" . (int) $order;
+		$db->setQuery($sql);
+		return $db->loadResult();
+	}
+
+	public static function getDeleted($order, $license=0)
+	{
+		$db = JFactory::getDBO();
+		$sql = "SELECT SUM(`amount_paid`)
+				FROM `#__digicom_orders_details`
+				WHERE `cancelled`=3
+				  AND `orderid`=" . (int) $order;
+		$db->setQuery($sql);
+		return $db->loadResult();
+	}
+
+	public static function isProductDeleted($id)
+	{
+		$db = JFactory::getDBO();
+		$sql = "SELECT `cancelled`
+				FROM `#__digicom_orders_details`
+				WHERE `id`='" . $id . "'";
+		$db->setQuery($sql);
+		return $db->loadResult();
 	}
 
 	public static function addAdminStyles(){

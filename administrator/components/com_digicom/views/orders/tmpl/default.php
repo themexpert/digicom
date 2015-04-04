@@ -1,23 +1,19 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 341 $
- * @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
 
 JHtml::_('behavior.multiselect');
 JHtml::_('behavior.formvalidation');
 JHtml::_('formbehavior.chosen', 'select');
 
 $invisible = 'style="display:none;"';
-
-$document = JFactory::getDocument();
-//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 
 $k = 0;
 $n = count( $this->orders );
@@ -51,8 +47,8 @@ Joomla.submitbutton = function (pressbutton) {
 <div id="j-main-container" class="">
 <?php endif;?>
 
-	<div class="alert alert-info">
-		<?php echo JText::_("COM_DIGICOM_ORDERS_HEADER_NOTICE"); ?>
+	<div class="dg-alert dg-alert-with-icon">
+		<span class="icon-support"></span><?php echo JText::_("COM_DIGICOM_ORDERS_HEADER_NOTICE"); ?>
 	</div>
 	<form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&view=orders'); ?>" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
 		<div class="js-stools">
@@ -105,6 +101,9 @@ Joomla.submitbutton = function (pressbutton) {
 						<?php echo JText::_( 'COM_DIGICOM_PRICE' ); ?>
 					</th>
 					<th>
+						<?php echo JText::_( 'COM_DIGICOM_AMOUNT_PAID' ); ?>
+					</th>
+					<th>
 						<?php echo JText::_( 'COM_DIGICOM_USER_NAME' ); ?>
 					</th>
 					<th>
@@ -153,14 +152,15 @@ Joomla.submitbutton = function (pressbutton) {
 						</td>
 						<td align="center">
 							<?php 
-								
-								if ($order->amount_paid == "-1") $order->amount_paid = $order->amount;
-								//$refunds = DigiComAdminModelOrder::getRefunds($order->id);
-								//$chargebacks = DigiComAdminModelOrder::getChargebacks($order->id);
-								//$order->amount_paid = $order->amount_paid - $refunds - $chargebacks;
-								$order->amount_paid = $order->amount_paid;
+								echo DigiComHelperDigiCom::format_price($order->amount, $configs->get('currency','USD'), true, $configs); 
+							?>
+						</td>
+						<td align="center">
+							<?php 
+								$refunds = DigiComHelperDigiCom::getRefunds($order->id);
+								$chargebacks = DigiComHelperDigiCom::getChargebacks($order->id);
+								$order->amount_paid = $order->amount_paid - $refunds - $chargebacks;
 								echo DigiComHelperDigiCom::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs); 
-								
 							?>
 						</td>
 						<td align="center">
@@ -171,12 +171,18 @@ Joomla.submitbutton = function (pressbutton) {
 						</td>
 						<td align="center">
 							<?php
-								$a_style = "";
+								$class = 'badge badge-success';
 								if($order->status == "Pending"){
-									$a_style = 'style="color:red;"';
+									$class = 'badge badge-warning';
 								}
 							?>
-							<a href="<?php echo $orderstatuslink; ?>" <?php echo $a_style; ?> ><?php echo (trim( $order->status ) != "in_progres" ? $order->status : "Active"); ?></a>
+							<span class="<?php echo $class; ?>">
+								<?php echo (trim( $order->status ) != "in_progres" ? $order->status : "Active"); ?>
+							</span>
+							<a href="<?php echo $orderstatuslink; ?>" title="<?php echo JText::_('COM_DIGICOM_ORDER_STATUS_CHANGE_FROM_'.strtoupper($order->status));?>" class="hasTooltip">
+								<i class="icon-refresh"></i>
+							</a>
+							
 						</td>
 						<td align="center">
 							<?php echo $order->processor; ?>
@@ -190,7 +196,7 @@ Joomla.submitbutton = function (pressbutton) {
 				<?php else: ?>
 					<tr>
 						<td colspan="9">
-							<?php echo  JText::_('COM_DIGICOM_NO_ORDER_FOUND'); ?>
+							<?php echo  JText::_('COM_DIGICOM_ORDERS_NOTICE_NO_ORDER_FOUND'); ?>
 						</td>
 					</tr>
 				<?php endif; ?>
@@ -220,4 +226,8 @@ Joomla.submitbutton = function (pressbutton) {
 		<input type="hidden" name="view" value="orders" />
 		<?php echo JHtml::_('form.token'); ?>
 	</form>
+</div>
+
+<div class="dg-footer">
+	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
 </div>

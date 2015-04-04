@@ -1,12 +1,17 @@
 <?php
-// no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
-defined('DS') or define ('DS',DIRECTORY_SEPARATOR);
+/**
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
+
+defined('_JEXEC') or die;
+
 // Import library dependencies
 jimport('joomla.event.plugin');
-//$mainframe->registerEvent( 'onPrepareContent', 'botMosDigiCom'  );
-//error_reporting(0);
-require_once JPATH_SITE.DS.'components'.DS.'com_digicom'.DS.'helpers'.DS.'digicom.php';
+require_once JPATH_SITE . '/components/com_digicom/helpers/digicom.php';
 
 class plgSystemDigiCom_Addtocart extends JPlugin{
 	

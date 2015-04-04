@@ -1,14 +1,13 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 441 $
- * @lastmodified	$LastChangedDate: 2013-11-20 04:59:31 +0100 (Wed, 20 Nov 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license
-*/
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
 
 class DigiComModelOrder extends JModelItem
 {
@@ -38,8 +37,8 @@ class DigiComModelOrder extends JModelItem
 			$db->setQuery($sql);
 			$this->_order = $db->loadObject();
 			
-			$sql = "SELECT p.id, p.name, p.images,p.language, p.catid, od.package_type, od.amount_paid as price ";
-			$sql .= "FROM #__digicom_products as p, #__digicom_orders_details as od WHERE p.id=od.productid AND od.orderid='". $this->_order->id ."'";
+			$sql = "SELECT p.id, p.name, p.images,p.language, p.catid, od.package_type, od.amount_paid as price , od.userid";
+			$sql .= " FROM #__digicom_products as p, #__digicom_orders_details as od WHERE p.id=od.productid AND od.orderid='". $this->_order->id ."'";
 			$db->setQuery($sql);
 			$prods = $db->loadObjectList();
 			

@@ -1,18 +1,18 @@
 <?php
 /**
  * @package		DigiCom
- * @copyright	Copyright (c)2010-2015 ThemeXpert
- * @license 	GNU General Public License version 3, or later
  * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
  * @since 		1.0.0
  */
 
 defined('_JEXEC') or die;
 
 /**
- * Weblink controller class.
+ * OrderNew controller class.
  *
- * @since  1.6
+ * @since  1.0.0
  */
 class DigiComControllerOrderNew extends JControllerForm
 {
@@ -25,7 +25,7 @@ class DigiComControllerOrderNew extends JControllerForm
 	 *
 	 * @return  boolean
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
 	{
@@ -55,7 +55,7 @@ class DigiComControllerOrderNew extends JControllerForm
 	 *
 	 * @return	void
 	 *
-	 * @since	1.6
+	 * @since	1.0.0
 	 */
 	protected function postSaveHook(JModelLegacy $model, $validData = array())
 	{

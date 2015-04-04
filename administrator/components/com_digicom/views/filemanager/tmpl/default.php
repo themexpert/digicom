@@ -1,16 +1,16 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 341 $
- * @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
-
+defined('_JEXEC') or die;
+// TODO : Refactor - Codestandard
 $mosConfig_absolute_path = JPATH_ROOT;
+$max_upload = ini_get('upload_max_filesize');
 ?>
 <?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="">
@@ -20,8 +20,8 @@ $mosConfig_absolute_path = JPATH_ROOT;
 <?php else : ?>
 	<div id="j-main-container" class="">
 <?php endif;?>
-		<div class="alert alert-info">
-			<?php echo JText::_("COM_DIGICOM_FILE_MANAGER_HEADER_NOTICE"); ?>
+		<div class="dg-alert dg-alert-with-icon">
+			<span class="icon-flag"></span><?php echo JText::sprintf("COM_DIGICOM_FILE_MANAGER_HEADER_NOTICE",ini_get('upload_max_filesize')); ?>
 		</div>
 					<script type="text/javascript">
 						jQuery(document).ready(function() {
@@ -55,3 +55,7 @@ $mosConfig_absolute_path = JPATH_ROOT;
 					</form>
 				
 	</div>
+
+		<div class="dg-footer">
+			<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+		</div>

@@ -1,22 +1,21 @@
 <?php
 /**
  * @package		DigiCom
- * @copyright	Copyright (c)2010-2015 ThemeXpert
- * @license 	GNU General Public License version 3, or later
  * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
  * @since 		1.0.0
  */
 
 defined('_JEXEC') or die;
 
-
 use Joomla\Registry\Registry;
 use Joomla\String\String;
 
 /**
- * discount model.
+ * Discount model.
  *
- * @since  1.5
+ * @since  1.0.0
  */
 class DigiComModelDiscount extends JModelAdmin
 {
@@ -24,7 +23,7 @@ class DigiComModelDiscount extends JModelAdmin
 	 * The type alias for this content type.
 	 *
 	 * @var    string
-	 * @since  3.2
+	 * @since  1.0.0
 	 */
 	public $typeAlias = 'com_digicom.discount';
 
@@ -32,7 +31,7 @@ class DigiComModelDiscount extends JModelAdmin
 	 * The prefix to use with controller messages.
 	 *
 	 * @var    string
-	 * @since  1.6
+	 * @since  1.0.0
 	 */
 	protected $text_prefix = 'COM_DIGICOM_DISCOUNTS';
 
@@ -43,17 +42,13 @@ class DigiComModelDiscount extends JModelAdmin
 	 *
 	 * @return  boolean  True if allowed to delete the record. Defaults to the permission for the component.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function canDelete($record)
 	{
 		if (!empty($record->id))
 		{
-			if ($record->state != -2)
-			{
-				return;
-			}
-
+			
 			if ($record->catid)
 			{
 				return JFactory::getUser()->authorise('core.delete', 'com_digicom.discount.' . (int) $record->catid);
@@ -70,7 +65,7 @@ class DigiComModelDiscount extends JModelAdmin
 	 *
 	 * @return  boolean  True if allowed to change the state of the record. Defaults to the permission for the component.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function canEditState($record)
 	{
@@ -90,7 +85,7 @@ class DigiComModelDiscount extends JModelAdmin
 	 *
 	 * @return  mixed  Object on success, false on failure.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	public function getItem($pk = null)
 	{
@@ -133,7 +128,7 @@ class DigiComModelDiscount extends JModelAdmin
 	 *
 	 * @return  JTable  A JTable object
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	public function getTable($type = 'Discount', $prefix = 'Table', $config = array())
 	{
@@ -148,7 +143,7 @@ class DigiComModelDiscount extends JModelAdmin
 	 *
 	 * @return  mixed  A JForm object on success, false on failure
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
@@ -168,7 +163,7 @@ class DigiComModelDiscount extends JModelAdmin
 	 *
 	 * @return  array  The default data is an empty array.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function loadFormData()
 	{

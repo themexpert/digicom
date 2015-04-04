@@ -1,10 +1,10 @@
 <?php
 /**
- * @package     Joomla.Administrator
- * @subpackage  com_categories
- *
- * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
  */
 
 defined('_JEXEC') or die;
@@ -122,7 +122,7 @@ class DigiComViewCategories extends JViewLegacy
 		else
 		// Else use the base title
 		{
-			$ptitle = JText::_('COM_CATEGORIES_CATEGORIES_BASE_TITLE');
+			$ptitle = JText::_('COM_DIGICOM_CATEGORIES_TOOLBAR_TITLE');
 		}
 
 		// Load specific css component
@@ -136,39 +136,10 @@ class DigiComViewCategories extends JViewLegacy
 			JToolbarHelper::addNew('category.add');
 		}
 
-		if ($canDo->get('core.edit') || $canDo->get('core.edit.own'))
-		{
-			JToolbarHelper::editList('category.edit');
-		}
-
 		if ($canDo->get('core.edit.state'))
 		{
 			JToolbarHelper::publish('categories.publish', 'JTOOLBAR_PUBLISH', true);
 			JToolbarHelper::unpublish('categories.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-			JToolbarHelper::archiveList('categories.archive');
-		}
-
-		if (JFactory::getUser()->authorise('core.admin'))
-		{
-			JToolbarHelper::checkin('categories.checkin');
-		}
-
-		// Add a batch button
-		if ($user->authorise('core.create', $extension) & $user->authorise('core.edit', $extension) && $user->authorise('core.edit.state', $extension))
-		{
-			JHtml::_('bootstrap.modal', 'collapseModal');
-			$title = JText::_('JTOOLBAR_BATCH');
-
-			// Instantiate a new JLayoutFile instance and render the batch button
-			$layout = new JLayoutFile('joomla.toolbar.batch');
-
-			$dhtml = $layout->render(array('title' => $title));
-			$bar->appendButton('Custom', $dhtml, 'batch');
-		}
-
-		if ($canDo->get('core.admin'))
-		{
-			JToolbarHelper::custom('categories.rebuild', 'refresh.png', 'refresh_f2.png', 'JTOOLBAR_REBUILD', false);
 		}
 
 		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete', $component))
@@ -179,31 +150,6 @@ class DigiComViewCategories extends JViewLegacy
 		{
 			JToolbarHelper::trash('categories.trash');
 		}
-
-		// Compute the ref_key if it does exist in the component
-		if (!$lang->hasKey($ref_key = strtoupper($component . ($section ? "_$section" : '')) . '_CATEGORIES_HELP_KEY'))
-		{
-			$ref_key = 'JHELP_COMPONENTS_' . strtoupper(substr($component, 4) . ($section ? "_$section" : '')) . '_CATEGORIES';
-		}
-
-		/*
-		 * Get help for the categories view for the component by
-		 * -remotely searching in a language defined dedicated URL: *component*_HELP_URL
-		 * -locally  searching in a component help file if helpURL param exists in the component and is set to ''
-		 * -remotely searching in a component URL if helpURL param exists in the component and is NOT set to ''
-		 */
-		if ($lang->hasKey($lang_help_url = strtoupper($component) . '_HELP_URL'))
-		{
-			$debug = $lang->setDebug(false);
-			$url = JText::_($lang_help_url);
-			$lang->setDebug($debug);
-		}
-		else
-		{
-			$url = null;
-		}
-
-		JToolbarHelper::help($ref_key, JComponentHelper::getParams($component)->exists('helpURL'), $url);
 
 		$layout = new JLayoutFile('toolbar.title');
 		$title = array(

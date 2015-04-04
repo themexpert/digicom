@@ -1,57 +1,53 @@
 <?php
 /**
-  @version		$Id: helper.php 341 2013-10-10 12:28:28Z thongta $
- * @package		DigiCom - Shopping Cart for Joomla.
- * @copyright	(C) 2013 themexpert.com. All rights reserved.
- * @author		themexpert.com
- * @license		GNU/GPLv3, see LICENSE
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
  */
-// no direct access
-defined('_JEXEC') or die('Restricted access');
-$mainframe = JFactory::getApplication();
 
-class modDigiComCategoriesHelper
+defined('_JEXEC') or die;
+
+require_once JPATH_SITE . '/components/com_digicom/helpers/route.php';
+
+/**
+ * Helper for mod_digicom_categories
+ *
+ * @package     DigiCom
+ * @subpackage  mod_articles_categories
+ *
+ * @since       1.0.0
+ */
+abstract class ModDigicomCategoriesHelper
 {
-	
-	public static function getCategories($parent_id=0, $lv='', $catsList=array())
+	/**
+	 * Get list of Categories
+	 *
+	 * @param   \Joomla\Registry\Registry  &$params  module parameters
+	 *
+	 * @return  array
+	 *
+	 * @since   1.5
+	 */
+	public static function getList(&$params)
 	{
-		$db	= JFactory::getDBO();
-		$qr = 'SELECT `id` AS `id`, `name` AS `title`, `parent_id` AS `parent_id` FROM `#__digicom_categories`';
-		$qr .= ' WHERE `parent_id` = '.(int)$parent_id.' AND `published` = 1';
-		
-		// Filter by User ACL : Access Lavel		
-		// Implement View Level Access
-		$user = JFactory::getUser();
-		if (!$user->authorise('core.admin'))
+		$options               = array();
+		$options['countItems'] = $params->get('numitems', 0);
+
+		$categories = JCategories::getInstance('Digicom', $options);
+		$category   = $categories->get($params->get('parent', 'root'));
+
+		if ($category != null)
 		{
-			$groups = implode(',', $user->getAuthorisedViewLevels());
-			$qr .= ' AND `access` IN (' . $groups . ')';
-		}
-		
-		$qr .= '  ORDER BY `ordering` ASC';
-		$db->setQuery($qr);
-		$cats	= $db->loadObjectList();
-		if (!$cats) {
-			return $catsList;
-		}
-		$nlv = ' - - '.($lv == '' ? '' : $lv);
-		foreach ($cats as $c) {
-			$cat = new stdClass();
-			$cat->id 				= $c->id;
-			$cat->title				= $lv.$c->title;
-			$cat->parent_id			= $c->parent_id;
-			$cArr	= array();
-			$cArr[]	= $cat;
-			$subCat	= self::getCategories($cat->id, $nlv, array());
-			if ($subCat) {
-				$cArr	= array_merge($cArr,$subCat);
+			$items = $category->getChildren();
+
+			if ($params->get('count', 0) > 0 && count($items) > $params->get('count', 0))
+			{
+				$items = array_slice($items, 0, $params->get('count', 0));
 			}
-			if (is_array($catsList)) {
-				$catsList	= array_merge($catsList,$cArr);
-			} else {
-				$catsList	= $cArr;
-			}
+
+			return $items;
 		}
-		return $catsList;
 	}
 }

@@ -36,6 +36,17 @@
 			>
 			<option value="">JOPTION_SELECT_ACCESS</option>
 		</field>
+		<field
+			name="product_type"
+			type="list"
+			label="COM_DIGICOM_PRODUCTS_TYPE"
+			description="COM_DIGICOM_PRODUCTS_TYPE_DESC"
+			onchange="this.form.submit();"
+			>
+			<option value="">COM_DIGICOM_PRODUCTS_SELECT_TYPE</option>
+			<option value="reguler">COM_DIGICOM_PRODUCTS_TYPE_SINGLE</option>
+			<option value="bundle">COM_DIGICOM_PRODUCTS_TYPE_BUNDLE</option>
+		</field>
 		<!-- 
 		<field
 			name="level"

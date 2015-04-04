@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="DIGICOM_ORDERS">
+	<layout title="COM_DIGICOM_MENU_ITEM_TYPE_ORDERS">
 		<message>
-			<![CDATA[DIGICOM_ORDERS TIP]]>
+			<![CDATA[COM_DIGICOM_MENU_ITEM_TYPE_ORDERS_DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>DIGICOM_ORDERS</name>
-		<description>DIGICOM_ORDERS DESC</description>
+		<name>COM_DIGICOM_MENU_ITEM_TYPE_ORDERS</name>
+		<description>COM_DIGICOM_MENU_ITEM_TYPE_ORDERS_DESC</description>
 		<params>
 		</params>
 	</state>

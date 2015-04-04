@@ -1,16 +1,15 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 398 $
- * @lastmodified	$LastChangedDate: 2013-11-04 05:07:10 +0100 (Mon, 04 Nov 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
+defined('_JEXEC') or die;
 
-*/
-
-defined ('_JEXEC') or die ("Go away.");
+//TODO : PHP property need to be added eg : public, private
 
 class DigiComControllerDownloads extends JControllerLegacy
 {
@@ -43,7 +42,6 @@ class DigiComControllerDownloads extends JControllerLegacy
 			return;
 		}
 		
-		//require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'downloadfileclass.inc' );
 		$fileInfo = $this->_model->getfileinfo();
 		
 		DigiComSiteHelperDigiCom::checkUserAccessToFile($fileInfo,$this->_customer->_user->id);
@@ -56,7 +54,7 @@ class DigiComControllerDownloads extends JControllerLegacy
 		
 		$parsed = parse_url($fileInfo->url);
 		if (empty($parsed['scheme'])) {
-			$fileLink = JPATH_BASE.DS.$fileInfo->url;
+			$fileLink = JPATH_BASE . '/' . $fileInfo->url;
 		}else{
 			$fileLink = $fileInfo->url;
 		}
@@ -67,12 +65,10 @@ class DigiComControllerDownloads extends JControllerLegacy
 		$files->hits = $files->hits+1;
 		$files->store();
 		
-		//$downloadfile = new DOWNLOADFILE($fileLink);
 		$downloadfile = new DigiComSiteHelperDownloadFile($fileLink);
 		if (!$downloadfile->df_download()){
 			$itemid = JFactory::getApplication()->input->get('itemid',0);
 			$msg = JText::_sprintf("COM_DIGICOM_FILE_DOWNLOAD_FAILED",$fileInfo->name);
-			//$msg = JText::sprintf('COM_DIGICOM_FILE_DONT_EXIST_DETAILS',$fileInfo->name);
 			JFactory::getApplication()->redirect('index.php?option=com_digicom&view=downloads&Itemid='.$itemid,$msg);
 		}			
 		

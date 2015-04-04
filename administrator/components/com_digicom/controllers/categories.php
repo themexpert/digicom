@@ -1,9 +1,9 @@
 <?php
 /**
  * @package		DigiCom
- * @copyright	Copyright (c)2010-2015 ThemeXpert
- * @license 	GNU General Public License version 3, or later
  * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
  * @since 		1.0.0
  */
 
@@ -46,7 +46,7 @@ class DigiComControllerCategories extends JControllerAdmin
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		$extension = $this->input->get('extension');
-		$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=categories&extension=' . $extension, false));
+		$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=categories', false));
 
 		$model = $this->getModel();
 
@@ -126,7 +126,7 @@ class DigiComControllerCategories extends JControllerAdmin
 			// Make sure the item ids are integers
 			jimport('joomla.utilities.arrayhelper');
 			JArrayHelper::toInteger($cid);
-
+			
 			// Remove the items.
 			if ($model->delete($cid))
 			{
@@ -138,6 +138,6 @@ class DigiComControllerCategories extends JControllerAdmin
 			}
 		}
 
-		$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&extension=' . $extension, false));
+		$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=categories', false));
 	}
 }

@@ -1,44 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="2.5" client="site" method="upgrade">
+<extension type="module"
+		   version="3.4"
+		   client="site"
+		   method="upgrade">
 	<name>DigiCom Shopping Cart</name>
-	<author>themexpert.com</author>
-	<creationDate>Oct 2013</creationDate>
-	<copyright>Copyright (C) 2013 themexpert.com</copyright>
+	<author>ThemeXpert</author>
+	<creationDate>Mar 2015</creationDate>
+	<copyright>Copyright (C) 2010-2015 ThemeXpert. All rights reserved.</copyright>
 	<license>GNU/GPLv3</license>
 	<authorEmail>info@themexpert.com</authorEmail>
 	<authorUrl>www.themexpert.com</authorUrl>
-	<version>3.1.3b</version>
-	<description>DigiCom shoping cart</description>
+	<version>1.0.0</version>
+	<description>DigiCom Shopping Cart</description>
 	<files>
 		<filename module="mod_digicom_cart">mod_digicom_cart.xml</filename>
 		<filename module="mod_digicom_cart">mod_digicom_cart.php</filename>
+		<folder>assets</folder>
 		<folder>tmpl</folder>
 		<filename>index.html</filename>
 	</files>
-	<languages folder="languages">
-			<language tag="en-GB">en-GB.mod_digicom_cart.ini</language>
+	<languages folder="language">
+			<language tag="en-GB">en-GB/en-GB.mod_digicom_cart.ini</language>
 	</languages>
 	
 	<config>
 		<fields name="params">
-			<fieldset name="basic" label="COM_MENUS_BASIC_FIELDSET_LABEL">
-				<field name="digicom_category" type="text" default="" label="Default Category (enter category name):" description="This module displays a Buy Now button and once the user adds something to the shopping cart, it shows the shopping cart." />
-				<field name="modbuynow" type="list" default="0" label="BUTTON" description="">
-					<option value="2">NOTHING</option>
-					<option value="1">TEXT</option>
-					<option value="0">IMAGE</option>
-				</field>
-				<field type="filelist" 
-						name="layout" 
-						default="default"
-						label="MOD_DIGICOM_CONFIG_LAYOUT_LABEL" 
-						description="MOD_DIGICOM_CONFIG_LAYOUT_DESC" 
-						filter=".php" 
-						directory="/modules/mod_digicom_cart/tmpl/" 
-						hide_default="true" 
-						hide_none="true" 
-						stripext="true"/>
-				<field name="moduleclass_sfx" type="text" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+			<fieldset name="basic" label="">
+				
 			</fieldset>
 		</fields>
 	</config>

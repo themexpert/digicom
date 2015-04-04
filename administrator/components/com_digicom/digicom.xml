@@ -1,72 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="2.5.0" method="upgrade">
-	<name>COM_DIGICOM</name>
-	<creationDate>Nov 2014</creationDate>
-	<author>themexpert.com</author>
-	<authorEmail>info@themexpert.com</authorEmail>
+<extension type="component" version="3.1" method="upgrade">
+	<name>com_digicom</name>
+	<author>ThemeXpert</author>
+	<creationDate>March 2015</creationDate>
+	<copyright>(C) 2005 - 2015 Open Source Matters. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>admin@themexpert.com</authorEmail>
 	<authorUrl>www.themexpert.com</authorUrl>
-	<copyright>Copyright (C) 2013 themexpert.com.</copyright>
-	<license>GPL/GNU</license>
-	<version>3.1.1b16</version>
-	<install folder="admin">
+	<version>1.0.0</version>
+	<description>COM_DIGICOM_XML_DESCRIPTION</description>
+	<scriptfile>script.php</scriptfile>
+
+	<install>
 		<sql>
-			<file charset="utf8" driver="mysql">sql/install.sql</file>
+			<file charset="utf8" driver="mysql">sql/install.mysql.sql</file>
 		</sql>
 	</install>
 
-	<uninstall folder="admin">
+	<uninstall>
 		<sql>
-			<file charset="utf8" driver="mysql">sql/uninstall.sql</file>
+			<file charset="utf8" driver="mysql">sql/uninstall.mysql.sql</file>
 		</sql>
 	</uninstall>
-
+	
 	<files folder="site">
-		<filename>index.html</filename>
-		<filename>router.php</filename>
-		<filename>controller.php</filename>
 		<filename>digicom.php</filename>
-		<folder>assets</folder>
-		<folder>controllers</folder>
-		<folder>download</folder>
-		<folder>helpers</folder>
-		<folder>models</folder>
-		<folder>views</folder>
-		<folder>tables</folder>
-	</files>
+		<filename>controller.php</filename>
+		<filename>router.php</filename>
+		<filename>index.html</filename>
+		<filename>metadata.xml</filename>
 
-	<languages>
-		<language tag="en-GB">en-GB.com_digicom.ini</language>
-	</languages>
+		<folder>controllers</folder>
+		<folder>helpers</folder>
+		<folder>language</folder>
+		<folder>models</folder>
+		<folder>tables</folder>
+		<folder>templates</folder>
+		<folder>views</folder>
+	</files>
+	
+	<media folder="media" destination="digicom">
+		<folder>assets</folder>
+	</media>
 
 	<administration>
-		<menu img="components/com_digicom/assets/images/icons/small/digicom_logo.png">COM_DIGICOM</menu>
+		<menu img="class:digicom">com_digicom</menu>
+		<submenu>
+			<menu link="option=com_digicom" view="links" img="class:digicom" alt="DigiCom/Dashboard">com_digicom_dashboard</menu>
+			<menu link="option=com_digicom&amp;view=products" view="products" img="class:digicom-products" alt="DigiCom/Products">com_digicom_products</menu>
+			<menu link="option=com_digicom&amp;view=categories" view="categories" img="class:digicom-categories" alt="DigiCom/Categories">com_digicom_categories</menu>
+			<menu link="option=com_digicom&amp;view=filemanager" view="filemanager" img="class:digicom-filemanager" alt="DigiCom/FileManager">com_digicom_filemanager</menu>
+			<menu link="option=com_digicom&amp;view=customers" view="customers" img="class:digicom-customers" alt="DigiCom/Customers">com_digicom_customers</menu>
+			<menu link="option=com_digicom&amp;view=orders" view="orders" img="class:digicom-orders" alt="DigiCom/Orders">com_digicom_orders</menu>
+			<menu link="option=com_digicom&amp;view=discounts" view="discounts" img="class:digicom-discounts" alt="DigiCom/Discounts">com_digicom_discount</menu>
+			<menu link="option=com_digicom&amp;view=stats" view="stats" img="class:digicom-stats" alt="DigiCom/Stats">com_digicom_stats</menu>
+			<menu link="option=com_digicom&amp;view=about" view="about" img="class:digicom-about" alt="DigiCom/About">com_digicom_about</menu>
+		</submenu>
 		<files folder="admin">
-			<folder>assets</folder>
+			<filename>digicom.php</filename>
+			<filename>controller.php</filename>
+			<filename>access.xml</filename>
+			<filename>config.xml</filename>
+			<filename>index.html</filename>
+
 			<folder>controllers</folder>
-			<folder>elements</folder>
-			<folder>extras</folder>
 			<folder>helpers</folder>
 			<folder>html</folder>
+			<folder>language</folder>
+			<folder>layouts</folder>
 			<folder>libs</folder>
 			<folder>models</folder>
 			<folder>sql</folder>
 			<folder>tables</folder>
-			<folder>upgrade</folder>
 			<folder>views</folder>
-			<filename>config.xml</filename>
-			<filename>digicom.php</filename>
-			<filename>controller.php</filename>
-			<filename>index.html</filename>
 		</files>
-		<languages folder="admin">
-			<language tag="en-GB">en-GB.com_digicom.ini</language>
-			<language tag="en-GB">en-GB.com_digicom.sys.ini</language>
-		</languages>
 	</administration>
 
-	<scriptfile>script.php</scriptfile>
-	
-	<updateservers>
-		<server type="extension" priority="2" name="DigiCom Updates">http://themexpert.com/updates/digicom.xml</server>
-	</updateservers>
 </extension>
+

@@ -1,16 +1,17 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 436 $
- * @lastmodified	$LastChangedDate: 2013-11-19 15:04:40 +0100 (Tue, 19 Nov 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
 
 jimport('joomla.filesystem.file');
+
+// TODO : Remove JRequest to JInput and php visibility
 
 class DigiComModelDownloads extends JModelList
 {
@@ -155,8 +156,8 @@ class DigiComModelDownloads extends JModelList
 							$item->filesize = DigiComSiteHelperDigiCom::FileSizeConvert($filesize);
 							$item->filemtime = date("d F Y", filemtime($fileLink));
 						}else{
-							$item->filesize = JText::_('COM_DIGICOM_FILE_DONT_EXIST');
-							$item->filemtime = JText::_('COM_DIGICOM_FILE_DONT_EXIST');
+							$item->filesize = JText::_('COM_DIGICOM_FILE_DOESNT_EXIST');
+							$item->filemtime = JText::_('COM_DIGICOM_FILE_DOESNT_EXIST');
 						}
 						
 					}
@@ -192,22 +193,6 @@ class DigiComModelDownloads extends JModelList
 		$db->setQuery($query);
 		return $db->loadObject();		
 		
-	}
-	
-	function getPackageContents($license, $product) {
-
-		jimport("joomla.filesystem.file");
-
-		define( 'PCLZIP_TEMPORARY_DIR', JPATH_ROOT.DS.'administrator/components/digicom_product_uploads/tmp/' );
-
-		DigiComSiteHelperDigiCom::CreateIndexFile(JPATH_ROOT.DS.'administrator/components/digicom_product_uploads/');
-		DigiComSiteHelperDigiCom::CreateIndexFile(JPATH_ROOT.DS."components/com_digicom/download/");
-		DigiComSiteHelperDigiCom::CreateIndexFile(JPATH_ROOT.DS."components/com_digicom/download/".$license->userid."/");
-
-		require_once (JPATH_ROOT.DS."administrator".DS."includes".DS."pcl".DS."pclzip.lib.php");
-
-		$srcZip = new PclZip(JPATH_ROOT.DS."components/com_digicom/download/".$license->userid."/".$product->file);
-		return ($srcZip->listContent());
 	}
 
 }

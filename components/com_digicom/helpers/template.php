@@ -1,14 +1,15 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 341 $
- * @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
+
+// TODO : PHP visibility and proper naming convention
 
 class DigiComSiteHelperTemplate extends JViewLegacy {
 	
@@ -20,46 +21,46 @@ class DigiComSiteHelperTemplate extends JViewLegacy {
 
 		$this->view = $view;
 		$this->addScriptDeclaration('var digicom_site = "'. JUri::root() . '";');
-		$this->addScriptDeclaration('var DIGI_ATENTION = "'. JText::_("DIGI_ATENTION") . '";');
-		$this->addScriptDeclaration('var DSALL_REQUIRED_FIELDS = "'. JText::_("DSALL_REQUIRED_FIELDS") . '";');
-		$this->addScriptDeclaration('var DSCONFIRM_PASSWORD_MSG = "'. JText::_("DSCONFIRM_PASSWORD_MSG") . '";');
-		$this->addScriptDeclaration('var DSINVALID_EMAIL = "'. JText::_("DSINVALID_EMAIL") . '";');
-		$this->addScriptDeclaration('var ACCEPT_TERMS_CONDITIONS = "'. JText::_("ACCEPT_TERMS_CONDITIONS") . '";');
+		$this->addScriptDeclaration('var DIGI_ATENTION = "'. JText::_("COM_DIGICOM_REGISTER_NOTICE_ATTENTION") . '";');
+		$this->addScriptDeclaration('var DSALL_REQUIRED_FIELDS = "'. JText::_("COM_DIGICOM_REGISTER_NOTICE_ALL_REQUIRED_FIELDS") . '";');
+		$this->addScriptDeclaration('var DSCONFIRM_PASSWORD_MSG = "'. JText::_("COM_DIGICOM_REGISTER_NOTICE_CONFIRM_PASSWORD_UNMATCHED") . '";');
+		$this->addScriptDeclaration('var DSINVALID_EMAIL = "'. JText::_("COM_DIGICOM_REGISTER_NOTICE_INVALID_EMAIL") . '";');
+		$this->addScriptDeclaration('var ACCEPT_TERMS_CONDITIONS = "'. JText::_("COM_DIGICOM_REGISTER_NOTICE_ACCEPT_TERMS_CONDITIONS") . '";');
 
 	}
 	public function rander($layout = 'products'){
 		
 		$this->view->setLayout($layout);
 		
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$params = JComponentHelper::getParams('com_digicom');
 		// Look for template files in component folders
-		$this->view->_addPath('template', JPATH_COMPONENT.DS.'templates');
-		$this->view->_addPath('template', JPATH_COMPONENT.DS.'templates'.DS.'default');
+		$this->view->_addPath('template', JPATH_COMPONENT . '/templates');
+		$this->view->_addPath('template', JPATH_COMPONENT . '/templates/default');
 
 		// Look for overrides in template folder (Joomla! template structure)
-		$this->view->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_digicom'.DS.'default');
-		$this->view->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_digicom');
+		$this->view->_addPath('template', JPATH_SITE . '/templates/' . $app->getTemplate() . '/html/com_digicom/default');
+		$this->view->_addPath('template', JPATH_SITE . '/templates/' . $app->getTemplate() . '/html/com_digicom');
 		
 		// Look for specific DigiCom theme files
 		if ($params->get('template','default'))
 		{
-			$this->view->_addPath('template', JPATH_COMPONENT.DS.'templates'.DS.$params->get('template','default'));
-			$this->view->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_digicom'.DS.$params->get('template','default'));
+			$this->view->_addPath('template', JPATH_COMPONENT . '/templates/' . $params->get('template','default'));
+			$this->view->_addPath('template', JPATH_SITE . '/templates/' . $app->getTemplate() . '/html/com_digicom/' . $params->get('template','default'));
 		}
 		
 		// CUSTOM CSS
-		if (is_file(JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_digicom'.DS.$params->get('template','default') . '/css/style.css')) {
-			$this->addStyleSheet(JUri::root(true).DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_digicom'.DS.$params->get('template','default') . '/css/style.css');
-		}elseif(is_file(JPATH_COMPONENT.DS.'templates'.DS.$params->get('template','default') . '/css/style.css')) {
-			$this->addStyleSheet(JUri::root(true).DS.'components'.DS.'com_digicom'.DS.'templates'.DS.$params->get('template','default') . '/css/style.css');
+		if (is_file( JPATH_SITE . '/templates/' . $app->getTemplate() . '/html/com_digicom/' . $params->get('template','default') . '/css/style.css')) {
+			$this->addStyleSheet( JUri::root(true) . '/templates/' . $app->getTemplate() . '/html/com_digicom/' . $params->get('template','default') . '/css/style.css');
+		}elseif( is_file(JPATH_COMPONENT . '/templates/' . $params->get('template','default') . '/css/style.css') ) {
+			$this->addStyleSheet( JUri::root(true) . '/components/com_digicom/templates/' . $params->get('template','default') . '/css/style.css');
 		}
 
 		// CUSTOM JS
-		if (is_file(JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_digicom'.DS.$params->get('template','default') . '/js/script.js')) {
-			$this->addScript(JUri::root(true).DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_digicom'.DS.$params->get('template','default') . '/js/script.js');
-		}elseif(is_file(JPATH_COMPONENT.DS.'templates'.DS.$params->get('template','default') . '/js/script.js')) {
-			$this->addScript(JUri::root(true).DS.'components'.DS.'com_digicom'.DS.'templates'.DS.$params->get('template','default') . '/js/script.js');
+		if (is_file(JPATH_SITE .'/templates/' . $app->getTemplate() . '/html/com_digicom/' . $params->get('template','default') . '/js/script.js')) {
+			$this->addScript(JUri::root(true) . '/templates/' . $app->getTemplate() . '/html/com_digicom/' . $params->get('template','default') . '/js/script.js');
+		}elseif( is_file( JPATH_COMPONENT . '/templates/' . $params->get('template','default') . '/js/script.js')) {
+			$this->addScript(JUri::root(true) . '/components/com_digicom/templates/' . $params->get('template','default') . '/js/script.js');
 		}
 		
 	}

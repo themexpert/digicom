@@ -1,19 +1,19 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 341 $
- * @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
+
 defined( 'DS' ) or define( 'DS', DIRECTORY_SEPARATOR);
 
 jimport( 'joomla.plugin.plugin' );
 
-require_once(dirname(__FILE__).DS.'paypal'.DS.'helper.php');
+require_once(dirname(__FILE__) . '/paypal/helper.php');
 
 class  plgDigiCom_PayPaypal extends JPlugin
 {
@@ -48,8 +48,9 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	function buildLayoutPath($layout) {
 		jimport('joomla.filesystem.file');
 		$app = JFactory::getApplication();
-		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.'default.php';
-		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
+		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
+		$override	= JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout . '.php';
+
 		if(JFile::exists($override))
 		{
 			return $override;
@@ -115,16 +116,15 @@ class  plgDigiCom_PayPaypal extends JPlugin
 		$payment_status = $this->translateResponse( $data['payment_status'] );
 
 		$result = array(
-						'order_id'=>$data['custom'],
-						'transaction_id'=>$data['txn_id'],
-						'buyer_email'=>$data['payer_email'],
-						'status'=>$payment_status,
-						'subscribe_id'=>$data['subscr_id'],
-						'txn_type'=>$data['txn_type'],
-						'total_paid_amt'=>$data['mc_gross'],
-						'raw_data'=>$data,
-						'error'=>$error,
-						);
+			'order_id'=>$data['custom'],
+			'transaction_id'=>$data['txn_id'],
+			'buyer_email'=>$data['payer_email'],
+			'status'=>$payment_status,
+			'txn_type'=>$data['txn_type'],
+			'total_paid_amt'=>$data['mc_gross'],
+			'raw_data'=>$data,
+			'processor'=>'paypal'
+		);
 		return $result;
 	}
 

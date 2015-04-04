@@ -1,10 +1,10 @@
 <?php
 /**
- * @package     Joomla.Administrator
- * @subpackage  com_digicom
- *
- * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
  */
 
 defined('_JEXEC') or die;
@@ -47,7 +47,9 @@ JFactory::getDocument()->addScriptDeclaration('
 <?php endif;?>
 
 		<?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
-
+		
+		<?php echo JLayoutHelper::render('edit.cat_params', $this); ?>
+		
 		<div class="form-horizontal">
 			<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'general')); ?>
 
@@ -58,18 +60,7 @@ JFactory::getDocument()->addScriptDeclaration('
 					<?php echo $this->form->getInput('description'); ?>
 				</div>
 				<div class="span3">
-					<?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
-				</div>
-			</div>
-			<?php echo JHtml::_('bootstrap.endTab'); ?>
-
-			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'publishing', JText::_('COM_DIGICOM_CATEGORY_PUBLISHING_OPTION', true)); ?>
-			<div class="row-fluid form-horizontal-desktop">
-				<div class="span6">
-					<?php echo JLayoutHelper::render('joomla.edit.publishingdata', $this); ?>
-				</div>
-				<div class="span6">
-					<?php echo JLayoutHelper::render('joomla.edit.metadata', $this); ?>
+					<?php echo JLayoutHelper::render('edit.sidebar_cat', $this); ?>
 				</div>
 			</div>
 			<?php echo JHtml::_('bootstrap.endTab'); ?>
@@ -86,8 +77,6 @@ JFactory::getDocument()->addScriptDeclaration('
 				<?php echo JHtml::_('bootstrap.endTab'); ?>
 			<?php endif; ?>
 
-			<?php echo JLayoutHelper::render('joomla.edit.params', $this); ?>
-
 			<?php echo JHtml::_('bootstrap.endTabSet'); ?>
 
 			<?php echo $this->form->getInput('extension'); ?>
@@ -96,3 +85,6 @@ JFactory::getDocument()->addScriptDeclaration('
 		</div>
 	</div>
 </form>
+<div class="dg-footer">
+	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>

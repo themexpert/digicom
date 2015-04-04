@@ -1,14 +1,13 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 341 $
- * @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.'/helpers/html/');
 
@@ -26,6 +25,7 @@ $canOrder	= $user->authorise('core.edit.state', 'com_digicom.component');
 
 $archived	= $this->state->get('filter.published') == 2 ? true : false;
 $trashed	= $this->state->get('filter.published') == -2 ? true : false;
+$product_type	= $this->state->get('filter.product_type');
 
 $saveOrder	= $listOrder == 'a.ordering';
 if ($saveOrder)
@@ -68,15 +68,15 @@ JFactory::getDocument()->addScriptDeclaration('
 <?php else : ?>
 	<div id="j-main-container" class="">
 <?php endif;?>
+		<div class="dg-alert dg-alert-with-icon">
+			<span class="icon-support"></span><?php echo JText::_("COM_DIGICOM_PRODUCTS_HEADER_NOTICE"); ?>
+		</div>
+
 		<?php
 		// Search tools bar
 		echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 		?>
 
-		
-		<div class="alert alert-info">
-			<?php echo JText::_("COM_DIGICOM_PRODUCTS_HEADER_NOTICE"); ?>
-		</div>
 		<div id="editcell" >
 
 			<table class="adminlist table table-striped table-hover" id="productList">
@@ -103,7 +103,7 @@ JFactory::getDocument()->addScriptDeclaration('
 							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_TYPE', 'product_type', $listDirn, $listOrder); ?>
 						</th>
 						<th width="10%">
-							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_PRICE', 'hide_public', $listDirn, $listOrder); ?>
+							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_PRICE', 'price', $listDirn, $listOrder); ?>
 						</th>
 						<th width="10%">
 							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_STOCK', 'hide_public', $listDirn, $listOrder); ?>
@@ -168,13 +168,19 @@ JFactory::getDocument()->addScriptDeclaration('
 
 								$action = $trashed ? 'untrash' : 'trash';
 								JHtml::_('actionsdropdown.' . $action, 'cb' . $i, 'products');
+
+								$action = $archived ? 'unarchive' : 'archive';
+								JHtml::_('actionsdropdown.' . $action, 'cb' . $i, 'products');
+								
 								echo JHtml::_('actionsdropdown.render', $this->escape($item->name));
 								?>
 							</div>
 						</td>
 						<td align="center">
 							<?php if(!empty($item->images)): ?>
-							<img src="<?php echo JUri::root() . $item->images; ?>" height="48" width="48">
+								<div class="product-thumb">
+									<img src="<?php echo JUri::root() . $item->images; ?>" >
+								</div>
 							<?php endif; ?>
 						</td>
 						<td class="has-context">
@@ -244,7 +250,7 @@ JFactory::getDocument()->addScriptDeclaration('
 
 				<tfoot>
 					<tr>
-						<td colspan="8">
+						<td colspan="11">
 							<?php echo $this->pagination->getListFooter(); ?>
 						</td>
 					</tr>
@@ -252,9 +258,6 @@ JFactory::getDocument()->addScriptDeclaration('
 			</table>
 		</div>
 	</div>
-
-	<?php // Load the batch processing form. ?>
-	<?php echo $this->loadTemplate('batch'); ?>
 
 	<input type="hidden" name="option" value="com_digicom" />
 	<input type="hidden" name="task" value="" />
@@ -265,3 +268,6 @@ JFactory::getDocument()->addScriptDeclaration('
 	<?php echo JHtml::_('form.token'); ?>
 	
 </form>
+<div class="dg-footer">
+	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>

@@ -1,19 +1,18 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 341 $
- * @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
+
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('formbehavior.chosen', 'select');
 $document = JFactory::getDocument();
-//$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
 $k = 0;
 $n = count ($this->custs);
 ?>
@@ -26,7 +25,9 @@ $n = count ($this->custs);
 <div id="j-main-container" class="">
 <?php endif;?>
 	<form id="adminForm" action="index.php" name="adminForm" method="post">
-		<div class="alert alert-info">
+
+		<div class="dg-alert dg-alert-with-icon">
+			<span class="icon-support"></span>
 			<?php echo JText::_("COM_DIGICOM_CUSTOMERS_HEADER_NOTICE"); ?>
 		</div>
 
@@ -131,4 +132,8 @@ $n = count ($this->custs);
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="view" value="customers" />
 	</form>
+</div>
+
+<div class="dg-footer">
+	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
 </div>

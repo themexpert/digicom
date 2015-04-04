@@ -1,13 +1,13 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 434 $
- * @lastmodified	$LastChangedDate: 2013-11-18 11:52:38 +0100 (Mon, 18 Nov 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
-defined ('_JEXEC') or die ("Go away.");
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
+
+defined('_JEXEC') or die;
 
 $Itemid = JRequest::getVar("Itemid", "0");
 $cart_itemid = DigiComSiteHelperDigiCom::getCartItemid();
@@ -23,37 +23,9 @@ if($product_itemid != "0"){
 ?>
 <div id="digicom">
 	 
-	<div class="navbar">
-		<div class="navbar-inner hidden-phone">
-			<ul class="nav hidden-phone">
-				<li class="active">
-					<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=downloads&Itemid=".$Itemid); ?>"><i class="ico-download"></i> <?php echo JText::_("DIGI_MY_DOWNLOADS"); ?></a>
-				</li>
-				<li class="divider-vertical"></li>
-				<li>
-					<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=orders&Itemid=".$Itemid); ?>"><i class="ico-list-alt"></i> <?php echo JText::_("DIGI_MY_ORDERS"); ?></a>
-				</li>
-				<li class="divider-vertical"></li>
-				<li>
-					<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=cart&task=showCart".$and_itemid); ?>"><i class="ico-shopping-cart"></i> <?php echo JText::_("DIGI_MY_CART"); ?></a>
-				</li>
-			</ul>
-		</div>
-		<ul class="nav nav-pills hidden-desktop">
-			<li class="active">
-				<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=downloads&Itemid=".$Itemid); ?>"><i class="ico-download hidden-phone"></i> <?php echo JText::_("DIGI_MY_DOWNLOADS"); ?></a>
-			</li>
-			<li class="divider-vertical"></li>
-			<li>
-				<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=orders&Itemid=".$Itemid); ?>"><i class="ico-list-alt hidden-phone"></i> <?php echo JText::_("DIGI_MY_ORDERS"); ?></a>
-			</li>
-			<li class="divider-vertical"></li>
-			<li>
-				<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=cart&task=showCart".$and_itemid); ?>"><i class="ico-shopping-cart hidden-phone"></i> <?php echo JText::_("DIGI_MY_CART"); ?></a>
-			</li>
-		</ul>
-	</div>
-		
+	<?php DigiComSiteHelperDigicom::loadModules('digicom_toolber'); ?>
+	
+	<h2 class="digi-page-title"><?php echo JText::_("COM_DIGICOM_DOWNLOADS_PAGE_TITLE"); ?></h2>
 	<div class="accordion" id="">
 		<?php foreach($this->products as $key=>$item): ?>
 		<div class="accordion-group">
@@ -69,11 +41,11 @@ if($product_itemid != "0"){
 					<table class="table table-bordered">
 						<thead>
 							<tr>
-								<th><?php echo JText::_('COM_DIGICOM_FILE_NAME'); ?></th>
-								<th><?php echo JText::_('COM_DIGICOM_FILE_SIZE'); ?></th>
-								<th><?php echo JText::_('COM_DIGICOM_FILE_UPDATES'); ?></th>
-								<th><?php echo JText::_('COM_DIGICOM_FILE_HITS'); ?></th>
-								<th><?php echo JText::_('COM_DIGICOM_FILE_DOWNLOAD_ACTION'); ?></th>
+								<th><?php echo JText::_('COM_DIGICOM_DOWNLOADS_FILE_NAME'); ?></th>
+								<th><?php echo JText::_('COM_DIGICOM_SIZE'); ?></th>
+								<th><?php echo JText::_('COM_DIGICOM_DOWNLOADS_FILE_UPDATED'); ?></th>
+								<th><?php echo JText::_('JGLOBAL_HITS'); ?></th>
+								<th><?php echo JText::_('COM_DIGICOM_ACTION'); ?></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -84,8 +56,7 @@ if($product_itemid != "0"){
 								<td><?php echo $file->filemtime; ?></td>
 								<td><?php echo $file->hits; ?></td>
 								<td>
-									<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=downloads&task=downloads.makeDownload&downloadid='.$file->downloadid.'&Itemid='.$Itemid);?>" class="btn btn-warning btn-mini"><?php echo JText::_('COM_DIGICOM_FILE_DOWNLOAD'); ?></a>
-									
+									<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=downloads&task=downloads.makeDownload&downloadid='.$file->downloadid.'&Itemid='.$Itemid);?>" class="btn btn-warning btn-mini"><?php echo JText::_('COM_DIGICOM_DOWNLOAD'); ?></a>
 								</td>
 							</tr>
 							<?php endforeach; ?>
@@ -96,6 +67,8 @@ if($product_itemid != "0"){
 		</div>
 		<?php endforeach; ?>
 	</div>
-	<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>
 
+	<?php DigiComSiteHelperDigicom::loadModules('digicom_footer','xhtml'); ?>
+	
 </div>
+	<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>

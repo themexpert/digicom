@@ -1,9 +1,9 @@
 <?php
 /**
  * @package		DigiCom
- * @copyright	Copyright (c)2010-2015 ThemeXpert
- * @license 	GNU General Public License version 3, or later
  * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
  * @since 		1.0.0
  */
 
@@ -14,13 +14,13 @@ jimport('joomla.utilities.date');
 class DigiComModelCustomers extends JModelList {
 
 	protected $_context = 'com_digicom.customers';   
-	var $_customers;
-	var $_customer;
-	var $_id = null;
-	var $_total = 0;
-	var $_pagination = null;
+	protected $_customers;
+	protected $_customer;
+	protected $_id = null;
+	protected $_total = 0;
+	protected $_pagination = null;
 
-	function __construct () {
+	public function __construct () {
 		parent::__construct();
 		$cids = JRequest::getVar('cid', 0, '', 'array');
 		$this->setId((int)$cids[0]);
@@ -32,7 +32,7 @@ class DigiComModelCustomers extends JModelList {
 		$this->_customer = null;
 	}
 
-	function populateState($ordering = NULL, $direction = NULL){
+	protected function populateState($ordering = NULL, $direction = NULL){
 		$app = JFactory::getApplication('administrator');
 		$this->setState('list.start', $app->getUserStateFromRequest($this->_context . '.list.start', 'limitstart', 0, 'int'));
 		$this->setState('list.limit', $app->getUserStateFromRequest($this->_context . '.list.limit', 'limit', $app->getCfg('list_limit', 25) , 'int'));
@@ -69,7 +69,7 @@ class DigiComModelCustomers extends JModelList {
 		return $sql;
 	}
 
-	function getItems(){
+	public function getItems(){
 		$config = JFactory::getConfig();
 		$app = JFactory::getApplication('administrator');
 		$limistart = $app->getUserStateFromRequest($this->context.'.list.start', 'limitstart');
@@ -88,7 +88,7 @@ class DigiComModelCustomers extends JModelList {
 		return $result;
 	}
 
-	function getCustomer() {
+	public function getCustomer() {
 
 		if (empty($this->_customer)) {
 			$this->_customer = $this->getTable("Customer");

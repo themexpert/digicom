@@ -1,13 +1,13 @@
 <?php
 /**
  * @package     DigiCom
- * @copyright   Copyright (c)2010-2015 ThemeXpert
- * @license     GNU General Public License version 3, or later
  * @author      ThemeXpert http://www.themexpert.com
+ * @copyright   Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license     GNU General Public License version 3 or later; see LICENSE.txt
  * @since       1.0.0
  */
 
-defined('JPATH_PLATFORM') or die;
+defined('_JEXEC') or die;
 
 jimport('joomla.filesystem.folder');
 
@@ -41,7 +41,7 @@ class JFormFieldThemelayout extends JFormField
 		jimport('joomla.filesystem.folder');
         $mainframe = JFactory::getApplication();
         $fieldName = $this->name;
-        $componentPath = JPATH_SITE.DS.'components'.DS.'com_digicom'.DS.'templates';
+        $componentPath = JPATH_SITE .'/components/com_digicom/templates';
         $componentFolders = JFolder::folders($componentPath);
 		
         $db = JFactory::getDBO();
@@ -49,13 +49,13 @@ class JFormFieldThemelayout extends JFormField
         $db->setQuery($query);
         $defaultemplate = $db->loadResult();
 
-        if (JFolder::exists(JPATH_SITE.DS.'templates'.DS.$defaultemplate.DS.'html'.DS.'com_digicom'.DS.'templates'))
+        if (JFolder::exists(JPATH_SITE . '/templates/' . $defaultemplate . '/html/com_digicom/templates'))
         {
-            $templatePath = JPATH_SITE.DS.'templates'.DS.$defaultemplate.DS.'html'.DS.'com_digicom'.DS.'templates';
+            $templatePath = JPATH_SITE . '/templates/' . $defaultemplate . '/html/com_digicom/templates';
         }
         else
         {
-            $templatePath = JPATH_SITE.DS.'templates'.DS.$defaultemplate.DS.'html'.DS.'com_digicom';
+            $templatePath = JPATH_SITE . '/templates/' . $defaultemplate . '/html/com_digicom';
         }
 
         if (JFolder::exists($templatePath))

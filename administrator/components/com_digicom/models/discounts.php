@@ -1,31 +1,30 @@
 <?php
 /**
  * @package		DigiCom
- * @copyright	Copyright (c)2010-2015 ThemeXpert
- * @license 	GNU General Public License version 3, or later
  * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
  * @since 		1.0.0
  */
 
 defined('_JEXEC') or die;
 
-
 class DigiComModelDiscounts extends JModelList {
 
 	protected $_context = 'com_digicom.discounts';
-	var $_valid_promos;
-	var $_promos;
-	var $_promo;
-	var $_id = null;
-	var $_pagination = null;
+	protected $_valid_promos;
+	protected $_promos;
+	protected $_promo;
+	protected $_id = null;
+	protected $_pagination = null;
 
-	function __construct () {
+	public function __construct () {
 		parent::__construct();
 		$cids = JRequest::getVar('cid', 0, '', 'array');
 		$this->setId((int)$cids[0]);
 	}
 
-	 function populateState($ordering = NULL, $direction = NULL){
+	protected function populateState($ordering = NULL, $direction = NULL){
 		$app = JFactory::getApplication('administrator');
 		$this->setState('list.start', $app->getUserStateFromRequest($this->_context . '.list.start', 'limitstart', 0, 'int'));
 		$this->setState('list.limit', $app->getUserStateFromRequest($this->_context . '.list.limit', 'limit', $app->getCfg('list_limit', 25) , 'int'));
@@ -55,7 +54,7 @@ class DigiComModelDiscounts extends JModelList {
 	{
 		$promosearch = JRequest::getVar("promosearch", "");
 		$condition = JRequest::getVar("condition", '1');
-		$status = JRequest::getVar("status", '1');
+		$status = JRequest::getVar("status", '');
 		$where = array();
 
 		if(trim($promosearch) != "")
@@ -102,23 +101,6 @@ class DigiComModelDiscounts extends JModelList {
 		$result	= $db->loadObjectList();
 		return $result;
 	}
-
-	/*function getlistPromos () {
-		if(empty ($this->_promos)){
-			$promosearch = JRequest::getVar("promosearch", "");
-			$and = "";
-			if(trim($promosearch) != ""){
-				$and .= " where (title like '%".trim($promosearch)."%' or code like '%".trim($promosearch)."%') ";
-			}
-
-			$sql = "select * from #__digicom_promocodes ".$and." order by id desc";
-			$this->_total = $this->_getListCount($sql);
-			if ($this->getState('limitstart') > $this->_total) $this->setState('limitstart', 0);
-			if ($this->getState('limitstart') > 0 & $this->getState('limit') == 0)  $this->setState('limitstart', 0);
-			$this->_promos = $this->_getList($sql, $this->getState('limitstart'), $this->getState('limit'));
-		}
-		return $this->_promos;
-	}*/
 
 	function getlistPromosValid () {
 		if (empty ($this->_valid_promos)) {
@@ -267,29 +249,6 @@ class DigiComModelDiscounts extends JModelList {
 		}
 		return true;
 	}
-
-	/*
-
-	function publish () {
-		$db = JFactory::getDBO();
-		$cids = JRequest::getVar('cid', array(0), 'post', 'array');
-		$task = JRequest::getVar('task', '', 'post');
-		$item = $this->getTable('Discount');
-		$res = 0;
-		if ($task == 'publish'){
-			$res = 1;
-			$sql = "update #__digicom_promocodes set published='1' where id in ('".implode("','", $cids)."')";
-		} else {
-			$res = -1;
-			$sql = "update #__digicom_promocodes set published='0' where id in ('".implode("','", $cids)."')";
-		}
-		$db->setQuery($sql);
-		if (!$db->query() ){
-			$this->setError($db->getErrorMsg());
-		}
-		return $res;
-	}
-	*/
 	
 	function getConfigs() {
 		$comInfo = JComponentHelper::getComponent('com_digicom');

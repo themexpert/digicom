@@ -1,14 +1,13 @@
 <?php
 /**
- * @package            DigiCom Joomla Extension
- * @author            themexpert.com
- * @version            $Revision: 418 $
- * @lastmodified    $LastChangedDate: 2013-11-16 09:20:18 +0100 (Sat, 16 Nov 2013) $
- * @copyright        Copyright (C) 2013 themexpert.com. All rights reserved.
- * @license            GNU/GPLv3
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
  */
 
-defined( '_JEXEC' ) or die ( "Go away." );
+defined('_JEXEC') or die;
 
 class DigiComModelCustomer extends JModelItem {
 	var $_customers;
@@ -78,9 +77,6 @@ class DigiComModelCustomer extends JModelItem {
 		}
 		$item = $this->getTable( 'Customer' );
 		$data = $_POST;
-		/*if(count($data) <= 0 || !isset($data["username"])){
-			$data = JRequest::get('get');
-		}*/
 
 		$data['password1'] = $data['password'];
 		$data['password2'] = $data['password_confirm'];
@@ -88,7 +84,6 @@ class DigiComModelCustomer extends JModelItem {
 		$res               = array( "err" => true, "error" => "" );
 		$reg               = JSession::getInstance( "none", array() );//new JSession();
 
-		//$user = new JUser();
 		$userId = ( ! empty( $data['id'] ) ) ? $data['id'] : (int) $this->getState( 'user.id' );
 		$user   = new JUser( $userId );
 
@@ -111,7 +106,6 @@ class DigiComModelCustomer extends JModelItem {
 			$error        = $user->getError();
 			$res["err"]   = false;
 			$res["error"] = $error;
-			//$res = false;
 		}
 
 		if ( ! $user->id ) {
@@ -173,21 +167,12 @@ class DigiComModelCustomer extends JModelItem {
 		}
 
 		if ( $res["err"] && $new_user ) {
-			$this->sendRegConfirm( $data );
+			//$this->sendRegConfirm( $data );
 		}
 
 
 
 		return $res;
-	}
-
-
-	function getlistCustomerClasses() {
-		$sql = "select * from #__digicom_tax_customerclass order by ordering asc";
-		$db  = JFactory::getDBO();
-		$db->setQuery( $sql );
-
-		return ( $db->loadObjectList() );
 	}
 
 	function sendRegConfirm( $customer ) {
@@ -280,7 +265,7 @@ class DigiComModelCustomer extends JModelItem {
 		$message = html_entity_decode( $message, ENT_QUOTES );
 
 		// Send email to user
-//			global $mosConfig_mailfrom, $mosConfig_fromname, $configs;
+		//			global $mosConfig_mailfrom, $mosConfig_fromname, $configs;
 
 		$mosConfig_mailfrom = $app->getCfg( "mailfrom" );
 		$mosConfig_fromname = $app->getCfg( "fromname" );
@@ -315,11 +300,11 @@ class DigiComModelCustomer extends JModelItem {
 
 		if ( ! $mailSender->Send() ) {
 
-//			<Your error code management>
+			//			<Your error code management>
 		}else{
 			$email->store();
 		}
-//			mosMail( $adminEmail2, $adminName2, $my->email, $subject, $message, 1 ); // Send mail
+		//			mosMail( $adminEmail2, $adminName2, $my->email, $subject, $message, 1 ); // Send mail
 		if ( $configs->get('sendmailtoadmin',1) != 0 ) {
 			$mailSender = JFactory::getMailer();
 			$mailSender->IsHTML( true );
@@ -328,7 +313,7 @@ class DigiComModelCustomer extends JModelItem {
 			$mailSender->setSubject( $subject );
 			$mailSender->setBody( $message );
 			if ( ! $mailSender->Send() ) {
-//					<Your error code management>
+				//					<Your error code management>
 			}else{
 				$email->store();
 			}

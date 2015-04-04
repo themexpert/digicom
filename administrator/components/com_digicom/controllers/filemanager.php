@@ -1,17 +1,16 @@
 <?php
 /**
  * @package		DigiCom
- * @copyright	Copyright (c)2010-2015 ThemeXpert
- * @license 	GNU General Public License version 3, or later
  * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
  * @since 		1.0.0
  */
 
 defined('_JEXEC') or die;
 
-class DigiComControllerFileManager extends JControllerAdmin {
-
-
+class DigiComControllerFileManager extends JControllerAdmin 
+{
 	function connector()
 	{
         $mainframe = JFactory::getApplication();
@@ -36,12 +35,12 @@ class DigiComControllerFileManager extends JControllerAdmin {
 		JRequest::setVar('debug', false);
 		
 		$url = JURI::root(true).'/'.$folder;
-		$path = JPATH_SITE.DS.JPath::clean($folder);
+		$path = JPATH_SITE . '/' . JPath::clean($folder);
         JPath::check($path);
-		include_once JPATH_COMPONENT_ADMINISTRATOR.DS.'libs'.DS.'elfinder'.DS.'elFinderConnector.class.php';
-		include_once JPATH_COMPONENT_ADMINISTRATOR.DS.'libs'.DS.'elfinder'.DS.'elFinder.class.php';
-		include_once JPATH_COMPONENT_ADMINISTRATOR.DS.'libs'.DS.'elfinder'.DS.'elFinderVolumeDriver.class.php';
-		include_once JPATH_COMPONENT_ADMINISTRATOR.DS.'libs'.DS.'elfinder'.DS.'elFinderVolumeLocalFileSystem.class.php';
+		include_once JPATH_COMPONENT_ADMINISTRATOR . '/libs/elfinder/elFinderConnector.class.php';
+		include_once JPATH_COMPONENT_ADMINISTRATOR . '/libs/elfinder/elFinder.class.php';
+		include_once JPATH_COMPONENT_ADMINISTRATOR . '/libs/elfinder/elFinderVolumeDriver.class.php';
+		include_once JPATH_COMPONENT_ADMINISTRATOR . '/libs/elfinder/elFinderVolumeLocalFileSystem.class.php';
 		
 		function access($attr, $path, $data, $volume)
 		{

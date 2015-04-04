@@ -1,14 +1,13 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 377 $
- * @lastmodified	$LastChangedDate: 2013-10-21 12:02:56 +0200 (Mon, 21 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
 
 class DigiComViewCheckout extends JViewLegacy
 {
@@ -16,6 +15,7 @@ class DigiComViewCheckout extends JViewLegacy
 	function display($tpl = null)
 	{
 		
+		$app = JFactory::getApplication();
 		$pg_plugin 	= JRequest::getVar("processor", "", "", "string");
 		$Itemid 	= JRequest::getInt("Itemid", "0");
 		$order_id 	= JRequest::getInt("order_id", "0");
@@ -50,28 +50,15 @@ class DigiComViewCheckout extends JViewLegacy
 		$vars->user_id = JFactory::getUser()->id;
 		$vars->user_email = $customer->_user->email;
 		$vars->item_name = '';
-		//print_r($items);die;
+		
 		for($i=0; $i<count($items)-2; $i++)
 		{
-			//print_r($items[$i]);die;
 			$vars->item_name.= $items[$i]['name'] . ', ';
 		}
 		$vars->item_name = substr($vars->item_name, 0, strlen($vars->item_name)-2);
-
-		// downloads page
-		if ($configs->get('afterpurchase') == 0)
-		{
-			$vars->return = JRoute::_(JURI::root()."index.php?option=com_digicom&view=downloads&Itemid=".$Itemid, true, 0);
-		}
-		// orders page
-		else
-		{
-			$vars->return = JRoute::_(JURI::root()."index.php?option=com_digicom&view=order&id=".$params['order_id']."&Itemid=".$Itemid, true, 0);
-		}
 		
-		$vars->return = str_replace('https', 'http', $vars->return);
 		$vars->cancel_return = JRoute::_(JURI::root()."index.php?option=com_digicom&Itemid=".$Itemid."&task=cart.cancel&processor={$pg_plugin}", true, 0);
-		$vars->url = $vars->notify_url = JRoute::_(JURI::root()."index.php?option=com_digicom&task=cart.processPayment&processor={$pg_plugin}&order_id=".$params['order_id']."&sid=".$customer->_sid, true, false);
+		$vars->return = $vars->url = $vars->notify_url = JRoute::_(JURI::root()."index.php?option=com_digicom&task=cart.processPayment&processor={$pg_plugin}&order_id=".$params['order_id']."&sid=".$customer->_sid, true, false);
 		$vars->currency_code = $configs->get('currency','USD');
 		$vars->amount = $items[-2]['taxed'];//+$items[-2]['shipping'];
 		
@@ -80,22 +67,18 @@ class DigiComViewCheckout extends JViewLegacy
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onSendPayment', array(& $params));
 		$html = $dispatcher->trigger('onTP_GetHTML', array($vars));
-		
-		
-		//print_r($html);die;
+
 		if (!isset($html[0])) {
 			$html[0] = '';
 		}
-		$html[0] = $html[0] . '<script type="text/javascript">';
 		if ($pg_plugin == 'paypal')
 		{
+			$html[0] = $html[0] . '<script type="text/javascript">';
 			$html[0] = $html[0] . 'jQuery(".akeeba-bootstrap").hide();';
+			$html[0] = $html[0] . 'jQuery(window).load(function() {jQuery(".akeeba-bootstrap form").submit();});';
+			$html[0] = $html[0] . '</script>';
 		}
-		$html[0] = $html[0] . 'jQuery(".akeeba-bootstrap form").submit();';
-		$html[0] = $html[0] . '</script>';
 
-		//echo $html[0];
-		
 		$this->assign("pg_plugin", $pg_plugin);
 		$this->assign("configs", $configs);
 		$this->assign("data", $html);

@@ -1,18 +1,18 @@
 <?php
 /**
  * @package		DigiCom
- * @copyright	Copyright (c)2010-2015 ThemeXpert
- * @license 	GNU General Public License version 3, or later
  * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
  * @since 		1.0.0
  */
 
 defined('_JEXEC') or die;
 
 /**
- * Weblink controller class.
+ * Order controller class.
  *
- * @since  1.6
+ * @since  1.0.0
  */
 class DigiComControllerOrder extends JControllerForm
 {
@@ -25,23 +25,11 @@ class DigiComControllerOrder extends JControllerForm
 	 *
 	 * @return  boolean
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
 	{
 		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
-		$categoryId = 0;
-
-		if ($recordId)
-		{
-			$categoryId = (int) $this->getModel()->getItem($recordId)->catid;
-		}
-
-		if ($categoryId)
-		{
-			// The category has been set. Check the category permissions.
-			return JFactory::getUser()->authorise('core.edit', $this->option . '.order.' . $categoryId);
-		}
 
 		// Since there is no asset tracking, revert to the component permissions.
 		return parent::allowEdit($data, $key);
@@ -55,7 +43,7 @@ class DigiComControllerOrder extends JControllerForm
 	 *
 	 * @return	void
 	 *
-	 * @since	1.6
+	 * @since	1.0.0
 	 */
 	protected function postSaveHook(JModelLegacy $model, $validData = array())
 	{

@@ -2,22 +2,22 @@
 <form>
 	<fields addfieldpath="/administrator/components/com_digicom/models/fields">
 	
-		<field name="id"  type="text" class="readonly" label="JGLOBAL_FIELD_ID_LABEL" description ="JGLOBAL_FIELD_ID_DESC" size="10" default="0" readonly="true" />
+		<field name="id"  type="hidden" label="JGLOBAL_FIELD_ID_LABEL" description ="JGLOBAL_FIELD_ID_DESC" size="10" default="" />
 		
-		<field name="userid" type="user" label="COM_DIGICOM_FIELD_SELECT_USER_LABEL" description ="COM_DIGICOM_FIELD_SELECT_USER_DESC" required="true" size="10" default="0" />
+		<field name="userid" type="user" label="COM_DIGICOM_ORDER_CREATE_NEW_FIELD_CUSTOMER_LABEL" description ="COM_DIGICOM_FIELD_SELECT_USER_DESC" required="true" size="10" default="0" />
 		
-		<field name="order_date" type="calendar" label="COM_DIGICOM_FIELD_ORDER_DATE_LABEL" description="COM_DIGICOM_FIELD_ORDER_DATE_DESC" size="40" required="true" />
+		<field name="order_date" type="calendar" label="COM_DIGICOM_ORDER_CREATE_NEW_FIELD_ORDER_DATE_LABEL" description="COM_DIGICOM_ORDER_CREATE_NEW_FIELD_ORDER_DATE_DESC" size="40" required="true" />
 		
 		<field name="currency" type="media" label="COM_DIGICOM_FIELD_INTRO_LABEL" description="COM_DIGICOM_FIELD_INTRO_DESC" />
 		
 		<field name="product_id" type="media" label="COM_DIGICOM_FIELD_INTRO_LABEL" description="COM_DIGICOM_FIELD_INTRO_DESC" />
 		
-		<field id="order_status" name="status" default="Active" type="radio" label="COM_DIGICOM_FIELD_ORDER_STATUS_LABEL" description="COM_DIGICOM_FIELD_ORDER_STATUS_DESC" class="btn-group" size="1" >
+		<field id="order_status" name="status" default="Active" type="radio" label="COM_DIGICOM_ORDER_CREATE_NEW_FIELD_ORDER_STATUS_LABEL" description="COM_DIGICOM_ORDER_CREATE_NEW_FIELD_ORDER_STATUS_DESC" class="btn-group" size="1" >
 			<option value="Active">COM_DIGICOM_ORDER_STATUS_ACTIVE</option>
 			<option value="Pending">COM_DIGICOM_ORDER_STATUS_PENDING</option>
 		</field>
 		
-		<field name="discount" type="discounts" label="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_LABEL" description="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_DESC" published="true" onchange="changePlain();"/>
+		<field name="discount" type="discounts" label="COM_DIGICOM_PROMO_CODE" description="COM_DIGICOM_ORDER_PROMO_CODE_TIP" published="true" onchange="changePlain();"/>
 
 
 		<field name="promocodeid" type="text" label="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_LABEL" description="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_DESC" buttons="true" />
@@ -25,11 +25,11 @@
 
 		<field name="promocodediscount" type="text" label="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_LABEL" description="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_DESC" buttons="true" />
 
-		<field name="amount_paid" type="text" label="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_LABEL" description="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_DESC" buttons="true" />
+		<field name="amount_paid" type="number" label="COM_DIGICOM_ORDER_DETAILS_UPDATE_PAID_AMOUNT_LABEL" description="COM_DIGICOM_ORDER_DETAILS_UPDATE_PAID_AMOUNT_DESC" buttons="true" />
 
 		<field name="processor" type="plugins" folder="digicom_pay"
-			description="COM_USERS_USER_FIELD_EDITOR_DESC"
-			label="COM_USERS_USER_FIELD_EDITOR_LABEL" default="offline" required="required" class="input-xlarge required" />
+			description="COM_DIGICOM_ORDER_CREATE_NEW_FIELD_PAYMENT_METHOD_TIP"
+			label="COM_DIGICOM_ORDER_CREATE_NEW_FIELD_PAYMENT_METHOD_LABEL" default="offline" required="required" class="input-xlarge required" />
 
 		<field id="published" name="published" type="list" label="JSTATUS" description="JFIELD_PUBLISHED_DESC" class="chzn-color-state" size="1" default="1" >
 			<option value="1"> JPUBLISHED</option>

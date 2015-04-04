@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="DIGICOM_CATEGORIES_LAYOUT">
+	<layout title="COM_DIGICOM_MENU_ITEM_TYPE_PRODUCTS_LIST">
 		<message>
-			<![CDATA[DIGICOM_CATEGORIES_LAYOUT_TIP]]>
+			<![CDATA[COM_DIGICOM_MENU_ITEM_TYPE_PRODUCTS_LIST_DESC]]>
 		</message>
 	</layout>
 
 	<!-- Add fields to the request variables for the layout. -->
 	<fields name="request">
 		<fieldset name="request" addfieldpath="/administrator/components/com_digicom/models/fields">
-			
-			<field name="id" type="category" 
+
+			<field name="id" type="category"
 				label="JGLOBAL_FIELD_CATEGORIES_CHOOSE_CATEGORY_LABEL"
 				extension="com_digicom"
 				show_root="true"
 				required="true"
 				description="JGLOBAL_FIELD_CATEGORIES_CHOOSE_CATEGORY_DESC"/>
-			
+
 		</fieldset>
 	</fields>
 	<fields name="params">
@@ -29,7 +29,18 @@
 				description="COM_DIGICOM_NUM_PRODUCTS_DESC"
 				label="COM_DIGICOM_NUM_PRODUCTS_LABEL" 
 				default="9" />
-				
+			<field
+				name="category_cols"
+				type="list"
+				label="COM_DIGICOM_PRODUCTS_COLUMN_NO_LABEL"
+			>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="6">6</option>
+			</field>
+			
 			<field name="show_cat_title" type="radio"
 				description="COM_DIGICOM_SHOW_CAT_TITLE_DESC"
 				label="COM_DIGICOM_SHOW_CAT_TITLE_LABEL"
@@ -101,7 +112,7 @@
 				label="JGLOBAL_ARTICLE_ORDER_LABEL"
 			>
 				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="front">COM_CONTENT_FEATURED_ORDER</option>
+				<option value="front">COM_DIGICOM_PRODUCTS_LIST_ARTICLE_ORDER_FEATURED</option>
 				<option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
 				<option value="date">JGLOBAL_OLDEST_FIRST</option>
 				<option value="alpha">JGLOBAL_TITLE_ALPHABETICAL</option>

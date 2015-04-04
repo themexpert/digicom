@@ -149,7 +149,7 @@ function cartformsubmit(user_id,askterms){
 					jQuery('#myModal').modal('show');
 					return false;
 				}
-				if (!validateUSZip(document.cart_form.zipcode.value)){
+				if (!validateUSZip(document.cart_form.zipcode.value,document.adminForm.country.value)){
 					//alert("Invalid zipcode");
 					//return false;
 				}
@@ -176,9 +176,14 @@ function isEmail(string) {
 	return (str.search(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/) != -1);
 }
 
-function validateUSZip( strValue ) {
-	var objRegExp  = /(^[A-Za-z0-9 ]{1,7}$)/;
-	return objRegExp.test(strValue);
+function validateUSZip( strValue , country) {
+
+	if(country == 'United-States'){
+		var objRegExp  = /(^[A-Za-z0-9 ]{1,7}$)/;
+		return objRegExp.test(strValue);
+	}
+
+	return true;
 }
 
 
@@ -237,7 +242,7 @@ function validateForm(){
 		   return false;
 		}
 
-		if ((document.adminForm.zipcode) && !validateUSZip(document.adminForm.zipcode.value)){
+		if ((document.adminForm.zipcode) && !validateUSZip(document.adminForm.zipcode.value,document.adminForm.country.value)){
 		   	var field_required = new Array("firstname", "lastname", "email", "address", "city", "country", "username", "password", "password_confirm");
 			for(i=0; i<field_required.length; i++){
 				if(document.getElementById(field_required[i])){
@@ -356,14 +361,20 @@ function changeProvince_cb_ship(province_option) {
 
  }
  function ChangeLogOption(value){
-		if(value == 0){
-			document.getElementById("log_form").style.display = "block";
-			document.getElementById("reg_form").style.display = "none";
-			document.getElementById("continue_button").style.display = "none";
-		}
-		else if(value == 1){
-			document.getElementById("log_form").style.display = "none";
-			document.getElementById("reg_form").style.display = "block";
-			document.getElementById("continue_button").style.display = "block";
-		}
+	if(value == 0){
+		document.getElementById("log_form").style.display = "block";
+		document.getElementById("reg_form").style.display = "none";
+		document.getElementById("continue_button").style.display = "none";
 	}
+	else if(value == 1){
+		document.getElementById("log_form").style.display = "none";
+		document.getElementById("reg_form").style.display = "block";
+		document.getElementById("continue_button").style.display = "block";
+	}
+}
+function closePopupLogin(div) {
+	if(document.getElementById(div)){
+		for_delete = document.getElementById(div);
+		for_delete.parentNode.removeChild(for_delete);
+	}
+}

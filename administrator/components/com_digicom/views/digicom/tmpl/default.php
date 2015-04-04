@@ -1,17 +1,18 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 440 $
- * @lastmodified	$LastChangedDate: 2013-11-20 04:53:55 +0100 (Wed, 20 Nov 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
+
 $configs = $this->configs;
 $document = JFactory::getDocument();
 $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
+// TODO : Tranlation need to be done
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_digicom'); ?>" class="clearfix" method="post" name="adminForm" id="adminForm">
 <?php if (!empty( $this->sidebar)) : ?>
@@ -28,38 +29,37 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 			 <div class="span3">
 			 	<div class="panel-box">			 		
 				 	<span class="icon-briefcase"></span>
-				 	<p><strong><?php echo DigiComHelperDigiCom::format_price($this->totalOrder, $configs->get('currency','USD'), true, $configs);?></strong><br>Total Sale</p>
+				 	<p><strong><?php echo DigiComHelperDigiCom::format_price($this->totalOrder, $configs->get('currency','USD'), true, $configs);?></strong><br><?php echo JText::_('COM_DIGICOM_REPORTS_TOTAL_SALES'); ?></p>
 			 	</div>
 			 </div>
 
 			 <div class="span3">
 			 	<div class="panel-box">			 		
 				 	<span class="icon-cart"></span>
-				 	<p><strong><?php echo $this->reportOrders['total']; ?></strong><br>Total Orders</p>
+				 	<p><strong><?php echo $this->reportOrders['total']; ?></strong><br><?php echo JText::_('COM_DIGICOM_REPORTS_TOTAL_ORDERS'); ?></p>
 			 	</div>
 			 </div>
 
 			 <div class="span3">
 			 	<div class="panel-box">
 			 		<span class="icon-warning"></span>
-				 	<p><strong><?php echo $this->reportOrders['pending']; ?></strong><br>Pending Orders</p>
+				 	<p><strong><?php echo $this->reportOrders['pending']; ?></strong><br><?php echo JText::_('COM_DIGICOM_REPORTS_PENDING_ORDERS'); ?></p>
 			 	</div>			 	
 			 </div>
 
 			 <div class="span3">
 			 	<div class="panel-box">			 		
 				 	<span class="icon-users"></span>
-				 	<p><strong><?php echo $this->reportCustomer; ?></strong><br>New Customers</p>
+				 	<p><strong><?php echo $this->reportCustomer; ?></strong><br><?php echo JText::_('COM_DIGICOM_REPORTS_NEW_CUSTOMERS'); ?></p>
 			 	</div>
 			 </div>
 		</div>
 
 		<div class="panel">
 			<div class="panel-header clearfix">
-				<h3 class="panel-title"><span class="icon-bars"></span> Sales Analytics</h3>
+				<h3 class="panel-title"><span class="icon-bars"></span> <?php echo JText::_('COM_DIGICOM_REPORTS_SALES_ANALYTICS'); ?></h3>
 			</div>
 			<?php
-				$chart = DigiComHelperChart::test();
 				$monthlyDay = DigiComHelperChart::getMonthLabelDay();
 				
 				$monthlyPrice = DigiComHelperChart::getMonthLabelPrice($monthlyDay);
@@ -74,12 +74,12 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 
 					        {
 					            label: "Monthly Report",
-					            fillColor: "rgba(151,187,205,0.2)",
-					            strokeColor: "rgba(151,187,205,1)",
-					            pointColor: "rgba(151,187,205,1)",
-					            pointStrokeColor: "#555",
-					            pointHighlightFill: "#555",
-					            pointHighlightStroke: "rgba(151,187,205,1)",
+					            fillColor: "#e6f3f9",
+					            strokeColor: "#1562AD",
+					            pointColor: "#1562AD",
+					            pointStrokeColor: "#1562AD",
+					            pointHighlightFill: "#e6f3f9",
+					            pointHighlightStroke: "#1562AD",
 					            data: [<?php echo $monthlyPrice; ?>]
 					        }
 					    ]
@@ -100,7 +100,7 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 		<div class="row-fluid">
 			<div class="span6 panel">
 				<div class="panel-header clearfix">
-					<h3 class="panel-title"><span class="icon-star-empty"></span><?php echo JText::_('DIGICOM_LATESTORDERS'); ?></h3>
+					<h3 class="panel-title"><span class="icon-star-empty"></span><?php echo JText::_('COM_DIGICOM_REPORTS_LATEST_ORDERS'); ?></h3>
 				</div>
 				<div class="panel-content">
 					<table class="table table-striped">
@@ -117,7 +117,7 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 						<tr>
 							<td>
 								<span class="label label-ds hasTip" title="" data-original-title="Order ID">
-									<a href="index.php?option=com_digicom&controller=orders&task=show&cid[]=<?php echo $order->id; ?>"><?php echo JText::_('VIEWLICLICORDERID').$order->id; ?></a>
+									<a href="index.php?option=com_digicom&controller=orders&task=show&cid[]=<?php echo $order->id; ?>"><?php echo JText::_('COM_DIGICOM_ORDER_ID').$order->id; ?></a>
 								</span>
 							</td>
 							<td>
@@ -128,7 +128,7 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 								</strong>
 							</td>
 							<td><span class="small pull-right"><?php echo DigiComHelperDigiCom::format_price($order->amount, $order->currency, true, $configs); ?></span></td>
-							<td><span class="small"><i class="icon-calendar"></i> <?php echo date("Y-m-d", $order->order_date); ?></span></td>
+							<td><span class="small"><?php echo date("Y-m-d", $order->order_date); ?></span></td>
 						</tr>
 						
 					<?php endforeach; ?>
@@ -138,7 +138,7 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 			</div>
 			<div class="span6 panel">
 				<div class="panel-header clearfix">
-					<h3 class="panel-title"><span class="icon-download"></span>Most Sold Product</h3>
+					<h3 class="panel-title"><span class="icon-download"></span><?php echo JText::_('COM_DIGICOM_REPORTS_MOST_SOLD_PRODUCTS'); ?></h3>
 				</div>
 				<div class="panel-content">
 					<table class="table table-striped" style="text-align: center;">
@@ -147,7 +147,7 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 							<th>Name</th>
 							<th>Type</th>
 							<th>Price</th>
-							<th>Num Sold</th>
+							<th>Total Sold</th>
 						</tr>
 						</thead>
 						<?php foreach($this->most_sold AS $product) : ?>
@@ -159,7 +159,7 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 						</tr>
 						<?php endforeach; ?>
 					</table>
-					<a href="index.php?option=com_digicom&controller=products"><?php echo JText::_('DIGICOM_RECENTPROD'); ?></a>
+					<a href="index.php?option=com_digicom&controller=products"><?php echo JText::_('COM_DIGICOM_RECENT_PRODUCTS'); ?></a>
 				</div>
 			</div>
 		</div>
@@ -167,6 +167,6 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 	</div>
 </form>
 
-<div class="alert alert-info text-center">
-	<?php echo JText::_('DIGICOM_CREDITS'); ?>
+<div class="dg-footer">
+	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
 </div>

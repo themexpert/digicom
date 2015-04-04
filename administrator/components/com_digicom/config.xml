@@ -3,14 +3,14 @@
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
 		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" filter="rules" component="com_digicom" section="component">
 			<action name="core.manage" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
-			<action name="digicom.settings" title="VIEWDSADMINSETTINGS" description="JACTION_SETTINGS_DESC" />
-			<action name="digicom.categories" title="VIEWDSADMINCATEGORIES" description="JACTION_CATEGORIES_DESC" />
-			<action name="digicom.products" title="VIEWDSADMINPRODUCTS" description="JACTION_PRODUCTS_DESC" />
-			<action name="digicom.customers" title="VIEWDSADMINCUSTOMERS" description="JACTION_CUSTOMERS_DESC" />
-			<action name="digicom.orders" title="VIEWDSADMINORDERS" description="JACTION_ORDERS_DESC" />
-			<action name="digicom.filemanager" title="VIEWTREEFILEMANAGER" description="VIEWTREEFILEMANAGER_DESC" />
-			<action name="digicom.promocodes" title="VIEWTREEPROMO" description="JACTION_PROMOCODES_DESC" />
-			<action name="digicom.stats" title="VIEWDSADMINSTATS" description="JACTION_STATS_DESC" />
+			<action name="digicom.settings" title="COM_DIGICOM_SETTINGS_ACL_SETTINGS" description="COM_DIGICOM_SETTINGS_ACL_SETTINGS_DESC" />
+			<action name="digicom.categories" title="COM_DIGICOM_SETTINGS_ACL_CATEGORIES_MANAGER" description="COM_DIGICOM_SETTINGS_ACL_CATEGORIES_MANAGER_DESC" />
+			<action name="digicom.products" title="COM_DIGICOM_SETTINGS_ACL_PRODUCTS_MANAGER" description="COM_DIGICOM_SETTINGS_ACL_PRODUCTS_MANAGER_DESC" />
+			<action name="digicom.customers" title="COM_DIGICOM_SETTINGS_ACL_CUSTOMERS_MANAGER" description="COM_DIGICOM_SETTINGS_ACL_CUSTOMERS_MANAGER_DESC" />
+			<action name="digicom.orders" title="COM_DIGICOM_SETTINGS_ACL_ORDERS_MANAGER" description="COM_DIGICOM_SETTINGS_ACL_ORDERS_MANAGER_DESC" />
+			<action name="digicom.filemanager" title="COM_DIGICOM_SETTINGS_ACL_FILE_MANAGER" description="COM_DIGICOM_SETTINGS_ACL_FILE_MANAGER_DESC" />
+			<action name="digicom.promocodes" title="COM_DIGICOM_SETTINGS_ACL_DISCOUNTS_MANAGER" description="COM_DIGICOM_SETTINGS_ACL_DISCOUNTS_MANAGER_DESC" />
+			<action name="digicom.stats" title="COM_DIGICOM_SETTINGS_ACL_REPORTS" description="COM_DIGICOM_SETTINGS_ACL_REPORTS_DESC" />
 		</field>
 	</fieldset>
 </config>

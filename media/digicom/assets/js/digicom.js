@@ -8,7 +8,13 @@
 imgpath = "";
 // Media manager
 function elFinderUpdate(fieldID, value) {
-	jQuery('#' + fieldID).val(value);
+  var fileNameIndex = value.lastIndexOf("/") + 1;
+  var filename = value.substr(fileNameIndex);
+  filename = filename.replace(/\.[^/.]+$/, "");
+  var filenameID = fieldID.replace("url", "name");
+
+  jQuery('#' + fieldID).val(value);
+	jQuery('#' + filenameID).val(filename);
 	if (typeof SqueezeBox !== 'undefined' && jQuery.isFunction(SqueezeBox)) {
 		SqueezeBox.close();
 	} else {
@@ -22,6 +28,7 @@ function openModal(a){
 }
 
 jQuery(document).ready(function() {
+
  jQuery("a[href*=#togglesidebar]").toggle(function () {
   jQuery("body").addClass("sidebar-collapse");
  }, function () {
@@ -33,4 +40,26 @@ jQuery(document).ready(function() {
  }, function () {
   jQuery("body").removeClass("sidebar-right-collapse");
  });
+
+  // Toggle toolbar button
+  var btnSelector = jQuery('#toolbar-publish,#toolbar-unpublish,#toolbar-trash,#toolbar-delete,#toolbar-edit');
+
+  jQuery("input[type='checkbox']").change( function(){
+
+    if(!jQuery("input[type='checkbox']").is(':checked')){
+     btnSelector.removeClass('in');
+    }else{
+     btnSelector.addClass('in');
+    }
+
+    jQuery('input[name="checkall-toggle"]').change( function(){
+      if( this.checked){
+        btnSelector.removeClass('in');
+        btnSelector.addClass('in');
+      }else{
+       btnSelector.removeClass('in');
+      }
+    });
+  });
+
 });

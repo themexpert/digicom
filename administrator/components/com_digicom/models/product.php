@@ -1,9 +1,9 @@
 <?php
 /**
  * @package		DigiCom
- * @copyright	Copyright (c)2010-2015 ThemeXpert
- * @license 	GNU General Public License version 3, or later
  * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
  * @since 		1.0.0
  */
 
@@ -13,9 +13,9 @@ use Joomla\Registry\Registry;
 use Joomla\String\String;
 
 /**
- * Weblinks model.
+ * Product model.
  *
- * @since  1.5
+ * @since  1.0.0
  */
 class DigiComModelProduct extends JModelAdmin
 {
@@ -23,7 +23,7 @@ class DigiComModelProduct extends JModelAdmin
 	 * The type alias for this content type.
 	 *
 	 * @var    string
-	 * @since  3.2
+	 * @since  1.0.0
 	 */
 	public $typeAlias = 'com_digicom.product';
 
@@ -31,7 +31,7 @@ class DigiComModelProduct extends JModelAdmin
 	 * The prefix to use with controller messages.
 	 *
 	 * @var    string
-	 * @since  1.6
+	 * @since  1.0.0
 	 */
 	protected $text_prefix = 'COM_DIGICOM_PRODUCTS';
 
@@ -42,14 +42,18 @@ class DigiComModelProduct extends JModelAdmin
 	 *
 	 * @return  boolean  True if allowed to delete the record. Defaults to the permission for the component.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function canDelete($record)
 	{
 		if (!empty($record->id))
 		{
-			if ($record->state != -2)
+			if ($record->published != -2)
 			{
+				return;
+			}
+
+			if(!$this->checkOrderExist($record->id)) {
 				return;
 			}
 
@@ -62,6 +66,107 @@ class DigiComModelProduct extends JModelAdmin
 		}
 	}
 
+
+	function checkOrderExist($pid){
+		$app = JFactory::getApplication();
+
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->select('id')
+			  ->from('#__digicom_orders_details')
+			  ->where('productid = '.$pid)
+			  ->limit('1');
+		$db->setQuery($query);
+		$od = $db->loadObject();
+		if($od->id > 0){
+			$app->enqueueMessage(JText::sprintf('COM_DIGICOM_PRODUCT_EXIST_IN_ORDER',$pid), 'warning');
+			return false;
+		}else{
+			return true;
+		}
+	}
+
+	/**
+	 * Method to delete one or more records.
+	 *
+	 * @param   array  &$pks  An array of record primary keys.
+	 *
+	 * @return  boolean  True if successful, false if an error occurs.
+	 *
+	 * @since   12.2
+	 */
+	public function delete(&$pks)
+	{
+		$dispatcher = JEventDispatcher::getInstance();
+		$pks = (array) $pks;
+		$table = $this->getTable();
+
+		// Include the plugins for the delete events.
+		JPluginHelper::importPlugin($this->events_map['delete']);
+
+		// Iterate the items to delete each one.
+		foreach ($pks as $i => $pk)
+		{
+			if ($table->load($pk))
+			{
+				if ($this->canDelete($table))
+				{
+					$context = $this->option . '.' . $this->name;
+
+					// Trigger the before delete event.
+					$result = $dispatcher->trigger($this->event_before_delete, array($context, $table));
+
+					if (in_array(false, $result, true))
+					{
+						$this->setError($table->getError());
+
+						return false;
+					}
+
+					if (!$table->delete($pk))
+					{
+						$this->setError($table->getError());
+
+						return false;
+					}
+
+					// Trigger the after event.
+					$dispatcher->trigger($this->event_after_delete, array($context, $table));
+				}
+				else
+				{
+					// Prune items that you can't change.
+					unset($pks[$i]);
+					$error = $this->getError();
+
+					if ($error)
+					{
+						JLog::add($error, JLog::WARNING, 'jerror');
+
+						return false;
+					}
+					else
+					{
+						JLog::add(JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), JLog::WARNING, 'jerror');
+
+						return false;
+					}
+				}
+			}
+			else
+			{
+				$this->setError($table->getError());
+
+				return false;
+			}
+		}
+
+		// Clear the component's cache
+		$this->cleanCache();
+
+		return true;
+	}
+
 	/**
 	 * Method to test whether a record can be deleted.
 	 *
@@ -69,7 +174,7 @@ class DigiComModelProduct extends JModelAdmin
 	 *
 	 * @return  boolean  True if allowed to change the state of the record. Defaults to the permission for the component.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function canEditState($record)
 	{
@@ -90,7 +195,7 @@ class DigiComModelProduct extends JModelAdmin
 	 *
 	 * @return  JTable  A JTable object
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	public function getTable($type = 'Product', $prefix = 'Table', $config = array())
 	{
@@ -105,7 +210,7 @@ class DigiComModelProduct extends JModelAdmin
 	 *
 	 * @return  mixed  A JForm object on success, false on failure
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
@@ -154,7 +259,7 @@ class DigiComModelProduct extends JModelAdmin
 	 *
 	 * @return  array  The default data is an empty array.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function loadFormData()
 	{
@@ -189,7 +294,7 @@ class DigiComModelProduct extends JModelAdmin
 	 *
 	 * @return  mixed  Object on success, false on failure.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	public function getItem($pk = null)
 	{
@@ -229,7 +334,7 @@ class DigiComModelProduct extends JModelAdmin
 	 *
 	 * @return  void
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function prepareTable($table)
 	{
@@ -280,7 +385,7 @@ class DigiComModelProduct extends JModelAdmin
 	 *
 	 * @return  array  An array of conditions to add to ordering queries.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function getReorderConditions($table)
 	{
@@ -322,7 +427,7 @@ class DigiComModelProduct extends JModelAdmin
 	            foreach($files as $key => $file){
 	                $filesTable = $this->getTable('Files');
 	                $filesTable->product_id = $recordId;
-	                $filesTable->name = ($file['name'] ? $file['name'] : $file['url']);
+	                $filesTable->name = ($file['name'] ? $file['name'] : JText::sprintf('COM_DIGICOM_PRODUCT_FILE_NAME',$key));
 	                $filesTable->url = $file['url'];
 	                $filesTable->store();
 	            }
@@ -343,6 +448,7 @@ class DigiComModelProduct extends JModelAdmin
 	            $bundleTable->bundle_type = 'category';
 
 	            foreach($bundle_category as $bundle){          
+	                $bundleTable->id = '';
 	                $bundleTable->product_id = $recordId;
 	                $bundleTable->bundle_id = $bundle;
 	                $bundleTable->store();
@@ -359,6 +465,7 @@ class DigiComModelProduct extends JModelAdmin
 	            $bundle_product = $data['bundle_product'];
 	            $bundleTable->bundle_type = 'product';
 	            foreach($bundle_product as $bundle){          
+	                $bundleTable->id = '';
 	                $bundleTable->product_id = $recordId;
 	                $bundleTable->bundle_id = $bundle;
 	                $bundleTable->store();
@@ -382,7 +489,7 @@ class DigiComModelProduct extends JModelAdmin
 	 *
 	 * @return  boolean  True if successful.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 * @throws  Exception
 	 */
 	public function duplicate(&$pks)

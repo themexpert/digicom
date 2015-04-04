@@ -1,14 +1,13 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 410 $
- * @lastmodified	$LastChangedDate: 2013-11-14 11:50:41 +0100 (Thu, 14 Nov 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
 
 $n = count ($this->order->products);
 $configs = $this->configs;
@@ -18,9 +17,12 @@ $date = date( $configs->get('time_format','d M Y'), $order->order_date);
 if ($this->order->id < 1){
 	echo JText::_('DSEMPTYORDER');
 }
+$params = json_decode($this->order->params);
 ?>
 
 <div id="digicom">	
+
+	<?php DigiComSiteHelperDigicom::loadModules('digicom_toolber'); ?>
 
 	<h1 class="digi-page-title"><?php echo JText::_('COM_DIGICOM_ORDER_DETAILS'); ?></h1>
 
@@ -28,7 +30,7 @@ if ($this->order->id < 1){
 		<thead>
 			
 			<tr>
-				<th><?php echo JText::_('COM_DIGICOM_ORDER_ID'); ?></th>
+				<th><?php echo JText::_('JGRID_HEADING_ID'); ?></th>
 				<th><?php echo $order->id; ?></th>
 			</tr>
 		</thead>
@@ -36,7 +38,7 @@ if ($this->order->id < 1){
 		<tbody>
 
 			<tr>
-				<td><strong><?php echo JText::_('COM_DIGICOM_STATUS'); ?></strong></td>
+				<td><strong><?php echo JText::_('JSTATUS'); ?></strong></td>
 				<td>
 					<?php
 						$labelClass = '';
@@ -53,7 +55,7 @@ if ($this->order->id < 1){
 				<td><?php echo ucfirst( $order->processor ); ?></td>
 			</tr>
 			<tr>
-				<td><strong><?php echo JText::_('COM_DIGICOM_DATE'); ?></strong></td>
+				<td><strong><?php echo JText::_('JDATE'); ?></strong></td>
 				<td><?php echo $date; ?></td>
 			</tr>
 			
@@ -63,21 +65,57 @@ if ($this->order->id < 1){
 			</tr>
 
 			<tr>
-				<td><strong><?php echo JText::_('COM_DIGICOM_AMOUNT_PAID'); ?></strong></td>
+				<td><strong><?php echo JText::_('COM_DIGICOM_TOTAL'); ?></strong></td>
+				<td><?php echo DigiComSiteHelperDigiCom::format_price($order->amount, $configs->get('currency','USD'), true, $configs);?></td>
+			</tr>
+
+			<tr>
+				<td><strong><?php echo JText::_('COM_DIGICOM_TOTAL_PAID'); ?></strong></td>
 				<td><?php echo DigiComSiteHelperDigiCom::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs);?></td>
 			</tr>
+			
+			<tr>
+				<td><strong><?php echo JText::_('COM_DIGICOM_ORDER_PAYMENT_INFORMATION'); ?></strong></td>
+				<td><p class="alert alert-info"><?php echo $order->comment;?></p></td>
+			</tr>
+
+			<?php if(!empty($params->warning)): ?>
+			<tr>
+				<td><strong><?php echo JText::_('COM_DIGICOM_ORDER_PAYMENT_WARNING'); ?></strong></td>
+				<td><p class="alert alert-danger"><?php echo $params->warning;?></p></td>
+			</tr>
+			<?php endif; ?>
 
 		</tbody>
 	</table>
+	<?php if(strtolower($order->status) === 'pending'): 
+	$u = JURI::getInstance();
+	$item = JFactory::getApplication()->getMenu()->getItems('link', 'index.php?option=com_digicom&view=checkout', true);
+	$Itemid = isset($item->id) ? $item->id : '';
+	?>
+		<div class="alert alert-warning">
+  			<p><?php echo JText::sprintf('COM_DIGICOM_ORDER_COMPLETE_NOTICE'); ?></p>
+			<form method="get" class="well well-small form-inline" action="<?php echo $u->toString(); ?>">
+  				<input type="hidden" name="option" value="com_digicom">
+				<input type="hidden" name="view" value="checkout">
+				<input type="hidden" name="order_id" value="<?php echo $order->id; ?>">
 
+				<?php echo DigiComSiteHelperDigicom::getPaymentPlugins($configs); ?>
+
+				<button class="btn pull-right" type="submit">Pay Now</button>
+				<input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>">
+ 			</form>
+ 		</div>
+
+	<?php endif; ?>
 	<h3 class="digi-section-title"><?php echo JText::_('COM_DIGICOM_PRODUCTS'); ?></h3>
 	<table class="table table-striped table-hover table-bordered">
 		<thead>
 			<tr>
-				<th><?php echo JText::_('COM_DIGICOM_PRODUCTS_IMAGE'); ?></th>
-				<th><?php echo JText::_('COM_DIGICOM_PRODUCTS_NAME'); ?></th>
-				<th><?php echo JText::_('COM_DIGICOM_PRODUCTS_TYPE'); ?></th>
-				<th><?php echo JText::_('COM_DIGICOM_PRODUCTS_PRICE'); ?></th>
+				<th><?php echo JText::_('COM_DIGICOM_IMAGE'); ?></th>
+				<th><?php echo JText::_('JGLOBAL_TITLE'); ?></th>
+				<th><?php echo JText::_('COM_DIGICOM_TYPE'); ?></th>
+				<th><?php echo JText::_('COM_DIGICOM_PRODUCT_PRICE'); ?></th>
 			</tr>
 		</thead>
 
@@ -105,6 +143,8 @@ if ($this->order->id < 1){
 		<i class="icon-printer"></i> <?php echo JText::_('COM_DIGICOM_ORDER_PRINT'); ?>
 	</a>
 
-	<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>
+	<?php DigiComSiteHelperDigicom::loadModules('digicom_footer','xhtml'); ?>
 
 </div>
+
+<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>

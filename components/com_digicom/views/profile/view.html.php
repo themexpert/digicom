@@ -1,17 +1,15 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 364 $
- * @lastmodified	$LastChangedDate: 2013-10-15 15:27:43 +0200 (Tue, 15 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
 
 class DigiComViewProfile extends JViewLegacy {
-
 
 	function display($tpl = null)
 	{	
@@ -20,9 +18,10 @@ class DigiComViewProfile extends JViewLegacy {
 		$app = JFactory::getApplication();
 		$input = $app->input;
 		$Itemid = $input->get("Itemid", 0);
+		$return = base64_encode( JURI::getInstance()->toString() );
 		if($customer->_user->id < 1)
 		{
-			$app->Redirect(JRoute::_('index.php?option=com_digicom&view=login&returnpage=profile&Itemid='.$Itemid, false));
+			$app->Redirect(JRoute::_('index.php?option=com_users&view=login&return='.$return.'&Itemid='.$Itemid, false));
 			return true;
 		}
 
@@ -32,21 +31,10 @@ class DigiComViewProfile extends JViewLegacy {
 		$this->askforbilling = $configs->get('askforbilling',1);
 		$this->askforcompany = $configs->get('askforcompany',1);
 		
-		$country_option = DigiComSiteHelperDigiCom::get_country_options($customer, false, $configs);
+		$country_option = DigiComSiteHelperDigiCom::get_country_options($customer->_customer, false, $configs);
 		$lists['country_option'] = $country_option;
 
-		$profile = new StdClass();
-		$profile->country = @$customer->country;
-		$profile->state = @$customer->state;
-		$shipcountry_option = DigiComSiteHelperDigiCom::get_country_options($profile, true, $configs);
-		$lists['shipcountry_options'] = $shipcountry_option;
-
-		$lists['customerlocation'] = DigiComSiteHelperDigiCom::get_store_province($profile, false);
-
-		$profile = new StdClass();
-		$profile->country = @$customer->country;
-		$profile->state = @$customer->state;
-		$lists['customershippinglocation'] = DigiComSiteHelperDigiCom::get_store_province($profile, true);
+		$lists['customerlocation'] = DigiComSiteHelperDigiCom::get_store_province($customer->_customer, false);
 
 		$sql = "select * from #__digicom_states where eumember='1'";
 		$db->setQuery($sql);

@@ -1,13 +1,13 @@
 <?php
 /**
- * @package     Joomla.Administrator
- * @subpackage  com_digicom
- *
- * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
  */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
 
 
 class digicomViewdigicom extends JViewLegacy {
@@ -56,13 +56,13 @@ class digicomViewdigicom extends JViewLegacy {
 	 */
 	protected function addToolbar()
 	{
-		JToolBarHelper::title(JText::_('DIGICOM_DASHBOARD'), 'generic.png');
+		JToolBarHelper::title(JText::_('COM_DIGICOM_DASHBOARD_TOOLBAR_TITLE'), 'generic.png');
 		
 		$bar = JToolBar::getInstance('toolbar');
 		
 		$layout = new JLayoutFile('toolbar.title');
 		$title = array(
-			'title' => JText::_( 'DIGICOM_DASHBOARD' ),
+			'title' => JText::_( 'COM_DIGICOM_DASHBOARD_TOOLBAR_TITLE' ),
 			'class' => 'product'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');		

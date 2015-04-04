@@ -1,14 +1,13 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 377 $
- * @lastmodified	$LastChangedDate: 2013-10-21 12:02:56 +0200 (Mon, 21 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
 
 class DigiComViewCart extends JViewLegacy
 {
@@ -63,42 +62,6 @@ class DigiComViewCart extends JViewLegacy
 		}
 		
 		parent::display($tpl);
-	}
-
-	
-	public function getPaymentPlugins($configs){
-		
-		$db = JFactory::getDBO();
-
-		$condtion = array(0 => '\'digicom_pay\'');
-		$condtionatype = join(',',$condtion);
-		if(JVERSION >= '1.6.0')
-		{
-			$query = "SELECT extension_id as id,name,element,enabled as published
-					  FROM #__extensions
-					  WHERE folder in ($condtionatype) AND enabled=1";
-		}
-		else
-		{
-			$query = "SELECT id,name,element,published
-					  FROM #__plugins
-					  WHERE folder in ($condtionatype) AND published=1";
-		}
-		$db->setQuery($query);
-		$gatewayplugin = $db->loadobjectList();
-
-		$lang = JFactory::getLanguage();
-		$options = array();
-		$options[] = JHTML::_('select.option', '', 'Select payment gateway');
-		foreach($gatewayplugin as $gateway)
-		{
-			$gatewayname = strtoupper(str_replace('plugpayment', '',$gateway->element));
-			$lang->load('plg_digicom_pay_' . strtolower($gatewayname), JPATH_ADMINISTRATOR);
-			$options[] = JHTML::_('select.option',$gateway->element, JText::_($gatewayname));
-		}
-
-		return JHTML::_('select.genericlist', $options, 'processor', 'class="inputbox required" style="float:right;"', 'value', 'text', $configs->get('default_payment','bycheck'), 'processor' );
-
 	}
 
 }

@@ -1,18 +1,18 @@
 <?php
 /**
  * @package		DigiCom
- * @copyright	Copyright (c)2010-2015 ThemeXpert
- * @license 	GNU General Public License version 3, or later
  * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
  * @since 		1.0.0
  */
 
 defined('_JEXEC') or die;
 
 /**
- * Weblink controller class.
+ * Product controller class.
  *
- * @since  1.6
+ * @since  1.0.0
  */
 class DigiComControllerProduct extends JControllerForm
 {
@@ -67,7 +67,7 @@ class DigiComControllerProduct extends JControllerForm
 	 *
 	 * @return  boolean
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function allowAdd($data = array())
 	{
@@ -98,7 +98,7 @@ class DigiComControllerProduct extends JControllerForm
 	 *
 	 * @return  boolean
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
 	{
@@ -127,7 +127,7 @@ class DigiComControllerProduct extends JControllerForm
 	 *
 	 * @return  boolean   True if successful, false otherwise and internal error is set.
 	 *
-	 * @since   1.7
+	 * @since   1.0.0
 	 */
 	public function batch($model = null)
 	{
@@ -150,7 +150,7 @@ class DigiComControllerProduct extends JControllerForm
 	 *
 	 * @return	void
 	 *
-	 * @since	1.6
+	 * @since	1.0.0
 	 */
 	protected function postSaveHook(JModelLegacy $model, $validData = array())
 	{

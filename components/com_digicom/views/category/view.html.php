@@ -1,10 +1,10 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  com_digicom
- *
- * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
  */
 
 defined('_JEXEC') or die;
@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 use Joomla\Registry\Registry;
 
 /**
- * HTML View class for the Content component
+ * HTML View class
  *
  * @since  1.5
  */
@@ -118,6 +118,8 @@ class DigiComViewCategory extends JViewCategory
 
 			$results = $dispatcher->trigger('onContentAfterDisplay', array('com_digicom.category', &$item, &$item->params, 0));
 			$item->event->afterDisplayContent = trim(implode("\n", $results));
+		
+			$item->images = DigiComSiteHelperDigiCom::getThumbnail($item->images); 
 		}
 
 		// Check for layout override only if this is not the active menu item
@@ -242,7 +244,7 @@ class DigiComViewCategory extends JViewCategory
 		{
 			$this->document->setMetaData('author', $this->category->get('author', ''));
 		}
-
+		
 		$mdata = $this->category->metadata->toArray();
 
 		foreach ($mdata as $k => $v)

@@ -1,15 +1,15 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 341 $
- * @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
 
+// TODO : Remvoe JRequest and cleanup code, naming convention
 JHtml::_('jquery.framework');
 JHTML::_('behavior.modal');
 $user = JFactory::getUser();
@@ -22,7 +22,7 @@ $items = $this->items;
 ?>
 <div id="digicom" class="digicom-wrapper com_digicom cart">
 <?php
-$button_value = "DSCHECKOUTE";
+$button_value = "COM_DIGICOM_CHECKOUT";
 $onclick = "document.getElementById('returnpage').value='checkout'; document.getElementById('type_button').value='checkout';";
 
 if($user->id == 0 || $this->customer->_customer->country == "")
@@ -33,7 +33,7 @@ if($user->id == 0 || $this->customer->_customer->country == "")
 
 if($configs->get('askterms',0) == '1')
 {
-	$onclick= "if(document.cart_form.agreeterms.checked != true){ alert(\'".JText::_("ACCEPT_TERMS_CONDITIONS")."\'); return false; }".$onclick;
+	$onclick= "if(document.cart_form.agreeterms.checked != true){ alert(\'".JText::_("COM_DIGICOM_CART_ACCEPT_TERMS_CONDITIONS_REQUIRED_NOTICE")."\'); return false; }".$onclick;
 }
 
 $url="index.php?option=com_digicom&controller=cart&task=gethtml&tmpl=component&format=raw&processor=";
@@ -102,14 +102,14 @@ $nr_columns = 4;
 			<td></td>
 			<td>
 				<b><?php
-					$text = "DIGI_ITEM_IN_CART";
+					$text = "COM_DIGICOM_ITEM_IN_CART";
 					if($k > 1){
-						$text = "DIGI_ITEMS_IN_CART";
+						$text = "COM_DIGICOM_ITEMS_IN_CART";
 					}
 					echo $k." ".JText::_($text); 
 				?></b>
 			</td>
-			<td><b><?php echo JText::_("DSSUBTOTAL");?></b></td>
+			<td><b><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></b></td>
 			<td>
 				<b><?php echo DigiComSiteHelperDigiCom::format_price2($total, $currency, true, $configs); ?></b>
 			</td>

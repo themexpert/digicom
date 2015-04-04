@@ -1,21 +1,18 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  com_weblinks
- *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
  */
 
 defined('_JEXEC') or die;
-
 /**
- * Weblinks Component Category Tree
+ * DigiCom Component Category Tree
  *
- * @static
- * @package     Joomla.Site
- * @subpackage  com_weblinks
- * @since       1.6
+ * @package     DigiCom
+ * @since       1.0.0
  */
 class DigiComCategories extends JCategories
 {
@@ -23,7 +20,7 @@ class DigiComCategories extends JCategories
 	 * Name of the items state field
 	 *
 	 * @var    string
-	 * @since  11.1
+	 * @since  1.0.0
 	 */
 
 	public function __construct($options = array())

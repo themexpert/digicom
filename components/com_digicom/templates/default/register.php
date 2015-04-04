@@ -1,30 +1,30 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 341 $
- * @lastmodified	$LastChangedDate: 2013-10-10 14:28:28 +0200 (Thu, 10 Oct 2013) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license			GNU/GPLv3
-*/
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
+
 JHtml::_('behavior.formvalidation');
 $Itemid = JRequest::getInt("Itemid", 0);
 
-require_once( JPATH_COMPONENT.DS.'helpers'.DS.'sajax.php' );
+require_once( JPATH_COMPONENT . '/helpers/sajax.php' );
 $configs = $this->configs;
 JHTML::_('behavior.modal');
 	$login_link = JRoute::_("index.php?option=com_digicom&view=register&task=register.login&returnpage=cart&tmpl=component&returnpage=cart&graybox=true");
 ?>
 <script type="text/javascript"><?php sajax_show_javascript(); ?></script>
 <form name="adminForm" id="adminForm" method="post" action="<?php echo JRoute::_('index.php?optioncom_digicom&view=profile&Itemid='.$Itemid); ?>" onsubmit="return validateForm();" >
-	<h2><?php echo JText::_('COM_DIGICOM_REGISTER');?></h2>
+	<h2 class="digi-section-title"><?php echo JText::_('COM_DIGICOM_REGISTER');?></h2>
 	<table style="border-collapse:separate !important;">
 
 	<tr>
 		<td>
-			<?php echo JText::_("DSFIRSTNAME"); ?>&nbsp;<span class="error">*</span>
+			<?php echo JText::_("COM_DIGICOM_FIRST_NAME"); ?>&nbsp;<span class="error">*</span>
 		</td>
 
 		<td>
@@ -34,7 +34,7 @@ JHTML::_('behavior.modal');
 
 	<tr>
 		<td>
-			<?php echo JText::_("DSLASTNAME"); ?>&nbsp;<span class="error">*</span>
+			<?php echo JText::_("COM_DIGICOM_LAST_NAME"); ?>&nbsp;<span class="error">*</span>
 		</td>
 
 		<td>
@@ -46,7 +46,7 @@ JHTML::_('behavior.modal');
 
 	<tr>
 		<td>
-			<?php echo JText::_("DSCOMPANY"); ?><b></b>
+			<?php echo JText::_("COM_DIGICOM_COMPANY"); ?><b></b>
 		</td>
 
 		<td>
@@ -58,7 +58,7 @@ JHTML::_('behavior.modal');
 
 	<tr>
 		<td>
-			<?php echo JText::_('DSEMAIL'); ?>&nbsp;<span class="error">*</span>
+			<?php echo JText::_('COM_DIGICOM_EMAIL'); ?>&nbsp;<span class="error">*</span>
 		</td>
 
 		<td>
@@ -72,14 +72,14 @@ JHTML::_('behavior.modal');
 
 	<tr>
 		<td>
-			<h2><?php echo JText::_("DSLOGININFO"); ?></h2>
+			<h2 class="digi-section-title"><?php echo JText::_("COM_DIGICOM_REGISTER_LOGIN_INFORMATION"); ?></h2>
 		</td>
 		<td>&nbsp;</td>
 	</tr>
 
 	<tr>
 		<td>
-			<?php echo JText::_('DSUSERNAME'); ?>&nbsp;<span class="error">*</span>
+			<?php echo JText::_('COM_DIGICOM_USERNAME'); ?>&nbsp;<span class="error">*</span>
 		</td>
 
 		<td>
@@ -87,13 +87,13 @@ JHTML::_('behavior.modal');
 			&nbsp;&nbsp;
 			<span class="" id="username_span">&nbsp;&nbsp;&nbsp;&nbsp;</span>
 			<br/>
-			<span style="display:none; color:#FF0000; font-size: 12px;" id="username_span_msg"><?php echo JText::_("DIGI_USERNAME_TAKEN")." "."<a rel=\"{handler: 'iframe', size: {x: 300, y: 300}}\"  class=\"modal\"  href=\"".$login_link."\">".JText::_('DIGI_HERE')."</a> ".JText::_("DIGI_TO_CONTINUE"); ?></span>
+			<span style="display:none; color:#FF0000; font-size: 12px;" id="username_span_msg"><?php echo JText::_("COM_DIGICOM_REGISTER_USERNAME_TAKEN")." "."<a rel=\"{handler: 'iframe', size: {x: 300, y: 300}}\"  class=\"modal\"  href=\"".$login_link."\">".JText::_('COM_DIGICOM_REGISTER_CLICK_HERE')."</a> ".JText::_("COM_DIGICOM_REGISTER_TO_CONTINUE"); ?></span>
 		</td>
 	</tr>
 
 	<tr>
 		<td>
-			<?php echo JText::_("DSPASS"); ?>&nbsp;<span class="error">*</span>
+			<?php echo JText::_("COM_DIGICOM_PASSWORD"); ?>&nbsp;<span class="error">*</span>
 		</td>
 
 		<td>
@@ -103,7 +103,7 @@ JHTML::_('behavior.modal');
 
 	<tr>
 		<td>
-			<?php echo JText::_("DSCPASS"); ?>&nbsp;<span class="error">*</span>
+			<?php echo JText::_("COM_DIGICOM_CONFIRM_PASSWORD"); ?>&nbsp;<span class="error">*</span>
 		</td>
 
 		<td>
@@ -115,21 +115,21 @@ JHTML::_('behavior.modal');
 
 		<tr>
 			<td>
-				<h2><?php echo JText::_("DSBILLINGADR"); ?></h2>
+				<h2><?php echo JText::_("COM_DIGICOM_BILLING_ADDRESS"); ?></h2>
 			</td>
 			<td>&nbsp;</td>
 		</tr>
 
 		<tr>
 			<td>
-				<?php echo JText::_("DSCOUNTRY"); ?>&nbsp;<span class="error">*</span>
+				<?php echo JText::_("COM_DIGICOM_COUNTRY"); ?>&nbsp;<span class="error">*</span>
 			</td>
 
 			<td>
 				<?php
 					$customer = $this->customer;
-					$customer->country = $country;
-					$country_option = DigiComHelper::get_country_options($customer, false, $configs);
+					$customer->country = $this->userinfo->country;
+					$country_option = DigiComSiteHelperDigiCom::get_country_options($customer, false, $configs);
 					echo $country_option;
 				?>
 			</td>
@@ -137,7 +137,7 @@ JHTML::_('behavior.modal');
 
 		<tr>
 			<td>
-				<?php echo Jtext::_("DSBILLING"); ?>&nbsp;<span class="error">*</span>
+				<?php echo Jtext::_("COM_DIGICOM_ADDRESS"); ?>&nbsp;<span class="error">*</span>
 			</td>
 
 			<td>
@@ -147,7 +147,7 @@ JHTML::_('behavior.modal');
 
 		<tr>
 			<td>
-				<?php echo JText::_("DSCITY"); ?>&nbsp;<span class="error">*</span>
+				<?php echo JText::_("COM_DIGICOM_CITY"); ?>&nbsp;<span class="error">*</span>
 			</td>
 
 			<td>
@@ -157,21 +157,21 @@ JHTML::_('behavior.modal');
 
 		<tr>
 			<td>
-				<?php echo JText::_("DSSTATE"); ?>&nbsp;<span class="error">*</span>
+				<?php echo JText::_("COM_DIGICOM_STATE"); ?>&nbsp;<span class="error">*</span>
 			</td>
 
 			<td>
 				<?php
 					$customer = $this->customer;
-					$customer->state = $state;
-					echo DigiComHelper::get_store_province($customer, false);
+					$customer->state = $this->userinfo->state;
+					echo DigiComSiteHelperDigiCom::get_store_province($customer, false);
 				?>
 			</td>
 		</tr>
 
 		<tr>
 			<td>
-				<?php echo JText::_("DSZIP"); ?>&nbsp;<span class="error">*</span>
+				<?php echo JText::_("COM_DIGICOM_ZIP"); ?>&nbsp;<span class="error">*</span>
 			</td>
 
 			<td>
@@ -192,7 +192,7 @@ JHTML::_('behavior.modal');
 	<table width="100%">
 		<tr>
 			<td align="left">
-				<button id="continue_button" type="submit" name="submit" class="btn btn-primary"><?php echo JText::_("COM_DIGICOM_LOGIN_REGISTER_BUTTON"); ?> <i class="ico-chevron-right ico-white"></i></button>
+				<button id="continue_button" type="submit" name="submit" class="btn btn-primary"><?php echo JText::_("COM_DIGICOM_REGISTER"); ?> <i class="ico-chevron-right ico-white"></i></button>
 			</td>
 		</tr>
 	</table>

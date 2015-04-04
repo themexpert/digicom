@@ -1,18 +1,20 @@
-<?php 
+<?php
 /**
- * @package Social Ads
- * @copyright Copyright (C) 2009 -2010 themexpert.com, Tekdi Web Solutions . All rights reserved.
- * @license GNU GPLv2 <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>
- * @link     http://www.themexpert.com.com
- */
-defined('_JEXEC') or die('Restricted access'); 
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
+
+defined('_JEXEC') or die; 
 ?>
 <div class="akeeba-bootstrap">
 	<form action="<?php echo $vars->action_url ?>" class="form-horizontal" method="post">
 		<input type="hidden" name="business" value="<?php echo $vars->business ?>" />
 		<input type="hidden" name="custom" value="<?php echo $vars->order_id ?>" />
 		<input type="hidden" name="item_name" value="<?php echo $vars->item_name ?>" />
-		<input type="hidden" name="return" value="<?php echo $vars->return ?>" />
+		<input type="hidden" name="return" value="<?php echo $vars->url ?>" />
 		<input type="hidden" name="cancel_return" value="<?php echo $vars->cancel_return ?>" />
 		<input type="hidden" name="notify_url" value="<?php echo $vars->notify_url ?>" />
 		<input type="hidden" name="currency_code" value="<?php echo $vars->currency_code ?>" />

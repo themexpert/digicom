@@ -1,20 +1,19 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  com_weblinks
- *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
  */
 
 defined('_JEXEC') or die;
 
 /**
- * Weblinks Component Controller
+ * DigiCom Front Controller
  *
- * @package     Joomla.Site
- * @subpackage  com_weblinks
- * @since       1.5
+ * @package     DigiCom
+ * @since       1.0
  */
 class DigiComController extends JControllerLegacy
 {
@@ -25,7 +24,7 @@ class DigiComController extends JControllerLegacy
 	 * @param   array  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
 	 * @return  JController		This object to support chaining.
-	 * @since   1.5
+	 * @since   1.0
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{

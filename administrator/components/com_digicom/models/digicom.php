@@ -1,21 +1,20 @@
 <?php
 /**
  * @package		DigiCom
- * @copyright	Copyright (c)2010-2015 ThemeXpert
- * @license 	GNU General Public License version 3, or later
  * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
  * @since 		1.0.0
  */
 
 defined('_JEXEC') or die;
 
-
 class DigiComModelDigiCom extends JModelList
 {
-	var $_configs = null;
-	var $_id = null;
+	protected $_configs = null;
+	protected $_id = null;
 
-	function __construct () {
+	public function __construct () {
 		parent::__construct();
 		$this->_id = 1;
 	}

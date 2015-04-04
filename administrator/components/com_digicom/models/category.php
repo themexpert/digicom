@@ -1,9 +1,9 @@
 <?php
 /**
  * @package		DigiCom
- * @copyright	Copyright (c)2010-2015 ThemeXpert
- * @license 	GNU General Public License version 3, or later
  * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
  * @since 		1.0.0
  */
 
@@ -14,13 +14,13 @@ use Joomla\Registry\Registry;
 /**
  * Categories Component Category Model
  *
- * @since  1.6
+ * @since  1.0.0
  */
 class DigiComModelCategory extends JModelAdmin
 {
 	/**
 	 * @var    string  The prefix to use with controller messages.
-	 * @since  1.6
+	 * @since  1.0.0
 	 */
 	protected $text_prefix = 'COM_CATEGORIES';
 
@@ -54,7 +54,7 @@ class DigiComModelCategory extends JModelAdmin
 	 *
 	 * @return  boolean  True if allowed to delete the record. Defaults to the permission set in the component.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function canDelete($record)
 	{
@@ -72,13 +72,96 @@ class DigiComModelCategory extends JModelAdmin
 	}
 
 	/**
+	 * Method to delete one or more records.
+	 *
+	 * @param   array  &$pks  An array of record primary keys.
+	 *
+	 * @return  boolean  True if successful, false if an error occurs.
+	 *
+	 * @since   12.2
+	 */
+	public function delete(&$pks)
+	{
+		$dispatcher = JEventDispatcher::getInstance();
+		$pks = (array) $pks;
+		$table = $this->getTable();
+
+		// Include the plugins for the delete events.
+		JPluginHelper::importPlugin($this->events_map['delete']);
+
+		// Iterate the items to delete each one.
+		foreach ($pks as $i => $pk)
+		{
+			if ($table->load($pk))
+			{
+				if ($this->canDelete($table))
+				{
+					
+					$context = $this->option . '.' . $this->name;
+
+					// Trigger the before delete event.
+					$result = $dispatcher->trigger($this->event_before_delete, array($context, $table));
+
+					if (in_array(false, $result, true))
+					{
+						$this->setError($table->getError());
+
+						return false;
+					}
+					
+					if (!$table->delete($pk))
+					{
+						
+						$this->setError($table->getError());
+
+						return false;
+					}
+
+					// Trigger the after event.
+					$dispatcher->trigger($this->event_after_delete, array($context, $table));
+				}
+				else
+				{
+					// Prune items that you can't change.
+					unset($pks[$i]);
+					$error = $this->getError();
+
+					if ($error)
+					{
+						JLog::add($error, JLog::WARNING, 'jerror');
+
+						return false;
+					}
+					else
+					{
+						JLog::add(JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), JLog::WARNING, 'jerror');
+
+						return false;
+					}
+				}
+			}
+			else
+			{
+				$this->setError($table->getError());
+
+				return false;
+			}
+		}
+
+		// Clear the component's cache
+		$this->cleanCache();
+
+		return true;
+	}
+
+	/**
 	 * Method to test whether a record can have its state changed.
 	 *
 	 * @param   object  $record  A record object.
 	 *
 	 * @return  boolean  True if allowed to change the state of the record. Defaults to the permission set in the component.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function canEditState($record)
 	{
@@ -110,7 +193,7 @@ class DigiComModelCategory extends JModelAdmin
 	 *
 	 * @return  JTable  A JTable object
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	public function getTable($type = 'Category', $prefix = 'DigiComTable', $config = array())
 	{
@@ -124,7 +207,7 @@ class DigiComModelCategory extends JModelAdmin
 	 *
 	 * @return  void
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function populateState()
 	{
@@ -159,7 +242,7 @@ class DigiComModelCategory extends JModelAdmin
 	 *
 	 * @return  mixed    Category data object on success, false on failure.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	public function getItem($pk = null)
 	{
@@ -235,7 +318,7 @@ class DigiComModelCategory extends JModelAdmin
 	 *
 	 * @return  mixed    A JForm object on success, false on failure
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
@@ -292,7 +375,7 @@ class DigiComModelCategory extends JModelAdmin
 	 *
 	 * @return  array           An array of conditions to add to add to ordering queries.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function getReorderConditions($table)
 	{
@@ -304,7 +387,7 @@ class DigiComModelCategory extends JModelAdmin
 	 *
 	 * @return  mixed  The data for the form.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function loadFormData()
 	{
@@ -331,7 +414,7 @@ class DigiComModelCategory extends JModelAdmin
 	 * @return  void
 	 *
 	 * @see     JFormField
-	 * @since   1.6
+	 * @since   1.0.0
 	 * @throws  Exception if there is an error in the form event.
 	 */
 	protected function preprocessForm(JForm $form, $data, $group = 'content')
@@ -445,7 +528,7 @@ class DigiComModelCategory extends JModelAdmin
 	 *
 	 * @return  boolean  True on success.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	public function save($data)
 	{
@@ -664,7 +747,7 @@ class DigiComModelCategory extends JModelAdmin
 	 *
 	 * @return  boolean  False on failure or error, true otherwise.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	public function rebuild()
 	{
@@ -694,7 +777,7 @@ class DigiComModelCategory extends JModelAdmin
 	 *
 	 * @return  boolean  False on failure or error, True otherwise
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	public function saveorder($idArray = null, $lft_array = null)
 	{
@@ -773,7 +856,7 @@ class DigiComModelCategory extends JModelAdmin
 	 *
 	 * @return  mixed    An array of new IDs on success, boolean false on failure.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function batchCopy($value, $pks, $contexts)
 	{
@@ -987,7 +1070,7 @@ class DigiComModelCategory extends JModelAdmin
 	 *
 	 * @return  boolean  True on success.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function batchMove($value, $pks, $contexts)
 	{
@@ -1138,7 +1221,7 @@ class DigiComModelCategory extends JModelAdmin
 	 *
 	 * @return  void
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function cleanCache($group = null, $client_id = 0)
 	{

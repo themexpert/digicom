@@ -1,14 +1,13 @@
 <?php
 /**
-* @package			DigiCom Joomla Extension
- * @author			themexpert.com
- * @version			$Revision: 457 $
- * @lastmodified	$LastChangedDate: 2014-01-26 08:51:32 +0100 (Sun, 26 Jan 2014) $
- * @copyright		Copyright (C) 2013 themexpert.com. All rights reserved.
-* @license
-*/
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
+ */
 
-defined ('_JEXEC') or die ("Go away.");
+defined('_JEXEC') or die;
 
 class DigiComModelCheckout extends JModelItem
 {
@@ -1401,7 +1400,7 @@ class DigiComModelCheckout extends JModelItem
 	}
 
 	function addUserToList($user_id, $product_id){
-		require_once(JPATH_COMPONENT.DS.'helpers'.DS.'MCAPI.class.php');
+		require_once(JPATH_COMPONENT . '/helpers/MCAPI.class.php');
 		$db = JFactory::getDBO();
 		$sql = "select p.mailchimpapi, p.mailchimplist, p.mailchimpregister, p.mailchimpgroupid, u.email, c.firstname, c.lastname from #__users u, #__digicom_products p, #__digicom_customers c where u.id=c.id and u.id=".intval($user_id)." and p.id=".intval($product_id);
 		$db->setQuery($sql);

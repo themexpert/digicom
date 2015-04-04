@@ -1,10 +1,10 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  com_content
- *
- * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
  */
 
 defined('_JEXEC') or die;
@@ -168,7 +168,7 @@ class DigiComSiteHelperQuery
 		{
 			// Calculate voting count
 			$select = ' , ROUND(v.rating_sum / v.rating_count) AS rating, v.rating_count';
-			$join = ' LEFT JOIN #__content_rating AS v ON a.id = v.content_id';
+			$join = ' LEFT JOIN #__digicom_products_rating AS v ON a.id = v.content_id';
 		}
 		else
 		{

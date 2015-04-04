@@ -1,19 +1,18 @@
 <?php
 /**
  * @package		DigiCom
- * @copyright	Copyright (c)2010-2015 ThemeXpert
- * @license 	GNU General Public License version 3, or later
  * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
  * @since 		1.0.0
  */
 
 defined('_JEXEC') or die;
 
-
 /**
  * Categories Component Categories Model
  *
- * @since  1.6
+ * @since  1.0.0
  */
 class DigiComModelCategories extends JModelList
 {
@@ -23,7 +22,7 @@ class DigiComModelCategories extends JModelList
 	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
 	 * @see     JController
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	public function __construct($config = array())
 	{
@@ -61,7 +60,7 @@ class DigiComModelCategories extends JModelList
 	 *
 	 * @return  void
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
@@ -120,7 +119,7 @@ class DigiComModelCategories extends JModelList
 	 *
 	 * @return  string  A store id.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function getStoreId($id = '')
 	{
@@ -138,7 +137,7 @@ class DigiComModelCategories extends JModelList
 	 *
 	 * @return  JDatabaseQuery object.
 	 *
-	 * @since   1.6
+	 * @since   1.0.0
 	 */
 	protected function getListQuery()
 	{
