@@ -32,7 +32,6 @@
 
 		<folder>controllers</folder>
 		<folder>helpers</folder>
-		<folder>language</folder>
 		<folder>models</folder>
 		<folder>tables</folder>
 		<folder>templates</folder>
@@ -66,7 +65,6 @@
 			<folder>controllers</folder>
 			<folder>helpers</folder>
 			<folder>html</folder>
-			<folder>language</folder>
 			<folder>layouts</folder>
 			<folder>libs</folder>
 			<folder>models</folder>

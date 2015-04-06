@@ -14,7 +14,6 @@
 	<files>
 		<filename plugin="offline">offline.php</filename>
 		<folder>offline</folder>
-		<folder>language</folder>
 	</files>
 	
 	<languages folder="language">
