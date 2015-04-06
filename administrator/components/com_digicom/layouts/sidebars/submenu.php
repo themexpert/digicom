@@ -24,7 +24,7 @@ JHtmlBehavior::core();
 			<?php if ($displayData->displayMenu) : ?>
 			<ul id="submenu" class="nav nav-list">
 				<li>
-					<a class="dglogo" href="#">DigiCom</a>
+					<a class="dglogo" href="index.php?option=com_digicom">DigiCom</a>
 				</li>
 				<?php foreach ($displayData->list as $item) :
 				if (isset ($item[2]) && $item[2] == 1) : ?>
