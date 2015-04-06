@@ -6,7 +6,7 @@
  * @license 	GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 imgpath = "";
-// Media manager
+/* Media manager*/
 function elFinderUpdate(fieldID, value) {
   var fileNameIndex = value.lastIndexOf("/") + 1;
   var filename = value.substr(fileNameIndex);
@@ -14,12 +14,12 @@ function elFinderUpdate(fieldID, value) {
   var filenameID = fieldID.replace("url", "name");
 
   jQuery('#' + fieldID).val(value);
-	jQuery('#' + filenameID).val(filename);
-	if (typeof SqueezeBox !== 'undefined' && jQuery.isFunction(SqueezeBox)) {
-		SqueezeBox.close();
-	} else {
-		parent.document.getElementById('sbox-btn-close').click()
-	}
+  jQuery('#' + filenameID).val(filename);
+  if (typeof SqueezeBox !== 'undefined' && jQuery.isFunction(SqueezeBox)) {
+  	SqueezeBox.close();
+  } else {
+	 parent.document.getElementById('sbox-btn-close').click()
+  }
 }
 
 function openModal(a){
@@ -29,19 +29,51 @@ function openModal(a){
 
 jQuery(document).ready(function() {
 
- jQuery("a[href*=#togglesidebar]").toggle(function () {
-  jQuery("body").addClass("sidebar-collapse");
- }, function () {
-  jQuery("body").removeClass("sidebar-collapse");
- });
+  /* Load the value from localStorage*/
+  if (typeof(Storage) !== "undefined")
+  {
+    var toggleDigiSidebar = localStorage.getItem('digisidebar',false);
+    if(toggleDigiSidebar == 'true'){
+      jQuery("body").addClass("sidebar-collapse");
+    }else{
+      jQuery("body").removeClass("sidebar-collapse");
+      localStorage.setItem('digisidebar', false);
+    }
+  }
 
- jQuery("#toggle_settings").toggle(function () {
-  jQuery("body").addClass("sidebar-right-collapse");
- }, function () {
-  jQuery("body").removeClass("sidebar-right-collapse");
- });
+  jQuery("a[href*=#togglesidebar]").click(function(e) {
 
-  // Toggle toolbar button
+    if(jQuery("body").hasClass("sidebar-collapse")) {
+      /* if it's closed, then remove class and open it */
+      jQuery("body").removeClass("sidebar-collapse");
+
+      // Load the value from localStorage
+      if (typeof(Storage) !== "undefined")
+      {
+        /* Set the last selection in localStorage */
+        localStorage.setItem('digisidebar', false);
+      }
+    } else {
+      /* as its open, close it */
+      jQuery("body").addClass("sidebar-collapse");
+
+      // Load the value from localStorage
+      if (typeof(Storage) !== "undefined")
+      {
+        /* Set the last selection in localStorage */
+        localStorage.setItem('digisidebar', true);
+      }
+    }
+
+  });
+
+  jQuery("#toggle_settings").toggle(function () {
+    jQuery("body").addClass("sidebar-right-collapse");
+  }, function () {
+    jQuery("body").removeClass("sidebar-right-collapse");
+  });
+
+  /* Toggle toolbar button*/
   var btnSelector = jQuery('#toolbar-publish,#toolbar-unpublish,#toolbar-trash,#toolbar-delete,#toolbar-edit');
 
   jQuery("input[type='checkbox']").change( function(){
