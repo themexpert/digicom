@@ -72,8 +72,10 @@
 					if(typeof settings.before_remove === 'function') {
 						settings.before_remove(container, row);
 					}
-
-					row.remove();
+					if (confirm(DIGICOM_ALERT_REMOVE_FILES))
+					{
+						row.remove();
+					}
 					/*
 					if(typeof settings.after_remove === 'function') {
 						settings.after_remove(container);
