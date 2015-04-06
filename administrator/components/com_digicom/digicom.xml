@@ -44,17 +44,7 @@
 
 	<administration>
 		<menu img="class:digicom">com_digicom</menu>
-		<submenu>
-			<menu link="option=com_digicom" view="links" img="class:digicom" alt="DigiCom/Dashboard">com_digicom_dashboard</menu>
-			<menu link="option=com_digicom&amp;view=products" view="products" img="class:digicom-products" alt="DigiCom/Products">com_digicom_products</menu>
-			<menu link="option=com_digicom&amp;view=categories" view="categories" img="class:digicom-categories" alt="DigiCom/Categories">com_digicom_categories</menu>
-			<menu link="option=com_digicom&amp;view=filemanager" view="filemanager" img="class:digicom-filemanager" alt="DigiCom/FileManager">com_digicom_filemanager</menu>
-			<menu link="option=com_digicom&amp;view=customers" view="customers" img="class:digicom-customers" alt="DigiCom/Customers">com_digicom_customers</menu>
-			<menu link="option=com_digicom&amp;view=orders" view="orders" img="class:digicom-orders" alt="DigiCom/Orders">com_digicom_orders</menu>
-			<menu link="option=com_digicom&amp;view=discounts" view="discounts" img="class:digicom-discounts" alt="DigiCom/Discounts">com_digicom_discount</menu>
-			<menu link="option=com_digicom&amp;view=stats" view="stats" img="class:digicom-stats" alt="DigiCom/Stats">com_digicom_stats</menu>
-			<menu link="option=com_digicom&amp;view=about" view="about" img="class:digicom-about" alt="DigiCom/About">com_digicom_about</menu>
-		</submenu>
+		
 		<files folder="admin">
 			<filename>digicom.php</filename>
 			<filename>controller.php</filename>
