@@ -18,6 +18,7 @@ $component 		= $input->getCmd('option', 'com_digicom');
 $document 		= JFactory::getDocument();
 $product 		= $displayData->get('item');
 $configs 		= $displayData->get('configs');
+$document->addScriptDeclaration('var DIGICOM_ALERT_REMOVE_PRODUCTS = "'. JText::_("COM_DIGICOM_PRODUCTS_ITEMS_REMOVE_WARNING") . '";');
 
 $link = 'index.php?option=com_digicom&amp;view=products&amp;layout=modal&amp;tmpl=component&amp;' . JSession::getFormToken() . '=1';
 
@@ -37,7 +38,10 @@ function jSelectProduct(id, title, catid, object, link, lang,price)
 }
 function jRemveProduct(id){
 	event.preventDefault();
-	jQuery('tr#productincludes_item_'+id).remove();
+	if (confirm(DIGICOM_ALERT_REMOVE_PRODUCTS))
+	{
+		jQuery('tr#productincludes_item_'+id).remove();
+	}
 }
 ";
 $document->addScriptDeclaration($js);
