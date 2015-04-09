@@ -240,6 +240,22 @@ class DigiComRouter extends JComponentRouterBase
 			}
 		}
 
+		/*
+		 * lets deal the processor
+		 */
+		if (isset($query['processor']))
+		{
+			if ($query['processor'] == '')
+			{
+				unset($query['processor']);
+			}else{
+				$segments['processor'] = $query['processor'];
+				unset($query['processor']);
+			}
+			
+		}
+		
+
 		$total = count($segments);
 
 		for ($i = 0; $i < $total; $i++)
