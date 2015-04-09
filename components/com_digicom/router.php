@@ -31,7 +31,7 @@ class DigiComRouter extends JComponentRouterBase
 
 		// Get a menu item based on Itemid or currently active
 		$params = JComponentHelper::getParams('com_digicom');
-		$advanced = $params->get('sef_advanced_link', 0);
+		$advanced = $params->get('sef_advanced_link', 1);
 
 		// We need a menu item.  Either the one specified in the query, or the current active one if none specified
 		if (empty($query['Itemid']))
@@ -284,7 +284,7 @@ class DigiComRouter extends JComponentRouterBase
 		// Get the active menu item.
 		$item = $this->menu->getActive();
 		$params = JComponentHelper::getParams('com_digicom');
-		$advanced = $params->get('sef_advanced_link', 0);
+		$advanced = $params->get('sef_advanced_link', 1);
 		$db = JFactory::getDbo();
 
 		// Count route segments

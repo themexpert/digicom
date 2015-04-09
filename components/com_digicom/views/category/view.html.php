@@ -145,7 +145,7 @@ class DigiComViewCategory extends JViewCategory
 			$this->setLayout($active->query['layout']);
 		}
 
-		// For blog layouts, preprocess the breakdown of leading, intro and linked articles.
+		// For blog layouts, preprocess the breakdown of leading, intro and linked products.
 		foreach ($this->items as $i => $item)
 		{
 			if ($i < $numLeading)

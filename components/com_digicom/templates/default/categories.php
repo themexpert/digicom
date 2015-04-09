@@ -74,7 +74,7 @@ $bsGrid = array(
 							<h3 class="item-title">
 								<a href="<?php echo JRoute::_(DigiComHelperRoute::getCategoryRoute($item->id));?>">
 								<?php echo $this->escape($item->title); ?></a>
-								<?php if ($this->params->get('show_cat_num_articles_cat') == 1) :?>
+								<?php if ($this->params->get('show_cat_num_products_cat') == 1) :?>
 									<span class="badge badge-info tip hasTooltip" title="<?php echo JHtml::tooltipText('COM_DIGICOM_NUM_ITEMS'); ?>">
 										<?php echo $item->numitems; ?>
 									</span>

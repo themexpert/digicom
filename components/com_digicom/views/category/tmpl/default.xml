@@ -108,11 +108,11 @@
 			</field>
 
 			<field name="orderby_sec" type="list"
-				description="JGLOBAL_ARTICLE_ORDER_DESC"
-				label="JGLOBAL_ARTICLE_ORDER_LABEL"
+				description="JGLOBAL_PRODUCT_ORDER_DESC"
+				label="JGLOBAL_PRODUCT_ORDER_LABEL"
 			>
 				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="front">COM_DIGICOM_PRODUCTS_LIST_ARTICLE_ORDER_FEATURED</option>
+				<option value="front">COM_DIGICOM_PRODUCTS_LIST_PRODUCT_ORDER_FEATURED</option>
 				<option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
 				<option value="date">JGLOBAL_OLDEST_FIRST</option>
 				<option value="alpha">JGLOBAL_TITLE_ALPHABETICAL</option>

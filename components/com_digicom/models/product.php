@@ -161,13 +161,13 @@ class DigiComModelProduct extends JModelItem
 
 				if (empty($data))
 				{
-					return JError::raiseError(404, JText::_('COM_DIGICOM_ERROR_ARTICLE_NOT_FOUND'));
+					return JError::raiseError(404, JText::_('COM_DIGICOM_ERROR_PRODUCT_NOT_FOUND'));
 				}
 
 				// Check for published state if filter set.
 				if (((is_numeric($published)) || (is_numeric($archived))) && (($data->state != $published) && ($data->state != $archived)))
 				{
-					return JError::raiseError(404, JText::_('COM_DIGICOM_ERROR_ARTICLE_NOT_FOUND'));
+					return JError::raiseError(404, JText::_('COM_DIGICOM_ERROR_PRODUCT_NOT_FOUND'));
 				}
 
 				// Convert parameter fields to objects.

@@ -149,7 +149,7 @@ class DigiComSiteHelperQuery
 	/**
 	 * Get join information for the voting query.
 	 *
-	 * @param   \Joomla\Registry\Registry  $params  An options object for the article.
+	 * @param   \Joomla\Registry\Registry  $params  An options object for the Product.
 	 *
 	 * @return  array  A named array with "select" and "join" keys.
 	 * 
@@ -187,7 +187,7 @@ class DigiComSiteHelperQuery
 	 * The layout always lays the introtext products out across columns.
 	 * Array is reordered so that, when products are displayed in index order
 	 * across columns in the layout, the result is that the
-	 * desired article ordering is achieved down the columns.
+	 * desired Product ordering is achieved down the columns.
 	 *
 	 * @param   array    &$products   Array of intro text products
 	 * @param   integer  $numColumns  Number of columns in the layout
