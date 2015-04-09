@@ -54,7 +54,7 @@ class DigiComControllerCart extends JControllerLegacy
 		if($from == "ajax"){
 			$renew = JRequest::getVar("renew", "");
 			//$this->showCart();
-			$url = JRoute::_("index.php?option=com_digicom&view=cart&layout=cart_popup&tmpl=component&Itemid=".$cart_itemid, false);
+			$url = JRoute::_(JRoute::_("index.php?option=com_digicom&view=cart&layout=cart_popup&tmpl=component"), false);
 			$this->setRedirect($url);
 			return true;
 		}
@@ -62,18 +62,18 @@ class DigiComControllerCart extends JControllerLegacy
 		$cart_itemid = DigiComSiteHelperDigiCom::getCartItemid();
 
 		if(JRequest::getVar('status', '-1') == 'change'){
-			$url = JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$cart_itemid, false);
+			$url = JRoute::_("index.php?option=com_digicom&view=cart", false);
 			$this->setRedirect($url);
 		}
 		else{
 			if($res < 0) {
 				$msg = JText::_("DSWRONGPRODID");
-				$link = "index.php?option=com_digicom&view=category&id=" . $cid . "&Itemid=" . $Itemid;
+				$link = "index.php?option=com_digicom&view=category&id=" . $cid;
 				$this->setRedirect(JRoute::_($link, false), $msg);
 			}
 			elseif($res == 0){
 				$msg = JText::_("DSERRORUPDCARD");
-				$link = "index.php?option=com_digicom&view=category&id=" . $cid . "&Itemid=" . $Itemid;
+				$link = "index.php?option=com_digicom&view=category&id=" . $cid;
 				$this->setRedirect(JRoute::_($link, false), $msg);
 			}
 
@@ -89,7 +89,7 @@ class DigiComControllerCart extends JControllerLegacy
 			}
 
 			if($type_afteradd == 0){// Take to cart
-				$url = JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$cart_itemid, false);
+				$url = JRoute::_("index.php?option=com_digicom&view=cart", false);
 				$this->setRedirect($url);
 			}
 			elseif($type_afteradd == 1){//Stay on product list
@@ -158,7 +158,7 @@ class DigiComControllerCart extends JControllerLegacy
 			if(strlen($rp) < 1)
 			{
 				$cart_itemid = DigiComSiteHelperDigiCom::getCartItemid();
-				$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$cart_itemid."&processor=".$processor, false));
+				$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&processor=".$processor, false));
 			}
 			else
 			{
@@ -167,7 +167,7 @@ class DigiComControllerCart extends JControllerLegacy
 					if(trim($renew) != ""){
 						$renew = "&renew=".$renew;
 					}
-					$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart".$renew."&Itemid=".$Itemid."&processor=".$processor, false, ($processor=='authorizenet' ? true : false)), JText::_("DIGI_ALREADY_JOOMLA_USER"), "notice");
+					$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart".$renew."&processor=".$processor, false, ($processor=='authorizenet' ? true : false)), JText::_("DIGI_ALREADY_JOOMLA_USER"), "notice");
 					return true;
 				}
 				else{
@@ -188,7 +188,7 @@ class DigiComControllerCart extends JControllerLegacy
 
 		if($from == "ajax"){
 			//$this->showCart();
-			$this->setRedirect("index.php?option=com_digicom&view=cart&layout=cart_popup&tmpl=component&Itemid=".$itemid."&processor=".$processor);
+			$this->setRedirect("index.php?option=com_digicom&view=cart&layout=cart_popup&processor=".$processor."&tmpl=component");
 
 		}
 		else{
@@ -248,14 +248,14 @@ class DigiComControllerCart extends JControllerLegacy
 		if(!$user->id or $this->_customer->_user->id < 1){
 			$uri = JURI::getInstance();
 			$return = base64_encode($uri->toString());
- 			$this->setRedirect("index.php?option=com_digicom&view=register&layout=register_cart&Itemid=".$Itemid."&processor=".$processor.'&returnpage='.$returnpage);
+ 			$this->setRedirect("index.php?option=com_digicom&view=register&layout=register_cart&processor=".$processor.'&returnpage='.$returnpage);
 			return true;
 		}
 
 		// Check Payment Plugin installed
 		if (empty($plugins_enabled)) {
 			$msg = JText::_('COM_DIGICOM_PAYMENT_PLUGIN_NOT_INSTALLED');
-			$this->setRedirect("index.php?option=com_digicom&view=cart&Itemid=".$Itemid, $msg);
+			$this->setRedirect("index.php?option=com_digicom&view=cart", $msg);
 			return;
 		}
 
@@ -264,12 +264,12 @@ class DigiComControllerCart extends JControllerLegacy
 
 		$res = DigiComSiteHelperDigiCom::checkProfileCompletion($customer);
 		if( $res < 1 ) {
-			$this->setRedirect("index.php?option=com_digicom&view=profile&layout=edit&returnpage=checkout&Itemid=".$_Itemid."&processor=".$processor);
+			$this->setRedirect("index.php?option=com_digicom&view=profile&layout=edit&returnpage=checkout&processor=".$processor);
 		}
 
 		if($configs->get('askforbilling',1) != 0)
 		{
-			$this->setRedirect("index.php?option=com_digicom&view=profile&layout=edit&returnpage=checkout&Itemid=".$_Itemid."&processor=".$processor);
+			$this->setRedirect("index.php?option=com_digicom&view=profile&layout=edit&returnpage=checkout&processor=".$processor);
 		}
 		
 		if( $res == 1 ) {
@@ -393,8 +393,7 @@ class DigiComControllerCart extends JControllerLegacy
 			$params['order_currency'] = $items[-2]['currency'];
 			
 			$cart->storeOrderParams( $user->id, $order_id ,$params);
-
-			$this->setRedirect("index.php?option=com_digicom&view=checkout&order_id=".$order_id."&processor=".$params['processor']."&Itemid=".$itemid);
+			$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=checkout&order_id=".$order_id."&processor=".$params['processor']));
 			
 		}
 		
@@ -477,6 +476,7 @@ class DigiComControllerCart extends JControllerLegacy
 	function processPayment()
 	{
 		
+	 	$session = JFactory::getSession();
 	 	$app		= JFactory::getApplication();
 		$input 		= $app->input;
 		
@@ -489,7 +489,7 @@ class DigiComControllerCart extends JControllerLegacy
 		if($processor == ''){
 			$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=cart', true);
 			$Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
-			$app->redirect('index.php?option=com_digicom&view=orders'.$Itemid,JText::_('COM_DIGICOM_PAYMENT_NO_PROCESSOR_SELECTED'));
+			$app->redirect(JRoute::_('index.php?option=com_digicom&view=orders'),JText::_('COM_DIGICOM_PAYMENT_NO_PROCESSOR_SELECTED'));
 			return false;
 		}
 
@@ -497,7 +497,7 @@ class DigiComControllerCart extends JControllerLegacy
 		{
 			$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=cart', true);
 			$Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
-			$app->redirect("index.php?option=com_digicom&view=orders".$Itemid,JText::_('COM_DIGICOM_PAYMENT_NO_ORDER_PASSED'));
+			$app->redirect(JRoute::_("index.php?option=com_digicom&view=orders"),JText::_('COM_DIGICOM_PAYMENT_NO_ORDER_PASSED'));
 		}
 
 		$param = array();

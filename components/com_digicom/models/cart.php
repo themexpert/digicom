@@ -740,25 +740,19 @@ class DigiComModelCart extends JModelItem
 			
 		}
 
-		$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=orders', true);
-		$Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
-
 		if($status != "Active"){			
-			$app->redirect(JURI::root()."index.php?option=com_digicom&view=order&id=".$order_id.$Itemid,$msg);
+			$app->redirect(JRoute::_("index.php?option=com_digicom&view=order&id=".$order_id),$msg);
 		}
 		
 		// orders page
 		if ($configs->get('afterpurchase',1) == 1)
 		{
-			$app->redirect(JURI::root()."index.php?option=com_digicom&view=order&id=".$order_id.$Itemid,$msg);
+			$app->redirect(JRoute::_("index.php?option=com_digicom&view=order&id=".$order_id),$msg);
 		}
 		// download page
 		else
 		{
-			$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=downloads', true);
-			$Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
-
-			$app->redirect(JURI::root()."index.php?option=com_digicom&view=downloads".$Itemid,$msg);
+			$app->redirect(JRoute::_("index.php?option=com_digicom&view=downloads"),$msg);
 		}
 		
 		return true;

@@ -208,11 +208,22 @@ class DigiComRouter extends JComponentRouterBase
 			}
 		}
 
-		if ($view == 'cart')
+		if ($view == 'cart' or $view == 'checkout' or $view == 'order')
 		{
 			if (!$menuItemGiven)
 			{
 				$segments[] = $view;
+			}
+
+			if($view == 'checkout'){
+				$segments[] = 'order';
+				$segments[] = $query['order_id'];
+				unset($query['order_id']);
+			}
+			
+			if($view == 'order'){
+				$segments[] = $query['id'];
+				unset($query['id']);
 			}
 
 			unset($query['view']);
@@ -304,8 +315,14 @@ class DigiComRouter extends JComponentRouterBase
 		{
 			$vars['view'] = $segments[0];
 			if($segments[0] == 'cart'){
-				$vars['layout'] = $segments[1];
+				if(!empty($segments[1])) $vars['layout'] = $segments[1];
 			}
+
+			if($segments[0] == 'checkout'){
+				if( !empty($segments[1]) && !empty($segments[2]) ) $vars['order_id'] = $segments[2];
+			}
+
+
 			$vars['id'] = $segments[$count - 1];
 			return $vars;
 		}
