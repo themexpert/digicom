@@ -15,7 +15,6 @@ class DigiComControllerCart extends JControllerLegacy
 	var $_model = null;
 	var $_config = null;
 	var $_product = null;
-	var $_session = null;
 
 	function __construct()
 	{
@@ -126,6 +125,7 @@ class DigiComControllerCart extends JControllerLegacy
 
 	function updateCart()
 	{
+		$session = JFactory::getSession();
 		$res = $this->_model->updateCart($this->_customer, $this->_config);
 
 		$from = JRequest::getVar("from", "");
@@ -152,9 +152,9 @@ class DigiComControllerCart extends JControllerLegacy
 			$country = JRequest::getVar("country", "");
 			$state = JRequest::getVar("state", "");
 			$array = array("firstname"=>$firstname, "lastname"=>$lastname, "company"=>$company, "email"=>$email, "username"=>$username, "password"=>$password, "password_confirm"=>$password_confirm, "address"=>$address, "city"=>$city, "zipcode"=>$zipcode, "country"=>$country, "state"=>$state);
-			$_SESSION["new_customer"] = $array;
 			$processor = JRequest::getVar("processor", "");
-
+			$session->set('new_customer', $array);
+			$session->set('processor', $processor);
 			if(strlen($rp) < 1)
 			{
 				$cart_itemid = DigiComSiteHelperDigiCom::getCartItemid();
@@ -162,7 +162,6 @@ class DigiComControllerCart extends JControllerLegacy
 			}
 			else
 			{
-				$_SESSION["processor"] = $processor;
 				if($this->_model->existUser($username, $email)){
 					$renew = JRequest::getVar("renew", "", "get");
 					if(trim($renew) != ""){
@@ -180,10 +179,12 @@ class DigiComControllerCart extends JControllerLegacy
 
 	function deleteFromCart()
 	{
+		$session = JFactory::getSession();
 		$res = $this->_model->deleteFromCart($this->_customer, $this->_config);
 		$itemid = DigiComSiteHelperDigiCom::getCartItemid();
 		$from = JRequest::getVar("from", "");
 		$processor = JRequest::getVar("processor", "");
+		$session->set('processor',$processor);
 
 		if($from == "ajax"){
 			//$this->showCart();
@@ -232,10 +233,11 @@ class DigiComControllerCart extends JControllerLegacy
 
 	function checkout()
 	{
-		
+		$session = JFactory::getSession();
 		$app = JFactory::getApplication();
 		$Itemid = JRequest::getInt("Itemid", 0);
-		$processor = JRequest::getVar("processor", "");
+		$processor =  JRequest::getVar("processor", '');
+		$session->set('processor',$processor);
 		$returnpage = JRequest::getVar("returnpage", "");
 		$_Itemid = $Itemid;
 		$user = JFactory::getUser();
@@ -274,7 +276,7 @@ class DigiComControllerCart extends JControllerLegacy
 			
 			$fromsum = JRequest::getVar('fromsum', '0');
 			if(!$fromsum) {
-				$this->setRedirect("index.php?option=com_digicom&view=cart&layout=summary&Itemid=".$_Itemid."&processor=".$processor);
+				$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&layout=summary&processor=".$processor));
 				return true;
 			}
 
@@ -474,10 +476,11 @@ class DigiComControllerCart extends JControllerLegacy
 
 	function processPayment()
 	{
-		$app		= JFactory::getApplication();
+		
+	 	$app		= JFactory::getApplication();
 		$input 		= $app->input;
 		
-		$processor 	= $input->get('processor','');
+		$processor 	= $session->get('processor','');
 		$order_id 	= $input->get('order_id',0);
 		$sid 		= $input->get('sid','');
 		$pay 		= $input->get('pay','');

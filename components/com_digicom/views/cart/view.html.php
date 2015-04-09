@@ -26,6 +26,8 @@ class DigiComViewCart extends JViewLegacy
 
 		$this->plugins = $this->get('PluginList');
 
+		$this->session = JFactory::getSession();;
+
 		$disc = 0;
 		foreach ($this->items as $i => $item) {
 

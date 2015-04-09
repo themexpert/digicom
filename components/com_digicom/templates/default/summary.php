@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 $configs = $this->configs;
 $Itemid = JRequest::getInt("Itemid", 0);
-$processor = JRequest::getVar("processor", '');
+$processor = $this->session->get('processor');
 if($configs->get('show_steps',1) == 1){ ?>
 <div class="pagination pagination-centered">
 	<ul>

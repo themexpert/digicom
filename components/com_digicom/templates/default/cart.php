@@ -17,7 +17,7 @@ JHtml::_('formbehavior.chosen', 'select');
 $user = JFactory::getUser();
 $document=JFactory::getDocument();
 $configs = $this->configs;
-$processor = JRequest::getVar("processor", "");
+$processor = $this->session->get('processor');
 $Itemid = JRequest::getInt("Itemid", 0);
 $items = $this->items;
 $button_value = "COM_DIGICOM_CHECKOUT";
@@ -28,7 +28,7 @@ if($user->id == 0 || $this->customer->_customer->country == "")
 	$button_value = "COM_DIGICOM_CONTINUE";
 }
 
-$url="index.php?option=com_digicom&view=cart&task=cart.gethtml&tmpl=component&format=raw&processor=";
+$url="index.php?option=com_digicom&view=cart&task=cart.gethtml&tmpl=component&format=raw&processor=".$processor;
 
 $total = 0;//$this->total;//0;
 $discount = $this->discount;//0;
