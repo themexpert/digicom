@@ -208,7 +208,7 @@ class DigiComRouter extends JComponentRouterBase
 			}
 		}
 
-		if ($view == 'featured')
+		if ($view == 'cart')
 		{
 			if (!$menuItemGiven)
 			{
