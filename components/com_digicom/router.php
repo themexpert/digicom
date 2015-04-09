@@ -230,11 +230,19 @@ class DigiComRouter extends JComponentRouterBase
 				{
 					unset($query['layout']);
 				}
+				else{
+					$segments[] = $query['layout'];
+					unset($query['layout']);
+				}
 			}
 			else
 			{
 				if ($query['layout'] == 'default')
 				{
+					unset($query['layout']);
+				}
+				else{
+					$segments[] = $query['layout'];
 					unset($query['layout']);
 				}
 			}
