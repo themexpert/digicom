@@ -1,10 +1,10 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  com_digicom
- *
- * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @package		DigiCom
+ * @author 		ThemeXpert http://www.themexpert.com
+ * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license 	GNU General Public License version 3 or later; see LICENSE.txt
+ * @since 		1.0.0
  */
 
 defined('_JEXEC') or die;
@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 /**
  * Routing class from com_digicom
  *
- * @since  3.3
+ * @since  1.0.0-beta2
  */
 class DigiComRouter extends JComponentRouterBase
 {
@@ -23,7 +23,7 @@ class DigiComRouter extends JComponentRouterBase
 	 *
 	 * @return  array  The URL arguments to use to assemble the subsequent URL.
 	 *
-	 * @since   3.3
+	 * @since   1.0.0-beta2
 	 */
 	public function build(&$query)
 	{
@@ -31,7 +31,6 @@ class DigiComRouter extends JComponentRouterBase
 
 		// Get a menu item based on Itemid or currently active
 		$params = JComponentHelper::getParams('com_digicom');
-		$advanced = $params->get('sef_advanced_link', 1);
 
 		// We need a menu item.  Either the one specified in the query, or the current active one if none specified
 		if (empty($query['Itemid']))
@@ -168,23 +167,12 @@ class DigiComRouter extends JComponentRouterBase
 
 			$array = array_reverse($array);
 
-			if (!$advanced && count($array))
-			{
-				$array[0] = (int) $catid . ':' . $array[0];
-			}
-
 			$segments = array_merge($segments, $array);
 
 			if ($view == 'product')
 			{
-				if ($advanced)
-				{
-					list($tmp, $id) = explode(':', $query['id'], 2);
-				}
-				else
-				{
-					$id = $query['id'];
-				}
+				
+				list($tmp, $id) = explode(':', $query['id'], 2);	
 
 				$segments[] = $id;
 			}
@@ -269,7 +257,7 @@ class DigiComRouter extends JComponentRouterBase
 	 *
 	 * @return  array  The URL attributes to be used by the application.
 	 *
-	 * @since   3.3
+	 * @since   1.0.0-beta2
 	 */
 	public function parse(&$segments)
 	{
@@ -284,7 +272,6 @@ class DigiComRouter extends JComponentRouterBase
 		// Get the active menu item.
 		$item = $this->menu->getActive();
 		$params = JComponentHelper::getParams('com_digicom');
-		$advanced = $params->get('sef_advanced_link', 1);
 		$db = JFactory::getDbo();
 
 		// Count route segments
@@ -310,14 +297,7 @@ class DigiComRouter extends JComponentRouterBase
 		if ($count == 1)
 		{
 			// We check to see if an alias is given.  If not, we assume it is an product
-			if (strpos($segments[0], ':') === false)
-			{
-				$vars['view'] = 'product';
-				$vars['id'] = (int) $segments[0];
-
-				return $vars;
-			}
-
+			
 			list($id, $alias) = explode(':', $segments[0], 2);
 
 			// First we check if it is a category
@@ -358,27 +338,7 @@ class DigiComRouter extends JComponentRouterBase
 		 * because the first segment will have the target category id prepended to it.  If the
 		 * last segment has a number prepended, it is an product, otherwise, it is a category.
 		 */
-		if (!$advanced)
-		{
-			$cat_id = (int) $segments[0];
-
-			$product_id = (int) $segments[$count - 1];
-
-			if ($product_id > 0)
-			{
-				$vars['view'] = 'product';
-				$vars['catid'] = $cat_id;
-				$vars['id'] = $product_id;
-			}
-			else
-			{
-				$vars['view'] = 'category';
-				$vars['id'] = $cat_id;
-			}
-
-			return $vars;
-		}
-
+		
 		// We get the category id from the menu item and search from there
 		$id = $item->query['id'];
 		$category = JCategories::getInstance('DigiCom')->get($id);
@@ -414,22 +374,16 @@ class DigiComRouter extends JComponentRouterBase
 
 			if ($found == 0)
 			{
-				if ($advanced)
-				{
-					$db = JFactory::getDbo();
-					$query = $db->getQuery(true)
-						->select($db->quoteName('id'))
-						->from('#__digicom_products')
-						->where($db->quoteName('catid') . ' = ' . (int) $vars['catid'])
-						->where($db->quoteName('alias') . ' = ' . $db->quote($segment));
-					$db->setQuery($query);
-					$cid = $db->loadResult();
-				}
-				else
-				{
-					$cid = $segment;
-				}
-
+				
+				$db = JFactory::getDbo();
+				$query = $db->getQuery(true)
+					->select($db->quoteName('id'))
+					->from('#__digicom_products')
+					->where($db->quoteName('catid') . ' = ' . (int) $vars['catid'])
+					->where($db->quoteName('alias') . ' = ' . $db->quote($segment));
+				$db->setQuery($query);
+				$cid = $db->loadResult();
+				
 				$vars['id'] = $cid;
 
 				if ($item->query['view'] == 'archive' && $count != 1)
@@ -480,7 +434,7 @@ function DigiComBuildRoute(&$query)
  *
  * @return  array  The URL attributes to be used by the application.
  *
- * @since   3.3
+ * @since   1.0.0-beta2
  * @deprecated  4.0  Use Class based routers instead
  */
 function DigiComParseRoute($segments)
