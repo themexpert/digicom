@@ -298,11 +298,14 @@ class DigiComRouter extends JComponentRouterBase
 		 * Standard routing for products.  If we don't pick up an Itemid then we get the view from the segments
 		 * the first segment is the view and the last segment is the id of the product or category.
 		 */
-		// TODO: cart segment for payprocess active
-		//if($segments[0] == 'cart')
+		
+		
 		if (!isset($item))
 		{
 			$vars['view'] = $segments[0];
+			if($segments[0] == 'cart'){
+				$vars['layout'] = $segments[1];
+			}
 			$vars['id'] = $segments[$count - 1];
 			return $vars;
 		}
