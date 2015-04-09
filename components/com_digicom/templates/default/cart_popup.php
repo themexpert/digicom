@@ -31,11 +31,6 @@ if($user->id == 0 || $this->customer->_customer->country == "")
 	$onclick = "document.getElementById(\'returnpage\').value=\'login_register\'; document.getElementById(\'type_button\').value=\'checkout\';";
 }
 
-if($configs->get('askterms',0) == '1')
-{
-	$onclick= "if(document.cart_form.agreeterms.checked != true){ alert(\'".JText::_("COM_DIGICOM_CART_ACCEPT_TERMS_CONDITIONS_REQUIRED_NOTICE")."\'); return false; }".$onclick;
-}
-
 $url="index.php?option=com_digicom&controller=cart&task=gethtml&tmpl=component&format=raw&processor=";
 
 $total = 0;//$this->total;//0;

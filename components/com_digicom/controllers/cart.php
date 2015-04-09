@@ -153,13 +153,12 @@ class DigiComControllerCart extends JControllerLegacy
 			$state = JRequest::getVar("state", "");
 			$array = array("firstname"=>$firstname, "lastname"=>$lastname, "company"=>$company, "email"=>$email, "username"=>$username, "password"=>$password, "password_confirm"=>$password_confirm, "address"=>$address, "city"=>$city, "zipcode"=>$zipcode, "country"=>$country, "state"=>$state);
 			$_SESSION["new_customer"] = $array;
-			$agreeterms = JRequest::getVar("agreeterms", "");
 			$processor = JRequest::getVar("processor", "");
 
 			if(strlen($rp) < 1)
 			{
 				$cart_itemid = DigiComSiteHelperDigiCom::getCartItemid();
-				$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$cart_itemid."&processor=".$processor."&agreeterms=".$agreeterms, false));
+				$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$cart_itemid."&processor=".$processor, false));
 			}
 			else
 			{
@@ -169,11 +168,11 @@ class DigiComControllerCart extends JControllerLegacy
 					if(trim($renew) != ""){
 						$renew = "&renew=".$renew;
 					}
-					$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart".$renew."&Itemid=".$Itemid."&processor=".$processor."&agreeterms=".$agreeterms, false, ($processor=='authorizenet' ? true : false)), JText::_("DIGI_ALREADY_JOOMLA_USER"), "notice");
+					$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart".$renew."&Itemid=".$Itemid."&processor=".$processor, false, ($processor=='authorizenet' ? true : false)), JText::_("DIGI_ALREADY_JOOMLA_USER"), "notice");
 					return true;
 				}
 				else{
-					$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&task=checkout&processor=".$processor."&agreeterms=".$agreeterms, false, ($processor=='authorizenet' ? true : false)));
+					$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&task=checkout&processor=".$processor, false, ($processor=='authorizenet' ? true : false)));
 				}
 			}
 		}
@@ -184,16 +183,15 @@ class DigiComControllerCart extends JControllerLegacy
 		$res = $this->_model->deleteFromCart($this->_customer, $this->_config);
 		$itemid = DigiComSiteHelperDigiCom::getCartItemid();
 		$from = JRequest::getVar("from", "");
-		$agreeterms = JRequest::getVar("agreeterms", "");
 		$processor = JRequest::getVar("processor", "");
 
 		if($from == "ajax"){
 			//$this->showCart();
-			$this->setRedirect("index.php?option=com_digicom&view=cart&layout=cart_popup&tmpl=component&Itemid=".$itemid."&processor=".$processor."&agreeterms=".$agreeterms);
+			$this->setRedirect("index.php?option=com_digicom&view=cart&layout=cart_popup&tmpl=component&Itemid=".$itemid."&processor=".$processor);
 
 		}
 		else{
-			$this->setRedirect("index.php?option=com_digicom&view=cart&Itemid=".$itemid."&processor=".$processor."&agreeterms=".$agreeterms);
+			$this->setRedirect("index.php?option=com_digicom&view=cart&Itemid=".$itemid."&processor=".$processor);
 		}
 	}
 

@@ -110,7 +110,7 @@ function refresCartModule(){
 	}
 }
 
-function cartformsubmit(user_id,askterms){
+function cartformsubmit(user_id){
 				
 	if(user_id == '0'){
 
@@ -153,15 +153,6 @@ function cartformsubmit(user_id,askterms){
 					//alert("Invalid zipcode");
 					//return false;
 				}
-			}
-			
-			if(askterms){
-			   if(document.cart_form.agreeterms.checked != true){
-				   jQuery("#myModalLabel").html(DIGI_ATENTION);
-				   jQuery('#myModalBody').html("<p>" + ACCEPT_TERMS_CONDITIONS + "</p>");
-				   jQuery('#myModal').modal('show');
-				   return false;
-			   }
 			}
 			
 		}	
