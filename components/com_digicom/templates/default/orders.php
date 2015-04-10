@@ -9,7 +9,6 @@
 
 defined('_JEXEC') or die;
 
-$Itemid = JRequest::getVar("Itemid", "0");
 $configs = $this->configs;
 $k = 0;
 $n = count ($this->orders);
@@ -46,10 +45,10 @@ $n = count ($this->orders);
 					//print_r($order);die;
 					$id = $order->id;
 
-					$order_link = JRoute::_("index.php?option=com_digicom&view=order&id=".$id."&Itemid=".$Itemid);
+					$order_link = JRoute::_("index.php?option=com_digicom&view=order&id=".$id);
 					$order_link = '<a class="btn btn-success" href="'.$order_link.'">'.JText::_('COM_DIGICOM_ORDER_DETAILS').'</a>';
 
-					$rec_link = JRoute::_("index.php?option=com_digicom&view=order&layout=invoice&id=".$id."&tmpl=component&Itemid=".$Itemid);
+					$rec_link = JRoute::_("index.php?option=com_digicom&view=order&layout=invoice&id=".$id."&tmpl=component");
 					$rec_link = '<a class="btn btn-info" href="'.$rec_link.'" target="_blank">'.JText::_('COM_DIGICOM_VIEW_AND_PRINT').'</a>';
 
 					// Price
@@ -99,7 +98,6 @@ $n = count ($this->orders);
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="view" value="orders" />
-	<input type="hidden" name="Itemid" value="<?php echo JRequest::getVar("Itemid", "0"); ?>" />
 </div>
 
 <?php echo DigiComSiteHelperDigiCom::powered_by(); ?>

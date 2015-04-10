@@ -12,13 +12,10 @@ defined('_JEXEC') or die;
 class DigiComSiteHelperDigicom {
 
 	public static function getCartItemid() {
-		$db  = JFactory::getDBO();
-		$sql = "SELECT id FROM #__menu WHERE `alias`='cart' AND `menutype` = 'DigiCom-Menu'";
-		$db->setQuery( $sql );
-		$db->query();
-		$result = $db->loadResult();
-
-		return intval( $result );
+		$app = JFactory::getApplication();
+		$item = $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=cart', true);
+		$Itemid = isset($item->id) ? $item->id : '';
+		return $Itemid;
 	}
 
 	public static function getProductItemid() {

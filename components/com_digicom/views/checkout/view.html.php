@@ -17,7 +17,13 @@ class DigiComViewCheckout extends JViewLegacy
 		
 		$app = JFactory::getApplication();
 		$session 	= JFactory::getSession();
-		$pg_plugin 	= $session->get('processor');
+		$processor	= JRequest::getVar("processor", "");
+
+		if(empty($processor)){
+			$pg_plugin 	= $session->get('processor');
+		}else{
+			$pg_plugin 	= $processor;
+		}
 		$Itemid 	= JRequest::getInt("Itemid", "0");
 		$order_id 	= JRequest::getInt("order_id", "0");
 		$dispatcher = JDispatcher::getInstance();

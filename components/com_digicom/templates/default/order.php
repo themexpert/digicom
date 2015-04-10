@@ -89,13 +89,12 @@ $params = json_decode($this->order->params);
 		</tbody>
 	</table>
 	<?php if(strtolower($order->status) === 'pending'): 
-	$u = JURI::getInstance();
 	$item = JFactory::getApplication()->getMenu()->getItems('link', 'index.php?option=com_digicom&view=checkout', true);
 	$Itemid = isset($item->id) ? $item->id : '';
 	?>
 		<div class="alert alert-warning">
   			<p><?php echo JText::sprintf('COM_DIGICOM_ORDER_COMPLETE_NOTICE'); ?></p>
-			<form method="get" class="well well-small form-inline" action="<?php echo $u->toString(); ?>">
+			<form method="post" class="well well-small form-inline" action="<?php echo JRoute::_('index.php?option=com_digicom&view=checkout'); ?>">
   				<input type="hidden" name="option" value="com_digicom">
 				<input type="hidden" name="view" value="checkout">
 				<input type="hidden" name="order_id" value="<?php echo $order->id; ?>">
@@ -103,7 +102,6 @@ $params = json_decode($this->order->params);
 				<?php echo DigiComSiteHelperDigicom::getPaymentPlugins($configs); ?>
 
 				<button class="btn pull-right" type="submit">Pay Now</button>
-				<input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>">
  			</form>
  		</div>
 

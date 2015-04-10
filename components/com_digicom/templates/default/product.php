@@ -9,8 +9,6 @@
 
 defined('_JEXEC') or die;
 
-$cart_itemid = DigiComSiteHelperDigicom::getCartItemid();
-$itemid = JFactory::getApplication()->input->get('Itemid',$cart_itemid);
 $conf = $this->configs;
 $date_today = time();
 
@@ -110,7 +108,8 @@ if($this->configs->get('afteradditem',0) == "2"){
 						<div class="addtocart-bar">
 							
 							<?php if($conf->get('afteradditem',0) == "2") {	?>
-								<button type="button" class="btn btn-warning" onclick="javascript:createPopUp(<?php echo $this->item->id; ?>, <?php echo JRequest::getVar("cid", "0"); ?>, '<?php echo JURI::root(); ?>', '', '', <?php echo $cart_itemid; ?>, '<?php echo JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$cart_itemid); ?>');"><i class="icon-cart"></i> <?php echo JText::_("COM_DIGICOM_ADD_TO_CART");?></button>
+								<?php echo JRoute::_("index.php?option=com_digicom&view=cart"); ?>
+								<button type="button" class="btn btn-warning" onclick="javascript:createPopUp(<?php echo $this->item->id; ?>, <?php echo JRequest::getVar("cid", "0"); ?>, '<?php echo JURI::root(); ?>', '', '', '', '<?php echo JRoute::_("index.php?option=com_digicom&view=cart"); ?>');"><i class="icon-cart"></i> <?php echo JText::_("COM_DIGICOM_ADD_TO_CART");?></button>
 							<?php }else { ?>
 								<button type="submit" class="btn btn-warning"><i class="icon-cart"></i> <?php echo JText::_('COM_DIGICOM_ADD_TO_CART'); ?></button>
 							<?php } ?>
@@ -130,7 +129,6 @@ if($this->configs->get('afteradditem',0) == "2"){
 			<input type="hidden" name="task" value="cart.add"/>
 			<input type="hidden" name="pid" value="<?php echo $this->item->id; ?>"/>
 			<input type="hidden" name="cid" value="<?php echo $this->item->catid; ?>"/>
-			<input type="hidden" name="Itemid" value="<?php $itemid; ?>"/>
 		</form>
 		
 
