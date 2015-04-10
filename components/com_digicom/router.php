@@ -28,6 +28,8 @@ class DigiComRouter extends JComponentRouterBase
 	public function build(&$query)
 	{
 		
+		$app = JFactory::getApplication();
+
 		$segments = array();
 		//print_r($query);
 		// Get a menu item based on Itemid or currently active
@@ -44,7 +46,6 @@ class DigiComRouter extends JComponentRouterBase
 			$menuItem = $this->menu->getItem($query['Itemid']);
 			$menuItemGiven = true;
 		}
-		;
 
 		// Check again
 		if ($menuItemGiven && isset($menuItem) && $menuItem->component != 'com_digicom')
@@ -120,7 +121,7 @@ class DigiComRouter extends JComponentRouterBase
 					return $segments;
 				}
 			}
-			elseif($view == 'category')
+			else
 			{
 				if (isset($query['id']))
 				{
@@ -137,11 +138,6 @@ class DigiComRouter extends JComponentRouterBase
 					// We should have id set for this view.  If we don't, it is an error
 					return $segments;
 				}
-			}
-			else
-			{
-				
-				return $segments;
 			}
 
 			if ($menuItemGiven && isset($menuItem->query['id']))
@@ -196,12 +192,10 @@ class DigiComRouter extends JComponentRouterBase
 
 		if ($view == 'cart' 
 				or $view == 'checkout' 
-				or $view == 'orders' 
-				or $view == 'order' 
 				or $view == 'dashboard' 
 				or $view == 'downloads' 
 				or $view == 'profile'
-			)
+		)
 		{
 
 			if (!$menuItemGiven)
@@ -209,12 +203,6 @@ class DigiComRouter extends JComponentRouterBase
 				$segments[] = $view;
 			}
 
-			if($menuItem->query['view'] != $query['view']){
-				$segments[] = $view;
-			}
-		//	print_r($menuItem);die;
-		//	print_r($segments);die;
-			unset($menuItem);
 			unset($query['view']);
 			
 
@@ -230,6 +218,27 @@ class DigiComRouter extends JComponentRouterBase
 				$segments[] = $query['id'];
 				unset($query['id']);
 			}
+
+		}
+
+		if ($view == 'order' or $view="orders")
+		{
+			if (!$menuItemGiven)
+			{
+				$segments[] = $view;
+			}
+
+			unset($query['view']);
+			
+			if(isset($query['layout'])){
+				$segments[] = $query['layout'];
+				unset($query['layout']);
+			}
+			if(isset($query['id'])){
+				$segments[] = $query['id'];
+				unset($query['id']);
+			}
+		
 
 		}
 
@@ -266,7 +275,7 @@ class DigiComRouter extends JComponentRouterBase
 		 * If the layout is specified and it is the same as the layout in the menu item, we
 		 * unset it so it doesn't go into the query string.
 		 */
-		if (isset($query['layout']))
+		if (isset($query['layout']) && $view != 'order')
 		{
 			if ($menuItemGiven && isset($menuItem->query['layout']))
 			{
@@ -304,10 +313,6 @@ class DigiComRouter extends JComponentRouterBase
 		for ($i = 0; $i < $total; $i++)
 		{
 			$segments[$i] = str_replace(':', '-', $segments[$i]);
-		}
-
-		if ($view == 'cart'){
-			//print_r($segments);die;
 		}
 
 		return $segments;
@@ -370,13 +375,14 @@ class DigiComRouter extends JComponentRouterBase
 		if ($count == 1 && $item->query['view'] != 'orders')
 		{
 			// We check to see if an alias is given.  If not, we assume it is an product
-			
-			list($id, $alias) = explode(':', $segments[0], 2);
+			//list( $id, $alias ) = explode( ':', $segments[0] , 2 );
+			$id = $segments[0];
+			$alias = '';
 
 			// First we check if it is a category
 			$category = JCategories::getInstance('DigiCom')->get($id);
 
-			if ($category && $category->alias == $alias)
+			if ( $category && $category->alias == $alias )
 			{
 				$vars['view'] = 'category';
 				$vars['id'] = $id;
@@ -405,13 +411,20 @@ class DigiComRouter extends JComponentRouterBase
 				}
 			}
 		}
-		else if($count == 1 && $item->query['view'] == 'orders')
+		else if($item->query['view'] == 'orders' or $item->query['view'] == 'order')
 		{
-			$vars['view'] = 'order';
-			$vars['id'] = $segments[0];
+			$vars['view'] = $item->query['view'];
+			if(isset($segments[1])){
+				$vars['view'] = 'order';
+				$vars['layout'] = $segments[0];
+				$vars['id'] = $segments[1];
+			}else{
+				$vars['view'] = 'order';
+				$vars['id'] = $segments[0];
+			}
+			
 			return $vars;
 		}
-
 		/*
 		 * If there was more than one segment, then we can determine where the URL points to
 		 * because the first segment will have the target category id prepended to it.  If the
