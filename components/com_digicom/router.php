@@ -208,7 +208,14 @@ class DigiComRouter extends JComponentRouterBase
 			}
 		}
 
-		if ($view == 'cart' or $view == 'checkout' or $view == 'order')
+		if ($view == 'cart' 
+				or $view == 'checkout' 
+				or $view == 'orders' 
+				or $view == 'order' 
+				or $view == 'dashboard' 
+				or $view == 'downloads' 
+				or $view == 'profile'
+			)
 		{
 			if (!$menuItemGiven)
 			{
@@ -322,7 +329,6 @@ class DigiComRouter extends JComponentRouterBase
 				if( !empty($segments[1]) && !empty($segments[2]) ) $vars['order_id'] = $segments[2];
 			}
 
-
 			$vars['id'] = $segments[$count - 1];
 			return $vars;
 		}
@@ -332,7 +338,7 @@ class DigiComRouter extends JComponentRouterBase
 		 * We test it first to see if it is a category.  If the id and alias match a category,
 		 * then we assume it is a category.  If they don't we assume it is an product
 		 */
-		if ($count == 1)
+		if ($count == 1 && $item->query['view'] != 'orders')
 		{
 			// We check to see if an alias is given.  If not, we assume it is an product
 			
@@ -369,6 +375,12 @@ class DigiComRouter extends JComponentRouterBase
 					}
 				}
 			}
+		}
+		else if($count == 1 && $item->query['view'] == 'orders')
+		{
+			$vars['view'] = 'order';
+			$vars['id'] = $segments[0];
+			return $vars;
 		}
 
 		/*
