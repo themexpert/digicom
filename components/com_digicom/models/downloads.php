@@ -1,4 +1,4 @@
-<?php
+re<?php
 /**
  * @package		DigiCom
  * @author 		ThemeXpert http://www.themexpert.com
@@ -147,7 +147,7 @@ class DigiComModelDownloads extends JModelList
 						
 						$parsed = parse_url($item->url);
 						if (empty($parsed['scheme'])) {
-							$fileLink = JPATH_BASE.DS.$item->url;
+							$fileLink = JPATH_BASE.DIRECTORY_SEPARATOR.$item->url;
 						}else{
 							$fileLink = $item->url;
 						}
