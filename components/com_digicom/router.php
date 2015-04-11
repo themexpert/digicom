@@ -190,15 +190,35 @@ class DigiComRouter extends JComponentRouterBase
 			unset($query['catid']);
 		}
 
-		if ($view == 'cart' 
-				or $view == 'checkout' 
-				or $view == 'dashboard' 
-				or $view == 'downloads' 
-				or $view == 'profile'
+		if ($view == 'cart'){
+			$item = $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=cart', true);
+			$Itemid = isset($item->id) ? $item->id : '';
+			
+			if (!$Itemid)
+			{
+				$segments[] = $view;
+			}
+
+			unset($query['view']);
+
+			if(!empty($Itemid)){
+				 $query['Itemid'] = $Itemid;
+			}else{
+				unset($query['Itemid']);
+			}
+
+
+		} 
+		if ($view == 'checkout' 
+			or $view == 'dashboard' 
+			or $view == 'downloads' 
+			or $view == 'profile'
 		)
 		{
-
-			if (!$menuItemGiven)
+			$item = $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view='.$view, true);
+			$Itemid = isset($item->id) ? $item->id : '';
+			
+			if (!$Itemid)
 			{
 				$segments[] = $view;
 			}
@@ -206,22 +226,19 @@ class DigiComRouter extends JComponentRouterBase
 			unset($query['view']);
 			
 
-			if($view == 'checkout'){
+			/*if($view == 'checkout'){
 				if(isset($query['order_id'])){
 					$segments[] = 'order';
 					$segments[] = $query['order_id'];
 					unset($query['order_id']);					
 				}
-			}
-			
-			if($view == 'order'){
-				$segments[] = $query['id'];
-				unset($query['id']);
-			}
+			}*/
+
+
 
 		}
 
-		if ($view == 'order' or $view="orders")
+		if ($view == 'order' or $view == "orders")
 		{
 			if (!$menuItemGiven)
 			{
@@ -241,7 +258,6 @@ class DigiComRouter extends JComponentRouterBase
 		
 
 		}
-
 
 		if ($view == 'archive')
 		{

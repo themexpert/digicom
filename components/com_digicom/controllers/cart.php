@@ -125,6 +125,7 @@ class DigiComControllerCart extends JControllerLegacy
 
 	function updateCart()
 	{
+		
 		$session = JFactory::getSession();
 		$res = $this->_model->updateCart($this->_customer, $this->_config);
 
@@ -155,10 +156,11 @@ class DigiComControllerCart extends JControllerLegacy
 			$processor = JRequest::getVar("processor", "");
 			$session->set('new_customer', $array);
 			$session->set('processor', $processor);
+			
 			if(strlen($rp) < 1)
 			{
 				$cart_itemid = DigiComSiteHelperDigiCom::getCartItemid();
-				$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&processor=".$processor, false));
+				$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart", false));
 			}
 			else
 			{
@@ -171,7 +173,7 @@ class DigiComControllerCart extends JControllerLegacy
 					return true;
 				}
 				else{
-					$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&task=checkout&processor=".$processor, false, ($processor=='authorizenet' ? true : false)));
+					$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&task=cart.checkout&processor=".$processor, false, ($processor=='authorizenet' ? true : false)));
 				}
 			}
 		}
@@ -248,7 +250,7 @@ class DigiComControllerCart extends JControllerLegacy
 		if(!$user->id or $this->_customer->_user->id < 1){
 			$uri = JURI::getInstance();
 			$return = base64_encode($uri->toString());
- 			$this->setRedirect("index.php?option=com_digicom&view=register&layout=register_cart&processor=".$processor.'&returnpage='.$returnpage);
+ 			$this->setRedirect("index.php?option=com_digicom&view=register&layout=register_cart&returnpage=".$returnpage);
 			return true;
 		}
 
