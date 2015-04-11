@@ -61,7 +61,7 @@ $Itemid = JRequest::getInt("Itemid", 0);
 			<div id="collapseOne" class="accordion-body collapse in">
 			  <div class="accordion-inner">
 			    <div id="log_form">
-			    	<form name="login" id="login" method="post" action="<?php echo JRoute::_('index.php?optioncom_digicom&view=profile&Itemid='.$Itemid); ?>">
+			    	<form name="login" id="login" method="post" action="<?php echo JRoute::_('index.php?option=com_digicom&view=profile'); ?>">
 						<table width="100%" style="border-collapse:separate !important;">
 							<tr>
 								<td class="field-login"><?php echo JText::_("COM_DIGICOM_USERNAME");?>:

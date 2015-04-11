@@ -222,18 +222,20 @@ class DigiComRouter extends JComponentRouterBase
 			if (!$Itemid)
 			{
 				$segments[] = $view;
+			}else{
+				$query['Itemid'] = $Itemid;
 			}
 
 			unset($query['view']);
 			
 
-			/*if($view == 'checkout'){
+			if($view == 'checkout'){
 				if(isset($query['order_id'])){
 					$segments[] = 'order';
 					$segments[] = $query['order_id'];
 					unset($query['order_id']);					
 				}
-			}*/
+			}
 
 
 
@@ -332,6 +334,12 @@ class DigiComRouter extends JComponentRouterBase
 			$segments[$i] = str_replace(':', '-', $segments[$i]);
 		}
 
+		if ($view == 'cart'){
+
+			//print_r($query);die;
+
+		}
+		
 		return $segments;
 	}
 

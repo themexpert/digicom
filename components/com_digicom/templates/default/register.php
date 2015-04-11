@@ -10,7 +10,6 @@
 defined('_JEXEC') or die;
 
 JHtml::_('behavior.formvalidation');
-$Itemid = JRequest::getInt("Itemid", 0);
 
 require_once( JPATH_COMPONENT . '/helpers/sajax.php' );
 $configs = $this->configs;
@@ -18,7 +17,7 @@ JHTML::_('behavior.modal');
 	$login_link = JRoute::_("index.php?option=com_digicom&view=register&task=register.login&returnpage=cart&tmpl=component&returnpage=cart&graybox=true");
 ?>
 <script type="text/javascript"><?php sajax_show_javascript(); ?></script>
-<form name="adminForm" id="adminForm" method="post" action="<?php echo JRoute::_('index.php?optioncom_digicom&view=profile&Itemid='.$Itemid); ?>" onsubmit="return validateForm();" >
+<form name="adminForm" id="adminForm" method="post" action="<?php echo JRoute::_('index.php?option=com_digicom&view=profile'); ?>" onsubmit="return validateForm();" >
 	<h2 class="digi-section-title"><?php echo JText::_('COM_DIGICOM_REGISTER');?></h2>
 	<table style="border-collapse:separate !important;">
 
@@ -182,11 +181,10 @@ JHTML::_('behavior.modal');
 
 	</table>
 
-	<input type="hidden" name="Itemid" value="<?php echo $Itemid;?>" />
 	<input type="hidden" name="option" value="com_digicom" >
 	<input type="hidden" name="task" value="profile.saveCustomer" >
 	<input type="hidden" name="processor" value="<?php echo JRequest::getVar("processor", ""); ?>" />
-	<input type="hidden" name="returnpage" value="<?php echo JRequest::getVar("returnpage", ""); ?>" />
+	<input type="hidden" name="return" value="<?php echo JRequest::getVar("return", ""); ?>" />
 	<input type="hidden" name="view" value="profile" >
 	
 	<table width="100%">
