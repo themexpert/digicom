@@ -102,10 +102,10 @@ class DigiComControllerProfile extends JControllerLegacy
 
 			$error = $err["error"];
 			if(strpos($error, 'email') !== FALSE){
-				$msg = JText::_("COM_DIGICOM_REGISTRATION_INVALID_EMAIL");
+				$msg = JText::_("COM_DIGICOM_REGISTER_NOTICE_INVALID_EMAIL");
 			}
 			elseif(strpos($error, 'ser name') !== FALSE){
-				$msg = JText::_("COM_DIGICOM_REGISTRATION_INVALID_USERNAME");
+				$msg = JText::_("COM_DIGICOM_REGISTER_NOTICE_INVALID_USERNAME");
 			}
 
 			$firstname			= JRequest::getVar("firstname", "");
@@ -129,7 +129,7 @@ class DigiComControllerProfile extends JControllerLegacy
 			$this->setRedirect($return, $msg, "notice");
 			return false;
 		}else{
-			$this->setRedirect($return, JText::_('DSCUSTOMERSAVED'));
+			$this->setRedirect($return, JText::_('COM_DIGICOM_REGISTRATION_SUCCESSFULL'));
 		}
 	}
 	

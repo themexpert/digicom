@@ -213,6 +213,7 @@ class DigiComRouter extends JComponentRouterBase
 			or $view == 'dashboard' 
 			or $view == 'downloads' 
 			or $view == 'profile'
+			or $view == 'register'
 		)
 		{
 			$item = $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view='.$view, true);
