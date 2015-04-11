@@ -31,7 +31,6 @@ class DigiComRouter extends JComponentRouterBase
 		$app = JFactory::getApplication();
 
 		$segments = array();
-		//print_r($query);
 		// Get a menu item based on Itemid or currently active
 		$params = JComponentHelper::getParams('com_digicom');
 
@@ -46,7 +45,7 @@ class DigiComRouter extends JComponentRouterBase
 			$menuItem = $this->menu->getItem($query['Itemid']);
 			$menuItemGiven = true;
 		}
-
+		
 		// Check again
 		if ($menuItemGiven && isset($menuItem) && $menuItem->component != 'com_digicom')
 		{
@@ -90,24 +89,38 @@ class DigiComRouter extends JComponentRouterBase
 		if ($view == 'category' || $view == 'product')
 		{
 			
-			
 			if (!$menuItemGiven)
 			{
 				$segments[] = $view;
 			}
-			elseif($menuItem->query['view'] == 'orders')
-			{
-				//$segments[] = $view;
-				//$menuItemGiven = false;
-				//unset($query['Itemid']);
-			}
-
+			
 			unset($query['view']);
 
 			if ($view == 'product')
 			{
 				if (isset($query['id']) && isset($query['catid']) && $query['catid'])
 				{
+					if($menuItemGiven && $menuItem->query['view'] != 'product')
+					{
+						$item = $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=categories&id='.$query['catid'], true);
+						$Itemid = isset($item->id) ? $item->id : '';
+
+						if($Itemid == ''){
+							$item = $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=categories&id=0', true);
+							$Itemid = isset($item->id) ? $item->id : '';
+						}
+
+						if($Itemid){
+							$query['Itemid'] = 	$Itemid;
+						}else{
+							$query['Itemid'] = '';
+							$menuItemGiven = false;
+						}
+
+					}
+
+
+
 					$catid = $query['catid'];
 
 					// Make sure we have the id and the alias
@@ -134,12 +147,6 @@ class DigiComRouter extends JComponentRouterBase
 				if (isset($query['id']))
 				{
 					$catid = $query['id'];
-					if(!is_integer($catid)){
-						//TODO:
-						//print_r($segments);die; 
-						//print_r($query);die; 
-						//echo $catid;die;
-					}
 				}
 				else
 				{
@@ -382,7 +389,7 @@ class DigiComRouter extends JComponentRouterBase
 		 * the first segment is the view and the last segment is the id of the product or category.
 		 */
 		
-		if (!isset($item))
+		if (!isset($item) && ( $segments[0] != 'category' && $segments[0] != 'product') )
 		{
 			
 			$vars['view'] = $segments[0];
@@ -395,6 +402,7 @@ class DigiComRouter extends JComponentRouterBase
 			}
 
 			$vars['id'] = $segments[$count - 1];
+
 			return $vars;
 		}
 
@@ -403,7 +411,8 @@ class DigiComRouter extends JComponentRouterBase
 		 * We test it first to see if it is a category.  If the id and alias match a category,
 		 * then we assume it is a category.  If they don't we assume it is an product
 		 */
-		if ($count == 1 && $item->query['view'] != 'orders')
+
+		if ( isset($item) && $count == 1 && $item->query['view'] != 'orders')
 		{
 			// We check to see if an alias is given.  If not, we assume it is an product
 			//list( $id, $alias ) = explode( ':', $segments[0] , 2 );
@@ -442,7 +451,7 @@ class DigiComRouter extends JComponentRouterBase
 				}
 			}
 		}
-		else if($item->query['view'] == 'orders' or $item->query['view'] == 'order')
+		else if( isset($item) && ( $item->query['view'] == 'orders' or $item->query['view'] == 'order') )
 		{
 			$vars['view'] = $item->query['view'];
 			if(isset($segments[1])){
@@ -456,14 +465,20 @@ class DigiComRouter extends JComponentRouterBase
 			
 			return $vars;
 		}
+		
 		/*
 		 * If there was more than one segment, then we can determine where the URL points to
 		 * because the first segment will have the target category id prepended to it.  If the
 		 * last segment has a number prepended, it is an product, otherwise, it is a category.
 		 */
-		
-		// We get the category id from the menu item and search from there
-		$id = $item->query['id'];
+		// Ltes handle the product & category
+		if (!isset($item) && ( $segments[0] == 'category' or $segments[0] == 'product')){
+			$id= $segments[$count - 1];
+		}else{
+			// We get the category id from the menu item and search from there
+			$id = $item->query['id'];
+		}
+
 		$category = JCategories::getInstance('DigiCom')->get($id);
 
 		if (!$category)
@@ -509,7 +524,7 @@ class DigiComRouter extends JComponentRouterBase
 				
 				$vars['id'] = $cid;
 
-				if ($item->query['view'] == 'archive' && $count != 1)
+				if (isset($item) && ( $item->query['view'] == 'archive' && $count != 1) )
 				{
 					$vars['year'] = $count >= 2 ? $segments[$count - 2] : null;
 					$vars['month'] = $segments[$count - 1];
