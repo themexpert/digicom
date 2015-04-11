@@ -90,7 +90,7 @@ $Itemid = JRequest::getInt("Itemid", 0);
 						<input type="hidden" name="option" value="com_digicom" />
 						<input type="hidden" name="task" value="profile.logCustomerIn" />
 						<input type="hidden" name="processor" value="<?php echo JRequest::getVar("processor", ""); ?>" />
-						<input type="hidden" name="returnpage" value="<?php echo JRequest::getVar("returnpage", ""); ?>" />
+						<input type="hidden" name="return" value="<?php echo JRequest::getVar("return", ""); ?>" />
 					</form>
 			    </div>
 			  </div>

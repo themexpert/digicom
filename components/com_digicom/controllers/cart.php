@@ -250,14 +250,14 @@ class DigiComControllerCart extends JControllerLegacy
 		if(!$user->id or $this->_customer->_user->id < 1){
 			$uri = JURI::getInstance();
 			$return = base64_encode($uri->toString());
- 			$this->setRedirect("index.php?option=com_digicom&view=register&layout=register_cart&returnpage=".$returnpage);
+ 			$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=register&layout=register_cart&return=".$return));
 			return true;
 		}
 
 		// Check Payment Plugin installed
 		if (empty($plugins_enabled)) {
 			$msg = JText::_('COM_DIGICOM_PAYMENT_PLUGIN_NOT_INSTALLED');
-			$this->setRedirect("index.php?option=com_digicom&view=cart", $msg);
+			$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart"), $msg);
 			return;
 		}
 

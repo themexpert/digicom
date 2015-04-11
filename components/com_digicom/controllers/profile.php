@@ -29,12 +29,10 @@ class DigiComControllerProfile extends JControllerLegacy
 
 	function checkNextAction($err) {
 
-		$Itemid = JRequest::getVar("Itemid", "0");
-		$processor = JRequest::getVar("processor", "");
 		$return = JRequest::getVar("return", "");
 
 		if ((isset($err->message) && trim($err->message) != "") || $err === FALSE) {
-			$link = JRoute::_("index.php?option=com_digicom&view=profile&layout=register&return=".$return."&Itemid=".$Itemid."&processor=".$processor);
+			$link = JRoute::_("index.php?option=com_digicom&view=profile&layout=register&return=".$return);
 			$this->setRedirect($link);
 			return true;
 		} else {
@@ -48,14 +46,7 @@ class DigiComControllerProfile extends JControllerLegacy
 			$items = $cart_model->getCartItems($customer, $configs);
 			$tax = $cart_model->calc_price($items, $customer, $configs);
 
-			if($tax["shipping"] != "0" || $tax["value"] != "0") {
-				$link = "index.php?option=com_digicom&view=cart&layout=summary&Itemid=".$Itemid."&processor=" . $processor;
-			} else {
-				$link = "index.php?option=com_digicom&view=cart&layout=wait&Itemid=".$Itemid."&processor=" . $processor;
-			}
-
-			$link = "index.php?option=com_digicom&view=cart&layout=summary&Itemid=".$Itemid."&processor=" . $processor;
-			
+			$link = JRoute::_("index.php?option=com_digicom&view=cart&layout=summary");
 
 			$this->setRedirect($link);
 
@@ -67,7 +58,6 @@ class DigiComControllerProfile extends JControllerLegacy
 	{
 		$app = JFactory::getApplication("site");
 		$Itemid = JRequest::getInt('Itemid', 0);
-		$processor = JRequest::getVar("processor", "");
 		$returnpage = JRequest::getVar("returnpage", "");
 		if($return = JRequest::getVar('return', '', 'request', 'base64'))
 		{
@@ -97,19 +87,64 @@ class DigiComControllerProfile extends JControllerLegacy
 
 	function save()
 	{
-		global $Itemid;
 
+		$session = JFactory::getSession();
 		$conf = $this->getModel( "Config" );
 		$configs = $conf->getConfigs();
-		$returnpage = JRequest::getVar("returnpage", "");
-		$redirect = 'downloads';
+		$return = base64_decode( JRequest::getVar("return", "") );
 
-		if($configs->get('afterpurchase',1)) {
-			$redirect = 'orders';
-		}
-
-		$link = $this->getLink($redirect);
 		$err = $this->_model->store($error);
+		
+		if($err["err"] === FALSE){
+			$session->set('login_register_invalid','notok');
+
+			$msg = JText::_("COM_DIGICOM_REGISTRATION_INVALID");
+
+			$error = $err["error"];
+			if(strpos($error, 'email') !== FALSE){
+				$msg = JText::_("COM_DIGICOM_REGISTRATION_INVALID_EMAIL");
+			}
+			elseif(strpos($error, 'ser name') !== FALSE){
+				$msg = JText::_("COM_DIGICOM_REGISTRATION_INVALID_USERNAME");
+			}
+
+			$firstname			= JRequest::getVar("firstname", "");
+			$lastname			= JRequest::getVar("lastname", "");
+			$company			= JRequest::getVar("company", "");
+			$email 				= JRequest::getVar("email", "");
+			$username 			= JRequest::getVar("username", "");
+			$password 			= JRequest::getVar("password", "");
+			$password_confirm 	= JRequest::getVar("password_confirm", "");
+			$address 			= JRequest::getVar("address", "");
+			$city 				= JRequest::getVar("city", "");
+			$zipcode 			= JRequest::getVar("zipcode", "");
+			$country			= JRequest::getVar("country", "");
+			$state 				= JRequest::getVar("state", "");
+			$array 				= array("firstname"=>$firstname, "lastname"=>$lastname, "company"=>$company, "email"=>$email, "username"=>$username, "password"=>$password, "password_confirm"=>$password_confirm, "address"=>$address, "city"=>$city, "zipcode"=>$zipcode, "country"=>$country, "state"=>$state);
+			
+			$session->set('new_customer', $array);
+			$uri = JURI::getInstance();
+			$return = $uri->toString();
+
+			$this->setRedirect($return, $msg, "notice");
+			return false;
+		}else{
+			$this->setRedirect($return, JText::_('DSCUSTOMERSAVED'));
+		}
+	}
+	
+	function save_x()
+	{
+
+		$session = JFactory::getSession();
+		$conf = $this->getModel( "Config" );
+		$configs = $conf->getConfigs();
+		$returnpage = JRequest::getVar("return", "");
+		//$session->set('processor',$processor);
+
+		//$link = $this->getLink($redirect);
+		$err = $this->_model->store($error);
+		
 		
 		if($returnpage == "login_register"){
 
@@ -148,7 +183,6 @@ class DigiComControllerProfile extends JControllerLegacy
 			return true;
 		}
 
-		global $Itemid;
 		if($err)
 		{
 			$msg = JText::_('DSCUSTOMERSAVED');
