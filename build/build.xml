@@ -224,6 +224,9 @@
                 <replaceregexp>
                     <regexp pattern="&lt;version&gt;(.*?)&lt;/version&gt;"
                             replace="&lt;version&gt;${version}&lt;/version&gt;"/>
+
+                    <regexp pattern="&lt;creationDate&gt;(.*?)&lt;/creationDate&gt;"
+                            replace="&lt;creationDate&gt;${build.date}&lt;/creationDate&gt;"/>
                 </replaceregexp>
             </filterchain>
         </reflexive>
@@ -234,14 +237,19 @@
     </target>
 
     <target name="set-version" description="Sets the &lt;version&gt; tag in all XML files with the version from the build.ini file.">
+
         <phingcall target="replace-xml">
             <property name="tag" value="version" />
             <property name="tagValue" value="${version}" />
+
+            <property name="tagC" value="creationDate" />
+            <property name="tagValueC" value="${build.date}" />
         </phingcall>
     </target>
 
     <target name="replace-xml" description="[PRIVATE] Sets an XML tag with a new value.">
         <echo message="Replacing '${tag}' tag with '${tagValue}'."/>
+
         <reflexive>
             <fileset dir=".">
                 <include pattern="temp/**/*.xml" />
@@ -250,6 +258,9 @@
                 <replaceregexp>
                     <regexp pattern="&lt;${tag}&gt;(.*?)&lt;/${tag}&gt;"
                             replace="&lt;${tag}&gt;${tagValue}&lt;/${tag}&gt;"/>
+
+                    <regexp pattern="&lt;${tagC}&gt;(.*?)&lt;/${tagC}&gt;"
+                            replace="&lt;${tagC}&gt;${tagValueC}&lt;/${tagC}&gt;"/>
                 </replaceregexp>
             </filterchain>
         </reflexive>
