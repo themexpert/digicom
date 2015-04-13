@@ -395,6 +395,9 @@ class DigiComRouter extends JComponentRouterBase
 			$vars['view'] = $segments[0];
 			if($segments[0] == 'cart'){
 				if(!empty($segments[1])) $vars['layout'] = $segments[1];
+			}elseif ($segments[0] == 'cart_popup' or $segments[0] == 'summary') {
+				$vars['view'] = 'cart';
+				$vars['layout'] = $segments[0];
 			}
 
 			if($segments[0] == 'checkout'){
@@ -404,7 +407,34 @@ class DigiComRouter extends JComponentRouterBase
 			$vars['id'] = $segments[$count - 1];
 
 			return $vars;
+
+		}elseif(isset($item) && $item->query['option'] == 'com_digicom' && ( $segments[0] != 'category' && $segments[0] != 'product')){
+			
+			//print_r($segments);die;
+			$vars['view'] = $item->query['view'];
+
+			if($segments[0] == 'cart')
+			{
+				if(!empty($segments[1])) $vars['layout'] = $segments[1];
+			}
+			elseif($segments[0] == 'summary')
+			{
+				$vars['view'] = 'cart';
+				$vars['layout'] = $segments[0];
+			}
+			elseif ($segments[0] == 'cart_popup' or $segments[0] == 'summary')
+			{
+				$vars['view'] = 'cart';
+				$vars['layout'] = $segments[0];
+			}elseif($segments[0] == 'checkout'){
+				$totalsegs = count($segments);
+				if($totalsegs > 2){
+					$vars['view'] = $segments[1];
+					$vars['id'] = $segments[2];
+				}
+			}
 		}
+
 
 		/*
 		 * If there is only one segment, then it points to either an product or a category.
@@ -465,12 +495,29 @@ class DigiComRouter extends JComponentRouterBase
 			
 			return $vars;
 		}
-		
+
+		$activeView = $segments[0];
+		switch ($activeView) {
+			case 'summary':
+			case 'cart':
+			case 'cart_popup':
+			case 'orders':
+			case 'checkout':
+			case 'dashboard':
+			case 'profile':
+			case 'downloads':
+				return $vars;
+			default:
+				//nothing to do;
+				break;
+		}
+
 		/*
 		 * If there was more than one segment, then we can determine where the URL points to
 		 * because the first segment will have the target category id prepended to it.  If the
 		 * last segment has a number prepended, it is an product, otherwise, it is a category.
 		 */
+		
 		// Ltes handle the product & category
 		if (!isset($item) && ( $segments[0] == 'category' or $segments[0] == 'product')){
 			$id= $segments[$count - 1];
@@ -479,6 +526,7 @@ class DigiComRouter extends JComponentRouterBase
 			$id = $item->query['id'];
 		}
 
+		
 		$category = JCategories::getInstance('DigiCom')->get($id);
 
 		if (!$category)
@@ -538,6 +586,7 @@ class DigiComRouter extends JComponentRouterBase
 
 			$found = 0;
 		}
+
 
 		return $vars;
 	}
