@@ -68,7 +68,7 @@ class DigiComControllerDownloads extends JControllerLegacy
 		$downloadfile = new DigiComSiteHelperDownloadFile($fileLink);
 		if (!$downloadfile->df_download()){
 			$itemid = JFactory::getApplication()->input->get('itemid',0);
-			$msg = JText::_sprintf("COM_DIGICOM_FILE_DOWNLOAD_FAILED",$fileInfo->name);
+			$msg = JText::sprintf("COM_DIGICOM_FILE_DOWNLOAD_FAILED",$fileInfo->name);
 			JFactory::getApplication()->redirect('index.php?option=com_digicom&view=downloads&Itemid='.$itemid,$msg);
 		}			
 		

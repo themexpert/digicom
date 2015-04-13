@@ -88,7 +88,7 @@ class DigiComRouter extends JComponentRouterBase
 
 		if ($view == 'category' || $view == 'product')
 		{
-			
+			//print_r($query);die;
 			if (!$menuItemGiven)
 			{
 				$segments[] = $view;
@@ -98,15 +98,26 @@ class DigiComRouter extends JComponentRouterBase
 
 			if ($view == 'product')
 			{
+				
 				if (isset($query['id']) && isset($query['catid']) && $query['catid'])
 				{
-					if($menuItemGiven && $menuItem->query['view'] != 'product')
+					if($menuItemGiven && ( $menuItem->query['view'] != 'product' and $menuItem->query['view'] != 'category' ) )
 					{
-						$item = $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=categories&id='.$query['catid'], true);
+						//print_r($menuItem);die;
+						$item = $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=category&id='.$query['catid'], true);
 						$Itemid = isset($item->id) ? $item->id : '';
 
 						if($Itemid == ''){
+							$item = $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=categories&id='.$query['catid'], true);
+							$Itemid = isset($item->id) ? $item->id : '';
+						}
+						if($Itemid == ''){
 							$item = $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=categories&id=0', true);
+							$Itemid = isset($item->id) ? $item->id : '';
+						}
+
+						if($Itemid == ''){
+							$item = $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=category&id=0', true);
 							$Itemid = isset($item->id) ? $item->id : '';
 						}
 
@@ -118,8 +129,6 @@ class DigiComRouter extends JComponentRouterBase
 						}
 
 					}
-
-
 
 					$catid = $query['catid'];
 
@@ -206,6 +215,7 @@ class DigiComRouter extends JComponentRouterBase
 		}
 
 		if ($view == 'cart'){
+			//print_r($query);die;
 			$item = $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=cart', true);
 			$Itemid = isset($item->id) ? $item->id : '';
 			
@@ -219,7 +229,7 @@ class DigiComRouter extends JComponentRouterBase
 			if(!empty($Itemid)){
 				 $query['Itemid'] = $Itemid;
 			}else{
-				unset($query['Itemid']);
+				//unset($query['Itemid']);
 			}
 
 
@@ -258,9 +268,17 @@ class DigiComRouter extends JComponentRouterBase
 
 		if ($view == 'order' or $view == "orders")
 		{
-			if (!$menuItemGiven)
-			{
-				$segments[] = $view;
+			$item = $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=orders', true);
+			$Itemid = isset($item->id) ? $item->id : '';
+			
+			if (!$menuItemGiven){
+				if (!$Itemid)
+				{
+					$segments[] = $view;
+				}
+				else{
+					$query['Itemid'] = $Itemid;
+				}
 			}
 
 			unset($query['view']);
@@ -349,9 +367,9 @@ class DigiComRouter extends JComponentRouterBase
 			$segments[$i] = str_replace(':', '-', $segments[$i]);
 		}
 
-		//if ($view == 'cart'){
-			//print_r($query);die;
-		//}
+		if ($view == 'product'){
+			//print_r($segments);die;
+		}
 		
 		return $segments;
 	}
@@ -389,22 +407,86 @@ class DigiComRouter extends JComponentRouterBase
 		 * the first segment is the view and the last segment is the id of the product or category.
 		 */
 		
-		if (!isset($item) && ( $segments[0] != 'category' && $segments[0] != 'product') )
+		if (!isset($item) && ( $segments[0] != 'categories' && $segments[0] != 'category' && $segments[0] != 'product') )
 		{
 			
-			$vars['view'] = $segments[0];
-			if($segments[0] == 'cart'){
+			$segview = $segments[0];
+
+			switch ($segview) {
+				case 'cart':
+				case 'checkout':
+				case 'dashboard':
+				case 'downloads':
+				case 'login':
+				case 'order':
+				case 'orders':
+				case 'profile':
+				case 'register':
+
+					$vars['view'] = $segments[0];
+					$vars['id'] = $segments[$count - 1];
+					break;
+				
+				default:
+					$info = $this->getCategoryId($segments[0], $segments);
+					
+					if(!$info) return $vars;
+
+					$vars['view'] = $info['view'];
+					$vars['catid'] = $info['catid'];
+					$vars['id'] = $info['id'];
+					break;
+			}
+			
+			if($segments[0] == 'cart')
+			{
 				if(!empty($segments[1])) $vars['layout'] = $segments[1];
 			}
+			elseif ($segments[0] == 'cart_popup' or $segments[0] == 'summary') 
+			{
+				$vars['view'] = 'cart';
+				$vars['layout'] = $segments[0];
+			}
 
-			if($segments[0] == 'checkout'){
+			if($segments[0] == 'checkout')
+			{
 				if( !empty($segments[1]) && !empty($segments[2]) ) $vars['order_id'] = $segments[2];
 			}
 
-			$vars['id'] = $segments[$count - 1];
-
 			return $vars;
+
+		}elseif(isset($item) && $item->query['option'] == 'com_digicom' && ( $segments[0] != 'category' && $segments[0] != 'product')){
+			
+			//print_r($segments);die;
+			$vars['view'] = $item->query['view'];
+
+			if($segments[0] == 'cart')
+			{
+				if( $item->query['view'] != 'cart' ){
+					$vars['view'] = $segments[0];	
+				}
+				if(!empty($segments[1])){
+					$vars['layout'] = $segments[1];	
+				} 
+			}
+			elseif($segments[0] == 'summary')
+			{
+				$vars['view'] = 'cart';
+				$vars['layout'] = $segments[0];
+			}
+			elseif ($segments[0] == 'cart_popup' or $segments[0] == 'summary')
+			{
+				$vars['view'] = 'cart';
+				$vars['layout'] = $segments[0];
+			}elseif($segments[0] == 'checkout'){
+				$totalsegs = count($segments);
+				if($totalsegs > 2){
+					$vars['view'] = $segments[0];
+					$vars['order_id'] = $segments[2];
+				}
+			}
 		}
+
 
 		/*
 		 * If there is only one segment, then it points to either an product or a category.
@@ -465,12 +547,29 @@ class DigiComRouter extends JComponentRouterBase
 			
 			return $vars;
 		}
-		
+
+		$activeView = $segments[0];
+		switch ($activeView) {
+			case 'summary':
+			case 'cart':
+			case 'cart_popup':
+			case 'orders':
+			case 'checkout':
+			case 'dashboard':
+			case 'profile':
+			case 'downloads':
+				return $vars;
+			default:
+				//nothing to do;
+				break;
+		}
+
 		/*
 		 * If there was more than one segment, then we can determine where the URL points to
 		 * because the first segment will have the target category id prepended to it.  If the
 		 * last segment has a number prepended, it is an product, otherwise, it is a category.
 		 */
+		
 		// Ltes handle the product & category
 		if (!isset($item) && ( $segments[0] == 'category' or $segments[0] == 'product')){
 			$id= $segments[$count - 1];
@@ -479,6 +578,7 @@ class DigiComRouter extends JComponentRouterBase
 			$id = $item->query['id'];
 		}
 
+		
 		$category = JCategories::getInstance('DigiCom')->get($id);
 
 		if (!$category)
@@ -540,6 +640,63 @@ class DigiComRouter extends JComponentRouterBase
 		}
 
 		return $vars;
+	}
+
+	public static function getCategoryId($info, $segments){
+		
+		$return = array();
+		$id = $info;
+		$category = JCategories::getInstance('DigiCom')->get($id);
+
+		if (!$category)
+		{
+			JError::raiseError(404, JText::_('COM_DIGICOM_ERROR_PARENT_CATEGORY_NOT_FOUND'));
+
+			return false;
+		}
+
+		$categories = $category->getChildren();
+		$return['catid'] = $id;
+		$return['id'] = $id;
+		$found = 0;
+
+		foreach ($segments as $segment)
+		{
+			$segment = str_replace(':', '-', $segment);
+
+			foreach ($categories as $category)
+			{
+				if ($category->alias == $segment)
+				{
+					$return['id'] = $category->id;
+					$return['catid'] = $category->id;
+					$return['view'] = 'category';
+					$categories = $category->getChildren();
+					$found = 1;
+					break;
+				}
+			}
+
+			if ($found == 0)
+			{
+				
+				$db = JFactory::getDbo();
+				$query = $db->getQuery(true)
+					->select($db->quoteName('id'))
+					->from('#__digicom_products')
+					->where($db->quoteName('catid') . ' = ' . (int) $return['catid'])
+					->where($db->quoteName('alias') . ' = ' . $db->quote($segment));
+				$db->setQuery($query);
+				$cid = $db->loadResult();
+				
+				$return['id'] = $cid;
+				$return['view'] = 'product';
+
+			}
+
+			$found = 0;
+		}
+		return $return;
 	}
 }
 
