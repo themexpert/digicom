@@ -478,12 +478,17 @@ class DigiComRouter extends JComponentRouterBase
 			{
 				$vars['view'] = 'cart';
 				$vars['layout'] = $segments[0];
-			}elseif($segments[0] == 'checkout'){
+			}
+			elseif($segments[0] == 'checkout')
+			{
 				$totalsegs = count($segments);
 				if($totalsegs > 2){
 					$vars['view'] = $segments[0];
 					$vars['order_id'] = $segments[2];
 				}
+			}else{
+				$vars['view'] = $segments[0];
+				if( !empty($segments[1]) && !empty($segments[1]) ) $vars['layout'] = $segments[1];
 			}
 		}
 
@@ -552,6 +557,7 @@ class DigiComRouter extends JComponentRouterBase
 		switch ($activeView) {
 			case 'summary':
 			case 'cart':
+			case 'register':
 			case 'cart_popup':
 			case 'orders':
 			case 'checkout':

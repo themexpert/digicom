@@ -76,6 +76,11 @@ class DigiComControllerProfile extends JControllerLegacy
 
 		$err = $app->login($credentials, $options);
 		
+		if($return){
+			$this->setRedirect($return);
+			return true;
+		}
+		
 		$link = $this->getLink();
 		if($returnpage != 'checkout'){
 			$this->setRedirect($link);
