@@ -97,76 +97,66 @@ function submitbutton(pressbutton) {
 					<!--<h3><?php echo JText::_('COM_DIGICOM_DISCOUNT_TAB_TITLE_DISCOUNT_CODE_SETTINGS');?></h3>-->
 					<div class="form-horizontal">
 						<div class="control-group">
-							<label for="" class="control-label"><?php echo JText::_("JGLOBAL_TITLE");?></label>
+							<div class="control-label">
+								<?php echo $this->form->getLabel('title'); ?>
+							</div>
 							<div class="controls">
 								<?php echo $this->form->getInput('title'); ?>
-								<?php
-									echo JHTML::tooltip(JText::_("COM_DIGICOM_DICOUNT_TITLE_DESC"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
-								?>
 							</div>
 						</div>
 
 						<div class="control-group">
-							<label for="" class="control-label"><?php echo JText::_("COM_DIGICOM_DISCOUNT_CODE");?></label>
+							<div class="control-label">
+								<?php echo $this->form->getLabel('code'); ?>
+							</div>
 							<div class="controls">
 								<?php echo $this->form->getInput('code'); ?>
-						<?php
-							echo JHTML::tooltip(JText::_("COM_DIGICOM_DISCOUNT_CODE_DESC"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
-						?>
 							</div>
 						</div>
 
 						<div class="control-group">
-							<label for="" class="control-label"><?php echo JText::_("COM_DIGICOM_DISCOUNT_CODE_USAGE_LIMIT");?></label>
+							<div class="control-label">
+								<?php echo $this->form->getLabel('codelimit'); ?>
+							</div>
 							<div class="controls">
 								<?php echo $this->form->getInput('codelimit'); ?>
-						<?php
-							echo JHTML::tooltip(JText::_("COM_DIGICOM_DISCOUNT_CODE_USAGE_LIMIT_DESC"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
-						?>
 							</div>
 						</div>
 
 						<div class="control-group">
-							<label for="" class="control-label"><?php echo JText::_("COM_DIGICOM_DISCOUNT_AMOUNT");?></label>
+							<div class="control-label">
+								<?php echo $this->form->getLabel('amount'); ?>
+							</div>
 							<div class="controls">
 								<?php echo $this->form->getInput('amount'); ?>
-								<?php echo $this->form->getInput('promotype'); ?>
-								
-						&nbsp;
-						<?php
-							echo JHTML::tooltip(JText::_("COM_DIGICOM_DISCOUNT_AMOUNT_DESC"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
-						?>
+								<?php echo $this->form->getInput('promotype'); ?>								
 							</div>
 						</div>
 
 						<div class="control-group">
-							<label for="" class="control-label"><?php echo JText::_("COM_DIGICOM_DISCOUNT_CODE_START_PUBLISHIING");?></label>
+							<div class="control-label">
+								<?php echo $this->form->getLabel('codestart'); ?>
+							</div>							
 							<div class="controls">
 								<?php echo $this->form->getInput('codestart'); ?>
-								<?php
-									echo JHTML::tooltip(JText::_("COM_DIGICOM_DISCOUNT_CODE_START_PUBLISHIING_DESC"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
-								?>
 							</div>
 						</div>
 
 						<div class="control-group">
-							<label for="" class="control-label"><?php echo JText::_("COM_DIGICOM_DISCOUNT_CODE_END_PUBLISHIING");?></label>
+							<div class="control-label">
+								<?php echo $this->form->getLabel('codeend'); ?>
+							</div>							
 							<div class="controls">
 								<?php echo $this->form->getInput('codeend'); ?>
-								<?php
-									echo JHTML::tooltip(JText::_("COM_DIGICOM_DISCOUNT_CODE_END_PUBLISHIING_DESC"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
-								?>
 							</div>
 						</div>
 
 						<div class="control-group">
-							<label for="" class="control-label"><?php echo JText::_("JSTATUS");?></label>
-								
+							<div class="control-label">
+								<?php echo $this->form->getLabel('published'); ?>
+							</div>
 							<div class="controls">
 								<?php echo $this->form->getInput('published'); ?>
-								<?php
-									echo JHTML::tooltip(JText::_("COM_DIGICOM_DISCOUNT_CODE_STATUS_DESC"), '', '',  "<img src=".JURI::root()."administrator/components/com_digicom/assets/images/tooltip.png />", '', '', 'hasTip');
-								?>
 							</div>
 						</div>
 
