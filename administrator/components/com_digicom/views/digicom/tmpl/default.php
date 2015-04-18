@@ -117,12 +117,12 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 						<tr>
 							<td>
 								<span class="label label-ds hasTip" title="" data-original-title="Order ID">
-									<a href="index.php?option=com_digicom&controller=orders&task=show&cid[]=<?php echo $order->id; ?>"><?php echo JText::_('COM_DIGICOM_ORDER_ID').$order->id; ?></a>
+									<a href="index.php?option=com_digicom&view=order&layout=edit&id=<?php echo $order->id; ?>"><?php echo JText::_('COM_DIGICOM_ORDER_ID').$order->id; ?></a>
 								</span>
 							</td>
 							<td>
 								<strong class="row-title">
-									<a href="index.php?option=com_digicom&controller=customers&task=edit&cid[]=<?php echo $order->userid;?>">
+									<a href="index.php?option=com_digicom&view=customer&layout=edit&id=<?php echo $order->userid;?>">
 										<?php echo $order->firstname.' '.$order->lastname;?>
 									</a>
 								</strong>
@@ -133,7 +133,7 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 						
 					<?php endforeach; ?>
 					</table>
-					<a href="index.php?option=com_digicom&controller=orders"><?php echo JText::_('COM_DIGICOM_ALL_ORDERS'); ?></a>
+					<a href="index.php?option=com_digicom&view=orders"><?php echo JText::_('COM_DIGICOM_ALL_ORDERS'); ?></a>
 				</div>
 			</div>
 			<div class="span6 panel">
@@ -152,14 +152,14 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 						</thead>
 						<?php foreach($this->most_sold AS $product) : ?>
 						<tr>
-							<td><a href="index.php?option=com_digicom&controller=products&task=edit&cid[]=<?php echo $product->productid;?>"><?php echo $product->name;?></a></td>
+							<td><a href="index.php?option=com_digicom&view=product&layout=edit&id=<?php echo $product->productid;?>"><?php echo $product->name;?></a></td>
 							<td><?php echo ($product->package_type =='reguler' ? ucfirst($product->package_type) : JText::sprintf('COM_DIGICOM_BUNDLE',ucfirst($product->package_type)));?></td>
 							<td><?php echo $product->price;?></td>
 							<td><?php echo $product->total;?></td>
 						</tr>
 						<?php endforeach; ?>
 					</table>
-					<a href="index.php?option=com_digicom&controller=products"><?php echo JText::_('COM_DIGICOM_RECENT_PRODUCTS'); ?></a>
+					<a href="index.php?option=com_digicom&view=products"><?php echo JText::_('COM_DIGICOM_RECENT_PRODUCTS'); ?></a>
 				</div>
 			</div>
 		</div>
