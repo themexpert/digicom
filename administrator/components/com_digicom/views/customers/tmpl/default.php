@@ -58,7 +58,7 @@ $n = count ($this->custs);
 							<?php echo JText::_('COM_DIGICOM_FULL_NAME');?>
 						</th>
 						<th>
-							<?php echo JText::_('COM_DIGICOM_USER_NAME');?>
+							<?php echo JText::_('COM_DIGICOM_CUSTOMMER_USER_NAME');?>
 						</th>
 						<th>
 							<?php echo JText::_('COM_DIGICOM_CUSTOMERS_TOTAL_ORDER');?>
@@ -79,19 +79,10 @@ $n = count ($this->custs);
 						$ulink = JRoute::_("index.php?option=com_users&view=user&layout=edit&id=".$id);
 					?>
 					<tr class="row<?php echo $k;?>"> 
-						<td>
-									<?php echo $id;?>
-						</td>
-						<td>
-								<a href="<?php echo $link;?>" ><?php echo $cust->firstname." ".$cust->lastname;?></a>
-						</td>
-						<td>
-							<?php echo $cust->username;?>
-						</td>
-						<td>
-							<?php echo $cust->total_order;?>
-						</td>
-
+						<td><?php echo $id;?></td>
+						<td><a href="<?php echo $link;?>" ><?php echo $cust->firstname." ".$cust->lastname;?></a></td>
+						<td><?php echo ($cust->username ? $cust->username : $cust->email) ;?></td>
+						<td><?php echo $cust->total_order;?></td>
 					</tr>
 
 
