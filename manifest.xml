@@ -12,11 +12,11 @@
 ]]></downloadurl>
 		</downloads>
 		<tags>
-			<tag>beta</tag>
+			<tag>beta2</tag>
 		</tags>
 		<targetplatform name="joomla" version="3.4" />
 	</update>
-	
+
 	<update>
 		<name>DigiCom Package</name>
 		<description>DigiCom component update</description>
@@ -29,7 +29,7 @@
 ]]></downloadurl>
 		</downloads>
 		<tags>
-			<tag>beta</tag>
+			<tag>beta1</tag>
 		</tags>
 		<targetplatform name="joomla" version="3.4" />
 	</update>
