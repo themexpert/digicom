@@ -45,27 +45,6 @@ class DigiComViewCustomer extends JViewLegacy {
 		$this->assign("user", $user);
 
 		$configs = $this->get("Configs");
-		//$country_option = DigiComHelperDigiCom::get_country_options($customer, false, $configs);
-		//$lists['country_option'] = $country_option;
-
-		$profile = new StdClass();
-		$profile->country = $customer->shipcountry;
-		$profile->state = $customer->shipstate;
-		//$shipcountry_option = DigiComHelperDigiCom::get_country_options($customer, true, $configs);
-		//$lists['shipcountry_options'] = $shipcountry_option;
-
-		//$lists['customerlocation'] = DigiComHelperDigiCom::get_store_province($customer);
-
-		$profile = new StdClass();
-		$profile->country = $customer->shipcountry;
-		$profile->state = $customer->shipstate;
-		//$lists['customershippinglocation'] = DigiComHelperDigiCom::get_store_province($profile, true, $configs);
-
-		$cclasses = explode("\n", $customer->taxclass);
-
-		//$this->assign("lists", $lists);
-		$keyword = JRequest::getVar("keyword", "", "request");
-		$this->assign ("keyword", $keyword);
 		
 		$this->assign("configs", $configs);
 		

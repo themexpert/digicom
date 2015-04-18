@@ -141,7 +141,21 @@ $input->set('layout', 'dgform');
 								<div class="control-group">
 									<label for="" class="control-label"><?php echo JText::_( "COM_DIGICOM_CUSTOMER_COUNTRY" ); ?></label>
 									<div class="controls">
-										<?php //echo $this->lists['country_option']; ?>
+										<input name="country" type="text" id="country" size="30" value="<?php echo $cust->country; ?>">
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label for="" class="control-label"><?php echo JText::_( "COM_DIGICOM_CUSTOMER_STATE" ); ?></label>
+									<div class="controls">
+										<input name="state" type="text" id="state" size="30" value="<?php echo $cust->state; ?>">
+									</div>
+								</div>
+								
+								<div class="control-group">
+									<label for="" class="control-label"><?php echo JText::_( "COM_DIGICOM_CUSTOMER_CITY" ); ?></label>
+									<div class="controls">
+										<input name="city" type="text" id="city" size="30" value="<?php echo $cust->city; ?>">
 									</div>
 								</div>
 								
@@ -160,10 +174,6 @@ $input->set('layout', 'dgform');
 					<?php echo JHtml::_('bootstrap.endTab'); ?>
 					<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'order_details', JText::_('COM_DIGICOM_CUSTOMER_TAB_HEADING_CUSTOMER_ORDERS', true)); ?>
 
-						<?php 
-						//show custommers order 
-						//print_r($cust->orders);
-						?>
 						<table class="adminlist table table-striped">
 							<thead>
 								<tr>
@@ -176,6 +186,9 @@ $input->set('layout', 'dgform');
 									</th>
 									<th>
 										<?php echo JText::_( 'COM_DIGICOM_PRICE' ); ?>
+									</th>
+									<th>
+										<?php echo JText::_( 'COM_DIGICOM_AMOUNT_PAID' ); ?>
 									</th>
 									<th>
 										<?php echo JText::_( 'JSTATUS' ); ?>
@@ -214,12 +227,16 @@ $input->set('layout', 'dgform');
 										</td>
 										<td align="center">
 											<?php 
+												echo DigiComHelperDigiCom::format_price($order->amount, $configs->get('currency','USD'), true, $configs); 												
+											?>
+										</td>
+										<td align="center">
+											<?php 
 												
 												if ($order->amount_paid == "-1") $order->amount_paid = $order->amount;
-												//$refunds = DigiComAdminModelOrder::getRefunds($order->id);
-												//$chargebacks = DigiComAdminModelOrder::getChargebacks($order->id);
-												//$order->amount_paid = $order->amount_paid - $refunds - $chargebacks;
-												$order->amount_paid = $order->amount_paid;
+												$refunds = DigiComHelperDigiCom::getRefunds($order->id);
+												$chargebacks = DigiComHelperDigiCom::getChargebacks($order->id);
+												$order->amount_paid = $order->amount_paid - $refunds - $chargebacks;
 												echo DigiComHelperDigiCom::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs); 
 												
 											?>
