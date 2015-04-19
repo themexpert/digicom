@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 JHtml::_('formbehavior.chosen', 'select');
 
 $cust = $this->cust;
-$user = $this->user["0"];
+$user = $this->user;
 $configs = $this->configs;
 $app = JFactory::getApplication();
 $input = $app->input;
@@ -74,7 +74,7 @@ $input->set('layout', 'dgform');
 								<div class="control-group">
 									<label class="control-label"><?php echo JText::_( 'COM_DIGICOM_USER_NAME' ); ?></label>
 									<div class="controls">
-										<?php echo $user["username"]; ?>
+										<?php echo ($user["username"] ? $user["username"] : $cust->email ); ?>
 									</div>
 								</div>
 
@@ -88,7 +88,7 @@ $input->set('layout', 'dgform');
 								<div class="control-group">
 									<label class="control-label"><?php echo JText::_( "COM_DIGICOM_CUSTOMER_REGISTRATION_DATE" ); ?></label>
 									<div class="controls">
-										<?php echo $cust->registerDate; ?>
+										<?php echo $cust->registered; ?>
 									</div>
 								</div>
 
@@ -99,7 +99,7 @@ $input->set('layout', 'dgform');
 										<?php echo JText::_( 'COM_DIGICOM_EMAIL' );?>
 									</label>
 									<div class="controls">
-										<?php echo $user["email"]; ?>
+										<?php echo $cust->email; ?>
 									</div>
 								</div>
 
@@ -281,7 +281,7 @@ $input->set('layout', 'dgform');
 	</div>
 
 	<input type="hidden" name="option" value="com_digicom" />
-	<input type="hidden" name="id" value="<?php echo $user["id"]; ?>" />
+	<input type="hidden" name="id" value="<?php echo $cust->id; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="view" value="customer" />
 	<input type="hidden" name="keyword" value="<?php echo $this->keyword; ?>" />

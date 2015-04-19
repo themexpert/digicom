@@ -26,64 +26,7 @@ class DigiComModelCustomer extends JModelAdmin {
 
 	function setId($id) {
 		$this->_id = $id;
-
 		$this->_customer = null;
-	}
-
-	protected function populateState($ordering = NULL, $direction = NULL){
-		$app = JFactory::getApplication('administrator');
-		$this->setState('list.start', $app->getUserStateFromRequest($this->_context . '.list.start', 'limitstart', 0, 'int'));
-		$this->setState('list.limit', $app->getUserStateFromRequest($this->_context . '.list.limit', 'limit', $app->getCfg('list_limit', 25) , 'int'));
-		$this->setState('selected', JRequest::getVar('cid', array()));
-	}
-
-	function getPagination(){
-		$pagination=parent::getPagination();
-		$pagination->total=$this->total;
-		if($pagination->total%$pagination->limit>0){
-			$nr_pages=intval($pagination->total/$pagination->limit)+1;
-		}
-		else{ 
-			$nr_pages=intval($pagination->total/$pagination->limit);
-		}
-		$pagination->set('pages.total',$nr_pages);
-		$pagination->set('pages.stop',$nr_pages);
-		return $pagination;
-	}
-
-	protected function getListQuery(){
-		$db = JFactory::getDBO();
-		$session = JFactory::getSession();
-		$keyword = JRequest::getVar("keyword", "");
-
-		$where = " 1=1 ";
-
-		if(trim($keyword) != ""){
-			$where .= " and (u.username like '%".$keyword."%' or c.firstname like '%".$keyword."%' or c.lastname like '%".$keyword."%' ) ";
-		}
-		$where .= " and c.id=(SELECT od.userid from #__digicom_orders od where od.userid=c.id limit 1)";
-
-		$sql = "select c.*, (SELECT count(od.userid) from #__digicom_orders od where od.userid=c.id limit 1) as total_order, u.username, u.email from #__digicom_customers c left join #__users u on( u.id=c.id) where ".$where." order by c.id desc";
-		return $sql;
-	}
-
-	public function getItems(){
-		$config = JFactory::getConfig();
-		$app = JFactory::getApplication('administrator');
-		$limistart = $app->getUserStateFromRequest($this->context.'.list.start', 'limitstart');
-		$limit = $app->getUserStateFromRequest($this->context.'.list.limit', 'limit', $config->get('list_limit'));
-		$db = JFactory::getDBO();
-		$query = $db->getQuery(true);
-		$query = $this->getListQuery();
-
-		$db->setQuery($query);
-		$db->query();
-		$result	= $db->loadObjectList();
-		$this->total=count($result);
-		$db->setQuery($query, $limistart, $limit);
-		$db->query();
-		$result	= $db->loadObjectList();
-		return $result;
 	}
 
 	public function getCustomer() {
@@ -92,10 +35,12 @@ class DigiComModelCustomer extends JModelAdmin {
 			$this->_customer = $this->getTable("Customer");
 			$this->_customer->load($this->_id);
 		}
+		//print_r($this->_customer);die;
+		if($this->getUser()){
+			$user = JFactory::getUser($this->_id);
+			if (!isset($this->_customer->registered)) $this->_customer->registered = $user->registerDate;
+		}
 		
-		$user = JFactory::getUser($this->_id);
-		
-		if (!isset($this->_customer->registerDate)) $this->_customer->registerDate = $user->registerDate;
 		
 		$this->_customer->orders = $this->getlistCustomerOrders($this->_id);
 
@@ -301,7 +246,7 @@ class DigiComModelCustomer extends JModelAdmin {
 		$sql = "select * from #__users where id='".intval($id)."'";
 		$db->setQuery($sql);
 		$db->query();
-		$result = $db->loadAssocList();
+		$result = $db->loadAssoc();
 		return $result;
 	}
 

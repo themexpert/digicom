@@ -1,4 +1,4 @@
-re<?php
+<?php
 /**
  * @package		DigiCom
  * @author 		ThemeXpert http://www.themexpert.com
