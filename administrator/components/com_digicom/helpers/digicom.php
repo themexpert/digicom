@@ -217,14 +217,12 @@ class DigiComHelperDigiCom extends JHelperContent{
 	public static function getOrders($limit) {
 		$db = JFactory::getDBO();
 		$sql = '
-			SELECT o.*, u.username, c.firstname, c.lastname
+			SELECT o.*, c.firstname, c.lastname
 			FROM
 				#__digicom_orders o,
-				#__users u,
 				#__digicom_customers c
 			WHERE
-				`u`.`id`=`o`.`userid` AND
-				`c`.`id`=`u`.`id` AND 
+				`c`.`id`=`o`.`userid` AND
 				`status` = "Active"
 			ORDER BY `o`.`order_date` DESC
 			LIMIT '.$limit.'';
@@ -323,14 +321,12 @@ class DigiComHelperDigiCom extends JHelperContent{
 	public static function getCustomers($limit) {
 		$db = JFactory::getDBO();
 		$sql = '
-			SELECT o.*, u.username, c.firstname, c.lastname
+			SELECT o.*, c.firstname, c.lastname, c.email
 			FROM
 				#__digicom_orders o,
-				#__users u,
 				#__digicom_customers c
 			WHERE
-				u.id=o.userid AND
-				c.id=u.id AND 
+				c.id=o.userid AND
 				status = "Active"
 			GROUP BY o.userid
 			LIMIT '.$limit.'

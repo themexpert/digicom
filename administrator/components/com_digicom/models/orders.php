@@ -382,17 +382,15 @@ class DigiComModelOrders extends JModelList{
 
 		$keyword = JRequest::getVar( "keyword", "");
 		//echo $keyword ;die;
-		$keyword_where = "(u.username like '%" . $keyword . "%' 
+		$keyword_where = "(c.email like '%" . $keyword . "%' 
 							or c.firstname like '%" . $keyword . "%' 
 							or c.lastname like '%" . $keyword . "%'
 							or o.id like '%" . $keyword . "%')";
 
-		$sql = "SELECT o.*, u.username, c.firstname, c.lastname
+		$sql = "SELECT o.*, c.firstname, c.lastname,c.email
 				FROM #__digicom_orders o
-						INNER JOIN 
-					#__users u ON u.id=o.userid
-						LEFT JOIN 
-					#__digicom_customers c ON u.id=c.id ";
+					LEFT JOIN 
+					#__digicom_customers c ON o.userid=c.id ";
 					
 		$where = array();
 		if($startdate > 0) 

@@ -104,7 +104,7 @@ Joomla.submitbutton = function (pressbutton) {
 						<?php echo JText::_( 'COM_DIGICOM_AMOUNT_PAID' ); ?>
 					</th>
 					<th>
-						<?php echo JText::_( 'COM_DIGICOM_USER_NAME' ); ?>
+						<?php echo JText::_( 'COM_DIGICOM_EMAIL' ); ?>
 					</th>
 					<th>
 						<?php echo JText::_( 'COM_DIGICOM_CUSTOMER' ); ?>
@@ -125,7 +125,7 @@ Joomla.submitbutton = function (pressbutton) {
 				for ( $i = 0; $i < $n; $i++ ):
 					++$z;
 					$order =  $this->orders[$i];
-
+					//print_r($order);die;
 					$id = $order->id;
 					$checked = JHTML::_( 'grid.id', $i, $id );
 					$olink = JRoute::_( "index.php?option=com_digicom&view=order&task=order.edit&id=" . $id );
@@ -133,7 +133,7 @@ Joomla.submitbutton = function (pressbutton) {
 					$order->published = 1;
 					$published = JHTML::_( 'grid.published', $order, $i );
 					$orderstatuslink = JRoute::_( "index.php?option=com_digicom&view=orders&task=orders.cycleStatus&id=" . $id );
-					$userlink = "index.php?option=com_users&view=users&filter_search=".$order->username;
+					$userlink = "index.php?option=com_users&view=users&filter_search=".$order->email;
 
 				?>
 					<tr class="row<?php echo $k; ?>">
@@ -164,7 +164,7 @@ Joomla.submitbutton = function (pressbutton) {
 							?>
 						</td>
 						<td align="center">
-							<?php echo ($order->username); ?>
+							<?php echo ($order->email); ?>
 						</td>
 						<td align="center">
 							<a href="<?php echo $customerlink; ?>" ><?php echo ($order->firstname . " " . $order->lastname); ?></a>
