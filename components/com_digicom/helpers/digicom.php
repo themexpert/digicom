@@ -248,6 +248,7 @@ class DigiComSiteHelperDigicom {
 			$cust->id = $user->id;
 			$cust->firstname = $tcustomer->firstname;
 			$cust->lastname =  $tcustomer->lastname;
+			$cust->email =  $user->email;
 			$table->bind($cust);
 			$table->store();
 		}
