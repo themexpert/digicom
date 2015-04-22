@@ -23,7 +23,7 @@ class DigiComViewOrder extends JViewLegacy {
 
 		$return = base64_encode( JURI::getInstance()->toString() );
 
-		if($customer->_user->id < 1)
+		if($customer->_customer->id < 1)
 		{
 			$app->Redirect(JRoute::_('index.php?option=com_users&view=login&return='.$return.$Itemid, false));
 			return true;
@@ -33,7 +33,7 @@ class DigiComViewOrder extends JViewLegacy {
 
 		if($order->id < 1){
 			return JError::raiseError(404, JText::_('COM_DIGICOM_ORDER_NOT_FOUND'));
-		}elseif($order->userid != $customer->_user->id){
+		}elseif($order->userid != $customer->_customer->id){
 			return JError::raiseError(203, JText::_('COM_DIGICOM_ORDER_NOT_OWN'));
 		}
 

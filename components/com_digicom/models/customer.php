@@ -29,7 +29,7 @@ class DigiComModelCustomer extends JModelItem {
 
 	function getlistCustomers() {
 		if ( empty ( $this->_customers ) ) {
-			$sql              = "select c.*, u.username, u.email from #__digicom_customers c left join #__users u on( u.id=c.id)";
+			$sql = "select c.*, u.username, u.email from #__digicom_customers c left join #__users u on( u.email=c.email)";
 			$this->_customers = $this->_getList( $sql );
 
 		}
@@ -46,7 +46,7 @@ class DigiComModelCustomer extends JModelItem {
 			$this->_customer->load( $this->_id );
 
 			if ( $this->_customer->firstname == '' ) {
-				$name                       = $this->getPartName( $user->name );
+				$name = $this->getPartName( $user->name );
 				$this->_customer->firstname = $name->firstname;
 				$this->_customer->lastname  = $name->lastname;
 			}
@@ -84,10 +84,22 @@ class DigiComModelCustomer extends JModelItem {
 		$res               = array( "err" => true, "error" => "" );
 		$reg               = JSession::getInstance( "none", array() );//new JSession();
 
-		$userId = ( ! empty( $data['id'] ) ) ? $data['id'] : (int) $this->getState( 'user.id' );
+		//$userId = ( ! empty( $data['id'] ) ) ? $data['id'] : (int) $this->getState( 'user.id' );
+		
+		$query = "select `id` from `#__users` where `email`='" . $data['email']."'";
+		$db->setQuery( $query );
+		$userId = $db->loadResult();
 		$user   = new JUser( $userId );
+		//print_r($user);die;
 
-		$groups         = array( "0" => "2" );
+		if($userId != $data['id']){
+			$query = "UPDATE `#__digicom_customers` SET `id`=".$userId." WHERE `email`='" . $data['email']."'";
+			$db->setQuery( $query );
+			$db->query();
+		}
+
+		//TODO:: hook with options to set usergroup
+		$groups = array( "0" => "2" );
 		$data["groups"] = $groups;
 
 		if ( $my->id ) {
@@ -98,9 +110,13 @@ class DigiComModelCustomer extends JModelItem {
 		}
 
 		$user->bind( $data );
-		$user->gid      = 2;
+		$user->id = $userId;
+		$user->gid = 2;
+		//TODO:: hook with options to set usergroup
 		$user->usertype = "Registered";
 
+		//print_r($user);die;
+		
 		if ( ! $user->save() ) {
 			$reg->set( "tmp_profile", $data );
 			$error        = $user->getError();
@@ -129,7 +145,7 @@ class DigiComModelCustomer extends JModelItem {
 			$res["error"] = $error;
 			//$res = false;
 		}
-
+		//print_r($item);die;
 		if ( ! $item->store() ) {
 			echo "store failed";
 			$error        = $user->getError();
@@ -169,8 +185,6 @@ class DigiComModelCustomer extends JModelItem {
 		if ( $res["err"] && $new_user ) {
 			//$this->sendRegConfirm( $data );
 		}
-
-
 
 		return $res;
 	}

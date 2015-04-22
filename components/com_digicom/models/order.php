@@ -25,6 +25,8 @@ class DigiComModelOrder extends JModelItem
 	}
 
 	function getOrder($id = 0) {
+		$custommer = new DigiComSiteHelperSession();
+
 		if (empty ($this->_order)) {
 			$db = JFactory::getDBO();
 			if ($id > 0) $this->_id = $id;

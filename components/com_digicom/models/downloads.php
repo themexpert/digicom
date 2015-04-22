@@ -28,14 +28,6 @@ class DigiComModelDownloads extends JModelList
 	function setId($id) {
 		$this->_id = $id;
 		$this->_oid = $id;
-		$this->_license = null;
-	}
-
-	function incrimentDownloadCount($licid) {
-		$db = JFactory::getDBO();
-		$sql = 'update #__digicom_licenses set download_count = download_count+1 where id='.intval($licid);
-		$db->setQuery($sql);
-		$db->query();
 	}
 	
 	function getlistDownloads(){

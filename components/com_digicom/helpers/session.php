@@ -107,7 +107,7 @@ class DigiComSiteHelperSession {
 		//print_r($my->registerDate);die;
 		$this->_user = $my;
 		if ($this->_user->id > 0) {
-			$sql ="select * from #__digicom_customers where id='".$this->_user->id."'";
+			$sql ="select * from #__digicom_customers where email='".$this->_user->email."'";
 			$db->setQuery($sql);
 			$tmp = $db->loadObject();
 
@@ -142,8 +142,11 @@ class DigiComSiteHelperSession {
 				unset($name_array[count($name_array)-1]);
 				$first_name = implode(" ", $name_array);
 			}
+			$email = $my->email;
+			
 			if (empty( $this->_customer->firstname )&& $my->id ) $this->_customer->firstname 	= $first_name;
 			if (empty( $this->_customer->lastname )&& $my->id ) $this->_customer->lastname 	= $last_name;
+			if (empty( $this->_customer->email )&& $my->id ) $this->_customer->email = $email;
 		
 		}
 		

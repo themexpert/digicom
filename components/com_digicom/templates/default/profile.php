@@ -16,7 +16,6 @@ $user = $this->customer->_user;
 $eu = $this->eu;
 $uid = $user->id ? $this->customer->_user->id : 0;
 $configs = $this->configs;
-$Itemid = JRequest::getVar("Itemid", "0");
 ?>
 <div class="digicom">
 	<?php DigiComSiteHelperDigicom::loadModules('digicom_toolber'); ?>
@@ -24,7 +23,7 @@ $Itemid = JRequest::getVar("Itemid", "0");
 	<div class="digicom_form_account">
 		<h2 class="digi-page-title"><?php echo JText::_("COM_DIGICOM_PROFILE_PAGE_TITLE"); ?></h2>
 
-		<form action="index.php?option=com_digicom" method="post" name="adminForm" id="adminForm" onsubmit="return validateForm();" class="form-horizontal">
+		<form action="<?php echo JRoute::_('index.php?option=com_digicom&view=profile');?>" method="post" name="adminForm" id="adminForm" onsubmit="return validateForm();" class="form-horizontal">
 			<h3 class="digi-section-title"><?php echo JText::_('COM_DIGICOM_PROFILE_SECTION_TITLE_PROFILE_SETTINGS'); ?></h3>
 			
 			<div class="row-fluid">
@@ -177,12 +176,11 @@ $Itemid = JRequest::getVar("Itemid", "0");
 				</div>
 			</div>
 
-			<input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>" />
 			<input type="hidden" name="images" value="" />
 			<input type="hidden" name="option" value="com_digicom" />
 			<input type="hidden" name="id" value="<?php echo $cust->id; ?>" />
 			<input type="hidden" name="task" value="profile.save" />
-			<input type="hidden" name="returnpage" value="<?php echo (JRequest::getVar("returnpage", "profile", 'request')); ?>" />
+			<input type="hidden" name="return" value="<?php echo base64_encode(JRequest::getVar("return", JURI::getInstance()->toString(), 'request')); ?>" />
 			<input type="hidden" name="view" value="profile" />
 		</form>
 	</div>

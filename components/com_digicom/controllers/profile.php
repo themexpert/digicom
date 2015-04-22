@@ -130,12 +130,16 @@ class DigiComControllerProfile extends JControllerLegacy
 			$session->set('new_customer', $array);
 			$uri = JURI::getInstance();
 			$return = $uri->toString();
-
-			$this->setRedirect($return, $msg, "notice");
-			return false;
+			//echo $return;die;
+			//$this->setRedirect($return, $msg, "notice");
+			JFactory::getApplication()->redirect($return, $msg, "notice");
 		}else{
-			$this->setRedirect($return, JText::_('COM_DIGICOM_REGISTRATION_SUCCESSFULL'));
+			//$this->setRedirect($return, JText::_('COM_DIGICOM_REGISTRATION_SUCCESSFULL'));
+			//TODO: set new_customer var and show message, else only success nor reg success
+			JFactory::getApplication()->redirect($return, JText::_('COM_DIGICOM_REGISTRATION_SUCCESSFULL'));
 		}
+
+		return true;
 	}
 	
 	function save_x()

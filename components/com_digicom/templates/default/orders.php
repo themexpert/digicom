@@ -33,6 +33,7 @@ $n = count ($this->orders);
 					<th><?php echo JText::_("JGRID_HEADING_ID"); ?></th>
 					<th><?php echo JText::_("JDATE"); ?></th>
 					<th><?php echo JText::_("JSTATUS"); ?></th>
+					<th><?php echo JText::_("COM_DIGICOM_TOTAL"); ?></th>
 					<th><?php echo JText::_("COM_DIGICOM_TOTAL_PAID"); ?></th>
 					<th><?php echo JText::_("COM_DIGICOM_ACTION"); ?></th>
 				</tr>
@@ -68,6 +69,9 @@ $n = count ($this->orders);
 							elseif ( strtolower($order->status) === 'pending') $labelClass = 'label-warning';
 							?>
 							<span class="label <?php echo $labelClass; ?>"><?php echo $order->status; ?></span>
+						</td>
+						<td>
+							<?php echo DigiComSiteHelperDigiCom::format_price($order->amount, $order->currency, true, $configs);; ?>
 						</td>
 						<td>
 							<?php echo $order_price; ?>
