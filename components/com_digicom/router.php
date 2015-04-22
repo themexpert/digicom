@@ -84,6 +84,12 @@ class DigiComRouter extends JComponentRouterBase
 			unset($query['id']);
 
 			return $segments;
+		}elseif(
+			($menuItem instanceof stdClass)
+			&& $menuItem->query['view'] == $query['view']
+		){
+			unset($query['view']);
+			return $segments;
 		}
 
 		if ($view == 'category' || $view == 'product')
@@ -385,7 +391,6 @@ class DigiComRouter extends JComponentRouterBase
 	 */
 	public function parse(&$segments)
 	{
-		
 		$total = count($segments);
 		$vars = array();
 
