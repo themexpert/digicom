@@ -10,21 +10,26 @@
 defined('_JEXEC') or die;
 
 $form = $displayData->getForm();
-
+$item = $displayData->get('item');
 $title = $form->getField('title') ? 'title' : ($form->getField('name') ? 'name' : '');
 
 ?>
 <div class="form-title-alias">
-	<div class="row-fluid">
+	<div class="row-fluid digicom-product-title">
 		<div class="span12">
 			<?php echo $title ? $form->renderField($title) : '';?>
+
+			<?php if(!empty($item->alias)):?>
+				<div class="form-inline">
+					<?php echo $form->getLabel('alias'); ?> : <span id="digicom-product-alias" class="muted"><?php echo $form->getInput('alias'); ?></span><i class="icon-edit"></i>
+				</div>
+			<?php endif; ?>
+
 		</div>
 	</div>
+	
 	<div class="row-fluid">
-		<div class="span7">
-			<?php echo $form->renderField('alias'); ?>
-		</div>
-		<div class="span5">
+		<div class="span12">
 			<?php echo $form->renderField('price'); ?>
 		</div>
 	</div>

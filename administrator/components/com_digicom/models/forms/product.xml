@@ -9,7 +9,7 @@
 		
 		<field name="name" type="text" label="JGLOBAL_TITLE" description="JFIELD_TITLE_DESC" class="input-xxlarge" size="40" required="true" />
 
-		<field name="alias" type="text" label="JFIELD_ALIAS_LABEL" description="JFIELD_ALIAS_DESC" hint="JFIELD_ALIAS_PLACEHOLDER" size="40" class="input-xlarge"/>
+		<field name="alias" type="text" label="JFIELD_ALIAS_LABEL" description="JFIELD_ALIAS_DESC" hint="JFIELD_ALIAS_PLACEHOLDER" size="40" class="input-xlarge input-short"/>
 		
 		<field name="price" type="text" label="COM_DIGICOM_PRICE" description="COM_DIGICOM_PRODUCT_FIELD_PRICE_DESC" hint="COM_DIGICOM_PRODUCT_FIELD_PRICE_PLACEHOLDER" class="input-large" size="40" required="true"/>
 		
