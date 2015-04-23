@@ -111,6 +111,12 @@ class DigiComSiteHelperSession {
 			$db->setQuery($sql);
 			$tmp = $db->loadObject();
 
+			if($tmp->id != $this->_user->id){
+				$query = "UPDATE `#__digicom_customers` SET `id`=".$this->_user->id." WHERE `email`='" . $this->_user->email."'";
+				$db->setQuery( $query );
+				$db->query();
+			}
+
 			if ( $tmp ) {
 				$this->_customer = $tmp;
 			} else {
@@ -122,6 +128,7 @@ class DigiComSiteHelperSession {
 		
 		if (!isset($this->_customer->firstname)) $this->_customer->firstname = '';
 		if (!isset($this->_customer->lastname)) $this->_customer->lastname = '';
+		if (!isset($this->_customer->email)) $this->_customer->email = '';
 		if (!isset($this->_customer->country)) $this->_customer->country = '';
 		if (!isset($this->_customer->state)) $this->_customer->state = '';
 		if (!isset($this->_customer->zipcode)) $this->_customer->zipcode = '';
