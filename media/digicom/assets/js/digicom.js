@@ -7,6 +7,7 @@
  */
 imgpath = "";
 /* Media manager*/
+
 function elFinderUpdate(fieldID, value) {
   var fileNameIndex = value.lastIndexOf("/") + 1;
   var filename = value.substr(fileNameIndex);
@@ -22,10 +23,27 @@ function elFinderUpdate(fieldID, value) {
   }
 }
 
+function changeValidity(){
+  var a = jQuery('#jform_price_type').chosen();
+  if(a.val() != 3){
+    jQuery('#jform_expiration_length').removeClass('disabled');
+    jQuery('#jform_expiration_length').removeAttr('disabled');
+    jQuery('#jform_expiration_length').attr('required','false');
+    jQuery("#jform_expiration_type").attr('disabled', false).trigger("liszt:updated");
+  }else{
+    jQuery('#jform_expiration_length').addClass('disabled');
+    jQuery('#jform_expiration_length').attr('disabled','disabled');
+    jQuery('#jform_expiration_length').attr('required','true');
+    jQuery("#jform_expiration_type").attr('disabled', true).trigger("liszt:updated");
+  }
+}
+
 function openModal(a){
   fileInput = jQuery(a).prev();
   SqueezeBox.open('index.php?option=com_digicom&view=filemanager&tmpl=component&folder='+imgpath+'&layout=modal&fieldID='+fileInput.attr('id'),{handler:'iframe',size:{x:800,y:450}});
 }
+
+
 
 jQuery(document).ready(function() {
 
@@ -94,4 +112,17 @@ jQuery(document).ready(function() {
     });
   });
 
+  /* onclick edit alias of product*/
+  jQuery('a#digicom-edit-alias').click(function () {
+    jQuery('#digicom-product-alias').hide();
+    jQuery('#digicom-product-alias-edit').show(function(){
+      jQuery('#jform_alias').focus();
+    });
+  });
+
+  jQuery('input[id=jform_alias]').focusout(function() {
+    jQuery('#digicom-product-alias').text(jQuery('#jform_alias').val());
+    jQuery('#digicom-product-alias').show();
+    jQuery('#digicom-product-alias-edit').hide();
+  });
 });
