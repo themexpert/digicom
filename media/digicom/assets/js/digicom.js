@@ -24,17 +24,15 @@ function elFinderUpdate(fieldID, value) {
 }
 
 function changeValidity(){
-  var a = jQuery('#jform_price_type').chosen();
-  if(a.val() != 3){
-    jQuery('#jform_expiration_length').removeClass('disabled');
-    jQuery('#jform_expiration_length').removeAttr('disabled');
-    jQuery('#jform_expiration_length').attr('required','false');
-    jQuery("#jform_expiration_type").attr('disabled', false).trigger("liszt:updated");
+  var validityType = jQuery('#jform_price_type').chosen(),
+      lengthBox = jQuery('#jform_expiration_length'),
+      lengthType = jQuery('#jform_expiration_type');
+  if(validityType.val() != 0){
+    lengthBox.removeClass('disabled').removeAttr('disabled').attr('required','false');
+    lengthType.attr('disabled', false).trigger("liszt:updated");
   }else{
-    jQuery('#jform_expiration_length').addClass('disabled');
-    jQuery('#jform_expiration_length').attr('disabled','disabled');
-    jQuery('#jform_expiration_length').attr('required','true');
-    jQuery("#jform_expiration_type").attr('disabled', true).trigger("liszt:updated");
+    lengthBox.addClass('disabled').attr('disabled','disabled').attr('required','true');
+    lengthType.attr('disabled', true).trigger("liszt:updated");
   }
 }
 
