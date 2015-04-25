@@ -111,7 +111,7 @@ class DigiComSiteHelperSession {
 			$db->setQuery($sql);
 			$tmp = $db->loadObject();
 
-			if($tmp->id != $this->_user->id){
+			if(isset($tmp) and $tmp->id != $this->_user->id){
 				$query = "UPDATE `#__digicom_customers` SET `id`=".$this->_user->id." WHERE `email`='" . $this->_user->email."'";
 				$db->setQuery( $query );
 				$db->query();
