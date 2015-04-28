@@ -106,7 +106,7 @@ if($this->configs->get('afteradditem',0) == "2"){
 							<br>
 							<?php if ($this->configs->get('show_validity',1) == 1) : ?>
 							<span>
-								<small><?php echo DigiComSiteHelperPrice::getProductValidityPeriod($this->item); ?></small>
+								<small><?php echo JText::_('COM_DIGICOM_PRODUCT_VALIDITY'); ?> : <?php echo DigiComSiteHelperPrice::getProductValidityPeriod($this->item); ?></small>
 							</span>
 							<?php endif; ?>
 						</div>						
