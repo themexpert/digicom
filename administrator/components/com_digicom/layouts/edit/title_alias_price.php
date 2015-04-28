@@ -15,7 +15,7 @@ $title = $form->getField('title') ? 'title' : ($form->getField('name') ? 'name' 
 ?>
 <script>
 jQuery(function($) {
-	//changeValidity();
+	changeValidity();
 });
 </script>
 <div class="form-title-alias">
