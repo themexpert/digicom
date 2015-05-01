@@ -104,7 +104,6 @@ class DigiComModelCart extends JModelItem
 		$item_qty = @$data["0"]->quantity;
 		$cid = @$data["0"]->cid;
 
-
 		if(!$item_id){//no such item in cart- inserting new row
 			$sql = "insert into #__digicom_cart (quantity, item_id, sid, userid)"
 				. " values ('".$qty."', '".intval($pid)."', '".intval($sid)."', '".intval($uid)."')";
@@ -636,6 +635,7 @@ class DigiComModelCart extends JModelItem
 		$shipping = $tax['shipping'];
 		$orderid = $this->addOrder($items, $customer, $now, $prosessor,$status);
 		$this->addOrderDetails($items, $orderid, $now, $customer,$status);
+		$this->addLicenceSubscription($items, $customer->_customer->id, $orderid, $status);
 
 		return $orderid;
 	}
