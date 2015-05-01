@@ -124,7 +124,14 @@ $params = json_decode($this->order->params);
 			?>
 			<tr>
 				<td><img width="64" height="64" src="<?php echo JUri::root().$product->images; ?>" alt="<?php echo $product->name; ?>" /></td>
-				<td><strong><a href="<?php echo $productlink; ?>" target="_blank"><?php echo $product->name; ?></a></strong></td>
+				<td>
+					<a href="<?php echo $productlink; ?>" target="_blank"><strong><?php echo $product->name; ?></strong></a>
+					<?php if ($this->configs->get('show_validity',1) == 1) : ?>
+					<div class="muted">
+						<small><?php echo JText::_('COM_DIGICOM_PRODUCT_VALIDITY'); ?> : <?php echo DigiComSiteHelperPrice::getProductValidityPeriod($product); ?></small>
+					</div>
+					<?php endif; ?>
+				</td>
 				<td><?php echo ucfirst( $product->package_type ); ?></td>
 				<td><?php echo DigiComSiteHelperDigiCom::format_price($product->price, $configs->get('currency','USD'), true, $configs);?></td>
 			</tr>

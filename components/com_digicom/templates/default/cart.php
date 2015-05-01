@@ -104,6 +104,11 @@ $tax = $this->tax;
 					<tr>
 						<td>
 							<a href="<?php echo $item_link; ?>" target="blank"><?php echo $item->name; ?></a>
+							<?php if ($this->configs->get('show_validity',1) == 1) : ?>
+							<div class="muted">
+								<small><?php echo JText::_('COM_DIGICOM_PRODUCT_VALIDITY'); ?> : <?php echo DigiComSiteHelperPrice::getProductValidityPeriod($item); ?></small>
+							</div>
+							<?php endif; ?>
 						</td>
 
 						<td nowrap="nowrap">
