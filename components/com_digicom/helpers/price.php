@@ -42,14 +42,15 @@ class DigiComSiteHelperPrice {
 				}
 				break;
 			
-			default:
-				//month
+			case 'month':
 				if($item->expiration_length > 1){
 					return $item->expiration_length . ' ' . JText::_('COM_DIGICOM_MONTHS');
 				}else {
 					return $item->expiration_length . ' ' . JText::_('COM_DIGICOM_MONTH');
 				}
 				break;
+			default:
+				return JText::_('COM_DIGICOM_PRODUCT_EXPIRATION_NEVER');
 				break;
 		}
 
