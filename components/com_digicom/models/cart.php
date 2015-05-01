@@ -612,11 +612,13 @@ class DigiComModelCart extends JModelItem
 		$shipping = $tax['shipping'];
 		//check the items
 		//print_r($items);die;
+		//check custommer object
+		//print_r($customer);die;
 
 		$orderid = $this->addOrder($items, $customer, $now, 'free');
 		$this->addOrderDetails($items, $orderid, $now, $customer);
 		$type = 'complete_order';
-		$this->addLicenceSubscription($items, $customer->_uid, $orderid, $type);
+		$this->addLicenceSubscription($items, $customer->_customer->id, $orderid, $type);
 		$this->goToSuccessURL($customer->_sid, '', $orderid , $type);
 		return $orderid;
 	}
@@ -644,9 +646,11 @@ class DigiComModelCart extends JModelItem
 
 	public function addLicenceSubscription( $items, $user_id, $orderid, $type) {
 		if( $items && count($items) ) {
-			foreach( $items as $item ) {
-				if($key >= 0) 
+			foreach( $items as $key=>$item ) {
+				if($key >= 0){
+					//echo $key . '<br>';
 					$this->createLicense( $orderid, $item, $user_id, $type );
+				}
 			}
 		}
 	}
