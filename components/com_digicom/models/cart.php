@@ -853,13 +853,15 @@ class DigiComModelCart extends JModelItem
 			$table->status = 'Pending';
 		}else{
 			$table->status = $status;
+		}
 
+		if($type == 'complete_order'){
+			$this->updateLicenses($order_id, $table->number_of_products, $items, $customer , $type);
 		}
 
 		$comment = array();
 		$comment[] = $table->comment;
 		$comment[] = (isset($result['comment']) ? $result['comment'] : '');
-
 
 		$table->comment = implode("\n", $comment);
 
@@ -883,7 +885,17 @@ class DigiComModelCart extends JModelItem
 
 		return true;
 	}
-	
+	/*
+	* $order_id = orderid;
+	* numof product
+	* $items
+	* customer
+	* type, may complete_order by default
+	*/
+	public function updateLicenses($order_id, $number_of_products, $items, $customer , $type){
+		//TODO:: Update the licences for products in this purchase;
+	}
+
 	function storeOrderParams($user_id,$order_id ,$params){
 
 		$table = $this->getTable('Order');
