@@ -361,6 +361,7 @@ class DigiComModelCart extends JModelItem
 
 	//gets promo code details from database
 	//if checkvalid == 1 - checks if this promocode is still valid and can be used.
+
 	function get_promo( $customer, $checkvalid = 1 )
 	{
 		
@@ -408,7 +409,6 @@ class DigiComModelCart extends JModelItem
 		} else {
 			$promo = $this->getTable( "Discount" );
 		}
-
 
 		$promo->error = "";
 		if ( $promodata[0] == "promoerror" )
@@ -665,18 +665,18 @@ class DigiComModelCart extends JModelItem
 		$order 		= $this->getOrder($order_id);
 		$order_date = $order->order_date;
 		$licenseid = $this->getNewLicenseId();
-		$ltype = ($package_item)?'package_item':'common';
 		if(!$user_id){
 			$user_id = $order->userid;
 		}
 		$expires = "";
 		$time_unit = array( 'day'=>'DAY', 'month'=>'MONTH', 'year'=>'YEAR');//HOUR
-		if( $product->duration_type!=0 ) {
+		//echo $product->price_type;die;
+		if( $product->price_type!=0 ) {
 			$expires = ' DATE_ADD(FROM_UNIXTIME('.$order->order_date.'), INTERVAL '.$product->expiration_length.' '.$time_unit[$product->expiration_type].') ';
 		} else {
 			$expires = ' "0000-00-00 00:00:00" ';
 		}
-
+		
 		if($published == 'complete_order'){
 			$active = 1;
 		}else{
