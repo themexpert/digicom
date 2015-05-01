@@ -610,10 +610,13 @@ class DigiComModelCart extends JModelItem
 		$currency = $tax['currency'];
 		$taxa = $tax['value'];
 		$shipping = $tax['shipping'];
+		//check the items
+		//print_r($items);die;
+
 		$orderid = $this->addOrder($items, $customer, $now, 'free');
 		$this->addOrderDetails($items, $orderid, $now, $customer);
 		$type = 'complete_order';
-		$this->addLicenceSubscription($items, $customer->_sid, $orderid, $type);
+		$this->addLicenceSubscription($items, $customer->_uid, $orderid, $type);
 		$this->goToSuccessURL($customer->_sid, '', $orderid , $type);
 		return $orderid;
 	}
@@ -639,11 +642,11 @@ class DigiComModelCart extends JModelItem
 	* prepare the licence area
 	*/
 
-	public function addLicenceSubscription( $items, $customer->_sid, $orderid, $type) {
-		//TODO:: make the subscription happen
+	public function addLicenceSubscription( $items, $user_id, $orderid, $type) {
 		if( $items && count($items) ) {
 			foreach( $items as $item ) {
-				$this->createLicense( $orderid, $item,  $customer->_sid, $type );
+				if($key >= 0) 
+					$this->createLicense( $orderid, $item, $user_id, $type );
 			}
 		}
 	}
@@ -652,6 +655,7 @@ class DigiComModelCart extends JModelItem
 	 * Create license for end product
 	 */
 	public function createLicense( $order_id, $product, $user_id=null, $published ){
+		
 		$db 	= JFactory::getDbo();
 		$app 	= JFactory::getApplication();
 		$order 		= $this->getOrder($order_id);
@@ -662,16 +666,23 @@ class DigiComModelCart extends JModelItem
 			$user_id = $order->userid;
 		}
 		$expires = "";
-		$time_unit = array( 1=>'HOUR', 2=>'DAY', 3=>'MONTH', 4=>'YEAR' );
-		if( $product->duration_type!=0 && $product->duration_count!= -1 ) {
-			$expires = ' DATE_ADD(FROM_UNIXTIME('.$order->order_date.'), INTERVAL '.$product->duration_count.' '.$time_unit[$product->duration_type].') ';
+		$time_unit = array( 'day'=>'DAY', 'month'=>'MONTH', 'year'=>'YEAR');//HOUR
+		if( $product->duration_type!=0 ) {
+			$expires = ' DATE_ADD(FROM_UNIXTIME('.$order->order_date.'), INTERVAL '.$product->expiration_length.' '.$time_unit[$product->expiration_type].') ';
 		} else {
 			$expires = ' "0000-00-00 00:00:00" ';
 		}
+
+		if($published == 'complete_order'){
+			$active = 1;
+		}else{
+			$active = 0;
+		}
+
 		$sql = 'INSERT INTO `#__digicom_licenses`
-					( `licenseid`, `userid`, `productid`, `domain`, `amount_paid`, `orderid`, `dev_domain`, `hosting_service`, `published`, `ltype`, `package_id`, `purchase_date`, `expires`, `renew`, `download_count`, `plan_id`)
+					( `licenseid`,`orderid`, `userid`, `productid`, `purchase`, `expires`, `active`)
 						VALUES
-					("'.$licenseid.'", '.$user_id.', '.$product->productid.', "", '.$product->price.', '.$order_id.', "", "", '.$published.', "'.$ltype.'",'.$package_item.', FROM_UNIXTIME('.$order->order_date.'), '.$expires.', 0, 0, '.$product->plan_id.')';
+					("'.$licenseid.'", '.$order_id.', '.$user_id.', '.$product->id.', FROM_UNIXTIME('.$order->order_date.'), '.$expires.', '.$active.')';
 		$db->setQuery($sql);
 		$db->query();
 		if($db->getErrorNum()){
