@@ -613,6 +613,7 @@ class DigiComModelCart extends JModelItem
 		$orderid = $this->addOrder($items, $customer, $now, 'free');
 		$this->addOrderDetails($items, $orderid, $now, $customer);
 		$type = 'complete_order';
+		$this->addLicenceSubscription($items, $customer->_sid, $orderid, $type);
 		$this->goToSuccessURL($customer->_sid, '', $orderid , $type);
 		return $orderid;
 	}
@@ -633,6 +634,64 @@ class DigiComModelCart extends JModelItem
 
 		return $orderid;
 	}
+
+	/*
+	* prepare the licence area
+	*/
+
+	public function addLicenceSubscription( $items, $customer->_sid, $orderid, $type) {
+		//TODO:: make the subscription happen
+		if( $items && count($items) ) {
+			foreach( $items as $item ) {
+				$this->createLicense( $orderid, $item,  $customer->_sid, $type );
+			}
+		}
+	}
+	
+	/**
+	 * Create license for end product
+	 */
+	public function createLicense( $order_id, $product, $user_id=null, $published ){
+		$db 	= JFactory::getDbo();
+		$app 	= JFactory::getApplication();
+		$order 		= $this->getOrder($order_id);
+		$order_date = $order->order_date;
+		$licenseid = $this->getNewLicenseId();
+		$ltype = ($package_item)?'package_item':'common';
+		if(!$user_id){
+			$user_id = $order->userid;
+		}
+		$expires = "";
+		$time_unit = array( 1=>'HOUR', 2=>'DAY', 3=>'MONTH', 4=>'YEAR' );
+		if( $product->duration_type!=0 && $product->duration_count!= -1 ) {
+			$expires = ' DATE_ADD(FROM_UNIXTIME('.$order->order_date.'), INTERVAL '.$product->duration_count.' '.$time_unit[$product->duration_type].') ';
+		} else {
+			$expires = ' "0000-00-00 00:00:00" ';
+		}
+		$sql = 'INSERT INTO `#__digicom_licenses`
+					( `licenseid`, `userid`, `productid`, `domain`, `amount_paid`, `orderid`, `dev_domain`, `hosting_service`, `published`, `ltype`, `package_id`, `purchase_date`, `expires`, `renew`, `download_count`, `plan_id`)
+						VALUES
+					("'.$licenseid.'", '.$user_id.', '.$product->productid.', "", '.$product->price.', '.$order_id.', "", "", '.$published.', "'.$ltype.'",'.$package_item.', FROM_UNIXTIME('.$order->order_date.'), '.$expires.', 0, 0, '.$product->plan_id.')';
+		$db->setQuery($sql);
+		$db->query();
+		if($db->getErrorNum()){
+			$app->enqueuemessage($db->getErrorMsg(), 'error');
+		}
+	}
+
+	public function getNewLicenseId(){
+		$db 	= JFactory::getDbo();
+		$sql 	= "SELECT max(licenseid) FROM `#__digicom_licenses` WHERE CONCAT('',`licenseid`*1)=`licenseid`";
+		$db->setQuery( $sql );
+		$licenseid = $db->loadResult();
+		if(isset($licenseid) && intval($licenseid) != "0"){
+			$licenseid = intval($licenseid)+1;
+		} else {
+			$licenseid = 100000001;
+		}
+		return $licenseid;
+	}
+
 
 	/**
 	 * Get return url
