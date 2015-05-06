@@ -103,9 +103,11 @@ Joomla.submitbutton = function (pressbutton) {
 					<th>
 						<?php echo JText::_( 'COM_DIGICOM_AMOUNT_PAID' ); ?>
 					</th>
+					<!-- 
 					<th>
 						<?php echo JText::_( 'COM_DIGICOM_EMAIL' ); ?>
 					</th>
+					 -->
 					<th>
 						<?php echo JText::_( 'COM_DIGICOM_CUSTOMER' ); ?>
 					</th>
@@ -163,10 +165,12 @@ Joomla.submitbutton = function (pressbutton) {
 								echo DigiComHelperDigiCom::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs); 
 							?>
 						</td>
+						<!-- 
 						<td align="center">
 							<?php echo ($order->email); ?>
 						</td>
-						<td align="center">
+						 -->
+						 <td align="center">
 							<a href="<?php echo $customerlink; ?>" ><?php echo ($order->firstname . " " . $order->lastname); ?></a>
 						</td>
 						<td align="center">
