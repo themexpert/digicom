@@ -35,6 +35,17 @@ class DigiComSiteHelperLicense {
 	*/
 	public static function updateLicenses($order_id, $number_of_products = 0, $items, $customer , $type){
 		//TODO:: Update the licences for products in this purchase;
+		$db 	= JFactory::getDbo();
+
+		if($type == 'complete_order'){
+			$sql = "UPDATE #__digicom_licenses SET active=1 WHERE orderid=" . $order_id . " and userid=" . $customer;
+		}else{
+			$sql = "UPDATE #__digicom_licenses SET active=0 WHERE orderid=" . $order_id . " and userid=" . $customer;
+		}
+		
+		$db->setQuery($sql);
+		
+		return $db->query();
 	}
 	
 	/**
