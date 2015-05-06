@@ -81,7 +81,8 @@ class DigiComModelDownloads extends JModelList
 				$params->loadString($active->params);
 			}
 		}
-		//print_r($items);die;products
+		//print_r($items);die;
+		//products
 		if (count($items))
 		{
 
@@ -228,10 +229,11 @@ class DigiComModelDownloads extends JModelList
 		$query->order('ordering ASC');
 		*/
 		// Select required fields from the downloads.
-		$query->select('DISTINCT(p.id) as productid')
+		//$query->select('DISTINCT(p.id) as productid')
+		$query->select('DISTINCT p.id as productid')
 			  ->select(array('p.name,p.catid,p.bundle_source,p.product_type as type'))
-			  ->from($db->quoteName('#__digicom_products') . ' AS p')
-			  ->join('inner', '#__digicom_licenses AS l ON l.productid = p.id');
+			  ->from($db->quoteName('#__digicom_licenses') . ' AS l')
+			  ->join('inner', '#__digicom_products AS p ON l.productid = p.id');
 
 		if ($this->state->params->get('show_pagination_limit'))
 		{
@@ -262,7 +264,7 @@ class DigiComModelDownloads extends JModelList
 
 		$query->where($db->quoteName('l.active') . ' = ' . $published);
 		$query->where($db->quoteName('l.userid') . ' = ' . $user->_customer->id);
-		$query->where('DATEDIFF(`expires`, now()) > -1 or DATEDIFF(`expires`, now()) IS NULL' );
+		$query->where(' ( DATEDIFF(`expires`, now()) > -1 or DATEDIFF(`expires`, now()) IS NULL )' );
 
 		$query->order($db->quoteName($orderby) . ' ' . $orderDirection . ', p.name ASC');
 		//echo $query->__tostring();die;
@@ -414,7 +416,7 @@ class DigiComModelDownloads extends JModelList
 		if($fileid == '0') return false;
 		$fileid = base64_decode($fileid);
 		$fileid = json_decode($fileid);
-		
+		//print_r( $fileid );die;
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName(array('id', 'product_id','name', 'url', 'hits')));
