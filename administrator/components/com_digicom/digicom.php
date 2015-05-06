@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 JLoader::discover('DigiComHelper', JPATH_COMPONENT_ADMINISTRATOR . '/helpers');
+JLoader::discover('DigiComSiteHelper', JPATH_COMPONENT_SITE . '/helpers');
 
 JHtml::_('behavior.tabstate');
 
