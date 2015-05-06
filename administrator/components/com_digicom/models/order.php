@@ -210,6 +210,7 @@ class DigiComModelOrder extends JModelAdmin
 			}else{
 				$type = 'complete_order';
 			}
+			$orders->updateLicensesStatus($data['id'], $type);
 
 			$orders->sendApprovedEmail( $data['id'], $type, $data['status'], $data['amount_paid'] );
 		}
