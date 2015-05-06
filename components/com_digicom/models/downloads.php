@@ -81,11 +81,111 @@ class DigiComModelDownloads extends JModelList
 				$params->loadString($active->params);
 			}
 		}
-
-		if (!count($items))
+		//print_r($items);die;products
+		if (count($items))
 		{
 
+			$bundleItems = array();
+			foreach($items as $key=>$product){
+				if($product->type != 'reguler'){
+					switch($product->type){
+						case 'category':
+							$BundleTable = JTable::getInstance('Bundle', 'Table');
+							$BundleList = $BundleTable->getFieldValues('product_id',$product->productid,$product->bundle_source);
+							$bundle_ids = $BundleList->bundle_id;
+							if($bundle_ids){
+								$db = $this->getDbo();
+								$query = $db->getQuery(true)
+									->select(array('id as productid','name','catid'))
+									->from($db->quoteName('#__digicom_products'))
+									->where($db->quoteName('bundle_source').' IS NULL')
+									->where($db->quoteName('catid').' in ('.$bundle_ids.')');
+								$db->setQuery($query);
+								$bundleItems[] = $db->loadObjectList();
+								//we should show only items
+							}
 
+							unset($items[$key]);
+							
+							break;
+						case 'product':
+						default:
+							// its bundle by product
+							$BundleTable = JTable::getInstance('Bundle', 'Table');
+							$BundleList = $BundleTable->getFieldValues('product_id',$product->productid,$product->bundle_source);
+							$bundle_ids = $BundleList->bundle_id;
+							//echo $bundle_ids;die;
+							if($bundle_ids){
+								$db = $this->getDbo();
+								$query = $db->getQuery(true)
+									->select(array('id as productid','name','catid'))
+									->from($db->quoteName('#__digicom_products'))
+									->where($db->quoteName('bundle_source').' IS NULL')
+									->where($db->quoteName('id').' in ('.$bundle_ids.')');
+								$db->setQuery($query);
+								$bundleItems[] = $db->loadObjectList();
+							}					
+							//we should show only items
+							unset($items[$key]);
+							
+							break;
+					}
+				}
+			}
+			//print_r($bundleItems);die;
+			//we got all our items
+			// now add bundle item to the items array
+			if(count($bundleItems) >0){
+				foreach($bundleItems as $item2){
+					foreach($item2 as $item3){
+						$items[] = $item3;
+					}
+				}
+			}
+			
+			//print_r($items);die;
+			$productAdded = array();
+			foreach($items as $key=>$product){
+				
+				$query = $db->getQuery(true);
+				$query->select($db->quoteName(array('id', 'name', 'url', 'hits')));
+				$query->from($db->quoteName('#__digicom_products_files'));
+				$query->where($db->quoteName('product_id') . ' = '. $db->quote($product->productid));
+				$query->order('id DESC');
+				// Reset the query using our newly populated query object.
+				$db->setQuery($query);
+				$files = $db->loadObjectList();
+				
+				if(count($files) >0){
+					foreach($files as $key2=>$item){
+						$downloadid = array(
+							'fileid' => $item->id
+						);
+						$downloadcode = json_encode($downloadid);
+						$item->downloadid = base64_encode($downloadcode);
+						
+						$parsed = parse_url($item->url);
+						if (empty($parsed['scheme'])) {
+							$fileLink = JPATH_BASE.DIRECTORY_SEPARATOR.$item->url;
+						}else{
+							$fileLink = $item->url;
+						}
+						if (JFile::exists($fileLink)) {
+							$filesize = filesize ($fileLink);
+							$item->filesize = DigiComSiteHelperDigiCom::FileSizeConvert($filesize);
+							$item->filemtime = date("d F Y", filemtime($fileLink));
+						}else{
+							$item->filesize = JText::_('COM_DIGICOM_FILE_DOESNT_EXIST');
+							$item->filemtime = JText::_('COM_DIGICOM_FILE_DOESNT_EXIST');
+						}
+						
+					}
+				}
+				
+				$product->files = $files;
+				if(isset($productAdded[$product->productid])) unset($items[$key]);
+				$productAdded[$product->productid] = true;
+			}
 
 		}
 
@@ -168,116 +268,6 @@ class DigiComModelDownloads extends JModelList
 		//echo $query->__tostring();die;
 
 		return $query;
-
-		// Reset the query using our newly populated query object.
-		$db->setQuery($query);
-		
-		$products = $db->loadObjectList();
-		//print_r($products);die;
-
-		$bundleItems = array();
-		foreach($products as $key=>$product){
-			if($product->type != 'reguler'){
-				switch($product->type){
-					case 'category':
-						$BundleTable = JTable::getInstance('Bundle', 'Table');
-						$BundleList = $BundleTable->getFieldValues('product_id',$product->productid,$product->bundle_source);
-						$bundle_ids = $BundleList->bundle_id;
-						if($bundle_ids){
-							$db = $this->getDbo();
-							$query = $db->getQuery(true)
-								->select(array('id as productid','name','catid'))
-								->from($db->quoteName('#__digicom_products'))
-								->where($db->quoteName('bundle_source').' IS NULL')
-								->where($db->quoteName('catid').' in ('.$bundle_ids.')');
-							$db->setQuery($query);
-							$bundleItems[] = $db->loadObjectList();
-							//we should show only items
-						}
-
-						unset($products[$key]);
-						
-						break;
-					case 'product':
-					default:
-						// its bundle by product
-						$BundleTable = JTable::getInstance('Bundle', 'Table');
-						$BundleList = $BundleTable->getFieldValues('product_id',$product->productid,$product->bundle_source);
-						$bundle_ids = $BundleList->bundle_id;
-						//echo $bundle_ids;die;
-						if($bundle_ids){
-							$db = $this->getDbo();
-							$query = $db->getQuery(true)
-								->select(array('id as productid','name','catid'))
-								->from($db->quoteName('#__digicom_products'))
-								->where($db->quoteName('bundle_source').' IS NULL')
-								->where($db->quoteName('id').' in ('.$bundle_ids.')');
-							$db->setQuery($query);
-							$bundleItems[] = $db->loadObjectList();
-						}					
-						//we should show only items
-						unset($products[$key]);
-						
-						break;
-				}
-			}
-		}
-		//print_r($bundleItems);die;
-		//we got all our products
-		// now add bundle item to the products array
-		if(count($bundleItems) >0){
-			foreach($bundleItems as $item2){
-				foreach($item2 as $item3){
-					$products[] = $item3;
-				}
-			}
-		}
-		
-		//print_r($products);die;
-		$productAdded = array();
-		foreach($products as $key=>$product){
-			
-			$query = $db->getQuery(true);
-			$query->select($db->quoteName(array('id', 'name', 'url', 'hits')));
-			$query->from($db->quoteName('#__digicom_products_files'));
-			$query->where($db->quoteName('product_id') . ' = '. $db->quote($product->productid));
-			$query->order('id DESC');
-			// Reset the query using our newly populated query object.
-			$db->setQuery($query);
-			$files = $db->loadObjectList();
-			
-			if(count($files) >0){
-				foreach($files as $key2=>$item){
-					$downloadid = array(
-						'fileid' => $item->id
-					);
-					$downloadcode = json_encode($downloadid);
-					$item->downloadid = base64_encode($downloadcode);
-					
-					$parsed = parse_url($item->url);
-					if (empty($parsed['scheme'])) {
-						$fileLink = JPATH_BASE.DIRECTORY_SEPARATOR.$item->url;
-					}else{
-						$fileLink = $item->url;
-					}
-					if (JFile::exists($fileLink)) {
-						$filesize = filesize ($fileLink);
-						$item->filesize = DigiComSiteHelperDigiCom::FileSizeConvert($filesize);
-						$item->filemtime = date("d F Y", filemtime($fileLink));
-					}else{
-						$item->filesize = JText::_('COM_DIGICOM_FILE_DOESNT_EXIST');
-						$item->filemtime = JText::_('COM_DIGICOM_FILE_DOESNT_EXIST');
-					}
-					
-				}
-			}
-			
-			$product->files = $files;
-			if(isset($productAdded[$product->productid])) unset($products[$key]);
-			$productAdded[$product->productid] = true;
-		}
-
-		return $products;
 	}
 	
 	function getlistDownloads_x(){
