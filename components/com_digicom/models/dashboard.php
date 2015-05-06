@@ -143,6 +143,7 @@ class DigiComModelDashboard extends JModelList
 
 		$query->where($db->quoteName('l.active') . ' = ' . $published);
 		$query->where($db->quoteName('l.userid') . ' = ' . $user->id);
+		//$query->where('DATEDIFF(`expires`, now()) > -1 or DATEDIFF(`expires`, now()) IS NULL' );
 
 		$query->order($db->quoteName($orderby) . ' ' . $orderDirection . ', p.name ASC');
 		//echo $query->__tostring();die;
