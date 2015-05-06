@@ -128,6 +128,11 @@ $user = $this->customer->_customer;
 
 									<td>
 									 	<?php echo $prod->name;?>
+									 	<?php if ($configs->get('show_validity',1) == 1) : ?>
+										<div class="muted">
+											<small><?php echo JText::_('COM_DIGICOM_PRODUCT_VALIDITY'); ?> : <?php echo DigiComSiteHelperPrice::getProductValidityPeriod($order); ?></small>
+										</div>
+										<?php endif; ?>
 									</td>
 
 									<td>
