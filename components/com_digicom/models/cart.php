@@ -617,7 +617,7 @@ class DigiComModelCart extends JModelItem
 		$orderid = $this->addOrder($items, $customer, $now, 'free');
 		$this->addOrderDetails($items, $orderid, $now, $customer);
 		$type = 'complete_order';
-		$this->addLicenceSubscription($items, $customer->_customer->id, $orderid, $type);
+		DigiComSiteHelperLicense::addLicenceSubscription($items, $customer->_customer->id, $orderid, $type);
 		$this->goToSuccessURL($customer->_sid, '', $orderid , $type);
 		return $orderid;
 	}
@@ -635,78 +635,10 @@ class DigiComModelCart extends JModelItem
 		$shipping = $tax['shipping'];
 		$orderid = $this->addOrder($items, $customer, $now, $prosessor,$status);
 		$this->addOrderDetails($items, $orderid, $now, $customer,$status);
-		$this->addLicenceSubscription($items, $customer->_customer->id, $orderid, $status);
+		DigiComSiteHelperLicense::addLicenceSubscription($items, $customer->_customer->id, $orderid, $status);
 
 		return $orderid;
 	}
-
-	/*
-	* prepare the licence area
-	*/
-
-	public function addLicenceSubscription( $items, $user_id, $orderid, $type) {
-		if( $items && count($items) ) {
-			foreach( $items as $key=>$item ) {
-				if($key >= 0){
-					//echo $key . '<br>';
-					$this->createLicense( $orderid, $item, $user_id, $type );
-				}
-			}
-		}
-	}
-	
-	/**
-	 * Create license for end product
-	 */
-	public function createLicense( $order_id, $product, $user_id=null, $published ){
-		
-		$db 	= JFactory::getDbo();
-		$app 	= JFactory::getApplication();
-		$order 		= $this->getOrder($order_id);
-		$order_date = $order->order_date;
-		$licenseid = $this->getNewLicenseId();
-		if(!$user_id){
-			$user_id = $order->userid;
-		}
-		$expires = "";
-		$time_unit = array( 'day'=>'DAY', 'month'=>'MONTH', 'year'=>'YEAR');//HOUR
-		//echo $product->price_type;die;
-		if( $product->price_type!=0 ) {
-			$expires = ' DATE_ADD(FROM_UNIXTIME('.$order->order_date.'), INTERVAL '.$product->expiration_length.' '.$time_unit[$product->expiration_type].') ';
-		} else {
-			$expires = ' "0000-00-00 00:00:00" ';
-		}
-		
-		if($published == 'complete_order'){
-			$active = 1;
-		}else{
-			$active = 0;
-		}
-
-		$sql = 'INSERT INTO `#__digicom_licenses`
-					( `licenseid`,`orderid`, `userid`, `productid`, `purchase`, `expires`, `active`)
-						VALUES
-					("'.$licenseid.'", '.$order_id.', '.$user_id.', '.$product->id.', FROM_UNIXTIME('.$order->order_date.'), '.$expires.', '.$active.')';
-		$db->setQuery($sql);
-		$db->query();
-		if($db->getErrorNum()){
-			$app->enqueuemessage($db->getErrorMsg(), 'error');
-		}
-	}
-
-	public function getNewLicenseId(){
-		$db 	= JFactory::getDbo();
-		$sql 	= "SELECT max(licenseid) FROM `#__digicom_licenses` WHERE CONCAT('',`licenseid`*1)=`licenseid`";
-		$db->setQuery( $sql );
-		$licenseid = $db->loadResult();
-		if(isset($licenseid) && intval($licenseid) != "0"){
-			$licenseid = intval($licenseid)+1;
-		} else {
-			$licenseid = 100000001;
-		}
-		return $licenseid;
-	}
-
 
 	/**
 	 * Get return url
@@ -719,7 +651,7 @@ class DigiComModelCart extends JModelItem
 		$configs = $conf->getConfigs();
 
 		if($configs->get('afterpurchase',1) == 0){
-			$controller = "Licenses";
+			$controller = "Downloads";
 			$task = "show";
 		}
 		else{
@@ -856,7 +788,7 @@ class DigiComModelCart extends JModelItem
 		}
 
 		if($type == 'complete_order'){
-			$this->updateLicenses($order_id, $table->number_of_products, $items, $customer , $type);
+			DigiComSiteHelperLicense::updateLicenses($order_id, $table->number_of_products, $items, $customer , $type);
 		}
 
 		$comment = array();
@@ -885,17 +817,7 @@ class DigiComModelCart extends JModelItem
 
 		return true;
 	}
-	/*
-	* $order_id = orderid;
-	* numof product
-	* $items
-	* customer
-	* type, may complete_order by default
-	*/
-	public function updateLicenses($order_id, $number_of_products, $items, $customer , $type){
-		//TODO:: Update the licences for products in this purchase;
-	}
-
+	
 	function storeOrderParams($user_id,$order_id ,$params){
 
 		$table = $this->getTable('Order');
