@@ -59,15 +59,18 @@ $nr_columns = 4;
 		<tr>
 			<!-- Product image -->
 			<td width="70">
-				<img height="100" width="200" title="<?php echo $item->name; ?>" src="<?php echo $item->images; ?>" alt="<?php echo $item->name; ?>"/>
+				<img height="100" width="200" title="<?php echo $item->name; ?>" src="<?php echo JRoute::_(JURI::root().$item->images); ?>" alt="<?php echo $item->name; ?>"/>
 			</td>
 			<!-- /End Product image -->
 
 			<!-- Product name -->
 			<td style="text-align:left;" class="digicom_product_name">
-				<?php 
-					echo $item->name; 
-				?>
+				<?php echo $item->name;?>
+				<?php if ($this->configs->get('show_validity',1) == 1) : ?>
+				<div class="muted">
+					<small><?php echo JText::_('COM_DIGICOM_PRODUCT_VALIDITY'); ?> : <?php echo DigiComSiteHelperPrice::getProductValidityPeriod($item); ?></small>
+				</div>
+				<?php endif; ?>
 			</td>
 			<!-- /End Product name -->
 

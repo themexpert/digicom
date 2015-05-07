@@ -103,6 +103,12 @@ if($this->configs->get('afteradditem',0) == "2"){
 					<div class="well clearfix">	
 						<div class="product-price">
 							<?php echo $price; ?>
+							<br>
+							<?php if ($this->configs->get('show_validity',1) == 1) : ?>
+							<span>
+								<small><?php echo JText::_('COM_DIGICOM_PRODUCT_VALIDITY'); ?> : <?php echo DigiComSiteHelperPrice::getProductValidityPeriod($this->item); ?></small>
+							</span>
+							<?php endif; ?>
 						</div>						
 						
 						<div class="addtocart-bar">

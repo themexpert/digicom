@@ -562,6 +562,8 @@ class DigiComModelOrders extends JModelList{
 			$sql = "update #__digicom_orders_details set published=1 where orderid in ('" . $cids  . "')";
 			$type = 'complete_order';
 		}
+		$this->updateLicensesStatus($cids, $type);
+
 		
 		$db->setQuery($sql);
 		if(!$db->query()){
@@ -573,6 +575,30 @@ class DigiComModelOrders extends JModelList{
 		return $res;
 	}
 
+	/*
+	* create license as we are changng the status
+	*/
+	public function addLicense($orderid, $type){
+
+		$order = $this->getOrder($orderid);
+		$items = $order->products;
+		$customer_id = $order->userid;
+		DigiComSiteHelperLicense::addLicenceSubscription($items, $customer_id, $orderid, $type);
+		
+	}
+
+	/*
+	* create license as we are changng the status
+	* $orderid = id of order
+	* $type = order status; like:  complete_order;
+	*/
+	public function updateLicensesStatus($orderid, $type){
+		$order = $this->getOrder($orderid);
+		$items = $order->products;
+		$customer_id = $order->userid;
+		$number_of_products = count($items);
+		DigiComSiteHelperLicense::updateLicenses($orderid, $number_of_products, $items, $customer_id, $type);
+	}
 
 	/*
 	* $type = process_order, new_order, cancel_order;

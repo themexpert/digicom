@@ -12,22 +12,25 @@ defined('_JEXEC') or die;
 
 class DigiComViewDashboard extends JViewLegacy
 {
+	public $items;
+	public $configs;
+	public $customer;
 
 	function display($tpl = null)
 	{
-		$customer = new DigiComSiteHelperSession();
 		$app = JFactory::getApplication();
 		$input = $app->input;
 		$Itemid = $input->get("Itemid", 0);
 		$return = base64_encode( JURI::getInstance()->toString() );
-		if($customer->_user->id < 1)
+		$this->customer = new DigiComSiteHelperSession();
+		if($this->customer->_user->id < 1)
 		{
 			$app->Redirect(JRoute::_('index.php?option=com_users&view=login&return='.$return.'&Itemid='.$Itemid, false));
 			return true;
 		}
-
-
-		$this->customer = $customer ;
+		$this->items = $this->get('items');
+		$this->configs = JComponentHelper::getComponent('com_digicom')->params;
+		//print_r($items);die;
 
 		$template = new DigiComSiteHelperTemplate($this);
 		$template->rander('dashboard');

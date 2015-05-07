@@ -27,7 +27,7 @@ if($product_itemid != "0"){
 	
 	<h2 class="digi-page-title"><?php echo JText::_("COM_DIGICOM_DOWNLOADS_PAGE_TITLE"); ?></h2>
 	<div class="accordion" id="">
-		<?php foreach($this->products as $key=>$item): ?>
+		<?php foreach($this->items as $key=>$item): ?>
 		<div class="accordion-group">
 			<div class="accordion-heading">
 				<a class="accordion-toggle" data-toggle="collapse" data-parent="" href="#product<?php echo $item->productid; ?>">

@@ -38,7 +38,7 @@ class DigiComControllerOrders extends JControllerAdmin
 
 	function cancel()
 	{
-		$msg = JText::_( 'ORDCANCEL' );
+		$msg = JText::_( 'COM_DIGICOM_ORDERS_NOTICE_ORDER_CANCEL' );
 		$link = "index.php?option=com_digicom&view=orders";
 		$this->setRedirect( $link, $msg );
 
@@ -48,13 +48,13 @@ class DigiComControllerOrders extends JControllerAdmin
 	{
 		$res = $this->_model->publish();
 		if ( !$res ) {
-			$msg = JText::_( 'ORDBLOCKERR' );
+			$msg = JText::_( 'COM_DIGICOM_ORDERS_NOTICE_ORDER_BLOCK_ERR' );
 		} elseif ( $res == -1 ) {
-			$msg = JText::_( 'ORDUNPUB' );
+			$msg = JText::_( 'COM_DIGICOM_ORDERS_NOTICE_ORDER_UNPUB' );
 		} elseif ( $res == 1 ) {
-			$msg = JText::_( 'ORDPUB' );
+			$msg = JText::_( 'COM_DIGICOM_ORDERS_NOTICE_ORDER_PUB' );
 		} else {
-			$msg = JText::_( 'ORDUNSPEC' );
+			$msg = JText::_( 'COM_DIGICOM_ORDERS_NOTICE_ORDER_UNSPEC' );
 		}
 
 		$link = "index.php?option=com_digicom&view=orders";
@@ -66,10 +66,10 @@ class DigiComControllerOrders extends JControllerAdmin
 		$res = $this->_model->cycleStatus();
 		$msg = "";
 		if(!$res){
-			$msg = JText::_('ORDSTATUSCHANGEERR');
+			$msg = JText::_('COM_DIGICOM_ORDERS_NOTICE_ORDER_STATUS_CHANGE_ERR');
 		}
 		else{
-			$msg = JText::_('ORDSTATUSCHANGED');
+			$msg = JText::_('COM_DIGICOM_ORDERS_NOTICE_ORDER_STATUS_CHANGED');
 		}
 		$link_orders = "index.php?option=com_digicom&view=orders";
 		$this->setRedirect($link_orders, $msg);

@@ -57,7 +57,7 @@ span.label-ds a, span.badge-ds a {
 	color: white;
 }
 
-.header_zone, adminlist.header_zone {
+.header_zone, .adminlist.header_zone {
 	background-color: #E8F8FF !important;
 	border: 1px solid #999999 !important;
 	padding: 5px !important;
@@ -672,7 +672,7 @@ body.sidebar-right-collapse {
 	}
 }
 
-.form-title-alias {
+.form-title-alias .digicom-product-title {
 	.control-group {
 		.control-label {float: none;}
 		.controls {
@@ -857,3 +857,20 @@ body.layout-neworder {
 	}
 }
 .dg-footer{ text-align: right; margin-bottom: 40px; margin-right: 25px; }
+body.com_digicom .digicom-product-title{
+	.control-group{
+		margin-bottom: 2px;
+	}
+	#jform_alias{
+	  padding: 2px 6px;
+	  font-size: 12px;
+	  font-weight: normal;
+	}
+}
+body.com_digicom .digicom-product-price{
+	.input-prepend{
+		[class*="span"]{
+			margin-left:-1px;
+		}
+	}
+}

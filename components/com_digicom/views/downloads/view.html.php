@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 class DigiComViewDownloads extends JViewLegacy {
+	public $items;
 
 	function display($tpl = null)
 	{
@@ -27,9 +28,9 @@ class DigiComViewDownloads extends JViewLegacy {
 
 		$mainframe=JFactory::getApplication();
 		$Itemid = JRequest::getInt("Itemid", 0);
-		$products = $this->get('listDownloads');
-		
-		$this->assign("products", $products);
+		$items = $this->get('Items');
+		//print_r($items);die;
+		$this->assign("items", $items);
 
 		$template = new DigiComSiteHelperTemplate($this);
 		$template->rander('downloads');

@@ -48,7 +48,7 @@ class DigiComControllerDownloads extends JControllerLegacy
 		
 		if(empty($fileInfo->url)){
 			$itemid = JFactory::getApplication()->input->get('itemid',0);
-			$msg = JText::sprintf('COM_DIGICOM_FILE_DONT_EXIST_DETAILS',$fileInfo->name);
+			$msg = JText::sprintf('COM_DIGICOM_DOWNLOADS_FILE_DONT_EXIST_DETAILS',$fileInfo->name);
 			JFactory::getApplication()->redirect('index.php?option=com_digicom&view=downloads&Itemid='.$itemid,$msg);
 		}
 		

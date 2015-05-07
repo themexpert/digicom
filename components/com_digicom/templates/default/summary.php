@@ -83,6 +83,11 @@ if($configs->get('show_steps',1) == 1){
 
 					<td class="item_column">
 						<?php echo $item->name; ?>
+						<?php if ($this->configs->get('show_validity',1) == 1) : ?>
+						<div class="muted">
+							<small><?php echo JText::_('COM_DIGICOM_PRODUCT_VALIDITY'); ?> : <?php echo DigiComSiteHelperPrice::getProductValidityPeriod($item); ?></small>
+						</div>
+						<?php endif; ?>
 					</td>
 					<!-- Quantity -->
 					<td class="center" <?php if ($configs->get('showcam',1) == 0) echo $invisible;?> nowrap="nowrap">

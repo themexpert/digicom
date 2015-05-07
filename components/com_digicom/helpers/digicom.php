@@ -408,6 +408,124 @@ class DigiComSiteHelperDigicom {
 		
 		if($user_id < 1) return false;
 		$db = JFactory::getDBO();
+		//echo $product_id;die;
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName('id'));
+		$query->from($db->quoteName('#__digicom_licenses'));
+		$query->where($db->quoteName('userid') . ' = '. $db->quote($user_id));
+		$query->where($db->quoteName('productid') . ' = '. $product_id);
+		$query->where($db->quoteName('active') . ' = '. $db->quote('1'));
+		$query->where('( DATEDIFF(`expires`, now()) > -1 or DATEDIFF(`expires`, now()) IS NULL )' );
+		// Reset the query using our newly populated query object.
+		//echo $query->__tostring();die;
+		$db->setQuery($query);
+		$license = $db->loadObject();
+		
+		if(isset($license->id) && ($license->id > 0)) return true;
+		// its not single purchased product
+		// so check for the bundle/category item
+
+		$query = $db->getQuery(true);
+		/*
+		$query->select('DISTINCT('.$db->quoteName('od.productid').')');
+		$query->select($db->quoteName(array('p.name', 'p.catid', 'p.bundle_source')));
+		$query->select($db->quoteName('od.package_type').' type');
+		$query->from($db->quoteName('#__digicom_products').' p');
+		$query->from($db->quoteName('#__digicom_orders_details').' od');
+		$query->where($db->quoteName('od.userid') . ' = '. $db->quote($user_id));
+		$query->where($db->quoteName('od.productid') . ' = '. $db->quoteName('p.id'));
+		$query->where($db->quoteName('od.published') . ' = '. $db->quote('1'));
+		$query->order('ordering ASC');
+		*/
+		// Select required fields from the dashboard.
+		$query->select('DISTINCT p.id as productid')
+			  ->select(array('p.name,p.catid,p.bundle_source,p.product_type as type'))
+			  ->from($db->quoteName('#__digicom_licenses') . ' AS l')
+			  ->join('inner', '#__digicom_products AS p ON l.productid = p.id');
+
+		$query->where($db->quoteName('l.active') . ' = ' . $db->quote('1'));
+		$query->where($db->quoteName('l.userid') . ' = ' . $db->quote($user_id));
+		$query->where('DATEDIFF(`expires`, now()) > -1 or DATEDIFF(`expires`, now()) IS NULL' );
+
+		// Reset the query using our newly populated query object.
+		$db->setQuery($query);
+
+		$items = $db->loadObjectList();
+		//print_r($items);die;
+		$bundleItems = array();
+		foreach($items as $key=>$product){
+			if($product->type != 'reguler'){
+				switch($product->type){
+					case 'category':
+						$BundleTable = JTable::getInstance('Bundle', 'Table');
+						$BundleList = $BundleTable->getFieldValues('product_id',$product->productid,$product->bundle_source);
+						$bundle_ids = $BundleList->bundle_id;
+						if($bundle_ids){
+							$db = JFactory::getDBO();
+							$query = $db->getQuery(true)
+								->select(array('id as productid','name','catid'))
+								->from($db->quoteName('#__digicom_products'))
+								->where($db->quoteName('bundle_source').' IS NULL')
+								->where($db->quoteName('catid').' in ('.$bundle_ids.')');
+							$db->setQuery($query);
+							$bundleItems[] = $db->loadObjectList();
+							//we should show only items
+						}
+
+						unset($items[$key]);
+						
+						break;
+					case 'product':
+					default:
+						// its bundle by product
+						$BundleTable = JTable::getInstance('Bundle', 'Table');
+						$BundleList = $BundleTable->getFieldValues('product_id',$product->productid,$product->bundle_source);
+						$bundle_ids = $BundleList->bundle_id;
+						//echo $bundle_ids;die;
+						if($bundle_ids){
+							$db = JFactory::getDBO();
+							$query = $db->getQuery(true)
+								->select(array('id as productid','name','catid'))
+								->from($db->quoteName('#__digicom_products'))
+								->where($db->quoteName('bundle_source').' IS NULL')
+								->where($db->quoteName('id').' in ('.$bundle_ids.')');
+							$db->setQuery($query);
+							$bundleItems[] = $db->loadObjectList();
+						}					
+						//we should show only items
+						unset($items[$key]);
+						
+						break;
+				}
+			}
+		}
+		//print_r($bundleItems);die;
+		//we got all our items
+		// now add bundle item to the items array
+		if(count($bundleItems) >0){
+			foreach($bundleItems as $item2){
+				foreach($item2 as $item3){
+					$items[] = $item3;
+				}
+			}
+		}
+		//print_r($items);die;
+		//we got all our products
+		// now add bundle item to the products array
+		if(count($bundleItems) >0){
+			foreach($bundleItems as $item2){
+				foreach($item2 as $item3){
+					if($item3->productid == $product_id) return true;
+				}
+			}
+		}
+		return false;
+		
+	}
+	public static function getUsersProductAccess_x($user_id,$product_id){
+		
+		if($user_id < 1) return false;
+		$db = JFactory::getDBO();
 		//$product_id
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName('od.productid'));
@@ -501,6 +619,7 @@ class DigiComSiteHelperDigicom {
 	public static function checkUserAccessToFile($fileInfo,$user_id)
 	{
 		
+		//print_r($fileInfo);die;
 		$user = JFactory::getUser($user_id);
 		$access = DigiComSiteHelperDigiCom::getUsersProductAccess($user_id,$fileInfo->product_id);
 		
@@ -508,10 +627,11 @@ class DigiComSiteHelperDigicom {
 				
 		// Wrong Download ID
 		$msg = array(
-			'wrong_id' => JText::_('COM_DIGICOM_WRONG_DOWNLOAD_ID')
+			'access' => JText::_('COM_DIGICOM_DOWNLOADS_ACCESS_DENIED')
 		);
 		$msgcode = json_encode($msg);
-		
+		echo $msgcode;
+		JFactory::getApplication()->close();
 	}
 	
 	/*

@@ -10,27 +10,269 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.filesystem.file');
-
+use Joomla\Registry\Registry;
 // TODO : Remove JRequest to JInput and php visibility
 
 class DigiComModelDownloads extends JModelList
 {
-	var $_products;
-	var $_product;
-	var $_id = null;
+	
+	/**
+	 * Model context string.
+	 *
+	 * @var    string
+	 * @since  3.1
+	 */
+	public $_context = 'com_digicom.downloads';
 
-	function __construct () {
-		parent::__construct();
-		$cids = JRequest::getVar('licid', 0, '', 'array');
-		$this->setId((int)$cids[0]);
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
+	 *
+	 * @return  void
+	 *
+	 * @note Calling getState in this method will result in recursion.
+	 *
+	 * @since   3.1
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$app = JFactory::getApplication('site');
+
+		$offset = $app->input->get('limitstart', 0, 'uint');
+		$this->setState('list.offset', $offset);
+		$app = JFactory::getApplication();
+
+		$params = $app->getParams();
+		$this->setState('params', $params);
+
+		$this->setState('list.limit', $params->get('maximum', 200));
+
+		$this->setState('filter.published', 1);
+		
+		// Optional filter text
+		$itemid = $app->input->getInt('Itemid', 0);
+		$filterSearch = $app->getUserStateFromRequest('com_digicom.downloads.list.' . $itemid . '.filter_search', 'filter-search', '', 'string');
+		$this->setState('list.filter', $filterSearch);
 	}
 
-	function setId($id) {
-		$this->_id = $id;
-		$this->_oid = $id;
+	/**
+	 * Redefine the function and add some properties to make the styling more easy
+	 *
+	 * @return  mixed  An array of data items on success, false on failure.
+	 *
+	 * @since   3.1
+	 */
+	public function getItems()
+	{
+		// Invoke the parent getItems method to get the main list
+		$items = parent::getItems();
+
+		if (!count($items))
+		{
+			$app = JFactory::getApplication();
+			$menu = $app->getMenu();
+			$active = $menu->getActive();
+			$params = new Registry;
+
+			if ($active)
+			{
+				$params->loadString($active->params);
+			}
+		}
+		//print_r($items);die;
+		//products
+		if (count($items))
+		{
+
+			$bundleItems = array();
+			foreach($items as $key=>$product){
+				if($product->type != 'reguler'){
+					switch($product->type){
+						case 'category':
+							$BundleTable = JTable::getInstance('Bundle', 'Table');
+							$BundleList = $BundleTable->getFieldValues('product_id',$product->productid,$product->bundle_source);
+							$bundle_ids = $BundleList->bundle_id;
+							if($bundle_ids){
+								$db = $this->getDbo();
+								$query = $db->getQuery(true)
+									->select(array('id as productid','name','catid'))
+									->from($db->quoteName('#__digicom_products'))
+									->where($db->quoteName('bundle_source').' IS NULL')
+									->where($db->quoteName('catid').' in ('.$bundle_ids.')');
+								$db->setQuery($query);
+								$bundleItems[] = $db->loadObjectList();
+								//we should show only items
+							}
+
+							unset($items[$key]);
+							
+							break;
+						case 'product':
+						default:
+							// its bundle by product
+							$BundleTable = JTable::getInstance('Bundle', 'Table');
+							$BundleList = $BundleTable->getFieldValues('product_id',$product->productid,$product->bundle_source);
+							$bundle_ids = $BundleList->bundle_id;
+							//echo $bundle_ids;die;
+							if($bundle_ids){
+								$db = $this->getDbo();
+								$query = $db->getQuery(true)
+									->select(array('id as productid','name','catid'))
+									->from($db->quoteName('#__digicom_products'))
+									->where($db->quoteName('bundle_source').' IS NULL')
+									->where($db->quoteName('id').' in ('.$bundle_ids.')');
+								$db->setQuery($query);
+								$bundleItems[] = $db->loadObjectList();
+							}					
+							//we should show only items
+							unset($items[$key]);
+							
+							break;
+					}
+				}
+			}
+			//print_r($bundleItems);die;
+			//we got all our items
+			// now add bundle item to the items array
+			if(count($bundleItems) >0){
+				foreach($bundleItems as $item2){
+					foreach($item2 as $item3){
+						$items[] = $item3;
+					}
+				}
+			}
+			
+			//print_r($items);die;
+			$productAdded = array();
+			foreach($items as $key=>$product){
+				
+				$query = $db->getQuery(true);
+				$query->select($db->quoteName(array('id', 'name', 'url', 'hits')));
+				$query->from($db->quoteName('#__digicom_products_files'));
+				$query->where($db->quoteName('product_id') . ' = '. $db->quote($product->productid));
+				$query->order('id DESC');
+				// Reset the query using our newly populated query object.
+				$db->setQuery($query);
+				$files = $db->loadObjectList();
+				
+				if(count($files) >0){
+					foreach($files as $key2=>$item){
+						$downloadid = array(
+							'fileid' => $item->id
+						);
+						$downloadcode = json_encode($downloadid);
+						$item->downloadid = base64_encode($downloadcode);
+						
+						$parsed = parse_url($item->url);
+						if (empty($parsed['scheme'])) {
+							$fileLink = JPATH_BASE.DIRECTORY_SEPARATOR.$item->url;
+						}else{
+							$fileLink = $item->url;
+						}
+						if (JFile::exists($fileLink)) {
+							$filesize = filesize ($fileLink);
+							$item->filesize = DigiComSiteHelperDigiCom::FileSizeConvert($filesize);
+							$item->filemtime = date("d F Y", filemtime($fileLink));
+						}else{
+							$item->filesize = JText::_('COM_DIGICOM_FILE_DOESNT_EXIST');
+							$item->filemtime = JText::_('COM_DIGICOM_FILE_DOESNT_EXIST');
+						}
+						
+					}
+				}
+				
+				$product->files = $files;
+				if(isset($productAdded[$product->productid])) unset($items[$key]);
+				$productAdded[$product->productid] = true;
+			}
+
+		}
+
+
+		return $items;
+	}
+
+
+	/**
+	 * Method to build an SQL query to load the list data.
+	 *
+	 * @return  string  An SQL query
+	 *
+	 * @since   1.6
+	 */
+	protected function getListQuery()
+	{
+		$app = JFactory::getApplication('site');
+		$user = new DigiComSiteHelperSession();
+		$orderby = $this->state->params->get('orderby', 'name');
+		$published = $this->state->params->get('published', 1);
+		$orderDirection = $this->state->params->get('direction', 'ASC');
+
+		//$user	= JFactory::getUser();
+		$db = JFactory::getDBO();
+
+		$search = JRequest::getVar('search', '');
+		$search = trim($search);
+
+		$query = $db->getQuery(true);
+		/*
+		$query->select('DISTINCT('.$db->quoteName('od.productid').')');
+		$query->select($db->quoteName(array('p.name', 'p.catid', 'p.bundle_source')));
+		$query->select($db->quoteName('od.package_type').' type');
+		$query->from($db->quoteName('#__digicom_products').' p');
+		$query->from($db->quoteName('#__digicom_orders_details').' od');
+		$query->where($db->quoteName('od.userid') . ' = '. $db->quote($user->_customer->id));
+		$query->where($db->quoteName('od.productid') . ' = '. $db->quoteName('p.id'));
+		$query->where($db->quoteName('od.published') . ' = '. $db->quote('1'));
+		$query->order('ordering ASC');
+		*/
+		// Select required fields from the downloads.
+		//$query->select('DISTINCT(p.id) as productid')
+		$query->select('DISTINCT p.id as productid')
+			  ->select(array('p.name,p.catid,p.bundle_source,p.product_type as type'))
+			  ->from($db->quoteName('#__digicom_licenses') . ' AS l')
+			  ->join('inner', '#__digicom_products AS p ON l.productid = p.id');
+
+		if ($this->state->params->get('show_pagination_limit'))
+		{
+			$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->get('list_limit'), 'uint');
+		}
+		else
+		{
+			$limit = $this->state->params->get('maximum', 20);
+		}
+
+		$this->setState('list.limit', $limit);
+
+		$offset = $app->input->get('limitstart', 0, 'uint');
+		$this->setState('list.start', $offset);
+
+		// Optionally filter on entered value
+		//search
+		if ($this->state->get('list.filter'))
+		{
+			$query->where(
+				$db->quoteName('p.name') . ' LIKE '	 . $db->quote('%' . $this->state->get('list.filter') . '%')
+				.
+				' or '
+				.
+				$db->quoteName('l.licenseid') . ' = '	 . $db->quote( $this->state->get('list.filter') ) 
+			);
+		}
+
+		$query->where($db->quoteName('l.active') . ' = ' . $published);
+		$query->where($db->quoteName('l.userid') . ' = ' . $user->_customer->id);
+		$query->where(' ( DATEDIFF(`expires`, now()) > -1 or DATEDIFF(`expires`, now()) IS NULL )' );
+
+		$query->order($db->quoteName($orderby) . ' ' . $orderDirection . ', p.name ASC');
+		//echo $query->__tostring();die;
+
+		return $query;
 	}
 	
-	function getlistDownloads(){
+	function getlistDownloads_x(){
 		$user = new DigiComSiteHelperSession();
 		//dsdebug($user->_customer->id);die;
 		$db = JFactory::getDBO();
@@ -174,7 +416,7 @@ class DigiComModelDownloads extends JModelList
 		if($fileid == '0') return false;
 		$fileid = base64_decode($fileid);
 		$fileid = json_decode($fileid);
-		
+		//print_r( $fileid );die;
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName(array('id', 'product_id','name', 'url', 'hits')));

@@ -104,7 +104,6 @@ class DigiComModelCart extends JModelItem
 		$item_qty = @$data["0"]->quantity;
 		$cid = @$data["0"]->cid;
 
-
 		if(!$item_id){//no such item in cart- inserting new row
 			$sql = "insert into #__digicom_cart (quantity, item_id, sid, userid)"
 				. " values ('".$qty."', '".intval($pid)."', '".intval($sid)."', '".intval($uid)."')";
@@ -361,6 +360,7 @@ class DigiComModelCart extends JModelItem
 
 	//gets promo code details from database
 	//if checkvalid == 1 - checks if this promocode is still valid and can be used.
+
 	function get_promo( $customer, $checkvalid = 1 )
 	{
 		
@@ -408,7 +408,6 @@ class DigiComModelCart extends JModelItem
 		} else {
 			$promo = $this->getTable( "Discount" );
 		}
-
 
 		$promo->error = "";
 		if ( $promodata[0] == "promoerror" )
@@ -610,9 +609,15 @@ class DigiComModelCart extends JModelItem
 		$currency = $tax['currency'];
 		$taxa = $tax['value'];
 		$shipping = $tax['shipping'];
+		//check the items
+		//print_r($items);die;
+		//check custommer object
+		//print_r($customer);die;
+
 		$orderid = $this->addOrder($items, $customer, $now, 'free');
 		$this->addOrderDetails($items, $orderid, $now, $customer);
 		$type = 'complete_order';
+		DigiComSiteHelperLicense::addLicenceSubscription($items, $customer->_customer->id, $orderid, $type);
 		$this->goToSuccessURL($customer->_sid, '', $orderid , $type);
 		return $orderid;
 	}
@@ -630,6 +635,7 @@ class DigiComModelCart extends JModelItem
 		$shipping = $tax['shipping'];
 		$orderid = $this->addOrder($items, $customer, $now, $prosessor,$status);
 		$this->addOrderDetails($items, $orderid, $now, $customer,$status);
+		DigiComSiteHelperLicense::addLicenceSubscription($items, $customer->_customer->id, $orderid, $status);
 
 		return $orderid;
 	}
@@ -645,7 +651,7 @@ class DigiComModelCart extends JModelItem
 		$configs = $conf->getConfigs();
 
 		if($configs->get('afterpurchase',1) == 0){
-			$controller = "Licenses";
+			$controller = "Downloads";
 			$task = "show";
 		}
 		else{
@@ -779,13 +785,15 @@ class DigiComModelCart extends JModelItem
 			$table->status = 'Pending';
 		}else{
 			$table->status = $status;
+		}
 
+		if($type == 'complete_order'){
+			DigiComSiteHelperLicense::updateLicenses($order_id, $table->number_of_products, $items, $customer , $type);
 		}
 
 		$comment = array();
 		$comment[] = $table->comment;
 		$comment[] = (isset($result['comment']) ? $result['comment'] : '');
-
 
 		$table->comment = implode("\n", $comment);
 

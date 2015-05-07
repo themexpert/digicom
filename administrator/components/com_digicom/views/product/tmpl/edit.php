@@ -16,7 +16,7 @@ JHtml::_('jquery.ui');
 JHtml::_('jquery.ui', array('sortable'));
 JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.keepalive');
-JHtml::_('formbehavior.chosen', 'select');
+JHtml::_('formbehavior.chosen');
 
 $app = JFactory::getApplication();
 $input = $app->input;

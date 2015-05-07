@@ -182,7 +182,7 @@ class DigiComModelProducts extends JModelList
 		$query->select(
 			$this->getState(
 				'list.select',
-				'a.id, a.name, a.alias,a.price,a.price, a.bundle_source,a.hide_public, a.description, a.fulldescription, ' .
+				'a.id, a.name, a.alias,a.price, a.bundle_source,a.hide_public, a.description, a.fulldescription, ' .
 					'a.checked_out, a.checked_out_time, ' .
 					'a.catid, a.created, a.created_by, ' .
 					// Use created if modified is 0
