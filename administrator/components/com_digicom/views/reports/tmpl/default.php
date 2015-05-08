@@ -10,28 +10,11 @@
 
 defined ('_JEXEC') or die ("Go away.");
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.multiselect');
-JHtml::_('behavior.formvalidation');
-JHtml::_('formbehavior.chosen', 'select');
-
-$startdate = JRequest::getVar('startdate', '');
-$enddate = JRequest::getVar('enddate', '');
-$report = JRequest::getVar("report", "daily");
 $configs = $this->configs;
-
-$result = $this->getStartEndDate($report);
-$startdate = $result["0"];
-$enddate = $result["1"];
-
-$app = JFactory::getApplication();
-$input = $app->input;
-
 $document = JFactory::getDocument();
-
+$app = JFactory::getApplication();
 $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
-$document->addStyleSheet("components/com_digicom/assets/css/diagrams.css");
-
+$input = $app->input;
 ?>
 
 <script language="javascript" type="text/javascript">
@@ -46,7 +29,7 @@ $document->addStyleSheet("components/com_digicom/assets/css/diagrams.css");
 	}
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_digicom&view=stats'); ?>" method="post" name="adminFormStats" autocomplete="off" class="form-validate form-horizontal">
+<form action="<?php echo JRoute::_('index.php?option=com_digicom&view=reports'); ?>" method="post" name="adminFormStats" autocomplete="off" class="form-validate form-horizontal">
 	<?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="">
 		<?php echo $this->sidebar; ?>
@@ -61,12 +44,27 @@ $document->addStyleSheet("components/com_digicom/assets/css/diagrams.css");
 		<?php echo JHtml::_('bootstrap.startTabSet', 'digicomTab', array('active' => 'sales')); ?>
 
 			<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'sales', JText::_('Sales', true)); ?>
+			<div class="well">
+				<div class="pull-left">
+					<h3>Sales Overview</h3>
+				</div>
+				<div class="pull-right">
+					<?php 
+						$today = strtotime('today');
+						$daybefore30 = strtotime("30 days",$today);
+						$startdate = $input->get('startdate', date("Y-m-d", $daybefore30));
+						$enddate = $input->get('enddate', date('Y-m-d'));
 
-			<ul class="nav nav-pills disabled">
+						echo JText::_("VIEWSTATFROM")."&nbsp;";
+						echo JHTML::_("calendar", $startdate, 'startdate', 'startdate', "%Y-%m-%d")."&nbsp;";
+						echo JText::_("VIEWSTATTO")."&nbsp;";
+						echo JHTML::_("calendar", $enddate, 'enddate', 'enddate', "%Y-%m-%d")."&nbsp;&nbsp;";
+						echo '<input type="submit" name="Submit" value="'.JText::_("VIEWSTATGO").'" class="btn" />';
+					?>
+				</div>
+			</div
+			<ul class="nav nav-pills">
 			  <li class="active">
-			    <a href="#">Overview</a>
-			  </li>
-			  <li>
 			  	<a href="#">Daily</a>
 			  </li>
 			  <li>
@@ -154,7 +152,7 @@ $document->addStyleSheet("components/com_digicom/assets/css/diagrams.css");
 		<?php echo JHtml::_('bootstrap.endTabSet'); ?>
 		
 
-		<input type="hidden" name="view" value="stats" />
+		<input type="hidden" name="view" value="reports" />
 		<input type="hidden" name="option" value="com_digicom" />
 		<input type="hidden" name="task" value="showStats" />
 	</div>
