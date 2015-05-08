@@ -66,8 +66,8 @@ class DigiComHelperDigiCom extends JHelperContent{
 		
 		JHtmlSidebar::addEntry(
 			JText::_('COM_DIGICOM_SIDEBAR_MENU_REPORTS'),
-			'index.php?option=com_digicom&view=stats',
-			$vName == 'stats'
+			'index.php?option=com_digicom&view=reports',
+			$vName == 'reports'
 		);
 		
 		JHtmlSidebar::addEntry(
