@@ -9,9 +9,11 @@
 
 defined('_JEXEC') or die;
 
+JHtml::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.'/helpers/html/');
+
 JHtml::_('behavior.multiselect');
 JHtml::_('behavior.formvalidation');
-JHtml::_('formbehavior.chosen', 'select');
+//JHtml::_('formbehavior.chosen', 'select');
 
 $invisible = 'style="display:none;"';
 
@@ -23,6 +25,24 @@ $f = str_replace( "-", "-%", $f );
 $f = "%" . $f;
 ?>
 <script language="javascript" type="text/javascript">
+function OrderlistItemTask(id) {
+    var f = document.adminForm, i, cbx,
+    cb = f[id];
+    if (cb) {
+        for (i = 0; true; i++) {
+            cbx = f['cb'+i];
+            if (!cbx)
+                break;
+            cbx.checked = false;
+        } // for
+        cb.checked = true;
+        f.boxchecked.value = 1;
+        return true;
+    }
+    return false;
+}
+
+
 Joomla.submitbutton = function (pressbutton) {
 	var form = document.adminForm;
 	if (pressbutton == 'remove')
@@ -33,7 +53,6 @@ Joomla.submitbutton = function (pressbutton) {
 		}
 		return;
 	}
-
 	Joomla.submitform(pressbutton);
 }
 </script>
@@ -173,7 +192,8 @@ Joomla.submitbutton = function (pressbutton) {
 						 <td align="center">
 							<a href="<?php echo $customerlink; ?>" ><?php echo ($order->firstname . " " . $order->lastname); ?></a>
 						</td>
-						<td align="center">
+						<td align="center" width="1%">
+<!-- 							
 							<?php
 								$class = 'badge badge-success';
 								if($order->status == "Pending"){
@@ -187,6 +207,8 @@ Joomla.submitbutton = function (pressbutton) {
 								<i class="icon-refresh"></i>
 							</a>
 							
+ -->
+ 							<?php echo DigiComHelperDigiCom::getOrderSratusList($order->status, $i, $order); ?>
 						</td>
 						<td align="center">
 							<?php echo $order->processor; ?>
@@ -228,6 +250,7 @@ Joomla.submitbutton = function (pressbutton) {
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="view" value="orders" />
+		<input type="hidden" id="order_id" name="order_id" value="" />
 		<?php echo JHtml::_('form.token'); ?>
 	</form>
 </div>
