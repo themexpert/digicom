@@ -39,8 +39,10 @@ class DigiComSiteHelperLicense {
 
 		if($type == 'complete_order'){
 			$sql = "UPDATE #__digicom_licenses SET active=1 WHERE orderid=" . $order_id . " and userid=" . $customer;
-		}else{
+		}elseif($type == 'process_order'){
 			$sql = "UPDATE #__digicom_licenses SET active=0 WHERE orderid=" . $order_id . " and userid=" . $customer;
+		}else{
+			$sql = "UPDATE #__digicom_licenses SET active='-1' WHERE orderid=" . $order_id . " and userid=" . $customer;
 		}
 		
 		$db->setQuery($sql);
