@@ -17,7 +17,7 @@ class DigiComModelOrders extends JModelList{
 	protected $_id = null;
 	protected $_total = 0;
 	protected $_pagination = null;
-	protected $_statusList = array("Active", "Pending");
+	protected $_statusList = array("Active", "Pending", "Cancel");
 
 	public function __construct(){
 		parent::__construct();
@@ -525,54 +525,53 @@ class DigiComModelOrders extends JModelList{
 
 	
 	function cycleStatus(){
+
 		$db = JFactory::getDBO();
-		$cids = JRequest::getVar( 'id');
-		$res = true;
-
-		$sql = "select status from #__digicom_orders where id ='" . $cids . "'";
-		$db->setQuery( $sql );
-
-		$status = $db->loadResult();
-		$max_status = count( $this->_statusList ) - 1;
-		$statid = $max_status;
-		foreach ( $this->_statusList as $i => $stat){
-			if ( $stat == $status ) {
-				$statid = $i;
-				break;
-			}
-		}
-		$statid++;
-		if ( $statid > $max_status )
-			$statid = 0;
-		$status = $this->_statusList[$statid];
+		$input = JFactory::getApplication()->input;
+		//orderstatus
+		print_r($_POST);die;
+		$cids = $input->get('cid', null, null);
+		$status = $input->post->get('orderstatus',null,null);
+		$id = $cids['0'];
 
 		$table = $this->getTable('order');
-		$table->load($cids);
+		$table->load($id);
 		$table->status = $status;
-		$table->amount_paid = $table->amount;
+
+		if($status == 'Paid'){
+			$table->amount_paid = $table->amount;
+		}
+		print_r($status);die;
+		print_r($table);die;
 		if(!$table->store()){
-			$res = false;
+			return JFactory::getApplication()->enqueueMessage(JText::_('COM_DIGICOM_ORDER_STATUS_CHANGED_FAILED',$table->getErrorMsg()),'error');
 		}
 
-		if($res && $status == "Pending"){
-			$sql = "update #__digicom_orders_details set published=0 where orderid in ('".$cids."')";
+		if($status == "Pending"){
+			$sql = "update #__digicom_orders_details set published=0 where orderid in ('".$id."')";
 			$type = 'process_order';
 		}
-		elseif($status == "Active"){
-			$sql = "update #__digicom_orders_details set published=1 where orderid in ('" . $cids  . "')";
+		elseif($status == "Active" or $status == "Paid"){
+			$sql = "update #__digicom_orders_details set published=1 where orderid in ('" . $id  . "')";
 			$type = 'complete_order';
 		}
-		$this->updateLicensesStatus($cids, $type);
+		elseif($status == "Cancel"){
+			$sql = "update #__digicom_orders_details set published='-1' where orderid in ('" . $id  . "')";
+			$type = 'cancel_order';
+		}
+
+		$this->updateLicensesStatus($id, $type);
 
 		
 		$db->setQuery($sql);
 		if(!$db->query()){
 			$res = false;
 		}
+		if($status == "Active" or $status == "Paid"){
+			$this->sendApprovedEmail($id, $type, $status);
+		}
 
-		$this->sendApprovedEmail($cids, $type, $status);
-
-		return $res;
+		return true;
 	}
 
 	/*
