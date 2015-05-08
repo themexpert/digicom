@@ -806,4 +806,20 @@ class DigiComSiteHelperDigicom {
 
 	}
 
+	public static function prepareGCalendarUrl($item){
+		//href="<?php echo 
+		//;&dates=20150522T090000/20150522T110000
+		//&location=http://siteurl.com&details=Your product will expire at tx site on this day, add it to get remonder">
+		$text = JText::sprintf('COM_DIGICOM_PRODUCT_ADD_CALENDER_TITLE',$item->name,JFactory::getConfig()->get( 'sitename' ));
+		$startDate = strtotime($item->expires . "-1 days");
+		$expires = new DateTime($item->expires);
+		$endDate = $expires->format('Ymd');
+		$endTime = $expires->format('His');
+		$end = $endDate.'T'.$endTime;
+		$start = date('Ymd',$startDate).'T'.$endTime;
+		$location = JUri::root();
+		$details = JText::sprintf('COM_DIGICOM_PRODUCT_ADD_CALENDER_DESC',$item->name,JFactory::getConfig()->get( 'sitename' ));
+		return 'https://www.google.com/calendar/render?action=TEMPLATE&text='.$text.'&dates='.$start.'/'.$end.'&location='.$location.'&details='.$details;
+	}
+
 }
