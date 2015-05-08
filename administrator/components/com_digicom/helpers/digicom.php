@@ -480,6 +480,29 @@ class DigiComHelperDigiCom extends JHelperContent{
 		return $db->loadResult();
 	}
 
+	public static function getOrderSratusList($status, $i, $order){
+		
+		$statuslist = array(
+			'Active' => JText::_('COM_DIGICOM_ORDER_STATUS_ACTIVE'),
+			'Pending' => JText::_('COM_DIGICOM_ORDER_STATUS_PENDING'),
+			'Cancel' => JText::_('COM_DIGICOM_ORDER_STATUS_CANCEL'),
+			'Paid' => JText::_('COM_DIGICOM_ORDER_MAKE_PAID')
+		);
+		## Initialize array to store dropdown options ##
+		$options = array();
+		
+		foreach($statuslist as $key=>$value) :
+			## Create $value ##
+			$options[] = JHTML::_('select.option', $key, $value);
+		endforeach;
+		
+		## Create <select name="month" class="inputbox"></select> ##
+		$dropdown = JHTML::_('select.genericlist', $options, 'orderstatus', 'class="inputbox input-small" onchange="OrderlistItemTask(\'cb'.$i.'\');Joomla.submitbutton(\'orders.cycleStatus\');"', 'value', 'text', $status);
+		
+		## Output created <select> list ##
+		return $dropdown;
+	}
+
 	public static function addAdminStyles(){
 		
 		// load core script
