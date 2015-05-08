@@ -85,7 +85,18 @@ class DigiComController extends JControllerLegacy
 		}
 		catch (Exception $e)
 		{
-		    JLog::addLogger(array(), JLog::ERROR);
+		    JLog::addLogger(
+		       array(
+		            // Sets file name
+		            'text_file' => 'com_digicom.log.php'
+		       ),
+		       // Sets messages of all log levels to be sent to the file
+		       JLog::ALL,
+		       // The log category/categories which should be recorded in this file
+		       // In this case, it's just the one category from our extension, still
+		       // we need to put it inside an array
+		       array('com_digicom')
+		   );
 		    JLog::add(JText::sprintf('COM_DIGICOM_LICENSE_CHECK_FAILED_CHECK_LOG',$e->getMessage()), JLog::ERROR, 'com_digicom');
 			echo JText::_('COM_DIGICOM_LICENSE_CHECK_FAILED');
 		}
