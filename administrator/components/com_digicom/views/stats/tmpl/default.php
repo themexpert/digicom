@@ -26,7 +26,6 @@ $enddate = $result["1"];
 
 $app = JFactory::getApplication();
 $input = $app->input;
-$input->set('layout', 'dgform');
 
 $document = JFactory::getDocument();
 
