@@ -48,12 +48,10 @@ $configs = $this->configs;
 		<table class="table table-bordered table-striped">
 			<thead>
 				<tr>
-					<th><?php echo JText::_("COM_DIGICOM_LICENSE_NUMBER"); ?></th>
 					<th><?php echo JText::_("COM_DIGICOM_PRODUCT"); ?></th>
 					<th><?php echo JText::_("COM_DIGICOM_LICENSE_ISSUE_DATE"); ?></th>
 					<th><?php echo JText::_("COM_DIGICOM_LICENSE_EXPIRE_DATE"); ?></th>
 					<th><?php echo JText::_("COM_DIGICOM_LICENSE_DAY_LEFT"); ?></th>
-					<th><?php echo JText::_("JSTATUS"); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -64,23 +62,33 @@ $configs = $this->configs;
 					?>
 					<tr>
 						<td>
-							<span class="label"><?php echo $licence->licenseid; ?></span>
-						</td>
-						<td>
 							<?php echo $licence->name; ?>
 						</td>
 						<td>
-							<?php echo $licence->purchase;?>
+							<?php 
+							$date = new DateTime($licence->purchase);
+							$result = $date->format('d M Y');
+							echo $result;
+							?>
+						</td>						
+						<td>
+							<?php 
+							$date = new DateTime($licence->expires);
+							$result = $date->format('d M Y');
+							?>
+							<?php echo ($licence->expires == '0000-00-00 00:00:00' ? JText::_('COM_DIGICOM_PRODUCT_EXPIRATION_NEVER') : $result);?>
 						</td>
 						<td>
-							<?php echo ($licence->expires == '0000-00-00 00:00:00' ? JText::_('COM_DIGICOM_PRODUCT_EXPIRATION_NEVER') : $licence->expires);?>
+							<span class="label label-info"><?php echo ($licence->expires == '0000-00-00 00:00:00' ? JText::_('COM_DIGICOM_PRODUCT_VALIDITY_UNLIMITED') : $licence->dayleft .' '. JText::_('COM_DIGICOM_DAYS') ) ; ?></span>
+							<?php if($licence->expires != '0000-00-00 00:00:00'):?>
+							<a target="_blank" class="btn btn-default btn-mini pull-right hasTooltip" 
+							   title="<?php echo JText::_('COM_DIGICOM_ADD_TO_CALENDAR');?>" 
+							   href="<?php echo DigiComSiteHelperDigicom::prepareGCalendarUrl($licence);?>">
+								<i class="icon-calendar"></i>
+							</a>
+							<?php endif; ?>
 						</td>
-						<td>
-							<?php echo ($licence->expires == '0000-00-00 00:00:00' ? JText::_('COM_DIGICOM_PRODUCT_VALIDITY_UNLIMITED') : $licence->dayleft .' '. JText::_('COM_DIGICOM_DAYS') ) ; ?>
-						</td>
-						<td>
-							<span class="label"><?php echo ($licence->active==1 ? JText::_('COM_DIGICOM_ACTIVE') : JText::_('COM_DIGICOM_EXPIRED') );?></span>
-						</td>
+
 					</tr>
 					<?php
 					$i++;
@@ -95,6 +103,9 @@ $configs = $this->configs;
 
 			</tbody>
 		</table>
+
+		
+
 
 	</form>
 
