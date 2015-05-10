@@ -529,9 +529,10 @@ class DigiComModelOrders extends JModelList{
 		$db = JFactory::getDBO();
 		$input = JFactory::getApplication()->input;
 		//orderstatus
-		print_r($_POST);die;
+		//print_r($_POST);die;
 		$cids = $input->get('cid', null, null);
-		$status = $input->post->get('orderstatus',null,null);
+		$statuses = $input->post->get('orderstatus',null,null);
+		$status = $statuses['0'];
 		$id = $cids['0'];
 
 		$table = $this->getTable('order');
@@ -540,9 +541,10 @@ class DigiComModelOrders extends JModelList{
 
 		if($status == 'Paid'){
 			$table->amount_paid = $table->amount;
+			$table->status = 'Active';
 		}
-		print_r($status);die;
-		print_r($table);die;
+		//print_r($status);die;
+		//print_r($table);die;
 		if(!$table->store()){
 			return JFactory::getApplication()->enqueueMessage(JText::_('COM_DIGICOM_ORDER_STATUS_CHANGED_FAILED',$table->getErrorMsg()),'error');
 		}

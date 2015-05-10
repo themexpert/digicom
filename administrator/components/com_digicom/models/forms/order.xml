@@ -15,6 +15,8 @@
 		<field id="order_status" name="status" default="Active" type="radio" label="COM_DIGICOM_ORDER_CREATE_NEW_FIELD_ORDER_STATUS_LABEL" description="COM_DIGICOM_ORDER_CREATE_NEW_FIELD_ORDER_STATUS_DESC" class="btn-group" size="1" >
 			<option value="Active">COM_DIGICOM_ORDER_STATUS_ACTIVE</option>
 			<option value="Pending">COM_DIGICOM_ORDER_STATUS_PENDING</option>
+			<option value="Cancel">COM_DIGICOM_ORDER_STATUS_CANCEL</option>
+			<option value="Paid">COM_DIGICOM_ORDER_MAKE_PAID</option>
 		</field>
 		
 		<field name="discount" type="discounts" label="COM_DIGICOM_PROMO_CODE" description="COM_DIGICOM_ORDER_PROMO_CODE_TIP" published="true" onchange="changePlain();"/>

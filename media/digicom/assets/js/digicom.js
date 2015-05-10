@@ -41,7 +41,37 @@ function openModal(a){
   SqueezeBox.open('index.php?option=com_digicom&view=filemanager&tmpl=component&folder='+imgpath+'&layout=modal&fieldID='+fileInput.attr('id'),{handler:'iframe',size:{x:800,y:450}});
 }
 
+function changeOrderStatus(id,task,index,val){
+  
+  var f = document.adminForm, i, cbx,
+    cb = f[id],
+    status = f['orderstatus'+index];
+    if (cb) {
+        for (i = 0; true; i++) {
+            cbx = f['cb'+i];
+            if (!cbx)
+                break;
+            cbx.checked = false;
+        } // for
+        cb.checked = true;
+    }
+    
+    if(status){
+      orderstatus = f['orderstatus'+index];
+      for (i = 0; true; i++) {
+          cbx = f['orderstatus'+i];
+          if (!cbx)
+              break;
+          cbx.value = '';
+      } // for
+      status.value = val;
 
+    }
+
+    f.boxchecked.value = 1;
+
+    submitbutton(task);
+}
 
 jQuery(document).ready(function() {
 

@@ -200,19 +200,40 @@ class DigiComModelOrder extends JModelAdmin
 
 	public function save($data)
 	{
-		$app = JFactory::getApplication();	
+		$app = JFactory::getApplication();
+		$db = JFactory::getDBO();
+		//print_r($data);die;
+		$status = $data['status'];
+		if($status == 'Paid'){
+			$table->amount_paid = $table->amount;
+			$data['status'] = 'Active';
+		}
+
 		if(parent::save($data)){
 			
-			$orders = $this->getInstance( "Orders", "DigiComModel" );
-
-			if($data['status'] == 'Pending'){
+			
+			if($status == "Pending"){
+				$sql = "update #__digicom_orders_details set published=0 where orderid in ('".$id."')";
 				$type = 'process_order';
-			}else{
+			}
+			elseif($status == "Active" or $status == "Paid"){
+				$sql = "update #__digicom_orders_details set published=1 where orderid in ('" . $id  . "')";
 				$type = 'complete_order';
 			}
-			$orders->updateLicensesStatus($data['id'], $type);
+			elseif($status == "Cancel"){
+				$sql = "update #__digicom_orders_details set published='-1' where orderid in ('" . $id  . "')";
+				$type = 'cancel_order';
+			}
 
-			$orders->sendApprovedEmail( $data['id'], $type, $data['status'], $data['amount_paid'] );
+			$db->setQuery($sql);
+
+			$orders = $this->getInstance( "Orders", "DigiComModel" );
+			$orders->updateLicensesStatus($data['id'], $type);
+			
+			if($status == "Active" or $status == "Paid"){
+				$orders->sendApprovedEmail( $data['id'], $type, $status, $data['amount_paid'] );
+			}
+
 		}
 
 		return true;

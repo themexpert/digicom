@@ -497,7 +497,7 @@ class DigiComHelperDigiCom extends JHelperContent{
 		endforeach;
 		
 		## Create <select name="month" class="inputbox"></select> ##
-		$dropdown = JHTML::_('select.genericlist', $options, 'orderstatus', 'class="inputbox input-small" onchange="OrderlistItemTask(\'cb'.$i.'\');Joomla.submitbutton(\'orders.cycleStatus\');"', 'value', 'text', $status);
+		$dropdown = JHTML::_('select.genericlist', $options, 'orderstatus[]', 'class="inputbox input-small" onchange="changeOrderStatus(\'cb'.$i.'\',\'orders.cycleStatus\','.$i.',this.value);"', 'value', 'text', $status,'orderstatus'.$i);
 		
 		## Output created <select> list ##
 		return $dropdown;
