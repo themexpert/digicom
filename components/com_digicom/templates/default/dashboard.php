@@ -43,10 +43,10 @@ $configs = $this->configs;
 		<table class="table table-striped table-bordered">
 			<thead>
             	<tr>
-                  	<th width="40%">Product</th>
-                  	<th width="20%">Issue Date</th>
-                  	<th width="20%">Expire Date</th>
-                  	<th width="20%">Valid For</th>
+                  	<th width="40%"><?php echo JText::_('COM_DIGICOM_PRODUCTS'); ?></th>
+                  	<th width="20%"><?php echo JText::_('COM_DIGICOM_PRODUCTS_ISSUE_DATE'); ?></th>
+                  	<th width="20%"><?php echo JText::_('COM_DIGICOM_PRODUCTS_EXPIRE_DATE'); ?></th>
+                  	<th width="20%"><?php echo JText::_('COM_DIGICOM_PRODUCTS_VALID_FOR'); ?></th>
             	</tr>
           	</thead>
 		<?php if(count($this->items) > 0): ?>
