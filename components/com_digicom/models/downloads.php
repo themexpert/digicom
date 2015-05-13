@@ -66,6 +66,7 @@ class DigiComModelDownloads extends JModelList
 	 */
 	public function getItems()
 	{
+		$db = $this->getDbo();
 		// Invoke the parent getItems method to get the main list
 		$items = parent::getItems();
 
@@ -95,7 +96,7 @@ class DigiComModelDownloads extends JModelList
 							$BundleList = $BundleTable->getFieldValues('product_id',$product->productid,$product->bundle_source);
 							$bundle_ids = $BundleList->bundle_id;
 							if($bundle_ids){
-								$db = $this->getDbo();
+								
 								$query = $db->getQuery(true)
 									->select(array('id as productid','name','catid'))
 									->from($db->quoteName('#__digicom_products'))
