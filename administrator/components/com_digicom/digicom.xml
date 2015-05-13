@@ -58,7 +58,6 @@
 
 			<folder>controllers</folder>
 			<folder>helpers</folder>
-			<folder>html</folder>
 			<folder>layouts</folder>
 			<folder>libs</folder>
 			<folder>models</folder>
