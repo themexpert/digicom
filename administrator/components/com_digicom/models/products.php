@@ -161,6 +161,7 @@ class DigiComModelProducts extends JModelList
 			$this->getState(
 				'list.select',
 				'a.id, a.name, a.alias,a.price,a.images, a.product_type, a.checked_out, a.checked_out_time, a.catid, a.created_by, a.hide_public, a.featured,' .
+				'a.price_type,a.expiration_length, a.expiration_type,' .
 				'a.hits, a.published, a.access, a.ordering, a.language, a.publish_up, a.publish_down'
 			)
 		);

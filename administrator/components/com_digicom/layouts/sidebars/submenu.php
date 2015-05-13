@@ -28,9 +28,9 @@ JHtmlBehavior::core();
 				</li>
 				<?php foreach ($displayData->list as $item) :
 				if (isset ($item[2]) && $item[2] == 1) : ?>
-					<li class="active hasTooltip" title="<?php echo $item[0]; ?>">
+					<li class="active" title="<?php echo $item[0]; ?>">
 				<?php else : ?>
-					<li class="hasTooltip" title="<?php echo $item[0]; ?>">
+					<li title="<?php echo $item[0]; ?>" data-placement="right">
 				<?php endif;
 				if ($displayData->hide) : ?>
 					<a class="nolink"><?php echo $item[0]; ?></a>
