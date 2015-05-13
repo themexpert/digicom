@@ -105,6 +105,9 @@ JFactory::getDocument()->addScriptDeclaration('
 						<th width="10%">
 							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_PRICE', 'price', $listDirn, $listOrder); ?>
 						</th>
+						<th width="1%">
+							<?php echo JText::_('COM_DIGICOM_PRODUCTS_VALIDITY'); ?>
+						</th>
 						<th width="10%">
 							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_STOCK', 'hide_public', $listDirn, $listOrder); ?>
 						</th>
@@ -230,6 +233,9 @@ JFactory::getDocument()->addScriptDeclaration('
 						</td>
 						<td class="small">
 							<?php echo DigiComHelperDigiCom::format_price($item->price, $this->configs->get('currency','USD'), true, $this->configs); ?>
+						</td>
+						<td class="small hidden-phone">
+								<?php echo DigiComSiteHelperPrice::getProductValidityPeriod($item); ?>
 						</td>
 						<td align="center" style="text-align: center; ">
 							<?php echo ($item->hide_public ? '<span class="label label-important">' . JText::_("JNO") . '</span>' : '<span class="label label-success">' . JText::_("JYES") . '</span>' ); ?>
