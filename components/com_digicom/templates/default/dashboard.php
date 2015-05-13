@@ -40,45 +40,52 @@ $configs = $this->configs;
 	
 	<h3><?php echo JText::_('COM_DIGICOM_DASHBOARD_MY_ACTIVE_LICENSES');?></h3>
 	<form action="<?php echo JRoute::_('index.php?options=com_digicom&view=dashboard'); ?>" name="adminForm" method="post">	
-
-		<div class="licenced-products tx-cards">
+		<table class="table table-striped table-bordered">
+			<thead>
+            	<tr>
+                  	<th width="40%">Product</th>
+                  	<th width="20%">Issue Date</th>
+                  	<th width="20%">Expire Date</th>
+                  	<th width="20%">Valid For</th>
+            	</tr>
+          	</thead>
 		<?php if(count($this->items) > 0): ?>
 			<?php
 			$i = 0;
 				foreach($this->items as $key=>$licence){
 					?>
-					<div class="row-fluid">
-						<div class="span6"><?php echo $licence->name; ?></div>
-						<div class="span2">
+					<tr>
+						<td><?php echo $licence->name; ?></td>
+						<td>	
 							<?php 
-							$date = new DateTime($licence->purchase);
-							$result = $date->format('d M Y');
-							echo $result;
+								$date = new DateTime($licence->purchase);
+								$result = $date->format('d M Y');
+								echo $result;
 							?>
-						</div>						
-						<div class="span2">
+						</td>
+						<td>
 							<?php 
 							$date = new DateTime($licence->expires);
 							$result = $date->format('d M Y');
 							?>
 							<?php echo ($licence->expires == '0000-00-00 00:00:00' ? JText::_('COM_DIGICOM_PRODUCT_EXPIRATION_NEVER') : $result);?>
-						</div>
-						<div class="span2	">
-							<span class="label label-info"><?php echo ($licence->expires == '0000-00-00 00:00:00' ? JText::_('COM_DIGICOM_PRODUCT_VALIDITY_UNLIMITED') : $licence->dayleft .' '. JText::_('COM_DIGICOM_DAYS') ) ; ?></span>
+						</td>
+						<td>
+							<?php echo ($licence->expires == '0000-00-00 00:00:00' ? JText::_('COM_DIGICOM_PRODUCT_VALIDITY_UNLIMITED') : $licence->dayleft .' '. JText::_('COM_DIGICOM_DAYS') ) ; ?>
 							<?php if($licence->expires != '0000-00-00 00:00:00'):?>
-							<a target="_blank" class="btn btn-default btn-mini pull-right hasTooltip" 
+							<a target="_blank" class="hasTooltip" 
 							   title="<?php echo JText::_('COM_DIGICOM_ADD_TO_CALENDAR');?>" 
 							   href="<?php echo DigiComSiteHelperDigicom::prepareGCalendarUrl($licence);?>">
 								<i class="icon-calendar"></i>
 							</a>
 							<?php endif; ?>
-						</div>
-					</div>
+						</td>
+					</tr>
 					<?php
 					$i++;
 				}
 			?>
-		</div
+		</table>
 		<?php else: ?>
 			<div class="alert alert-warning">
 				<?php echo JText::_('COM_DIGICOM_ORDERS_NO_ORDER_FOUND_NOTICE'); ?>
