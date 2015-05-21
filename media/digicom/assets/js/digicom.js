@@ -153,4 +153,22 @@ jQuery(document).ready(function() {
     jQuery('#digicom-product-alias').show();
     jQuery('#digicom-product-alias-edit').hide();
   });
+  
+	var sortable = {
+		update: function (event, ui) {
+			//create the array that hold the positions...
+		  var order = []; 
+			//loop trought each li...
+		   jQuery('#digicom_item_files_items .container tr').each( function(e) {
+			jQuery(this).find('input[id^=files_ordering_]').val(jQuery(this).index());
+		  
+		  });
+		}
+	};
+	jQuery('.repeat').each(function() {
+		jQuery(this).repeatable_fields({
+			'sortable_options': sortable
+		});
+	});
+
 });
