@@ -109,7 +109,7 @@
 		}
 		
 		function before_remove(container, row) {
-			var fields =  $(row).find("input[name^='digicom_files_id']");
+			var fields =  $(row).find("input[id^='digicom_files_id']");
 			var filesId = '';
 			$(fields).each(function(){
 				filesId = this.value;
