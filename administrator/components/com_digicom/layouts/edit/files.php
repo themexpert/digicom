@@ -14,14 +14,7 @@ $document = JFactory::getDocument();
 $document->addScriptDeclaration('var DIGICOM_ALERT_REMOVE_FILES = "'. JText::_("COM_DIGICOM_PRODUCTS_FILES_REMOVE_WARNING") . '";');
 $document->addScript(JURI::root(true).'/media/digicom/assets/js/repeatable-fields.js?v=1.0.0');
 ?>
-<script type="text/javascript">
-jQuery(function(){
 
-	jQuery('.repeat').each(function() {
-		jQuery(this).repeatable_fields();
-	});
-});
-</script>
 <fieldset class="adminform">
 	<legend><?php echo JText::_('COM_DIGICOM_PRODUCT_SINGLE_FILES');?></legend>
 	<div id="digicom_item_files_items" class="repeat">
@@ -42,7 +35,10 @@ jQuery(function(){
 			</thead>
 			<tbody class="container">
 				<tr class="template row">
-					<td width="1%"><span class="move"><i class="icon-move"></i></span></td>
+					<td width="1%">
+						<span class="move"><i class="icon-move"></i></span>
+						<input type="hidden" name="jform[file][{{row-count-placeholder}}][id]" id="digicom_files_id" value="" />
+					</td>
 					
 					<td width="10%">
 						<input type="text" name="jform[file][{{row-count-placeholder}}][name]" id="files_row_count_placeholder_id_name" placeholder="File Name"/>
@@ -58,7 +54,10 @@ jQuery(function(){
 						</div>
 					</td>
 					
-					<td width="10%"><span class="remove"><i class="icon-remove"></i></span></td>
+					<td width="10%">
+						<span class="remove"><i class="icon-remove"></i></span>
+						<input type="hidden" name="jform[file][{{row-count-placeholder}}][ordering]" value="" id="files_row_count_placeholder_id_ordering"/>
+					</td>
 				</tr>
 				<?php
 					$item = $displayData;
@@ -69,7 +68,7 @@ jQuery(function(){
 					<tr class="row">
 						<td width="1%">
 							<span class="move"><i class="icon-move"></i></span>
-							<input type="hidden" name="digicom_files_id" value="<?php echo $value->id; ?>" />
+							<input type="hidden" name="jform[file][<?php echo $key; ?>][id]" id="digicom_files_id" value="<?php echo $value->id; ?>" />
 						</td>
 						
 						<td width="10%">
@@ -90,6 +89,9 @@ jQuery(function(){
 						</td>
 						
 						<td width="10%">
+							<input type="hidden" name="jform[file][<?php echo $key; ?>][ordering]" id="files_ordering_<?php echo $key; ?>"
+								value="<?php echo $value->ordering; ?>"
+								/>
 							<span class="remove"><i class="icon-remove"></i></span>                        
 						</td>
 					</tr>
