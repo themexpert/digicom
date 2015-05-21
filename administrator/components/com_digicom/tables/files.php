@@ -55,10 +55,12 @@ class TableFiles extends JTable
         
         // Verify that the file is
 		$table = JTable::getInstance('Files', 'Table');
-
 		if ($table->load(array('product_id' => $this->product_id, 'url' => $this->url)) && ($table->id != $this->id || $this->id == 0))
 		{
-			if(!($table->name == $this->name)) $table->name = $this->name;$table->store();
+			if(!($table->name == $this->name)){
+				$table->name = $this->name;
+				$table->store();
+			}
 			return true;
 		}
 
@@ -91,7 +93,8 @@ class TableFiles extends JTable
         $query = $db->getQuery(true)
             ->select('*')
             ->from($db->quoteName('#__digicom_products_files'))
-            ->where($db->quoteName($field).'='.$value);
+            ->where($db->quoteName($field).'='.$value)
+            ->order($db->quoteName('ordering').' ASC');
         $db->setQuery($query);
         return $db->loadObjectList();
     }
