@@ -102,7 +102,7 @@ class DigiComSiteHelperQuery
 				break;
 
 			case 'front' :
-				$orderby = 'a.featured DESC, fp.ordering, ' . $queryDate . ' DESC ';
+				$orderby = 'a.featured DESC, a.ordering, ' . $queryDate . ' DESC ';
 				break;
 
 			default :
