@@ -59,7 +59,9 @@ $nr_columns = 4;
 		<tr>
 			<!-- Product image -->
 			<td width="70">
-				<img height="100" width="200" title="<?php echo $item->name; ?>" src="<?php echo JRoute::_(JURI::root().$item->images); ?>" alt="<?php echo $item->name; ?>"/>
+				<?php if(!empty($item->images)): ?>
+					<img height="100" width="200" title="<?php echo $item->name; ?>" src="<?php echo JRoute::_(JURI::root().$item->images); ?>" alt="<?php echo $item->name; ?>"/>
+				<?php endif; ?>
 			</td>
 			<!-- /End Product image -->
 

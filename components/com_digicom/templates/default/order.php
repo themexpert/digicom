@@ -123,7 +123,11 @@ $params = json_decode($this->order->params);
 			$productlink = JRoute::_(DigiComHelperRoute::getProductRoute($product->id, $product->catid, $product->language));
 			?>
 			<tr>
-				<td><img width="64" height="64" src="<?php echo JUri::root().$product->images; ?>" alt="<?php echo $product->name; ?>" /></td>
+				<td>
+					<?php if(!empty($product->images)): ?>
+						<img width="64" height="64" src="<?php echo JUri::root().$product->images; ?>" alt="<?php echo $product->name; ?>" />
+					<?php endif; ?>
+				</td>
 				<td>
 					<a href="<?php echo $productlink; ?>" target="_blank"><strong><?php echo $product->name; ?></strong></a>
 					<?php if ($this->configs->get('show_validity',1) == 1) : ?>
