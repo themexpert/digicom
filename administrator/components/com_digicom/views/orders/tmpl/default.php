@@ -113,8 +113,8 @@ Joomla.submitbutton = function (pressbutton) {
 					<th>
 						<?php echo JText::_( 'COM_DIGICOM_DATE' ); ?>
 					</th>
-					<th  <?php if ( $configs->get('showolics',0) == 0 ) echo $invisible; ?>>
-						<?php echo JText::_( 'VIEWORDERSNOL' ); ?>
+					<th>
+						<?php echo JText::_( 'COM_DIGICOM_NUM_PRODUCT_IN_ORDER' ); ?>
 					</th>
 					<th>
 						<?php echo JText::_( 'COM_DIGICOM_PRICE' ); ?>
@@ -167,9 +167,8 @@ Joomla.submitbutton = function (pressbutton) {
 						<td align="center">
 							<?php echo date( $configs->get('time_format','DD-MM-YYYY'), $order->order_date ); ?>
 						</td>
-						<td align="center" <?php if ( $configs->get('showolics',0) == 0 )
-								echo $invisible; ?>>
-							<a href="<?php echo $link; ?>" ><?php echo $order->licensenum; ?></a>
+						<td>
+							<?php echo $order->number_of_products; ?></a>
 						</td>
 						<td align="center">
 							<?php 
