@@ -110,7 +110,7 @@ $input->set('layout', 'dgform');
 				if($product_type == 'reguler'): ?>
 				
 					<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'files', JText::_('COM_DIGICOM_PRODUCT_REGULAR_FILES_SELECTION', true)); ?>
-						<?php echo JLayoutHelper::render('edit.files', $this->item); ?>
+						<?php echo JLayoutHelper::render('edit.files', $this); ?>
 					<?php echo JHtml::_('bootstrap.endTab'); ?>
 
 				<?php else: ?>

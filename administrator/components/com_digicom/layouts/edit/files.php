@@ -60,26 +60,30 @@ $document->addScript(JURI::root(true).'/media/digicom/assets/js/repeatable-field
 					</td>
 				</tr>
 				<?php
-					$item = $displayData;
+					$form = $displayData->getForm();
+					$item = $displayData->get('item');
+					$form_data = $form->getData();
+					$files = $form_data->get('file');
+					if((isset($item->file) && count($item->file) >=1 && is_array($item->file)) or is_array($files) ):
 					
-					if(isset($item->file) && count($item->file) >=1 && is_array($item->file)) :
-					$files = $item->file;
-					foreach($files as $key => $value){?>
+					foreach($files as $key => $value){
+						if(is_array($value)) $value = (object) $value;
+					?>
 					<tr class="row">
 						<td width="1%">
 							<span class="move"><i class="icon-move"></i></span>
-							<input type="hidden" name="jform[file][<?php echo $key; ?>][id]" id="digicom_files_id" value="<?php echo $value->id; ?>" />
+							<input type="hidden" name="jform[file][<?php echo $key; ?>][id]" id="digicom_files_id" value="<?php echo (isset($value->id) ? $value->id : ''); ?>" />
 						</td>
 						
 						<td width="10%">
 							<input type="text" id="files_<?php echo $key; ?>_name"
-							name="jform[file][<?php echo $key; ?>][name]" placeholder="File Name" value="<?php echo $value->name; ?>"/>
+							name="jform[file][<?php echo $key; ?>][name]" placeholder="File Name" value="<?php echo (isset($value->name) ? $value->name : ''); ?>"/>
 						</td>
 						
 						<td width="70%">
 							<div class="input-prepend input-append" style="display: block;">
 								<input type="text" name="jform[file][<?php echo $key; ?>][url]" id="files_<?php echo $key; ?>_url" placeholder="Upload or enter the file URL" class="span8"
-								value="<?php echo $value->url; ?>"
+								value="<?php echo (isset($value->url) ? $value->url : ''); ?>"
 								/>
 								<a class="files_uploader_modal btn modal" title="Select" 
 								href="javascript:;" onclick="openModal(this);"
@@ -90,7 +94,7 @@ $document->addScript(JURI::root(true).'/media/digicom/assets/js/repeatable-field
 						
 						<td width="10%">
 							<input type="hidden" name="jform[file][<?php echo $key; ?>][ordering]" id="files_ordering_<?php echo $key; ?>"
-								value="<?php echo $value->ordering; ?>"
+								value="<?php echo (isset($value->ordering) ? $value->ordering : ''); ?>"
 								/>
 							<span class="remove"><i class="icon-remove"></i></span>                        
 						</td>
