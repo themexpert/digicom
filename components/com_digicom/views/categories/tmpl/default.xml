@@ -27,7 +27,7 @@
 	<fields name="params">
 		<fieldset name="basic" label="JGLOBAL_CATEGORIES_OPTIONS">
 
-			<field name="show_base_description" type="list"
+			<field name="show_base_description" type="radio" class="btn-group"
 				label="JGLOBAL_FIELD_SHOW_BASE_DESCRIPTION_LABEL"
 				description="JGLOBAL_FIELD_SHOW_BASE_DESCRIPTION_DESC"
 				default="0"
@@ -43,51 +43,34 @@
 				rows="5"
 			/>
 			<field name="maxLevelcat" type="hidden" value="0" />
-			<field name="show_empty_categories_cat" type="hidden" value="1" />
 
-			<field name="show_subcat_desc_cat" type="list"
-
-			label="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_LABEL"
-			description="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_DESC"
-
+			<field name="show_subcat_desc_cat" type="radio" class="btn-group"
+				label="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_LABEL"
+				description="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_DESC"
+				default="0"
 			>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			
+			<field name="show_empty_categories_cat" type="radio" class="btn-group"
+				label="JGLOBAL_SHOW_EMPTY_CATEGORIES_LABEL"
+				description="COM_DIGICOM_SHOW_EMPTY_CATEGORIES_DESC"
+				default="0"
+			>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
 
-			<field name="show_cat_num_products_cat" type="list"
+			<field name="show_cat_num_products_cat" type="radio" class="btn-group"
 				label="COM_DIGICOM_NUMBER_CATEGORY_ITEMS_LABEL"
 				description="COM_DIGICOM_NUMBER_CATEGORY_ITEMS_DESC"
+				default="0"
 			>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
 
-		</fieldset>
-
-		
-		<fieldset name="integration"
-		>
-
-			<field name="show_feed_link" type="list"
-				description="JGLOBAL_SHOW_FEED_LINK_DESC"
-				label="JGLOBAL_SHOW_FEED_LINK_LABEL"
-			>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field name="feed_summary" type="list"
-				description="JGLOBAL_FEED_SUMMARY_DESC"
-				label="JGLOBAL_FEED_SUMMARY_LABEL"
-			>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JGLOBAL_INTRO_TEXT</option>
-				<option value="1">JGLOBAL_FULL_TEXT</option>
-			</field>
 		</fieldset>
 	</fields>
 </metadata>

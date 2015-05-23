@@ -81,7 +81,7 @@ $bsGrid = array(
 								<?php endif; ?>
 								
 							</h3>
-							<?php if ($item->description) : ?>
+							<?php if (($this->params->get('show_cat_num_products_cat') == 1) && $item->description ) : ?>
 								<div class="category-desc">
 									<?php echo JHtml::_('content.prepare', $item->description, '', 'com_content.categories'); ?>
 								</div>
