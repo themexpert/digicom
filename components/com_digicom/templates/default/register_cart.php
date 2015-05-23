@@ -9,10 +9,12 @@
 
 defined('_JEXEC') or die;
 
-JHtml::_('jquery.framework');
+
 JHtml::_('behavior.framework');
 JHtml::_('behavior.formvalidation');
-$Itemid = JRequest::getInt("Itemid", 0);
+$app=JFactory::getApplication();
+$input = $app->input;
+$Itemid = $input->get("Itemid", 0);
 ?>
 
 
@@ -89,8 +91,8 @@ $Itemid = JRequest::getInt("Itemid", 0);
 						<input type="hidden" name="Itemid" value="<?php echo $Itemid;?>" />
 						<input type="hidden" name="option" value="com_digicom" />
 						<input type="hidden" name="task" value="profile.logCustomerIn" />
-						<input type="hidden" name="processor" value="<?php echo JRequest::getVar("processor", ""); ?>" />
-						<input type="hidden" name="return" value="<?php echo JRequest::getVar("return", ""); ?>" />
+						<input type="hidden" name="processor" value="<?php echo $input->get("processor", ""); ?>" />
+						<input type="hidden" name="return" value="<?php echo $input->get("return", ""); ?>" />
 					</form>
 			    </div>
 			  </div>

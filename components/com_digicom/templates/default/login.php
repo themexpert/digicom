@@ -9,8 +9,10 @@
 
 defined('_JEXEC') or die;
 
-$Itemid = JRequest::getVar("Itemid", "", 'Itemid');
-$returnpage = JRequest::getVar("returnpage", "", 'request');
+$app=JFactory::getApplication();
+$input = $app->input;
+$Itemid = $input->get("Itemid", 0);
+$returnpage = $input->get("returnpage", "");
 
 if($returnpage != "cart") :
 ?>
@@ -68,8 +70,8 @@ if($returnpage != "cart") :
 				<input type="hidden" name="view" value="profile" />
 				<input type="hidden" name="Itemid" value="<?php echo $Itemid;?>" />
 				<input type="hidden" name="task" value="profile.logCustomerIn" />
-				<input type="hidden" name="returnpage" value="<?php echo (JRequest::getVar("returnpage", "", 'request'));?>" />
-				<input type="hidden" name="graybox" value="<?php echo (JRequest::getVar("graybox", ""));?>" />	 
+				<input type="hidden" name="returnpage" value="<?php echo ($input->get("returnpage", ""));?>" />
+				<input type="hidden" name="graybox" value="<?php echo ($input->get("graybox", ""));?>" />	 
 			</form>
 		</div>
 		
@@ -81,7 +83,7 @@ if($returnpage != "cart") :
 				<input type="hidden" name="option" value="com_digicom" />
 				<input type="hidden" name="view" value="register" />
 				<input type="hidden" name="Itemid" value="<?php echo $Itemid;?>" />
-				<input type="hidden" name="returnpage" value="<?php echo (JRequest::getVar("returnpage", "", 'request'));?>" />  
+				<input type="hidden" name="returnpage" value="<?php echo ($input->get("returnpage", "", 'request'));?>" />  
 				
 				<span class="text"><?php echo JText::_("DIGI_REGISTRATION_EASY"); ?></span>		
 				<input type="submit" class="btn" style="display:block" value="<?php echo JText::_("DIGI_MYPROGRAMS_ACTION_CONTINUE");?>" />
@@ -143,11 +145,11 @@ if($returnpage != "cart") :
 					<input type="hidden" name="controller" value="profile" />
 					<input type="hidden" name="Itemid" value="<?php echo $Itemid;?>" />
 					<input type="hidden" name="task" value="logCustomerIn" />
-					<input type="hidden" name="pid" value="<?php echo (JRequest::getVar("pid", "", 'request'));?>" />
-					<input type="hidden" name="cid" value="<?php echo (JRequest::getVar("cid", "", 'request'));?>" />
-					<input type="hidden" name="licid" value="<?php echo (JRequest::getVar("licid", ""));?>" />
-					<input type="hidden" name="returnpage" value="<?php echo (JRequest::getVar("returnpage", "", 'request'));?>" />
-					<input type="hidden" name="graybox" value="<?php echo (JRequest::getVar("graybox", ""));?>" />	 
+					<input type="hidden" name="pid" value="<?php echo ($input->get("pid", "", 'request'));?>" />
+					<input type="hidden" name="cid" value="<?php echo ($input->get("cid", "", 'request'));?>" />
+					<input type="hidden" name="licid" value="<?php echo ($input->get("licid", ""));?>" />
+					<input type="hidden" name="returnpage" value="<?php echo ($input->get("returnpage", "", 'request'));?>" />
+					<input type="hidden" name="graybox" value="<?php echo ($input->get("graybox", ""));?>" />	 
 				</form>
 			
 			</div>

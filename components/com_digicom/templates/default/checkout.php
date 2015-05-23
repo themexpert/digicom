@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-JHtml::_('jquery.framework');
+
 JHTML::_('behavior.formvalidation');
 
 $pg_plugin = $this->pg_plugin;

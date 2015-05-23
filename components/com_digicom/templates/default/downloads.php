@@ -9,7 +9,9 @@
 
 defined('_JEXEC') or die;
 
-$Itemid = JRequest::getVar("Itemid", "0");
+$app=JFactory::getApplication();
+$input = $app->input;
+$Itemid = $input->get("Itemid", 0);
 $cart_itemid = DigiComSiteHelperDigiCom::getCartItemid();
 $and_itemid = "";
 if($cart_itemid != ""){

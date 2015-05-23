@@ -10,15 +10,16 @@
 defined('_JEXEC') or die;
 
 // TODO : Remove JReqeust and need a lot cleaup
-JHtml::_('jquery.framework');
+
 JHTML::_('behavior.modal');
 JHtml::_('formbehavior.chosen', 'select');
-
 $user = JFactory::getUser();
 $document=JFactory::getDocument();
+$app=JFactory::getApplication();
+$input = $app->input;
 $configs = $this->configs;
 $processor = $this->session->get('processor');
-$Itemid = JRequest::getInt("Itemid", 0);
+$Itemid = $input->get("Itemid", 0);
 $items = $this->items;
 $button_value = "COM_DIGICOM_CHECKOUT";
 $onclick = "document.getElementById('returnpage').value='checkout'; document.getElementById('type_button').value='checkout';";
@@ -34,7 +35,7 @@ $total = 0;//$this->total;//0;
 $discount = $this->discount;//0;
 $cat_url = $this->cat_url;
 $shippingexists = 0;
-$from = JRequest::getVar("from", "");
+$from = $input->get("from", "");
 $nr_columns = 4;
 $invisible = 'style="display:none;"';
 $formlink = JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$Itemid);
@@ -345,10 +346,10 @@ $tax = $this->tax;
 					</table>
 
 					<input type="hidden" name="option" value="com_users"/>
-					<input type="hidden" name="Itemid" value="<?php echo JRequest::getInt('Itemid', 0);?>"/>
+					<input type="hidden" name="Itemid" value="<?php echo $input->get('Itemid', 0);?>"/>
 					<input type="hidden" name="task" value="user.login"/>
 					<input type="hidden" name="return"
-						   value="<?php echo base64_encode('index.php?option=com_digicom&view=cart&task=cart.showCart&Itemid=' . JRequest::getInt('Itemid', 0)); ?>"/>
+						   value="<?php echo base64_encode('index.php?option=com_digicom&view=cart&task=cart.showCart&Itemid=' . $input->get('Itemid', 0)); ?>"/>
 					<?php echo JHTML::_('form.token'); ?>
 				</form>
 			</div>

@@ -10,7 +10,9 @@
 defined('_JEXEC') or die;
 
 $configs = $this->configs;
-$Itemid = JRequest::getInt("Itemid", 0);
+$app=JFactory::getApplication();
+$input = $app->input;
+$Itemid = $input->get("Itemid", 0);
 $processor = $this->session->get('processor');
 $customer = $this->customer;
 $items = $this->items;

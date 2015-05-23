@@ -10,6 +10,8 @@
 defined('_JEXEC') or die;
 
 JHtml::_('behavior.formvalidation');
+$app=JFactory::getApplication();
+$input = $app->input;
 
 require_once( JPATH_COMPONENT . '/helpers/sajax.php' );
 $configs = $this->configs;
@@ -183,8 +185,8 @@ JHTML::_('behavior.modal');
 
 	<input type="hidden" name="option" value="com_digicom" >
 	<input type="hidden" name="task" value="profile.saveCustomer" >
-	<input type="hidden" name="processor" value="<?php echo JRequest::getVar("processor", ""); ?>" />
-	<input type="hidden" name="return" value="<?php echo JRequest::getVar("return", ""); ?>" />
+	<input type="hidden" name="processor" value="<?php echo $input->get("processor", ""); ?>" />
+	<input type="hidden" name="return" value="<?php echo $input->get("return", ""); ?>" />
 	<input type="hidden" name="view" value="profile" >
 	
 	<table width="100%">

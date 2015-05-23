@@ -8,6 +8,7 @@
  */
 
 defined('_JEXEC') or die;
+JHtml::_('jquery.framework');
 
 JLoader::discover('DigiComSiteHelper', JPATH_COMPONENT_SITE . '/helpers');
 

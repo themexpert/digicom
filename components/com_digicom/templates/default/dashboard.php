@@ -8,8 +8,9 @@
  */
 
 defined('_JEXEC') or die;
-
-$Itemid = JRequest::getInt("Itemid", 0);
+$app=JFactory::getApplication();
+$input = $app->input;
+$Itemid = $input->get("Itemid", 0);
 
 $customer = $this->customer->_customer;
 $user = $this->customer->_user;

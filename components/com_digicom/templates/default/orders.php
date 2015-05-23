@@ -8,7 +8,8 @@
  */
 
 defined('_JEXEC') or die;
-
+$app=JFactory::getApplication();
+$input = $app->input;
 $configs = $this->configs;
 $k = 0;
 $n = count ($this->orders);
@@ -23,7 +24,7 @@ $n = count ($this->orders);
 	<form action="<?php echo JRoute::_('index.php?options=com_digicom&view=orders'); ?>" name="adminForm" method="post">
 
 		<div class="input-append">
-			<input type="text" id="dssearch" name="search" class="digi-textbox"  value="<?php echo trim(JRequest::getVar('search', '')); ?>" size="30" />
+			<input type="text" id="dssearch" name="search" class="digi-textbox"  value="<?php echo trim($input->get('search', '')); ?>" size="30" />
 			<button type="submit" class="btn"><?php echo JText::_("COM_DIGICOM_SEARCH"); ?></button>
 		</div>			
 

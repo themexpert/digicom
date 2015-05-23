@@ -10,6 +10,8 @@
 defined('_JEXEC') or die;
 
 JHTML::_('behavior.modal');
+$app=JFactory::getApplication();
+$input = $app->input;
 
 $cust = $this->customer->_customer;
 $user = $this->customer->_user;
@@ -180,7 +182,7 @@ $configs = $this->configs;
 			<input type="hidden" name="option" value="com_digicom" />
 			<input type="hidden" name="id" value="<?php echo $cust->id; ?>" />
 			<input type="hidden" name="task" value="profile.save" />
-			<input type="hidden" name="return" value="<?php echo base64_encode(JRequest::getVar("return", JURI::getInstance()->toString(), 'request')); ?>" />
+			<input type="hidden" name="return" value="<?php echo base64_encode($input->get("return", JURI::getInstance()->toString(), 'request')); ?>" />
 			<input type="hidden" name="view" value="profile" />
 		</form>
 	</div>

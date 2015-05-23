@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 // Load Jquery
-JHtml::_('jquery.framework');
+//
 // We'll only load this js if show cart in popup option is set from admin setting
 if($this->configs->get('afteradditem',0) == "2"){
 	JHTML::_('behavior.modal');

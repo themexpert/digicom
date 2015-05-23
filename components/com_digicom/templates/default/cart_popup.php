@@ -10,14 +10,16 @@
 defined('_JEXEC') or die;
 
 // TODO : Remvoe JRequest and cleanup code, naming convention
-JHtml::_('jquery.framework');
+
 JHTML::_('behavior.modal');
 $user = JFactory::getUser();
 $document=JFactory::getDocument();
+$app=JFactory::getApplication();
+$input = $app->input;
 $configs = $this->configs;
-$agreeterms = JRequest::getVar("agreeterms", "");
-$processor = JRequest::getVar("processor", "");
-$Itemid = JRequest::getInt("Itemid", 0);
+$agreeterms = $input->get("agreeterms", "");
+$processor = $input->get("processor", "");
+$Itemid = $input->get("Itemid", 0);
 $items = $this->items;
 ?>
 <div id="digicom" class="digicom-wrapper com_digicom cart">
@@ -38,7 +40,7 @@ $discount = $this->discount;//0;
 $cat_url = $this->cat_url;
 $totalfields = 0;
 $shippingexists = 0;
-$from = JRequest::getVar("from", "");
+$from = $input->get("from", "");
 $nr_columns = 4;
 ?>
 
