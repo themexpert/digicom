@@ -179,6 +179,8 @@ class DigiComSiteHelperDigicom {
 				//					$theURI .= '?' . $_SERVER['QUERY_STRING'];
 			}
 		}
+		
+		$theURI = str_replace('/administrator','',$theURI);
 
 		return $theURI;
 	}

@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 JHtml::_('formbehavior.chosen', 'select');
+require_once( JPATH_COMPONENT_SITE . '/helpers/sajax.php' );
 
 $cust = $this->cust;
 $user = $this->user;
@@ -21,8 +22,8 @@ $document = JFactory::getDocument();
 $input->set('layout', 'dgform');
 
 ?>
-
 <script language="javascript" type="text/javascript">
+	<?php sajax_show_javascript(); ?>
 	<!--
 	var request_processed = 0;
 	function submitbutton(pressbutton) {
@@ -42,8 +43,25 @@ $input->set('layout', 'dgform');
 		changeProvince_ship();
 		request_processed = 1;
 	}
-
-	-->
+	
+	function changeProvince() {
+		// get the folder name
+		var country;
+		country = document.getElementById('country').value;
+		var euc = Array();
+		
+		var flag = 0;
+		for (i = 0; i< euc.length; i++)
+			if (country == euc[i]) flag = 1;
+		
+		x_phpchangeProvince(country, 'main', changeProvince_cb);
+	}
+	 
+	function changeProvince_cb(province_option) {
+		document.getElementById("province").innerHTML = province_option;
+	}
+	
+	 -->
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -141,14 +159,19 @@ $input->set('layout', 'dgform');
 								<div class="control-group">
 									<label for="" class="control-label"><?php echo JText::_( "COM_DIGICOM_CUSTOMER_COUNTRY" ); ?></label>
 									<div class="controls">
-										<input name="country" type="text" id="country" size="30" value="<?php echo $cust->country; ?>">
+										<?php
+											$country_option = DigiComSiteHelperDigiCom::get_country_options($cust, false, $configs);
+											echo $country_option;
+										?>
 									</div>
 								</div>
 
 								<div class="control-group">
 									<label for="" class="control-label"><?php echo JText::_( "COM_DIGICOM_CUSTOMER_STATE" ); ?></label>
 									<div class="controls">
-										<input name="state" type="text" id="state" size="30" value="<?php echo $cust->state; ?>">
+										<?php
+											echo DigiComSiteHelperDigiCom::get_store_province($cust, false);
+										?>
 									</div>
 								</div>
 								
@@ -284,7 +307,6 @@ $input->set('layout', 'dgform');
 	<input type="hidden" name="id" value="<?php echo $cust->id; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="view" value="customer" />
-	<input type="hidden" name="keyword" value="<?php echo $this->keyword; ?>" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>
 
