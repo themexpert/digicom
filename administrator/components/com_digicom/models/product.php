@@ -265,11 +265,11 @@ class DigiComModelProduct extends JModelAdmin
 	{
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState('com_digicom.edit.product.data', array());
-
+		
 		if (empty($data))
 		{
 			$data = $this->getItem();
-
+			
 			// Prime some default values.
 			if ($this->getState('product.id') == 0)
 			{
@@ -280,6 +280,20 @@ class DigiComModelProduct extends JModelAdmin
 
 			}
 
+		}else{
+			if(isset($data['bundle_product']) && count($data['bundle_product'])){
+				$i = 0;
+				foreach($data['bundle_product'] as $product){
+					$tmp = $this->getItem($product);
+					$item = new stdClass();
+					$item->id = $product;
+					$item->name = $tmp->name;
+					$item->price = $tmp->price;
+					
+					$data['bundle_product'][$i] = $item;
+					$i++;
+				}
+			}
 		}
 
 		$this->preprocessData('com_digicom.product', $data);

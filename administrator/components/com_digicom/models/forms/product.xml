@@ -65,7 +65,7 @@
 
 		<field name="bundle_product" type="hidden" />
 
-		<field name="bundle_category" type="category" extension="com_digicom" multiple="true" class="input-xxlarge" label="COM_DIGICOM_PRODUCT_BUNDLE_CATEGORIES_SELECT_LABEL" description="COM_DIGICOM_PRODUCT_BUNDLE_CATEGORIES_SELECT_DESC"/>
+		<field name="bundle_category" type="category" extension="com_digicom" multiple="true" label="COM_DIGICOM_PRODUCT_BUNDLE_CATEGORIES_SELECT_LABEL" description="COM_DIGICOM_PRODUCT_BUNDLE_CATEGORIES_SELECT_DESC" class="advancedSelect"/>
 
 
 		<field name="access" type="accesslevel" label="JFIELD_ACCESS_LABEL" description="JFIELD_ACCESS_DESC" size="1" class="advancedSelect"/>
