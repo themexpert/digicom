@@ -60,6 +60,8 @@ jQuery(function ($) {
 $document->addScriptDeclaration($js);
 JHtml::_('behavior.modal');
 $link = 'index.php?option=com_digicom&amp;view=products&amp;filter[product_type]=reguler&amp;layout=modal&amp;tmpl=component&amp;' . JSession::getFormToken() . '=1';
+$form_data = $form->getData();
+$bundle_source = $form_data->get('bundle_source');
 ?>
 
 <fieldset class="adminform">
@@ -74,11 +76,11 @@ $link = 'index.php?option=com_digicom&amp;view=products&amp;filter[product_type]
 
 	<hr>
 	
-	<div class="bundle_source_option <?php echo ($product->bundle_source == 'category' ? '' : ' hide');?>" id="bundle_source_category_option">
+	<div class="bundle_source_option <?php echo ($bundle_source == 'category' ? '' : ' hide');?>" id="bundle_source_category_option">
 		<?php echo $form->renderField('bundle_category'); ?>
 	</div>
 	
-	<div class="bundle_source_option <?php echo (($product->bundle_source == 'product' or $product->bundle_source =='') ? '' : ' hide');?>" id="bundle_source_product_option">
+	<div class="bundle_source_option <?php echo (($bundle_source == 'product' or $bundle_source =='') ? '' : ' hide');?>" id="bundle_source_product_option">
 		
 		<table id="productincludes" class="table table-striped table-hover" id="productList">
 			<thead>
@@ -89,19 +91,24 @@ $link = 'index.php?option=com_digicom&amp;view=products&amp;filter[product_type]
 				</tr>
 			</thead>
 			<tbody id="productincludes_items">
-				<?php 
-				if(isset($product->bundle_product) && count($product->bundle_product) > 0) :
-					foreach($product->bundle_product as $key => $include) :
-						$price = DigiComHelperDigiCom::format_price($include->price, $configs->get('currency','USD'), true, $configs);
+				<?php
+				
+				$bundle_product = $form_data->get('bundle_product');
+				
+				if(isset($bundle_product) && count($bundle_product) > 0) :
+					foreach($bundle_product as $key => $include) :
+						if(is_array($include)) $include = (object) $include;
+						$iprice = (isset($include->price) ? $include->price : '');
+						$price = DigiComHelperDigiCom::format_price($iprice, $configs->get('currency','USD'), true, $configs);
 					?>
-					<tr id="productincludes_item_<?php echo $include->id;?>">
-						<td>
-							<input type="hidden" id="product_include_id<?php echo $include->id;?>" name="jform[bundle_product][]" value="<?php echo $include->id;?>">
-							<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=product&layout=edit&id='.$include->id);?>"><?php echo $include->name;?></a>
-						</td>
-						<td width="100px"><?php echo $price;?></td>
-						<td width="1%"><a href="#" onclick="jRemveProduct('<?php echo $include->id;?>');"><i class="icon-remove"></i></a></td>
-					</tr>
+						<tr id="productincludes_item_<?php echo $include->id;?>">
+							<td>
+								<input type="hidden" id="product_include_id<?php echo $include->id;?>" name="jform[bundle_product][]" value="<?php echo $include->id;?>">
+								<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=product&layout=edit&id='.$include->id);?>"><?php echo $include->name;?></a>
+							</td>
+							<td width="100px"><?php echo $price;?></td>
+							<td width="1%"><a href="#" onclick="jRemveProduct('<?php echo $include->id;?>');"><i class="icon-remove"></i></a></td>
+						</tr>
 					<?php endforeach; ?>
 				<?php endif; ?>
 			</tbody>
