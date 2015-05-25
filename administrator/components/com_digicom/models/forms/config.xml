@@ -480,39 +480,40 @@
 				<field name="email_type" type="list"
 					label="COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_EMAIL_TYPE_LABEL"
 					description="COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_EMAIL_TYPE_DESC"
+					onchange="showProperTemplateEmail('new_order')"
 				>
 					<option value="html">COM_DIGICOM_SETTINGS_EMAIL_TYPE_HTML</option>
-					<option value="text">COM_DIGICOM_SETTINGS_EMAIL_TYPE_TEXT</option>
+					<option value="raw">COM_DIGICOM_SETTINGS_EMAIL_TYPE_TEXT</option>
 				</field>
-				
+				<field name="email_settings_spacer_new_order_show_hide" type="spacer"
+					label="COM_DIGICOM_SETTINGS_EMAIL_SETTINGS_SPACER_NEW_ORDER_SHOW_HIDE_NOTICE"
+				/>
 				<field name="template_html" type="dgeditor"
 					editor="codemirror|none"
-					id="neworder_template_html"
 					readonly="true"
 					buttons="no" 
-					label="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_LABEL" description="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_DESC"
+					label="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_HTML_LABEL" description="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_DESC"
 					height="500px" rows="20" cols="80" syntax="php" filter="raw" 
 					path="/components/com_digicom/emails/"
 					filename="new-order.html.php"
 					overridepath="template"
 					override="/html/com_digicom/emails/"
 					overridemsg="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_OVERRIDE_NEW_ORDER_HTML_MSG"
-					class="span12"
+					class="span12 email_template_digicom_new_order_html"
 				/>
 
 				<field name="template_raw" type="dgeditor"
 					editor="codemirror|none"
-					id="neworder_template_raw"
 					readonly="true"
 					buttons="no" 
-					label="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_LABEL" description="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_DESC"
+					label="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_RAW_LABEL" description="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_DESC"
 					height="500px" rows="20" cols="80" syntax="php" filter="raw" 
 					path="/components/com_digicom/emails/"
 					filename="new-order.raw.php"
 					overridepath="template"
 					override="/html/com_digicom/emails/"
 					overridemsg="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_OVERRIDE_NEW_ORDER_RAW_MSG"
-					class="span12"
+					class="span12 email_template_digicom_new_order_raw"
 				/>
 				
 				
