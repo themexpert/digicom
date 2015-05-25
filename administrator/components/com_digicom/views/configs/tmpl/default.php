@@ -51,40 +51,87 @@ JHtml::_('formbehavior.chosen', 'select');
 				</ul>
 				<div class="tab-content">
 					<?php $fieldSets = $this->form->getFieldsets(); ?>
-					<?php foreach ($fieldSets as $name => $fieldSet) : ?>
+					<?php 
+					foreach ($fieldSets as $name => $fieldSet) : 
+					?>
 						<div class="tab-pane" id="<?php echo $name; ?>">
 							<?php
-							if (isset($fieldSet->description) && !empty($fieldSet->description))
-							{
-								echo '<p class="tab-description">' . JText::_($fieldSet->description) . '</p>';
-							}
-							?>
-							<?php foreach ($this->form->getFieldset($name) as $field) : ?>
-								<?php
-								$fieldname = str_replace( ']', '', str_replace('jform[', '', $field->name) );
-								$class = '';
-								$rel = '';
-								if ($showon = $field->getAttribute('showon'))
+							if($name != 'email_settings'):
+							
+								if (isset($fieldSet->description) && !empty($fieldSet->description))
 								{
-									JHtml::_('jquery.framework');
-									JHtml::_('script', 'jui/cms.js', false, true);
-									$id = $this->form->getFormControl();
-									$showon = explode(':', $showon, 2);
-									$class = ' showon_' . implode(' showon_', explode(',', $showon[1]));
-									$rel = ' rel="showon_' . $id . '[' . $showon[0] . ']"';
+									echo '<p class="tab-description">' . JText::_($fieldSet->description) . '</p>';
 								}
 								?>
-								<div class="control-group<?php echo $class; ?>"<?php echo $rel; ?>>
-									<?php if (!$field->hidden && $name != "permissions" && $fieldname != "email") : ?>
+								<?php 
+								foreach ($this->form->getFieldset($name) as $field) : 
+								
+								?>
+									<?php
+									/*
+									$fieldname = str_replace( ']', '', str_replace('jform[', '', $field->name) );
+									$class = '';
+									$rel = '';
+									if ($showon = $field->getAttribute('showon'))
+									{
+										JHtml::_('jquery.framework');
+										JHtml::_('script', 'jui/cms.js', false, true);
+										$id = $this->form->getFormControl();
+										$showon = explode(':', $showon, 2);
+										$class = ' showon_' . implode(' showon_', explode(',', $showon[1]));
+										$rel = ' rel="showon_' . $id . '[' . $showon[0] . ']"';
+									}
+									
+									
+									<?php echo $this->form->getControlGroup('images'); ?>
+									<?php foreach ($this->form->getGroup('images') as $field) : ?>
+										<?php echo $field->getControlGroup(); ?>
+									<?php endforeach; ?>
+									
+									
+									*/
+									?>
+									<div class="control-group">
 										<div class="control-label">
 											<?php echo $field->label; ?>
 										</div>
-									<?php endif; ?>
-									<div class="<?php if ($name != "permissions" && $fieldname != "email") : ?>controls<?php endif; ?>">
-										<?php echo $field->input; ?>
+										<div class="controls">
+											<?php echo $field->input; ?>
+										</div>
+									</div>										
+								<?php endforeach; ?>
+							<?php else: ?>
+							
+								<ul class="nav nav-tabs" id="emailTabs">
+									<li class=""><a href="#COMMON" data-toggle="tab">Common</a></li>
+									<li><a href="#NEW_ORDER" data-toggle="tab">New Order</a></li>
+								</ul>
+								
+								<div class="tab-content">
+								
+									<div class="tab-pane" id="COMMON">
+										<?php foreach ($this->form->getGroup('email_settings') as $field) : ?>
+											<?php echo $field->getControlGroup(); ?>
+										<?php endforeach; ?>
 									</div>
+									
+									<div class="tab-pane" id="NEW_ORDER">
+										<?php foreach ($this->form->getGroup('new_order') as $field) : 
+											$name = $field->getAttribute('name');
+											if($name != 'template'):
+											?>
+											<?php echo $field->getControlGroup(); ?>
+											<?php else: ?>
+											<?php echo $field->input; ?>
+											<?php endif; ?>
+										<?php endforeach; ?>
+									</div>
+									
+									
 								</div>
-							<?php endforeach; ?>
+								
+							<?php endif; ?>
+						
 						</div>
 					<?php endforeach; ?>
 				</div>
