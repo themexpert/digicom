@@ -377,18 +377,134 @@
 			label="COM_DIGICOM_SETTINGS_EMAIL_FIELDSET_LABEL"
 			description="COM_DIGICOM_SETTINGS_EMAIL_FIELDSET_LABEL_DESC">
 			
-			<field
-				name="email_from_name"
-				type="text"
-				label="COM_DIGICOM_SETTINGS_EMAIL_FROM_NAME_LABEL"
-				description="COM_DIGICOM_SETTINGS_EMAIL_FROM_NAME_LABEL_DESC"
+			<fields name="email_settings">
+			
+				<field
+					name="from_name"
+					type="text"
+					label="COM_DIGICOM_SETTINGS_EMAIL_FROM_NAME_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_FROM_NAME_LABEL_DESC"
+					/>
+					
+				<field
+					name="from_email"
+					type="email"
+					label="COM_DIGICOM_SETTINGS_EMAIL_FROM_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_FROM_LABEL_DESC"
+					/>
+				
+				<field name="email_settings_spacer_template_notice" type="spacer" class="label label-info"
+					label="COM_DIGICOM_SETTINGS_EMAIL_SETTINGS_SPACER_TEMPLATE_NOTICE"
+					/>
+				<field
+					name="email_header_image"
+					type="media"
+					label="COM_DIGICOM_SETTINGS_EMAIL_HEADER_IMAGE_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_HEADER_IMAGE_DESC"
+					/>
+				<field
+					name="email_footer"
+					type="textarea"
+					label="COM_DIGICOM_SETTINGS_EMAIL_FOOTER_LABEL"
+					class="span12" row="12"
+					description="COM_DIGICOM_SETTINGS_EMAIL_FOOTER_DESC"
+					/>
+				<field
+					name="email_base_color"
+					type="color"
+					label="COM_DIGICOM_SETTINGS_EMAIL_BASE_COLOR_LABEL"
+					class="span12" row="12"
+					description="COM_DIGICOM_SETTINGS_EMAIL_BASE_COLOR_DESC"
+					/>
+				<field
+					name="email_bg_color"
+					type="color"
+					label="COM_DIGICOM_SETTINGS_EMAIL_BG_COLOR_LABEL"
+					class="span12" row="12"
+					description="COM_DIGICOM_SETTINGS_EMAIL_BG_COLOR_DESC"
+					/>
+				<field
+					name="email_body_bg_color"
+					type="color"
+					label="COM_DIGICOM_SETTINGS_EMAIL_BODY_BG_COLOR_LABEL"
+					class="span12" row="12"
+					description="COM_DIGICOM_SETTINGS_EMAIL_BODY_BG_COLOR_DESC"
+					/>
+				<field
+					name="email_body_color"
+					type="color"
+					label="COM_DIGICOM_SETTINGS_EMAIL_BODY_COLOR_LABEL"
+					class="span12" row="12"
+					description="COM_DIGICOM_SETTINGS_EMAIL_BODY_COLOR_DESC"
+					/>
+				
+				
+				
+			</fields>
+			
+			<fields name="new_order">
+			
+				<field name="email_settings_spacer_new_order_notice" type="spacer" class="label"
+				label="COM_DIGICOM_SETTINGS_EMAIL_SETTINGS_SPACER_NEW_ORDER_NOTICE"
 				/>
-			<field
-				name="email_from"
-				type="email"
-				label="COM_DIGICOM_SETTINGS_EMAIL_FROM_LABEL"
-				description="COM_DIGICOM_SETTINGS_EMAIL_FROM_LABEL_DESC"
+				
+				<field
+					name="enable"
+					type="radio"
+					class="btn-group"
+					label="COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_ENABLE_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_ENABLE_DESC"
+					default="1"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				
+				<field name="recipients" type="text"
+					label="COM_DIGICOM_SETTINGS_NEW_ORDER_RECIPIENTS_LABEL"
+					description="COM_DIGICOM_SETTINGS_NEW_ORDER_RECIPIENTS_DESC"
 				/>
+				<field name="Subject" type="text"
+					label="COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_SUBJECT_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_SUBJECT_DESC"
+				>
+					<option value="[{site_title}] New customer order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_SUBJECT_DEFAULT</option>
+				</field>
+				<field name="heading" type="text"
+					label="COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_HEADING_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_HEADING_DESC"
+				>
+					<option value="[{site_title}] New customer order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_SUBJECT_DEFAULT</option>
+				</field>
+				
+				<field name="email_type" type="list"
+					label="COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_EMAIL_TYPE_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_EMAIL_TYPE_DESC"
+				>
+					<option value="html">COM_DIGICOM_SETTINGS_EMAIL_TYPE_HTML</option>
+					<option value="text">COM_DIGICOM_SETTINGS_EMAIL_TYPE_TEXT</option>
+				</field>
+				
+				<field name="template" type="dgeditor"
+					editor="codemirror|none"
+					readonly="true"
+					buttons="no" 
+					label="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_LABEL" description="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_DESC"
+					height="500px" rows="20" cols="80" syntax="php" filter="raw" 
+					path="/components/com_digicom/emails/"
+					filename="new-order.php"
+					overridepath="template"
+					override="/html/com_digicom/emails/"
+					overridemsg="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_OVERRIDE_MSG"
+					class="span12"
+				/>
+				
+				
+			</fields>
+			
+			
+			<!--
+			
 			<field
 				name="email"
 				type="systememail"
@@ -396,6 +512,7 @@
 				label="COM_DIGICOM_SYSTEM_EMAIL_LABEL"
 				description="COM_DIGICOM_SYSTEM_EMAIL_DESC"
 				/>
+			-->
 		</fieldset>
 		
 	</fields>
