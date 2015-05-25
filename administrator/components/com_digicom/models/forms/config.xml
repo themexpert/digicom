@@ -485,17 +485,33 @@
 					<option value="text">COM_DIGICOM_SETTINGS_EMAIL_TYPE_TEXT</option>
 				</field>
 				
-				<field name="template" type="dgeditor"
+				<field name="template_html" type="dgeditor"
 					editor="codemirror|none"
+					id="neworder_template_html"
 					readonly="true"
 					buttons="no" 
 					label="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_LABEL" description="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_DESC"
 					height="500px" rows="20" cols="80" syntax="php" filter="raw" 
 					path="/components/com_digicom/emails/"
-					filename="new-order.php"
+					filename="new-order.html.php"
 					overridepath="template"
 					override="/html/com_digicom/emails/"
-					overridemsg="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_OVERRIDE_MSG"
+					overridemsg="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_OVERRIDE_NEW_ORDER_HTML_MSG"
+					class="span12"
+				/>
+
+				<field name="template_raw" type="dgeditor"
+					editor="codemirror|none"
+					id="neworder_template_raw"
+					readonly="true"
+					buttons="no" 
+					label="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_LABEL" description="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_DESC"
+					height="500px" rows="20" cols="80" syntax="php" filter="raw" 
+					path="/components/com_digicom/emails/"
+					filename="new-order.raw.php"
+					overridepath="template"
+					override="/html/com_digicom/emails/"
+					overridemsg="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_OVERRIDE_NEW_ORDER_RAW_MSG"
 					class="span12"
 				/>
 				
