@@ -402,7 +402,7 @@ class JFormFieldDGEditor extends JFormFieldTextarea
 	 */
 	public function save()
 	{
-		return $this->getEditor()->save($this->id);
+		return $this->getEditor()->onSave($this->id);
 	}
 
 	/*
