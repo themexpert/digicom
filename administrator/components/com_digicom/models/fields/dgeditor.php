@@ -255,7 +255,9 @@ class JFormFieldDGEditor extends JFormFieldTextarea
 		$overridepath = $this->getAttribute('overridepath'); //template || root
 		$override = $this->getAttribute('override'); // /html/com_digicom/emails/
 		$override_action = true;
-		
+		$wclass        = !empty($this->class) ? ' '. $this->class : '';
+		$return = '<div class="dgeditor email_template_digicom'.$wclass.'">';
+
 		if(!empty($overridepath)){
 			//TODO:: !empty
 			switch($overridepath){
@@ -278,7 +280,7 @@ class JFormFieldDGEditor extends JFormFieldTextarea
 						{
 							$override_action = false;
 							$overridemsg = $this->getAttribute('overridemsg'); ///html/com_digicom/emails/
-							echo JText::_($overridemsg).'<br/>';
+							$return .= JText::_($overridemsg).'<br/>';
 							
 							$filePath = JPath::clean($client->path . $path . '/'.$filename);
 							$this->value = file_get_contents($filePath);
@@ -295,7 +297,7 @@ class JFormFieldDGEditor extends JFormFieldTextarea
 			// Get an editor object.
 			$editor = $this->getEditor();
 
-			return $editor->display(
+			$return .= $editor->display(
 				$this->name, htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8'), $this->width, $this->height, $this->cols, $this->rows,
 				$this->buttons ? (is_array($this->buttons) ? array_merge($this->buttons, $this->hide) : $this->hide) : false, $this->id, $this->asset,
 				$this->form->getValue($this->authorField), array('syntax' => (string) $this->element['syntax'])
@@ -325,10 +327,12 @@ class JFormFieldDGEditor extends JFormFieldTextarea
 			$onchange = $this->onchange ? ' onchange="' . $this->onchange . '"' : '';
 			$onclick = $this->onclick ? ' onclick="' . $this->onclick . '"' : '';
 			
-			return '<textarea name="' . $this->name . '" id="' . $this->id . '"' . $columns . $rows . $class
+			$return .= '<textarea name="' . $this->name . '" id="' . $this->id . '"' . $columns . $rows . $class
 				. $hint . $disabled . $readonly . $onchange . $onclick . $required . $autocomplete . $autofocus . $spellcheck . ' >'
 				. htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '</textarea>';
 		}
+		$return .='</div>';
+		return $return; 
 	}
 
 	/**
