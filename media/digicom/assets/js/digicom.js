@@ -73,7 +73,26 @@ function changeOrderStatus(id,task,index,val){
     submitbutton(task);
 }
 
+function showProperTemplateEmail(type){
+	//console.log(type);return;
+  event.preventDefault();
+
+  var templateType = jQuery('#jform_'+ type +'_email_type').chosen(),
+		htmlTemplate = jQuery('.email_template_digicom.email_template_digicom_'+type+'_html'),
+		rawTemplate = jQuery('.email_template_digicom.email_template_digicom_'+type+'_raw');
+	//console.log(templateType.val());
+	if(templateType.val() == 'html'){
+		htmlTemplate.parent().parent().show();
+		rawTemplate.parent().parent().hide();
+	}else{
+		htmlTemplate.parent().parent().hide();
+    rawTemplate.parent().parent().show();
+	}
+}
+
 jQuery(document).ready(function() {
+
+  jQuery('.email_template_digicom').parent().parent().hide();
 
   /* Load the value from localStorage*/
   if (typeof(Storage) !== "undefined")
@@ -170,5 +189,7 @@ jQuery(document).ready(function() {
 			'sortable_options': sortable
 		});
 	});
-
+	
+	
+	
 });
