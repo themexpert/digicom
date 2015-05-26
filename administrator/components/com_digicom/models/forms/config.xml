@@ -423,7 +423,7 @@
 					class="span12" row="12"
 					description="COM_DIGICOM_SETTINGS_EMAIL_BG_COLOR_DESC"
 					/>
-				<field
+				<!-- <field
 					name="email_body_bg_color"
 					type="color"
 					label="COM_DIGICOM_SETTINGS_EMAIL_BODY_BG_COLOR_LABEL"
@@ -436,7 +436,7 @@
 					label="COM_DIGICOM_SETTINGS_EMAIL_BODY_COLOR_LABEL"
 					class="span12" row="12"
 					description="COM_DIGICOM_SETTINGS_EMAIL_BODY_COLOR_DESC"
-					/>
+					/> -->
 				
 				
 				
