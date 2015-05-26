@@ -452,8 +452,8 @@
 					name="enable"
 					type="radio"
 					class="btn-group"
-					label="COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_ENABLE_LABEL"
-					description="COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_ENABLE_DESC"
+					label="COM_DIGICOM_SETTINGS_EMAIL_ENABLE_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_ENABLE_DESC"
 					default="1"
 				>
 					<option value="0">JNO</option>
@@ -461,25 +461,25 @@
 				</field>
 				
 				<field name="recipients" type="text"
-					label="COM_DIGICOM_SETTINGS_NEW_ORDER_RECIPIENTS_LABEL"
-					description="COM_DIGICOM_SETTINGS_NEW_ORDER_RECIPIENTS_DESC"
+					label="COM_DIGICOM_SETTINGS_RECIPIENTS_LABEL"
+					description="COM_DIGICOM_SETTINGS_RECIPIENTS_DESC"
 				/>
 				<field name="Subject" type="text"
-					label="COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_SUBJECT_LABEL"
-					description="COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_SUBJECT_DESC"
+					label="COM_DIGICOM_SETTINGS_EMAIL_SUBJECT_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_SUBJECT_DESC"
 				>
 					<option value="[{site_title}] New customer order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_SUBJECT_DEFAULT</option>
 				</field>
 				<field name="heading" type="text"
-					label="COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_HEADING_LABEL"
-					description="COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_HEADING_DESC"
+					label="COM_DIGICOM_SETTINGS_EMAIL_HEADING_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_HEADING_DESC"
 				>
 					<option value="[{site_title}] New customer order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_SUBJECT_DEFAULT</option>
 				</field>
 				
 				<field name="email_type" type="list"
-					label="COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_EMAIL_TYPE_LABEL"
-					description="COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_EMAIL_TYPE_DESC"
+					label="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_DESC"
 					onchange="showProperTemplateEmail('new_order')"
 				>
 					<option value="html">COM_DIGICOM_SETTINGS_EMAIL_TYPE_HTML</option>
@@ -514,6 +514,234 @@
 					override="/html/com_digicom/emails/"
 					overridemsg="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_OVERRIDE_NEW_ORDER_RAW_MSG"
 					class="span12 email_template_digicom_new_order_raw"
+				/>
+				
+				
+			</fields>
+			<fields name="process_order">
+			
+				<field name="email_settings_spacer_process_order_notice" type="spacer" class="label"
+				label="COM_DIGICOM_SETTINGS_EMAIL_SETTINGS_SPACER_PROCESS_ORDER_NOTICE"
+				/>
+				
+				<field
+					name="enable"
+					type="radio"
+					class="btn-group"
+					label="COM_DIGICOM_SETTINGS_EMAIL_ENABLE_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_ENABLE_DESC"
+					default="1"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				
+				<field name="recipients" type="text"
+					label="COM_DIGICOM_SETTINGS_RECIPIENTS_LABEL"
+					description="COM_DIGICOM_SETTINGS_RECIPIENTS_DESC"
+				/>
+				<field name="Subject" type="text"
+					label="COM_DIGICOM_SETTINGS_EMAIL_SUBJECT_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_SUBJECT_DESC"
+				>
+					<option value="[{site_title}] Process Order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_PROCESS_ORDER_SUBJECT_DEFAULT</option>
+				</field>
+				<field name="heading" type="text"
+					label="COM_DIGICOM_SETTINGS_EMAIL_HEADING_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_HEADING_DESC"
+				>
+					<option value="[{site_title}] Process order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_PROCESS_ORDER_SUBJECT_DEFAULT</option>
+				</field>
+				
+				<field name="email_type" type="list"
+					label="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_DESC"
+					onchange="showProperTemplateEmail('process_order')"
+				>
+					<option value="html">COM_DIGICOM_SETTINGS_EMAIL_TYPE_HTML</option>
+					<option value="raw">COM_DIGICOM_SETTINGS_EMAIL_TYPE_TEXT</option>
+				</field>
+				<field name="email_settings_spacer_process_order_show_hide" type="spacer"
+					label="COM_DIGICOM_SETTINGS_EMAIL_SETTINGS_SPACER_PROCESS_ORDER_SHOW_HIDE_NOTICE"
+				/>
+				<field name="template_html" type="dgeditor"
+					editor="codemirror|none"
+					readonly="true"
+					buttons="no" 
+					label="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_HTML_LABEL" description="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_DESC"
+					height="500px" rows="20" cols="80" syntax="php" filter="raw" 
+					path="/components/com_digicom/emails/"
+					filename="process-order.html.php"
+					overridepath="template"
+					override="/html/com_digicom/emails/"
+					overridemsg="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_OVERRIDE_PROCESS_ORDER_HTML_MSG"
+					class="span12 email_template_digicom_process_order_html"
+				/>
+
+				<field name="template_raw" type="dgeditor"
+					editor="codemirror|none"
+					readonly="true"
+					buttons="no" 
+					label="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_RAW_LABEL" description="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_DESC"
+					height="500px" rows="20" cols="80" syntax="php" filter="raw" 
+					path="/components/com_digicom/emails/"
+					filename="process-order.raw.php"
+					overridepath="template"
+					override="/html/com_digicom/emails/"
+					overridemsg="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_OVERRIDE_PROCESS_ORDER_RAW_MSG"
+					class="span12 email_template_digicom_process_order_raw"
+				/>
+				
+				
+			</fields>
+			<fields name="complete_order">complete_order
+			
+				<field name="email_settings_spacer_complete_order_notice" type="spacer" class="label"
+				label="COM_DIGICOM_SETTINGS_EMAIL_SETTINGS_SPACER_COMPLETE_ORDER_NOTICE"
+				/>
+				
+				<field
+					name="enable"
+					type="radio"
+					class="btn-group"
+					label="COM_DIGICOM_SETTINGS_EMAIL_ENABLE_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_ENABLE_DESC"
+					default="1"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				
+				<field name="recipients" type="text"
+					label="COM_DIGICOM_SETTINGS_RECIPIENTS_LABEL"
+					description="COM_DIGICOM_SETTINGS_RECIPIENTS_DESC"
+				/>
+				<field name="Subject" type="text"
+					label="COM_DIGICOM_SETTINGS_EMAIL_SUBJECT_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_SUBJECT_DESC"
+				>
+					<option value="[{site_title}] Complete order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_COMPLETE_ORDER_SUBJECT_DEFAULT</option>
+				</field>
+				<field name="heading" type="text"
+					label="COM_DIGICOM_SETTINGS_EMAIL_HEADING_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_HEADING_DESC"
+				>
+					<option value="[{site_title}] Complete order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_COMPLETE_ORDER_SUBJECT_DEFAULT</option>
+				</field>
+				
+				<field name="email_type" type="list"
+					label="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_DESC"
+					onchange="showProperTemplateEmail('complete_order')"
+				>
+					<option value="html">COM_DIGICOM_SETTINGS_EMAIL_TYPE_HTML</option>
+					<option value="raw">COM_DIGICOM_SETTINGS_EMAIL_TYPE_TEXT</option>
+				</field>
+				<field name="email_settings_spacer_complete_order_show_hide" type="spacer"
+					label="COM_DIGICOM_SETTINGS_EMAIL_SETTINGS_SPACER_COMPLETE_ORDER_SHOW_HIDE_NOTICE"
+				/>
+				<field name="template_html" type="dgeditor"
+					editor="codemirror|none"
+					readonly="true"
+					buttons="no" 
+					label="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_HTML_LABEL" description="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_DESC"
+					height="500px" rows="20" cols="80" syntax="php" filter="raw" 
+					path="/components/com_digicom/emails/"
+					filename="complete-order.html.php"
+					overridepath="template"
+					override="/html/com_digicom/emails/"
+					overridemsg="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_OVERRIDE_COMPLETE_ORDER_HTML_MSG"
+					class="span12 email_template_digicom_complete_order_html"
+				/>
+
+				<field name="template_raw" type="dgeditor"
+					editor="codemirror|none"
+					readonly="true"
+					buttons="no" 
+					label="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_RAW_LABEL" description="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_DESC"
+					height="500px" rows="20" cols="80" syntax="php" filter="raw" 
+					path="/components/com_digicom/emails/"
+					filename="complete-order.raw.php"
+					overridepath="template"
+					override="/html/com_digicom/emails/"
+					overridemsg="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_OVERRIDE_COMPLETE_ORDER_RAW_MSG"
+					class="span12 email_template_digicom_complete_order_raw"
+				/>
+				
+				
+			</fields>
+			<fields name="cancel_order">
+			
+				<field name="email_settings_spacer_cancel_order_notice" type="spacer" class="label"
+				label="COM_DIGICOM_SETTINGS_EMAIL_SETTINGS_SPACER_CANCEL_ORDER_NOTICE"
+				/>
+				
+				<field
+					name="enable"
+					type="radio"
+					class="btn-group"
+					label="COM_DIGICOM_SETTINGS_EMAIL_ENABLE_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_ENABLE_DESC"
+					default="1"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				
+				<field name="recipients" type="text"
+					label="COM_DIGICOM_SETTINGS_RECIPIENTS_LABEL"
+					description="COM_DIGICOM_SETTINGS_RECIPIENTS_DESC"
+				/>
+				<field name="Subject" type="text"
+					label="COM_DIGICOM_SETTINGS_EMAIL_SUBJECT_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_SUBJECT_DESC"
+				>
+					<option value="[{site_title}] Cancel order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_CANCEL_ORDER_SUBJECT_DEFAULT</option>
+				</field>
+				<field name="heading" type="text"
+					label="COM_DIGICOM_SETTINGS_EMAIL_HEADING_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_HEADING_DESC"
+				>
+					<option value="[{site_title}] Cancel order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_CANCEL_ORDER_SUBJECT_DEFAULT</option>
+				</field>
+				
+				<field name="email_type" type="list"
+					label="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_DESC"
+					onchange="showProperTemplateEmail('cancel_order')"
+				>
+					<option value="html">COM_DIGICOM_SETTINGS_EMAIL_TYPE_HTML</option>
+					<option value="raw">COM_DIGICOM_SETTINGS_EMAIL_TYPE_TEXT</option>
+				</field>
+				<field name="email_settings_spacer_cancel_order_show_hide" type="spacer"
+					label="COM_DIGICOM_SETTINGS_EMAIL_SETTINGS_SPACER_CANCEL_ORDER_SHOW_HIDE_NOTICE"
+				/>
+				<field name="template_html" type="dgeditor"
+					editor="codemirror|none"
+					readonly="true"
+					buttons="no" 
+					label="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_HTML_LABEL" description="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_DESC"
+					height="500px" rows="20" cols="80" syntax="php" filter="raw" 
+					path="/components/com_digicom/emails/"
+					filename="cancel-order.html.php"
+					overridepath="template"
+					override="/html/com_digicom/emails/"
+					overridemsg="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_OVERRIDE_CANCEL_ORDER_HTML_MSG"
+					class="span12 email_template_digicom_cancel_order_html"
+				/>
+
+				<field name="template_raw" type="dgeditor"
+					editor="codemirror|none"
+					readonly="true"
+					buttons="no" 
+					label="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_RAW_LABEL" description="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_DESC"
+					height="500px" rows="20" cols="80" syntax="php" filter="raw" 
+					path="/components/com_digicom/emails/"
+					filename="cancel-order.raw.php"
+					overridepath="template"
+					override="/html/com_digicom/emails/"
+					overridemsg="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_OVERRIDE_CANCEL_ORDER_RAW_MSG"
+					class="span12 email_template_digicom_cancel_order_raw"
 				/>
 				
 				
