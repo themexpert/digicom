@@ -254,7 +254,10 @@ class JFormFieldDGEditor extends JFormFieldTextarea
 		$filename = $this->getAttribute('filename'); //new-order.php
 		$overridepath = $this->getAttribute('overridepath'); //template || root
 		$override = $this->getAttribute('override'); // /html/com_digicom/emails/
-		$override_action = true;
+		
+		// override is always false for now
+		// when we will support edit file then it will be true
+		$override_action = false;
 		$wclass        = !empty($this->class) ? ' '. $this->class : '';
 		$return = '<div class="dgeditor email_template_digicom'.$wclass.'">';
 
@@ -274,6 +277,7 @@ class JFormFieldDGEditor extends JFormFieldTextarea
 						//echo $filePath;die;
 						if (file_exists($filePath))
 						{
+							$return .= JText::sprintf('COM_DIGICOM_CONFIG_EDITOR_EDIT_PATH_YOURSELF',$filename,'templates/yourtemplates'.$override).'<br/>';
 							$this->value = file_get_contents($filePath);
 						}
 						else
