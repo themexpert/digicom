@@ -103,8 +103,11 @@ JHtml::_('formbehavior.chosen', 'select');
 							<?php else: ?>
 							
 								<ul class="nav nav-tabs" id="emailTabs">
-									<li class=""><a href="#COMMON" data-toggle="tab">Common</a></li>
-									<li><a href="#NEW_ORDER" data-toggle="tab">New Order</a></li>
+									<li class=""><a href="#COMMON" data-toggle="tab"><?php echo JText::_('COM_DIGICOM_CONFIG_EMAIL_TEMPLATES_COMMON');?></a></li>
+									<li><a href="#NEW_ORDER" data-toggle="tab"><?php echo JText::_('COM_DIGICOM_CONFIG_EMAIL_TEMPLATES_NEW_ORDER');?></a></li>
+									<li><a href="#COMPLETE_ORDER" data-toggle="tab"><?php echo JText::_('COM_DIGICOM_CONFIG_EMAIL_TEMPLATES_COMPLETE_ORDER');?></a></li>
+									<li><a href="#PROCESS_ORDER" data-toggle="tab"><?php echo JText::_('COM_DIGICOM_CONFIG_EMAIL_TEMPLATES_PROCESS_ORDER');?></a></li>
+									<li><a href="#CANCEL_ORDER" data-toggle="tab"><?php echo JText::_('COM_DIGICOM_CONFIG_EMAIL_TEMPLATES_CANCEL_ORDER');?></a></li>
 								</ul>
 								
 								<div class="tab-content">
@@ -117,6 +120,39 @@ JHtml::_('formbehavior.chosen', 'select');
 									
 									<div class="tab-pane" id="NEW_ORDER">
 										<?php foreach ($this->form->getGroup('new_order') as $field) : 
+											$name = $field->getAttribute('name');
+											if($name != 'template'):
+											?>
+											<?php echo $field->getControlGroup(); ?>
+											<?php else: ?>
+											<?php echo $field->input; ?>
+											<?php endif; ?>
+										<?php endforeach; ?>
+									</div>
+									<div class="tab-pane" id="COMPLETE_ORDER">
+										<?php foreach ($this->form->getGroup('complete_order') as $field) : 
+											$name = $field->getAttribute('name');
+											if($name != 'template'):
+											?>
+											<?php echo $field->getControlGroup(); ?>
+											<?php else: ?>
+											<?php echo $field->input; ?>
+											<?php endif; ?>
+										<?php endforeach; ?>
+									</div>
+									<div class="tab-pane" id="PROCESS_ORDER">
+										<?php foreach ($this->form->getGroup('process_order') as $field) : 
+											$name = $field->getAttribute('name');
+											if($name != 'template'):
+											?>
+											<?php echo $field->getControlGroup(); ?>
+											<?php else: ?>
+											<?php echo $field->input; ?>
+											<?php endif; ?>
+										<?php endforeach; ?>
+									</div>
+									<div class="tab-pane" id="CANCEL_ORDER">
+										<?php foreach ($this->form->getGroup('cancel_order') as $field) : 
 											$name = $field->getAttribute('name');
 											if($name != 'template'):
 											?>
