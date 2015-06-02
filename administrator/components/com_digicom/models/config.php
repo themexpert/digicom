@@ -98,6 +98,8 @@ class DigiComModelConfig extends JModelForm
 
 		// Store email templates to file
 		// TODO:: Lets push it man
+		// this time we will not store it
+		/*
 		$app = JFactory::getApplication();
 		$fileName = base64_decode($app->input->get('file'));
 		$client = JApplicationHelper::getClientInfo($template->client_id);
@@ -113,12 +115,12 @@ class DigiComModelConfig extends JModelForm
 		// Try to make the template file writable.
 		if (!is_writable($filePath))
 		{
-			$app->enqueueMessage(JText::_('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_WRITABLE'), 'warning');
-			$app->enqueueMessage(JText::_('COM_TEMPLATES_FILE_PERMISSIONS' . JPath::getPermissions($filePath)), 'warning');
+			$app->enqueueMessage(JText::_('COM_DIGICOM_CONFIG_EMAIL_TEMPLATE_ERROR_SOURCE_FILE_NOT_WRITABLE'), 'warning');
+			$app->enqueueMessage(JText::_('COM_DIGICOM_CONFIG_EMAIL_TEMPLATE_FILE_PERMISSIONS' . JPath::getPermissions($filePath)), 'warning');
 
 			if (!JPath::isOwner($filePath))
 			{
-				$app->enqueueMessage(JText::_('COM_TEMPLATES_CHECK_FILE_OWNERSHIP'), 'warning');
+				$app->enqueueMessage(JText::_('COM_DIGICOM_CONFIG_EMAIL_TEMPLATE_CHECK_FILE_OWNERSHIP'), 'warning');
 			}
 
 			return false;
@@ -127,11 +129,11 @@ class DigiComModelConfig extends JModelForm
 		$return = JFile::write($filePath, $data['source']);
 		if (!$return)
 		{
-			$app->enqueueMessage(JText::sprintf('COM_TEMPLATES_ERROR_FAILED_TO_SAVE_FILENAME', $fileName), 'error');
+			$app->enqueueMessage(JText::sprintf('COM_DIGICOM_CONFIG_EMAIL_TEMPLATE_ERROR_FAILED_TO_SAVE_FILENAME', $fileName), 'error');
 
 			return false;
 		}
-
+		*/
 
 		return true;
 	}
