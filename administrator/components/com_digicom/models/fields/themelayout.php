@@ -47,16 +47,8 @@ class JFormFieldThemelayout extends JFormField
         $db = JFactory::getDBO();
 		$query = "SELECT template FROM #__template_styles WHERE client_id = 0 AND home = 1";
         $db->setQuery($query);
-        $defaultemplate = $db->loadResult();
-
-        if (JFolder::exists(JPATH_SITE . '/templates/' . $defaultemplate . '/html/com_digicom/templates'))
-        {
-            $templatePath = JPATH_SITE . '/templates/' . $defaultemplate . '/html/com_digicom/templates';
-        }
-        else
-        {
-            $templatePath = JPATH_SITE . '/templates/' . $defaultemplate . '/html/com_digicom';
-        }
+        $defaultemplate = $db->loadResult();    
+        $templatePath = JPATH_SITE . '/templates/' . $defaultemplate . '/html/com_digicom/templates';
 
         if (JFolder::exists($templatePath))
         {
