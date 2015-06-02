@@ -1201,11 +1201,13 @@ class DigiComModelCart extends JModelItem
 		}
 
 		$mailSender = JFactory::getMailer();
-		$mailSender->IsHTML( true );
+		$mailSender->isHTML( true );
+		$mailSender->Encoding = 'base64';
 		$mailSender->addRecipient( $my->email );
 		$mailSender->setSender( array($adminEmail2, $adminName2) );
 		$mailSender->setSubject( $subject );
 		$mailSender->setBody( $message );
+
 		//Log::write( $message );
 		if ( !$mailSender->Send() ) {
 			//<Your error code management>
@@ -1214,7 +1216,8 @@ class DigiComModelCart extends JModelItem
 		if ( $configs->get('sendmailtoadmin',1) != 0 ) {
 			$recipients =  $adminEmail2 . (!empty($recipients) ? ', '.$recipients : ''); 
 			$mailSender = JFactory::getMailer();
-			$mailSender->IsHTML( true );
+			$mailSender->isHTML( true );
+			$mailSender->Encoding = 'base64';
 			$mailSender->addRecipient( $recipients );
 			$mailSender->setSender( array($adminEmail2, $adminName2) );
 			$mailSender->setSubject( $subject );
