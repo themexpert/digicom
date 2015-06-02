@@ -619,9 +619,81 @@ class DigiComModelOrders extends JModelList{
 
 		$my = $cust_info;
 
+		/*		
 		$emailinfo = $configs->get('email');
 		$message = $emailinfo->$type->body;
 		$subject = $emailinfo->$type->subject;
+		*/
+
+		//echo $type;die;
+		$email_settings = $configs->get('email_settings');
+		$email_header_image = $email_settings->email_header_image;//jform[email_settings][email_header_image]
+		if(!empty($email_header_image)){
+			$email_header_image = '<img src="'.JRoute::_(JURI::base().$email_header_image).'" />';
+		}
+		$phone = $configs->get('phone');
+
+		$email_footer = $email_settings->email_footer;
+
+		$emailinfo = $configs->get($type,'new_order');
+		$email_type = $emailinfo->email_type;
+		$Subject = $emailinfo->Subject;
+		$recipients = $emailinfo->recipients;
+		$enable = $emailinfo->enable;
+		if(!$enable) return;
+		//print_r($emailinfo);die;
+		
+		//-----------------------------------------------------------------------
+		$path = '/components/com_digicom/emails/';
+		
+		switch ($type) {
+			case 'new_order':
+				$emailType = JText::_('COM_DIGIOM_NEW_ORDER');
+				$filename = 'new-order.'.$email_type.'.php';
+				break;
+			
+			case 'process_order':
+				$emailType = JText::_('COM_DIGIOM_PROCESS_ORDER');
+				$filename = 'process-order.'.$email_type.'.php';
+				break;
+			
+			case 'cancel_order':
+				$emailType = JText::_('COM_DIGIOM_CANCEL_ORDER');
+				$filename = 'cancel-order.'.$email_type.'.php';
+				break;
+			
+			case 'complete_order':
+				$emailType = JText::_('COM_DIGIOM_COMPLETE_ORDER');
+				$filename = 'complete-order.'.$email_type.'.php';
+				break;
+		}
+
+		$override = '/html/com_digicom/emails/';
+		$template = $this->getTemplate();
+		$client   = JApplicationHelper::getClientInfo($template->client_id);
+		$filePath = JPath::clean($client->path . '/templates/' . $template->template . $override.'/'.$filename);
+		//echo $filePath;die;
+		if (file_exists($filePath))
+		{
+			$emailbody = file_get_contents($filePath);
+		}
+		else
+		{
+			$filePath = JPath::clean($client->path . $path . '/'.$filename);
+			$emailbody = file_get_contents($filePath);
+		}
+		//echo $emailbody;die;
+		//-----------------------------------------------------------------------
+
+
+		//$email = $configs->get('email');
+		
+		/*$message = $email->$type->body;
+		$subject = $email->$type->subject;
+		*/
+		$message = $emailbody;
+		$subject = $Subject;
+
 
 		$mes = new stdClass();
 
@@ -646,6 +718,9 @@ class DigiComModelOrders extends JModelList{
 
 		$message = str_replace( "[SITENAME]", $sitename, $message );
 
+		$message = str_replace("[EMAIL_TYPE]", $emailType, $message);
+		$message = str_replace("[HEADER_IMAGE]", $email_header_image, $message);
+
 		$message = str_replace( "../%5BSITEURL%5D", $siteurl, $message );
 		$message = str_replace( "%5BSITEURL%5D", $siteurl, $message );
 		$message = str_replace( "[SITEURL]", $siteurl, $message );
@@ -662,6 +737,9 @@ class DigiComModelOrders extends JModelList{
 		$message = str_replace( "[NUMBER_OF_PRODUCTS]", $order->number_of_products, $message );
 		$message = str_replace( "[DISCOUNT_AMOUNT]", $order->promocodediscount, $message );
 		$message = str_replace( "[ORDER_STATUS]", $status, $message );
+
+		$message = str_replace( "[STORE_PHONE]", $phone, $message );
+		$message = str_replace( "[FOOTER_TEXT]", $email_footer, $message );
 
 		$displayed = array();
 		$product_list = '';
@@ -698,8 +776,11 @@ class DigiComModelOrders extends JModelList{
 
 		$subject = str_replace( "[PRODUCTS]", $product_list, $subject );
 
-		$subject = html_entity_decode( $subject, ENT_QUOTES );
+		$subject = str_replace( "{site_title}", $sitename, $subject );
+		$subject = str_replace( "{order_number}", $cid, $subject );
+		$subject = str_replace( "{order_date}", date( $configs->get('time_format','d-m-Y'), $timestamp ), $subject );
 
+		$subject = html_entity_decode( $subject, ENT_QUOTES );
 		$message = html_entity_decode( $message, ENT_QUOTES );
 
 		// Send email to user
@@ -758,6 +839,26 @@ class DigiComModelOrders extends JModelList{
 
 	}
 
+	/*
+	* getTemplate
+	* get the site template for frontend
+	*/
+
+	public static function getTemplate(){
+		// Get the database object.
+		$db = JFactory::getDbo();
+		// Build the query.
+		$query = $db->getQuery(true)
+			->select('*')
+			->from('#__template_styles')
+			->where('client_id = ' . $db->quote(0))
+			->where('home = ' . $db->quote(1));
+
+		// Check of the editor exists.
+		$db->setQuery($query);
+		return $db->loadObject();
+
+	}
 
 	
 	/**
