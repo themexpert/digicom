@@ -1027,7 +1027,7 @@ class DigiComModelCart extends JModelItem
 		//print_r($emailinfo);die;
 		
 		//-----------------------------------------------------------------------
-		$path = 'components/com_digicom/emails/';
+		$path = '/components/com_digicom/emails/';
 		
 		switch ($type) {
 			case 'new_order':
@@ -1185,6 +1185,7 @@ class DigiComModelCart extends JModelItem
 		// final email subject & message
 		$subject = html_entity_decode( $subject, ENT_QUOTES );
 		$message = html_entity_decode( $message, ENT_QUOTES );
+		//echo $message;die;
 
 		$app = JFactory::getApplication('site');
 
