@@ -406,7 +406,7 @@
 					name="email_footer"
 					type="textarea"
 					label="COM_DIGICOM_SETTINGS_EMAIL_FOOTER_LABEL"
-					class="span12" row="12"
+					class="span12 input-large-text" row="12"
 					description="COM_DIGICOM_SETTINGS_EMAIL_FOOTER_DESC"
 					/>
 				<field
