@@ -94,7 +94,7 @@ class DigiComControllerConfigs extends JControllerAdmin {
 		switch ($task)
 		{
 			case 'apply':
-				$this->app->enqueueMessage(JText::_('CONFIGSAVED'));
+				$this->app->enqueueMessage(JText::_('COM_DIGICOM_CONFIG_SAVED_SUCCESSFULLY'));
 				$this->app->redirect(JRoute::_('index.php?option=com_digicom&view=configs', false));
 
 				break;
@@ -102,7 +102,7 @@ class DigiComControllerConfigs extends JControllerAdmin {
 			case 'save':
 			default:
 				$redirect = 'index.php?option=com_digicom';
-				$this->app->enqueueMessage(JText::_('CONFIGSAVED'));
+				$this->app->enqueueMessage(JText::_('COM_DIGICOM_CONFIG_SAVED_SUCCESSFULLY'));
 				$this->app->redirect(JRoute::_($redirect, false));
 
 				break;
