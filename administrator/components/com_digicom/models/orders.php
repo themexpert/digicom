@@ -629,7 +629,7 @@ class DigiComModelOrders extends JModelList{
 		$email_settings = $configs->get('email_settings');
 		$email_header_image = $email_settings->email_header_image;//jform[email_settings][email_header_image]
 		if(!empty($email_header_image)){
-			$email_header_image = '<img src="'.JRoute::_(JURI::base().$email_header_image).'" />';
+			$email_header_image = '<img src="'.JRoute::_(JURI::root().$email_header_image).'" />';
 		}
 		$phone = $configs->get('phone');
 
@@ -640,6 +640,7 @@ class DigiComModelOrders extends JModelList{
 		$Subject = $emailinfo->Subject;
 		$recipients = $emailinfo->recipients;
 		$enable = $emailinfo->enable;
+		$heading = $emailinfo->heading;//jform[email_settings][heading]
 		if(!$enable) return;
 		//print_r($emailinfo);die;
 		
@@ -719,6 +720,7 @@ class DigiComModelOrders extends JModelList{
 		$message = str_replace( "[SITENAME]", $sitename, $message );
 
 		$message = str_replace("[EMAIL_TYPE]", $emailType, $message);
+		$message = str_replace("[EMAIL_HEADER]", $heading, $message);
 		$message = str_replace("[HEADER_IMAGE]", $email_header_image, $message);
 
 		$message = str_replace( "../%5BSITEURL%5D", $siteurl, $message );
@@ -774,11 +776,27 @@ class DigiComModelOrders extends JModelList{
 		$subject = str_replace( "[DISCOUNT_AMOUNT]", $order->promocodediscount, $subject );
 		$subject = str_replace( "[ORDER_STATUS]", $status, $subject );
 
-		$subject = str_replace( "[PRODUCTS]", $product_list, $subject );
-
 		$subject = str_replace( "{site_title}", $sitename, $subject );
 		$subject = str_replace( "{order_number}", $cid, $subject );
 		$subject = str_replace( "{order_date}", date( $configs->get('time_format','d-m-Y'), $timestamp ), $subject );
+		
+		$message = str_replace( "{site_title}", $sitename, $message );
+		$message = str_replace( "{order_number}", $cid, $message );
+		$message = str_replace( "{order_date}", date( $configs->get('time_format','d-m-Y'), $timestamp ), $message );
+		
+		$subject = str_replace( "[PRODUCTS]", $product_list, $subject );
+
+		//replace styles
+		$basecolor = $email_settings->email_base_color; //
+		$basebgcolor = $email_settings->email_bg_color; //
+		$tmplcolor = $email_settings->email_body_color; //
+		$tmplbgcolor = $email_settings->email_body_bg_color; //
+		$message = str_replace( "[BASE_COLOR]", $basecolor, $message );
+		$message = str_replace( "[BASE_BG_COLOR]", $basebgcolor, $message );
+		$message = str_replace( "[TMPL_COLOR]", $tmplcolor, $message );
+		$message = str_replace( "[TMPL_BG_COLOR]", $tmplbgcolor, $message );
+
+		
 
 		$subject = html_entity_decode( $subject, ENT_QUOTES );
 		$message = html_entity_decode( $message, ENT_QUOTES );
