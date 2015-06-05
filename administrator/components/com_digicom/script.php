@@ -138,9 +138,9 @@ class Com_DigiComInstallerScript
 		}
 		
 		// Add an index.html if neither an index.html nor an index.php exist
-		if (!(file_exists($defaultPath . '/index.html') || file_exists($path . '/index.php')))
+		if (!(file_exists($defaultPath . '/index.html') || file_exists($defaultPath . '/index.php')))
 		{
-			file_put_contents($path . '/index.html', '<!DOCTYPE html><title></title>' . "\n");
+			file_put_contents($defaultPath . '/index.html', '<!DOCTYPE html><title></title>' . "\n");
 		}
 
 		return true;
