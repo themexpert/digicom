@@ -415,6 +415,7 @@
 					label="COM_DIGICOM_SETTINGS_EMAIL_BASE_COLOR_LABEL"
 					class="span12" row="12"
 					description="COM_DIGICOM_SETTINGS_EMAIL_BASE_COLOR_DESC"
+					default="#557da1"
 					/>
 				<field
 					name="email_bg_color"
@@ -422,13 +423,15 @@
 					label="COM_DIGICOM_SETTINGS_EMAIL_BG_COLOR_LABEL"
 					class="span12" row="12"
 					description="COM_DIGICOM_SETTINGS_EMAIL_BG_COLOR_DESC"
+					default="#f5f5f5"
 					/>
-				<!-- <field
+				<field
 					name="email_body_bg_color"
 					type="color"
 					label="COM_DIGICOM_SETTINGS_EMAIL_BODY_BG_COLOR_LABEL"
 					class="span12" row="12"
 					description="COM_DIGICOM_SETTINGS_EMAIL_BODY_BG_COLOR_DESC"
+					default="#fdfdfd"
 					/>
 				<field
 					name="email_body_color"
@@ -436,9 +439,8 @@
 					label="COM_DIGICOM_SETTINGS_EMAIL_BODY_COLOR_LABEL"
 					class="span12" row="12"
 					description="COM_DIGICOM_SETTINGS_EMAIL_BODY_COLOR_DESC"
-					/> -->
-				
-				
+					default="#505050"
+					/>
 				
 			</fields>
 			
