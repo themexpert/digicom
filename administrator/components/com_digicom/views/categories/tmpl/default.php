@@ -33,10 +33,10 @@ if ($saveOrder)
 ?>
 
 <form action="<?php echo JRoute::_('index.php?option=com_digicom&view=categories'); ?>" method="post" name="adminForm" id="adminForm">
-	<div id="j-sidebar-container" class="span2">
+	<div id="j-sidebar-container">
 		<?php echo $this->sidebar; ?>
 	</div>
-	<div id="j-main-container" class="span10">
+	<div id="j-main-container">
 		<?php
 		// Search tools bar
 		echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
