@@ -15,3 +15,20 @@ defined('_JEXEC') or die;
 // Complete Order Raw Template , text version
 //----------------------------------------------
 ?>
+
+= [EMAIL_HEADER] =
+
+
+Hi, [CUSTOMER_USER_NAME]
+This is an email to let you inform about your payment for the order#[ORDER_ID] has completed at [SITENAME]. The order is as follows
+
+Order #[ORDER_ID] (<time datetime="[ORDER_DATE]">[ORDER_DATE]</time>)
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+[PRODUCTS]
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+Store address : [STORE_ADDRESS] [STORE_PHONE]
+
+[FOOTER_TEXT]
