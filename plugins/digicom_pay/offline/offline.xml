@@ -2,7 +2,7 @@
 <extension version="3.0" type="plugin" group="digicom_pay" method="upgrade">
 	
 	<name>Offline Payment - DigiCom Pay Plugin</name>
-	<author>themexpert.com</author>
+	<author>ThemeXpert</author>
 	<creationDate>25th Oct 2013</creationDate>
 	<copyright>themexpert.com. All Rights Reserved.</copyright>
 	<authorEmail>extensions@themexpert.com.com</authorEmail>
