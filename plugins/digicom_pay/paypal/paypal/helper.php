@@ -8,9 +8,6 @@
  */
 
 defined('_JEXEC') or die;
-jimport('joomla.html.html');
-jimport( 'joomla.plugin.helper' );
-
 class plgDigiCom_PayPaypalHelper
 {
 	public static $ipn_data = array();
@@ -20,13 +17,15 @@ class plgDigiCom_PayPaypalHelper
 	public static $ipn_log_file = null;
 	
 	//gets the paypal URL
-	public static function buildPaypalUrl($secure_post = true, $sandbox = false )
+	public static function buildPaymentSubmitUrl($secure_post = true, $sandbox = false )
 	{
 		$url = $sandbox? 'www.sandbox.paypal.com' : 'www.paypal.com';
-		if ( $secure_post )
-			$url = 'https://' . $url . '/cgi-bin/webscr';
-		else
-			$url = 'http://' . $url . '/cgi-bin/webscr';
+		if ( $secure_post ){
+			$url = 'https://' . $url . '/cgi-bin/webscr';			
+		}else{
+			$url = 'http://' . $url . '/cgi-bin/webscr';			
+		}
+		
 		return $url;
 	}
 
@@ -35,29 +34,27 @@ class plgDigiCom_PayPaypalHelper
 
 		jimport('joomla.error.log');
 		$options = array('format' => "{DATE}\t{TIME}\t{USER}\t{DESC}");
-		if(JVERSION >='1.6.0')
-			$path=JPATH_SITE.'/plugins/digicom-pay/'.$name.'/'.$name.'/';
-		else
-			$path=JPATH_SITE.'/plugins/digicom-pay/'.$name.'/';	  
+		$path=JPATH_SITE.'/plugins/digicom-pay/'.$name.'/'.$name.'/';
+	
 		$my 	= JFactory::getUser();  
-// 		$logs 	= JLog::getInstance($logdata['JT_CLIENT'].'_'.$name.'.log',$options,$path);
-// 		JLog::addLogger(array('user' => $my->name.'('.$my->id.')','desc'=>json_encode($logdata['raw_data'])));
-		JLog::addLogger(array(
-							'user' => $my->name.'('.$my->id.')', 
-							'desc' => json_encode($logdata['raw_data'])
-							)
+		JLog::addLogger(
+			array(
+				'user' => $my->name.'('.$my->id.')', 
+				'desc' => json_encode($logdata['raw_data'])
+			)
 		);
+		
 	}
 
 	public static function validateIPN( $data, $paypal_url = '')
 	{
 		// parse the paypal URL
 		if(!$paypal_url){
-			$paypal_url	=plgDigiCom_PayPaypalHelper::buildPaypalUrl();
+			$paypal_url	=plgDigiCom_PayPaypalHelper::buildPaymentSubmitUrl();
 		}
-		$url_parsed=parse_url($paypal_url);
+		$url_parsed = parse_url($paypal_url);
 
-		// generate the post string from the _POST vars aswell as load the
+		// generate the post string from the _POST vars as-well-as load the
 		// _POST vars into an arry so we can play with them from the calling
 		// script.
 		// append ipn command
@@ -112,10 +109,11 @@ class plgDigiCom_PayPaypalHelper
 		// Timestamp
 		$text = '['.date('m/d/Y g:i A').'] - '; 
 		// Success or failure being logged?
-		if ($success)
-			$text .= "SUCCESS!\n";
-		else
-			$text .= 'FAIL: '.self::$last_error."\n";
+		if ($success){
+			$text .= "SUCCESS!\n";			
+		}else{
+			$text .= 'FAIL: '.self::$last_error."\n";			
+		}
 
 		// Log the POST variables
 		$text .= "IPN POST Vars from Paypal:\n";
@@ -125,6 +123,7 @@ class plgDigiCom_PayPaypalHelper
 
 		// Log the response from the paypal server
 		$text .= "\nIPN Response from Paypal Server:\n ".self::$ipn_response;
+		
 		// Write to log
 		$fp=fopen(self::$ipn_log_file,'a');
 		fwrite($fp, $text . "\n\n");

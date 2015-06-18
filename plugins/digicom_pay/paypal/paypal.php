@@ -18,33 +18,35 @@ require_once(dirname(__FILE__) . '/paypal/helper.php');
 class  plgDigiCom_PayPaypal extends JPlugin
 {
 	public $responseStatus = array (
-				'Completed' 		=> 'C',
-				'Pending' 			=> 'P',
-				'Failed' 			=> 'E',
-				'Denied' 			=> 'D',
-				'Refunded'			=> 'RF',
-				'Canceled_Reversal' => 'CRV',
-				'Reversed'			=> 'RV'
-			);
+		'Completed' 		=> 'C',
+		'Pending' 			=> 'P',
+		'Failed' 			=> 'E',
+		'Denied' 			=> 'D',
+		'Refunded'			=> 'RF',
+		'Canceled_Reversal' => 'CRV',
+		'Reversed'			=> 'RV'
+	);
+	
 	function __construct($subject, $config)
 	{
 		parent::__construct($subject, $config);
-		//Set the language in the class
-		//$config = JFactory::getConfig();
-
-		//Define Payment Status codes in Paypal  And Respective Alias in Framework
+		
+		//Define Payment Status codes in API  And Respective Alias in Framework
 		$this->responseStatus= array (
-				'Completed' 		=> 'C',
-				'Pending' 			=> 'P',
-				'Failed' 			=> 'E',
-				'Denied' 			=> 'D',
-				'Refunded'			=> 'RF',
-				'Canceled_Reversal' => 'CRV',
-				'Reversed'			=> 'RV'
-			);
+			'Completed' 		=> 'C',
+			'Pending' 			=> 'P',
+			'Failed' 			=> 'E',
+			'Denied' 			=> 'D',
+			'Refunded'			=> 'RF',
+			'Canceled_Reversal' => 'CRV',
+			'Reversed'			=> 'RV'
+		);
 	}
 
-	/* Internal use functions */
+	/* 
+	* Internal use functions 
+	* to override the view or output styles
+	*/
 	function buildLayoutPath($layout) {
 		jimport('joomla.filesystem.file');
 		$app = JFactory::getApplication();
@@ -57,11 +59,13 @@ class  plgDigiCom_PayPaypal extends JPlugin
 		}
 		else
 		{
-	  	return  $core_file;
-	}
+			return  $core_file;
+		}
 	}
 
-	//Builds the layout to be shown, along with hidden fields.
+	/*
+	* Builds the layout to be shown, along with hidden fields.
+	*/
 	function buildLayout($vars, $layout = 'default' )
 	{
 		// Load the layout & push variables
@@ -73,7 +77,9 @@ class  plgDigiCom_PayPaypal extends JPlugin
 		return $html;
 	}
 
-	// Used to Build List of Payment Gateway in the respective Components
+	/*
+	* Used to Build List of Payment Gateway in the respective Components
+	*/
 	function onTP_GetInfo($config)
 	{
 
@@ -85,19 +91,24 @@ class  plgDigiCom_PayPaypal extends JPlugin
 		return $obj;
 	}
 
-	//Constructs the Payment form in case of On Site Payment gateways like Auth.net & constructs the Submit button in case of offsite ones like Paypal
+	/*
+	* Constructs the Payment form in case of On Site Payment gateways like 
+	* Auth.net & constructs the Submit button in case of offsite ones like Paypal
+	*/
 	function onTP_GetHTML($vars)
 	{
 		$params 		= $this->params;
 		$secure_post 	= $params->get('secure_post');
 		$sandbox 		= $params->get('sandbox');
-		$vars->action_url = plgDigiCom_PayPaypalHelper::buildPaypalUrl($secure_post , $sandbox);
+		$vars->action_url = plgDigiCom_PayPaypalHelper::buildPaymentSubmitUrl($secure_post , $sandbox);
 
 		//Take this receiver email address from plugin if component not provided it
 		if(empty($vars->business))
 		$vars->business = $this->params->get('business');
 		$html = $this->buildLayout($vars);
 		return $html;
+		
+		
 	}
 
 
@@ -107,7 +118,7 @@ class  plgDigiCom_PayPaypal extends JPlugin
 		$params 		= $this->params;
 		$secure_post 	= $params->get('secure_post');
 		$sandbox 		= $params->get('sandbox');
-		$paypal_url 	= plgDigiCom_PayPaypalHelper::buildPaypalUrl($secure_post , $sandbox);
+		$paypal_url 	= plgDigiCom_PayPaypalHelper::buildPaymentSubmitUrl($secure_post , $sandbox);
 
 		$verify 		= plgDigiCom_PayPaypalHelper::validateIPN($data);
 
@@ -127,7 +138,6 @@ class  plgDigiCom_PayPaypal extends JPlugin
 		);
 		return $result;
 	}
-
 	function translateResponse($payment_status){
 			if(array_key_exists($payment_status,$this->responseStatus)){
 				return $this->responseStatus[$payment_status];

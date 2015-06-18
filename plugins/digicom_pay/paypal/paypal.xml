@@ -2,13 +2,13 @@
 <extension version="3.0" type="plugin" group="digicom_pay" method="upgrade">
 
 	<name>Payment - Paypal</name>
-	<author>themexpert.com</author>
-	<creationDate>Oct 2013</creationDate>
+	<author>ThemeXpert</author>
+	<creationDate>2015-06-05</creationDate>
 	<copyright>Copyright © 2013 themexpert.com. All rights reserved.</copyright>
 	<license>GNU/GPLv3</license>
 	<authorEmail>info@themexpert.com</authorEmail>
 	<authorUrl>www.themexpert.com</authorUrl>
-	<version>1.0.0</version>
+	<version>1.0.0-beta.4</version>
 	<description>Paypal payment plugin for DigiCom Joomla Extension</description>
 	
 	<files>
