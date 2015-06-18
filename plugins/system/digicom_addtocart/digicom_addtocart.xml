@@ -3,12 +3,12 @@
 
 	<name>System - Add To Cart DigiCom</name>
 	<author>ThemeXpert</author>
-	<creationDate>Sep, 2013</creationDate>
+	<creationDate>2015-06-05</creationDate>
 	<copyright>Copyright (C) 2013 themexpert.com. All rights reserved.</copyright>
 	<license>GNU/GPL</license>
 	<authorEmail>info@themexpert.com</authorEmail>
 	<authorUrl>www.themexpert.com</authorUrl>
-	<version>1.0.0</version>
+	<version>1.0.0-beta.4</version>
 
 	<description>Thank you for installing DigiCom Plugin.<br /> <br />To use this plugin, place the tag wherever you you want to display an "Add To Cart" button.<br /> <br />Basic Syntax: {digicom id=x}<br />  <br />Additional parameters:<br />align=right/left/center. For example: {digicom id=1 align=right}<br />quantity=yes. For example: {digicom id=1 quantity=yes}<br />close=yes. For example: {digicom id=1 close=yes}<br /><br /> <br />Combine the parameters for complete control. For example: {digicom id=1 align=right quantity=yes close=yes}<br /></description>
 
