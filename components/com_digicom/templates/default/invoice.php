@@ -81,9 +81,24 @@ $user = $this->customer->_customer;
 							<tr>
 								<td align="left">
 									<h3 style="text-transform: uppercase;font-size: 30px;"><?php echo JText::_('COM_DIGICOM_ORDER_PRINT_VIEW_INVOICE');?></h3>
-									<?php echo JText::_("COM_DIGICOM_MY_ORDERS")." #".$order->id; ?>
-									<br />
-									<?php echo JText::_("JDATE")." ".date( $configs->get('time_format','d-m-Y'), $order->order_date);?>
+									<div>
+										<span><?php echo JText::_("COM_DIGICOM_MY_ORDERS");?><span>
+										<code><?php echo '#' . $order->id; ?></code>
+									</div>
+									<div>
+										<span><?php echo JText::_("JDATE");?><span>
+										<code><?php echo date( $configs->get('time_format','d-m-Y'), $order->order_date); ?></code>
+									</div>
+									<div>
+										<span><?php echo JText::_("COM_DIGICOM_PAYMENT_METHOD");?><span>
+										<code><?php echo $order->processor; ?></code>
+									</div>
+									<div>
+										<span><?php echo JText::_("JSTATUS");?><span>
+										<code><?php echo ( strtolower($order->status) === 'active' ? JText::_('COM_DIGICOM_PAYMENT_PAID') : $order->status); ?></code>
+									</div>
+
+									
 								</td>
 
 								<td style="font-weight:normal" align="right">
