@@ -16,6 +16,16 @@ class DigiComViewCheckout extends JViewLegacy
 	{
 		
 		$app = JFactory::getApplication();
+		$input = $app->input;
+		$Itemid = $input->get("Itemid", 0);
+		$return = base64_encode( JURI::getInstance()->toString() );
+		$customer 	= new DigiComSiteHelperSession();
+		if($customer->_user->id < 1)
+		{
+			$app->Redirect(JRoute::_('index.php?option=com_users&view=login&return='.$return.'&Itemid='.$Itemid, false));
+			return true;
+		}
+
 		$session 	= JFactory::getSession();
 		$processor	= JRequest::getVar("processor", "");
 
@@ -29,7 +39,7 @@ class DigiComViewCheckout extends JViewLegacy
 		$dispatcher = JDispatcher::getInstance();
 		$plugin = JPluginHelper::importPlugin( 'digicom_pay', $pg_plugin );
 		
-		$customer 	= new DigiComSiteHelperSession();
+		
 		$configs 	= JComponentHelper::getComponent('com_digicom')->params;
 		$order 		=$this->get('Order');
 		//print_r($order);die;
