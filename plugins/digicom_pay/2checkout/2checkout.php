@@ -106,7 +106,6 @@ class  plgDigiCom_Pay2checkout extends JPlugin
 		$vars->lang = $this->params->get('lang','en');
 		$vars->pay_method = $this->params->get('pay_method','cc');
 
-
 		$html = $this->buildLayout($vars);
 		return $html;
 	}
@@ -116,12 +115,12 @@ class  plgDigiCom_Pay2checkout extends JPlugin
 	function onTP_Processpayment($data) 
 	{
 		$secret = $this->params->get('secret','cc');
-		/*
+		
 		$verify = plgDigiCom_Pay2checkoutHelper::validateIPN($data,$secret);
 		if (!$verify) { 
 			return false; 
 		}	
-		*/
+		
 
 		$id = array_key_exists('order_id', $data) ? (int)$data['order_id'] : -1;
 
