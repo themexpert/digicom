@@ -50,6 +50,7 @@ class DigiComViewCheckout extends JViewLegacy
 		$vars = new stdClass();
 
 
+		$vars->items = $items;
 		$vars->order_id = $params['order_id'];
 		$vars->custom = $customer->_customer->id;
 		$vars->user_firstname = $customer->_customer->firstname;
