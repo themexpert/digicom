@@ -712,7 +712,11 @@ class DigiComModelCart extends JModelItem
 	{
 		$app = JFactory::getApplication();
 		$dispatcher = JDispatcher::getInstance();
-
+		$customer = $this->loadCustomer($sid);
+		if(!$customer){
+			$order = $this->getOrder($order_id);
+			$customer = $order->userid;
+		}
 		$conf = $this->getInstance( "config", "digicomModel" );
 		$configs = $conf->getConfigs();
 
@@ -724,7 +728,6 @@ class DigiComModelCart extends JModelItem
 		if(isset($data['status']))
 		{
 			$_SESSION['in_trans'] = 1;
-			$customer = $this->loadCustomer($sid);
 			
 			if($data['status']=='C'){
 				$msg = JText::_("COM_DIGICOM_PAYMENT_SUCCESSFUL_THANK_YOU");
