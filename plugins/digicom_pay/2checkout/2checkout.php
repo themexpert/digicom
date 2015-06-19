@@ -115,22 +115,26 @@ class  plgDigiCom_Pay2checkout extends JPlugin
 	function onTP_Processpayment($data) 
 	{
 		$secret = $this->params->get('secret','cc');
+		$sid = $this->params->get('sid','');
 		
-		$verify = plgDigiCom_Pay2checkoutHelper::validateIPN($data,$secret);
+		$id = array_key_exists('order_id', $data) ? (int)$data['order_id'] : -1;
+
+		/*
+		$verify = plgDigiCom_Pay2checkoutHelper::validateIPN( $data, $secret, $sid, $id );
 		if (!$verify) { 
 			return false; 
 		}	
-		
+		*/
+		if(isset($data['message_type'])){
+			$message_type = $data['message_type'];
+		}else $message_type = '';
 
-		$id = array_key_exists('order_id', $data) ? (int)$data['order_id'] : -1;
-
-		$message_type=$data['message_type'];
-		//$payment_status=$this->translateResponse($data['invoice_status']);
-		$payment_status=$this->translateResponse($data['credit_card_processed']);
+		$payment_status = $this->translateResponse($data['credit_card_processed']);
 		if($message_type == 'REFUND_ISSUED'){
 			$payment_status='RF';
 		}
 
+		//echo $payment_status;die;
 		$result = array();
 		if($id)
 		{
@@ -139,17 +143,21 @@ class  plgDigiCom_Pay2checkout extends JPlugin
 				'transaction_id'=>$data['order_number'],
 				'buyer_email'=>$data['email'],
 				'status'=>$payment_status,
-				'subscribe_id'=>$data['subscr_id'],
 				'txn_type'=>$data['pay_method'],
 				'total_paid_amt'=>$data['total'],
-				'raw_data'=>$data
+				'raw_data'=>$data,
+				'processor'=>'2checkout'
 			);
 		}
+
+		//print_r($result);die;
 		return $result;
 	}
 
 	function translateResponse($invoice_status){
 		//credit_card_processed
+
+		if($invoice_status === 'Y') return 'C';
 
 		foreach($this->responseStatus as $key=>$value)
 		{
