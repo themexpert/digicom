@@ -29,20 +29,29 @@ class plgDigiCom_Pay2CheckoutHelper
 	
 	}
 	
-	function validateIPN($data,$secret)
+	public static function validateIPN($data,$secret,$sid,$order_id)
 	{
 
-		$incoming_md5 = strtoupper($data['md5_hash']);
-		$calculated_md5 = md5(
-			$data['sale_id'].
-			$data['vendor_id'].
-			$data['invoice_id'].
-			$secret
-		);
-		$calculated_md5 = strtoupper($calculated_md5);
+		$hashSecretWord = $secret; //2Checkout Secret Word
+		$hashSid = $sid; //2Checkout account number
+		$hashTotal = $data['total']; //Sale total to validate against
+		$hashOrder = $data['order_id']; //2Checkout Order Number
+		$StringToHash = strtoupper(md5($hashSecretWord . $hashSid . $hashOrder . $hashTotal));
+		//echo $hashOrder;die;
+		if ($StringToHash != $data['key']) {
+			//$result = 'Fail - Hash Mismatch'; 
+			return false;
+		} else { 
+			//$result = 'Success - Hash Matched';
+			return true;
+		}
+		$result;
+	}
 
-		return ($calculated_md5 == $incoming_md5);
+	public static function checkTotalToPay($order_id){
+		$db = JFactory::getDbo();
 
+		return '100.00';
 	}
 	
 	function log_ipn_results($success) {
