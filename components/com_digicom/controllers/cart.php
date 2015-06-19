@@ -483,6 +483,7 @@ class DigiComControllerCart extends JControllerLegacy
 		$input 		= $app->input;
 		
 		$processor 	= $session->get('processor','');
+		if(empty($processor)) $processor = $input->get('processor','');
 		$order_id 	= $input->get('order_id',0);
 		$sid 		= $input->get('sid','');
 		$pay 		= $input->get('pay','');
