@@ -62,7 +62,10 @@ config.codekit
 !/modules/mod_digicom_cart/
 !/modules/mod_digicom_categories/
 /plugins/*
-!/plugins/digicom_pay/
+!/plugins/digicom_pay/*
+/plugins/digicom_pay/*
+!/plugins/digicom_pay/offline/*
+!/plugins/digicom_pay/paypal/*
 !/plugins/system/
 !/plugins/search/
 !/plugins/finder/
