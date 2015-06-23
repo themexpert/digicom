@@ -62,11 +62,8 @@ class DigiComViewCheckout extends JViewLegacy
 
 		$vars->items = $items;
 		$vars->order_id = $params['order_id'];
-		$vars->custom = $customer->_customer->id;
-		$vars->user_firstname = $customer->_customer->firstname;
-		$vars->user_lastname = $customer->_customer->lastname;
 		$vars->user_id = JFactory::getUser()->id;
-		$vars->user_email = $customer->_user->email;
+		$vars->customer = $customer->_customer;
 		$vars->item_name = '';
 		
 		for($i=0; $i<count($items)-2; $i++)

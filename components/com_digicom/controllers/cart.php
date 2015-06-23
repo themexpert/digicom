@@ -402,7 +402,8 @@ class DigiComControllerCart extends JControllerLegacy
 		return true;
 	}
 	
-	function getCartItem() {
+	function getCartItem() 
+	{
 
 		$cid = JRequest::getVar('cid', -1);
 		$qty = JRequest::getVar('quantity'.$cid, 1);
@@ -455,7 +456,8 @@ class DigiComControllerCart extends JControllerLegacy
 		exit;
 	}
 
-	function validateInput(){
+	function validateInput()
+	{
 		$value = JRequest::getVar("value", "");
 		if(trim($value) != ""){
 			$input = JRequest::getVar("input", "");
