@@ -9,10 +9,6 @@
 
 defined('_JEXEC') or die;
 
-defined( 'DS' ) or define( 'DS', DIRECTORY_SEPARATOR);
-
-jimport( 'joomla.plugin.plugin' );
-
 require_once(dirname(__FILE__) . '/paypal/helper.php');
 
 class  plgDigiCom_PayPaypal extends JPlugin
@@ -30,7 +26,8 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	function __construct($subject, $config)
 	{
 		parent::__construct($subject, $config);
-		
+		$this->loadLanguage('plg_digicom_pay_paypal', JPATH_ADMINISTRATOR);
+
 		//Define Payment Status codes in API  And Respective Alias in Framework
 		$this->responseStatus= array (
 			'Completed' 		=> 'C',
@@ -41,6 +38,15 @@ class  plgDigiCom_PayPaypal extends JPlugin
 			'Canceled_Reversal' => 'CRV',
 			'Reversed'			=> 'RV'
 		);
+	}
+
+	/*
+	* 
+	*/
+	public function onSidebarMenuItem()
+	{
+		$pluginid = $this->getPluginId('paypal','digicom_pay','plugin');
+		return '<li><a href="' . JRoute::_("index.php?option=com_plugins&task=plugin.edit&extension_id=".$pluginid) . '">' . JText::_("PLG_DIGICOM_PAY_PAYPAL") . '</a></li>';
 	}
 
 	/* 
@@ -147,5 +153,26 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	{
 			$log = plgDigiCom_PayPaypalHelper::Storelog($this->_name,$data);
 
+	}
+	
+	/*
+	* element, folder, type
+	*/
+	function getPluginId($element,$folder, $type)
+	{
+	    $db = JFactory::getDBO();
+	    $query = $db->getQuery(true);
+	    $query
+	        ->select($db->quoteName('a.extension_id'))
+	        ->from($db->quoteName('#__extensions', 'a'))
+	        ->where($db->quoteName('a.element').' = '.$db->quote($element))
+	        ->where($db->quoteName('a.folder').' = '.$db->quote($folder))
+	        ->where($db->quoteName('a.type').' = '.$db->quote($type));
+	    $db->setQuery($query);
+	    $db->execute();
+	    if($db->getNumRows()){
+	        return $db->loadResult();
+	    }
+	    return false;
 	}
 }
