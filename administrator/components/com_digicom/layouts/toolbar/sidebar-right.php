@@ -8,7 +8,6 @@
  */
 
 defined('_JEXEC') or die;
-
 $uri = JFactory::getURI(); 
 $pageURL = $uri->toString(); 
 ?>
@@ -22,11 +21,9 @@ $pageURL = $uri->toString();
 		<?php } ?>		
 	</ul>
 
-	<h3>Add-ons Settings</h3>
-	<ul>
-		<li><a href="#">Mailchimp</a></li>
-		<li><a href="#">2CO Payment</a></li>
-		<li><a href="#">Tax</a></li>
-	</ul>
+	<?php
+	$dispatcher = JDispatcher::getInstance();
+	$results = $dispatcher->trigger( 'onAfterSidebarMenu', array());
+	?>
 
 </div>
