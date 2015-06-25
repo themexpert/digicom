@@ -132,11 +132,18 @@ jQuery(document).ready(function() {
 
   });
 
-  jQuery("#toggle_settings").toggle(function () {
-    jQuery("body").addClass("sidebar-right-collapse");
-  }, function () {
-    jQuery("body").removeClass("sidebar-right-collapse");
-  });
+	jQuery("#toggle_settings").toggle(function (e) {
+		e.preventDefault();
+		jQuery("body").addClass("sidebar-right-collapse");
+	}, function () {
+		jQuery("body").removeClass("sidebar-right-collapse");
+	});
+
+	jQuery('body').click(function(){
+		if(jQuery('body').hasClass('sidebar-right-collapse')){
+			jQuery('body').removeClass('sidebar-right-collapse');
+		}
+	});
 
   /* Toggle toolbar button*/
   var btnSelector = jQuery('#toolbar-publish,#toolbar-unpublish,#toolbar-trash,#toolbar-delete,#toolbar-edit');
