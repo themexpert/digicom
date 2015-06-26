@@ -37,7 +37,8 @@ class plgSystemDigiCom extends JPlugin{
 	 * Plugin method with the same name as the event will be called automatically.
 	 */
 
-	public function onAfterSidebarMenu($params) {
+	public function onAfterSidebarMenu($params = array()) {
+
 		JPluginHelper::importPlugin('digicom_pay');
 
 		$dispatcher = JDispatcher::getInstance();
