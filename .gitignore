@@ -24,6 +24,7 @@ config.codekit
 !/administrator/language/en-GB/en-GB.com_digicom.sys.ini
 !/administrator/language/en-GB/en-GB.mod_digicom_menu.ini
 !/administrator/language/en-GB/en-GB.mod_digicom_menu.sys.ini
+!/administrator/language/en-GB/en-GB.plg_system_digicom.ini
 !/administrator/language/en-GB/en-GB.plg_system_digicom_addtocart.ini
 !/administrator/language/en-GB/en-GB.plg_digicom_pay_offline.ini
 !/administrator/language/en-GB/en-GB.plg_digicom_pay_paypal.ini
@@ -72,6 +73,7 @@ config.codekit
 /plugins/system/*
 /plugins/search/*
 /plugins/finder/*
+!/plugins/system/digicom*
 !/plugins/system/digicom_addtocart*
 !/plugins/search/digicom*
 !/plugins/finder/digicom*

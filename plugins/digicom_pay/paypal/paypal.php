@@ -22,7 +22,7 @@ class  plgDigiCom_PayPaypal extends JPlugin
 		'Canceled_Reversal' => 'CRV',
 		'Reversed'			=> 'RV'
 	);
-	
+
 	function __construct($subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -41,17 +41,22 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	}
 
 	/*
-	* 
+	*
 	*/
 	public function onSidebarMenuItem()
 	{
 		$pluginid = $this->getPluginId('paypal','digicom_pay','plugin');
-		$link = JRoute::_("index.php?option=com_plugins&amp;client_id=0&amp;task=plugin.edit&amp;extension_id=".$pluginid . '&amp;tmpl=component&amp;layout=modal');
-		return '<li><a class="modal" href="' . $link . '" rel="{handler: \'iframe\', size: {x: 900, y: 550}}" title="'.JText::_("PLG_DIGICOM_PAY_PAYPAL").'" id="plugin-'.$pluginid.'">' . JText::_("PLG_DIGICOM_PAY_PAYPAL") . '</a></li>';
+
+		//$link = JRoute::_("index.php?option=com_plugins&amp;client_id=0&amp;task=plugin.edit&amp;extension_id=".$pluginid . '&amp;tmpl=component&amp;layout=modal');
+		// return '<li><a class="modal" href="' . $link . '" rel="{handler: \'iframe\', size: {x: 900, y: 550}}" title="'.JText::_("PLG_DIGICOM_PAY_PAYPAL").'" id="plugin-'.$pluginid.'">' . JText::_("PLG_DIGICOM_PAY_PAYPAL") . '</a></li>';
+
+		$link = JRoute::_("index.php?option=com_plugins&amp;client_id=0&amp;task=plugin.edit&amp;extension_id=".$pluginid);
+		return '<li><a target="_blank" href="' . $link . '" title="'.JText::_("PLG_DIGICOM_PAY_PAYPAL").'" id="plugin-'.$pluginid.'">' . JText::_("PLG_DIGICOM_PAY_PAYPAL") . '</a></li>';
+
 	}
 
-	/* 
-	* Internal use functions 
+	/*
+	* Internal use functions
 	* to override the view or output styles
 	*/
 	function buildLayoutPath($layout) {
@@ -79,7 +84,7 @@ class  plgDigiCom_PayPaypal extends JPlugin
 		ob_start();
 		$layout = $this->buildLayoutPath($layout);
 		include($layout);
-		$html = ob_get_contents(); 
+		$html = ob_get_contents();
 		ob_end_clean();
 		return $html;
 	}
@@ -99,7 +104,7 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	}
 
 	/*
-	* Constructs the Payment form in case of On Site Payment gateways like 
+	* Constructs the Payment form in case of On Site Payment gateways like
 	* Auth.net & constructs the Submit button in case of offsite ones like Paypal
 	*/
 	function onTP_GetHTML($vars)
@@ -114,13 +119,13 @@ class  plgDigiCom_PayPaypal extends JPlugin
 		$vars->business = $this->params->get('business');
 		$html = $this->buildLayout($vars);
 		return $html;
-		
-		
+
+
 	}
 
 
 
-	function onTP_Processpayment($data) 
+	function onTP_Processpayment($data)
 	{
 		$params 		= $this->params;
 		$secure_post 	= $params->get('secure_post');
@@ -155,7 +160,7 @@ class  plgDigiCom_PayPaypal extends JPlugin
 			$log = plgDigiCom_PayPaypalHelper::Storelog($this->_name,$data);
 
 	}
-	
+
 	/*
 	* element, folder, type
 	*/
