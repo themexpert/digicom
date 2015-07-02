@@ -40,7 +40,7 @@ class DigiComControllerProfile extends JControllerLegacy
 			$cart_model = $this->getModel("Cart");
 
 			$configs = JComponentHelper::getComponent('com_digicom')->params;
-			
+
 			$this->_customer = new DigiComSiteHelperSession();
 			$customer = $this->_customer;
 			$items = $cart_model->getCartItems($customer, $configs);
@@ -75,19 +75,19 @@ class DigiComControllerProfile extends JControllerLegacy
 		$credentials['password'] = $password; //JRequest::getString('passwd', '', 'post', JREQUEST_ALLOWRAW);
 
 		$err = $app->login($credentials, $options);
-		
+
 		if($return){
 			$this->setRedirect($return);
 			return true;
 		}
-		
+
 		$link = $this->getLink();
 		if($returnpage != 'checkout'){
 			$this->setRedirect($link);
 			return true;
 		}
 		$this->checkNextAction($err);
-		
+
 	}
 
 	function save()
@@ -97,9 +97,9 @@ class DigiComControllerProfile extends JControllerLegacy
 		$conf = $this->getModel( "Config" );
 		$configs = $conf->getConfigs();
 		$return = base64_decode( JRequest::getVar("return", "") );
-
-		$err = $this->_model->store($error);
 		
+		$err = $this->_model->store($error);
+
 		if($err["err"] === FALSE){
 			$session->set('login_register_invalid','notok');
 
@@ -126,7 +126,7 @@ class DigiComControllerProfile extends JControllerLegacy
 			$country			= JRequest::getVar("country", "");
 			$state 				= JRequest::getVar("state", "");
 			$array 				= array("firstname"=>$firstname, "lastname"=>$lastname, "company"=>$company, "email"=>$email, "username"=>$username, "password"=>$password, "password_confirm"=>$password_confirm, "address"=>$address, "city"=>$city, "zipcode"=>$zipcode, "country"=>$country, "state"=>$state);
-			
+
 			$session->set('new_customer', $array);
 			$uri = JURI::getInstance();
 			$return = $uri->toString();
@@ -141,7 +141,7 @@ class DigiComControllerProfile extends JControllerLegacy
 
 		return true;
 	}
-	
+
 	function save_x()
 	{
 
@@ -153,8 +153,8 @@ class DigiComControllerProfile extends JControllerLegacy
 
 		//$link = $this->getLink($redirect);
 		$err = $this->_model->store($error);
-		
-		
+
+
 		if($returnpage == "login_register"){
 
 			if($err["err"] === FALSE){
@@ -228,7 +228,7 @@ class DigiComControllerProfile extends JControllerLegacy
 			case "cart":
 				$link = "index.php?option=com_digicom&view=cart"."&Itemid=".$Itemid . "&processor=" . $processor;
 				break;
-			
+
 			case "profile":
 				$link = "index.php?option=com_digicom&view=profile"."&Itemid=".$Itemid;
 				break;
@@ -251,4 +251,3 @@ class DigiComControllerProfile extends JControllerLegacy
 	}
 
 }
-
