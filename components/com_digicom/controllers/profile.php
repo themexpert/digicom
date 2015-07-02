@@ -58,11 +58,15 @@ class DigiComControllerProfile extends JControllerLegacy
 	{
 		$app = JFactory::getApplication("site");
 		$Itemid = JRequest::getInt('Itemid', 0);
-		$returnpage = JRequest::getVar("returnpage", "");
-		if($return = JRequest::getVar('return', '', 'request', 'base64'))
-		{
-			$return = base64_decode($return);
-		}
+
+		// $returnpage = JRequest::getVar("returnpage", "");
+		// if($return = JRequest::getVar('return', '', 'request', 'base64'))
+		// {
+		// 	$return = base64_decode($return);
+		// }
+
+		$return = JRoute::_('index.php?option=com_digicom&view=cart&layout=summary');
+
 		$options = array();
 		$options['remember'] = JRequest::getBool('remember', false);
 		$options['return'] = $returnpage;
@@ -76,17 +80,18 @@ class DigiComControllerProfile extends JControllerLegacy
 
 		$err = $app->login($credentials, $options);
 
-		if($return){
+		// if($return){
 			$this->setRedirect($return);
 			return true;
-		}
+		// }
 
-		$link = $this->getLink();
-		if($returnpage != 'checkout'){
-			$this->setRedirect($link);
-			return true;
-		}
-		$this->checkNextAction($err);
+		// $link = $this->getLink();
+		// if($returnpage != 'checkout'){
+		// 	$this->setRedirect($link);
+		// 	return true;
+		// }
+
+		//$this->checkNextAction($err);
 
 	}
 
@@ -97,7 +102,7 @@ class DigiComControllerProfile extends JControllerLegacy
 		$conf = $this->getModel( "Config" );
 		$configs = $conf->getConfigs();
 		$return = base64_decode( JRequest::getVar("return", "") );
-		
+
 		$err = $this->_model->store($error);
 
 		if($err["err"] === FALSE){

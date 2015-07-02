@@ -39,7 +39,7 @@ $from = $input->get("from", "");
 $nr_columns = 4;
 $invisible = 'style="display:none;"';
 $formlink = JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$Itemid);
-$tax = $this->tax; 
+$tax = $this->tax;
 ?>
 <div id="digicom">
 
@@ -78,7 +78,7 @@ $tax = $this->tax;
 					<th>
 						<?php echo JText::_("COM_DIGICOM_PRICE_PLAN");?>
 					</th>
-					
+
 					<th>
 						<?php echo JText::_("COM_DIGICOM_QUANTITY"); ?>
 					</th>
@@ -119,7 +119,7 @@ $tax = $this->tax;
 						<td align="center" nowrap="nowrap">
 							<span class="digicom_details">
 								<strong>
-									<?php if($configs->get('show_quantity',0) == "1") { ?>								
+									<?php if($configs->get('show_quantity',0) == "1") { ?>
 										<input id="quantity<?php echo $item->cid; ?>" type="number" onchange="update_cart(<?php echo $item->cid; ?>);" name="quantity[<?php echo $item->cid; ?>]" min="1" class="input-small" value="<?php echo $item->quantity; ?>" size="2" placeholder="<?php echo JText::_('COM_DIGICOM_QUANTITY'); ?>">
 									<?php } else {
 										echo $item->quantity;
@@ -174,23 +174,23 @@ $tax = $this->tax;
 							<?php if ($tax['promo'] > 0 && $tax['promoaftertax'] == '0'): ?>
 							<li class="digi_cart_total"><?php echo JText::_("DSPROMODISCOUNT"); ?></li>
 							<?php endif; ?>
-			
+
 							<?php  if (($tax['value'] > 0) || ($configs->get('tax_zero',1) == 1) && ($this->customer->_user->id > 0)) : ?>
 							<li class="digi_cart_total"><?php echo $tax['type']; ?></li>
 							<?php endif; ?>
-			
+
 							<?php  if ($tax['shipping'] > 0 && $this->customer->_user->id > 0): ?>
 							<li class="digi_cart_total"><?php echo JText::_("DSSHIPING"); ?></li>
 							<?php endif; ?>
-			
+
 							<?php if ($tax['promo'] > 0 && $tax['promoaftertax'] == '1'): ?>
 							<li class="digi_cart_total"><?php echo JText::_("DSPROMOCODEDISCOUNT"); ?></li>
 							<?php endif; ?>
-		
+
 						<?php }	?>
 					</ul>
 				</td>
-				
+
 				<?php if ($configs->get('tax_summary',0) == 1) { ?>
 				<td nowrap="nowrap" style="text-align: center; padding-top:15px;">
 					<ul class="unstyled">
@@ -216,7 +216,7 @@ $tax = $this->tax;
 					<td>&nbsp;</td>
 				<?php } ?>
 			</tr>
-				
+
 			<tr valign="top">
 				<td colspan="<?php echo $nr_columns - 1; ?>" >
 					<div class="input-append">
@@ -245,7 +245,7 @@ $tax = $this->tax;
 			</tr>
 		</table>
 
-		<?php 
+		<?php
 		if($configs->get('showccont',0) == 1){ ?>
 			<div id="digicomcartcontinue" class="row-fluid continue-shopping">
 				<div class="span8">
@@ -278,7 +278,7 @@ $tax = $this->tax;
 					?>
 
 					<?php echo DigiComSiteHelperDigicom::getPaymentPlugins($configs); ?>
-					
+
 					<div id="html-container"></div>
 					<button type="button" class="btn btn-warning" style="float:right;margin-top:10px;" onclick="<?php echo $onclick; ?> "><?php echo JText::_($button_value);?> <i class="ico-ok-sign"></i></button>
 				</div>
@@ -389,13 +389,13 @@ $tax = $this->tax;
 
 	<script>
 		<?php
-		
+
 		if ($processor != '')
 		{
 			echo 'jQuery("#processor").val("' . $processor . '");';
 		}
 		?>
-		
+
 		function ShowPaymentAlert()
 		{
 			jQuery('#myModalLabel').html("<?php echo JText::_("COM_DIGICOM_WARNING");?>");

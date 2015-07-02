@@ -164,17 +164,7 @@ class DigiComControllerCart extends JControllerLegacy
 			}
 			else
 			{
-				if($this->_model->existUser($username, $email)){
-					$renew = JRequest::getVar("renew", "", "get");
-					if(trim($renew) != ""){
-						$renew = "&renew=".$renew;
-					}
-					$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart".$renew."&processor=".$processor, false, ($processor=='authorizenet' ? true : false)), JText::_("DIGI_ALREADY_JOOMLA_USER"), "notice");
-					return true;
-				}
-				else{
-					$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&task=cart.checkout&processor=".$processor, false, ($processor=='authorizenet' ? true : false)));
-				}
+				$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&task=cart.checkout&processor=".$processor, false, ($processor=='authorizenet' ? true : false)));
 			}
 		}
 	}
