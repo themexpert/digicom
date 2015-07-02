@@ -43,7 +43,7 @@ class DigiComControllerCart extends JControllerLegacy
 		$db->setQuery($sql);
 		$db->query();
 		$result = $db->loadResult();
-		
+
 		//check if this product is unpublished
 		$cid = JFactory::getApplication()->input->get('cid',0);
 		$res = $this->_model->addToCart();
@@ -125,7 +125,7 @@ class DigiComControllerCart extends JControllerLegacy
 
 	function updateCart()
 	{
-		
+
 		$session = JFactory::getSession();
 		$res = $this->_model->updateCart($this->_customer, $this->_config);
 
@@ -156,7 +156,7 @@ class DigiComControllerCart extends JControllerLegacy
 			$processor = JRequest::getVar("processor", "");
 			$session->set('new_customer', $array);
 			$session->set('processor', $processor);
-			
+
 			if(strlen($rp) < 1)
 			{
 				$cart_itemid = DigiComSiteHelperDigiCom::getCartItemid();
@@ -263,19 +263,22 @@ class DigiComControllerCart extends JControllerLegacy
 
 		$customer = $this->_customer;
 		$configs = $this->_config;
-
-		$res = DigiComSiteHelperDigiCom::checkProfileCompletion($customer);
+		$askforbilling = $configs->get('askforbilling',1);
+		$res = DigiComSiteHelperDigiCom::checkProfileCompletion($customer, $askforbilling);
 		if( $res < 1 ) {
 			$this->setRedirect("index.php?option=com_digicom&view=profile&layout=edit&returnpage=checkout&processor=".$processor);
 		}
 
-		if($configs->get('askforbilling',1) != 0)
+		if($askforbilling != 0 && $res == 2)
 		{
 			$this->setRedirect("index.php?option=com_digicom&view=profile&layout=edit&returnpage=checkout&processor=".$processor);
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_DIGICOM_BILLING_INFO_REQUIRED'));
+
+			return true;
 		}
-		
+
 		if( $res == 1 ) {
-			
+
 			$fromsum = JRequest::getVar('fromsum', '0');
 			if(!$fromsum) {
 				$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&layout=summary&processor=".$processor));
@@ -353,11 +356,11 @@ class DigiComControllerCart extends JControllerLegacy
 			if(!isset($prosessor) || trim($prosessor) == ""){
 				$prosessor = $processor;
 			}
-			
+
 			//store order
 			$order_id = $cart->addOrderInfo($items, $customer, $tax, $status = 'Pending', $prosessor);
 			$cart->getFinalize($this->_customer->_sid, $msg = '', $order_id, $type= 'new_order');
-			
+
 			/* Prepare params*/
 			$params = array();
 			$params['user_id'] = $this->_customer->_user->id;
@@ -374,7 +377,7 @@ class DigiComControllerCart extends JControllerLegacy
 
 			$params['products'] = $items; // array of products
 			$params['processor'] = $prosessor;//JRequest::getVar('processor'); //'payauthorize';
-			
+
 			$gataways = JPluginHelper::getPlugin('digicom_pay', $params['processor']);
 
 			if(is_array($gataways)){
@@ -393,16 +396,16 @@ class DigiComControllerCart extends JControllerLegacy
 			$params['sid'] = $this->_customer->_sid;
 			$params['order_amount'] = $items[-2]['taxed'];
 			$params['order_currency'] = $items[-2]['currency'];
-			
+
 			$cart->storeOrderParams( $user->id, $order_id ,$params);
 			$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=checkout&order_id=".$order_id."&processor=".$params['processor']));
-			
+
 		}
-		
+
 		return true;
 	}
-	
-	function getCartItem() 
+
+	function getCartItem()
 	{
 
 		$cid = JRequest::getVar('cid', -1);
@@ -479,11 +482,11 @@ class DigiComControllerCart extends JControllerLegacy
 
 	function processPayment()
 	{
-		
+
 	 	$session = JFactory::getSession();
 	 	$app		= JFactory::getApplication();
 		$input 		= $app->input;
-		
+
 		$processor 	= $session->get('processor','');
 		if(empty($processor)) $processor = $input->get('processor','');
 		$order_id 	= $input->get('order_id',0);
@@ -513,7 +516,7 @@ class DigiComControllerCart extends JControllerLegacy
 		$configs 	= $this->_config;
 		$cart 		= $this->_model;
 		$items 		= $cart->getOrderItems($order_id, $configs);
-		
+
 		$products = array();
 		if(isset($items) && count($items) > 0){
 			foreach($items as $key=>$product){
@@ -527,11 +530,11 @@ class DigiComControllerCart extends JControllerLegacy
 		}
 
 		// after recieved payment request, get the status info
-		
+
 		$dispatcher = JDispatcher::getInstance();
 		JPluginHelper::importPlugin('digicom_pay', $processor);
 		$data = $dispatcher->trigger('onTP_Processpayment', array($post));
-		
+
 		//after recieved payment, trigger any additional events
 		$param["cart_products"] = implode(" - ", $products);
 		$param["transaction"] = $data;
@@ -540,7 +543,7 @@ class DigiComControllerCart extends JControllerLegacy
 		$results_plugins = $dispatcher->trigger('onReceivePayment', array(& $param));
 
 		$this->_model->proccessSuccess($post, $processor, $order_id, $sid,$data, $items);
-		
+
 		return true;
 	}
 
