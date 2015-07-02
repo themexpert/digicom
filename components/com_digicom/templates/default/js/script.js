@@ -191,7 +191,7 @@ function validateForm(register){
 
 		){
 				if(register){
-					var field_required = new Array("firstname", "lastname", "email", "address", "city", "zipcode", "country", "username2", "password", "password_confirm");
+					var field_required = new Array("firstname", "lastname", "email", "address", "city", "zipcode", "country", "username", "password", "password_confirm");
 				}else{
 					var field_required = new Array("firstname", "lastname", "email", "address", "city", "zipcode", "country", "username2");
 				}
