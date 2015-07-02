@@ -19,7 +19,7 @@ JHTML::_('behavior.modal');
 	$login_link = JRoute::_("index.php?option=com_digicom&view=register&task=register.login&returnpage=cart&tmpl=component&returnpage=cart&graybox=true");
 ?>
 <script type="text/javascript"><?php sajax_show_javascript(); ?></script>
-<form name="adminForm" id="adminForm" method="post" action="<?php echo JRoute::_('index.php?option=com_digicom&view=profile'); ?>" onsubmit="return validateForm();" >
+<form name="adminForm" id="adminForm" method="post" action="<?php echo JRoute::_('index.php?option=com_digicom&view=profile'); ?>" onsubmit="return validateForm('register');" >
 	<h2 class="digi-section-title"><?php echo JText::_('COM_DIGICOM_REGISTER');?></h2>
 	<table style="border-collapse:separate !important;">
 
@@ -188,7 +188,7 @@ JHTML::_('behavior.modal');
 	<input type="hidden" name="processor" value="<?php echo $input->get("processor", ""); ?>" />
 	<input type="hidden" name="return" value="<?php echo $input->get("return", ""); ?>" />
 	<input type="hidden" name="view" value="profile" >
-	
+
 	<table width="100%">
 		<tr>
 			<td align="left">
