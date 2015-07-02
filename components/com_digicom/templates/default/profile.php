@@ -27,7 +27,7 @@ $configs = $this->configs;
 
 		<form action="<?php echo JRoute::_('index.php?option=com_digicom&view=profile');?>" method="post" name="adminForm" id="adminForm" onsubmit="return validateForm();" class="form-horizontal">
 			<h3 class="digi-section-title"><?php echo JText::_('COM_DIGICOM_PROFILE_SECTION_TITLE_PROFILE_SETTINGS'); ?></h3>
-			
+
 			<div class="row-fluid">
 				<div class="control-group">
 					<label class="control-label" for="firstname"><?php echo JText::_("COM_DIGICOM_FIRST_NAME"); ?> <span class="error">*</span></label>
@@ -44,7 +44,7 @@ $configs = $this->configs;
 					</div>
 				</div>
 			</div>
-	
+
 			<?php if($configs->get('askforcompany',1) == 1) { ?>
 			<div class="row-fluid">
 				<div class="control-group">
@@ -89,7 +89,7 @@ $configs = $this->configs;
 					</div>
 				</div>
 			</div>
-		
+
 
 			<?php if($configs->get('askforbilling','0') == 1){ ?>
 			<h3 class="digi-section-title"><?php echo JText::_('COM_DIGICOM_PROFILE_SECTION_TITLE_BILLING_ADDRESS'); ?></h3>
@@ -109,7 +109,7 @@ $configs = $this->configs;
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="row-fluid">
 				<div class="control-group">
 					<label class="control-label" for="address"><?php echo JText::_("COM_DIGICOM_ADDRESS"); ?> <span class="error">*</span></label>
@@ -182,7 +182,7 @@ $configs = $this->configs;
 			<input type="hidden" name="option" value="com_digicom" />
 			<input type="hidden" name="id" value="<?php echo $cust->id; ?>" />
 			<input type="hidden" name="task" value="profile.save" />
-			<input type="hidden" name="return" value="<?php echo base64_encode($input->get("return", JURI::getInstance()->toString(), 'request')); ?>" />
+			<input type="hidden" name="return" value="<?php echo $input->get("return", base64_encode(JURI::getInstance()->toString()), 'request'); ?>" />
 			<input type="hidden" name="view" value="profile" />
 		</form>
 	</div>
@@ -192,9 +192,9 @@ $configs = $this->configs;
 </div>
 
 <script>
-<?php 
-include (JPATH_COMPONENT.'/helpers/sajax.php'); 
-sajax_show_javascript(); 
+<?php
+include (JPATH_COMPONENT.'/helpers/sajax.php');
+sajax_show_javascript();
 ?>
 </script>
 
