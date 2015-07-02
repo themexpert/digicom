@@ -246,10 +246,13 @@ class DigiComControllerCart extends JControllerLegacy
 		$cart = $this->_model;
 		$plugins_enabled = $cart->getPluginList();
 
+		// set default redirect url
+		$uri = JURI::getInstance();
+		//echo $uri->toString();die;
+		$return = base64_encode($uri->toString());
+
 		// Check Login
 		if(!$user->id or $this->_customer->_user->id < 1){
-			$uri = JURI::getInstance();
-			$return = base64_encode($uri->toString());
  			$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=register&layout=register_cart&return=".$return));
 			return true;
 		}
@@ -266,12 +269,12 @@ class DigiComControllerCart extends JControllerLegacy
 		$askforbilling = $configs->get('askforbilling',1);
 		$res = DigiComSiteHelperDigiCom::checkProfileCompletion($customer, $askforbilling);
 		if( $res < 1 ) {
-			$this->setRedirect("index.php?option=com_digicom&view=profile&layout=edit&returnpage=checkout&processor=".$processor);
+			$this->setRedirect("index.php?option=com_digicom&view=profile&layout=edit&processor=".$processor.'&return='.$return);
 		}
 
 		if($askforbilling != 0 && $res == 2)
 		{
-			$this->setRedirect("index.php?option=com_digicom&view=profile&layout=edit&returnpage=checkout&processor=".$processor);
+			$this->setRedirect("index.php?option=com_digicom&view=profile&layout=edit&processor=".$processor.'&return='.$return);
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_DIGICOM_BILLING_INFO_REQUIRED'));
 
 			return true;
