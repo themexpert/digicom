@@ -71,7 +71,7 @@ $login_link = JRoute::_("index.php?option=com_digicom&view=register&task=profile
 				<?php
 				echo JText::_("COM_DIGICOM_REGISTRATION_EMAIL_ALREADY_USED")." ";
 				echo '<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">'
-			  . JText::_('COM_DIGICOM_REGISTRATION_CLICK_HERE')
+			  . JText::_('COM_DIGICOM_REGISTRATION_CLICK_HERE_TO_LOGIN')
 				. '</a>';
 				 ?>
 			</span>
@@ -95,7 +95,13 @@ $login_link = JRoute::_("index.php?option=com_digicom&view=register&task=profile
 			&nbsp;&nbsp;
 			<span class="" id="username_span">&nbsp;&nbsp;&nbsp;&nbsp;</span>
 			<br/>
-			<span style="display:none; color:#FF0000; font-size: 12px;" id="username_span_msg"><?php echo JText::_("COM_DIGICOM_REGISTER_USERNAME_TAKEN")." "."<a rel=\"{handler: 'iframe', size: {x: 300, y: 300}}\"  class=\"modal\"  href=\"".$login_link."\">".JText::_('COM_DIGICOM_REGISTER_CLICK_HERE')."</a> ".JText::_("COM_DIGICOM_REGISTER_TO_CONTINUE"); ?></span>
+			<span style="display:none; color:#FF0000; font-size: 12px;" id="username_span_msg">
+				<?php
+				echo JText::_("COM_DIGICOM_REGISTER_USERNAME_TAKEN")." ";
+				echo '<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">'
+				. JText::_('COM_DIGICOM_REGISTRATION_CLICK_HERE_TO_LOGIN')
+				. '</a>';
+				?>
 		</td>
 	</tr>
 
