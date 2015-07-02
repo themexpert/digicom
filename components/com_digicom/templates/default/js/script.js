@@ -178,7 +178,8 @@ function validateUSZip( strValue , country) {
 }
 
 
-function validateForm(){
+function validateForm(register){
+		//console.log(register);
 		if ((document.adminForm.firstname && document.adminForm.firstname.value=="")
 			|| (document.adminForm.lastname && document.adminForm.lastname.value=="")
 			|| (document.adminForm.email && document.adminForm.email.value=="")
@@ -187,20 +188,32 @@ function validateForm(){
 			|| (document.adminForm.zipcode && document.adminForm.zipcode.value=="")
 			|| (document.adminForm.country && document.adminForm.country.value=="")
 			|| (document.adminForm.username && document.adminForm.username.value=="")
-		//	|| (document.adminForm.password && document.adminForm.password.value=="")
+
 		){
-				var field_required = new Array("firstname", "lastname", "email", "address", "city", "zipcode", "country", "username2");
+				if(register){
+					var field_required = new Array("firstname", "lastname", "email", "address", "city", "zipcode", "country", "username2", "password", "password_confirm");
+				}else{
+					var field_required = new Array("firstname", "lastname", "email", "address", "city", "zipcode", "country", "username2");
+				}
+
+				var found = false;
 				for(i=0; i<field_required.length; i++){
 					if(document.getElementById(field_required[i])){
 						if(document.getElementById(field_required[i]).value == ""){
+							found = true;
 							document.getElementById(field_required[i]).style.borderColor = "red";
-						}
-						else{
+						}else{
 							document.getElementById(field_required[i]).style.borderColor = "";
 						}
 					}
 				}
-				alert(DSALL_REQUIRED_FIELDS);
+
+				if(found){
+					alert(DSALL_REQUIRED_FIELDS);
+				}else if(register){
+					alert(DSALL_REQUIRED_FIELDS);
+				}
+
 				return false;
 		}
 
