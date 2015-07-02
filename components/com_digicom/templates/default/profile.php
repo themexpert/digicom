@@ -65,6 +65,7 @@ $configs = $this->configs;
 			</div>
 
 			<h3 class="digi-section-title"><?php echo JText::_('COM_DIGICOM_PROFILE_SECTION_TITLE_LOGIN_INFO'); ?></h3>
+
 			<div class="row-fluid">
 				<div class="control-group">
 					<label class="control-label" for="username"><?php echo JText::_("COM_DIGICOM_USERNAME"); ?> <span class="error">*</span></label>

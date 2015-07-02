@@ -111,7 +111,7 @@ function refresCartModule(){
 }
 
 function cartformsubmit(user_id){
-				
+
 	if(user_id == '0'){
 
 		type_button_value = document.cart_form.type_button.value;
@@ -134,7 +134,7 @@ function cartformsubmit(user_id){
 					jQuery('#myModal').modal('show');
 					return false;
 				}
-		
+
 				if(document.cart_form.password.value != document.cart_form.password_confirm.value) {
 					//alert("<?php echo JText::_("DSCONFIRM_PASSWORD_MSG"); ?>");
 					jQuery("#myModalLabel").html(DIGI_ATENTION);
@@ -154,11 +154,11 @@ function cartformsubmit(user_id){
 					//return false;
 				}
 			}
-			
-		}	
-	}	
 
-	
+		}
+	}
+
+
 	return true;
 }
 
@@ -187,9 +187,9 @@ function validateForm(){
 			|| (document.adminForm.zipcode && document.adminForm.zipcode.value=="")
 			|| (document.adminForm.country && document.adminForm.country.value=="")
 			|| (document.adminForm.username && document.adminForm.username.value=="")
-			|| (document.adminForm.password && document.adminForm.password.value=="")
+		//	|| (document.adminForm.password && document.adminForm.password.value=="")
 		){
-				var field_required = new Array("firstname", "lastname", "email", "address", "city", "zipcode", "country", "username2", "password", "password_confirm");
+				var field_required = new Array("firstname", "lastname", "email", "address", "city", "zipcode", "country", "username2");
 				for(i=0; i<field_required.length; i++){
 					if(document.getElementById(field_required[i])){
 						if(document.getElementById(field_required[i]).value == ""){
@@ -259,7 +259,7 @@ function submitbutton(pressbutton) {
 function validateInput(input){
 	value = document.getElementById(input).value;
 	if(value != ""){
-		
+
 		var myAjax = new Request(
 	   	{
 		    url:   'index.php?option=com_digicom&task=cart.validate_input&input='+input+'&value='+value,
@@ -315,9 +315,9 @@ function changeProvince_cb(province_option) {
 	 // get the folder name
 	 var country;
 	 country = document.getElementById('country').value;
-	 
+
 	var euc = Array();
-	
+
 	 var flag = 0;
 	 for (i = 0; i< euc.length; i++)
 		 if (country == euc[i]) flag = 1;
