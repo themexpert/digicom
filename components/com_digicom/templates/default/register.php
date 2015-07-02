@@ -186,7 +186,8 @@ JHTML::_('behavior.modal');
 	<input type="hidden" name="option" value="com_digicom" >
 	<input type="hidden" name="task" value="profile.saveCustomer" >
 	<input type="hidden" name="processor" value="<?php echo $input->get("processor", ""); ?>" />
-	<input type="hidden" name="return" value="<?php echo $input->get("return", ""); ?>" />
+	<input type="hidden" name="returnpage" value="<?php echo $input->get("return", ""); ?>" />
+	<input type="hidden" name="new_customer" value="true" >
 	<input type="hidden" name="view" value="profile" >
 
 	<table width="100%">

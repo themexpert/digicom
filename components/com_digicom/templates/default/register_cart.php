@@ -117,4 +117,3 @@ $Itemid = $input->get("Itemid", 0);
 	</div>
 
 </div>
-
