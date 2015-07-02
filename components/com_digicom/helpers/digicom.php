@@ -179,7 +179,7 @@ class DigiComSiteHelperDigicom {
 				//					$theURI .= '?' . $_SERVER['QUERY_STRING'];
 			}
 		}
-		
+
 		$theURI = str_replace('/administrator','',$theURI);
 
 		return $theURI;
@@ -213,7 +213,7 @@ class DigiComSiteHelperDigicom {
 	}
 
 	// check if this user has filled in profile information
-	public static function checkProfileCompletion( $customer ) {
+	public static function checkProfileCompletion( $customer , $askforbilling = 0) {
 		$tcustomer = "";
 
 		if ( ! empty( $customer ) ) {
@@ -240,12 +240,12 @@ class DigiComSiteHelperDigicom {
 		) {
 			return - 1;
 		}
-		
+
 		$userid = $tcustomer->id;
 		$table = JTable::getInstance('Customer', 'Table');
 		$table->loadCustommer($userid);
-		
-		if(empty($table->id) or $table->id < 0){			
+
+		if(empty($table->id) or $table->id < 0){
 			$cust = new stdClass();
 			$cust->id = $user->id;
 			$cust->firstname = $tcustomer->firstname;
@@ -254,7 +254,24 @@ class DigiComSiteHelperDigicom {
 			$table->bind($cust);
 			$table->store();
 		}
-		
+
+		if($askforbilling){
+
+			//echo 'check billing info';
+			//print_r($table);die;
+
+			if (
+			     strlen( trim( $table->country ) ) < 1
+			     || strlen( trim( $table->state ) ) < 1
+			     || strlen( trim( $table->city ) ) < 1
+			     || strlen( trim( $table->address ) ) < 1
+			     || strlen( trim( $table->zipcode ) ) < 1
+			) {
+				return 2;
+			}
+
+		}
+
 		return 1;
 	}
 
@@ -275,20 +292,20 @@ class DigiComSiteHelperDigicom {
 
 		return $html;
 	}
-	
+
 	function str_word_count_unicode( $str, $format = 0 ) {
 		$words = preg_split( '~[\s0-9_]|[^\w]~u', $str, - 1, PREG_SPLIT_NO_EMPTY );
 
 		return ( $format === 0 ) ? count( $words ) : $words;
 	}
-	
-	/** 
-	* Converts bytes into human readable file size. 
-	* 
-	* @param string $bytes 
+
+	/**
+	* Converts bytes into human readable file size.
+	*
+	* @param string $bytes
 	* @return string human readable file size (2,87 Мб)
-	* @author Mogilev Arseny 
-	*/ 
+	* @author Mogilev Arseny
+	*/
 	public static function FileSizeConvert($bytes)
 	{
 		$result = $bytes . ' Bytes';
@@ -327,11 +344,11 @@ class DigiComSiteHelperDigicom {
 		}
 		return $result;
 	}
-	
+
 	public static function getUsersProduct($user_id){
-		
+
 		if($user_id < 1) return false;
-		
+
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select('DISTINCT('.$db->quoteName('od.productid').')');
@@ -354,11 +371,11 @@ class DigiComSiteHelperDigicom {
 			if($product->type != 'reguler'){
 				switch($product->type){
 					case 'category':
-						
+
 						$BundleTable = JTable::getInstance('Bundle', 'Table');
 						$BundleList = $BundleTable->getFieldValues('product_id',$product->productid,$product->bundle_source);
 						$bundle_ids = $BundleList->bundle_id;
-						
+
 						$query = $db->getQuery(true)
 							->select(array('id as productid','name','catid'))
 							->from($db->quoteName('#__digicom_products'))
@@ -369,14 +386,14 @@ class DigiComSiteHelperDigicom {
 						// Unset current product as its category bundle.
 						//we should show only items
 						unset($products[$key]);
-						
+
 						break;
 					case 'product':
 					default:
 						$BundleTable = JTable::getInstance('Bundle', 'Table');
 						$BundleList = $BundleTable->getFieldValues('product_id',$product->productid,$product->bundle_source);
 						$bundle_ids = $BundleList->bundle_id;
-						
+
 						$query = $db->getQuery(true)
 							->select(array('id as productid','name','catid'))
 							->from($db->quoteName('#__digicom_products'))
@@ -387,7 +404,7 @@ class DigiComSiteHelperDigicom {
 						// Unset current product as its category bundle.
 						//we should show only items
 						unset($products[$key]);
-						
+
 						break;
 				}
 			}
@@ -403,11 +420,11 @@ class DigiComSiteHelperDigicom {
 			}
 		}
 		return $products;
-		
+
 	}
-	
+
 	public static function getUsersProductAccess($user_id,$product_id){
-		
+
 		if($user_id < 1) return false;
 		$db = JFactory::getDBO();
 		//echo $product_id;die;
@@ -422,7 +439,7 @@ class DigiComSiteHelperDigicom {
 		//echo $query->__tostring();die;
 		$db->setQuery($query);
 		$license = $db->loadObject();
-		
+
 		if(isset($license->id) && ($license->id > 0)) return true;
 		// its not single purchased product
 		// so check for the bundle/category item
@@ -475,7 +492,7 @@ class DigiComSiteHelperDigicom {
 						}
 
 						unset($items[$key]);
-						
+
 						break;
 					case 'product':
 					default:
@@ -493,10 +510,10 @@ class DigiComSiteHelperDigicom {
 								->where($db->quoteName('id').' in ('.$bundle_ids.')');
 							$db->setQuery($query);
 							$bundleItems[] = $db->loadObjectList();
-						}					
+						}
 						//we should show only items
 						unset($items[$key]);
-						
+
 						break;
 				}
 			}
@@ -522,10 +539,10 @@ class DigiComSiteHelperDigicom {
 			}
 		}
 		return false;
-		
+
 	}
 	public static function getUsersProductAccess_x($user_id,$product_id){
-		
+
 		if($user_id < 1) return false;
 		$db = JFactory::getDBO();
 		//$product_id
@@ -540,7 +557,7 @@ class DigiComSiteHelperDigicom {
 		$db->setQuery($query);
 		$orders = $db->loadObject();
 		if(isset($orders->id) && ($orders->id > 0)) return true;
-		
+
 		$query = $db->getQuery(true);
 		$query->select('DISTINCT('.$db->quoteName('od.productid').')');
 		$query->select($db->quoteName(array('p.name', 'p.catid', 'p.bundle_source')));
@@ -559,11 +576,11 @@ class DigiComSiteHelperDigicom {
 		//print_r($products);die;
 		$bundleItems = array();
 		foreach($products as $key=>$product){
-			
+
 			if($product->type != 'reguler'){
 				switch($product->type){
 					case 'category':
-						
+
 						$BundleTable = JTable::getInstance('Bundle', 'Table');
 						$BundleList = $BundleTable->getFieldValues('product_id',$product->productid,$product->bundle_source);
 						$bundle_ids = $BundleList->bundle_id;
@@ -580,7 +597,7 @@ class DigiComSiteHelperDigicom {
 						}
 
 						unset($products[$key]);
-						
+
 						break;
 					case 'product':
 					default:
@@ -596,10 +613,10 @@ class DigiComSiteHelperDigicom {
 								->where($db->quoteName('id').' in ('.$bundle_ids.')');
 							$db->setQuery($query);
 							$bundleItems[] = $db->loadObjectList();
-						}					
+						}
 						//we should show only items
 						unset($products[$key]);
-						
+
 						break;
 				}
 			}
@@ -615,18 +632,18 @@ class DigiComSiteHelperDigicom {
 			}
 		}
 		return false;
-		
+
 	}
-	
+
 	public static function checkUserAccessToFile($fileInfo,$user_id)
 	{
-		
+
 		//print_r($fileInfo);die;
 		$user = JFactory::getUser($user_id);
 		$access = DigiComSiteHelperDigiCom::getUsersProductAccess($user_id,$fileInfo->product_id);
-		
+
 		if($access) return true;
-				
+
 		// Wrong Download ID
 		$msg = array(
 			'access' => JText::_('COM_DIGICOM_DOWNLOADS_ACCESS_DENIED')
@@ -635,9 +652,9 @@ class DigiComSiteHelperDigicom {
 		echo $msgcode;
 		JFactory::getApplication()->close();
 	}
-	
+
 	/*
-	* get thumbnail 
+	* get thumbnail
 	* images (string): image path like : /images/digicom.png
 	*/
 	public static function getThumbnail($image){
@@ -651,7 +668,7 @@ class DigiComSiteHelperDigicom {
 		if(!JFile::exists($image)) return $image;
 
 		if($params->get('image_thumb_enable')){
-			
+
 			$image_thumb_width = $params->get('image_thumb_width');
 			$image_thumb_height = $params->get('image_thumb_height');
 			$image_thumb_method = $params->get('image_thumb_method',6);
@@ -670,7 +687,7 @@ class DigiComSiteHelperDigicom {
 			$thumbpath = JPATH_ROOT.'/images/digicom/products/'.$thumbFileName;
 			$thumburl = JURI::root().'images/digicom/products/'.$thumbFileName;
 			if(JFile::exists($thumbpath)) return $thumburl;
-			
+
 			$image = $jimage->createThumbs(array($image_thumb_width.'x'.$image_thumb_height), $image_thumb_method,$path);
 			$thumburl = str_replace(JPATH_SITE.'/', '', $image[0]->getPath());
 			return $thumburl;
@@ -678,7 +695,7 @@ class DigiComSiteHelperDigicom {
 		}else{
 			return $image;
 		}
-		
+
 	}
 
 	public static function loadModules($position, $style = 'raw')
@@ -721,13 +738,13 @@ class DigiComSiteHelperDigicom {
 				## Create $value ##
 				$options[] = JHTML::_('select.option', $value, $value);
 			endforeach;
-			
+
 		}else{
 
 			$options[] = JHTML::_('select.option', 'United-States', 'United-States');
 			$options[] = JHTML::_('select.option', 'Canada', 'Canada');
 			$options[] = JHTML::_('select.option', 'Bangladesh', 'Bangladesh');
-		
+
 		}
 
 
@@ -741,12 +758,12 @@ class DigiComSiteHelperDigicom {
 
 
 		## Create <select name="country" class="inputbox"></select> ##
-		return JHTML::_('select.genericlist', $options, 'country', 'id="country" class="inputbox" onChange="changeProvince();"', 'value', 'text', $default);		
+		return JHTML::_('select.genericlist', $options, 'country', 'id="country" class="inputbox" onChange="changeProvince();"', 'value', 'text', $default);
 
 	}
 
 	public static function get_store_province( $custommer, $ship = 0 ) {
-		
+
 		## Initialize array to store dropdown options ##
 		$options = array();
 		$html = array();
@@ -770,13 +787,13 @@ class DigiComSiteHelperDigicom {
 			endforeach;
 
 			## Create <select name="country" class="inputbox"></select> ##
-			$html[] = JHTML::_('select.genericlist', $options, 'state', 'id="state" class="inputbox"', 'value', 'text', $default);	
+			$html[] = JHTML::_('select.genericlist', $options, 'state', 'id="state" class="inputbox"', 'value', 'text', $default);
 
 		}else{
 
 			$options[] = JHTML::_('select.option', '', JText::_( 'COM_DIGICOM_SELECT_COUNTRY_FIRST' ));
 			## Create <select name="country" class="inputbox"></select> ##
-			$html[] = JHTML::_('select.genericlist', $options, 'state', 'id="state" class="inputbox"', 'value', 'text', '');	
+			$html[] = JHTML::_('select.genericlist', $options, 'state', 'id="state" class="inputbox"', 'value', 'text', '');
 
 		}
 		$html[] = '</div>';
@@ -786,7 +803,7 @@ class DigiComSiteHelperDigicom {
 	}
 
 	public static function getPaymentPlugins($configs){
-		
+
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true)
 					->select('extension_id as id , name, element,enabled as published, params')
@@ -809,7 +826,7 @@ class DigiComSiteHelperDigicom {
 	}
 
 	public static function prepareGCalendarUrl($item){
-		//href="<?php echo 
+		//href="<?php echo
 		//;&dates=20150522T090000/20150522T110000
 		//&location=http://siteurl.com&details=Your product will expire at tx site on this day, add it to get remonder">
 		$text = JText::sprintf('COM_DIGICOM_PRODUCT_ADD_CALENDER_TITLE',$item->name,JFactory::getConfig()->get( 'sitename' ));
