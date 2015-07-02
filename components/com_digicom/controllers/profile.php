@@ -102,7 +102,20 @@ class DigiComControllerProfile extends JControllerLegacy
 		$conf = $this->getModel( "Config" );
 		$configs = $conf->getConfigs();
 		//$return = base64_decode( JRequest::getVar("return", "") );
-		$return = JRoute::_('index.php?option=com_digicom&view=cart&layout=summary');
+		$getreturn = JRequest::getVar("return", "");
+		$new_customer = JRequest::getVar("new_customer", false);
+		if($getreturn){
+			$return = base64_decode( $getreturn );
+		}else{
+			$return = JRoute::_('index.php?option=com_digicom&view=cart&layout=summary');
+		}
+		
+		if($new_customer){
+			$msg =  JText::_('COM_DIGICOM_REGISTRATION_SUCCESSFULL');
+		}else {
+			$msg =  JText::_('COM_DIGICOM_PROFILE_UPDATED_SUCCESSFULL');
+		}
+
 
 		$err = $this->_model->store($error);
 
@@ -142,7 +155,7 @@ class DigiComControllerProfile extends JControllerLegacy
 		}else{
 			//$this->setRedirect($return, JText::_('COM_DIGICOM_REGISTRATION_SUCCESSFULL'));
 			//TODO: set new_customer var and show message, else only success nor reg success
-			JFactory::getApplication()->redirect($return, JText::_('COM_DIGICOM_REGISTRATION_SUCCESSFULL'));
+			JFactory::getApplication()->redirect($return, $msg);
 		}
 
 		return true;
