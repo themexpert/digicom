@@ -101,7 +101,8 @@ class DigiComControllerProfile extends JControllerLegacy
 		$session = JFactory::getSession();
 		$conf = $this->getModel( "Config" );
 		$configs = $conf->getConfigs();
-		$return = base64_decode( JRequest::getVar("return", "") );
+		//$return = base64_decode( JRequest::getVar("return", "") );
+		$return = JRoute::_('index.php?option=com_digicom&view=cart&layout=summary');
 
 		$err = $this->_model->store($error);
 
