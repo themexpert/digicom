@@ -11,10 +11,10 @@ defined('_JEXEC') or die;
 
 class DigiComViewCheckout extends JViewLegacy
 {
-	
+
 	function display($tpl = null)
 	{
-		
+
 		$app = JFactory::getApplication();
 		$input = $app->input;
 		$Itemid = $input->get("Itemid", 0);
@@ -38,15 +38,15 @@ class DigiComViewCheckout extends JViewLegacy
 		$order_id 	= JRequest::getInt("order_id", "0");
 		$dispatcher = JDispatcher::getInstance();
 		$plugin = JPluginHelper::importPlugin( 'digicom_pay', $pg_plugin );
-		
-		
+
+
 		$configs 	= JComponentHelper::getComponent('com_digicom')->params;
 		$order 		=$this->get('Order');
 		//print_r($order);die;
 		$params 	= json_decode($order->params,true);
-		
+
 		$items 		= $params['products'];
-		
+
 		/*
 		 * $items
 		 * [0]
@@ -65,20 +65,20 @@ class DigiComViewCheckout extends JViewLegacy
 		$vars->user_id = JFactory::getUser()->id;
 		$vars->customer = $customer->_customer;
 		$vars->item_name = '';
-		
+
 		for($i=0; $i<count($items)-2; $i++)
 		{
 			$vars->item_name.= $items[$i]['name'] . ', ';
 		}
 		$vars->item_name = substr($vars->item_name, 0, strlen($vars->item_name)-2);
-		
+
 		$vars->cancel_return = JRoute::_(JURI::root()."index.php?option=com_digicom&Itemid=".$Itemid."&task=cart.cancel&processor={$pg_plugin}", true, 0);
 		$vars->return = $vars->url = $vars->notify_url = JRoute::_(JURI::root()."index.php?option=com_digicom&task=cart.processPayment&processor={$pg_plugin}&order_id=".$params['order_id']."&sid=".$customer->_sid, true, false);
 		$vars->currency_code = $configs->get('currency','USD');
 		$vars->amount = $items[-2]['taxed'];//+$items[-2]['shipping'];
-		
+
 		// Triggre plugin event
-		JPluginHelper::importPlugin('digicom_pay');
+		JPluginHelper::importPlugin('digicom_pay', $pg_plugin);
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onSendPayment', array(& $params));
 		$html = $dispatcher->trigger('onTP_GetHTML', array($vars));
@@ -97,13 +97,13 @@ class DigiComViewCheckout extends JViewLegacy
 		$this->assign("pg_plugin", $pg_plugin);
 		$this->assign("configs", $configs);
 		$this->assign("data", $html);
-		
+
 		$template = new DigiComSiteHelperTemplate($this);
-		$template->rander('checkout');			
-		
+		$template->rander('checkout');
+
 		parent::display($tpl);
-		
+
 	}
-	
+
 
 }
