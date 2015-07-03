@@ -8,6 +8,10 @@
  */
 
 defined('_JEXEC') or die;
+$doc 				= JFactory::getDocument();
+// Load style file
+$doc->addStyleSheet( JUri::root(true). '/modules/mod_digicom_cart/assets/css/mod_digicom_cart.css');
+
 
 // Total amount added to cart
 if (count($list) > 0) {
@@ -26,7 +30,7 @@ if (count($list) > 0) {
 	}
 }
 ?>
-<div class="dg-cart <?php echo $moduleclass_sfx; ?>">
+<div id="mod_digicom_cart_wrap" class="dg-cart <?php echo $moduleclass_sfx; ?>">
 	<?php if(count($list) > 0) :?>
 	<ul class="dg-cart-list">
 		<?php foreach($list as $index => $item): ?>
