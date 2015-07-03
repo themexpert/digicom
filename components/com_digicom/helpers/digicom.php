@@ -255,24 +255,18 @@ class DigiComSiteHelperDigicom {
 			$table->store();
 		}
 
-		if($askforbilling){
-
-			//echo 'check billing info';
-			//print_r($table);die;
-
-			if (
-			     strlen( trim( $table->country ) ) < 1
-			     || strlen( trim( $table->state ) ) < 1
-			     || strlen( trim( $table->city ) ) < 1
-			     || strlen( trim( $table->address ) ) < 1
-			     || strlen( trim( $table->zipcode ) ) < 1
-			) {
-				return 2;
-			}
-
+		if (
+		     strlen( trim( $table->country ) ) < 1
+		     || strlen( trim( $table->state ) ) < 1
+		     || strlen( trim( $table->city ) ) < 1
+		     || strlen( trim( $table->address ) ) < 1
+		     || strlen( trim( $table->zipcode ) ) < 1
+		) {
+			return 2;
+		}else{
+			return 1;
 		}
 
-		return 1;
 	}
 
 
