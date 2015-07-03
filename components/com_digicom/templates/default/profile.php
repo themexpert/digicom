@@ -92,7 +92,6 @@ $configs = $this->configs;
 			</div>
 
 
-			<?php if($configs->get('askforbilling','0') == 1){ ?>
 			<h3 class="digi-section-title"><?php echo JText::_('COM_DIGICOM_PROFILE_SECTION_TITLE_BILLING_ADDRESS'); ?></h3>
 			<div class="row-fluid">
 				<div class="control-group">
@@ -135,8 +134,7 @@ $configs = $this->configs;
 					</div>
 				</div>
 			</div>
-			<?php } ?>
-
+			
 			<div id="vathead" class="row-fluid" style="display:<?php echo (isset($cust->country) && in_array($cust->country, $eu) ? "" : "none"); ?>">
 				<div class="control-group">
 					<label class="control-label" for="shipzipcode"><?php echo JText::_("COM_DIGICOM_SHIPPING_ZIP"); ?> <span class="error">*</span></label>
