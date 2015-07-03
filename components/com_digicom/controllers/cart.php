@@ -256,13 +256,24 @@ class DigiComControllerCart extends JControllerLegacy
 
 		$customer = $this->_customer;
 		$configs = $this->_config;
-		$askforbilling = $configs->get('askforbilling',1);
+		$askforbilling = $configs->get('askforbilling',0);
+
+		// return -1 for not found core info, 2 for missing billing info, 1 for has core info
 		$res = DigiComSiteHelperDigiCom::checkProfileCompletion($customer, $askforbilling);
+
+		//if username, firstname, email, id not found for user
 		if( $res < 1 ) {
 			$this->setRedirect("index.php?option=com_digicom&view=profile&layout=edit&processor=".$processor.'&return='.$return);
 		}
 
-		if($askforbilling != 0 && $res == 2)
+		$plugin 			= JPluginHelper::getPlugin('digicom_pay',$processor);
+		$pluginParams = json_decode($plugin->params);
+
+		if(
+				($askforbilling != 0 && $res == 2)
+					or
+				($pluginParams->askforbilling && $res == 2)
+			)
 		{
 			$this->setRedirect("index.php?option=com_digicom&view=profile&layout=edit&processor=".$processor.'&return='.$return);
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_DIGICOM_BILLING_INFO_REQUIRED'));
