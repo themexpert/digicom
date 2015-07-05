@@ -23,7 +23,7 @@ $column = $this->category->params->get('category_cols',3);
 ?>
 <div id="digicom">
 	<div class="digi-categories">
-		
+
 		<?php if($this->category->params->get('show_cat_title',1) or $this->category->params->get('show_cat_image',1) or $this->category->params->get('show_cat_intro',1)): ?>
 		<!-- Category Info -->
 		<div class="category-info clearfix">
@@ -49,9 +49,9 @@ $column = $this->category->params->get('category_cols',3);
 		<div class="products-list clearfix">
 			<div class="row-fluid">
 	            <ul class="thumbnails">
-	              <?php 
+	              <?php
 				  $i=0;
-				  foreach($this->items as $key=>$item): 
+				  foreach($this->items as $key=>$item):
 				 	if(! ($i % $column) )  echo '</ul></div><div class="row-fluid"><ul class="thumbnails">';
 				  	// echo ( $i == $this->configs->get('category_cols') ) ? '<div class="clearfix"></div>' : '';
 				 if($item->price > 0){
@@ -71,7 +71,7 @@ $column = $this->category->params->get('category_cols',3);
 						<?php if($item->featured): ?>
 	                  	<span class="featured">Featured</span>
 						<?php endif; ?>
-						
+
 						<?php if(!empty($item->bundle_source)):?>
 							<span class="bundle-label label label-warning"><?php echo JText::sprintf('COM_DIGICOM_PRODUCT_TYPE_BUNDLE');?></span>
 						<?php endif; ?>
@@ -80,42 +80,25 @@ $column = $this->category->params->get('category_cols',3);
 					  	<div class="caption">
 		                    <h3><a href="<?php echo $link;?>"><?php echo $item->name; ?></a></h3>
 		                    <p class="description"><?php echo $item->description; ?></p>
-											
-							<!-- <form name="prod" class="input-append" id="product-form" action="<?php echo JRoute::_('index.php?option=com_digicom&view=cart');?>" method="post" style="width:100%;">
-								<input id="quantity_<?php echo $item->id; ?>" type="number" name="qty" min="1" class="input-small" value="1" size="2" placeholder="<?php echo JText::_('DSQUANTITY'); ?>">	
-								<input type="hidden" name="option" value="com_digicom"/>
-								<input type="hidden" name="view" value="cart"/>
-								<input type="hidden" name="task" value="add"/>
-								
-								<input type="hidden" name="pid" value="<?php echo $item->id; ?>"/>
-								<input type="hidden" name="cid" value="<?php echo $item->catid; ?>"/>
-								<input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>"/>
-											
-								<?php if($this->configs->get('afteradditem',0) == "2"){ ?>
-									<button type="button" class="btn btn-warning" onclick="javascript:createPopUp(<?php echo $item->id; ?>, <?php echo $item->catid; ?>, '<?php echo JURI::root(); ?>', '', '', <?php echo $cart_itemid; ?>, '<?php echo JRoute::_("index.php?option=com_digicom&viewcart&Itemid=".$cart_itemid) ?>');"><i class="ico-shopping-cart"></i> <?php echo JText::_("DSADDTOCART");?></button>
-								<?php } else{ ?>
-									<button type="submit" class="btn btn-warning"><i class="ico-shopping-cart"></i> <?php echo JText::_("DSADDTOCART");?></button>
-								<?php } ?>
-							</form> -->
 
 							<!-- Price & Readmore Button -->
 		                    <div class="clearfix">
 								<span class="price"><?php echo $price; ?></span>
 		                    	<a href="<?php echo $link;?>" class="btn btn-primary read-more"><?php echo JText::_('COM_DIGICOM_BUTTON_DETAILS'); ?></a>
-		                    </div> 
+		                    </div>
 	                  	</div>
 	                </div>
 	              </li>
-				  <?php 
+				  <?php
 				  $i++;
-				  endforeach; 
+				  endforeach;
 				  ?>
 	            </ul>
 	          </div>
 		</div>
 		<div class="pagination"><?php echo $this->pagination->getPagesLinks(); ?></div>
 	</div>
-	
+
 </div>
 <?php
 echo DigiComSiteHelperDigicom::powered_by();
