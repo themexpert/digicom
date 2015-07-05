@@ -272,7 +272,7 @@ class DigiComControllerCart extends JControllerLegacy
 		if(
 				($askforbilling != 0 && $res == 2)
 					or
-				($pluginParams->askforbilling && $res == 2)
+				(isset($pluginParams->askforbilling) && $pluginParams->askforbilling && $res == 2)
 			)
 		{
 			$this->setRedirect("index.php?option=com_digicom&view=profile&layout=edit&processor=".$processor.'&return='.$return);
