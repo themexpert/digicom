@@ -119,7 +119,7 @@ if($this->configs->get('afteradditem',0) == "2"){
 							<?php } ?>
 
 							<?php if($conf->get('afteradditem',0) == "2") {	?>
-								<button type="button" class="btn btn-warning" onclick="javascript:createPopUp(<?php echo $this->item->id; ?>, <?php echo $input->get("cid", "0"); ?>, '<?php echo JURI::root(); ?>', '', '', '', '<?php echo JRoute::_("index.php?option=com_digicom&view=cart"); ?>');"><i class="icon-cart"></i> <?php echo JText::_("COM_DIGICOM_ADD_TO_CART");?></button>
+								<button type="button" class="btn btn-warning" onclick="javascript:createPopUp(<?php echo $this->item->id; ?>,'<?php echo JRoute::_("index.php?option=com_digicom&view=cart"); ?>');"><i class="icon-cart"></i> <?php echo JText::_("COM_DIGICOM_ADD_TO_CART");?></button>
 							<?php }else { ?>
 								<button type="submit" class="btn btn-warning"><i class="icon-cart"></i> <?php echo JText::_('COM_DIGICOM_ADD_TO_CART'); ?></button>
 							<?php } ?>
