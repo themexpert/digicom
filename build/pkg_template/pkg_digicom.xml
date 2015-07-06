@@ -31,8 +31,12 @@
         <file type="plugin" id="offline" group="digicom_pay">plg_digicom_pay_offline.zip</file>
         <!-- Search plugin - finder-->
         <file type="plugin" id="digicom" group="finder">plg_finder_digicom.zip</file>
-        <!-- System plugin - addtocart-->
-        <file type="plugin" id="digicom_addtocart" group="system">plg_system_digicom_addtocart.zip</file>
+        <!-- System plugin - digicom-->
+        <file type="plugin" id="system" group="system">plg_system_digicom.zip</file>
+        <!-- Content plugin - digicom-->
+        <file type="plugin" id="content" group="content">plg_content_digicom.zip</file>
+        <!-- Editor-XTD plugin - digicom-->
+        <file type="plugin" id="editors-xtd" group="editors-xtd">plg_editors-xtd_digicom.zip</file>
     </files>
 
     <languages folder="language">
