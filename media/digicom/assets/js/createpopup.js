@@ -70,7 +70,7 @@ function deleteFromCart(cartid)
 	}).send();
 }
 
-function createPopUp(pid, cid, site, renew, renewlicid, itemid, to_cart)
+function createPopUp(pid, to_cart)
 {
 	var width = parseInt(window.screen.availWidth/4) + 110;
 	var height = parseInt(window.screen.availHeight/4);
@@ -81,10 +81,7 @@ function createPopUp(pid, cid, site, renew, renewlicid, itemid, to_cart)
 		document.body.removeChild(div);
 	}
 
-	itemid_var = "";
-	if(itemid != ""){
-		itemid_var = "&Itemid="+itemid;
-	}
+	var qty = document.getElementById("quantity_"+pid).value;
 
 	var divheader = document.createElement("div");
 	divheader.id = "cart_header";
@@ -100,8 +97,8 @@ function createPopUp(pid, cid, site, renew, renewlicid, itemid, to_cart)
 	var url = 'index.php?option=com_digicom&view=cart&task=cart.add'+
 						  '&from=ajax'+
 						  '&pid='+pid+
-						  '&cid='+cid;
-	console.log(req);
+						  '&qty='+qty;
+	//console.log(url);
 	var req = new Request.HTML({
 		method: 'get',
 		url: url,
@@ -112,16 +109,7 @@ function createPopUp(pid, cid, site, renew, renewlicid, itemid, to_cart)
 		}
 	}).send();
 
-	renew_var = "";
-	itemid_var = "";
-	if(renew != "")
-	{
-		renew_var = "&renew=renew";
-	}
-	if(itemid != "")
-	{
-		itemid_var = "&Itemid="+itemid;
-	}
+
 	var divfutter = document.createElement("div");
 	divfutter.id = "cart_futter";
 	divfutter.className = "modal-footer";
