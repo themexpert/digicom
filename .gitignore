@@ -12,6 +12,8 @@ config.codekit
 
 # Joomla core files
 /.htaccess
+
+# Administrator files n folders
 /administrator/cache/*
 /administrator/components/*
 !/administrator/components/com_digicom/
@@ -25,7 +27,6 @@ config.codekit
 !/administrator/language/en-GB/en-GB.mod_digicom_menu.ini
 !/administrator/language/en-GB/en-GB.mod_digicom_menu.sys.ini
 !/administrator/language/en-GB/en-GB.plg_system_digicom.ini
-!/administrator/language/en-GB/en-GB.plg_system_digicom_addtocart.ini
 !/administrator/language/en-GB/en-GB.plg_digicom_pay_offline.ini
 !/administrator/language/en-GB/en-GB.plg_digicom_pay_paypal.ini
 !/administrator/language/en-GB/en-GB.plg_finder_digicom.ini
@@ -62,21 +63,26 @@ config.codekit
 /modules/*
 !/modules/mod_digicom_cart/
 !/modules/mod_digicom_categories/
+
+# plugins index
 /plugins/*
 !/plugins/digicom_pay/*
 /plugins/digicom_pay/*
 !/plugins/digicom_pay/offline/*
 !/plugins/digicom_pay/paypal/*
+
+!/plugins/content/*
+/plugins/content/*
+!/plugins/content/digicom/*
+
 !/plugins/system/
-!/plugins/search/
-!/plugins/finder/
-/plugins/search/*
-/plugins/finder/*
 /plugins/system/*
 !/plugins/system/digicom/*
-# !/plugins/system/digicom_addtocart*
-!/plugins/search/digicom*
+
+!/plugins/finder/
+/plugins/finder/*
 !/plugins/finder/digicom*
+
 /templates/*
 /tmp/*
 /configuration.php
