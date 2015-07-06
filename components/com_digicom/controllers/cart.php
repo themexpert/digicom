@@ -48,7 +48,7 @@ class DigiComControllerCart extends JControllerLegacy
 		$cid = JFactory::getApplication()->input->get('cid',0);
 		$res = $this->_model->addToCart();
 		$configs = $this->_config;
-
+		$afteradditem = $configs->get('afteradditem',0);
 		$from = JFactory::getApplication()->input->get('from','');
 
 		if($from == "ajax"){
@@ -92,33 +92,27 @@ class DigiComControllerCart extends JControllerLegacy
 				$url = JRoute::_("index.php?option=com_digicom&view=cart", false);
 				$this->setRedirect($url);
 			}
-			elseif($type_afteradd == 1){//Stay on product list
-				$msg = "";
-				$items = $this->_model->getCartItems($this->_customer, $configs);
-				if(count($items) > 0){
-					$temp_msg = array();
-					foreach($items as $key=>$value){
-						if(isset($value->name) && trim($value->name) != ""){
-							$temp_msg[] = $value->name;
-						}
-					}
-					$products = implode(", ", $temp_msg);
-					$msg = urlencode($products);
-				}
-				$link = JRoute::_("index.php?option=com_digicom&view=product&cid=" . $cid . $layout . "&product_added=" . $msg . "&Itemid=" . $Itemid, false);
-				$this->setRedirect($link, "");
-			}
-			elseif($type_afteradd == 2){//Show cart in pop up
+			// elseif($type_afteradd == 1){//Stay on product list
+			// 	$msg = "";
+			// 	$items = $this->_model->getCartItems($this->_customer, $configs);
+			// 	if(count($items) > 0){
+			// 		$temp_msg = array();
+			// 		foreach($items as $key=>$value){
+			// 			if(isset($value->name) && trim($value->name) != ""){
+			// 				$temp_msg[] = $value->name;
+			// 			}
+			// 		}
+			// 		$products = implode(", ", $temp_msg);
+			// 		$msg = urlencode($products);
+			// 	}
+			// 	$link = JRoute::_("index.php?option=com_digicom&view=product&cid=" . $cid . $layout . "&product_added=" . $msg . "&Itemid=" . $Itemid, false);
+			// 	$this->setRedirect($link, "");
+			// }
+			// elseif($type_afteradd == 2){//Show cart in pop up
+			else{//Show cart in pop up
 				$task = JRequest::getVar("task", "", "get");
-				$renewlicid = JRequest::getVar("renewlicid", "", "post");
-				if($task == "add" && $from != "ajax"){
-					$url = JRoute::_("index.php?option=com_digicom&view=cart&&Itemid=".$cart_itemid, false);
-					$this->setRedirect($url);
-				}
-				if(trim($renewlicid) != ""){
-					$url = JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$cart_itemid, false);
-					$this->setRedirect($url);
-				}
+				$url = JRoute::_("index.php?option=com_digicom&view=cart", false);
+				$this->setRedirect($url);
 			}
 		}
 	}
