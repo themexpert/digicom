@@ -15,7 +15,7 @@ class DigiComModelCart extends JModelItem
 	public $packages 	= array();
 	public $configs 	= array();
 	public $customer 	= array();
-	
+
 	public $_items = null;
 	public $tax = null;
 
@@ -78,23 +78,33 @@ class DigiComModelCart extends JModelItem
 		$pid = JFactory::getApplication()->input->get('pid',0);
 		$my = JFactory::getUser($uid);
 		$cid = JFactory::getApplication()->input->get('cid',0);
+		$user = JFactory::getUser();
 
 		if($pid < 1){//bad product id
 			return (-1);
 		}
 
 		$plan_id = JRequest::getVar('plan_id', -1);
-		
+
 		$sql = "select name, access from #__digicom_products where id=".(int)($pid);
-		$db->setQuery( $sql );
+		$query = $db->getQuery(true);
+		$query->select(array('name', 'access'))
+					->from('#__digicom_products');
+
+		$groups = implode(',', $user->getAuthorisedViewLevels());
+		$query->where('access IN (' . $groups . ')');
+
+
+		$db->setQuery( $query );
 		$res = $db->loadObject();
 
 		$productname 	= $res->name;
 		$access 		= $res->access;
-
-		if(strlen($productname) < 1 /*|| $access > $customer->_user->gid*/){
+		
+		if(strlen($productname) < 1 || $access > $customer->_user->gid){
 			return -1;
 		}
+
 		$qty = JRequest::getVar( 'qty', 1, 'request' ); //product quantity
 		//check if item already in the cart
 		$sql = "select cid, item_id, quantity from #__digicom_cart where sid='".intval($sid)."' AND item_id='".intval($pid)."'";
@@ -111,7 +121,7 @@ class DigiComModelCart extends JModelItem
 			$db->query();
 			$cid = $db->insertid(); //cart id of the item inserted
 		}
-				
+
 		$sql = "select quantity from #__digicom_cart where item_id='".intval($pid)."' and sid='".intval($sid)."' and userid='".@$my->id."' and cid='".intval($cid). "'";
 		$db->setQuery( $sql );
 		$quant = $db->loadResult();
@@ -120,7 +130,7 @@ class DigiComModelCart extends JModelItem
 	}
 
 	function getCartItems($customer, $configs)
-	{	
+	{
 
 		if(is_object($customer)){
 			$sid = $customer->_sid;
@@ -137,7 +147,7 @@ class DigiComModelCart extends JModelItem
 		}
 
 		$db = JFactory::getDBO();
-		$sql = "SELECT 
+		$sql = "SELECT
 						`c`.*,
 						`p`.*
 					FROM
@@ -161,11 +171,11 @@ class DigiComModelCart extends JModelItem
 
 			$item->price_formated = DigiComSiteHelperDigiCom::format_price2( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
 			$item->subtotal_formated = DigiComSiteHelperDigiCom::format_price2( $item->subtotal, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
-		
+
 			$item->subtotal = $item->price * $item->quantity;
 		}
-		
-		
+
+
 		$this->_items = $items;
 
 		if(count($items) > 0){
@@ -181,11 +191,11 @@ class DigiComModelCart extends JModelItem
 
 	function calc_price($items,$cust_info,$configs)
 	{
-		
+
 		if(isset($items[-1]) && $items[-1] == "PayProcessed"){
 			return $items[-2];
 		}
-		
+
 		$db = JFactory::getDBO();
 		$user = JFactory::getUser();
 		if (is_object($cust_info))	$sid = $cust_info->_sid;
@@ -206,7 +216,7 @@ class DigiComModelCart extends JModelItem
 		$pay_flag = false;
 		$can_promo = true;
 		$payprocess = array();
-		
+
 		$total = 0;
 		$price_format = '%' . $configs->get('totaldigits','') . '.' . $configs->get('decimaldigits','2') . 'f';
 		$payprocess['number_of_products'] = 0;
@@ -278,13 +288,13 @@ class DigiComModelCart extends JModelItem
 					$sql = "update #__digicom_promocodes set used=used+1 where id = '" . $promo->id . "'";
 					$this->_db->setQuery( $sql );
 					$this->_db->query();
-					
+
 					$item->discount += $promoamount;
 					$payprocess['discount_calculated'] = 1;
 				}
 			} // end if for: product promo check
 		}
-		
+
 		if($addPromo && $onProduct){
 			$total -= $promovalue;
 			$promo_applied = 1;
@@ -323,13 +333,13 @@ class DigiComModelCart extends JModelItem
 		if (is_array($customer)) $tmp_customer = $customer;
 		$customer = $tmp_customer;
 		//final calculations end here
-		
+
 		if(!isset($payprocess['value'])) $payprocess['value'] = 0;
 		$sum_tax = $total + $payprocess['value']; //$vat_tax + $state_tax;//total tax
-		
+
 		$payprocess['promo_error'] = (!$user->id && isset($promo->orders) && count($promo->orders) ? JText::_("DIGI_PROMO_LOGIN") : '');
 		$payprocess['total'] = $total;
-		
+
 		$payprocess['taxed'] = $payprocess['shipping'] + $sum_tax;
 		$payprocess['discount_calculated'] = (isset($payprocess['discount_calculated']) ? $payprocess['discount_calculated'] : 0);
 		$payprocess['shipping'] = DigiComSiteHelperDigiCom::format_price( $payprocess['shipping'], $payprocess['currency'], false, $configs ); //sprintf($price_format, $payprocess['shipping']);
@@ -363,7 +373,7 @@ class DigiComModelCart extends JModelItem
 
 	function get_promo( $customer, $checkvalid = 1 )
 	{
-		
+
 		if(empty($customer->_sid))
 		{
 			$customer = new DigiComSiteHelperSession();
@@ -389,22 +399,22 @@ class DigiComModelCart extends JModelItem
 			$promocode = $promodata[1];
 		else
 			$promocode = '';
-		
-		
+
+
 		if ( strlen( $promocode ) > 0 ) {//valid promocode was provided
 			$sql = "select *
 					from #__digicom_promocodes
 					where code='" . $promocode . "'";
 			$db->setQuery( $sql );
 			$promo = $db->loadObject();
-			
+
 			// Get products restrictions
 			$sql = "SELECT p.`productid`
 					FROM `#__digicom_promocodes_products` AS p
 					WHERE p.`promoid`=" . $promo->id;
 			$db->setQuery( $sql );
 			$promo->products = $db->loadObjectList();
-			
+
 		} else {
 			$promo = $this->getTable( "Discount" );
 		}
@@ -415,14 +425,14 @@ class DigiComModelCart extends JModelItem
 
 		//code exists and we're about to validate it
 		if ( $promo->id > 0 && $checkvalid == 1 ) {
-			
+
 			/*if ( $uid > 0 ) {
 				$sql = "select count(*) from #__digicom_orders where userid='" . $uid . "' and promocode='".$promocode."'";
 				$db->setQuery( $sql );
 				$licensecount = $db->loadResult();
 			} else {
 				$licensecount = 0;
-			}		*/	
+			}		*/
 
 			$licensecount = 0;
 
@@ -475,7 +485,7 @@ class DigiComModelCart extends JModelItem
 		$db->setQuery( $sql );
 		$cartitems = $db->loadObjectList();
 
-		
+
 		//now we have to add rows for choosen items - rows are items of selected product
 		//with blank option set and qty = 1
 		$replicate = JRequest::getVar( 'replicate', '', 'post' );
@@ -538,7 +548,7 @@ class DigiComModelCart extends JModelItem
 			//$jAp->enqueueMessage(nl2br($db->getErrorMsg()),'error');
 		}
 
-		
+
 		$sql = "update #__digicom_session set shipping_details='0' where sid='" . intval($sid) . "'";
 		$db->setQuery( $sql );
 		$db->query();
@@ -592,7 +602,7 @@ class DigiComModelCart extends JModelItem
 		if(!$sid){
 			return;
 		}
-		
+
 		$sql = "delete from #__digicom_cart where sid='" . intval($sid) . "'";
 		$db->setQuery( $sql );
 		$db->query();
@@ -621,7 +631,7 @@ class DigiComModelCart extends JModelItem
 		$this->goToSuccessURL($customer->_sid, '', $orderid , $type);
 		return $orderid;
 	}
-	
+
 	function addOrderInfo($items, $customer, $tax, $status,$prosessor){
 		$config = JFactory::getConfig();
 		$tzoffset = $config->get('offset');
@@ -704,7 +714,7 @@ class DigiComModelCart extends JModelItem
 		$dispatcher=JDispatcher::getInstance();
 		JPluginHelper::importPlugin('digicom_pay',$name);
 		$dispatcher->trigger('onTP_Storelog',array($data1));
-		
+
 		return true;
 	}
 
@@ -724,11 +734,11 @@ class DigiComModelCart extends JModelItem
 		$data=$responce[0];
 
 		$this->storelog($pg_plugin, $data);
-		
+
 		if(isset($data['status']))
 		{
 			$_SESSION['in_trans'] = 1;
-			
+
 			if($data['status']=='C'){
 				$msg = JText::_("COM_DIGICOM_PAYMENT_SUCCESSFUL_THANK_YOU");
 				$status = "Active";
@@ -739,20 +749,20 @@ class DigiComModelCart extends JModelItem
 				$status = $data['status'];
 				$msg = JText::_("COM_DIGICOM_PAYMENT_WAITING_THANK_YOU");
 			}
-			
+
 			$config = JFactory::getConfig();
 			$tzoffset = $config->get('offset');
 			$now = date('Y-m-d H:i:s', time() + $tzoffset);
 			$now = strtotime($now);
 
 			$this->updateOrder($order_id,$result,$data,$pg_plugin,$status,$items,$customer);
-			
+
 		}
 
-		if($status != "Active"){			
+		if($status != "Active"){
 			$app->redirect(JRoute::_("index.php?option=com_digicom&view=order&id=".$order_id),$msg);
 		}
-		
+
 		// orders page
 		if ($configs->get('afterpurchase',1) == 1)
 		{
@@ -763,12 +773,12 @@ class DigiComModelCart extends JModelItem
 		{
 			$app->redirect(JRoute::_("index.php?option=com_digicom&view=downloads"),$msg);
 		}
-		
+
 		return true;
 	}
-	
+
 	function updateOrder($order_id,$result,$data,$pg_plugin,$status,$items,$customer){
-		
+
 		$table = $this->getTable('Order');
 		$table->load($order_id);
 
@@ -820,7 +830,7 @@ class DigiComModelCart extends JModelItem
 
 		return true;
 	}
-	
+
 	function storeOrderParams($user_id,$order_id ,$params){
 
 		$table = $this->getTable('Order');
@@ -860,7 +870,7 @@ class DigiComModelCart extends JModelItem
 		}
 
 		$tax = $cart->calc_price( $items, $customer, $configs );
-		
+
 		if ( $orderid == 0 && is_array( $cust_info ) && isset( $cust_info['cart'] ) && isset( $cust_info['cart']['orderid'] ) )
 			$orderid = $cust_info['cart']['orderid'];
 		if ( $orderid == 0 && is_object( $cust_info ) && isset( $cust_info->cart['orderid'] ) )
@@ -872,11 +882,11 @@ class DigiComModelCart extends JModelItem
 
 		$this->dispatchMail( $orderid, $total, $number_of_products, $now, $items, $customer , $type);
 		$cart->emptyCart( $sid );
-		
+
 		return true;
 
 	}
-	
+
 	function getFinalize( $sid, $msg = '', $orderid = 0 , $type)
 	{
 
@@ -908,7 +918,7 @@ class DigiComModelCart extends JModelItem
 		}
 
 		$tax = $cart->calc_price( $items, $customer, $configs );
-		
+
 		$now = time();
 		$total = $tax['taxed'];
 		$number_of_products = $tax['number_of_products'];
@@ -917,7 +927,7 @@ class DigiComModelCart extends JModelItem
 		$plugin = JRequest::getVar( 'plugin', '' );
 		$this->dispatchMail( $orderid, $total, $number_of_products, $now, $items, $customer , $type);
 		$cart->emptyCart( $sid );
-		
+
 		return true;
 
 	}
@@ -986,10 +996,10 @@ class DigiComModelCart extends JModelItem
 	}
 
 	//mail sending function
-	
+
 	function dispatchMail($orderid, $amount, $number_of_products, $timestamp, $items, $customer, $type = 'new_order', $status = '')
 	{
-		
+
 		$app 	= JFactory::getApplication();
 		$db 	= JFactory::getDbo();
 		$site_config = JFactory::getConfig();
@@ -1010,11 +1020,11 @@ class DigiComModelCart extends JModelItem
 		$configs = $configs->getConfigs();
 		$order = $this->getTable( "Order" );
 		$order->load( $orderid );
-		
+
 		//echo $type;die;
 		$email_settings = $configs->get('email_settings');
 		$email_header_image = $email_settings->email_header_image;//jform[email_settings][email_header_image]
-		
+
 		if(!empty($email_header_image)){
 			$email_header_image = '<img src="'.JRoute::_(JURI::root().$email_header_image).'" />';
 		}
@@ -1031,26 +1041,26 @@ class DigiComModelCart extends JModelItem
 		$heading = $emailinfo->heading;//jform[email_settings][heading]
 		if(!$enable) return;
 		//print_r($emailinfo);die;
-		
+
 		//-----------------------------------------------------------------------
 		$path = '/components/com_digicom/emails/';
-		
+
 		switch ($type) {
 			case 'new_order':
 				$emailType = JText::_('COM_DIGIOM_NEW_ORDER');
 				$filename = 'new-order.'.$email_type.'.php';
 				break;
-			
+
 			case 'process_order':
 				$emailType = JText::_('COM_DIGIOM_PROCESS_ORDER');
 				$filename = 'process-order.'.$email_type.'.php';
 				break;
-			
+
 			case 'cancel_order':
 				$emailType = JText::_('COM_DIGIOM_CANCEL_ORDER');
 				$filename = 'cancel-order.'.$email_type.'.php';
 				break;
-			
+
 			case 'complete_order':
 				$emailType = JText::_('COM_DIGIOM_COMPLETE_ORDER');
 				$filename = 'complete-order.'.$email_type.'.php';
@@ -1076,13 +1086,13 @@ class DigiComModelCart extends JModelItem
 
 
 		//$email = $configs->get('email');
-		
+
 		/*$message = $email->$type->body;
 		$subject = $email->$type->subject;
 		*/
 		$message = $emailbody;
 		$subject = $Subject;
-		
+
 		// Replace all variables in template
 		$uri = JURI::getInstance();
 		$sitename = (trim( $configs->get('store_name','DigiCom Store') ) != '') ? $configs->get('store_name','DigiCom Store') : $site_config->get( 'sitename' );
@@ -1165,11 +1175,11 @@ class DigiComModelCart extends JModelItem
 		$subject = str_replace( "[NUMBER_OF_PRODUCTS]", $number_of_products, $subject );
 		$subject = str_replace( "[DISCOUNT_AMOUNT]", $order->promocodediscount, $subject );
 		$subject = str_replace( "[ORDER_STATUS]", $status, $subject );
-		
+
 		$subject = str_replace( "{site_title}", $sitename, $subject );
 		$subject = str_replace( "{order_number}", $orderid, $subject );
 		$subject = str_replace( "{order_date}", date( $configs->get('time_format','d-m-Y'), $timestamp ), $subject );
-		
+
 		$message = str_replace( "{site_title}", $sitename, $message );
 		$message = str_replace( "{order_number}", $orderid, $message );
 		$message = str_replace( "{order_date}", date( $configs->get('time_format','d-m-Y'), $timestamp ), $message );
@@ -1230,7 +1240,7 @@ class DigiComModelCart extends JModelItem
 		}
 
 		if ( $configs->get('sendmailtoadmin',1) != 0 ) {
-			$recipients =  $adminEmail2 . (!empty($recipients) ? ', '.$recipients : ''); 
+			$recipients =  $adminEmail2 . (!empty($recipients) ? ', '.$recipients : '');
 			$mailSender = JFactory::getMailer();
 			$mailSender->isHTML( true );
 			$mailSender->Encoding = 'base64';
@@ -1238,13 +1248,13 @@ class DigiComModelCart extends JModelItem
 			$mailSender->setSender( array($adminEmail2, $adminName2) );
 			$mailSender->setSubject( $subject );
 			$mailSender->setBody( $message );
-			
+
 			//Log::write( $message );
 			if ( !$mailSender->Send() ) {
 				//error code
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -1268,7 +1278,7 @@ class DigiComModelCart extends JModelItem
 		return $db->loadObject();
 
 	}
-	
+
 	function addOrder( $items, $cust_info, $now, $paymethod, $status = "Active" )
 	{
 		$cart = $this;
@@ -1276,9 +1286,9 @@ class DigiComModelCart extends JModelItem
 		$configs = $conf->getConfigs();
 		$db = JFactory::getDBO();
 		$tax = $cart->calc_price( $items, $cust_info, $configs );
-		
+
 		//print_r($tax);die;
-		
+
 		$customer = $cust_info;
 
 		if (is_object($customer)) $sid = $customer->_sid;
@@ -1308,10 +1318,10 @@ class DigiComModelCart extends JModelItem
 			$promoid = '0';
 			$promocode = '0';
 		}
-		
+
 		$sql = "insert into #__digicom_orders ( userid, order_date, amount, amount_paid, currency, processor, number_of_products, status, promocodeid, promocode, promocodediscount, published ) "
 		. " values ('{$uid}','".$now."','".$payable_amount."', '0', '" . $currency . "','" . $paymethod . "','".$number_of_products."', '" . $status . "', '" . $promoid . "', '" . $promocode . "', '" . $tax['promo'] . "', '1') ";
-		
+
 		$db->setQuery( $sql );
 		$db->query();
 		$orderid = $db->insertid();
@@ -1337,15 +1347,15 @@ class DigiComModelCart extends JModelItem
 		$database = JFactory::getDBO();
 		$license_index = 0;
 		$jconfig = JFactory::getConfig();
-		
+
 		$user_id = isset($customer->_user->id) ? $customer->_user->id : $customer["userid"];
 
 		if($user_id == 0){
 			return false;
 		}
-		
+
 		//print_r($items);die;
-		
+
 		// start foreach
 		foreach($items as $key=>$item)
 		{
@@ -1361,15 +1371,15 @@ class DigiComModelCart extends JModelItem
 				//echo $sql;die;
 				$database->setQuery($sql);
 				$database->query();
-				
+
 				$sql = "update #__digicom_products set used=used+1 where id = '" . $item->item_id . "'";
 				$database->setQuery( $sql );
 				$database->query();
-				
+
 			}
 		}
 		// end foreach
-		
+
 		return true;
 	}
 
@@ -1385,7 +1395,7 @@ class DigiComModelCart extends JModelItem
 	}
 
 	public function getOrderItems( $order_id ){
-		
+
 		$configs = $this->configs;
 		$customer = new DigiComSiteHelperSession();
 		$db 	= JFactory::getDbo();
@@ -1409,10 +1419,10 @@ class DigiComModelCart extends JModelItem
 
 			$item->price_formated = DigiComSiteHelperDigiCom::format_price2( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
 			$item->subtotal_formated = DigiComSiteHelperDigiCom::format_price2( $item->subtotal, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
-		
+
 			$item->subtotal = $item->price * $item->quantity;
 		}
-		
+
 		return $items ;
 
 	}
