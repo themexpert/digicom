@@ -66,10 +66,10 @@ config.codekit
 
 # plugins index
 /plugins/*
-!/plugins/digicom_pay/*
+!/plugins/digicom_pay/
 /plugins/digicom_pay/*
-!/plugins/digicom_pay/offline/*
-!/plugins/digicom_pay/paypal/*
+!/plugins/digicom_pay/offline/
+!/plugins/digicom_pay/paypal/
 
 !/plugins/editors-xtd/*
 /plugins/editors-xtd/*
