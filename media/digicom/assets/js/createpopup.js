@@ -81,7 +81,11 @@ function createPopUp(pid, to_cart)
 		document.body.removeChild(div);
 	}
 
-	var qty = document.getElementById("quantity_"+pid).value;
+	if(document.getElementById("quantity_"+pid)){
+		var qty = document.getElementById("quantity_"+pid).value;
+	}else{
+		var qty = 1;
+	}
 
 	var divheader = document.createElement("div");
 	divheader.id = "cart_header";
