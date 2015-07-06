@@ -82,7 +82,7 @@ config.codekit
 
 !/plugins/system/
 /plugins/system/*
-!/plugins/system/digicom/*
+!/plugins/system/digicom/
 
 !/plugins/finder/
 /plugins/finder/*
