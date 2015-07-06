@@ -67,12 +67,13 @@ class DigiComControllerCart extends JControllerLegacy
 		}
 		else{
 			if($res < 0) {
-				$msg = JText::_("DSWRONGPRODID");
+				$msg = JText::_("COM_DIGICOM_CART_WRONG_PID_OR_ACCESS_LABEL");
 				$link = "index.php?option=com_digicom&view=category&id=" . $cid;
+				echo $link;die;
 				$this->setRedirect(JRoute::_($link, false), $msg);
 			}
 			elseif($res == 0){
-				$msg = JText::_("DSERRORUPDCARD");
+				$msg = JText::_("COM_DIGICOM_CART_ERROR_UPDATING_CART_LABEL");
 				$link = "index.php?option=com_digicom&view=category&id=" . $cid;
 				$this->setRedirect(JRoute::_($link, false), $msg);
 			}
