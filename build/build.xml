@@ -102,7 +102,7 @@
 	Plugins taks
 	====================================================================================================
 	-->
-    <target name="plugins" depends="plugin-pay,plugin-finder,plugin-system,plugin-editor" description="Loop through all plugins and build package">
+    <target name="plugins" depends="plugin-pay,plugin-finder,plugin-system,plugin-editor, plugin-content" description="Loop through all plugins and build package">
         <echo>Lets Build all plugin</echo>
     </target>
 
@@ -146,6 +146,11 @@
         </copy>
     </target>
 
+    <!---
+    =====================
+    Finder plugin
+    =====================
+    -->
     <target name="plugin-finder" description="Finder Plugins">
         <!--Copy finder/digicom files to temp-->
         <copy todir="temp/plg_finder_digicom" overwrite="true">
@@ -161,23 +166,65 @@
             </fileset>
         </copy>
     </target>
+
+    <!---
+    =====================
+    System plugin
+    =====================
+    -->
     <target name="plugin-system" description="System Plugins">
         <!--Copy finder/digicom files to temp-->
-        <copy todir="temp/plg_system_digicom_addtocart" overwrite="true">
-            <fileset dir="../plugins/system/digicom_addtocart">
+        <copy todir="temp/plg_system_digicom" overwrite="true">
+            <fileset dir="../plugins/system/digicom">
                 <include name="**" />
             </fileset>
         </copy>
         <!--Copy associated language file-->
-        <copy todir="temp/plg_system_digicom_addtocart/language/en-GB" overwrite="true">
+        <copy todir="temp/plg_system_digicom/language/en-GB" overwrite="true">
             <fileset dir="../administrator/language/en-GB/">
-                <include name="en-GB.plg_system_digicom_addtocart.ini" />
-                <include name="en-GB.plg_system_digicom_addtocart.sys.ini" />
+                <include name="en-GB.plg_system_digicom.ini" />
             </fileset>
         </copy>
     </target>
-    <target name="plugin-editor" description="Editor Plugins">
 
+    <!---
+    =====================
+    Content plugin
+    =====================
+    -->
+    <target name="plugin-content" description="Content Plugins">
+        <!--Copy finder/digicom files to temp-->
+        <copy todir="temp/plg_content_digicom" overwrite="true">
+            <fileset dir="../plugins/content/digicom">
+                <include name="**" />
+            </fileset>
+        </copy>
+        <!--Copy associated language file-->
+        <copy todir="temp/plg_content_digicom/language/en-GB" overwrite="true">
+            <fileset dir="../administrator/language/en-GB/">
+                <include name="en-GB.plg_content_digicom.ini" />
+            </fileset>
+        </copy>
+    </target>
+
+    <!---
+    =====================
+    Editor plugin
+    =====================
+    -->
+    <target name="plugin-editor" description="Editor Plugins">
+        <!--Copy finder/digicom files to temp-->
+        <copy todir="temp/plg_editors-xtd_digicom" overwrite="true">
+            <fileset dir="../plugins/editors-xtd/digicom">
+                <include name="**" />
+            </fileset>
+        </copy>
+        <!--Copy associated language file-->
+        <copy todir="temp/plg_editors-xtd_digicom/language/en-GB" overwrite="true">
+            <fileset dir="../administrator/language/en-GB/">
+                <include name="en-GB.plg_editors-xtd_digicom.ini" />
+            </fileset>
+        </copy>
     </target>
 
     <target name="make" description="Builds the extension release package for a version."
