@@ -76,9 +76,9 @@ config.codekit
 /plugins/editors-xtd/*
 !/plugins/editors-xtd/digicom/
 
-!/plugins/content/*
+!/plugins/content/
 /plugins/content/*
-!/plugins/content/digicom/*
+!/plugins/content/digicom/
 
 !/plugins/system/
 /plugins/system/*
