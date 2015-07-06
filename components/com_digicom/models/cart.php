@@ -108,12 +108,20 @@ class DigiComModelCart extends JModelItem
 		//check if item already in the cart
 		$sql = "select cid, item_id, quantity from #__digicom_cart where sid='".intval($sid)."' AND item_id='".intval($pid)."'";
 		$db->setQuery($sql);
-		$data = $db->loadObjectList();
-		$item_id = @$data["0"]->item_id; //lets just check if item is in the cart
-		$item_qty = @$data["0"]->quantity;
-		$cid = @$data["0"]->cid;
+		$data = $db->loadObject();
+		if($data){
+			$item_id = $data->item_id; //lets just check if item is in the cart
+			$item_qty = $data->quantity;
+			$cid = $data->cid;
 
-		if(!$item_id){//no such item in cart- inserting new row
+			//already in the cart, lets update if not same quantity
+			if($item_qty != $qty)
+			$sql = "update #__digicom_cart set quantity =quantity+".$qty." where sid='".intval($sid)."' AND item_id='".intval($pid)."'";
+			$db->setQuery($sql);
+			$db->query();
+		}
+
+		if(!isset($item_id)){//no such item in cart- inserting new row
 			$sql = "insert into #__digicom_cart (quantity, item_id, sid, userid)"
 				. " values ('".$qty."', '".intval($pid)."', '".intval($sid)."', '".intval($uid)."')";
 			$db->setQuery($sql);
@@ -121,9 +129,9 @@ class DigiComModelCart extends JModelItem
 			$cid = $db->insertid(); //cart id of the item inserted
 		}
 
-		$sql = "select quantity from #__digicom_cart where item_id='".intval($pid)."' and sid='".intval($sid)."' and userid='".@$my->id."' and cid='".intval($cid). "'";
-		$db->setQuery( $sql );
-		$quant = $db->loadResult();
+		// $sql = "select quantity from #__digicom_cart where item_id='".intval($pid)."' and sid='".intval($sid)."' and userid='".@$my->id."' and cid='".intval($cid). "'";
+		// $db->setQuery( $sql );
+		// $quant = $db->loadResult();
 
 		return $cid;
 	}
