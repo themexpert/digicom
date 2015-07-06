@@ -73,7 +73,7 @@ config.codekit
 /plugins/search/*
 /plugins/finder/*
 /plugins/system/*
-!/plugins/system/digicom*
+!/plugins/system/digicom/*
 # !/plugins/system/digicom_addtocart*
 !/plugins/search/digicom*
 !/plugins/finder/digicom*
