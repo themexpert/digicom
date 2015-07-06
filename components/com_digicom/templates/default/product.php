@@ -20,7 +20,7 @@ if($this->configs->get('afteradditem',0) == "2"){
 }
 ?>
 <div id="digicom">
-	
+
 	<div class="digi-products">
 
 		<?php if(!$this->item->id): ?>
@@ -30,7 +30,7 @@ if($this->configs->get('afteradditem',0) == "2"){
 		</div>
 		<?php return true; ?>
 		<?php endif; ?>
-		
+
 		<?php if(($this->item->publish_up > $date_today) || ($this->item->publish_down != 0 && $this->item->publish_down < $date_today)): ?>
 		<div class="alert alert-warning">
 			<?php echo JText::_('COM_DIGICOM_PRODUCT_PUBLISH_DOWN_NOTICE'); ?>
@@ -54,10 +54,10 @@ if($this->configs->get('afteradditem',0) == "2"){
 		<form name="prod" id="product-form" action="<?php echo JRoute::_('index.php?option=com_digicom&view=cart');?>" method="post" style="width:100%;">
 
 			<div class="row-fluid">
-				
+
 				<!-- Details & Cart -->
 				<div class="span12">
-					<?php 
+					<?php
 						if($this->item->price > 0){
 							 $price = '<span>'.JText::_('COM_DIGICOM_PRODUCT_PRICE').": ".DigiComSiteHelperDigicom::format_price2($this->item->price, $conf->get('currency','USD'), true, $conf).'</span>';
 						  }else{
@@ -75,7 +75,7 @@ if($this->configs->get('afteradditem',0) == "2"){
 						<span class="label"><?php echo JText::sprintf('COM_DIGICOM_PRODUCT_TYPE_BUNDLE');?></span>
 						<?php endif; ?>
 					</h1>
-					
+
 					<?php if (!empty($this->item->tags->itemTags)) : ?>
 						<?php $this->item->tagLayout = new JLayoutFile('joomla.content.tags'); ?>
 						<?php echo $this->item->tagLayout->render($this->item->tags->itemTags); ?>
@@ -83,12 +83,12 @@ if($this->configs->get('afteradditem',0) == "2"){
 
 					<p class="short-desc"><?php echo $this->item->description; ?></p>
 					<div class="description"><?php echo $this->item->fulldescription; ?></div>
-					
+
 					<?php if(!empty($this->item->bundle_source)):?>
 					<div class="bundled-products">
 						<h3><?php echo JText::_('COM_DIGICOM_PRODUCT_BUNDLE_ITEMS_TITLE');?></h3>
 						<ul>
-							<?php foreach($this->item->bundleitems as $key=>$bitem): 
+							<?php foreach($this->item->bundleitems as $key=>$bitem):
 								  $link = JRoute::_(DigiComHelperRoute::getProductRoute($bitem->id,$bitem->catid, $bitem->language));
 
 							?>
@@ -97,12 +97,12 @@ if($this->configs->get('afteradditem',0) == "2"){
 									<span class="label"><?php echo DigiComSiteHelperDigicom::format_price2($bitem->price, $conf->get('currency','USD'), true, $conf); ?></span>
 								</li>
 							<?php endforeach; ?>
-						</ul>	
-					</div>						
+						</ul>
+					</div>
 					<?php endif; ?>
 
 					<?php if ($this->configs->get('catalogue',0) == '0') : ?>
-					<div class="well clearfix">	
+					<div class="well clearfix">
 						<div class="product-price">
 							<?php echo $price; ?>
 							<br>
@@ -111,24 +111,23 @@ if($this->configs->get('afteradditem',0) == "2"){
 								<small><?php echo JText::_('COM_DIGICOM_PRODUCT_VALIDITY'); ?> : <?php echo DigiComSiteHelperPrice::getProductValidityPeriod($this->item); ?></small>
 							</span>
 							<?php endif; ?>
-						</div>						
-						
-						<div class="addtocart-bar">
-							
+						</div>
+
+						<div class="addtocart-bar<?php echo ( ($conf->get('show_quantity',0) == " input-append") ? '' : ''); ?>">
+							<?php if($conf->get('show_quantity',0) == "1") {	?>
+								<input id="quantity_<?php echo $this->item->id; ?>" type="number" name="qty" min="1" class="input-small" value="1" size="2" placeholder="<?php echo JText::_('COM_DIGICOM_QUANTITY'); ?>">
+							<?php } ?>
+
 							<?php if($conf->get('afteradditem',0) == "2") {	?>
 								<button type="button" class="btn btn-warning" onclick="javascript:createPopUp(<?php echo $this->item->id; ?>, <?php echo $input->get("cid", "0"); ?>, '<?php echo JURI::root(); ?>', '', '', '', '<?php echo JRoute::_("index.php?option=com_digicom&view=cart"); ?>');"><i class="icon-cart"></i> <?php echo JText::_("COM_DIGICOM_ADD_TO_CART");?></button>
 							<?php }else { ?>
 								<button type="submit" class="btn btn-warning"><i class="icon-cart"></i> <?php echo JText::_('COM_DIGICOM_ADD_TO_CART'); ?></button>
 							<?php } ?>
 
-							<?php if($conf->get('show_quantity',0) == "1") {	?>
-								<input id="quantity_<?php echo $this->item->id; ?>" type="number" name="qty" min="1" class="input-small" value="1" size="2" placeholder="<?php echo JText::_('COM_DIGICOM_QUANTITY'); ?>">
-							<?php } ?>
-
 						</div>
-					</div>	
+					</div>
 					<?php endif; ?>
-					
+
 				</div>
 			</div>
 			<input type="hidden" name="option" value="com_digicom"/>
@@ -137,7 +136,7 @@ if($this->configs->get('afteradditem',0) == "2"){
 			<input type="hidden" name="pid" value="<?php echo $this->item->id; ?>"/>
 			<input type="hidden" name="cid" value="<?php echo $this->item->catid; ?>"/>
 		</form>
-		
+
 
 		<?php echo DigiComSiteHelperDigicom::powered_by(); ?>
 	</div>
