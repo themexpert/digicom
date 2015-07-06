@@ -62,7 +62,9 @@ function ajaxRequest(Url,DivId)
 
 		document.getElementById('cart_item_price'+cid).innerHTML = cart_item_price;
 		document.getElementById('cart_item_total'+cid).innerHTML = cart_item_total;
-		document.getElementById('cart_item_discount'+cid).innerHTML = cart_item_discount;
+		if (document.getElementById('cart_item_discount'+cid)) {
+			 document.getElementById('cart_item_discount'+cid).innerHTML = cart_item_discount;
+		}
 		document.getElementById('cart_total').innerHTML = myObject.cart_total;
 		var cd = document.getElementById('digicom_cart_discount');
 		if(cd) cd.innerHTML = myObject.cart_discount;

@@ -113,7 +113,9 @@ $tax = $this->tax;
 						</td>
 
 						<td nowrap="nowrap">
-							<?php echo DigiComSiteHelperDigiCom::format_price2($item->price, $item->currency, true, $configs); ?>
+							<span id="cart_item_price<?php echo $item->cid; ?>">
+								<?php echo DigiComSiteHelperDigiCom::format_price2($item->price, $item->currency, true, $configs); ?>
+							</span>
 						</td>
 
 						<td align="center" nowrap="nowrap">
