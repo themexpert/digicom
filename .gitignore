@@ -71,6 +71,10 @@ config.codekit
 !/plugins/digicom_pay/offline/*
 !/plugins/digicom_pay/paypal/*
 
+!/plugins/editors-xtd/*
+/plugins/editors-xtd/*
+!/plugins/editors-xtd/digicom/*
+
 !/plugins/content/*
 /plugins/content/*
 !/plugins/content/digicom/*
