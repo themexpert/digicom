@@ -113,7 +113,7 @@ if($this->configs->get('afteradditem',0) == "2"){
 							<?php endif; ?>
 						</div>
 
-						<div class="addtocart-bar<?php echo ( ($conf->get('show_quantity',0) == " input-append") ? '' : ''); ?>">
+						<div class="addtocart-bar<?php echo ($conf->get('show_quantity',0) == 1 ? " input-append" : ''); ?>">
 							<?php if($conf->get('show_quantity',0) == "1") {	?>
 								<input id="quantity_<?php echo $this->item->id; ?>" type="number" name="qty" min="1" class="input-small" value="1" size="2" placeholder="<?php echo JText::_('COM_DIGICOM_QUANTITY'); ?>">
 							<?php } ?>
