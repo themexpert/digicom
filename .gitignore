@@ -52,8 +52,6 @@ config.codekit
 !/language/en-GB/en-GB.com_digicom.ini
 !/language/en-GB/en-GB.mod_digicom_cart.ini
 !/language/en-GB/en-GB.mod_digicom_categories.ini
-!/language/en-GB/en-GB.mod_digicom_manager.ini
-!/language/en-GB/en-GB.plg_system_digicom_addtocart.ini
 /layouts/*
 /libraries/*
 /logs/*
