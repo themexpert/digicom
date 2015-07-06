@@ -20,8 +20,7 @@
 	</files>
 
 	<languages folder="language">
-		<language client="administrator" tag="en-GB">en-GB/en-GB.plg_system_digicom.ini</language>
-		<language client="site" tag="en-GB">en-GB/en-GB.plg_system_digicom.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_system_digicom.ini</language>
 	</languages>
 
 	<config>
