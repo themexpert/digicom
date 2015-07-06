@@ -94,14 +94,13 @@ class DigiComModelCart extends JModelItem
 		$groups = implode(',', $user->getAuthorisedViewLevels());
 		$query->where('access IN (' . $groups . ')');
 
-
 		$db->setQuery( $query );
 		$res = $db->loadObject();
 
 		$productname 	= $res->name;
 		$access 		= $res->access;
-		
-		if(strlen($productname) < 1 || $access > $customer->_user->gid){
+
+		if(strlen($productname) < 1){
 			return -1;
 		}
 
