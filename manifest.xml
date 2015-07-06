@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <updates>
+	<!-- <update>
+        <name>DigiCom Package</name>
+        <description>DigiCom component update</description>
+        <element>pkg_digicom</element>
+        <type>package</type>
+        <version>1.0.0-beta.5</version>
+        <infourl title="DigiCom Extension Package">https://github.com/themexpert/digicom</infourl>
+        <downloads>
+            <downloadurl type="full" format="zip"><![CDATA[https://github.com/themexpert/digicom/releases/download/1.0.0-beta.5/pkg_digicom_1.0.0-beta.5.zip]]></downloadurl>
+        </downloads>
+        <tags>
+            <tag>beta5</tag>
+        </tags>
+        <targetplatform name="joomla" version="3.4" />
+    </update> -->
+
 	<update>
 		<name>DigiCom Package</name>
 		<description>DigiCom component update</description>
@@ -8,11 +24,10 @@
 		<version>1.0.0-beta.4</version>
 		<infourl title="DigiCom Extension Package">https://github.com/themexpert/digicom</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip"><![CDATA[https://github.com/themexpert/digicom/releases/download/1.0.0-beta.2/pkg_digicom_1.0.0-beta.4.zip
-]]></downloadurl>
+			<downloadurl type="full" format="zip"><![CDATA[https://github.com/themexpert/digicom/releases/download/1.0.0-beta.4/pkg_digicom_1.0.0-beta.4.zip]]></downloadurl>
 		</downloads>
 		<tags>
-			<tag>beta2</tag>
+			<tag>beta4</tag>
 		</tags>
 		<targetplatform name="joomla" version="3.4" />
 	</update>
@@ -24,11 +39,10 @@
 		<version>1.0.0-beta.3</version>
 		<infourl title="DigiCom Extension Package">https://github.com/themexpert/digicom</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip"><![CDATA[https://github.com/themexpert/digicom/releases/download/1.0.0-beta.2/pkg_digicom_1.0.0-beta.3.zip
-]]></downloadurl>
+			<downloadurl type="full" format="zip"><![CDATA[https://github.com/themexpert/digicom/releases/download/1.0.0-beta.3/pkg_digicom_1.0.0-beta.3.zip]]></downloadurl>
 		</downloads>
 		<tags>
-			<tag>beta2</tag>
+			<tag>beta3</tag>
 		</tags>
 		<targetplatform name="joomla" version="3.4" />
 	</update>
@@ -41,8 +55,7 @@
 		<version>1.0.0-beta.2</version>
 		<infourl title="DigiCom Extension Package">https://github.com/themexpert/digicom</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip"><![CDATA[https://github.com/themexpert/digicom/releases/download/1.0.0-beta.2/pkg_digicom_1.0.0-beta.2.zip
-]]></downloadurl>
+			<downloadurl type="full" format="zip"><![CDATA[https://github.com/themexpert/digicom/releases/download/1.0.0-beta.2/pkg_digicom_1.0.0-beta.2.zip]]></downloadurl>
 		</downloads>
 		<tags>
 			<tag>beta2</tag>
@@ -58,8 +71,7 @@
 		<version>1.0.0-beta.1</version>
 		<infourl title="DigiCom Extension Package">https://github.com/themexpert/digicom</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip"><![CDATA[https://github.com/themexpert/digicom/releases/download/1.0.0-beta.1/pkg_digicom_1.0.0-beta.1.zip
-]]></downloadurl>
+			<downloadurl type="full" format="zip"><![CDATA[https://github.com/themexpert/digicom/releases/download/1.0.0-beta.1/pkg_digicom_1.0.0-beta.1.zip]]></downloadurl>
 		</downloads>
 		<tags>
 			<tag>beta1</tag>
