@@ -22,7 +22,7 @@
 			<file charset="utf8" driver="mysql">sql/uninstall.mysql.sql</file>
 		</sql>
 	</uninstall>
-	
+
 	<files folder="site">
 		<filename>digicom.php</filename>
 		<filename>controller.php</filename>
@@ -31,13 +31,14 @@
 		<filename>metadata.xml</filename>
 
 		<folder>controllers</folder>
+		<folder>emails</folder>
 		<folder>helpers</folder>
 		<folder>models</folder>
 		<folder>tables</folder>
 		<folder>templates</folder>
 		<folder>views</folder>
 	</files>
-	
+
 	<languages folder="site">
 		<language tag="en-GB">language/en-GB/en-GB.com_digicom.ini</language>
 	</languages>
@@ -48,7 +49,7 @@
 
 	<administration>
 		<menu img="class:digicom">com_digicom</menu>
-		
+
 		<files folder="admin">
 			<filename>digicom.php</filename>
 			<filename>controller.php</filename>
@@ -74,4 +75,3 @@
 	</administration>
 
 </extension>
-

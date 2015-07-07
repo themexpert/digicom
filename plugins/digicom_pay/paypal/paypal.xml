@@ -10,10 +10,9 @@
 	<authorUrl>www.themexpert.com</authorUrl>
 	<version>1.0.0-beta.4</version>
 	<description>Paypal payment plugin for DigiCom Joomla Extension</description>
-	
+
 	<files>
 		<filename plugin="paypal">paypal.php</filename>
-		<filename plugin="paypal">paypal.xml</filename>
 		<folder>paypal</folder>
 	</files>
 
@@ -24,25 +23,25 @@
  	<config>
 
 		<fields name="params">
-			
+
 			<fieldset name="basic">
-				
+
 				<field name="business" type="text" default="" label="PAYPAL_EMAIL" description="PAYPAL_EMAIL_DESC"/>
 
 				<field name="sandbox" type="radio" class="btn-group" default="0" label="PAYPAL_SANDBOX" description="PAYPAL_SANDBOX_DESC">
 					<option value="0">NO</option>
 					<option value="1">YES</option>
 				</field>
-				
+
 				<field name="secure_post" type="radio" class="btn-group" default="1"  label="secure post(use	https)?" description="Use https for secure post">
 					<option value="0">NO</option>
 					<option value="1">YES</option>
 				</field>
 
 				<field name="plugin_name" type="text" default="Paypal" label="PLG_NAME" description="" />
-				
+
 				<field name="plugin_hidname" type="hidden" default="paypal" />
-			
+
 			</fieldset>
 
 		</fields>
