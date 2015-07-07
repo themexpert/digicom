@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.0" type="plugin" group="digicom_pay" method="upgrade">
 
-	<name>Payment - Paypal</name>
+	<name>Paypal - DigiCom Pay Plugin</name>
 	<author>ThemeXpert</author>
 	<creationDate>2015-06-05</creationDate>
 	<copyright>Copyright © 2013 themexpert.com. All rights reserved.</copyright>
