@@ -13,15 +13,11 @@
 	<description>Thank you for installing DigiCom Content Plugin.</description>
 
 	<files>
-
 		<filename plugin="digicom">digicom.php</filename>
-		<folder>language</folder>
-
 	</files>
 
 	<languages folder="language">
-		<language client="administrator" tag="en-GB">en-GB/en-GB.plg_content_digicom.ini</language>
-		<language client="site" tag="en-GB">en-GB/en-GB.plg_content_digicom.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_content_digicom.ini</language>
 	</languages>
 
 	<config>
