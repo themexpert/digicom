@@ -10,7 +10,7 @@
 	<authorUrl>www.themexpert.com</authorUrl>
 	<version>1.0.0-beta.4</version>
 
-	<description>Thank you for installing DigiCom Plugin.<br /> <br />To use this plugin, place the tag wherever you you want to display an "Add To Cart" button.<br /> <br />Basic Syntax: {digicom id=x}<br />  <br />Additional parameters:<br />align=right/left/center. For example: {digicom id=1 align=right}<br />quantity=yes. For example: {digicom id=1 quantity=yes}<br />close=yes. For example: {digicom id=1 close=yes}<br /><br /> <br />Combine the parameters for complete control. For example: {digicom id=1 align=right quantity=yes close=yes}<br /></description>
+	<description>Thank you for installing DigiCom system Plugin.</description>
 
 	<files>
 

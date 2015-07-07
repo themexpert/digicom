@@ -9,8 +9,6 @@
 
 defined('_JEXEC') or die;
 
-// Import library dependencies
-jimport('joomla.event.plugin');
 // load digicom helperfile
 require_once JPATH_SITE . '/components/com_digicom/helpers/digicom.php';
 
