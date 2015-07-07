@@ -26,8 +26,8 @@ class TableBundle extends JTable
 	{
 		parent::__construct('#__digicom_products_bundle', 'id', $db);
 	}
-	
-	
+
+
 	/**
 	 * Overload the store method for the Weblinks table.
 	 *
@@ -37,7 +37,7 @@ class TableBundle extends JTable
 	 */
 	public function store($updateNulls = false)
 	{
-		
+
         // Verify that the bundle is added once per product
 		$table = JTable::getInstance('Bundle', 'Table');
 
@@ -48,15 +48,15 @@ class TableBundle extends JTable
 
 		return parent::store($updateNulls);
 	}
-    
+
     /*
     * remove unmatch items from files list
     * item's files can be changed. so keep only current match and remove olds
-    * run loop with existing db value and then check 
+    * run loop with existing db value and then check
     * if that match with any submited value. if dont match remove it.
     * this way only new item will be stored and old will be removed
     */
-    
+
     public function removeUnmatch($files_id,$product_id,$bundle_type){
         $db = $this->getDbo();
         //DELETE from tablename WHERE id IN (1,2,3,...,254);
@@ -65,10 +65,10 @@ class TableBundle extends JTable
         $db->setQuery($query);
         return $db->Query();
     }
-    
+
     public function removeUnmatchBundle($bundle_items,$product_id,$bundle='category'){
         $items = implode(',', $bundle_items);
-
+				if(empty($items)) return true;
         $db = $this->getDbo();
         $query = $db->getQuery(true)
             ->select('GROUP_CONCAT(id) as id')
@@ -78,7 +78,7 @@ class TableBundle extends JTable
             ->where($db->quoteName('bundle_id').' NOT IN ('.$items.')');
         $db->setQuery($query);
         $found = $db->loadObject();
-       
+
         if(!empty($found->id) > 0){
             //TODO: delete them
             $query = $db->getQuery(true)
@@ -96,7 +96,7 @@ class TableBundle extends JTable
         }else{
             return true;
         }
-       
+
     }
 
     public function removeSameTypes($bundle_type,$product_id){
@@ -106,12 +106,12 @@ class TableBundle extends JTable
 		$db->setQuery($query);
         return $db->Query();
     }
-    
-    
+
+
     /*
     * get all files list based on req
     */
-    
+
     public function getList($field = 'product_id',$value){
         $db = $this->getDbo();
         $query = $db->getQuery(true)
@@ -129,11 +129,11 @@ class TableBundle extends JTable
         return $items;
 
     }
-	
+
     /*
     * get all files list based on req
     */
-    
+
     public function getFieldValues($field = 'product_id',$value,$bundle_type=null){
         $db = $this->getDbo();
         $query = $db->getQuery(true)
@@ -146,5 +146,5 @@ class TableBundle extends JTable
         $db->setQuery($query);
         return $db->loadObject();
     }
-    
+
 }
