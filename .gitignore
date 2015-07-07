@@ -29,6 +29,7 @@ config.codekit
 !/administrator/language/en-GB/en-GB.plg_content_digicom.ini
 !/administrator/language/en-GB/en-GB.plg_digicom_pay_offline.ini
 !/administrator/language/en-GB/en-GB.plg_digicom_pay_paypal.ini
+!/administrator/language/en-GB/en-GB.plg_editors-xtd_digicom.ini
 !/administrator/language/en-GB/en-GB.plg_finder_digicom.ini
 !/administrator/language/en-GB/en-GB.plg_finder_digicom.sys.ini
 !/administrator/language/en-GB/en-GB.plg_system_digicom.ini
