@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <updates>
-	<!-- <update>
+	<update>
         <name>DigiCom Package</name>
         <description>DigiCom component update</description>
         <element>pkg_digicom</element>
@@ -14,7 +14,7 @@
             <tag>beta5</tag>
         </tags>
         <targetplatform name="joomla" version="3.4" />
-    </update> -->
+    </update>
 
 	<update>
 		<name>DigiCom Package</name>
