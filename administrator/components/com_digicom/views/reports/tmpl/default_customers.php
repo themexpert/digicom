@@ -11,6 +11,6 @@ defined ('_JEXEC') or die ("Go away.");
 ?>
 <h3>Customer Stats</h3>
 <ul class="nav nav-pills">
-  <li><a href="index.php?option=com_digicom&view=reports&tab=customers&report=sales_by_date" class="current">New Customers</a></li>
-  <li><a href="index.php?option=com_digicom&view=reports&tab=customers&report=sales_by_product" class="">Top Customers</a></li>
+  <li><a href="index.php?option=com_digicom&view=reports&tab=customers&report=new_customers" class="current">New Customers</a></li>
+  <li><a href="index.php?option=com_digicom&view=reports&tab=customers&report=top_customers" class="">Top Customers</a></li>
 </ul>
