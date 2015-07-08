@@ -8,6 +8,9 @@
  */
 
 defined ('_JEXEC') or die ("Go away.");
+$app		= JFactory::getApplication();
+$input	= $app->input;
+$innertab		= $input->get('report','sales_by_date');
 ?>
 <h3><?php echo JText::_('COM_DIGICOM_REPORTS_DOWNLOADS_STATS');?></h3>
 
@@ -17,3 +20,8 @@ defined ('_JEXEC') or die ("Go away.");
   <li><a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=downloads&report=users_downloads');?>" class=""><?php echo JText::_('COM_DIGICOM_REPORTS_DOWNLOADS_USERS_DOWNLOADS');?></a></li>
   <li><a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=downloads&report=latest_downloads');?>" class=""><?php echo JText::_('COM_DIGICOM_REPORTS_DOWNLOADS_LATEST_DOWNLOADS');?></a></li>
 </ul>
+<p class="clearfix"></p>
+
+<section class="salesreportsWrapper">
+  <?php echo $this->loadTemplate($innertab); ?>
+</section>
