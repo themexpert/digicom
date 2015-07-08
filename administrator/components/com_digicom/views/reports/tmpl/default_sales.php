@@ -9,10 +9,10 @@
 
 defined ('_JEXEC') or die ("Go away.");
 ?>
-<h3>Sales Stats</h3>
+<h3><?php echo JText::_('COM_DIGICOM_REPORTS_SALES_STATS');?></h3>
 <ul class="nav nav-pills">
-  <li><a href="index.php?option=com_digicom&view=reports&tab=sales&report=sales_by_date" class="current">Sales by date</a></li>
-  <li><a href="index.php?option=com_digicom&view=reports&tab=sales&report=sales_by_product" class="">Sales by product</a></li>
-  <li><a href="index.php?option=com_digicom&view=reports&tab=sales&report=sales_by_category" class="">Sales by category</a></li>
-  <li><a href="index.php?option=com_digicom&view=reports&tab=sales&report=coupon_usage" class="">Coupons by date</a></li>
+  <li><a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report=sales_by_date');?>" class="current"><?php echo JText::_('COM_DIGICOM_REPORTS_SALES_DATE');?></a></li>
+  <li><a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report=sales_by_product');?>" class=""><?php echo JText::_('COM_DIGICOM_REPORTS_SALES_PRODUCTS');?></a></li>
+  <li><a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report=sales_by_category');?>" class=""><?php echo JText::_('COM_DIGICOM_REPORTS_SALES_CATEGORY');?></a></li>
+  <li><a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report=coupon_usage');?>" class=""><?php echo JText::_('COM_DIGICOM_REPORTS_SALES_COUPONS_DATE');?></a></li>
 </ul>
