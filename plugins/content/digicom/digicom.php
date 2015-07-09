@@ -41,7 +41,7 @@ class plgContentDigiCom extends JPlugin{
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
 
-		$allowed_contexts = array('com_content.category', 'com_content.article', 'com_content.featured');
+		$allowed_contexts = array('com_content.category', 'com_content.article', 'com_content.featured', 'mod_custom.content');
 
 		if (!in_array($context, $allowed_contexts))
 		{
