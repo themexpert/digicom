@@ -24,9 +24,15 @@ $tab		= $input->get('tab','sales');
 		<div class="navbar">
 			<div class="navbar-inner">
 				<ul class="nav">
-					<li<?php echo ($tab == 'sales' ? ' class="active"' : '');?>><a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report=sales_by_date&range=7day');?>">Sales</a></li>
-					<li<?php echo ($tab == 'customers' ? ' class="active"' : '');?>><a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=customers&report=sales_by_date&range=7day');?>">Customers</a></li>
-					<li<?php echo ($tab == 'downloads' ? ' class="active"' : '');?>><a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=downloads&report=sales_by_date&range=7day');?>">Downloads</a></li>
+					<li<?php echo ($tab == 'sales' ? ' class="active"' : '');?>>
+						<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report=sales_by_date&range=7day');?>">Sales</a>
+					</li>
+					<li<?php echo ($tab == 'customers' ? ' class="active"' : '');?>>
+						<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=customers&report=customers_new&range=7day');?>">Customers</a>
+					</li>
+					<li<?php echo ($tab == 'downloads' ? ' class="active"' : '');?>>
+						<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=downloads&report=downloads_top&range=7day');?>">Downloads</a>
+					</li>
 				</ul>
 			</div>
 		</div>
