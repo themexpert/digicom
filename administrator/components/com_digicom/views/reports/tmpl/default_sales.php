@@ -17,7 +17,7 @@ $innertab		= $input->get('report','sales_by_date');
   <li><a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report=sales_by_date');?>" class="current"><?php echo JText::_('COM_DIGICOM_REPORTS_SALES_DATE');?></a></li>
   <li><a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report=sales_by_product');?>" class=""><?php echo JText::_('COM_DIGICOM_REPORTS_SALES_PRODUCTS');?></a></li>
   <li><a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report=sales_by_category');?>" class=""><?php echo JText::_('COM_DIGICOM_REPORTS_SALES_CATEGORY');?></a></li>
-  <li><a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report=coupon_usage');?>" class=""><?php echo JText::_('COM_DIGICOM_REPORTS_SALES_COUPONS_DATE');?></a></li>
+  <li><a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report=sales_coupon_usage');?>" class=""><?php echo JText::_('COM_DIGICOM_REPORTS_SALES_COUPONS_DATE');?></a></li>
 </ul>
 <p class="clearfix"></p>
 
