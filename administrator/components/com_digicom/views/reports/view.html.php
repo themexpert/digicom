@@ -26,26 +26,21 @@ class DigiComViewReports extends JViewLegacy {
 
 	function display ($tpl =  null )
 	{
-		// Access check.
-		if (!JFactory::getUser()->authorise('digicom.reports', 'com_digicom'))
-		{
-			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
-		}
 
 		$this->latest_orders = DigiComHelperDigiCom::getOrders(5);
 		$this->most_sold = DigiComHelperDigiCom::getMostSoldProducts(5);
-		
+
 		$this->totalOrder = $this->get('reportTotal');
 		$this->reportOrders = $this->get('reportOrders');
 		$this->reportCustomer = $this->get('reportCustomer');
 		$this->configs = $this->get('configs');
-		
+
 		//load the toolber
 		$this->addToolbar();
 
 		DigiComHelperDigiCom::addSubmenu('reports');
-		$this->sidebar = DigiComHelperDigiCom::renderSidebar();	
-		
+		$this->sidebar = DigiComHelperDigiCom::renderSidebar();
+
 		parent::display($tpl);
 	}
 
@@ -72,14 +67,14 @@ class DigiComViewReports extends JViewLegacy {
 	function getPaginationDate($configs){
 		return $this->getModel()->getPaginationDate($configs);
 	}
-	
+
 	function prepereJoomlaDataFormat($format = '%m-%d-%Y') {
 
 		$result = $format;
 		if ( strpos($result,'%') === false) {
 			$r = array('m' => '%m', 'd' => '%d', 'Y' => '%Y');
 			$result = str_replace(array_keys($r),array_values($r),$format);
-		} 
+		}
 
 		return $result;
 	}
@@ -101,7 +96,7 @@ class DigiComViewReports extends JViewLegacy {
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
-		
+
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
 
