@@ -15,13 +15,6 @@ class DigiComViewFileManager extends JViewLegacy {
 
 	function display($tpl =  null){
 		JToolBarHelper::title(JText::_('COM_DIGICOM_FILE_MANAGER_TOOLBAR_TITLE'), 'generic.png');
-		
-
-		// Access check.
-		if (!JFactory::getUser()->authorise('digicom.filemanager', 'com_digicom'))
-		{
-			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
-		}
 
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout
@@ -31,37 +24,37 @@ class DigiComViewFileManager extends JViewLegacy {
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
-		
+
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
-		
+
 		$mainframe = JFactory::getApplication();
-        $user = JFactory::getUser();
-        $document = JFactory::getDocument();
-        $document->addStyleSheet(JURI::root(true).'/media/digicom/assets/css/smoothness/jquery-ui.css?v=1.8.0');
-        $document->addStyleSheet(JURI::root(true).'/media/digicom/assets/css/theme.css?v=2.7.0');
-        $document->addStyleSheet(JURI::root(true).'/media/digicom/assets/css/elfinder.min.css?v=2.7.0');
-        
+    $user = JFactory::getUser();
+    $document = JFactory::getDocument();
+    $document->addStyleSheet(JURI::root(true).'/media/digicom/assets/css/smoothness/jquery-ui.css?v=1.8.0');
+    $document->addStyleSheet(JURI::root(true).'/media/digicom/assets/css/theme.css?v=2.7.0');
+    $document->addStyleSheet(JURI::root(true).'/media/digicom/assets/css/elfinder.min.css?v=2.7.0');
+
 		if ($document->getType() == 'html')
 		{
-            $document->addScript(JURI::root(true).'/media/digicom/assets/js/jquery-ui-1.8.24.custom.min.js');
-            $document->addScript(JURI::root(true).'/media/digicom/assets/js/elfinder.js?v=1.0.0');
-        }
-		
-        $type = JRequest::getCmd('type');
-        $fieldID = JRequest::getCmd('fieldID');
+      $document->addScript(JURI::root(true).'/media/digicom/assets/js/jquery-ui-1.8.24.custom.min.js');
+      $document->addScript(JURI::root(true).'/media/digicom/assets/js/elfinder.js?v=1.0.0');
+  	}
+
+    $type = JRequest::getCmd('type');
+    $fieldID = JRequest::getCmd('fieldID');
 		$mimes = '';
-        
-        $this->assignRef('mimes', $mimes);
-        $this->assignRef('type', $type);
-        $this->assignRef('fieldID', $fieldID);
-		
+
+    $this->assignRef('mimes', $mimes);
+    $this->assignRef('type', $type);
+    $this->assignRef('fieldID', $fieldID);
+
 		$tmpl = JRequest::getCmd('tmpl','');
 		if($tmpl != 'component'){
 			DigiComHelperDigiCom::addSubmenu('filemanager');
 			$this->sidebar = DigiComHelperDigiCom::renderSidebar();
 		}
-		
+
 		parent::display($tpl);
 	}
 

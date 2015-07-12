@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-class DigiComControllerFileManager extends JControllerAdmin 
+class DigiComControllerFileManager extends JControllerAdmin
 {
 	function connector()
 	{
@@ -30,10 +30,10 @@ class DigiComControllerFileManager extends JControllerAdmin
 				$folder = $root;
 			}
 		}
-		
+
 		// Disable debug
 		JRequest::setVar('debug', false);
-		
+
 		$url = JURI::root(true).'/'.$folder;
 		$path = JPATH_SITE . '/' . JPath::clean($folder);
         JPath::check($path);
@@ -41,7 +41,7 @@ class DigiComControllerFileManager extends JControllerAdmin
 		include_once JPATH_COMPONENT_ADMINISTRATOR . '/libs/elfinder/elFinder.class.php';
 		include_once JPATH_COMPONENT_ADMINISTRATOR . '/libs/elfinder/elFinderVolumeDriver.class.php';
 		include_once JPATH_COMPONENT_ADMINISTRATOR . '/libs/elfinder/elFinderVolumeLocalFileSystem.class.php';
-		
+
 		function access($attr, $path, $data, $volume)
 		{
 			$mainframe = JFactory::getApplication();
@@ -51,7 +51,7 @@ class DigiComControllerFileManager extends JControllerAdmin
 			{
 				return true;
 			}
-			
+
 			// Hide files and folders starting with .
 			if (strpos(basename($path), '.') === 0 && $attr == 'hidden')
 			{
@@ -73,9 +73,9 @@ class DigiComControllerFileManager extends JControllerAdmin
 					return false;
 					break;
 			}
-			
+
 		}
-		
+
 		if ($mainframe->isAdmin())
 		{
 			$permissions = array(
@@ -90,7 +90,7 @@ class DigiComControllerFileManager extends JControllerAdmin
 			'write' => false
 			);
 		}
-        
+
 		$options = array(
 			'debug' => false,
 			'roots' => array( array(
@@ -101,9 +101,9 @@ class DigiComControllerFileManager extends JControllerAdmin
 				'defaults' => $permissions
 			))
 		);
-        
+
 		$connector = new elFinderConnector(new elFinder($options));
 		$connector->run();
-        
+
 	}
 }

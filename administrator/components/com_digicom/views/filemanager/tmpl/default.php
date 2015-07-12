@@ -9,8 +9,14 @@
 
 defined('_JEXEC') or die;
 // TODO : Refactor - Codestandard
+$showManager = false;
 $mosConfig_absolute_path = JPATH_ROOT;
 $max_upload = ini_get('upload_max_filesize');
+$canDo = JHelperContent::getActions('com_digicom', 'component');
+if($canDo->get('core.create') && $canDo->get('core.delete'))
+{
+	$showManager = true;
+}
 ?>
 <?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="">
@@ -26,6 +32,7 @@ $max_upload = ini_get('upload_max_filesize');
 		<div class="dg-alert dg-alert-with-icon">
 			<span class="icon-flag"></span><?php echo JText::sprintf("COM_DIGICOM_FILE_MANAGER_HEADER_NOTICE",ini_get('upload_max_filesize')); ?>
 		</div>
+					<?php if($showManager){?>
 					<script type="text/javascript">
 						jQuery(document).ready(function() {
 							var basePath = '<?php echo JURI::root(true); ?>';
@@ -45,18 +52,19 @@ $max_upload = ini_get('upload_max_filesize');
 							}).elfinder('instance');
 						});
 					</script>
-					<form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=filemanager&no_html=1'); ?>" method="post" class="clearfix" name="adminForm" id="adminForm">
-						
+					<?php } ?>
+					<form action="<?php echo JRoute::_('index.php?option=com_digicom&view=filemanager&no_html=1'); ?>" method="post" class="clearfix" name="adminForm" id="adminForm">
+
 			<div id="">
 							<!--// Start Elfinder-->
 							<div id="elfinder"></div>
-							
+
 							<input type="hidden" name="task" value="" />
 							<input type="hidden" name="boxchecked" value="0" />
 							<?php echo JHtml::_('form.token'); ?>
 						</div>
 					</form>
-				
+
 	</div>
 
 		<div class="dg-footer">
