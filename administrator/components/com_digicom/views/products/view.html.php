@@ -81,14 +81,14 @@ class DigiComViewProducts extends JViewLegacy
 
 	protected function addToolbar()
 	{
-		$canDo = JHelperContent::getActions('com_digicom', 'category', $this->state->get('filter.category_id'));
+		$canDo = JHelperContent::getActions('com_digicom', 'product', $this->state->get('filter.category_id'));
 		$user  = JFactory::getUser();
 
 		// Get the toolbar object instance
 		$bar = JToolBar::getInstance('toolbar');
 		JToolbarHelper::title(JText::_('COM_DIGICOM_PRODUCTS_TOOLBAR_TITLE'), 'stack product');
 
-		if ($canDo->get('core.create') || (count($user->getAuthorisedCategories('com_digicom', 'core.create'))) > 0 )
+		if ($canDo->get('core.create'))
 		{
 			//JToolbarHelper::addNew('product.add');
 			$layout = new JLayoutFile('toolbar.products');

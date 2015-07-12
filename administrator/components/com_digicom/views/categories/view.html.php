@@ -71,7 +71,7 @@ class DigiComViewCategories extends JViewLegacy
 
 		$this->addToolbar();
 		DigiComHelperDigiCom::addSubmenu('categories');
-		$this->sidebar = DigiComHelperDigiCom::renderSidebar();		
+		$this->sidebar = DigiComHelperDigiCom::renderSidebar();
 
 		parent::display($tpl);
 	}
@@ -156,8 +156,8 @@ class DigiComViewCategories extends JViewLegacy
 			'title' => $ptitle,
 			'class' => 'product'
 		);
-		$bar->appendButton('Custom', $layout->render($title), 'title');		
-		
+		$bar->appendButton('Custom', $layout->render($title), 'title');
+
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
 

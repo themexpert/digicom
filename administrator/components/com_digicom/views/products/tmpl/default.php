@@ -120,17 +120,16 @@ JFactory::getDocument()->addScriptDeclaration('
 						<th width="1%" class="nowrap hidden-phone">
 							<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
 						</th>
-						
+
 					</tr>
 
 				</thead>
 
 				<tbody>
-
+					
 				<?php foreach ($this->items as $i => $item) :
 					$item->max_ordering = 0;
 					$ordering   = ($listOrder == 'a.ordering');
-					$canCreate  = $user->authorise('core.create',     'com_digicom.category.' . $item->catid);
 					$canEdit    = $user->authorise('core.edit',       'com_digicom.product.' . $item->id);
 					$canCheckin = $user->authorise('core.manage',     'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
 					$canEditOwn = $user->authorise('core.edit.own',   'com_digicom.product.' . $item->id) && $item->created_by == $userId;
@@ -174,7 +173,7 @@ JFactory::getDocument()->addScriptDeclaration('
 
 								$action = $archived ? 'unarchive' : 'archive';
 								JHtml::_('actionsdropdown.' . $action, 'cb' . $i, 'products');
-								
+
 								echo JHtml::_('actionsdropdown.render', $this->escape($item->name));
 								?>
 							</div>
@@ -243,7 +242,7 @@ JFactory::getDocument()->addScriptDeclaration('
 						<td class="small hidden-phone">
 							<?php echo $this->escape($item->access_level); ?>
 						</td>
-						
+
 						<td class="center hidden-phone">
 							<?php echo (int) $item->id; ?>
 						</td>
@@ -272,7 +271,7 @@ JFactory::getDocument()->addScriptDeclaration('
 	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $listOrder; ?>" />
 	<?php echo JHtml::_('form.token'); ?>
-	
+
 </form>
 <div class="dg-footer">
 	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
