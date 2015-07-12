@@ -126,14 +126,13 @@ JFactory::getDocument()->addScriptDeclaration('
 				</thead>
 
 				<tbody>
-					
+
 				<?php foreach ($this->items as $i => $item) :
 					$item->max_ordering = 0;
 					$ordering   = ($listOrder == 'a.ordering');
-					$canEdit    = $user->authorise('core.edit',       'com_digicom.product.' . $item->id);
+					$canEdit    = $user->authorise('core.edit',       'com_digicom');
 					$canCheckin = $user->authorise('core.manage',     'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-					$canEditOwn = $user->authorise('core.edit.own',   'com_digicom.product.' . $item->id) && $item->created_by == $userId;
-					$canChange  = $user->authorise('core.edit.state', 'com_digicom.product.' . $item->id) && $canCheckin;
+					$canChange  = $user->authorise('core.edit.state', 'com_digicom') && $canCheckin;
 					?>
 					<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->catid; ?>">
 						<td class="order nowrap center hidden-phone">
@@ -163,18 +162,23 @@ JFactory::getDocument()->addScriptDeclaration('
 								<?php //echo $checked; ?>
 
 								<?php echo JHtml::_('jgrid.published', $item->published, $i, 'products.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
-								<?php echo JHtml::_('featured.featured', $item->featured, $i, 'products.', $canChange, 'cb'); ?>
 
 								<?php
-								JHtml::_('actionsdropdown.duplicate', 'cb' . $i, 'products');
+								if($canChange){
+									echo JHtml::_('featured.featured', $item->featured, $i, 'products.', $canChange, 'cb');
 
-								$action = $trashed ? 'untrash' : 'trash';
-								JHtml::_('actionsdropdown.' . $action, 'cb' . $i, 'products');
+									JHtml::_('actionsdropdown.duplicate', 'cb' . $i, 'products');
 
-								$action = $archived ? 'unarchive' : 'archive';
-								JHtml::_('actionsdropdown.' . $action, 'cb' . $i, 'products');
+									$action = $trashed ? 'untrash' : 'trash';
+									JHtml::_('actionsdropdown.' . $action, 'cb' . $i, 'products');
 
-								echo JHtml::_('actionsdropdown.render', $this->escape($item->name));
+									$action = $archived ? 'unarchive' : 'archive';
+									JHtml::_('actionsdropdown.' . $action, 'cb' . $i, 'products');
+
+									echo JHtml::_('actionsdropdown.render', $this->escape($item->name));
+								}
+
+
 								?>
 							</div>
 						</td>
@@ -195,11 +199,11 @@ JFactory::getDocument()->addScriptDeclaration('
 								<?php else:?>
 									<?php $language = $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED'); ?>
 								<?php endif;?>
-								<?php if ($canEdit || $canEditOwn) : ?>
+								<?php if ($canEdit) : ?>
 									<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_digicom&view=product&task=product.edit&id=' . $item->id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>">
 										<?php echo $this->escape($item->name); ?></a>
 								<?php else : ?>
-									<span title="<?php echo JText::sprintf('JFIELD_ALIAS_LABEL', $this->escape($item->alias)); ?>"><?php echo $this->escape($item->title); ?></span>
+									<span title="<?php echo JText::sprintf('JFIELD_ALIAS_LABEL', $this->escape($item->alias)); ?>"><?php echo $this->escape($item->name); ?></span>
 								<?php endif; ?>
 								<span class="small break-word">
 									<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
