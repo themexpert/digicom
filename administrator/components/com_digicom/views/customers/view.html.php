@@ -15,17 +15,12 @@ class DigiComViewCustomers extends JViewLegacy {
 
 	function display ($tpl =  null )
 	{
-		// Access check.
-		if (!JFactory::getUser()->authorise('digicom.customers', 'com_digicom'))
-		{
-			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
-		}
-
+		
 		$layout = JRequest::getVar('layout','');
 		if($layout){
 			$this->setLayout($layout);
 		}
-		
+
 		$customers = $this->get('Items');
 		$pagination = $this->get('Pagination');
 
@@ -37,13 +32,13 @@ class DigiComViewCustomers extends JViewLegacy {
 
 		$keyword = JRequest::getVar("keyword", "", "request");
 		$this->assign ("keyword", $keyword);
-		
+
 		//set toolber
 		$this->addToolbar();
-		
+
 		DigiComHelperDigiCom::addSubmenu('customers');
 		$this->sidebar = DigiComHelperDigiCom::renderSidebar();
-		
+
 		parent::display($tpl);
 
 	}
@@ -62,8 +57,8 @@ class DigiComViewCustomers extends JViewLegacy {
 		parent::display($tpl);
 	}
 
-	
-	
+
+
 	/**
 	 * Add the page title and toolbar.
 		*
@@ -81,12 +76,12 @@ class DigiComViewCustomers extends JViewLegacy {
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
-		
+
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
-		
+
 
 	}
-	
-	
+
+
 }

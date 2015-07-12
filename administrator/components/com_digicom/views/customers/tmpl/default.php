@@ -12,9 +12,11 @@ defined('_JEXEC') or die;
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('formbehavior.chosen', 'select');
+$canDo = JHelperContent::getActions('com_digicom', 'component');
 $document = JFactory::getDocument();
 $k = 0;
 $n = count ($this->custs);
+
 ?>
 <?php if (!empty( $this->sidebar)) : ?>
 <div id="j-sidebar-container" class="">
@@ -34,20 +36,20 @@ $n = count ($this->custs);
 		<div class="js-stools">
 			<div class="clearfix">
 				<div class="btn-wrapper input-append">
-					<input type="text" id="filter_search" class="input-large" name="keyword" placeholder="<?php echo JText::_('COM_DIGICOM_SEARCH'); ?>" value="<?php echo (strlen(trim($this->keyword)) > 0 ?$this->keyword:"");?>" class="span6" />		
+					<input type="text" id="filter_search" class="input-large" name="keyword" placeholder="<?php echo JText::_('COM_DIGICOM_SEARCH'); ?>" value="<?php echo (strlen(trim($this->keyword)) > 0 ?$this->keyword:"");?>" class="span6" />
 					<button type="submit" class="btn hasTooltip" title="" data-original-title="Search">
 						<i class="icon-search"></i>
 					</button>
 					<button type="button" class="btn hasTooltip js-stools-btn-clear" onclick="document.id('filter_search').value='';this.form.submit();">
-						<i class="icon-remove"></i>	
+						<i class="icon-remove"></i>
 					</button>
 				</div>
 
 			</div>
 		</div>
-		
+
 		<div id="editcell" >
-			
+
 			<table class="adminlist table">
 				<thead>
 					<tr>
@@ -65,12 +67,12 @@ $n = count ($this->custs);
 						</th>
 					</tr>
 				</thead>
-				
+
 				<tbody>
-				<?php 
+				<?php
 					//var_dump($this->custs);
-					if ($n > 0): ?>		
-					<?php 
+					if ($n > 0): ?>
+					<?php
 					for ($i = 0; $i < $n; $i++):
 						$cust = $this->custs[$i];
 						//print_r( $cust);die;
@@ -78,15 +80,21 @@ $n = count ($this->custs);
 						$link = JRoute::_("index.php?option=com_digicom&view=customer&task=customer.edit&id=".$id.(strlen(trim($this->keyword))>0?"&keyword=".$this->keyword:""));
 						$ulink = JRoute::_("index.php?option=com_users&view=user&layout=edit&id=".$id);
 					?>
-					<tr class="row<?php echo $k;?>"> 
+					<tr class="row<?php echo $k;?>">
 						<td><?php echo $id;?></td>
-						<td><a href="<?php echo $link;?>" ><?php echo $cust->firstname." ".$cust->lastname;?></a></td>
+						<td>
+							<?php if ($canDo->get('core.edit')) : ?>
+								<a href="<?php echo $link;?>" ><?php echo $cust->firstname." ".$cust->lastname;?></a>
+							<?php else: ?>
+								<span><?php echo $cust->firstname." ".$cust->lastname;?></span>
+							<?php endif; ?>
+						</td>
 						<td><?php echo ($cust->username ? $cust->username : $cust->email) ;?></td>
 						<td><?php echo $cust->total_order;?></td>
 					</tr>
 
 
-					<?php 
+					<?php
 					$k = 1 - $k;
 					endfor;
 					?>
