@@ -266,7 +266,7 @@ body.com_digicom .subhead #toolbar .btn-success {
   width: auto;
 }
 body.com_digicom .container-main {
-  padding: 0 0 0;
+  padding: 12px 0 0 0;
 }
 body.com_digicom #j-sidebar-container {
   background: #343f51;
