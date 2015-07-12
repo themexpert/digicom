@@ -21,6 +21,11 @@ $tab		= $input->get('tab','sales');
 <?php else : ?>
 	<div id="j-main-container">
 <?php endif;?>
+
+		<p class="dg-alert dg-alert-danger">
+			<?php echo JText::_(' Reports is now on the reactor and we need additional flux capacitor in ThemeXpert to generate 1.21 gigawatts reporting feature. Its coming with next Beta version.'); ?>
+		</p>
+
 		<div class="navbar">
 			<div class="navbar-inner">
 				<ul class="nav">

@@ -8,3 +8,4 @@
  */
 
 defined ('_JEXEC') or die ("Go away.");
+?>
