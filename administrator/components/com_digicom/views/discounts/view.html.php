@@ -14,7 +14,7 @@ class DigiComViewDiscounts extends JViewLegacy
 
 	function display ($tpl =  null )
 	{
-		    
+
 		$condition = JRequest::getVar("condition", '1');
 		$this->assign ("condition", $condition);
 
@@ -44,6 +44,7 @@ class DigiComViewDiscounts extends JViewLegacy
 	protected function addToolbar()
 	{
 		JToolBarHelper::title(JText::_('COM_DIGICOM_DISCOUNTS_TOOLBAR_TITLE'), 'generic.png');
+		$canDo = JHelperContent::getActions('com_digicom', 'component');
 
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout
@@ -57,13 +58,20 @@ class DigiComViewDiscounts extends JViewLegacy
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
 
-		JToolBarHelper::addNew('discount.add');
-		JToolBarHelper::divider();
-		JToolBarHelper::publishList('discounts.publish');
-		JToolBarHelper::unpublishList('discounts.unpublish');
-
-		JToolBarHelper::divider();
-
-		JToolBarHelper::deleteList(JText::_('COM_DIGICOM_DISCOUNTS_DELETE_CONFIRMATION'),'discounts.delete');
+		if ($canDo->get('core.create'))
+		{
+			JToolBarHelper::addNew('discount.add');
+			JToolBarHelper::divider();
+		}
+		if ($canDo->get('core.edit.state'))
+		{
+			JToolBarHelper::publishList('discounts.publish');
+			JToolBarHelper::unpublishList('discounts.unpublish');
+		}
+		if ($canDo->get('core.edit.delete'))
+		{
+			JToolBarHelper::deleteList(JText::_('COM_DIGICOM_DISCOUNTS_DELETE_CONFIRMATION'),'discounts.delete');
+			JToolBarHelper::divider();
+		}
 	}
 }

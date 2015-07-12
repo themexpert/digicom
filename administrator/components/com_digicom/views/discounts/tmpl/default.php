@@ -13,6 +13,7 @@ JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('formbehavior.chosen', 'select');
 $user		= JFactory::getUser();
+$canDo = JHelperContent::getActions('com_digicom', 'component');
 $k = 0;
 $n = count ($this->promos);
 $configs = $this->configs;
@@ -43,11 +44,11 @@ $document = JFactory::getDocument();
 						<i class="icon-search"></i>
 					</button>
 					<button type="button" class="btn hasTooltip js-stools-btn-clear" onclick="document.id('filter_search').value='';this.form.submit();">
-							<i class="icon-remove"></i>	
+							<i class="icon-remove"></i>
 						</button>
 				</div>
 				<div class="btn-wrapper pull-right">
-					
+
 					<?php echo JText::_("COM_DIGICOM_PUBLISH");?>:
 					<select name="status" onchange="document.adminForm.task.value=''; document.adminForm.submit();">
 						<option value="" <?php if($this->status == ""){ echo 'selected="selected"';} ?> ><?php echo JText::_("COM_DIGICOM_SELECT"); ?></option>
@@ -62,14 +63,14 @@ $document = JFactory::getDocument();
 					</select>
 
 				</div>
-				
+
 			</div>
-		</div>		
+		</div>
 
 		<table width="100%">
 			<tr>
 				<td width="100%" align="right" style="padding-bottom: 5px;">
-					
+
 				</td>
 			</tr>
 		</table>
@@ -82,7 +83,7 @@ $document = JFactory::getDocument();
 						<th width="5">
 							<?php echo JHtml::_('grid.checkall'); ?>
 						</th>
-						
+
 						<th>
 							<?php echo JText::_("COM_DIGICOM_PUBLISHED");?>
 						</th>
@@ -120,7 +121,7 @@ $document = JFactory::getDocument();
 
 				<tbody>
 
-				<?php 
+				<?php
 					JHTML::_("behavior.tooltip");
 					for ($i = 0; $i < $n; $i++):
 						$promo = $this->promos[$i];
@@ -130,11 +131,11 @@ $document = JFactory::getDocument();
 						$link = JRoute::_("index.php?option=com_digicom&view=discount&task=discount.edit&id=".$id);
 
 						$canCheckin = $user->authorise('core.manage',     'com_checkin') || $promo->checked_out == $user->id || $promo->checked_out == 0;
-						$canChange  = $user->authorise('core.edit.state', 'com_digicom.discounts.' . $promo->id) && $canCheckin;
+						$canChange  = $user->authorise('core.edit.state', 'com_digicom') && $canCheckin;
 						DigiComHelperDigiCom::publishAndExpiryHelper($img, $alt, $times, $status, $promo->codestart, $promo->codeend, $promo->published, $configs, $promo->codelimit, $promo->used);
 
 				?>
-					<tr class="row<?php echo $k;?>"> 
+					<tr class="row<?php echo $k;?>">
 						<td>
 							<?php echo $checked;?>
 						</td>
@@ -146,11 +147,17 @@ $document = JFactory::getDocument();
 						</td>
 
 						<td>
-							<a href="<?php echo $link;?>" ><?php echo $promo->title;?></a>
+							<?php	if ($canDo->get('core.edit')): ?>
+							<a href="<?php echo $link;?>">
+								<?php echo $promo->title;?>
+							</a>
+						<?php else: ?>
+							<?php echo $promo->title;?>
+						<?php endif;?>
 						</td>
 
 						<td>
-							<a href="<?php echo $link;?>" ><?php echo $promo->code;?></a>
+							<span class="label"><?php echo $promo->code;?></label>
 						</td>
 
 						<td align="center">
@@ -178,7 +185,7 @@ $document = JFactory::getDocument();
 					</tr>
 
 
-				<?php 
+				<?php
 						$k = 1 - $k;
 					endfor;
 				?>
@@ -212,7 +219,7 @@ $document = JFactory::getDocument();
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="view" value="discounts" />
 		<?php echo JHtml::_('form.token'); ?>
-		
+
 	</div>
 </form>
 
