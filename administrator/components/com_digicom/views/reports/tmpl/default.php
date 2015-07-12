@@ -11,6 +11,11 @@ defined ('_JEXEC') or die ("Go away.");
 $app		= JFactory::getApplication();
 $input	= $app->input;
 $tab		= $input->get('tab','sales');
+
+JFactory::getDocument()->addStylesheet(JURI::root().'media/digicom/assets/c3js/c3.min.css');
+JFactory::getDocument()->addScript(JURI::root().'media/digicom/assets/c3js/d3.min.js');
+JFactory::getDocument()->addScript(JURI::root().'media/digicom/assets/c3js/c3.min.js');
+
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_digicom&view=reports'); ?>" method="post" name="adminFormStats" autocomplete="off" class="form-validate form-horizontal">
 	<?php if (!empty( $this->sidebar)) : ?>
