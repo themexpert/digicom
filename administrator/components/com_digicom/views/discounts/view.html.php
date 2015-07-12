@@ -14,12 +14,7 @@ class DigiComViewDiscounts extends JViewLegacy
 
 	function display ($tpl =  null )
 	{
-		// Access check.
-		if (!JFactory::getUser()->authorise('digicom.discounts', 'com_digicom'))
-		{
-			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
-		}
-        
+		    
 		$condition = JRequest::getVar("condition", '1');
 		$this->assign ("condition", $condition);
 
@@ -30,13 +25,13 @@ class DigiComViewDiscounts extends JViewLegacy
 		$this->pagination = $this->get('Pagination');
 		$this->configs = $this->get('configs');
 
-		
+
 		//set toolber
 		$this->addToolbar();
-		
+
 		DigiComHelperDigiCom::addSubmenu('discounts');
 		$this->sidebar = DigiComHelperDigiCom::renderSidebar();
-		
+
 		parent::display($tpl);
 
 	}
@@ -58,10 +53,10 @@ class DigiComViewDiscounts extends JViewLegacy
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
-		
+
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
-		
+
 		JToolBarHelper::addNew('discount.add');
 		JToolBarHelper::divider();
 		JToolBarHelper::publishList('discounts.publish');

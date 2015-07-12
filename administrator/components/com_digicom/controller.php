@@ -32,6 +32,12 @@ class DigiComController extends JControllerLegacy
 		$view   = $this->input->get('view', 'digicom');
 		$layout = $this->input->get('layout', 'default');
 
+		// check for the view group permission
+		if (!JFactory::getUser()->authorise('core.manage', 'com_digicom'))
+		{
+			//return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+		}
+
 		return parent::display();
 	}
 

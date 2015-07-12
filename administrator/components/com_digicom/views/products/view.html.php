@@ -21,16 +21,10 @@ class DigiComViewProducts extends JViewLegacy
 
 	function display( $tpl = null )
 	{
-		
+
 		if ($this->getLayout() !== 'modal')
 		{
 			DigiComHelperDigiCom::addSubmenu('products');
-		}
-		
-		// Access check.
-		if (!JFactory::getUser()->authorise('digicom.products', 'com_digicom'))
-		{
-			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
 
 		$this->items         = $this->get('Items');
@@ -68,16 +62,16 @@ class DigiComViewProducts extends JViewLegacy
 		if ($this->getLayout() !== 'modal')
 		{
 			//set toolber
-			$this->addToolbar();			
+			$this->addToolbar();
 			$this->sidebar = DigiComHelperDigiCom::renderSidebar();
 		}
-		
-		
+
+
 		parent::display( $tpl );
 	}
 
 
-	
+
 
 	/**
 	 * Add the page title and toolbar.
@@ -101,7 +95,7 @@ class DigiComViewProducts extends JViewLegacy
 			$bar->appendButton('Custom', $layout->render(array()), 'products');
 		}
 
-		
+
 		if ($canDo->get('core.edit.state'))
 		{
 			JToolbarHelper::publish('products.publish', 'JTOOLBAR_PUBLISH', true);
@@ -131,10 +125,10 @@ class DigiComViewProducts extends JViewLegacy
 
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
-	
+
 	}
-	
-		
+
+
 	/**
 	 * Returns an array of fields the table can be sorted by
 	 *
@@ -153,6 +147,5 @@ class DigiComViewProducts extends JViewLegacy
 			'a.id' => JText::_('JGRID_HEADING_ID')
 		);
 	}
-	
-}
 
+}

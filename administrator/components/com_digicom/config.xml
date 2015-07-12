@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
-		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" filter="rules" component="com_digicom" section="component">
-			<action name="digicom.products" title="COM_DIGICOM_SETTINGS_ACL_PRODUCTS_MANAGER" description="COM_DIGICOM_SETTINGS_ACL_PRODUCTS_MANAGER_DESC" />
-			<action name="digicom.categories" title="COM_DIGICOM_SETTINGS_ACL_CATEGORIES_MANAGER" description="COM_DIGICOM_SETTINGS_ACL_CATEGORIES_MANAGER_DESC" />
-			<action name="digicom.filemanager" title="COM_DIGICOM_SETTINGS_ACL_FILE_MANAGER" description="COM_DIGICOM_SETTINGS_ACL_FILE_MANAGER_DESC" />
-			<action name="digicom.customers" title="COM_DIGICOM_SETTINGS_ACL_CUSTOMERS_MANAGER" description="COM_DIGICOM_SETTINGS_ACL_CUSTOMERS_MANAGER_DESC" />
-			<action name="digicom.orders" title="COM_DIGICOM_SETTINGS_ACL_ORDERS_MANAGER" description="COM_DIGICOM_SETTINGS_ACL_ORDERS_MANAGER_DESC" />
-			<action name="digicom.discounts" title="COM_DIGICOM_SETTINGS_ACL_DISCOUNTS_MANAGER" description="COM_DIGICOM_SETTINGS_ACL_DISCOUNTS_MANAGER_DESC" />
-			<action name="digicom.reports" title="COM_DIGICOM_SETTINGS_ACL_REPORTS" description="COM_DIGICOM_SETTINGS_ACL_REPORTS_DESC" />
-			<action name="digicom.settings" title="COM_DIGICOM_SETTINGS_ACL_SETTINGS" description="COM_DIGICOM_SETTINGS_ACL_SETTINGS_DESC" />
-		</field>
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" filter="rules" component="com_digicom" section="component" />
 	</fieldset>
 </config>
