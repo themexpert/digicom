@@ -14,7 +14,7 @@ JHtml::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.'/helpers/html/');
 JHtml::_('behavior.multiselect');
 JHtml::_('behavior.formvalidation');
 //JHtml::_('formbehavior.chosen', 'select');
-
+$canDo = JHelperContent::getActions('com_digicom', 'component');
 $invisible = 'style="display:none;"';
 
 $k = 0;
@@ -73,24 +73,24 @@ Joomla.submitbutton = function (pressbutton) {
 		<div class="js-stools">
 			<div class="clearfix">
 				<div class="btn-wrapper input-append">
-					<input type="text" id="filter_search" name="keyword" placeholder="<?php echo JText::_('DSKEYWORD'); ?>" value="<?php echo (strlen( trim( $this->keyword ) ) > 0 ? $this->keyword : ""); ?>" class="input-medium" />		
+					<input type="text" id="filter_search" name="keyword" placeholder="<?php echo JText::_('DSKEYWORD'); ?>" value="<?php echo (strlen( trim( $this->keyword ) ) > 0 ? $this->keyword : ""); ?>" class="input-medium" />
 					<button type="submit" class="btn hasTooltip" title="" data-original-title="Search">
 						<i class="icon-search"></i>
 					</button>
 					<button type="button" class="btn hasTooltip js-stools-btn-clear" onclick="document.id('filter_search').value='';this.form.submit();">
-						<i class="icon-remove"></i>	
+						<i class="icon-remove"></i>
 					</button>
 				</div>
 				<div class="btn-wrapper input-append input-prepend pull-right">
 					<label class="add-on"><?php echo JText::_( "DSFROM" ); ?>:</label>
 					<?php echo JHTML::_( "calendar", $this->startdate > 0 ? date( $configs->get('time_format','DD-MM-YYYY'), $this->startdate ) : "", 'startdate', 'startdate', $f, array('class'=>'input-medium'), array('class'=>'span2'), array('class'=>'span2')); ?>&nbsp;
-				
+
 					<label class="add-on"><?php echo JText::_( "DSTO" ); ?>:</label>
 					<?php echo JHTML::_( "calendar", $this->enddate > 0 ? date( $configs->get('time_format','DD-MM-YYYY'), $this->enddate ) : "", 'enddate', 'enddate', $f , array('class'=>'input-medium')); ?>
 
 					<input type="submit" name="go" value="<?php echo JText::_( "DSGO" ); ?>" class="btn" />
 					<button type="button" class="btn hasTooltip js-stools-btn-clear" onclick="document.id('startdate').value='';document.id('enddate').value='';this.form.submit();">
-						<i class="icon-remove"></i>	
+						<i class="icon-remove"></i>
 					</button>
 				</div>
 
@@ -99,7 +99,7 @@ Joomla.submitbutton = function (pressbutton) {
 		<br>
 
 
-		
+
 		<table class="adminlist table table-striped">
 			<thead>
 				<tr>
@@ -122,7 +122,7 @@ Joomla.submitbutton = function (pressbutton) {
 					<th>
 						<?php echo JText::_( 'COM_DIGICOM_AMOUNT_PAID' ); ?>
 					</th>
-					<!-- 
+					<!--
 					<th>
 						<?php echo JText::_( 'COM_DIGICOM_EMAIL' ); ?>
 					</th>
@@ -162,57 +162,59 @@ Joomla.submitbutton = function (pressbutton) {
 							<?php echo $checked; ?>
 						</td>
 						<td align="center">
-							<a href="<?php echo $olink; ?>"><?php echo $id; ?></a>
+							<?php if ($canDo->get('core.edit')) : ?>
+                <a href="<?php echo $olink; ?>"><?php echo $id; ?></a>
+              <?php else: ?>
+                <span><?php echo $id; ?></span>
+              <?php endif; ?>
 						</td>
 						<td align="center">
-							<?php echo date( $configs->get('time_format','DD-MM-YYYY'), $order->order_date ); ?>
+							<?php echo date( $configs->get('time_format','D-M-Y'), $order->order_date ); ?>
 						</td>
 						<td>
 							<?php echo $order->number_of_products; ?></a>
 						</td>
 						<td align="center">
-							<?php 
-								echo DigiComHelperDigiCom::format_price($order->amount, $configs->get('currency','USD'), true, $configs); 
+							<?php
+								echo DigiComHelperDigiCom::format_price($order->amount, $configs->get('currency','USD'), true, $configs);
 							?>
 						</td>
 						<td align="center">
-							<?php 
+							<?php
 								$refunds = DigiComHelperDigiCom::getRefunds($order->id);
 								$chargebacks = DigiComHelperDigiCom::getChargebacks($order->id);
 								$order->amount_paid = $order->amount_paid - $refunds - $chargebacks;
-								echo DigiComHelperDigiCom::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs); 
+								echo DigiComHelperDigiCom::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs);
 							?>
 						</td>
-						<!-- 
-						<td align="center">
-							<?php echo ($order->email); ?>
-						</td>
-						 -->
 						 <td align="center">
-							<a href="<?php echo $customerlink; ?>" ><?php echo ($order->firstname . " " . $order->lastname); ?></a>
+							<?php if ($canDo->get('core.edit')) : ?>
+              <a href="<?php echo $customerlink; ?>" >
+                <?php echo ($order->firstname . " " . $order->lastname); ?>
+              </a>
+            <?php else: ?>
+              <?php echo ($order->firstname . " " . $order->lastname); ?>
+            <?php endif; ?>
 						</td>
 						<td align="center" width="1%">
-<!-- 							
-							<?php
-								$class = 'badge badge-success';
+
+ 							<?php if ($canDo->get('core.edit.state')) : ?>
+                 <?php echo DigiComHelperDigiCom::getOrderSratusList($order->status, $i, $order); ?>
+						  <?php else: ?>
+                <?php
+                $class = 'badge badge-success';
 								if($order->status == "Pending"){
 									$class = 'badge badge-warning';
-								}
-							?>
-							<span class="<?php echo $class; ?>">
-								<?php echo (trim( $order->status ) != "in_progres" ? $order->status : "Active"); ?>
-							</span>
-							<a href="<?php echo $orderstatuslink; ?>" title="<?php echo JText::_('COM_DIGICOM_ORDER_STATUS_CHANGE_FROM_'.strtoupper($order->status));?>" class="hasTooltip">
-								<i class="icon-refresh"></i>
-							</a>
-							
- -->
- 							<?php echo DigiComHelperDigiCom::getOrderSratusList($order->status, $i, $order); ?>
-						</td>
+								} ?>
+                <span class="<?php echo $class; ?>">
+                  <?php echo (trim( $order->status ) != "in_progres" ? $order->status : "Active"); ?>
+                </span>
+              <?php endif; ?>
+            </td>
 						<td align="center">
 							<?php echo $order->processor; ?>
 						</td>
-						
+
 					</tr>
 					<?php
 					$k = 1 - $k;

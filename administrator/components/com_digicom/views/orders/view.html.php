@@ -14,17 +14,11 @@ class DigiComViewOrders extends JViewLegacy
 
 	function display( $tpl = null )
 	{
-		// Access check.
-		if (!JFactory::getUser()->authorise('digicom.orders', 'com_digicom'))
-		{
-			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
-		}
-
 		$document = JFactory::getDocument();
 
 		$orders = $this->get('Items');
 		$pagination = $this->get('Pagination');
-		
+
 		$this->orders = $orders;
 		$this->pagination = $pagination;
 
@@ -39,13 +33,13 @@ class DigiComViewOrders extends JViewLegacy
 
 		$keyword = JRequest::getVar( "keyword", "", "request" );
 		$this->assign( "keyword", $keyword );
-		
+
 		//set toolber
 		$this->addToolbar();
-		
+
 		DigiComHelperDigiCom::addSubmenu('orders');
 		$this->sidebar = DigiComHelperDigiCom::renderSidebar();
-		
+
 		parent::display( $tpl );
 	}
 
@@ -56,6 +50,7 @@ class DigiComViewOrders extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
+		$canDo = JHelperContent::getActions('com_digicom', 'component');
 		JToolBarHelper::title( JText::_( 'COM_DIGICOM_ORDERS_TOOLBAR_TITLE' ), 'generic.png' );
 
 		$bar = JToolBar::getInstance('toolbar');
@@ -66,14 +61,18 @@ class DigiComViewOrders extends JViewLegacy
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
-		
+
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
-		
-		JToolBarHelper::addNew('ordernew.add');
-		JToolBarHelper::divider();
-		JToolBarHelper::deleteList(JText::_('COM_DIGICOM_ORDERS_ALERT_REMOVE'),'orders.remove');
-		JToolBarHelper::spacer();
+
+		if ($canDo->get('core.create')){
+			JToolBarHelper::addNew('ordernew.add');
+			JToolBarHelper::divider();
+		}
+		if ($canDo->get('core.delete')){
+			JToolBarHelper::deleteList(JText::_('COM_DIGICOM_ORDERS_ALERT_REMOVE'),'orders.remove');
+			JToolBarHelper::spacer();
+		}
 	}
-	
+
 }
