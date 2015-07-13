@@ -15,7 +15,7 @@ defined('_JEXEC') or die;
  * @since  1.0.0
  */
 class DigiComHelperDigiCom extends JHelperContent{
-	
+
 	/**
 	 * Configure the Linkbar.
 	 * @param   string  $vName  The name of the active view.
@@ -30,13 +30,13 @@ class DigiComHelperDigiCom extends JHelperContent{
 			'index.php?option=com_digicom',
 			$vName == 'digicom'
 		);
-		
+
 		JHtmlSidebar::addEntry(
 			JText::_('COM_DIGICOM_SIDEBAR_MENU_CATEGORIES'),
 			'index.php?option=com_digicom&view=categories',
 			$vName == 'categories'
 		);
-		
+
 		JHtmlSidebar::addEntry(
 			JText::_('COM_DIGICOM_SIDEBAR_MENU_PRODUCTS'),
 			'index.php?option=com_digicom&view=products',
@@ -57,32 +57,32 @@ class DigiComHelperDigiCom extends JHelperContent{
 			'index.php?option=com_digicom&view=orders',
 			$vName == 'orders'
 		);
-		
+
 		JHtmlSidebar::addEntry(
 			JText::_('COM_DIGICOM_SIDEBAR_MENU_DISCOUNTS'),
 			'index.php?option=com_digicom&view=discounts',
 			$vName == 'discounts'
 		);
-		
+
 		JHtmlSidebar::addEntry(
 			JText::_('COM_DIGICOM_SIDEBAR_MENU_REPORTS'),
 			'index.php?option=com_digicom&view=reports',
 			$vName == 'reports'
 		);
-		
+
 		JHtmlSidebar::addEntry(
 			JText::_('COM_DIGICOM_SIDEBAR_MENU_ABOUT'),
 			'index.php?option=com_digicom&view=about',
 			$vName == 'about'
 		);
-		
+
 		JHtmlSidebar::addEntry(
 			JText::_('COM_DIGICOM_SIDEBAR_MENU_COLLAPSE'),
 			'#togglesidebar'
 		);
-		
+
 	}
-	
+
 	public static function renderSidebar(){
 		// Collect display data
 		$data                 = new stdClass;
@@ -98,9 +98,9 @@ class DigiComHelperDigiCom extends JHelperContent{
 		$sidebarHtml = $layout->render($data);
 
 		return $sidebarHtml;
-		
+
 	}
-	
+
 	// TODO : change function name to camelCase
 	public static function format_price ($amount, $ccode, $add_sym = true, $configs) {
 
@@ -118,10 +118,10 @@ class DigiComHelperDigiCom extends JHelperContent{
 				$res = $ccode. " " . $res;
 		}
 
-		return $res; 
+		return $res;
 	}
 
-	
+
 	public static function cleanUpImageFolders($root, $folders) {
 
 		foreach ($folders as $i => $folder) {
@@ -134,7 +134,7 @@ class DigiComHelperDigiCom extends JHelperContent{
 		return $folders;
 	}
 
-	
+
 	public static function getLiveSite() {
 
 		// Check if a bypass url was set
@@ -195,7 +195,7 @@ class DigiComHelperDigiCom extends JHelperContent{
 		return $theURI;
 	}
 
-	
+
 	public static function CreateIndexFile($dir)
 	{
 		if (file_exists($dir))
@@ -209,23 +209,14 @@ class DigiComHelperDigiCom extends JHelperContent{
 		}
 	}
 
-	
+
 	/**
 	 * Get latest orders, to use with DS Dashboard
 	 * @return unknown
 	 */
 	public static function getOrders($limit) {
 		$db = JFactory::getDBO();
-		$sql = '
-			SELECT o.*, c.firstname, c.lastname
-			FROM
-				#__digicom_orders o,
-				#__digicom_customers c
-			WHERE
-				`c`.`id`=`o`.`userid` AND
-				`status` = "Active"
-			ORDER BY `o`.`order_date` DESC
-			LIMIT '.$limit.'';
+		$sql = 'SELECT o.*, c.firstname, c.lastname FROM #__digicom_orders o, #__digicom_customers c WHERE `c`.`id`=`o`.`userid` AND `status` = "Active" ORDER BY `o`.`order_date` DESC LIMIT '.$limit.'';
 		$db->setQuery($sql);
 		if (!$orders = $db->loadObjectList()) {
 			echo $db->getErrorMsg();
@@ -239,20 +230,7 @@ class DigiComHelperDigiCom extends JHelperContent{
 	 */
 	public static function getProducts($limit) {
 		$db = JFactory::getDBO();
-		$sql = '
-			SELECT
-				DISTINCT p.id,p.name,p.catid, p.description, p.publish_up,
-				c.name AS category
-			FROM
-				#__digicom_products p,
-				#__digicom_categories c
-			WHERE
-				p.published = 1 AND
-				c.published = 1 AND
-				p.catid = c.id
-			ORDER BY p.id DESC
-			LIMIT '.$limit.'
-		';
+		$sql = 'SELECT DISTINCT p.id,p.name,p.catid, p.description, p.publish_up, c.name AS category FROM #__digicom_products p, #__digicom_categories c WHERE p.published = 1 AND c.published = 1 AND p.catid = c.id ORDER BY p.id DESC LIMIT '.$limit;
 		$db->setQuery($sql);
 		if (!$products = $db->loadObjectList()) {
 			echo $db->getErrorMsg();
@@ -264,14 +242,14 @@ class DigiComHelperDigiCom extends JHelperContent{
 	 * @return unknown
 	 */
 	public static function getMostSoldProducts($limit) {
-		
+
 		$db = JFactory::getDbo();
 		// Create a new query object.
 
 		$query = $db->getQuery(true);
 		$query->select( 'SUM('.$db->quoteName('od.quantity') .') as total');
 		$query->select($db->quoteName(array('od.productid', 'od.package_type')));
-		
+
 		$query->select($db->quoteName(array('p.name','p.price')));
 
 		$query->from($db->quoteName('#__digicom_orders_details').' od');
@@ -294,13 +272,13 @@ class DigiComHelperDigiCom extends JHelperContent{
 
 		// Reset the query using our newly populated query object.
 		$db->setQuery($query);
-		
+
 		if (!$products = $db->loadObjectList()) {
 			echo $db->getErrorMsg();
 		}
 		return $products;
 	}
-	
+
 	public static function getStartEndDateMonth(){
 		$return = array();
 		$date = new DateTime('now');
@@ -320,24 +298,14 @@ class DigiComHelperDigiCom extends JHelperContent{
 	 */
 	public static function getCustomers($limit) {
 		$db = JFactory::getDBO();
-		$sql = '
-			SELECT o.*, c.firstname, c.lastname, c.email
-			FROM
-				#__digicom_orders o,
-				#__digicom_customers c
-			WHERE
-				c.id=o.userid AND
-				status = "Active"
-			GROUP BY o.userid
-			LIMIT '.$limit.'
-		';
+		$sql = 'SELECT o.*, c.firstname, c.lastname, c.email FROM #__digicom_orders o, #__digicom_customers c WHERE c.id=o.userid AND status = "Active" GROUP BY o.userid LIMIT '.$limit;
 		$db->setQuery($sql);
 		if (!$customers = $db->loadObjectList()) {
 			echo $db->getErrorMsg();
 		}
 		return $customers;
 	}
-	
+
 	public static function publishAndExpiryHelper(&$img, &$alt, &$times, &$status, $timestart, $timeend, $published, $configs, $limit = 0, $used = 0) {
 
 		$now = time();
@@ -401,49 +369,46 @@ class DigiComHelperDigiCom extends JHelperContent{
 			$status = "<span style='color:red'>".(JText::_("COM_DIGICOM_DISCOUNT_CODE_ERROR"))."</span>";
 		}
 	}
-	
-	//This function transforms the php.ini notation for numbers (like '2M') to an integer (2*1024*1024 in this case)  
-	public static function convertPHPSizeToBytes($sSize)  
-	{  
+
+	//This function transforms the php.ini notation for numbers (like '2M') to an integer (2*1024*1024 in this case)
+	public static function convertPHPSizeToBytes($sSize)
+	{
 	    if ( is_numeric( $sSize) ) {
 	       return $sSize;
 	    }
-	    $sSuffix = substr($sSize, -1);  
-	    $iValue = substr($sSize, 0, -1);  
-	    switch(strtoupper($sSuffix)){  
-	    case 'P':  
-	        $iValue *= 1024;  
-	    case 'T':  
-	        $iValue *= 1024;  
-	    case 'G':  
-	        $iValue *= 1024;  
-	    case 'M':  
-	        $iValue *= 1024;  
-	    case 'K':  
-	        $iValue *= 1024;  
-	        break;  
-	    }  
-	    return $iValue;  
-	}  
+	    $sSuffix = substr($sSize, -1);
+	    $iValue = substr($sSize, 0, -1);
+	    switch(strtoupper($sSuffix)){
+	    case 'P':
+	        $iValue *= 1024;
+	    case 'T':
+	        $iValue *= 1024;
+	    case 'G':
+	        $iValue *= 1024;
+	    case 'M':
+	        $iValue *= 1024;
+	    case 'K':
+	        $iValue *= 1024;
+	        break;
+	    }
+	    return $iValue;
+	}
 
 	public static function setSidebarRight(){
-		
+
 		$input = JFactory::getApplication()->input;
 		$tmpl = $input->get('tmpl','');
 		$ajax = $input->get('ajax','');
 		if($tmpl == 'component' or $ajax =='1') return;
-		
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.'/layouts/toolbar/sidebar-right.php');
+
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.'/layouts/sidebars/sidebar-right.php');
 		return true;
 	}
 
 	public static function getChargebacks($order)
 	{
 		$db = JFactory::getDBO();
-		$sql = "SELECT SUM(`cancelled_amount`)
-				FROM `#__digicom_orders_details`
-				WHERE `cancelled`=1
-				  AND `orderid`=" . (int) $order;
+		$sql = "SELECT SUM(`cancelled_amount`) FROM `#__digicom_orders_details` WHERE `cancelled`=1 AND `orderid`=" . (int) $order;
 		$db->setQuery($sql);
 		return $db->loadResult();
 	}
@@ -451,10 +416,7 @@ class DigiComHelperDigiCom extends JHelperContent{
 	public static function getRefunds($order)
 	{
 		$db = JFactory::getDBO();
-		$sql = "SELECT SUM(`cancelled_amount`)
-				FROM `#__digicom_orders_details`
-				WHERE `cancelled`=2
-				  AND `orderid`=" . (int) $order;
+		$sql = "SELECT SUM(`cancelled_amount`) FROM `#__digicom_orders_details` WHERE `cancelled`=2 AND `orderid`=" . (int) $order;
 		$db->setQuery($sql);
 		return $db->loadResult();
 	}
@@ -462,10 +424,7 @@ class DigiComHelperDigiCom extends JHelperContent{
 	public static function getDeleted($order, $license=0)
 	{
 		$db = JFactory::getDBO();
-		$sql = "SELECT SUM(`amount_paid`)
-				FROM `#__digicom_orders_details`
-				WHERE `cancelled`=3
-				  AND `orderid`=" . (int) $order;
+		$sql = "SELECT SUM(`amount_paid`) FROM `#__digicom_orders_details` WHERE `cancelled`=3 AND `orderid`=" . (int) $order;
 		$db->setQuery($sql);
 		return $db->loadResult();
 	}
@@ -473,15 +432,13 @@ class DigiComHelperDigiCom extends JHelperContent{
 	public static function isProductDeleted($id)
 	{
 		$db = JFactory::getDBO();
-		$sql = "SELECT `cancelled`
-				FROM `#__digicom_orders_details`
-				WHERE `id`='" . $id . "'";
+		$sql = "SELECT `cancelled` FROM `#__digicom_orders_details` WHERE `id`='" . $id . "'";
 		$db->setQuery($sql);
 		return $db->loadResult();
 	}
 
 	public static function getOrderSratusList($status, $i, $order){
-		
+
 		$statuslist = array(
 			'Active' => JText::_('COM_DIGICOM_ORDER_STATUS_ACTIVE'),
 			'Pending' => JText::_('COM_DIGICOM_ORDER_STATUS_PENDING'),
@@ -490,21 +447,21 @@ class DigiComHelperDigiCom extends JHelperContent{
 		);
 		## Initialize array to store dropdown options ##
 		$options = array();
-		
+
 		foreach($statuslist as $key=>$value) :
 			## Create $value ##
 			$options[] = JHTML::_('select.option', $key, $value);
 		endforeach;
-		
+
 		## Create <select name="month" class="inputbox"></select> ##
 		$dropdown = JHTML::_('select.genericlist', $options, 'orderstatus[]', 'class="inputbox input-small" onchange="changeOrderStatus(\'cb'.$i.'\',\'orders.cycleStatus\','.$i.',this.value);"', 'value', 'text', $status,'orderstatus'.$i);
-		
+
 		## Output created <select> list ##
 		return $dropdown;
 	}
 
 	public static function addAdminStyles(){
-		
+
 		// load core script
 		$document = JFactory::getDocument();
 		$document->addScript(JURI::root(true).'/media/digicom/assets/js/digicom.js?v=1.0.0&amp;sitepath='.JURI::root(true).'/');
