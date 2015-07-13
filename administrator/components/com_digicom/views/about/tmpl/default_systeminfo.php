@@ -8,131 +8,70 @@
  */
 
 defined('_JEXEC') or die;
+// Add specific helper files for html generation
+JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+$input = JFactory::getApplication()->input;
 ?>
-<fieldset class="adminform">
-	<legend><?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_SYSTEM_INFORMATION'); ?></legend>
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th width="25%">
-					<?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_SETTING'); ?>
-				</th>
-				<th>
-					<?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_VALUE'); ?>
-				</th>
-			</tr>
-		</thead>
-		<tfoot>
-			<tr>
-				<td colspan="2">&#160;</td>
-			</tr>
-		</tfoot>
-		<tbody>
-			<tr>
-				<td>
-					<strong><?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_PHP_BUILT_ON'); ?></strong>
-				</td>
-				<td>
-					<?php echo $this->info['php']; ?>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<strong><?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_DATABASE_VERSION'); ?></strong>
-				</td>
-				<td>
-					<?php echo $this->info['dbversion']; ?>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<strong><?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_DATABASE_COLLATION'); ?></strong>
-				</td>
-				<td>
-					<?php echo $this->info['dbcollation']; ?>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<strong><?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_PHP_VERSION'); ?></strong>
-				</td>
-				<td>
-					<?php echo $this->info['phpversion']; ?>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<strong><?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_WEB_SERVER'); ?></strong>
-				</td>
-				<td>
-					<?php echo !empty($this->info['server']) ? $this->info['server'] : JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_NA'); ?>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<strong><?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_WEBSERVER_TO_PHP_INTERFACE'); ?></strong>
-				</td>
-				<td>
-					<?php echo $this->info['sapi_name']; ?>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<strong><?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_JOOMLA_VERSION'); ?></strong>
-				</td>
-				<td>
-					<?php echo $this->info['version']; ?>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<strong><?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_PLATFORM_VERSION'); ?></strong>
-				</td>
-				<td>
-					<?php echo $this->info['platform']; ?>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<strong><?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_USER_AGENT'); ?></strong>
-				</td>
-				<td>
-					<?php echo htmlspecialchars($this->info['useragent']); ?>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-</fieldset>
+<?php if($input->get('format','html') != 'attachment'): ?>
+<p class="text-right">
+	<a class="btn" href="<?php echo JRoute::_('index.php?option=com_digicom&view=about&tmpl=component&format=attachment'); ?>">
+		<?php echo JText::_('COMDIGICOM_ABOUT_SYSTEMINFO_DOWNLOAD_BTN'); ?>
+	</a>
+</p>
+<div class="clearfix"></div>
+<pre>
+<?php endif; ?>
 
-<fieldset class="adminform">
-	<legend><?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_DIRECTORY_PERMISSIONS'); ?></legend>
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th width="650">
-					<?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_DIRECTORY'); ?>
-				</th>
-				<th>
-					<?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_STATUS'); ?>
-				</th>
-			</tr>
-		</thead>
-		<tfoot>
-			<tr>
-				<td colspan="2">&#160;</td>
-			</tr>
-		</tfoot>
-		<tbody>
-			<?php foreach ($this->directory as $dir => $info) : ?>
-				<tr>
-					<td>
-						<?php echo JHtml::_('directory.message', $dir, $info['message']); ?>
-					</td>
-					<td>
-						<?php echo JHtml::_('directory.writable', $info['writable']); ?>
-					</td>
-				</tr>
-			<?php endforeach; ?>
-		</tbody>
-	</table>
-</fieldset>
+<?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_SYSTEM_DIGICOM'); ?>
+<?php echo "\n"; ?>
+===================================
+<?php echo "\n"; ?>
+<?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_DIGICOM_VERSION'); ?><?php echo "\n"; ?>
+	<?php //echo $this->info['digicom']->version; ?>
+
+
+<?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_SYSTEM_INFORMATION'); ?>
+<?php echo "\n"; ?>
+===================================
+<?php echo "\n"; ?>
+<?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_PHP_BUILT_ON'); ?><?php echo "\n"; ?>
+	<?php echo $this->info['php']; ?>
+<?php echo "\n"; ?>
+<?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_DATABASE_VERSION'); ?><?php echo "\n"; ?>
+	<?php echo $this->info['dbversion']; ?>
+<?php echo "\n"; ?>
+<?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_DATABASE_COLLATION'); ?><?php echo "\n"; ?>
+	<?php echo $this->info['dbcollation']; ?>
+<?php echo "\n"; ?>
+<?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_PHP_VERSION'); ?><?php echo "\n"; ?>
+	<?php echo $this->info['phpversion']; ?>
+<?php echo "\n"; ?>
+<?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_WEB_SERVER'); ?><?php echo "\n"; ?>
+	<?php echo !empty($this->info['server']) ? $this->info['server'] : JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_NA'); ?>
+<?php echo "\n"; ?>
+<?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_WEBSERVER_TO_PHP_INTERFACE'); ?><?php echo "\n"; ?>
+	<?php echo $this->info['sapi_name']; ?>
+<?php echo "\n"; ?>
+<?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_JOOMLA_VERSION'); ?><?php echo "\n"; ?>
+	<?php echo $this->info['version']; ?>
+<?php echo "\n"; ?>
+<?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_PLATFORM_VERSION'); ?><?php echo "\n"; ?>
+	<?php echo $this->info['platform']; ?>
+<?php echo "\n"; ?>
+<?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_USER_AGENT'); ?><?php echo "\n"; ?>
+	<?php echo htmlspecialchars($this->info['useragent']); ?>
+<?php echo "\n"; ?>
+
+
+<?php echo JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_DIRECTORY_PERMISSIONS'); ?>
+<?php echo "\n"; ?>
+===================================
+<?php echo "\n"; ?>
+<?php foreach ($this->directory as $dir => $info) : ?>
+<?php echo JHtml::_('directory.message', $dir, $info['message'], true, $input->get('format','html') === 'attachment' ? true : false); ?> : <?php echo JHtml::_('directory.writable', $info['writable'],($input->get('format') === 'attachment' ? 'true' : false)); ?>
+<?php echo "\n"; ?>
+<?php endforeach; ?>
+
+<?php if($input->get('format','attachment') != 'attachment'): ?>
+</pre>
+<?php endif; ?>

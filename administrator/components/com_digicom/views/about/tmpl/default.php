@@ -8,8 +8,7 @@
  */
 
 defined('_JEXEC') or die;
-// Add specific helper files for html generation
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+
 $mosConfig_absolute_path = JPATH_ROOT;
 $document = JFactory::getDocument();
 $app = JFactory::getApplication();
