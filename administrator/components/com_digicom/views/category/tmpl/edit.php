@@ -47,9 +47,9 @@ JFactory::getDocument()->addScriptDeclaration('
 <?php endif;?>
 
 		<?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
-		
+
 		<?php echo JLayoutHelper::render('edit.cat_params', $this); ?>
-		
+
 		<div class="form-horizontal">
 			<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'general')); ?>
 
@@ -60,7 +60,7 @@ JFactory::getDocument()->addScriptDeclaration('
 					<?php echo $this->form->getInput('description'); ?>
 				</div>
 				<div class="span3">
-					<?php echo JLayoutHelper::render('edit.sidebar_cat', $this); ?>
+					<?php echo JLayoutHelper::render('sidebars.sidebar_cat', $this); ?>
 				</div>
 			</div>
 			<?php echo JHtml::_('bootstrap.endTab'); ?>
