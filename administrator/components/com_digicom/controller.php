@@ -31,6 +31,20 @@ class DigiComController extends JControllerLegacy
 		DigiComHelperDigiCom::addAdminStyles();
 		$view   = $this->input->get('view', 'digicom');
 		$layout = $this->input->get('layout', 'default');
+		$id     = $this->input->getInt('id');
+
+		//all edit view
+		$editviews = array("category", "product", "customer", "order","ordernew", "discount");
+		// Check for edit form.
+		if (in_array($view,$editviews) && $layout == 'edit' && !$this->checkEditId('com_digicom.edit.'.$view, $id))
+		{
+			// Somehow the person just went to the form - we don't allow that.
+			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
+			$this->setMessage($this->getError(), 'error');
+			$this->setRedirect(JRoute::_('index.php?option=com_digicom', false));
+
+			return false;
+		}
 
 		return parent::display();
 	}
