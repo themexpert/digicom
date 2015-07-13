@@ -23,7 +23,7 @@ $input = $app->input;
 $input->set('layout', 'dgform');
 ?>
 <script type="text/javascript">
-	
+
 	Joomla.submitbutton = function(task)
 	{
 		if(task== 'product.save' || task == 'product.save2new' || task== 'product.apply'){
@@ -45,7 +45,7 @@ $input->set('layout', 'dgform');
 					error.error = [];
 					label = '<?php echo JText::_('COM_DIGICOM_PRODUCT_BUNDLE_SOURCE_INFO_REQUIRED'); ?>';
 					error.error[0] = message + label;
-					
+
 					Joomla.renderMessages(error);
 					return false;
 				}
@@ -67,20 +67,20 @@ $input->set('layout', 'dgform');
 	<?php else : ?>
 		<div id="j-main-container" class="">
 	<?php endif;?>
-	
-	
+
+
 	<div class="form-horizontal">
 		<div class="row-fluid">
 			<div class="span9">
 			<?php echo JHtml::_('bootstrap.startTabSet', 'digicomTab', array('active' => 'general')); ?>
 
 				<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'general', JText::_('COM_DIGICOM_PRODUCT_GENERAL_SETTINGS', true)); ?>
-				
+
 				<div class="row-fluid">
 					<div class="span4">
 						<div class="form-inline form-inline-header product-image">
 							<?php echo $this->form->getControlGroup('images'); ?>
-						</div>						
+						</div>
 					</div>
 					<div class="span8">
 						<?php echo JLayoutHelper::render('edit.title_alias_price', $this); ?>
@@ -90,25 +90,25 @@ $input->set('layout', 'dgform');
 							<?php echo $this->form->getInput('description'); ?>
 						</div>
 					</div>
-					
+
 				</div>
-				
-				
+
+
 				<div class="control-group ">
 					<?php echo $this->form->getLabel('fulldescription'); ?>
 					<?php echo $this->form->getInput('fulldescription'); ?>
 				</div>
 				<?php echo JHtml::_('bootstrap.endTab'); ?>
 				<?php // Do not show the publishing options if the edit form is configured not to. ?>
-				
-				<?php 
+
+				<?php
 				$product_type = $this->item->product_type;
 				if(empty($product_type)){
 					$product_type = $this->form->getData()->get('product_type');
 				}
 
 				if($product_type == 'reguler'): ?>
-				
+
 					<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'files', JText::_('COM_DIGICOM_PRODUCT_REGULAR_FILES_SELECTION', true)); ?>
 						<?php echo JLayoutHelper::render('edit.files', $this); ?>
 					<?php echo JHtml::_('bootstrap.endTab'); ?>
@@ -118,21 +118,21 @@ $input->set('layout', 'dgform');
 					<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'bundle', JText::_('COM_DIGICOM_PRODUCT_BUNDLE_FILES_SELECTION', true)); ?>
 						<?php echo JLayoutHelper::render('edit.bundle', $this); ?>
 					<?php echo JHtml::_('bootstrap.endTab'); ?>
-				
+
 				<?php endif; ?>
 			<?php echo JHtml::_('bootstrap.endTabSet'); ?>
 			</div>
 			<div class="span3">
-				<?php echo JLayoutHelper::render('edit.sidebar', $this); ?>
+				<?php echo JLayoutHelper::render('sidebars.sidebar', $this); ?>
 			</div>
 		</div>
-		
+
 		<input type="hidden" name="option" value="com_digicom" />
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="jform[product_type]" value="<?php echo $product_type; ?>" />
 		<input type="hidden" name="view" value="product" />
 		<input type="hidden" name="state_filter" value="<?php echo JRequest::getVar("state_filter", "-1"); ?>" />
-		<input type="hidden" name="return" value="<?php echo $input->getCmd('return'); ?>" />		
+		<input type="hidden" name="return" value="<?php echo $input->getCmd('return'); ?>" />
 		<?php echo JHtml::_('form.token'); ?>
 
 	</div>
