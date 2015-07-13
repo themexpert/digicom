@@ -23,13 +23,20 @@ abstract class JHtmlDirectory
 	 *
 	 * @return  string	html code
 	 */
-	public static function writable($writable)
+	public static function writable($writable, $raw = false)
 	{
+
 		if ($writable)
 		{
+			if($raw){
+				return JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_WRITABLE');
+			}
 			return '<span class="badge badge-success">' . JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_WRITABLE') . '</span>';
 		}
 
+		if($raw){
+			return JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_UNWRITABLE');
+		}
 		return '<span class="badge badge-important">' . JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_UNWRITABLE') . '</span>';
 	}
 
@@ -42,13 +49,17 @@ abstract class JHtmlDirectory
 	 *
 	 * @return  string	html code
 	 */
-	public static function message($dir, $message, $visible = true)
+	public static function message($dir, $message, $visible = true, $rawdata = false)
 	{
 		$output = $visible ? $dir : '';
 
 		if (empty($message))
 		{
 			return $output;
+		}
+
+		if($rawdata){
+			return $output . JText::_($message);
 		}
 
 		return $output . ' <strong>' . JText::_($message) . '</strong>';
