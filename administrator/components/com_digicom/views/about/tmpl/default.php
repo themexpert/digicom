@@ -8,14 +8,14 @@
  */
 
 defined('_JEXEC') or die;
-
+// Add specific helper files for html generation
+JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 $mosConfig_absolute_path = JPATH_ROOT;
-
 $document = JFactory::getDocument();
-
 $app = JFactory::getApplication();
 $input = $app->input;
 ?>
+
 <form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=about'); ?>" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
 	<?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="">
@@ -25,7 +25,7 @@ $input = $app->input;
 <?php else : ?>
 	<div id="j-main-container" class="">
 <?php endif;?>
-		
+
 		<?php echo JHtml::_('bootstrap.startTabSet', 'digicomTab', array('active' => 'about')); ?>
 
 			<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'about', JText::_('COM_DIGICOM_ABOUT_TAB_TITLE_ABOUT', true)); ?>
@@ -38,7 +38,7 @@ $input = $app->input;
 			<tr>
 				<td>
 					<table class="table table-striped">
-						
+
 			<?php
 
 			//angek: magazine-66 : start: lets do this dynamically
@@ -116,8 +116,13 @@ $input = $app->input;
 
 			<?php echo JHtml::_('bootstrap.endTab'); ?>
 
+			<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'systeminfo', JText::_('COM_DIGICOM_ABOUT_TAB_TITLE_SYSTEMINFO', true)); ?>
+				<?php echo $this->loadTemplate('systeminfo'); ?>
+			<?php echo JHtml::_('bootstrap.endTab'); ?>
+
+
 		<?php echo JHtml::_('bootstrap.endTabSet'); ?>
 
-		
+
 	</div>
 </form>

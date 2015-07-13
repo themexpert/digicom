@@ -9,13 +9,25 @@
 
 defined('_JEXEC') or die;
 
-jimport ("joomla.application.component.view");
-
 class DigiComViewAbout extends JViewLegacy {
 
+	/**
+	* @var array somme system values
+	*/
+	protected $info = null;
+
+	/**
+	 * @var array informations about writable state of directories
+	 */
+	protected $directory = null;
+
 	function display($tpl =  null){
+
+		$this->info			= $this->get('info');
+		$this->directory	= $this->get('directory');
+
 		JToolBarHelper::title(JText::_('COM_DIGICOM_ABOUT_TOOLBAR_TITLE'), 'generic.png');
-		
+
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout
 		$layout = new JLayoutFile('toolbar.title');
@@ -24,13 +36,13 @@ class DigiComViewAbout extends JViewLegacy {
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
-		
+
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
-		
+
 		DigiComHelperDigiCom::addSubmenu('about');
 		$this->sidebar = DigiComHelperDigiCom::renderSidebar();
-		
+
 		parent::display($tpl);
 	}
 
