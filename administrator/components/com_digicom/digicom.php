@@ -9,15 +9,15 @@
 
 defined('_JEXEC') or die;
 
-JLoader::discover('DigiComHelper', JPATH_COMPONENT_ADMINISTRATOR . '/helpers');
-JLoader::discover('DigiComSiteHelper', JPATH_COMPONENT_SITE . '/helpers');
-
-JHtml::_('behavior.tabstate');
-
 if (!JFactory::getUser()->authorise('core.manage', 'com_digicom'))
 {
 	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
+
+JHtml::_('behavior.tabstate');
+
+JLoader::discover('DigiComHelper', JPATH_COMPONENT_ADMINISTRATOR . '/helpers');
+JLoader::discover('DigiComSiteHelper', JPATH_COMPONENT_SITE . '/helpers');
 
 $controller	= JControllerLegacy::getInstance('Digicom');
 $controller->execute(JFactory::getApplication()->input->get('task'));
