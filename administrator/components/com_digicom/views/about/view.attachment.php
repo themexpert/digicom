@@ -27,6 +27,7 @@ class DigiComViewAbout extends JViewLegacy {
 
 		$this->info			= $this->get('info');
 		$this->directory	= $this->get('directory');
+		$this->plugins	= $this->get('plugins');
 
 		parent::display('systeminfo');
 	}
