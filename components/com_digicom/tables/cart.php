@@ -20,7 +20,4 @@ class TableCart extends JTable {
 		parent::__construct('#__digicom_cart', 'cid', $db);
 	}
 
-};
-
-
-?>
+}
