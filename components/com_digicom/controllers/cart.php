@@ -9,12 +9,19 @@
 
 defined('_JEXEC') or die;
 
+/**
+ * DigiCom Cart Controller
+ *
+ * @package     DigiCom
+ * @since       1.0.0
+ */
+
 class DigiComControllerCart extends JControllerLegacy
 {
 
-	var $_model = null;
-	var $_config = null;
-	var $_product = null;
+	protected $_model = null;
+	protected $_config = null;
+	protected $_product = null;
 
 	function __construct()
 	{
