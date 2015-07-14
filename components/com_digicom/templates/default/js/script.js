@@ -5,22 +5,9 @@
  * @copyright 	Copyright (c) 2006 - 2014 ThemeXpert Ltd. All rights reserved.
  * @license 	GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
+var request_processed = 0;
 
-
-function checkIfIframe(){
-	if(top !== self){
-		var fileref=document.createElement("link");
-		fileref.setAttribute("rel", "stylesheet");
-		fileref.setAttribute("type", "text/css");
-		fileref.setAttribute("href", digicom_site + "media/digicom/assets/css/changegrayposition.css");
-		if (typeof fileref!="undefined"){
-			document.getElementsByTagName("head")[0].appendChild(fileref);
-		}
-	}
-}
-
-function ajaxRequest(Url,DivId)
-{
+function ajaxRequest(Url,DivId){
 	 var AJAX;
 	 try
 	 {
@@ -179,7 +166,6 @@ function validateUSZip( strValue , country) {
 	return true;
 }
 
-
 function validateForm(register){
 		//console.log(register);
 		if ((document.adminForm.firstname && document.adminForm.firstname.value=="")
@@ -265,8 +251,6 @@ function validateForm(register){
 		return true;
 }
 
-var request_processed = 0;
-
 function submitbutton(pressbutton) {
    submitform( pressbutton );
 }
@@ -324,9 +308,9 @@ function populateShipping () {
 
 function changeProvince_cb(province_option) {
 	 document.getElementById("province").innerHTML = province_option;
- }
+}
 
- function changeProvince() {
+function changeProvince() {
 	 // get the folder name
 	 var country;
 	 country = document.getElementById('country').value;
@@ -338,9 +322,9 @@ function changeProvince_cb(province_option) {
 		 if (country == euc[i]) flag = 1;
 
 	 x_phpchangeProvince(country, 'main', changeProvince_cb);
- }
+}
 
-function changeProvince_cb_ship(province_option) {
+function changeProvince_cb_ship_x(province_option) {
 	 //alert(province_option+'MYYYYYYYYYYYY');
 
 	 var idx = 0;
@@ -350,23 +334,24 @@ function changeProvince_cb_ship(province_option) {
 		 document.getElementById('shipsel_province').selectedIndex = idx;
 	 }
 	 request_processed = 0;
- }
+}
 
- function changeProvince_ship() {
+function changeProvince_ship_x() {
 	 // get the folder name
 	 var country;
 	 country = document.getElementById('shipcountry').value;
 	 //alert(country);
 	 x_phpchangeProvince(country, 'ship', changeProvince_cb_ship);
- }
+}
 
- function showTaxNum(x) {
+function showTaxNum_x(x) {
 	 var taxnum = document.getElementById("comptaxnum");
 	 if (x == 0) taxnum.style.display = "";
 	 else taxnum.style.display = "none";
 
- }
- function ChangeLogOption(value){
+}
+
+function ChangeLogOption(value){
 	if(value == 0){
 		document.getElementById("log_form").style.display = "block";
 		document.getElementById("reg_form").style.display = "none";
@@ -378,9 +363,15 @@ function changeProvince_cb_ship(province_option) {
 		document.getElementById("continue_button").style.display = "block";
 	}
 }
+
 function closePopupLogin(div) {
 	if(document.getElementById(div)){
 		for_delete = document.getElementById(div);
 		for_delete.parentNode.removeChild(for_delete);
 	}
+}
+
+function RemoveFromCart(CARTID)
+{
+	window.location = "<?php echo JURI::root();?>index.php?option=com_digicom&view=cart&task=cart.deleteFromCart&cartid="+CARTID+"<?php echo (isset($item->discount1)?('&discount=1&noupdate='.(isset($item->noupdate)?$item->noupdate:'').'&qty='.$item->quantity ):"" )."&Itemid=".$Itemid;?>&processor="+jQuery("#processor").val();
 }
