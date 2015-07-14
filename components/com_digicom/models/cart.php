@@ -9,6 +9,13 @@
 
 defined('_JEXEC') or die;
 
+/**
+ * DigiCom Cart model
+ *
+ * @package     DigiCom
+ * @since       1.0.0
+ */
+
 class DigiComModelCart extends JModelItem
 {
 	public $orders 		= array();
@@ -21,6 +28,7 @@ class DigiComModelCart extends JModelItem
 
 	function __construct()
 	{
+
 		parent::__construct();
 		$this->configs = JComponentHelper::getComponent('com_digicom')->params;
 		$this->customer = new DigiComSiteHelperSession();
@@ -70,23 +78,29 @@ class DigiComModelCart extends JModelItem
 		return false;
 	}
 
-	function addToCart(){
-		$customer = $this->customer;
-		$db = JFactory::getDBO();
-		$sid = $customer->_sid; //digicom session id
-		$uid = $customer->_user->id; //joomla user id
-		$pid = JFactory::getApplication()->input->get('pid',0);
-		$my = JFactory::getUser($uid);
-		$cid = JFactory::getApplication()->input->get('cid',0);
-		$user = JFactory::getUser();
+	/**
+	 * Method to add product to cart object
+	 *
+	 * @return  int cart id
+	 * @since   1.0.0
+	 */
+	function addToCart()
+	{
+		$user			=	JFactory::getUser();
+		$db				= JFactory::getDBO();
+		$customer	= $this->customer;
 
-		if($pid < 1){//bad product id
+		$sid			= $customer->_sid; //digicom session id
+		$uid			= $customer->_user->id; //joomla user id
+		$pid			= JFactory::getApplication()->input->get('pid',0);
+		$cid			= JFactory::getApplication()->input->get('cid',0);
+
+		// check if product id less then 1, then its too bad, return -1
+		if($pid < 1){
 			return (-1);
 		}
 
-		$plan_id = JRequest::getVar('plan_id', -1);
-
-		$sql = "select name, access from #__digicom_products where id=".(int)($pid);
+		// now get the product with access label
 		$query = $db->getQuery(true);
 		$query->select(array('name', 'access'))
 					->from('#__digicom_products');
@@ -100,38 +114,41 @@ class DigiComModelCart extends JModelItem
 		$productname 	= $res->name;
 		$access 		= $res->access;
 
+		// if product name is empty, return -1
 		if(strlen($productname) < 1){
 			return -1;
 		}
 
+		// now we have passed basic check, move on ...
 		$qty = JRequest::getVar( 'qty', 1, 'request' ); //product quantity
+
 		//check if item already in the cart
 		$sql = "select cid, item_id, quantity from #__digicom_cart where sid='".intval($sid)."' AND item_id='".intval($pid)."'";
 		$db->setQuery($sql);
 		$data = $db->loadObject();
+
 		if($data){
+			//we already have this item in the cart
 			$item_id = $data->item_id; //lets just check if item is in the cart
 			$item_qty = $data->quantity;
 			$cid = $data->cid;
 
-			//already in the cart, lets update if not same quantity
-			if($item_qty != $qty)
-			$sql = "update #__digicom_cart set quantity =quantity+".$qty." where sid='".intval($sid)."' AND item_id='".intval($pid)."'";
-			$db->setQuery($sql);
-			$db->query();
+			//lets update if not same quantity
+			if($item_qty != $qty){
+				$sql = "update #__digicom_cart set quantity =quantity+".$qty." where sid='".intval($sid)."' AND item_id='".intval($pid)."'";
+				$db->setQuery($sql);
+				$db->query();
+			}
 		}
 
-		if(!isset($item_id)){//no such item in cart- inserting new row
+		if(!isset($item_id)){
+			//no such item in cart- inserting new row
 			$sql = "insert into #__digicom_cart (quantity, item_id, sid, userid)"
 				. " values ('".$qty."', '".intval($pid)."', '".intval($sid)."', '".intval($uid)."')";
 			$db->setQuery($sql);
 			$db->query();
 			$cid = $db->insertid(); //cart id of the item inserted
 		}
-
-		// $sql = "select quantity from #__digicom_cart where item_id='".intval($pid)."' and sid='".intval($sid)."' and userid='".@$my->id."' and cid='".intval($cid). "'";
-		// $db->setQuery( $sql );
-		// $quant = $db->loadResult();
 
 		return $cid;
 	}
