@@ -20,7 +20,7 @@ $Itemid = $input->get("Itemid", 0);
 
 <div id="digicom">
 
-	<?php if($this->configs->get('show_steps',0) == 0){ ?>
+	<?php if($this->configs->get('show_steps',0)){ ?>
 		<div class="pagination pagination-centered">
 			<ul>
 				<li><span><?php echo JText::_("COM_DIGICOM_BUYING_PROCESS_STEP_ONE"); ?></span></li>
