@@ -25,6 +25,7 @@ class DigiComViewAbout extends JViewLegacy {
 
 		$this->info			= $this->get('info');
 		$this->directory	= $this->get('directory');
+		$this->plugins	= $this->get('plugins');
 
 		JToolBarHelper::title(JText::_('COM_DIGICOM_ABOUT_TOOLBAR_TITLE'), 'generic.png');
 
