@@ -9,7 +9,8 @@
 
 defined('_JEXEC') or die;
 
-class TableSession extends JTable {
+class TableSession extends JTable
+{
 	var $sid = null;
 	var $cart_details = null;
 	var $transaction_details = null;
