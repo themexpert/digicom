@@ -37,6 +37,12 @@ class DigiComModelAbout extends JModelLegacy
 	protected $info = null;
 
 	/**
+	 * @var array Some system values
+	 * @since  1.6
+	 */
+	protected $plugins = null;
+
+	/**
 	 * @var string PHP info
 	 * @since  1.6
 	 */
@@ -149,6 +155,33 @@ class DigiComModelAbout extends JModelLegacy
 		$this->info['useragent'] = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : "";
 
 		return $this->info;
+	}
+
+	/**
+	 * Method to get the system information
+	 *
+	 * @return  array system information values
+	 *
+	 * @since   1.6
+	 */
+	public function &getPlugins()
+	{
+		if (!is_null($this->plugins))
+		{
+			return $this->plugins;
+		}
+
+		$db = JFactory::getDBo();
+		$query = $db->getQuery(true);
+		$query->select('*')
+					->from('#__extensions')
+					->where($db->quoteName('name'). ' LIKE '. $db->quote('%digicom%'))
+					->order('type')
+					->order('folder');
+		$db->setQuery($query);
+		$this->plugins = $db->loadObjectList();
+
+		return $this->plugins;
 	}
 
 	/**
