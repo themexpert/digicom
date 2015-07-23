@@ -373,5 +373,19 @@ function closePopupLogin(div) {
 
 function RemoveFromCart(CARTID)
 {
-	window.location = "<?php echo JURI::root();?>index.php?option=com_digicom&view=cart&task=cart.deleteFromCart&cartid="+CARTID+"<?php echo (isset($item->discount1)?('&discount=1&noupdate='.(isset($item->noupdate)?$item->noupdate:'').'&qty='.$item->quantity ):"" )."&Itemid=".$Itemid;?>&processor="+jQuery("#processor").val();
+	event.preventDefault();
+	var url 		= digicom_site + "index.php?option=com_digicom&task=getSefUrl";
+	var sefUrl	= "index.php?option=com_digicom&view=cart&task=cart.deleteFromCart&cartid="+CARTID+"&processor="+jQuery("#processor").val();
+
+	var myObject = new Object();
+	myObject.sefUrl = sefUrl;
+
+	var req 		= new Request.HTML({
+		method: 'get',
+		url: url,
+		data: { 'sefUrl' : myObject},
+		onComplete: function(responseTree, responseElements, responseHTML, responseJavaScript){
+			window.location = responseHTML;
+		}
+	}).send();
 }
