@@ -155,7 +155,7 @@ $tax = $this->tax;
 						</td>
 
 						<td nowrap="nowrap">
-							<a href="javascript:void();" class="btn btn-small btn-danger" onclick="RemoveFromCart(<?php echo $item->cid;?>);"><i class="icon-trash icon-white"></i></a>
+							<a href="#" class="btn btn-small btn-danger" onclick="RemoveFromCart(<?php echo $item->cid;?>);"><i class="icon-trash icon-white"></i></a>
 						</td>
 					</tr>
 					<?php
@@ -403,11 +403,6 @@ $tax = $this->tax;
 			jQuery('#myModalLabel').html("<?php echo JText::_("COM_DIGICOM_WARNING");?>");
 			jQuery('#myModalBody').html("<p><?php echo JText::_("COM_DIGICOM_CART_PAYMENT_METHOD_REQUIRED_NOTICE");?></p>");
 			jQuery('#myModal').modal('show');
-		}
-
-		function RemoveFromCart(CARTID)
-		{
-			window.location = "<?php echo JURI::root();?>index.php?option=com_digicom&view=cart&task=cart.deleteFromCart&cartid="+CARTID+"<?php echo (isset($item->discount1)?('&discount=1&noupdate='.(isset($item->noupdate)?$item->noupdate:'').'&qty='.$item->quantity ):"" )."&Itemid=".$Itemid;?>&processor="+jQuery("#processor").val();
 		}
 
 		if(jQuery(window).width() > jQuery("#digicomcarttable").width() && jQuery(window).width() < 550)
