@@ -203,7 +203,7 @@ class DigiComModelCart extends JModelItem
 		$this->_items = $items;
 
 		if(count($items) > 0){
-			$this->calc_price($items, $customer, $configs);
+			//$this->calc_price($items, $customer, $configs);
 			foreach($items as $i => $v){
 				if($i < 0){
 					continue;
@@ -540,8 +540,9 @@ class DigiComModelCart extends JModelItem
 				$now = time();
 				//if code is published and not expired by date or amount
 				if ( ($promo_data->codeend >= $now || $promo_data->codeend == 0) && $promo_data->published == '1' && (($promo_data->codelimit - $promo_data->used) > 0 || $promo_data->codelimit == 0 ) && !($promo_data->forexisting != 0 && ($my->id < 1 || $licensecount < 1)) ) {
-					$sql = "update #__digicom_session set cart_details='promocode=" . $promo . "' where sid='" . $sid . "'";
 					//add this code to user's cart
+					$sql = "update #__digicom_session set cart_details='promocode=" . $promo . "' where sid='" . $sid . "'";
+					$jAp->enqueueMessage(JText::sprintf('COM_DIGICOM_CART_PROMOCODE_APPLIED',$promo),'success');
 				} else if ( $promo_data->published != '1' ) {
 					$sql = "update #__digicom_session set cart_details='promoerror=" . (JText::_( "COM_DIGICOM_DISCOUNT_CODE_UNP" )) . "' where sid='" . intval($sid) . "'";
 				} else if ( $promo_data->codeend < $now && $promo_data->codeend != 0 ) {
