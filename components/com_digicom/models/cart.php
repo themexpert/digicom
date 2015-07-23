@@ -346,6 +346,7 @@ class DigiComModelCart extends JModelItem
 			$sql = "update #__digicom_promocodes set used=used+1 where id = '" . $promo->id . "'";
 			$this->_db->setQuery( $sql );
 			$this->_db->query();
+			$payprocess['discount_calculated'] = 1;
 		}
 
 		$payprocess['payable_amount'] = $total;
