@@ -34,7 +34,7 @@ class DigiComSiteHelperLicense {
 	* type, may complete_order by default
 	*/
 	public static function updateLicenses($order_id, $number_of_products = 0, $items, $customer , $type){
-		//TODO:: Update the licences for products in this purchase;
+
 		$db 	= JFactory::getDbo();
 
 		if($type == 'complete_order'){
