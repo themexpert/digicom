@@ -203,7 +203,7 @@ class DigiComModelCart extends JModelItem
 		$this->_items = $items;
 
 		if(count($items) > 0){
-			//$this->calc_price($items, $customer, $configs);
+			$this->calc_price($items, $customer, $configs);
 			foreach($items as $i => $v){
 				if($i < 0){
 					continue;
@@ -215,11 +215,11 @@ class DigiComModelCart extends JModelItem
 
 	function calc_price($items,$cust_info,$configs)
 	{
-
+		/*
 		if(isset($items[-1]) && $items[-1] == "PayProcessed"){
 			return $items[-2];
 		}
-
+		*/
 		$db = JFactory::getDBO();
 		$user = JFactory::getUser();
 		if (is_object($cust_info))	$sid = $cust_info->_sid;
@@ -372,10 +372,13 @@ class DigiComModelCart extends JModelItem
 		$payprocess['type'] = 'TAX';
 
 		$this->_tax = $payprocess;
+		
+		/*
 		if(count($items) > 0){
 			$this->_items[-1] = "PayProcessed";
 			$this->_items[-2] = $payprocess;
 		}
+		*/
 		return $payprocess;
 	}
 
@@ -805,46 +808,46 @@ class DigiComModelCart extends JModelItem
 
 	function updateOrder($order_id,$result,$data,$pg_plugin,$status,$items,$customer){
 
-		$table = $this->getTable('Order');
-		$table->load($order_id);
+		$orderTable = $this->getTable('Order');
+		$orderTable->load($order_id);
 
 		//amount_paid
-		$table->amount_paid = $table->amount_paid + $data['total_paid_amt'];
+		$orderTable->amount_paid = $orderTable->amount_paid + $data['total_paid_amt'];
 
 		//processor
-		$table->processor = $data['processor'];
+		$orderTable->processor = $data['processor'];
 		$warning = '';
 		$type = 'process_order';
 		//status
-		if($table->amount_paid >= $table->amount){
-			$table->status = $status;
+		if($orderTable->amount_paid >= $orderTable->amount){
+			$orderTable->status = $status;
 			$type = 'complete_order';
-		}else if(($table->amount_paid > 0) && ($table->amount_paid < $table->amount)){
+		}else if(($orderTable->amount_paid > 0) && ($orderTable->amount_paid < $orderTable->amount)){
 			$warning = JText::_('COM_DIGICOM_PAYMENT_FROUD_CASE_PAYMENT_MANUPULATION');
-			$table->status = 'Pending';
+			$orderTable->status = 'Pending';
 		}else{
-			$table->status = $status;
+			$orderTable->status = $status;
 		}
 
 		if($type == 'complete_order'){
-			DigiComSiteHelperLicense::updateLicenses($order_id, $table->number_of_products, $items, $customer , $type);
+			DigiComSiteHelperLicense::updateLicenses($order_id, $orderTable->number_of_products, $items, $customer , $type);
 		}
 
 		$comment = array();
-		$comment[] = $table->comment;
+		$comment[] = $orderTable->comment;
 		$comment[] = (isset($result['comment']) ? $result['comment'] : '');
 
-		$table->comment = implode("\n", $comment);
+		$orderTable->comment = implode("\n", $comment);
 
-		$orderparams = json_decode($table->params);
+		$orderparams = json_decode($orderTable->params);
 		$orderparams->paymentinfo 	= array();
 		$orderparams->paymentinfo[] = $pg_plugin;
 		$orderparams->paymentinfo[] = $result;
 		$orderparams->paymentinfo[] = $data;
 		$orderparams->warning 	= $warning;
 
-		$table->params = json_encode($orderparams);
-		$table->store();
+		$orderTable->params = json_encode($orderparams);
+		$orderTable->store();
 
 		//triggere email
 		$config = JFactory::getConfig();
@@ -852,7 +855,7 @@ class DigiComModelCart extends JModelItem
 		$now = date('Y-m-d H:i:s', time() + $tzoffset);
 		$now = strtotime($now);
 
-		$this->dispatchMail( $order_id, $table->amount_paid, $table->number_of_products, $now, $items, $customer , $type, $status);
+		$this->dispatchMail( $order_id, $orderTable->amount_paid, $orderTable->number_of_products, $now, $items, $customer , $type, $status);
 
 		return true;
 	}
