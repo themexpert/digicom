@@ -19,18 +19,54 @@ defined('_JEXEC') or die;
 class DigiComControllerCart extends JControllerLegacy
 {
 
+	/**
+	 * the model objcet
+	 *
+	 * @var    object
+	 * @since  1.0.0
+	 */
 	protected $_model = null;
+
+	/**
+	 * the config objcet of digicom
+	 *
+	 * @var    object
+	 * @since  1.0.0
+	 */
 	protected $_config = null;
+
+	/**
+	 * the model objcet of product
+	 *
+	 * @var    object
+	 * @since  1.0.0
+	 */
 	protected $_product = null;
+
+
+	/**
+	 * the model objcet of customer
+	 *
+	 * @var    object
+	 * @since  1.0.0
+	 */
+	protected $_customer = null;
+
+
+	/**
+	 * Construct Method for cart controller to handle task
+	 *
+	 * @since   1.0.0
+	 */
 
 	function __construct()
 	{
 		parent::__construct();
-		$this->registerTask("summary", "showSummary");
-		$this->registerTask("validate_input", "validateInput");
-		$this->registerTask("cancel", "cancel");
-		$this->registerTask("payment", "payment");
-		$this->registerTask("getcountries", "getCountries");
+		// $this->registerTask("summary", "showSummary");
+		// $this->registerTask("validate_input", "validateInput");
+		// $this->registerTask("cancel", "cancel");
+		// $this->registerTask("payment", "payment");
+		// $this->registerTask("getcountries", "getCountries");
 
 		$this->_model = $this->getModel("Cart");
 		$this->_config = JComponentHelper::getComponent('com_digicom')->params;
@@ -171,6 +207,11 @@ class DigiComControllerCart extends JControllerLegacy
 		}
 	}
 
+	/**
+	* cart item delete method
+	* delete cart item and redirect to cart page
+	* @since 1.0.0
+	*/
 	function deleteFromCart()
 	{
 		$session = JFactory::getSession();
@@ -182,11 +223,10 @@ class DigiComControllerCart extends JControllerLegacy
 
 		if($from == "ajax"){
 			//$this->showCart();
-			$this->setRedirect("index.php?option=com_digicom&view=cart&layout=cart_popup&processor=".$processor."&tmpl=component");
-
+			$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&layout=cart_popup".($processor ? "&processor=".$processor : '')."&tmpl=component"));
 		}
 		else{
-			$this->setRedirect("index.php?option=com_digicom&view=cart&Itemid=".$itemid."&processor=".$processor);
+			$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$itemid.($processor ? "&processor=".$processor : '')));
 		}
 	}
 
