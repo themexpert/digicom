@@ -74,6 +74,12 @@ class DigiComControllerCart extends JControllerLegacy
 		$this->_customer = new DigiComSiteHelperSession();
 	}
 
+	/**
+	* addProduct to cart
+	* update cart, and update session
+	* @since 1.0.0
+	*/
+
 	function add()
 	{
 		$db = JFactory::getDBO();
@@ -161,6 +167,11 @@ class DigiComControllerCart extends JControllerLegacy
 		}
 	}
 
+	/**
+	* updateCart method
+	* update cart status and use session
+	* @since 1.0.0
+	*/
 	function updateCart()
 	{
 
@@ -230,6 +241,12 @@ class DigiComControllerCart extends JControllerLegacy
 		}
 	}
 
+	/**
+	* getPageURL method
+	* to use core url or redirect from script it can be helpful
+	* @since 1.0.0
+	* @return string
+	*/
 	function getPageURL(){
 		$pageURL = 'http';
 
@@ -246,6 +263,11 @@ class DigiComControllerCart extends JControllerLegacy
 		return $pageURL;
 	}
 
+	/**
+	* handle https request
+	* @since 1.0.0
+	* @return string
+	*/
 	function getReqhttps($content)
 	{
 		$reqhttps = "1";
@@ -265,6 +287,12 @@ class DigiComControllerCart extends JControllerLegacy
 		return $reqhttps;
 	}
 
+	/**
+	* process the checkout
+	* finalize cart, check login status, billing info, customer info, set params
+	* @since 1.0.0
+	* @return string
+	*/
 	function checkout()
 	{
 		$session = JFactory::getSession();
