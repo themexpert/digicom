@@ -66,7 +66,7 @@ class DigiComController extends JControllerLegacy
 	/*
 	* this function need to run through cron job
 	* url: index.php?option=com_digicom&task=cron
-	* the url for cron job	
+	* the url for cron job
 	*/
 	function cron()
 	{
@@ -76,7 +76,7 @@ class DigiComController extends JControllerLegacy
 			$query 	= $db->getQuery(true);
 			$query->update($db->quoteName('#__digicom_licensess'));
 			$query->set($db->quoteName('active') . ' = ' . $db->quote('0'));
-			$query->where('DATEDIFF('.$db->quoteName('expires').', now()) <= ' .$db->quote('-1'));		
+			$query->where('DATEDIFF('.$db->quoteName('expires').', now()) <= ' .$db->quote('-1'));
 			//echo $query->__tostring();die;
 			$db->setQuery($query);
 			$db->query();
@@ -102,5 +102,29 @@ class DigiComController extends JControllerLegacy
 		}
 
 		JFactory::getApplication()->close();
+	}
+
+	/*
+	* this function need to run through cron job
+	* url: index.php?option=com_digicom&task=cron
+	* the url for cron job
+	*/
+	public function getSefUrl(){
+		$app		= JFactory::getApplication();
+		$input	= $app->input;
+
+		$urlObject = $input->get('sefUrl','','object');
+		$nonsefurl = $urlObject['sefUrl'];
+		
+		if($nonsefurl){
+			$sefurl = JRoute::_($nonsefurl);
+		}else {
+			$sefurl = JRoute::_('index.php');
+		}
+
+		echo $sefurl;die;
+
+		$app->close();
+
 	}
 }
