@@ -43,7 +43,6 @@ class DigiComControllerCart extends JControllerLegacy
 	 */
 	protected $_product = null;
 
-
 	/**
 	 * the model objcet of customer
 	 *
@@ -51,7 +50,6 @@ class DigiComControllerCart extends JControllerLegacy
 	 * @since  1.0.0
 	 */
 	protected $_customer = null;
-
 
 	/**
 	 * Construct Method for cart controller to handle task
@@ -62,11 +60,11 @@ class DigiComControllerCart extends JControllerLegacy
 	function __construct()
 	{
 		parent::__construct();
-		// $this->registerTask("summary", "showSummary");
-		// $this->registerTask("validate_input", "validateInput");
-		// $this->registerTask("cancel", "cancel");
-		// $this->registerTask("payment", "payment");
-		// $this->registerTask("getcountries", "getCountries");
+		$this->registerTask("summary", "showSummary");
+		$this->registerTask("validate_input", "validateInput");
+		$this->registerTask("cancel", "cancel");
+		$this->registerTask("payment", "payment");
+		$this->registerTask("getcountries", "getCountries");
 
 		$this->_model = $this->getModel("Cart");
 		$this->_config = JComponentHelper::getComponent('com_digicom')->params;
@@ -79,7 +77,6 @@ class DigiComControllerCart extends JControllerLegacy
 	* update cart, and update session
 	* @since 1.0.0
 	*/
-
 	function add()
 	{
 		$db = JFactory::getDBO();
@@ -479,6 +476,11 @@ class DigiComControllerCart extends JControllerLegacy
 		return true;
 	}
 
+	/**
+	* get cart item products
+	* @since 1.0.0
+	* @return json_encoded string and then die;
+	*/
 	function getCartItem()
 	{
 
@@ -533,6 +535,12 @@ class DigiComControllerCart extends JControllerLegacy
 		exit;
 	}
 
+	/**
+	* validate users
+	* it takes input field name n value
+	* @since 1.0.0
+	* @return true or false in binary. 0/1
+	*/
 	function validateInput()
 	{
 		$value = JRequest::getVar("value", "");
@@ -554,6 +562,12 @@ class DigiComControllerCart extends JControllerLegacy
 
 	}
 
+	/**
+	* process payment method
+	* validate submission n check processor n trigger plugins
+	* @since 1.0.0
+	* @return from model method proccessSuccess
+	*/
 	function processPayment()
 	{
 
@@ -621,12 +635,22 @@ class DigiComControllerCart extends JControllerLegacy
 		return true;
 	}
 
+	/**
+	* cancel method
+	* @since 1.0.0
+	* @return redirect
+	*/
 	function cancel()
 	{
 		$mainframe = JFactory::getApplication();
 		$mainframe->redirect(JURI::root(),JText::_('COM_DIGICOM_PAYMENT_CANCELLED_NOTICE'));
 	}
 
+	/**
+	* get list of country method
+	* @since 1.0.0
+	* @return country option in list item
+	*/
 	function getCountries()
 	{
 		$db = JFactory::getDBO();
@@ -652,12 +676,16 @@ class DigiComControllerCart extends JControllerLegacy
 		echo $html;
 	}
 
+	/**
+	* update cart module content
+	* @since 1.0.0
+	* @return country option in list item
+	*/
 	function get_cart_content(){
 		$module = JModuleHelper::getModule('mod_digicom_cart');
 		echo JModuleHelper::renderModule($module);
 		JFactory::getApplication()->close();
 	}
-
 
 	/**
 	 * Proxy for getModel
