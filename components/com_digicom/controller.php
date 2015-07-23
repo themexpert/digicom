@@ -115,7 +115,7 @@ class DigiComController extends JControllerLegacy
 
 		$urlObject = $input->get('sefUrl','','object');
 		$nonsefurl = $urlObject['sefUrl'];
-		
+
 		if($nonsefurl){
 			$sefurl = JRoute::_($nonsefurl);
 		}else {
