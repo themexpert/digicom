@@ -26,7 +26,7 @@ $n = count ($this->orders);
 		<div class="input-append">
 			<input type="text" id="dssearch" name="search" class="digi-textbox"  value="<?php echo trim($input->get('search', '')); ?>" size="30" />
 			<button type="submit" class="btn"><?php echo JText::_("COM_DIGICOM_SEARCH"); ?></button>
-		</div>			
+		</div>
 
 		<table class="table table-bordered table-striped">
 			<thead>
@@ -34,7 +34,7 @@ $n = count ($this->orders);
 					<th><?php echo JText::_("JGRID_HEADING_ID"); ?></th>
 					<th><?php echo JText::_("JDATE"); ?></th>
 					<th><?php echo JText::_("JSTATUS"); ?></th>
-					<th><?php echo JText::_("COM_DIGICOM_TOTAL"); ?></th>
+					<th><?php echo JText::_("COM_DIGICOM_PRICE"); ?></th>
 					<th><?php echo JText::_("COM_DIGICOM_TOTAL_PAID"); ?></th>
 					<th><?php echo JText::_("COM_DIGICOM_ACTION"); ?></th>
 				</tr>
