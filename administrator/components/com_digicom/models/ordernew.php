@@ -36,48 +36,6 @@ class DigiComModelOrderNew extends JModelAdmin
 	protected $text_prefix = 'COM_DIGICOM_ORDER';
 
 	/**
-	 * Method to test whether a record can be deleted.
-	 *
-	 * @param   object  $record  A record object.
-	 *
-	 * @return  boolean  True if allowed to delete the record. Defaults to the permission for the component.
-	 *
-	 * @since   1.0.0
-	 */
-	protected function canDelete($record)
-	{
-		if (!empty($record->id))
-		{
-			if ($record->state != -2)
-			{
-				return;
-			}
-
-			return JFactory::getUser()->authorise('core.delete', 'com_digicom.order.' . (int) $record->catid);
-
-		}
-	}
-
-	/**
-	 * Method to test whether a record can be deleted.
-	 *
-	 * @param   object  $record  A record object.
-	 *
-	 * @return  boolean  True if allowed to change the state of the record. Defaults to the permission for the component.
-	 *
-	 * @since   1.0.0
-	 */
-	protected function canEditState($record)
-	{
-		if (!empty($record->id))
-		{
-			return JFactory::getUser()->authorise('core.edit.state', 'com_digicom.order.' . (int) $record->id);
-		}
-
-		return parent::canEditState($record);
-	}
-
-	/**
 	 * Method to get a table object, load it if necessary.
 	 *
 	 * @param   string  $type    The table name. Optional.
@@ -152,39 +110,6 @@ class DigiComModelOrderNew extends JModelAdmin
 		$item = parent::getItem($pk);
 		$item->products = array();
 		return $item;
-	}
-
-	public static function getChargebacks($order)
-	{
-		$db = JFactory::getDBO();
-		$sql = "SELECT SUM(`cancelled_amount`)
-				FROM `#__digicom_orders_details`
-				WHERE `cancelled`=1
-				  AND `orderid`=" . (int) $order;
-		$db->setQuery($sql);
-		return $db->loadResult();
-	}
-
-	public static function getRefunds($order)
-	{
-		$db = JFactory::getDBO();
-		$sql = "SELECT SUM(`cancelled_amount`)
-				FROM `#__digicom_orders_details`
-				WHERE `cancelled`=2
-				  AND `orderid`=" . (int) $order;
-		$db->setQuery($sql);
-		return $db->loadResult();
-	}
-
-	public static function getDeleted($order, $license=0)
-	{
-		$db = JFactory::getDBO();
-		$sql = "SELECT SUM(`amount_paid`)
-				FROM `#__digicom_orders_details`
-				WHERE `cancelled`=3
-				  AND `orderid`=" . (int) $order;
-		$db->setQuery($sql);
-		return $db->loadResult();
 	}
 
 	/**
@@ -285,11 +210,11 @@ class DigiComModelOrderNew extends JModelAdmin
 		}
 		$data['price'] = $data['amount'];
 		$data['amount'] = $data['amount'] - $data['discount'];
-
+		//TODO:: missing promocode information
 		if(parent::save($data)){
 
 			//hook the files here
-			$recordId = $this->getState('ordernew.id');
+			$recordId = $this->getState('order.id');
 			//we have to add orderdetails now;
 			$this->addOrderDetails($data['product_id'], $recordId, $data['userid'], $data['status']);
 
@@ -378,81 +303,6 @@ class DigiComModelOrderNew extends JModelAdmin
 			return "0";
 		}
 
-	}
-	/**
-	 * Method to change the name & alias.
-	 *
-	 * @param   integer  $category_id  The id of the parent.
-	 * @param   string   $alias        The alias.
-	 * @param   string   $name         The name.
-	 *
-	 * @return  array  Contains the modified name and alias.
-	 *
-	 * @since   3.1
-	 */
-	protected function generateNewTitle($category_id, $alias, $name)
-	{
-		// Alter the name & alias
-		$table = $this->getTable();
-
-		while ($table->load(array('alias' => $alias, 'catid' => $category_id)))
-		{
-			if ($name == $table->name)
-			{
-				$name = String::increment($name);
-			}
-
-			$alias = String::increment($alias, 'dash');
-		}
-
-		return array($name, $alias);
-	}
-
-	/**
-	 * Method to toggle the featured setting of articles.
-	 *
-	 * @param   array    $pks    The ids of the items to toggle.
-	 * @param   integer  $value  The value to toggle to.
-	 *
-	 * @return  boolean  True on success.
-	 */
-	public function featured($pks, $value = 0)
-	{
-		// Sanitize the ids.
-		$pks = (array) $pks;
-		JArrayHelper::toInteger($pks);
-
-		if (empty($pks))
-		{
-			$this->setError(JText::_('COM_DIGICOM_NO_ITEM_SELECTED'));
-
-			return false;
-		}
-
-		$table = $this->getTable();
-
-		try
-		{
-			$db = $this->getDbo();
-			$query = $db->getQuery(true)
-						->update($db->quoteName('#__digicom_products'))
-						->set('featured = ' . (int) $value)
-						->where('id IN (' . implode(',', $pks) . ')');
-			$db->setQuery($query);
-			$db->execute();
-
-		}
-		catch (Exception $e)
-		{
-			$this->setError($e->getMessage());
-			return false;
-		}
-
-		$table->reorder();
-
-		$this->cleanCache();
-
-		return true;
 	}
 
 	function getConfigs() {
