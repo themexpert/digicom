@@ -236,56 +236,53 @@ $tax = $this->tax;
 				</td>
 				<td nowrap="nowrap" style="text-align: center;">
 					<ul style="margin: 0; padding: 0;list-style-type: none;">
-						<li class="digi_cart_total" style="font-weight: bold;font-size: 18px;text-align:right;"><?php echo JText::_("COM_DIGICOM_TOTAL");?></li>
+						<li class="digi_cart_total" style="font-size: 15px;text-align:right;">
+							<?php echo JText::_("COM_DIGICOM_PROMO_DISCOUNT");?>
+						</li>
+						<li class="digi_cart_total" style="font-weight: bold;font-size: 18px;text-align:right;">
+							<?php echo JText::_("COM_DIGICOM_TOTAL");?>
+						</li>
 					</ul>
 				</td>
 				<td nowrap="nowrap" style="text-align: center;">
 					<ul style="margin: 0; padding: 0;list-style-type: none;">
-						<li class="digi_cart_amount" id="cart_total" style="font-weight: bold;font-size: 18px;text-align:right;"><?php echo DigiComSiteHelperDigiCom::format_price2($tax['taxed'], $tax['currency'], true, $configs); ?></li>
+						<li class="digi_cart_amount" id="cart_total" style="font-size: 15px;text-align:right;">
+							<?php echo DigiComSiteHelperDigiCom::format_price2($tax['promo'], $tax['currency'], true, $configs); ?>
+						</li>
+						<li class="digi_cart_amount" id="cart_total" style="font-weight: bold;font-size: 18px;text-align:right;">
+							<?php echo DigiComSiteHelperDigiCom::format_price2($tax['taxed'], $tax['currency'], true, $configs); ?>
+						</li>
 					</ul>
 				</td>
 			</tr>
 		</table>
 
-		<?php
-		if($configs->get('showccont',0) == 1){ ?>
-			<div id="digicomcartcontinue" class="row-fluid continue-shopping">
-				<div class="span8">
-					<?php
-					echo JText::_("DIGI_PAYMENT_METHOD").": ".$this->plugins;
-					$onclick = "document.getElementById('returnpage').value='checkout'; document.getElementById('type_button').value='checkout';";
-					?>
-					<input type="submit" name="Submit" class="btn btn-warning" value="<?php echo JText::_("COM_DIGICOM_CHECKOUT");?>" onClick="<?php echo $onclick; ?>">
-				</div>
-				<div class="span4" <?php if ($discount!=1) echo 'style="display:none"'?>>&nbsp;</div>
+
+		<div id="digicomcartcontinue" class="row-fluid continue-shopping">
+			<div class="span8" style="margin-bottom:10px;">
+				<!--<a href="<?php echo $cat_url; ?>" class="btn"><i class="icon-cart"></i> <?php echo JText::_("DSCONTINUESHOPING")?></a>-->
 			</div>
-		<?php } else { ?>
-			<div id="digicomcartcontinue" class="row-fluid continue-shopping">
-				<div class="span8" style="margin-bottom:10px;">
-					<!--<a href="<?php echo $cat_url; ?>" class="btn"><i class="icon-cart"></i> <?php echo JText::_("DSCONTINUESHOPING")?></a>-->
-				</div>
-				<div class="span4" style="margin-top: -34px;margin-bottom: 10px;">
+			<div class="span4" style="margin-bottom: 10px;">
 				<p><strong><?php echo JText::_('COM_DIGICOM_PAYMENT_METHOD'); ?></strong></p>
-					<?php
-					$button_value = "COM_DIGICOM_CHECKOUT";
-					$onclick = "if(jQuery('#processor').val() == ''){ ShowPaymentAlert(); return false; }";
-					$onclick.= "jQuery('#returnpage').val('checkout'); jQuery('#type_button').val('checkout');";
+				<?php
+				$button_value = "COM_DIGICOM_CHECKOUT";
+				$onclick = "if(jQuery('#processor').val() == ''){ ShowPaymentAlert(); return false; }";
+				$onclick.= "jQuery('#returnpage').val('checkout'); jQuery('#type_button').val('checkout');";
 
-					if($user->id == 0 || $this->customer->_customer->country == "")
-					{
-						$button_value = "COM_DIGICOM_CONTINUE";
-					}
+				if($user->id == 0 || $this->customer->_customer->country == "")
+				{
+					$button_value = "COM_DIGICOM_CONTINUE";
+				}
 
-					$onclick.= "jQuery('#cart_form').submit();";
-					?>
+				$onclick.= "jQuery('#cart_form').submit();";
+				?>
 
-					<?php echo DigiComSiteHelperDigicom::getPaymentPlugins($configs); ?>
+				<?php echo DigiComSiteHelperDigicom::getPaymentPlugins($configs); ?>
 
-					<div id="html-container"></div>
-					<button type="button" class="btn btn-warning" style="float:right;margin-top:10px;" onclick="<?php echo $onclick; ?> "><?php echo JText::_($button_value);?> <i class="ico-ok-sign"></i></button>
-				</div>
+				<div id="html-container"></div>
+				<button type="button" class="btn btn-warning" style="float:right;margin-top:10px;" onclick="<?php echo $onclick; ?> "><?php echo JText::_($button_value);?> <i class="ico-ok-sign"></i></button>
 			</div>
-		<?php } ?>
+		</div>
 
 
 			<input name="view" type="hidden" id="view" value="cart">
