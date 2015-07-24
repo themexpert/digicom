@@ -16,7 +16,7 @@ class DigiComSiteHelperLicense {
 	*/
 
 	public static function addLicenceSubscription( $items, $user_id, $orderid, $type) {
-		//print_r($items);die;
+
 		if( $items && count($items) ) {
 			foreach( $items as $key=>$item ) {
 				self::createLicense( $orderid, $item, $user_id, $type );
@@ -60,6 +60,10 @@ class DigiComSiteHelperLicense {
 		$licenseid = self::getNewLicenseId();
 		if(!$user_id){
 			$user_id = $order->userid;
+		}
+		if(is_numeric($product)){
+			$productTable = JModelAdmin::getInstance( "Product", "DigiComModel" );
+			$product = $productTable->getItem($product);
 		}
 		$expires = "";
 		$time_unit = array( 'day'=>'DAY', 'month'=>'MONTH', 'year'=>'YEAR');//HOUR
