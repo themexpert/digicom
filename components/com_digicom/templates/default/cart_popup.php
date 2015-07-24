@@ -64,11 +64,6 @@ $currency = $configs->get('currency','USD');
 			<th>
 				<?php echo JText::_("COM_DIGICOM_QUANTITY"); ?>
 			</th>
-			<?php if ($tax['discount_calculated']){?>
-			<th>
-				<?php echo JText::_("COM_DIGICOM_PROMO_DISCOUNT"); ?>
-			</th>
-			<?php } ?>
 
 			<th><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></th>
 
