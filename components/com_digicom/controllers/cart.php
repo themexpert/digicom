@@ -292,16 +292,16 @@ class DigiComControllerCart extends JControllerLegacy
 	*/
 	function checkout()
 	{
-		$session = JFactory::getSession();
-		$app = JFactory::getApplication();
-		$Itemid = JRequest::getInt("Itemid", 0);
-		$processor =  JRequest::getVar("processor", '');
-		$session->set('processor',$processor);
+		$session 		= JFactory::getSession();
+		$app 				= JFactory::getApplication();
+		$Itemid 		= JRequest::getInt("Itemid", 0);
+		$processor	= JRequest::getVar("processor", '');
 		$returnpage = JRequest::getVar("returnpage", "");
-		$_Itemid = $Itemid;
-		$user = JFactory::getUser();
-		$cart = $this->_model;
+		$user 			= JFactory::getUser();
+		$cart 			= $this->_model;
+
 		$plugins_enabled = $cart->getPluginList();
+		$session->set('processor',$processor);
 
 		// set default redirect url
 		$uri = JURI::getInstance();
@@ -465,8 +465,8 @@ class DigiComControllerCart extends JControllerLegacy
 
 			$params['order_id'] = $order_id;
 			$params['sid'] = $this->_customer->_sid;
-			$params['order_amount'] = $items[-2]['taxed'];
-			$params['order_currency'] = $items[-2]['currency'];
+			$params['order_amount'] = $tax['taxed'];
+			$params['order_currency'] = $tax['currency'];
 
 			$cart->storeOrderParams( $user->id, $order_id ,$params);
 			$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=checkout&order_id=".$order_id."&processor=".$params['processor']));
