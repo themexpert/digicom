@@ -20,7 +20,7 @@ if ($this->order->id < 1){
 $params = json_decode($this->order->params);
 ?>
 
-<div id="digicom">	
+<div id="digicom">
 
 	<?php DigiComSiteHelperDigicom::loadModules('digicom_toolber'); ?>
 
@@ -28,7 +28,7 @@ $params = json_decode($this->order->params);
 
 	<table class="table table-striped table-hover table-bordered">
 		<thead>
-			
+
 			<tr>
 				<th><?php echo JText::_('JGRID_HEADING_ID'); ?></th>
 				<th><?php echo $order->id; ?></th>
@@ -49,7 +49,7 @@ $params = json_decode($this->order->params);
 				</td>
 			</tr>
 
-			
+
 			<tr>
 				<td><strong><?php echo JText::_('COM_DIGICOM_PAYMENT_METHOD'); ?></strong></td>
 				<td><?php echo ucfirst( $order->processor ); ?></td>
@@ -58,10 +58,15 @@ $params = json_decode($this->order->params);
 				<td><strong><?php echo JText::_('JDATE'); ?></strong></td>
 				<td><?php echo $date; ?></td>
 			</tr>
-			
+
+			<tr>
+				<td><strong><?php echo JText::_('COM_DIGICOM_SUBTOTAL'); ?></strong></td>
+				<td><?php echo DigiComSiteHelperDigiCom::format_price($order->amount, $configs->get('currency','USD'), true, $configs);?></td>
+			</tr>
+
 			<tr>
 				<td><strong><?php echo JText::_('COM_DIGICOM_DISCOUNT'); ?></strong></td>
-				<td><?php echo DigiComSiteHelperDigiCom::format_price($order->promocodediscount, $configs->get('currency','USD'), true, $configs);?></td>
+				<td><?php echo DigiComSiteHelperDigiCom::format_price($order->discount, $configs->get('currency','USD'), true, $configs);?></td>
 			</tr>
 
 			<tr>
@@ -73,7 +78,7 @@ $params = json_decode($this->order->params);
 				<td><strong><?php echo JText::_('COM_DIGICOM_TOTAL_PAID'); ?></strong></td>
 				<td><?php echo DigiComSiteHelperDigiCom::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs);?></td>
 			</tr>
-			
+
 			<tr>
 				<td><strong><?php echo JText::_('COM_DIGICOM_ORDER_PAYMENT_INFORMATION'); ?></strong></td>
 				<td><p class="alert alert-info"><?php echo $order->comment;?></p></td>
@@ -88,7 +93,7 @@ $params = json_decode($this->order->params);
 
 		</tbody>
 	</table>
-	<?php if(strtolower($order->status) === 'pending'): 
+	<?php if(strtolower($order->status) === 'pending'):
 	$item = JFactory::getApplication()->getMenu()->getItems('link', 'index.php?option=com_digicom&view=checkout', true);
 	$Itemid = isset($item->id) ? $item->id : '';
 	?>
@@ -118,8 +123,8 @@ $params = json_decode($this->order->params);
 		</thead>
 
 		<tbody>
-			<?php 
-			foreach($order->products as $key=>$product): 
+			<?php
+			foreach($order->products as $key=>$product):
 			$productlink = JRoute::_(DigiComHelperRoute::getProductRoute($product->id, $product->catid, $product->language));
 			?>
 			<tr>
