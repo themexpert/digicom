@@ -177,12 +177,12 @@ $user = $this->customer->_customer;
 								</tr>
 
 								<?php
-									if($order->promocodediscount > 0){
-										$total = $total - $order->promocodediscount;
+									if($order->discount > 0){
+										$total = $total - $order->discount;
 								?>
 								<tr>
 									<td style="font-weight:bold;text-align: right;" width="70%"><?php echo JText::sprintf("COM_DIGICOM_DISCOUNT",$order->promocode);?></td>
-									<td style="text-align: right;"><span style="white-space:nowrap;font-weight: bold;"><?php echo DigiComSiteHelperDigiCom::format_price($order->promocodediscount, $prod->currency, true, $configs);?></span></td>
+									<td style="text-align: right;"><span style="white-space:nowrap;font-weight: bold;"><?php echo DigiComSiteHelperDigiCom::format_price($order->discount, $prod->currency, true, $configs);?></span></td>
 								</tr>
 								<?php
 									}
