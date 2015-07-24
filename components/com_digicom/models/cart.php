@@ -246,6 +246,7 @@ class DigiComModelCart extends JModelItem
 		// Promo code
 		//--------------------------------------------------------
 		$promo = $this->get_promo( $cust_info );
+		//print_r($promo);die;
 		$promovalue = 0;
 		$addPromo = false;
 		$ontotal = false;
@@ -433,6 +434,8 @@ class DigiComModelCart extends JModelItem
 			$promo->products = $db->loadObjectList();
 
 		} else {
+			//TODO:: handle the exception correctly so it dosent return complete table object;
+
 			$promo = $this->getTable( "Discount" );
 		}
 
@@ -476,6 +479,7 @@ class DigiComModelCart extends JModelItem
 				$promo->error = "";
 			}
 		}
+
 		return $promo;
 
 	}
