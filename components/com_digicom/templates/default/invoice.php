@@ -17,17 +17,17 @@ $order = $this->order;
 $user = $this->customer->_customer;
 ?>
 <div id="digicom">
-	<div class="digi-view-order">	
+	<div class="digi-view-order">
 		<div class="container">
 			<div class="row-fluid">
 				<div class="span12">
 					<?php if ($this->order->id < 1): ?>
 						<div class="alert alert-danger"><?php echo JText::_('COM_DIGICOM_ORDERS_NO_ORDER_FOUND_NOTICE'); ?></div>
 					<?php else: ?>
-					
+
 					<form action="index.php" name="adminForm" method="post" style="padding-left: 10px; padding-right:10px; padding-top:100px;">
 						<input id="print_button" class="btn" style="float:right;margin-bottom: 10px;" type="button" value="<?php echo JText::_("COM_DIGICOM_PRINT");?>" onclick="document.getElementById('print_button').style.display='none'; javascript:window.print(); return false;" />
-						
+
 						<table  class="table" width="100%"  border="0" cellpadding="3" cellspacing="0" bordercolor="#cccccc" style="border-collapse: collapse">
 							<tr>
 								<td align="left" valign="top">
@@ -45,13 +45,13 @@ $user = $this->customer->_customer;
 										<strong>
 											<?php echo trim($configs->get('store_name','DigiCom Store')) != "" ? $configs->get('store_name','DigiCom Store') : ""; ?>
 										</strong>
-										<br />								
+										<br />
 										<?php if(trim($configs->get('address')) != "") { echo $configs->get('address','') . '<br />';} ?>
-									
+
 										<?php if(trim($configs->get('store_info')) != "") { echo $configs->get('store_info','') . '<br />'; } ?>
-										
+
 										<?php echo trim($configs->get('phone')) != "" ? JText::_("PHONE").":".$configs->get('phone') . '<br />' : ""; ?>
-									
+
 										<a href="<?php echo JUri::root(); ?>" title="?php echo $configs->get('store_name','DigiCom Store'); ?>"><?php echo $configs->get('store_name','DigiCom Store'); ?></a>
 									</address>
 								</td>
@@ -98,15 +98,15 @@ $user = $this->customer->_customer;
 										<code><?php echo ( strtolower($order->status) === 'active' ? JText::_('COM_DIGICOM_PAYMENT_PAID') : $order->status); ?></code>
 									</div>
 
-									
+
 								</td>
 
 								<td style="font-weight:normal" align="right">
-									
+
 								</td>
 							</tr>
 						</table>
-						
+
 						<table class="table" style="margin-bottom: 40px;">
 							<thead>
 								<tr style="border-bottom: 3px solid #666;">
@@ -136,8 +136,8 @@ $user = $this->customer->_customer;
 							?>
 								<tr class="row<?php echo $k;?> sectiontableentry<?php echo ($i%2 + 1);?>">
 									<td>
-										<?php 
-											echo $i+1; 
+										<?php
+											echo $i+1;
 										?>
 									</td>
 
@@ -162,7 +162,7 @@ $user = $this->customer->_customer;
 									$total += $prod->price;
 									$k = 1 - $k;
 								endfor;
-							?>	
+							?>
 							</tbody>
 						</table>
 
@@ -173,7 +173,11 @@ $user = $this->customer->_customer;
 
 								<tr style="">
 									<td style="font-weight:bold;text-align: right;" width="70%"><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></td>
-									<td style="text-align: right;"><span style="white-space:nowrap;font-weight: bold;"><?php echo DigiComSiteHelperDigiCom::format_price($total, $prod->currency, true, $configs);?></span></td>
+									<td style="text-align: right;">
+										<span style="white-space:nowrap;font-weight: bold;">
+											<?php echo DigiComSiteHelperDigiCom::format_price2($total, $prod->currency, true, $configs);?>
+										</span>
+									</td>
 								</tr>
 
 								<?php
@@ -182,7 +186,11 @@ $user = $this->customer->_customer;
 								?>
 								<tr>
 									<td style="font-weight:bold;text-align: right;" width="70%"><?php echo JText::sprintf("COM_DIGICOM_DISCOUNT",$order->promocode);?></td>
-									<td style="text-align: right;"><span style="white-space:nowrap;font-weight: bold;"><?php echo DigiComSiteHelperDigiCom::format_price($order->discount, $prod->currency, true, $configs);?></span></td>
+									<td style="text-align: right;">
+										<span style="white-space:nowrap;font-weight: bold;">
+											<?php echo DigiComSiteHelperDigiCom::format_price($order->discount, $prod->currency, true, $configs);?>
+										</span>
+									</td>
 								</tr>
 								<?php
 									}
@@ -209,7 +217,7 @@ $user = $this->customer->_customer;
 					<?php endif; ?>
 					<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>
 				</div><!-- End of span12 -->
-				
+
 			</div><!-- End of row-fluid -->
 		</div><!-- End of container -->
 	</div> <!-- End of Digi OrderView -->

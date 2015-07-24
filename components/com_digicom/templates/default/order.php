@@ -52,7 +52,7 @@ $params = json_decode($this->order->params);
 
 			<tr>
 				<td><strong><?php echo JText::_('COM_DIGICOM_PAYMENT_METHOD'); ?></strong></td>
-				<td><?php echo ucfirst( $order->processor ); ?></td>
+				<td><span class="label"><?php echo ucfirst( $order->processor ); ?></span></td>
 			</tr>
 			<tr>
 				<td><strong><?php echo JText::_('JDATE'); ?></strong></td>
@@ -60,8 +60,8 @@ $params = json_decode($this->order->params);
 			</tr>
 
 			<tr>
-				<td><strong><?php echo JText::_('COM_DIGICOM_SUBTOTAL'); ?></strong></td>
-				<td><?php echo DigiComSiteHelperDigiCom::format_price($order->amount, $configs->get('currency','USD'), true, $configs);?></td>
+				<td><strong><?php echo JText::_('COM_DIGICOM_PRICE'); ?></strong></td>
+				<td><?php echo DigiComSiteHelperDigiCom::format_price($order->price, $configs->get('currency','USD'), true, $configs);?></td>
 			</tr>
 
 			<tr>
@@ -70,18 +70,18 @@ $params = json_decode($this->order->params);
 			</tr>
 
 			<tr>
-				<td><strong><?php echo JText::_('COM_DIGICOM_TOTAL'); ?></strong></td>
+				<td><strong><?php echo JText::_('COM_DIGICOM_TOTAL'); ?></strong> (<?php echo JText::_('COM_DIGICOM_TOTAL_PAYABLE_AMOUNT'); ?>)</td>
 				<td><?php echo DigiComSiteHelperDigiCom::format_price($order->amount, $configs->get('currency','USD'), true, $configs);?></td>
 			</tr>
 
 			<tr>
-				<td><strong><?php echo JText::_('COM_DIGICOM_TOTAL_PAID'); ?></strong></td>
-				<td><?php echo DigiComSiteHelperDigiCom::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs);?></td>
+				<td><strong><?php echo JText::_('COM_DIGICOM_PAYMENT_PAID'); ?></strong></td>
+				<td><span class="label label-info"><?php echo DigiComSiteHelperDigiCom::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs);?></span></td>
 			</tr>
 
 			<tr>
 				<td><strong><?php echo JText::_('COM_DIGICOM_ORDER_PAYMENT_INFORMATION'); ?></strong></td>
-				<td><p class="alert alert-info"><?php echo $order->comment;?></p></td>
+				<td><?php echo $order->comment;?></td>
 			</tr>
 
 			<?php if(!empty($params->warning)): ?>
