@@ -35,7 +35,7 @@ function changePlain() {
 		}
 	}
 	var tprocessor = $('jform_processor').value;
-	var tpromocode = $('jformdiscount').value;
+	var tpromocode = $('jformpromocode').value;
 	var tamount_paid = $('amount_paid').value;
 
 	var jsonString = JSON.encode({pids: product_ids, processor: tprocessor, promocode: tpromocode, amount_paid: tamount_paid});
@@ -62,7 +62,7 @@ function changePlain() {
 					processor_select.options[payindex].selected = true;
 				}
 			}
-			
+
 			var promocode_select = $('jformdiscount');
 			if(promocode_select){
 				var CountPromocodes = promocode_select.options.length;
@@ -113,10 +113,10 @@ JHtml::_('behavior.modal');
 JHtml::_('behavior.multiselect');
 JHtml::_('behavior.formvalidation');
 JHtml::_('formbehavior.chosen', 'select');
-JHTML::_('behavior.tooltip'); 
+JHTML::_('behavior.tooltip');
 ?>
 <script type="text/javascript">
-	
+
 	Joomla.submitbutton = function(task)
 	{
 		if(task == 'ordernew.save'){
@@ -127,7 +127,7 @@ JHTML::_('behavior.tooltip');
 				error.error = [];
 				label = '<?php echo JText::_('COM_DIGICOM_ORDER_PRODUCT_REQUIRED'); ?>';
 				error.error[0] = message + label;
-				
+
 				Joomla.renderMessages(error);
 				return false;
 			}
@@ -157,7 +157,7 @@ JHTML::_('behavior.tooltip');
 			<div class="order-details">
 
 				<h3><?php echo JText::_( 'COM_DIGICOM_ORDER_DETAILS_HEADER_TITLE' ); ?></h3>
-				
+
 				<?php echo $this->form->renderField('userid'); ?>
 
 			  	<?php echo $this->form->renderField('status'); ?>
@@ -169,7 +169,7 @@ JHTML::_('behavior.tooltip');
 			</div>
 
 			<div class="product-details">
-				
+
 				<h3><?php echo JText::_( 'COM_DIGICOM_ORDER_CREATE_NEW_PRODUCT_DETAILS_TITLE' ); ?></h3>
 
 				<table id="productincludes" class="table table-striped table-hover" id="productList">
@@ -181,25 +181,25 @@ JHTML::_('behavior.tooltip');
 						</tr>
 					</thead>
 					<tbody id="productincludes_items">
-						
+
 					</tbody>
 				</table>
-				
+
 
 				<div style="margin:15px;padding:10px;">
-					<a class="btn btn-small btn-primary modal" title="Products" href="<?php echo $link; ?>" 
+					<a class="btn btn-small btn-primary modal" title="Products" href="<?php echo $link; ?>"
 					rel="{handler: 'iframe', size: {x: 800, y: 500}}">
-						<i class="icon-file-add"></i> 
+						<i class="icon-file-add"></i>
 						<?php echo JText::_('COM_DIGICOM_ADD_PRODUCT'); ?>
 					</a>
 
 				</div>
-				
+
 				<div class="promo-subtotal clearfix">
 
 					<div class="promos">
 
-					    <?php echo $this->form->renderField('discount'); ?>
+					    <?php echo $this->form->renderField('promocode'); ?>
 
 				  	</div>
 
@@ -217,10 +217,10 @@ JHTML::_('behavior.tooltip');
 				  	</div>
 
 				</div>
-				
+
 
 			</div>
-			
+
 			<div class="grand-total clearfix">
 			  	<div class="control-group hide">
 				    <label class="control-label" for="total"><?php echo JText::_( 'COM_DIGICOM_TAX' ); ?></label>
@@ -242,7 +242,7 @@ JHTML::_('behavior.tooltip');
 					</label>
 				    <div class="controls">
 						<span id="total">00.00 <?php echo $configs->get('currency','USD'); ?></span>
-						
+
 				    </div>
 			  	</div>
 
@@ -257,9 +257,9 @@ JHTML::_('behavior.tooltip');
 			  	</div>
 
 			</div>
-		  	
 
-			
+
+
 
 		  		<div id="from_ajax_div" style="display:none;"></div>
 

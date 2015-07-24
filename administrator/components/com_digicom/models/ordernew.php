@@ -201,8 +201,7 @@ class DigiComModelOrderNew extends JModelAdmin
 			$table->bind($cust);
 			$table->store();
 		}
-
-		//print_r($data);die;
+		// prepare the data
 		$status = $data['status'];
 		if($status == 'Paid'){
 			$data['amount_paid'] = $data['amount'];
@@ -210,18 +209,25 @@ class DigiComModelOrderNew extends JModelAdmin
 		}
 		$data['price'] = $data['amount'];
 		$data['amount'] = $data['amount'] - $data['discount'];
-		//TODO:: missing promocode information
+		$data['promocodeid'] = $this->getPromocodeByCode($data['promocode']);
+
+		//DigiComSiteHelperLicense::addLicenceSubscription($data['product_id'], $data['userid'], 1, $data['status']);
+
 		if(parent::save($data)){
 
 			//hook the files here
-			$recordId = $this->getState('order.id');
+			$recordId = $this->getState('ordernew.id');
 			//we have to add orderdetails now;
 			$this->addOrderDetails($data['product_id'], $recordId, $data['userid'], $data['status']);
 
-			$orders = $this->getInstance( "Orders", "DigiComModel" );
-			$orders->updateLicensesStatus($data['id'], $type);
-
-			DigiComSiteHelperLicense::addLicenceSubscription($data['product_id'], $data['userid'], $recordId, $data['status']);
+			// $orders = $this->getInstance( "Orders", "DigiComModel" );
+			// $orders->updateLicensesStatus($data['id'], $type);
+			if($data['status'] == 'Active'){
+				$type = 'complete_order';
+			}else{
+				$type = $data['status'];
+			}
+			DigiComSiteHelperLicense::addLicenceSubscription($data['product_id'], $data['userid'], $recordId, $type);
 
 			return true;
 
