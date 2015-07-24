@@ -215,11 +215,6 @@ class DigiComModelCart extends JModelItem
 
 	function calc_price($items,$cust_info,$configs)
 	{
-		/*
-		if(isset($items[-1]) && $items[-1] == "PayProcessed"){
-			return $items[-2];
-		}
-		*/
 		$db = JFactory::getDBO();
 		$user = JFactory::getUser();
 		if (is_object($cust_info))	$sid = $cust_info->_sid;
@@ -373,12 +368,6 @@ class DigiComModelCart extends JModelItem
 
 		$this->_tax = $payprocess;
 
-		/*
-		if(count($items) > 0){
-			$this->_items[-1] = "PayProcessed";
-			$this->_items[-2] = $payprocess;
-		}
-		*/
 		return $payprocess;
 	}
 
