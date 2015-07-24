@@ -132,7 +132,7 @@ class DigiComModelOrders extends JModelList{
 		$order['order_date'] = $order_date;
 		$order['processor'] = $post['processor'];
 		$order['promocode'] = $post['promocode'];
-		$order['promocodediscount'] = $post['discount'];
+		$order['discount'] = $post['discount'];
 		$order['promocodeid'] = $this->getPromocodeByCode( $order['promocode'] );
 		$order['number_of_products'] = count( $post['product_id'] );
 		$order['currency'] = $post['currency'];
@@ -737,7 +737,7 @@ class DigiComModelOrders extends JModelList{
 		$message = str_replace( "[ORDER_ID]", $cid, $message );
 		$message = str_replace( "[ORDER_AMOUNT]", $amount, $message );
 		$message = str_replace( "[NUMBER_OF_PRODUCTS]", $order->number_of_products, $message );
-		$message = str_replace( "[DISCOUNT_AMOUNT]", $order->promocodediscount, $message );
+		$message = str_replace( "[DISCOUNT_AMOUNT]", $order->discount, $message );
 		$message = str_replace( "[ORDER_STATUS]", $status, $message );
 
 		$message = str_replace( "[STORE_PHONE]", $phone, $message );
@@ -773,7 +773,7 @@ class DigiComModelOrders extends JModelList{
 		$subject = str_replace( "[ORDER_ID]", $cid, $subject );
 		$subject = str_replace( "[ORDER_AMOUNT]", $amount, $subject );
 		$subject = str_replace( "[NUMBER_OF_PRODUCTS]", $order->number_of_products, $subject );
-		$subject = str_replace( "[DISCOUNT_AMOUNT]", $order->promocodediscount, $subject );
+		$subject = str_replace( "[DISCOUNT_AMOUNT]", $order->discount, $subject );
 		$subject = str_replace( "[ORDER_STATUS]", $status, $subject );
 
 		$subject = str_replace( "{site_title}", $sitename, $subject );

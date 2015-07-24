@@ -713,7 +713,7 @@ class DigiComModelPlugin extends DigiComModel {
 		} else {
 			$shipaddress = '';
 		}
-		$sql = "insert into #__digicom_orders ( userid,order_date,amount, currency, payment_method,number_of_licenses, status, tax, shipping, promocodeid, promocode, promocodediscount, shipto, fullshipto ) "
+		$sql = "insert into #__digicom_orders ( userid,order_date,amount, currency, payment_method,number_of_licenses, status, tax, shipping, promocodeid, promocode, discount, shipto, fullshipto ) "
 		       . " values ('{$cust_info->_user->id}','$now','$total', '" . $currency . "','" . $paymethod . "','$licenses', '" . $status . "', '$taxa','$shipping', '" . $promoid . "', '" . $promocode . "', '" . $tax['promo'] . "', '" . $shipto . "', '" . $shipaddress . "') ";
 		$db->setQuery( $sql );
 		$db->query();

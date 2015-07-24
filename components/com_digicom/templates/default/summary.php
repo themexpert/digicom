@@ -16,8 +16,9 @@ $Itemid = $input->get("Itemid", 0);
 $processor = $this->session->get('processor');
 $customer = $this->customer;
 $items = $this->items;
-
-if($configs->get('show_steps',1) == 1){ 
+$tax = $this->tax;
+print_r($tax);
+if($configs->get('show_steps',1) == 1){
 ?>
 <div class="pagination pagination-centered">
 	<ul>
@@ -34,7 +35,7 @@ if($configs->get('show_steps',1) == 1){
 <?php else: ?>
 
 	<div id="cart_wrapper_component">
-		
+
 		<?php
 		$total = 0;//$this->total;//0;
 		$discount = $this->discount;//0;
@@ -47,7 +48,7 @@ if($configs->get('show_steps',1) == 1){
 
 
 		<?php if (!isset($customer->_user->id) || !$customer->_user->id ) { ?>
-		
+
 		<p style="font-size: 18px">
 			<?php echo JText::_("COM_DIGICOM_SUMMARY_RETURN_CUSTMERS_CLICK")?>
 	 		<a href="<?php echo $login_link; ?>"><?php echo JText::_("COM_DIGICOM_SUMMARY_HERE");?></a>
@@ -77,7 +78,7 @@ if($configs->get('show_steps',1) == 1){
 			  </th>
 			</tr>
 
-			<?php $k=1;foreach ( $items as $itemnum => $item ) 
+			<?php $k=1;foreach ( $items as $itemnum => $item )
 			{
 				if ( $itemnum < 0 ) continue;
 				?>
@@ -100,7 +101,7 @@ if($configs->get('show_steps',1) == 1){
 						</span>
 					</td>
 					<!-- /End Quantity -->
-					<td class="item_column" style="text-align:center;"> 
+					<td class="item_column" style="text-align:center;">
 						<?php echo  DigiComSiteHelperDigiCom::format_price($item->price, $item->currency, true, $configs);?>
 					</td>
 
@@ -117,7 +118,6 @@ if($configs->get('show_steps',1) == 1){
 				//+$item->product_price;
 				$k = 1 - $k;
 			}
-			$tax = $this->tax;
 			?>
 			<tr>
 				<td colspan="<?php echo ($discount ? '4' : '3'); ?>" valign="top" class="item_column_right" nowrap >
@@ -129,8 +129,8 @@ if($configs->get('show_steps',1) == 1){
 				</td>
 			</tr>
 
-			<?php 
-			if (strlen(trim($this->promocode))): 
+			<?php
+			if (strlen(trim($this->promocode))):
 			?>
 			<tr>
 				<td colspan="<?php echo ($discount ? '4' : '3'); ?>" valign="top" class="item_column_right" nowrap >
@@ -159,7 +159,7 @@ if($configs->get('show_steps',1) == 1){
 			<tr>
 				<td height="30" colspan="<?php echo ($discount ? '5' : '4'); ?>" width="100%">
 					<a href="<?php echo $cart_url;?>" class="digicom_cancel btn btn-warning"><?php echo JText::_("COM_DIGICOM_EDIT_ORDER")?></a>
-					
+
 					<form class="form-inline" name="checkout" method="post" action="<?php echo JRoute::_('index.php?option=com_digicom&view=cart');?>" style="display:inline;">
 						<button type="submit" class="btn btn-success"><?php echo JText::_("COM_DIGICOM_PLACE_ORDER")?></button>
 						<input type="hidden" name="fromsum" value="1" />

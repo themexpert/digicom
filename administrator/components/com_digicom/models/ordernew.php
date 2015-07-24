@@ -240,7 +240,6 @@ class DigiComModelOrderNew extends JModelAdmin
 		}
 
 		$data['order_date'] = $order_date;
-		$data['promocodediscount'] = $data['discount'];
 		$data['promocodeid'] = $this->getPromocodeByCode( $data['discount'] );
 		$data['number_of_products'] = count( $data['product_id'] );
 		$data['published'] = '1';

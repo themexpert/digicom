@@ -129,7 +129,7 @@ $date = date( $configs->get('time_format','d M Y'), $order->order_date);
 			
 			<tr><td colspan="2"></td>
 				<td style="font-weight:bold"><?php echo JText::_("COM_DIGICOM_DISCOUNT");?> <strong><?php echo $order->promocode; ?></strong></td>
-				<td><?php echo DigiComHelperDigiCom::format_price($order->promocodediscount, $order->currency, true, $configs);?></td></tr>
+				<td><?php echo DigiComHelperDigiCom::format_price($order->discount, $order->currency, true, $configs);?></td></tr>
 			<?php if ($refunds > 0):?>
 			<tr>
 				<td colspan="2"></td>

@@ -148,7 +148,7 @@ CREATE TABLE IF NOT EXISTS `#__digicom_orders` (
   `status` varchar(10) NOT NULL DEFAULT '',
   `promocodeid` int(11) NOT NULL DEFAULT '0',
   `promocode` varchar(255) NOT NULL DEFAULT '',
-  `promocodediscount` float NOT NULL DEFAULT '0',
+  `discount` float NOT NULL DEFAULT '0',
   `amount_paid` float NOT NULL DEFAULT '0',
   `processor` varchar(100) NOT NULL,
   `published` int(11) NOT NULL DEFAULT '0',

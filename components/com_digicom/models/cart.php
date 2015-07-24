@@ -276,7 +276,7 @@ class DigiComModelCart extends JModelItem
 		foreach ( $items as $item )
 		{
 
-			$total += $item->subtotal;
+			$payprocess['price'] = $total += $item->subtotal;
 			$payprocess['number_of_products'] += $item->quantity;
 
 			//check promocode on product apply
@@ -1150,7 +1150,7 @@ class DigiComModelCart extends JModelItem
 		$message = str_replace( "[ORDER_ID]", $orderid, $message );
 		$message = str_replace( "[ORDER_AMOUNT]", $amount, $message );
 		$message = str_replace( "[NUMBER_OF_PRODUCTS]", $number_of_products, $message );
-		$message = str_replace( "[DISCOUNT_AMOUNT]", $order->promocodediscount, $message );
+		$message = str_replace( "[DISCOUNT_AMOUNT]", $order->discount, $message );
 		$message = str_replace( "[ORDER_STATUS]", $status, $message );
 
 		$message = str_replace( "[STORE_ADDRESS]", $address, $message );
@@ -1199,7 +1199,7 @@ class DigiComModelCart extends JModelItem
 		$subject = str_replace( "[ORDER_ID]", $orderid, $subject );
 		$subject = str_replace( "[ORDER_AMOUNT]", $amount, $subject );
 		$subject = str_replace( "[NUMBER_OF_PRODUCTS]", $number_of_products, $subject );
-		$subject = str_replace( "[DISCOUNT_AMOUNT]", $order->promocodediscount, $subject );
+		$subject = str_replace( "[DISCOUNT_AMOUNT]", $order->discount, $subject );
 		$subject = str_replace( "[ORDER_STATUS]", $status, $subject );
 
 		$subject = str_replace( "{site_title}", $sitename, $subject );
@@ -1347,9 +1347,9 @@ class DigiComModelCart extends JModelItem
 		// Create a new query object.
 		$query = $db->getQuery(true);
 		// Insert columns.
-		$columns = array( 'userid', 'order_date', 'amount', 'amount_paid', 'currency', 'processor', 'number_of_products', 'status', 'promocodeid', 'promocode', 'promocodediscount', 'published' );
+		$columns = array( 'userid', 'order_date', 'price', 'amount', 'discount', 'amount_paid', 'currency', 'processor', 'number_of_products', 'status', 'promocodeid', 'promocode', 'published' );
 		// Insert values.
-		$values = array( $uid, $db->quote($now), $db->quote($tax['payable_amount']), 0, $db->quote($tax['currency']), $db->quote($paymethod), $tax['number_of_products'], $db->quote($status), $promoid, $db->quote($promocode), $tax['promo'], 1 );
+		$values = array( $uid, $db->quote($now), $db->quote($tax['price']), $db->quote($tax['payable_amount']), $tax['promo'], 0, $db->quote($tax['currency']), $db->quote($paymethod), $tax['number_of_products'], $db->quote($status), $promoid, $db->quote($promocode), 1 );
 
 		// Prepare the insert query.
 		$query
@@ -1361,7 +1361,7 @@ class DigiComModelCart extends JModelItem
 		$db->execute();
 
 		//--------------------------------------------------------
-		// $sql = "insert into #__digicom_orders ( userid, order_date, amount, amount_paid, currency, processor, number_of_products, status, promocodeid, promocode, promocodediscount, published ) "
+		// $sql = "insert into #__digicom_orders ( userid, order_date, amount, amount_paid, currency, processor, number_of_products, status, promocodeid, promocode, discount, published ) "
 		// . " values ('{$uid}','".$now."','".$payable_amount."', '0', '" . $currency . "','" . $paymethod . "','".$number_of_products."', '" . $status . "', '" . $promoid . "', '" . $promocode . "', '" . $tax['promo'] . "', '1') ";
 		// $db->setQuery( $sql );
 		// $db->query();
