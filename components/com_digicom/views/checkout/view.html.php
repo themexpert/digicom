@@ -41,7 +41,7 @@ class DigiComViewCheckout extends JViewLegacy
 
 		$configs 	= JComponentHelper::getComponent('com_digicom')->params;
 		$order 		= $this->get('Order');//print_r($order);die;
-		$params 	= json_decode($order->params,true);print_r($params);die;
+		$params 	= json_decode($order->params,true);//print_r($params);die;
 		$items 		= $params['products'];//print_r($items);die;
 
 		$vars 						= new stdClass();
