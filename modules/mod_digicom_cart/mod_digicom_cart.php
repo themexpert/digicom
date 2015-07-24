@@ -23,6 +23,7 @@ $customer	  = new DigiComSiteHelperSession();
 $cart		    = JModelLegacy::getInstance('Cart', 'DigiComModel', array('ignore_request' => true));
 $configs	  = JComponentHelper::getComponent('com_digicom')->params;
 $list       = $cart->getCartItems ($customer, $configs);
+$tax       =  $cart->calc_price($list, $customer, $configs);
 $item       = $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=cart', true);
 $Itemid     = isset($item->id) ? '&Itemid=' . $item->id : '';
 
