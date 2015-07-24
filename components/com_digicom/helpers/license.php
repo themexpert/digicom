@@ -16,12 +16,10 @@ class DigiComSiteHelperLicense {
 	*/
 
 	public static function addLicenceSubscription( $items, $user_id, $orderid, $type) {
+		//print_r($items);die;
 		if( $items && count($items) ) {
 			foreach( $items as $key=>$item ) {
-				if($key >= 0){
-					//echo $key . '<br>';
-					self::createLicense( $orderid, $item, $user_id, $type );
-				}
+				self::createLicense( $orderid, $item, $user_id, $type );
 			}
 		}
 	}
@@ -44,17 +42,17 @@ class DigiComSiteHelperLicense {
 		}else{
 			$sql = "UPDATE #__digicom_licenses SET active='-1' WHERE orderid=" . $order_id . " and userid=" . $customer;
 		}
-		
+
 		$db->setQuery($sql);
-		
+
 		return $db->query();
 	}
-	
+
 	/**
 	 * Create license for end product
 	 */
 	public static function createLicense( $order_id, $product, $user_id=null, $published ){
-		
+
 		$db 	= JFactory::getDbo();
 		$app 	= JFactory::getApplication();
 		$order 		= self::getOrder($order_id);
@@ -71,7 +69,7 @@ class DigiComSiteHelperLicense {
 		} else {
 			$expires = ' "0000-00-00 00:00:00" ';
 		}
-		
+
 		if($published == 'complete_order'){
 			$active = 1;
 		}else{

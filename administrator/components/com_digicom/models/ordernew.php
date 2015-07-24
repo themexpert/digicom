@@ -107,7 +107,7 @@ class DigiComModelOrderNew extends JModelAdmin
 	{
 		// Get the form.
 		$form = $this->loadForm('com_digicom.order', 'order', array('control' => 'jform', 'load_data' => $loadData));
-		
+
 		if (empty($form))
 		{
 			return false;
@@ -186,7 +186,7 @@ class DigiComModelOrderNew extends JModelAdmin
 		$db->setQuery($sql);
 		return $db->loadResult();
 	}
-	
+
 	/**
 	 * Method to validate the form data.
 	 *
@@ -202,7 +202,7 @@ class DigiComModelOrderNew extends JModelAdmin
 	 */
 	public function validate($form, $data, $group = null)
 	{
-		
+
 		// Filter and validate the form data.
 		$data = $form->filter($data);
 		$return = $form->validate($data, $group);
@@ -260,35 +260,50 @@ class DigiComModelOrderNew extends JModelAdmin
 	{
 
 		$app = JFactory::getApplication();
-		
+
 		$userid = $data['userid'];
 		$table = $this->getTable('Customer');
 		$table->loadCustommer($userid);
-		
+
 		if(empty($table->id) or $table->id < 0){
 			$user = JFactory::getUser($userid);
 			$name = explode(' ',$user->name);
-			
+
 			$cust = new stdClass();
 			$cust->id = $user->id;
 			$cust->firstname = $name[0];
 			$cust->lastname =  (!empty($name[1]) ? $name[1] : '');
 			$table->bind($cust);
 			$table->store();
-		}		
-		
+		}
+
+		//print_r($data);die;
+		$status = $data['status'];
+		if($status == 'Paid'){
+			$data['amount_paid'] = $data['amount'];
+			$data['status'] = 'Active';
+		}
+		$data['price'] = $data['amount'];
+		$data['amount'] = $data['amount'] - $data['discount'];
+
 		if(parent::save($data)){
 
 			//hook the files here
 			$recordId = $this->getState('ordernew.id');
 			//we have to add orderdetails now;
 			$this->addOrderDetails($data['product_id'], $recordId, $data['userid'], $data['status']);
-	        return true;
+
+			$orders = $this->getInstance( "Orders", "DigiComModel" );
+			$orders->updateLicensesStatus($data['id'], $type);
+
+			DigiComSiteHelperLicense::addLicenceSubscription($data['product_id'], $data['userid'], $recordId, $data['status']);
+
+			return true;
 
 		}
 
 		return false;
-	
+
 	}
 	/*
 	* add order details
@@ -296,7 +311,7 @@ class DigiComModelOrderNew extends JModelAdmin
 
 	function addOrderDetails($items, $orderid, $customer, $status = "Active")
 	{
-		
+
 		if($status != "Pending")
 			$published = 1;
 		else
@@ -304,13 +319,13 @@ class DigiComModelOrderNew extends JModelAdmin
 
 		$database = JFactory::getDBO();
 		$jconfig = JFactory::getConfig();
-		
+
 		$user_id = $customer;
 
 		if($user_id == 0){
 			return false;
 		}
-		
+
 		$product = $this->getTable('Product');
 		// start foreach
 		foreach($items as $key=>$item)
@@ -328,27 +343,27 @@ class DigiComModelOrderNew extends JModelAdmin
 				//print_r($sql);die;
 				$database->setQuery($sql);
 				$database->query();
+				//
+				// $site_config = JFactory::getConfig();
+				// $tzoffset = $site_config->get('offset');
+				// $buy_date = date('Y-m-d H:i:s', time() + $tzoffset);
+				// $sql = "insert into #__digicom_logs (`userid`, `productid`, `buy_date`, `buy_type`)
+				// 		values (".$user_id.", ". $item .", '".$buy_date."', 'new')";
+				// $database->setQuery($sql);
+				// $database->query();
 
-				$site_config = JFactory::getConfig();
-				$tzoffset = $site_config->get('offset');
-				$buy_date = date('Y-m-d H:i:s', time() + $tzoffset);
-				$sql = "insert into #__digicom_logs (`userid`, `productid`, `buy_date`, `buy_type`)
-						values (".$user_id.", ". $item .", '".$buy_date."', 'new')";
-				$database->setQuery($sql);
-				$database->query();
-				
-				
+
 				$sql = "update #__digicom_products set used=used+1 where id = '" . $item . "'";
 				$database->setQuery( $sql );
 				$database->query();
-				
+
 			}
 		}
 		// end foreach
-		
+
 		return true;
 	}
-	
+
 	/*
 		method to get discount code
 	*/

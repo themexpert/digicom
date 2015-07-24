@@ -107,7 +107,7 @@ class DigiComModelOrder extends JModelAdmin
 	{
 		// Get the form.
 		$form = $this->loadForm('com_digicom.order', 'order', array('control' => 'jform', 'load_data' => $loadData));
-		
+
 		if (empty($form))
 		{
 			return false;
@@ -137,7 +137,7 @@ class DigiComModelOrder extends JModelAdmin
 
 		return $data;
 	}
-	
+
 	/**
 	 * Method to get a single record.
 	 *
@@ -149,14 +149,14 @@ class DigiComModelOrder extends JModelAdmin
 	 */
 	public function getItem($pk = null)
 	{
-		
+
 		if ($item = parent::getItem($pk))
 		{
-			
+
 			$item->products = $this->getProducts($item->id);
 
 		}
-		
+
 		return $item;
 
 	}
@@ -210,8 +210,8 @@ class DigiComModelOrder extends JModelAdmin
 		}
 
 		if(parent::save($data)){
-			
-			
+
+
 			if($status == "Pending"){
 				$sql = "update #__digicom_orders_details set published=0 where orderid in ('".$id."')";
 				$type = 'process_order';
@@ -224,12 +224,12 @@ class DigiComModelOrder extends JModelAdmin
 				$sql = "update #__digicom_orders_details set published='-1' where orderid in ('" . $id  . "')";
 				$type = 'cancel_order';
 			}
-
 			$db->setQuery($sql);
+			$db->execute();
 
 			$orders = $this->getInstance( "Orders", "DigiComModel" );
 			$orders->updateLicensesStatus($data['id'], $type);
-			
+
 			if($status == "Active" or $status == "Paid"){
 				$orders->sendApprovedEmail( $data['id'], $type, $status, $data['amount_paid'] );
 			}
@@ -237,7 +237,7 @@ class DigiComModelOrder extends JModelAdmin
 		}
 
 		return true;
-	
+
 	}
 
 	function getConfigs() {
