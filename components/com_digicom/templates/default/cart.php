@@ -40,6 +40,7 @@ $nr_columns = 4;
 $invisible = 'style="display:none;"';
 $formlink = JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$Itemid);
 $tax = $this->tax;
+print_r($tax);
 ?>
 <div id="digicom">
 
@@ -71,218 +72,199 @@ $tax = $this->tax;
 
 			<table id="digicomcarttable" class="table table-striped table-bordered" width="100%">
 				<thead>
-				<tr valign="top">
-					<th width="30%">
-						<?php echo JText::_("COM_DIGICOM_PRODUCT");?>
-					</th>
-					<th>
-						<?php echo JText::_("COM_DIGICOM_PRICE_PLAN");?>
-					</th>
+					<tr valign="top">
+						<th width="30%">
+							<?php echo JText::_("COM_DIGICOM_PRODUCT");?>
+						</th>
+						<th>
+							<?php echo JText::_("COM_DIGICOM_PRICE_PLAN");?>
+						</th>
 
-					<th>
-						<?php echo JText::_("COM_DIGICOM_QUANTITY"); ?>
-					</th>
+						<th>
+							<?php echo JText::_("COM_DIGICOM_QUANTITY"); ?>
+						</th>
 
-					<?php if ($tax['discount_calculated']){?>
-					<th>
-						<?php echo JText::_("COM_DIGICOM_PROMO_DISCOUNT"); ?>
-					</th>
-					<?php } ?>
+						<?php if ($tax['discount_calculated']){?>
+						<th>
+							<?php echo JText::_("COM_DIGICOM_PROMO_DISCOUNT"); ?>
+						</th>
+						<?php } ?>
 
-					<th><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></th>
+						<th><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></th>
 
-					<th><?php echo JText::_("COM_DIGICOM_CART_REMOVE_ITEM");?></th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php
-				foreach($items as $itemnum => $item ):
-					if($itemnum < 0){
-						continue;
-					}
-					$item_link = JRoute::_(DigiComHelperRoute::getProductRoute($item->id, $item->catid, $item->language));
-					?>
-					<tr>
-						<td>
-							<a href="<?php echo $item_link; ?>" target="blank"><?php echo $item->name; ?></a>
-							<?php if ($this->configs->get('show_validity',1) == 1) : ?>
-							<div class="muted">
-								<small><?php echo JText::_('COM_DIGICOM_PRODUCT_VALIDITY'); ?> : <?php echo DigiComSiteHelperPrice::getProductValidityPeriod($item); ?></small>
-							</div>
-							<?php endif; ?>
-						</td>
-
-						<td nowrap="nowrap">
-							<span id="cart_item_price<?php echo $item->cid; ?>">
-								<?php echo DigiComSiteHelperDigiCom::format_price2($item->price, $item->currency, true, $configs); ?>
-							</span>
-						</td>
-
-						<td align="center" nowrap="nowrap">
-							<span class="digicom_details">
-								<strong>
-									<?php if($configs->get('show_quantity',0) == "1") { ?>
-										<input id="quantity<?php echo $item->cid; ?>" type="number" onchange="update_cart(<?php echo $item->cid; ?>);" name="quantity[<?php echo $item->cid; ?>]" min="1" class="input-small" value="<?php echo $item->quantity; ?>" size="2" placeholder="<?php echo JText::_('COM_DIGICOM_QUANTITY'); ?>">
-									<?php } else {
-										echo $item->quantity;
-									} ?>
-								</strong>
-							</span>
-						</td>
-
-						<?php if($tax['discount_calculated']) : ?>
-						<td style="text-align:center;" nowrap="nowrap">
-							<span id="cart_item_discount<?php echo $item->cid; ?>" class="digi_cart_amount">
-								<?php
-								$value_discount = 0;
-								if ( $item->discount > 0)
-								{
-									$value_discount = $item->discount;
-								}
-								elseif ( isset($item->percent_discount) && $item->percent_discount > 0)
-								{
-									$value_discount = ($item->price * $item->percent_discount) / 100;
-								}
-								echo (isset($item->percent_discount) && $item->percent_discount > 0) ? $item->percent_discount : DigiComSiteHelperDigiCom::format_price2($item->discount, $item->currency, true, $configs);;?>
-							</span>
-						</td>
-						<?php endif; ?>
-
-						<td nowrap>
-							<span id="cart_item_total<?php echo $item->cid; ?>" class="digi_cart_amount"><?php
-								echo DigiComSiteHelperDigiCom::format_price2($item->subtotal-(isset($value_discount) ? $value_discount : 0), $item->currency, true, $configs); ?>
-							</span>
-						</td>
-
-						<td nowrap="nowrap">
-							<a href="#" class="btn btn-small btn-danger" onclick="RemoveFromCart(<?php echo $item->cid;?>);"><i class="icon-trash icon-white"></i></a>
-						</td>
+						<th><?php echo JText::_("COM_DIGICOM_CART_REMOVE_ITEM");?></th>
 					</tr>
+				</thead>
+				<tbody>
 					<?php
-					$total += $item->subtotal;
-				endforeach;
-				?>
-			</tbody>
-		</table>
+					foreach($items as $itemnum => $item ):
+						$item_link = JRoute::_(DigiComHelperRoute::getProductRoute($item->id, $item->catid, $item->language));
+						?>
+						<tr>
+							<td>
+								<a href="<?php echo $item_link; ?>" target="blank"><?php echo $item->name; ?></a>
+								<?php if ($this->configs->get('show_validity',1) == 1) : ?>
+								<div class="muted">
+									<small><?php echo JText::_('COM_DIGICOM_PRODUCT_VALIDITY'); ?> : <?php echo DigiComSiteHelperPrice::getProductValidityPeriod($item); ?></small>
+								</div>
+								<?php endif; ?>
+							</td>
 
-		<table id="digicomcartpromo" width="100%">
-			<tr valign="top">
-				<td class="general_text" colspan="<?php echo $nr_columns - 1; ?>" valign="bottom">
-					<?php echo JText::_("COM_DIGICOM_CART_IF_PROMOCODE_LABEL"); ?>
-				</td>
-				<td nowrap="nowrap">
-					<ul class="unstyled">
-						<?php if ($configs->get('tax_summary',0) == 1) { ?>
-							<?php if ($tax['promo'] > 0 && $tax['promoaftertax'] == '0'): ?>
-							<li class="digi_cart_total"><?php echo JText::_("DSPROMODISCOUNT"); ?></li>
+							<td nowrap="nowrap">
+								<span id="cart_item_price<?php echo $item->cid; ?>">
+									<?php echo DigiComSiteHelperDigiCom::format_price2($item->price, $item->currency, true, $configs); ?>
+								</span>
+							</td>
+
+							<td align="center" nowrap="nowrap">
+								<span class="digicom_details">
+									<strong>
+										<?php if($configs->get('show_quantity',0) == "1") { ?>
+											<input id="quantity<?php echo $item->cid; ?>" type="number" onchange="update_cart(<?php echo $item->cid; ?>);" name="quantity[<?php echo $item->cid; ?>]" min="1" class="input-small" value="<?php echo $item->quantity; ?>" size="2" placeholder="<?php echo JText::_('COM_DIGICOM_QUANTITY'); ?>">
+										<?php } else {
+											echo $item->quantity;
+										} ?>
+									</strong>
+								</span>
+							</td>
+
+							<?php if($tax['discount_calculated']) : ?>
+							<td style="text-align:center;" nowrap="nowrap">
+								<span id="cart_item_discount<?php echo $item->cid; ?>" class="digi_cart_amount">
+									<?php
+									$value_discount = 0;
+									if ( $item->discount > 0)
+									{
+										$value_discount = $item->discount;
+									}
+									elseif ( isset($item->percent_discount) && $item->percent_discount > 0)
+									{
+										$value_discount = ($item->price * $item->percent_discount) / 100;
+									}
+									echo (isset($item->percent_discount) && $item->percent_discount > 0) ? $item->percent_discount : DigiComSiteHelperDigiCom::format_price2($item->discount, $item->currency, true, $configs);;?>
+								</span>
+							</td>
 							<?php endif; ?>
 
-							<?php  if (($tax['value'] > 0) || ($configs->get('tax_zero',1) == 1) && ($this->customer->_user->id > 0)) : ?>
-							<li class="digi_cart_total"><?php echo $tax['type']; ?></li>
-							<?php endif; ?>
+							<td nowrap>
+								<span id="cart_item_total<?php echo $item->cid; ?>" class="digi_cart_amount"><?php
+									echo DigiComSiteHelperDigiCom::format_price2($item->subtotal-(isset($value_discount) ? $value_discount : 0), $item->currency, true, $configs); ?>
+								</span>
+							</td>
 
-							<?php  if ($tax['shipping'] > 0 && $this->customer->_user->id > 0): ?>
-							<li class="digi_cart_total"><?php echo JText::_("DSSHIPING"); ?></li>
-							<?php endif; ?>
+							<td nowrap="nowrap">
+								<a href="#" class="btn btn-small btn-danger" onclick="RemoveFromCart(<?php echo $item->cid;?>);"><i class="icon-trash icon-white"></i></a>
+							</td>
+						</tr>
+						<?php
+						$total += $item->subtotal;
+					endforeach;
+					?>
+				</tbody>
+			</table>
 
-							<?php if ($tax['promo'] > 0 && $tax['promoaftertax'] == '1'): ?>
-							<li class="digi_cart_total"><?php echo JText::_("DSPROMOCODEDISCOUNT"); ?></li>
-							<?php endif; ?>
+			<table id="digicomcartpromo" width="100%">
+				<tr valign="top">
+					<td class="general_text" colspan="<?php echo $nr_columns; ?>" valign="bottom">
+						<?php echo JText::_("COM_DIGICOM_CART_IF_PROMOCODE_LABEL"); ?>
+					</td>
 
-						<?php }	?>
-					</ul>
-				</td>
+					<?php if ($configs->get('tax_summary',0) == 1) { ?>
+					<td nowrap="nowrap" style="text-align: center; padding-top:15px;">
+						<ul class="unstyled">
 
-				<?php if ($configs->get('tax_summary',0) == 1) { ?>
-				<td nowrap="nowrap" style="text-align: center; padding-top:15px;">
-					<ul class="unstyled">
-
-						<?php if ($tax['promo'] > 0 && $tax['promoaftertax'] == '0') : ?>
-						<li class="digi_cart_amount" style="text-align:right;" id="digicom_cart_discount"><?php echo DigiComSiteHelperDigiCom::format_price2($tax['promo'], $tax['currency'], true, $configs) ?></li>
-						<?php endif;?>
-
-						<?php if (($tax['value'] > 0 || $configs->get('tax_zero',1) == 1) && $this->customer->_user->id > 0) : ?>
-						<li class="digi_cart_amount" style="text-align:right;" id="digicom_cart_tax"><?php echo DigiComSiteHelperDigiCom::format_price2($tax['value'], $tax['currency'], true, $configs); ?></li>
-						<?php endif; ?>
-
-						<?php if ($tax['shipping'] > 0 && $this->customer->_user->id > 0) : ?>
-						<li class="digi_cart_amount" style="text-align:right;"><?php echo DigiComSiteHelperDigiCom::format_price2($tax['shipping'], $tax['currency'], true, $configs); ?></li>
-						<?php endif; ?>
-
-						<?php if ($tax['promo'] > 0 && $tax['promoaftertax'] == '1') : ?>
-							<li class="digi_cart_amount" style="text-align:right;"><?php echo DigiComSiteHelperDigiCom::format_price2($tax['promo'], $tax['currency'], true, $configs); ?></li>
-						<?php endif; ?>
-					</ul>
-				</td>
-				<?php } else { ?>
-					<td>&nbsp;</td>
-				<?php } ?>
-			</tr>
-
-			<tr valign="top">
-				<td colspan="<?php echo $nr_columns - 1; ?>" >
-					<div class="input-append">
-						<input type="text" id="promocode" name="promocode" size="15" value="<?php echo $this->promocode; ?>" />
-						<button type="submit" class="btn" onclick="document.getElementById('task').value='cart.updateCart'; document.getElementById('type_button').value='recalculate';"><i class="ico-gift"></i> <?php echo JText::_("COM_DIGICOM_CART_PROMOCODE_APPLY"); ?></button>
-					</div>
-					<?php if(!empty($this->promoerror) or ($tax['promo'] <= 0 && $this->promocode != '')): ?>
-						<div class="digi_error alert alert-warning">
-							<?php echo $this->promoerror; ?>
-							<?php if($tax['promo'] <= 0 && $this->promocode != ''):?>
-								<?php echo JText::_('DIGI_PROMO_NO_ACCESS');?>
+							<?php if ($tax['promo'] > 0 && $tax['promoaftertax'] == '0') : ?>
+							<li class="digi_cart_amount" style="text-align:right;" id="digicom_cart_discount"><?php echo DigiComSiteHelperDigiCom::format_price2($tax['promo'], $tax['currency'], true, $configs) ?></li>
 							<?php endif;?>
+
+							<?php if (($tax['value'] > 0 || $configs->get('tax_zero',1) == 1) && $this->customer->_user->id > 0) : ?>
+							<li class="digi_cart_amount" style="text-align:right;" id="digicom_cart_tax"><?php echo DigiComSiteHelperDigiCom::format_price2($tax['value'], $tax['currency'], true, $configs); ?></li>
+							<?php endif; ?>
+
+							<?php if ($tax['shipping'] > 0 && $this->customer->_user->id > 0) : ?>
+							<li class="digi_cart_amount" style="text-align:right;"><?php echo DigiComSiteHelperDigiCom::format_price2($tax['shipping'], $tax['currency'], true, $configs); ?></li>
+							<?php endif; ?>
+
+							<?php if ($tax['promo'] > 0 && $tax['promoaftertax'] == '1') : ?>
+								<li class="digi_cart_amount" style="text-align:right;"><?php echo DigiComSiteHelperDigiCom::format_price2($tax['promo'], $tax['currency'], true, $configs); ?></li>
+							<?php endif; ?>
+						</ul>
+					</td>
+					<?php } else { ?>
+						<td>&nbsp;</td>
+					<?php } ?>
+				</tr>
+
+				<tr valign="top">
+					<td colspan="<?php echo $nr_columns - 1; ?>" >
+						<div class="input-append">
+							<input type="text" id="promocode" name="promocode" size="15" value="<?php echo $this->promocode; ?>" />
+							<button type="submit" class="btn" onclick="document.getElementById('task').value='cart.updateCart'; document.getElementById('type_button').value='recalculate';"><i class="ico-gift"></i> <?php echo JText::_("COM_DIGICOM_CART_PROMOCODE_APPLY"); ?></button>
 						</div>
-					<?php endif;?>
-				</td>
-				<td nowrap="nowrap" style="text-align: center;">
-					<ul style="margin: 0; padding: 0;list-style-type: none;">
-						<li class="digi_cart_total" style="font-size: 15px;text-align:right;">
-							<?php echo JText::_("COM_DIGICOM_PROMO_DISCOUNT");?>
-						</li>
-						<li class="digi_cart_total" style="font-weight: bold;font-size: 18px;text-align:right;">
-							<?php echo JText::_("COM_DIGICOM_TOTAL");?>
-						</li>
-					</ul>
-				</td>
-				<td nowrap="nowrap" style="text-align: center;">
-					<ul style="margin: 0; padding: 0;list-style-type: none;">
-						<li class="digi_cart_amount" id="cart_total" style="font-size: 15px;text-align:right;">
-							<?php echo DigiComSiteHelperDigiCom::format_price2($tax['promo'], $tax['currency'], true, $configs); ?>
-						</li>
-						<li class="digi_cart_amount" id="cart_total" style="font-weight: bold;font-size: 18px;text-align:right;">
-							<?php echo DigiComSiteHelperDigiCom::format_price2($tax['taxed'], $tax['currency'], true, $configs); ?>
-						</li>
-					</ul>
-				</td>
-			</tr>
-		</table>
+						<?php if(!empty($this->promoerror) or ($tax['promo'] <= 0 && $this->promocode != '')): ?>
+							<div class="digi_error alert alert-warning">
+								<?php echo $this->promoerror; ?>
+								<?php if($tax['promo'] <= 0 && $this->promocode != ''):?>
+									<?php echo JText::_('COM_DIGICOM_PROMO_NO_ACCESS');?>
+								<?php endif;?>
+							</div>
+						<?php endif;?>
+					</td>
+					<td nowrap="nowrap" style="text-align: center;">
+						<ul style="margin: 0; padding: 0;list-style-type: none;">
+							<?php if ($tax['discount_calculated']): ?>
+							<li class="digi_cart_total" style="font-size: 15px;text-align:right;">
+								<?php echo JText::_("COM_DIGICOM_PROMO_DISCOUNT");?>
+							</li>
+							<?php endif; ?>
+
+							<li class="digi_cart_total" style="font-weight: bold;font-size: 18px;text-align:right;">
+								<?php echo JText::_("COM_DIGICOM_TOTAL");?>
+							</li>
+						</ul>
+					</td>
+					<td nowrap="nowrap" style="text-align: center;">
+						<ul style="margin: 0; padding: 0;list-style-type: none;">
+							<?php if ($tax['discount_calculated']): ?>
+							<li class="digi_cart_amount" id="cart_total" style="font-size: 15px;text-align:right;">
+								<?php echo DigiComSiteHelperDigiCom::format_price2($tax['promo'], $tax['currency'], true, $configs); ?>
+							</li>
+							<?php endif; ?>
+
+							<li class="digi_cart_amount" id="cart_total" style="font-weight: bold;font-size: 18px;text-align:right;">
+								<?php echo DigiComSiteHelperDigiCom::format_price2($tax['taxed'], $tax['currency'], true, $configs); ?>
+							</li>
+						</ul>
+					</td>
+				</tr>
+			</table>
 
 
-		<div id="digicomcartcontinue" class="row-fluid continue-shopping">
-			<div class="span8" style="margin-bottom:10px;">
-				<!--<a href="<?php echo $cat_url; ?>" class="btn"><i class="icon-cart"></i> <?php echo JText::_("DSCONTINUESHOPING")?></a>-->
+			<div id="digicomcartcontinue" class="row-fluid continue-shopping">
+				<div class="span8" style="margin-bottom:10px;">
+					<!--<a href="<?php echo $cat_url; ?>" class="btn"><i class="icon-cart"></i> <?php echo JText::_("DSCONTINUESHOPING")?></a>-->
+				</div>
+				<div class="span4" style="margin-bottom: 10px;">
+					<p><strong><?php echo JText::_('COM_DIGICOM_PAYMENT_METHOD'); ?></strong></p>
+					<?php
+					$button_value = "COM_DIGICOM_CHECKOUT";
+					$onclick = "if(jQuery('#processor').val() == ''){ ShowPaymentAlert(); return false; }";
+					$onclick.= "jQuery('#returnpage').val('checkout'); jQuery('#type_button').val('checkout');";
+
+					if($user->id == 0 || $this->customer->_customer->country == "")
+					{
+						$button_value = "COM_DIGICOM_CONTINUE";
+					}
+
+					$onclick.= "jQuery('#cart_form').submit();";
+					?>
+
+					<?php echo DigiComSiteHelperDigicom::getPaymentPlugins($configs); ?>
+
+					<div id="html-container"></div>
+					<button type="button" class="btn btn-warning" style="float:right;margin-top:10px;" onclick="<?php echo $onclick; ?> "><?php echo JText::_($button_value);?> <i class="ico-ok-sign"></i></button>
+				</div>
 			</div>
-			<div class="span4" style="margin-bottom: 10px;">
-				<p><strong><?php echo JText::_('COM_DIGICOM_PAYMENT_METHOD'); ?></strong></p>
-				<?php
-				$button_value = "COM_DIGICOM_CHECKOUT";
-				$onclick = "if(jQuery('#processor').val() == ''){ ShowPaymentAlert(); return false; }";
-				$onclick.= "jQuery('#returnpage').val('checkout'); jQuery('#type_button').val('checkout');";
-
-				if($user->id == 0 || $this->customer->_customer->country == "")
-				{
-					$button_value = "COM_DIGICOM_CONTINUE";
-				}
-
-				$onclick.= "jQuery('#cart_form').submit();";
-				?>
-
-				<?php echo DigiComSiteHelperDigicom::getPaymentPlugins($configs); ?>
-
-				<div id="html-container"></div>
-				<button type="button" class="btn btn-warning" style="float:right;margin-top:10px;" onclick="<?php echo $onclick; ?> "><?php echo JText::_($button_value);?> <i class="ico-ok-sign"></i></button>
-			</div>
-		</div>
 
 
 			<input name="view" type="hidden" id="view" value="cart">
@@ -290,8 +272,10 @@ $tax = $this->tax;
 			<input name="returnpage" type="hidden" id="returnpage" value="">
 			<input name="type_button" type="hidden" id="type_button" value="">
 			<input name="Itemid" type="hidden" value="<?php echo $Itemid; ?>">
+
 		</form>
 	</div>
+
 	<?php if(isset($tax) && $tax['promo_error'] != ''):?>
 		<div id="digicart_login" style="width:350px;left:50%;top:30%;position:fixed;z-index:1000;background:#eee;margin-left:-175px;">
 			<div id="cart_header" style="background-color: rgb(204, 204, 204);">
