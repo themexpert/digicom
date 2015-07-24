@@ -27,7 +27,7 @@ class DigiComRouter extends JComponentRouterBase
 	 */
 	public function build(&$query)
 	{
-		
+
 		$app = JFactory::getApplication();
 
 		$segments = array();
@@ -45,7 +45,7 @@ class DigiComRouter extends JComponentRouterBase
 			$menuItem = $this->menu->getItem($query['Itemid']);
 			$menuItemGiven = true;
 		}
-		
+
 		// Check again
 		if ($menuItemGiven && isset($menuItem) && $menuItem->component != 'com_digicom')
 		{
@@ -62,7 +62,7 @@ class DigiComRouter extends JComponentRouterBase
 			// We need to have a view in the query or it is an invalid URL
 			return $segments;
 		}
-		
+
 		// Are we dealing with an product or category that is attached to a menu item?
 		if (($menuItem instanceof stdClass)
 			&& $menuItem->query['view'] == $query['view']
@@ -99,12 +99,12 @@ class DigiComRouter extends JComponentRouterBase
 			{
 				$segments[] = $view;
 			}
-			
+
 			unset($query['view']);
 
 			if ($view == 'product')
 			{
-				
+
 				if (isset($query['id']) && isset($query['catid']) && $query['catid'])
 				{
 					if($menuItemGiven && ( $menuItem->query['view'] != 'product' and $menuItem->query['view'] != 'category' ) )
@@ -210,8 +210,8 @@ class DigiComRouter extends JComponentRouterBase
 
 			if ($view == 'product')
 			{
-				
-				list($tmp, $id) = explode(':', $query['id'], 2);	
+
+				list($tmp, $id) = explode(':', $query['id'], 2);
 
 				$segments[] = $id;
 			}
@@ -224,7 +224,7 @@ class DigiComRouter extends JComponentRouterBase
 			//print_r($query);die;
 			$item = $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=cart', true);
 			$Itemid = isset($item->id) ? $item->id : '';
-			
+
 			if (!$Itemid)
 			{
 				$segments[] = $view;
@@ -239,17 +239,17 @@ class DigiComRouter extends JComponentRouterBase
 			}
 
 
-		} 
-		if ($view == 'checkout' 
-			or $view == 'dashboard' 
-			or $view == 'downloads' 
+		}
+		if ($view == 'checkout'
+			or $view == 'dashboard'
+			or $view == 'downloads'
 			or $view == 'profile'
 			or $view == 'register'
 		)
 		{
 			$item = $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view='.$view, true);
 			$Itemid = isset($item->id) ? $item->id : '';
-			
+
 			if (!$Itemid)
 			{
 				$segments[] = $view;
@@ -258,13 +258,13 @@ class DigiComRouter extends JComponentRouterBase
 			}
 
 			unset($query['view']);
-			
+
 
 			if($view == 'checkout'){
 				if(isset($query['order_id'])){
 					$segments[] = 'order';
 					$segments[] = $query['order_id'];
-					unset($query['order_id']);					
+					unset($query['order_id']);
 				}
 			}
 
@@ -276,7 +276,7 @@ class DigiComRouter extends JComponentRouterBase
 		{
 			$item = $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=orders', true);
 			$Itemid = isset($item->id) ? $item->id : '';
-			
+
 			if (!$menuItemGiven){
 				if (!$Itemid)
 				{
@@ -288,7 +288,7 @@ class DigiComRouter extends JComponentRouterBase
 			}
 
 			unset($query['view']);
-			
+
 			if(isset($query['layout'])){
 				$segments[] = $query['layout'];
 				unset($query['layout']);
@@ -297,7 +297,7 @@ class DigiComRouter extends JComponentRouterBase
 				$segments[] = $query['id'];
 				unset($query['id']);
 			}
-		
+
 
 		}
 
@@ -328,7 +328,7 @@ class DigiComRouter extends JComponentRouterBase
 			}
 		}
 
-		
+
 		/*
 		 * If the layout is specified and it is the same as the layout in the menu item, we
 		 * unset it so it doesn't go into the query string.
@@ -364,9 +364,9 @@ class DigiComRouter extends JComponentRouterBase
 		 */
 		if (isset($query['processor']))
 		{
-			unset($query['processor']);			
+			unset($query['processor']);
 		}
-		
+
 		$total = count($segments);
 		for ($i = 0; $i < $total; $i++)
 		{
@@ -376,7 +376,7 @@ class DigiComRouter extends JComponentRouterBase
 		if ($view == 'product'){
 			//print_r($segments);die;
 		}
-		
+
 		return $segments;
 	}
 
@@ -411,10 +411,10 @@ class DigiComRouter extends JComponentRouterBase
 		 * Standard routing for products.  If we don't pick up an Itemid then we get the view from the segments
 		 * the first segment is the view and the last segment is the id of the product or category.
 		 */
-		
+
 		if (!isset($item) && ( $segments[0] != 'categories' && $segments[0] != 'category' && $segments[0] != 'product') )
 		{
-			
+
 			$segview = $segments[0];
 
 			switch ($segview) {
@@ -431,10 +431,10 @@ class DigiComRouter extends JComponentRouterBase
 					$vars['view'] = $segments[0];
 					$vars['id'] = $segments[$count - 1];
 					break;
-				
+
 				default:
 					$info = $this->getCategoryId($segments[0], $segments);
-					
+
 					if(!$info) return $vars;
 
 					$vars['view'] = $info['view'];
@@ -442,12 +442,12 @@ class DigiComRouter extends JComponentRouterBase
 					$vars['id'] = $info['id'];
 					break;
 			}
-			
+
 			if($segments[0] == 'cart')
 			{
 				if(!empty($segments[1])) $vars['layout'] = $segments[1];
 			}
-			elseif ($segments[0] == 'cart_popup' or $segments[0] == 'summary') 
+			elseif ($segments[0] == 'cart_popup' or $segments[0] == 'summary')
 			{
 				$vars['view'] = 'cart';
 				$vars['layout'] = $segments[0];
@@ -461,18 +461,18 @@ class DigiComRouter extends JComponentRouterBase
 			return $vars;
 
 		}elseif(isset($item) && $item->query['option'] == 'com_digicom' && ( $segments[0] != 'category' && $segments[0] != 'product')){
-			
+
 			//print_r($segments);die;
 			$vars['view'] = $item->query['view'];
 
 			if($segments[0] == 'cart')
 			{
 				if( $item->query['view'] != 'cart' ){
-					$vars['view'] = $segments[0];	
+					$vars['view'] = $segments[0];
 				}
 				if(!empty($segments[1])){
-					$vars['layout'] = $segments[1];	
-				} 
+					$vars['layout'] = $segments[1];
+				}
 			}
 			elseif($segments[0] == 'summary')
 			{
@@ -554,7 +554,7 @@ class DigiComRouter extends JComponentRouterBase
 				$vars['view'] = 'order';
 				$vars['id'] = $segments[0];
 			}
-			
+
 			return $vars;
 		}
 
@@ -580,7 +580,7 @@ class DigiComRouter extends JComponentRouterBase
 		 * because the first segment will have the target category id prepended to it.  If the
 		 * last segment has a number prepended, it is an product, otherwise, it is a category.
 		 */
-		
+
 		// Ltes handle the product & category
 		if (!isset($item) && ( $segments[0] == 'category' or $segments[0] == 'product')){
 			$id= $segments[$count - 1];
@@ -589,7 +589,7 @@ class DigiComRouter extends JComponentRouterBase
 			$id = $item->query['id'];
 		}
 
-		
+
 		$category = JCategories::getInstance('DigiCom')->get($id);
 
 		if (!$category)
@@ -623,7 +623,7 @@ class DigiComRouter extends JComponentRouterBase
 
 			if ($found == 0)
 			{
-				
+
 				$db = JFactory::getDbo();
 				$query = $db->getQuery(true)
 					->select($db->quoteName('id'))
@@ -632,7 +632,7 @@ class DigiComRouter extends JComponentRouterBase
 					->where($db->quoteName('alias') . ' = ' . $db->quote($segment));
 				$db->setQuery($query);
 				$cid = $db->loadResult();
-				
+
 				$vars['id'] = $cid;
 
 				if (isset($item) && ( $item->query['view'] == 'archive' && $count != 1) )
@@ -654,7 +654,7 @@ class DigiComRouter extends JComponentRouterBase
 	}
 
 	public static function getCategoryId($info, $segments){
-		
+
 		$return = array();
 		$id = $info;
 		$category = JCategories::getInstance('DigiCom')->get($id);
@@ -690,7 +690,7 @@ class DigiComRouter extends JComponentRouterBase
 
 			if ($found == 0)
 			{
-				
+
 				$db = JFactory::getDbo();
 				$query = $db->getQuery(true)
 					->select($db->quoteName('id'))
@@ -699,7 +699,7 @@ class DigiComRouter extends JComponentRouterBase
 					->where($db->quoteName('alias') . ' = ' . $db->quote($segment));
 				$db->setQuery($query);
 				$cid = $db->loadResult();
-				
+
 				$return['id'] = $cid;
 				$return['view'] = 'product';
 
