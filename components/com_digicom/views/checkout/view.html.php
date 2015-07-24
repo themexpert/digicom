@@ -60,7 +60,6 @@ class DigiComViewCheckout extends JViewLegacy
 		$vars->cancel_return = JRoute::_(JURI::root()."index.php?option=com_digicom&Itemid=".$Itemid."&task=cart.cancel&processor={$pg_plugin}", true, 0);
 		$vars->return = $vars->url = $vars->notify_url = JRoute::_(JURI::root()."index.php?option=com_digicom&task=cart.processPayment&processor={$pg_plugin}&order_id=".$params['order_id']."&sid=".$customer->_sid, true, false);
 		$vars->currency_code = $configs->get('currency','USD');
-		//$vars->amount = $items[-2]['taxed'];//+$items[-2]['shipping'];
 		$vars->amount = $params['order_amount'];
 
 		// Triggre plugin event
