@@ -764,12 +764,15 @@ class DigiComModelCart extends JModelItem
 			if($data['status']=='C'){
 				$msg = JText::_("COM_DIGICOM_PAYMENT_SUCCESSFUL_THANK_YOU");
 				$status = "Active";
+				$app->enqueueMessage($msg,'message');
 			} elseif($data['status']=='P') {
 				$status = "Pending";
 				$msg = JText::_("COM_DIGICOM_PAYMENT_PENDING_THANK_YOU");
+				$app->enqueueMessage($msg, 'notice');
 			}else{
 				$status = $data['status'];
 				$msg = JText::_("COM_DIGICOM_PAYMENT_WAITING_THANK_YOU");
+				$app->enqueueMessage($msg, 'notice');
 			}
 
 			$config = JFactory::getConfig();
@@ -782,18 +785,18 @@ class DigiComModelCart extends JModelItem
 		}
 
 		if($status != "Active"){
-			$app->redirect(JRoute::_("index.php?option=com_digicom&view=order&id=".$order_id),$msg);
+			$app->redirect(JRoute::_("index.php?option=com_digicom&view=order&id=".$order_id));
 		}
 
 		// orders page
 		if ($configs->get('afterpurchase',1) == 1)
 		{
-			$app->redirect(JRoute::_("index.php?option=com_digicom&view=order&id=".$order_id),$msg);
+			$app->redirect(JRoute::_("index.php?option=com_digicom&view=order&id=".$order_id));
 		}
 		// download page
 		else
 		{
-			$app->redirect(JRoute::_("index.php?option=com_digicom&view=downloads"),$msg);
+			$app->redirect(JRoute::_("index.php?option=com_digicom&view=downloads"));
 		}
 
 		return true;
