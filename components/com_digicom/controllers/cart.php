@@ -484,14 +484,14 @@ class DigiComControllerCart extends JControllerLegacy
 	function getCartItem()
 	{
 
-		$cid = JRequest::getVar('cid', -1);
-		$qty = JRequest::getVar('quantity'.$cid, 1);
-		$db = JFactory::getDBO();
+		$cid 	= JRequest::getVar('cid', -1);
+		$qty 	= JRequest::getVar('quantity'.$cid, 1);
+		$db 	= JFactory::getDBO();
 		if ($cid > 0) {
 
-			$cart = $this->_model;
-			$customer = $this->_customer;
-			$configs = $this->_config;
+			$cart 		= $this->_model;
+			$customer 	= $this->_customer;
+			$configs 	= $this->_config;
 
 			$sid = $this->_customer->_sid;
 			$sql = "UPDATE #__digicom_cart SET quantity = ".$qty." where cid=" . $cid; // sid = " . $sid . " and
@@ -503,7 +503,8 @@ class DigiComControllerCart extends JControllerLegacy
 			$db->setQuery( $sql );
 			$pid = (int)$db->loadResult();
 
-			$items = $cart->getCartItems($customer, $configs);
+			$items 	= $cart->getCartItems($customer, $configs);
+			$tax 	= $cart->calc_price($items, $customer, $configs);
 			$result = array();
 
 			foreach($items as $key=>$item) {
@@ -518,13 +519,13 @@ class DigiComControllerCart extends JControllerLegacy
 				}
 			}
 			//print_r($items);die;
-			$total = DigiComSiteHelperDigiCom::format_price($items[-2]['taxed'], $items[-2]['currency'], true, $configs);
-			$result['cart_total'] = $total;//"{$items[-2]['taxed']}";
+			$total = DigiComSiteHelperDigiCom::format_price($tax['taxed'], $tax['currency'], true, $configs);
+			$result['cart_total'] = $total;//"{$tax['taxed']}";
 
-			$cart = $this->_model;
-			$cart_tax = $cart->calc_price($items, $customer, $configs);
-			$result['cart_discount'] = DigiComSiteHelperDigiCom::format_price($cart_tax["promo"], $items[-2]['currency'], true, $configs);
-			$result['cart_tax'] = DigiComSiteHelperDigiCom::format_price($cart_tax["value"], $items[-2]['currency'], true, $configs);
+			//$cart = $this->_model;
+			//$tax = $cart->calc_price($items, $customer, $configs);
+			$result['cart_discount'] = DigiComSiteHelperDigiCom::format_price($tax["promo"], $tax['currency'], true, $configs);
+			$result['cart_tax'] = DigiComSiteHelperDigiCom::format_price($tax["value"], $tax['currency'], true, $configs);
 			echo json_encode($result);
 
 		} else {
