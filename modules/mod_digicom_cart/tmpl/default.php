@@ -11,38 +11,15 @@ defined('_JEXEC') or die;
 $doc 				= JFactory::getDocument();
 // Load style file
 $doc->addStyleSheet( JUri::root(true). '/modules/mod_digicom_cart/assets/css/mod_digicom_cart.css');
-
-
-// Total amount added to cart
-if (count($list) > 0) {
-	$total = 0;
-	$number = 0;
-	foreach ($list as $key => $item) {
-		if ($key >= 0) {
-			$currency = $item->currency;
-			if (!isset($item->discounted_price)) {
-				$total += $item->price * $item->quantity;
-			} else {
-				$total += $item->discounted_price * $item->quantity;
-			}
-			$number++;
-		}
-	}
-}
 ?>
 <div id="mod_digicom_cart_wrap" class="dg-cart <?php echo $moduleclass_sfx; ?>">
 	<?php if(count($list) > 0) :?>
 	<ul class="dg-cart-list">
 		<?php foreach($list as $index => $item): ?>
 
-			<?php
-				// TODO : remove this after issue #52 solve. no false index should be on cart array
-				if($index<0) continue;
-			?>
-
 			<li class="clearfix">
 				<a href="<?php echo JRoute::_(DigiComHelperRoute::getProductRoute($item->id, $item->catid)) ?>">
-					<img src="<?php echo DigiComSiteHelperDigiCom::getThumbnail($item->images); ?>" alt="<?php echo $item->name; ?>"/>
+					<?php if($item->images): ?><img src="<?php echo DigiComSiteHelperDigiCom::getThumbnail($item->images); ?>" alt="<?php echo $item->name; ?>"/><?php endif; ?>
 					<?php echo $item->name; ?>
 				</a>
 				<span class="dg-quantity">
@@ -52,13 +29,22 @@ if (count($list) > 0) {
 		<?php endforeach; ?>
 	</ul>
 	<div class="dg-total">
-		<p class="dg-amount">
-			<strong><?php echo JText::_('COM_DIGICOM_SUBTOTAL')?>:</strong> <?php echo $total; ?>
+		<?php if($tax['promo'] > 0): ?>
+		<p class="dg-amount-discount">
+			<strong><?php echo JText::_('MOD_DIGICOM_CART_PROMO_DISCOUNT')?>:</strong>
+			<?php echo DigiComSiteHelperDigiCom::format_price2($tax["promo"], $tax["currency"], true, $configs); ?>
 		</p>
+		<?php endif; ?>
+
+		<p class="dg-amount">
+			<strong><?php echo JText::_('MOD_DIGICOM_CART_PRICE_SUBTOTAL')?>:</strong>
+			<?php echo DigiComSiteHelperDigiCom::format_price2($tax["payable_amount"], $tax["currency"], true, $configs); ?>
+		</p>
+
 
 		<a class="btn btn-primary" href="<?php echo JRoute::_('index.php?option=com_digicom&view=cart'.$Itemid)?>">View Cart</a>
 	</div>
 	<?php else: ?>
-		<p><?php echo JText::_('MOD_DIGICOM_CART_EMPTY');?></p>
+		<p><?php echo JText::_('MOD_DIGICOM_CART_EMPTY_CART');?></p>
 	<?php endif; ?>
 </div>
