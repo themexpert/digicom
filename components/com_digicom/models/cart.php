@@ -372,7 +372,7 @@ class DigiComModelCart extends JModelItem
 		$payprocess['type'] = 'TAX';
 
 		$this->_tax = $payprocess;
-		
+
 		/*
 		if(count($items) > 0){
 			$this->_items[-1] = "PayProcessed";
@@ -638,22 +638,23 @@ class DigiComModelCart extends JModelItem
 	}
 
 	function addFreeProduct($items, $customer, $tax){
-		$config = JFactory::getConfig();
-		$tzoffset = $config->get('offset');
-		//$now = time();
-		$now = date('Y-m-d H:i:s', time() + $tzoffset);
-		$now = strtotime($now);
-		$non_taxed = $tax['total']; //$total;
-		$total = $tax['taxed'];
-		$currency = $tax['currency'];
-		$taxa = $tax['value'];
-		$shipping = $tax['shipping'];
+		$config			= JFactory::getConfig();
+		$tzoffset		= $config->get('offset');//$now = time();
+		$now 				= date('Y-m-d H:i:s', time() + $tzoffset);
+		$now 				= strtotime($now);
+
+		// $non_taxed 	= $tax['total']; //$total;
+		// $total 			= $tax['taxed'];
+		// $currency 	= $tax['currency'];
+		// $taxa 			= $tax['value'];
+		// $shipping 	= $tax['shipping'];
+
 		//check the items
 		//print_r($items);die;
 		//check custommer object
 		//print_r($customer);die;
 
-		$orderid = $this->addOrder($items, $customer, $now, 'free');
+		$orderid = $this->addOrder($items, $tax, $customer, $now, 'free');
 		$this->addOrderDetails($items, $orderid, $now, $customer);
 		$type = 'complete_order';
 		DigiComSiteHelperLicense::addLicenceSubscription($items, $customer->_customer->id, $orderid, $type);
@@ -667,12 +668,15 @@ class DigiComModelCart extends JModelItem
 		//$now = time();
 		$now = date('Y-m-d H:i:s', time() + $tzoffset);
 		$now = strtotime($now);
-		$non_taxed = $tax['total']; //$total;
-		$total = $tax['taxed'];
-		$currency = $tax['currency'];
-		$taxa = $tax['value'];
-		$shipping = $tax['shipping'];
-		$orderid = $this->addOrder($items, $customer, $now, $prosessor,$status);
+
+		// $non_taxed = $tax['total']; //$total;
+		// $total = $tax['taxed'];
+		// $currency = $tax['currency'];
+		// $taxa = $tax['value'];
+		// $shipping = $tax['shipping'];
+
+		$orderid = $this->addOrder($items, $tax, $customer, $now, $prosessor,$status);
+
 		$this->addOrderDetails($items, $orderid, $now, $customer,$status);
 		DigiComSiteHelperLicense::addLicenceSubscription($items, $customer->_customer->id, $orderid, $status);
 
@@ -979,6 +983,7 @@ class DigiComModelCart extends JModelItem
 	}
 
 	function storeTransactionData( $items, $orderid, $tax, $sid ){
+
 		global $Itemid;
 
 		$database = JFactory::getDBO();
@@ -1308,17 +1313,15 @@ class DigiComModelCart extends JModelItem
 
 	}
 
-	function addOrder( $items, $cust_info, $now, $paymethod, $status = "Active" )
+	function addOrder( $items, $tax, $cust_info, $now, $paymethod, $status = "Active" )
 	{
-		$cart = $this;
-		$conf = $this->getInstance( "config", "digicomModel" );
-		$configs = $conf->getConfigs();
-		$db = JFactory::getDBO();
-		$tax = $cart->calc_price( $items, $cust_info, $configs );
-
-		//print_r($tax);die;
-
+		$cart	 		= $this;
+		$db 			= JFactory::getDbo();
+		$conf 		= $this->getInstance( "config", "digicomModel" );
+		$configs 	= $conf->getConfigs();
 		$customer = $cust_info;
+		//$tax = $cart->calc_price( $items, $cust_info, $configs );
+		//print_r($tax);die;
 
 		if (is_object($customer)) $sid = $customer->_sid;
 		if (is_array($customer)) $sid = $customer['sid'];
@@ -1330,13 +1333,13 @@ class DigiComModelCart extends JModelItem
 			return 0;
 		}
 
-		$non_taxed = $tax['total'];
-		$total = $tax['taxed'];
-		$payable_amount = $tax['payable_amount'];
-		$taxa = $tax['value'];
-		$shipping = $tax['shipping'];
-		$currency = $tax['currency'];
-		$number_of_products = $tax['number_of_products'];
+		// $non_taxed = $tax['total'];
+		// $total = $tax['taxed'];
+		// $payable_amount = $tax['payable_amount'];
+		// $taxa = $tax['value'];
+		// $shipping = $tax['shipping'];
+		// $currency = $tax['currency'];
+		// $number_of_products = $tax['number_of_products'];
 
 		$promo = $cart->get_promo( $cust_info );
 		if($promo->id > 0){
@@ -1348,19 +1351,53 @@ class DigiComModelCart extends JModelItem
 			$promocode = '0';
 		}
 
-		$sql = "insert into #__digicom_orders ( userid, order_date, amount, amount_paid, currency, processor, number_of_products, status, promocodeid, promocode, promocodediscount, published ) "
-		. " values ('{$uid}','".$now."','".$payable_amount."', '0', '" . $currency . "','" . $paymethod . "','".$number_of_products."', '" . $status . "', '" . $promoid . "', '" . $promocode . "', '" . $tax['promo'] . "', '1') ";
+		//--------------------------------------------------------
+		// Create a new query object.
+		$query = $db->getQuery(true);
+		// Insert columns.
+		$columns = array( 'userid', 'order_date', 'amount', 'amount_paid', 'currency', 'processor', 'number_of_products', 'status', 'promocodeid', 'promocode', 'promocodediscount', 'published' );
+		// Insert values.
+		$values = array( $uid, $db->quote($now), $db->quote($tax['payable_amount']), 0, $db->quote($tax['currency']), $db->quote($paymethod), $tax['number_of_products'], $db->quote($status), $promoid, $db->quote($promocode), $tax['promo'], 1 );
 
-		$db->setQuery( $sql );
-		$db->query();
+		// Prepare the insert query.
+		$query
+		    ->insert($db->quoteName('#__digicom_orders'))
+		    ->columns($db->quoteName($columns))
+		    ->values(implode(',', $values));
+		// Set the query using our newly populated query object and execute it.
+		$db->setQuery($query);
+		$db->execute();
+
+		//--------------------------------------------------------
+		// $sql = "insert into #__digicom_orders ( userid, order_date, amount, amount_paid, currency, processor, number_of_products, status, promocodeid, promocode, promocodediscount, published ) "
+		// . " values ('{$uid}','".$now."','".$payable_amount."', '0', '" . $currency . "','" . $paymethod . "','".$number_of_products."', '" . $status . "', '" . $promoid . "', '" . $promocode . "', '" . $tax['promo'] . "', '1') ";
+		// $db->setQuery( $sql );
+		// $db->query();
+		//--------------------------------------------------------
 		$orderid = $db->insertid();
 		$this->storeTransactionData( $items, $orderid, $tax, $sid );
 
 		if ( $promoid > 0 ) {
-			$sql = "update #__digicom_promocodes set `used`=`used`+1 where id=" . $promoid;
-			$db->setQuery( $sql );
-			$db->query();
+			$query = $db->getQuery(true);
+
+			// Fields to update.
+			$fields = array(
+			    $db->quoteName('used') . ' = ' . $db->quote($db->quoteName('used') + 1)
+			);
+			// Conditions for which records should be updated.
+			$conditions = array(
+			    $db->quoteName('id') . ' = '.$promoid
+			);
+			$query->update($db->quoteName('#__digicom_promocodes'))->set($fields)->where($conditions);
+			// Set the query using our newly updated query object and execute it.
+			$db->setQuery($query);
+			$db->execute();
+
+			//$sql = "update #__digicom_promocodes set `used`=`used`+1 where id=" . $promoid;
+			//$db->setQuery( $sql );
+			//$db->query();
 		}
+
 		return $orderid;
 
 	}
