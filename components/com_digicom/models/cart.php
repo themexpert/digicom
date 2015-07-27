@@ -632,15 +632,19 @@ class DigiComModelCart extends JModelItem
 	{
 		$db = JFactory::getDBO();
 		$reg = JSession::getInstance("none", array());
-		//$sid = $reg->set("digisid", 0);
 
+		//$sid = $reg->set("digisid", 0);
 		if(!$sid){
 			return;
 		}
+		$sql = "update #__digicom_session set cart_details='' where sid='" . $sid . "'";
+		$db->setQuery( $sql );
+		$db->execute();
 
 		$sql = "delete from #__digicom_cart where sid='" . intval($sid) . "'";
 		$db->setQuery( $sql );
-		$db->query();
+		$db->execute();
+
 	}
 
 	function addFreeProduct($items, $customer, $tax){
