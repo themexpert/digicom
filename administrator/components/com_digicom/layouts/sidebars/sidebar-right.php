@@ -8,17 +8,21 @@
  */
 
 defined('_JEXEC') or die;
-$uri = JFactory::getURI(); 
-$pageURL = $uri->toString(); 
+$uri = JFactory::getURI();
+$pageURL = $uri->toString();
 ?>
 
 <div id="toggle_settings_wrap" class="">
-	<h3>Global Settings</h3>
+	<h3><?php echo JText::_('COM_DIGICOM_SIDEBAR_RIGHT_GLOBAL_SETTINGS'); ?></h3>
 	<ul>
 		<?php if (JFactory::getUser()->authorise('core.admin', 'com_digicom')) { ?>
-			<li><a href="index.php?option=com_config&view=component&component=com_digicom&return=<?php echo base64_encode($pageURL);?>">ACL Settings</a></li>
-			<li><a href="index.php?option=com_digicom&view=configs">Settings</a></li>
-		<?php } ?>		
+			<li><a href="<?php echo JRoute::_('index.php?option=com_config&view=component&component=com_digicom&return='.base64_encode($pageURL));?>">
+				<?php echo JText::_('COM_DIGICOM_SIDEBAR_RIGHT_ACL_SETTINGS'); ?>
+			</a></li>
+			<li><a href="<?php echo JRoute::_('index.php?option=com_digicom&view=configs');?>">
+				<?php echo JText::_('COM_DIGICOM_SIDEBAR_RIGHT_SETTINGS'); ?>
+			</a></li>
+		<?php } ?>
 	</ul>
 
 	<?php
