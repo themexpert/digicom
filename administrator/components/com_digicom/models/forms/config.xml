@@ -317,6 +317,7 @@
 				name="category_cols"
 				type="list"
 				label="COM_DIGICOM_SETTINGS_THEME_COLUMN_NO"
+				description="COM_DIGICOM_SETTINGS_THEME_COLUMN_NO_DESC"
 			>
 				<option value="1">1</option>
 				<option value="2">2</option>
