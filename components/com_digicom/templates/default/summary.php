@@ -17,7 +17,7 @@ $processor = $this->session->get('processor');
 $customer = $this->customer;
 $items = $this->items;
 $tax = $this->tax;
-print_r($tax);
+//print_r($tax);
 if($configs->get('show_steps',1) == 1){
 ?>
 <div class="pagination pagination-centered">
