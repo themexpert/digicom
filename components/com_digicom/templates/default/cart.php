@@ -40,7 +40,9 @@ $nr_columns = 4;
 $invisible = 'style="display:none;"';
 $formlink = JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$Itemid);
 $tax = $this->tax;
+echo '<pre>';
 print_r($tax);
+echo '</pre>';
 ?>
 <div id="digicom">
 
