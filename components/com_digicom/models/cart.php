@@ -242,6 +242,7 @@ class DigiComModelCart extends JModelItem
 		$payprocess['shipping'] = 0;
 		$payprocess['currency'] = $configs->get('currency','USD');
 		$payprocess['promo'] = 0;
+		$payprocess['item_discount'] = 0;
 		//--------------------------------------------------------
 		// Promo code
 		//--------------------------------------------------------
@@ -276,6 +277,8 @@ class DigiComModelCart extends JModelItem
 
 		foreach ( $items as $item )
 		{
+			//initial promo amount as 0, so later we can use it
+			$promoamount = 0;
 
 			$payprocess['price'] = $total += $item->subtotal;
 			$payprocess['number_of_products'] += $item->quantity;
@@ -296,21 +299,27 @@ class DigiComModelCart extends JModelItem
 					{
 						// Use absolute values
 						$promoamount = $promo->amount;
-						$promovalue += $promo->amount;
+						if($promoamount > $item->price){
+							$promoamount = $item->price;
+						}
+						$promovalue += $promoamount;
 					}
 					else
 					{
 						// Use percentage
 						$promoamount = $item->price * $promo->amount / 100;
-						$promovalue += $item->price * $promo->amount / 100;
+						$promovalue += $promoamount;
 					}
 
 					$sql = "update #__digicom_promocodes set used=used+1 where id = '" . $promo->id . "'";
 					$this->_db->setQuery( $sql );
 					$this->_db->query();
-
-					$item->discount += $promoamount;
+					if($promoamount > 0){
+						$item->discount = $promoamount;
+						$payprocess['item_discount'] = 1;
+					}
 					$payprocess['discount_calculated'] = 1;
+					//print_r($item);die;
 				}
 			} // end if for: product promo check
 		}
@@ -328,8 +337,12 @@ class DigiComModelCart extends JModelItem
 			//echo 'apply promo on cart';die;
 			//now lets apply promo discounts if there are any
 			if($promo->promotype == '0'){//use absolute values
-				$total -= $promo->amount;
-				$promovalue = $promo->amount;
+				$cartPromototal = $promo->amount;
+				if($cartPromototal > $total){
+				 	$cartPromototal = $total;
+				}
+				$total -= $cartPromototal;
+				$promovalue = $cartPromototal;
 			}
 			else{ //use percentage
 				$promovalue = $total * $promo->amount / 100;
