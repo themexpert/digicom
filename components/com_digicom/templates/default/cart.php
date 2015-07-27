@@ -40,9 +40,9 @@ $nr_columns = 4;
 $invisible = 'style="display:none;"';
 $formlink = JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$Itemid);
 $tax = $this->tax;
-echo '<pre>';
-print_r($tax);
-echo '</pre>';
+// echo '<pre>';
+// print_r($tax);
+// echo '</pre>';
 ?>
 <div id="digicom">
 
@@ -86,7 +86,7 @@ echo '</pre>';
 							<?php echo JText::_("COM_DIGICOM_QUANTITY"); ?>
 						</th>
 
-						<?php if ($tax['discount_calculated']){?>
+						<?php if ($tax['item_discount']){?>
 						<th>
 							<?php echo JText::_("COM_DIGICOM_PROMO_DISCOUNT"); ?>
 						</th>
@@ -130,7 +130,7 @@ echo '</pre>';
 								</span>
 							</td>
 
-							<?php if($tax['discount_calculated']) : ?>
+							<?php if($tax['item_discount']) : ?>
 							<td style="text-align:center;" nowrap="nowrap">
 								<span id="cart_item_discount<?php echo $item->cid; ?>" class="digi_cart_amount">
 									<?php
@@ -143,7 +143,8 @@ echo '</pre>';
 									{
 										$value_discount = ($item->price * $item->percent_discount) / 100;
 									}
-									echo (isset($item->percent_discount) && $item->percent_discount > 0) ? $item->percent_discount : DigiComSiteHelperDigiCom::format_price2($item->discount, $item->currency, true, $configs);;?>
+									//echo (isset($item->percent_discount) && $item->percent_discount > 0) ? $item->percent_discount : DigiComSiteHelperDigiCom::format_price2($item->discount, $item->currency, true, $configs);
+									echo DigiComSiteHelperDigiCom::format_price2($value_discount, $item->currency, true, $configs);?>
 								</span>
 							</td>
 							<?php endif; ?>
@@ -215,12 +216,15 @@ echo '</pre>';
 					<td nowrap="nowrap" style="text-align: center;">
 						<ul style="margin: 0; padding: 0;list-style-type: none;">
 							<?php if ($tax['discount_calculated']): ?>
-							<li class="digi_cart_total" style="font-size: 15px;text-align:right;">
+								<li class="digi_cart_subtotal_title" style="font-size: 15px;text-align:right;">
+									<?php echo JText::_("COM_DIGICOM_SUBTOTAL");?>
+								</li>
+								<li class="digi_cart_discount_title" style="font-size: 15px;text-align:right;">
 								<?php echo JText::_("COM_DIGICOM_PROMO_DISCOUNT");?>
 							</li>
 							<?php endif; ?>
 
-							<li class="digi_cart_total" style="font-weight: bold;font-size: 18px;text-align:right;">
+							<li class="digi_cart_total_title" style="font-weight: bold;font-size: 18px;text-align:right;">
 								<?php echo JText::_("COM_DIGICOM_TOTAL");?>
 							</li>
 						</ul>
@@ -228,12 +232,15 @@ echo '</pre>';
 					<td nowrap="nowrap" style="text-align: center;">
 						<ul style="margin: 0; padding: 0;list-style-type: none;">
 							<?php if ($tax['discount_calculated']): ?>
-							<li class="digi_cart_amount" id="cart_total" style="font-size: 15px;text-align:right;">
+							<li class="digi_cart_subtotal_price" id="cart_total" style="font-size: 15px;text-align:right;">
+								<?php echo DigiComSiteHelperDigiCom::format_price2($tax['price'], $tax['currency'], true, $configs); ?>
+							</li>
+							<li class="digi_cart_discount_price" id="cart_total" style="font-size: 15px;text-align:right;">
 								<?php echo DigiComSiteHelperDigiCom::format_price2($tax['promo'], $tax['currency'], true, $configs); ?>
 							</li>
 							<?php endif; ?>
 
-							<li class="digi_cart_amount" id="cart_total" style="font-weight: bold;font-size: 18px;text-align:right;">
+							<li class="digi_cart_total_price" id="cart_total" style="font-weight: bold;font-size: 18px;text-align:right;">
 								<?php echo DigiComSiteHelperDigiCom::format_price2($tax['taxed'], $tax['currency'], true, $configs); ?>
 							</li>
 						</ul>
