@@ -359,7 +359,7 @@ class DigiComModelCart extends JModelItem
 		$sum_tax = $total + $payprocess['value']; //$vat_tax + $state_tax;//total tax
 
 		$payprocess['promo_error'] = (!$user->id && isset($promo->orders) && count($promo->orders) ? JText::_("DIGI_PROMO_LOGIN") : '');
-		$payprocess['total'] = $total;
+		//$payprocess['total'] = $total;
 
 		$payprocess['taxed'] = $payprocess['shipping'] + $sum_tax;
 		$payprocess['discount_calculated'] = (isset($payprocess['discount_calculated']) ? $payprocess['discount_calculated'] : 0);
@@ -988,8 +988,8 @@ class DigiComModelCart extends JModelItem
 		$data = array();
 		$data['cart'] = array();
 		$data['cart']['orderid'] = $orderid;
-		$data['cart']['total'] = $tax['taxed'];
-		$data['cart']['tax'] = $tax['taxed'] - $tax['total'] - $tax['shipping'];
+		$data['cart']['payable_amount'] = $tax['taxed'];
+		$data['cart']['tax'] = $tax['taxed'] - $tax['payable_amount'] - $tax['shipping'];
 
 		$query = "select state, country, city from #__digicom_customers where id=" . $my->id;
 		$database->setQuery( $query );
@@ -1006,7 +1006,7 @@ class DigiComModelCart extends JModelItem
 		$data['option'] = 'com_digicom';
 		$data['Itemid'] = $Itemid;
 
-		$data['nontaxed'] = $tax['total'];
+		$data['nontaxed'] = $tax['payable_amount'];
 		$insert = base64_encode( serialize( $data ) );
 		$sql = "update #__digicom_session set transaction_details='" . $insert . "' where sid='" . intval($sid) . "'";
 		$database->setQuery( $sql );
