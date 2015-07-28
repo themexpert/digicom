@@ -69,7 +69,7 @@ class DigiComViewProduct extends JViewLegacy
 		}
 
 		// TODO: Change based on shownoauth
-		$item->readmore_link = JRoute::_(DigiComHelperRoute::getproductRoute($item->id, $item->catid, $item->language));
+		$item->readmore_link = JRoute::_(DigiComSiteHelperRoute::getproductRoute($item->id, $item->catid, $item->language));
 
 		// Merge product params. If this is single-product view, menu params override product params
 		// Otherwise, product params override menu item params
