@@ -41,7 +41,7 @@ function changePlain() {
 	var jsonString = JSON.encode({pids: product_ids, processor: tprocessor, promocode: tpromocode, amount_paid: tamount_paid});
 	//var url = \"index.php?option=com_digicom&controller=orders&task=calc&no_html=1&jsonString=\"+jsonString;
 	var url = \"index.php?option=com_digicom&task=orders.calc&tmpl=component&jsonString=\"+jsonString;
-	console.log(url);
+	//console.log(url);
 	//index.php?option=com_digicom&controller=orders&task=calc&no_html=1&
 	//jsonString={\"pids\":[],\"processor\":\"offline\",\"promocode\":\"\",\"amount_paid\":\"\"}
 	var req = new Request.HTML({

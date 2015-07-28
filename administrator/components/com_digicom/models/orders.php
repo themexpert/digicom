@@ -270,14 +270,10 @@ class DigiComModelOrders extends JModelList{
 		if(isset($req)){
 			foreach($req->pids as $item ) {
 				if (!empty($item[0])) {
-					
 					$sql = "SELECT price FROM #__digicom_products WHERE id = '" . $item[0] . "'";
 					$this->_db->setQuery( $sql );
 					$plan = $this->_db->loadObject();
-
-					$product_id = $item[0];
 					$price = $plan->price;
-
 					$amount_subtotal += $price;
 					$amount += $price;
 					//$taxvalue += $this->getTax( $product_id, $cust_id, $price );
@@ -285,7 +281,6 @@ class DigiComModelOrders extends JModelList{
 
 					//check promocode on product apply
 					if($addPromo && $onProduct){
-						//TODO: Apply Product promo
 						// Get product restrictions
 						$sql = "SELECT p.`productid` FROM `#__digicom_promocodes_products` AS p WHERE p.`promoid`=" . $promo->id ." and p.`productid`=".$item[0];
 						$this->_db->setQuery( $sql );
@@ -538,6 +533,10 @@ class DigiComModelOrders extends JModelList{
 		$table = $this->getTable('order');
 		$table->load($id);
 		$table->status = $status;
+
+		if(empty($table->transaction_number)){
+			$table->transaction_number = DigiComSiteHelper::getUniqueTransactionId($table->id);
+		}
 
 		if($status == 'Paid'){
 			$table->amount_paid = $table->amount;
@@ -862,7 +861,7 @@ class DigiComModelOrders extends JModelList{
 	* get the site template for frontend
 	*/
 
-	/*public static function getTemplate(){
+	public static function getTemplate_x(){
 		// Get the database object.
 		$db = JFactory::getDbo();
 		// Build the query.
@@ -876,7 +875,7 @@ class DigiComModelOrders extends JModelList{
 		$db->setQuery($query);
 		return $db->loadObject();
 
-	}*/
+	}
 
 	
 	/**
@@ -889,16 +888,16 @@ class DigiComModelOrders extends JModelList{
 	 *
 	 * @since	3.2
 	 */
-	/*public function getForm($data = array(), $loadData = true)
+	public function getForm_x($data = array(), $loadData = true)
 	{
 		$form = $this->loadForm('com_digicom.order', 'order', array('control' => 'jform', 'load_data' => $loadData));
-		
+
 		if (empty($form))
 		{
 			return false;
 		}
-		
+
 		return $form;
-	}*/
+	}
 
 }
