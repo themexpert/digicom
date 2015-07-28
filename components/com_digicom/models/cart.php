@@ -831,6 +831,9 @@ class DigiComModelCart extends JModelItem
 		//amount_paid
 		$orderTable->amount_paid = $orderTable->amount_paid + $data['total_paid_amt'];
 
+		//transection id
+		$orderTable->transaction_number = $data['transaction_id'];
+
 		//processor
 		$orderTable->processor = $data['processor'];
 		$warning = '';
@@ -1364,13 +1367,19 @@ class DigiComModelCart extends JModelItem
 			$promocode = '0';
 		}
 
+		if($paymethod == 'free'){
+			$transectionid = $tax['number_of_products'].$paymethod.$now;
+			$transectionid = substr($transectionid,0,15);
+		}else{
+			$transectionid = '';
+		}
 		//--------------------------------------------------------
 		// Create a new query object.
 		$query = $db->getQuery(true);
 		// Insert columns.
-		$columns = array( 'userid', 'order_date', 'price', 'amount', 'discount', 'amount_paid', 'currency', 'processor', 'number_of_products', 'status', 'promocodeid', 'promocode', 'published' );
+		$columns = array( 'userid', 'transaction_number', 'order_date', 'price', 'amount', 'discount', 'amount_paid', 'currency', 'processor', 'number_of_products', 'status', 'promocodeid', 'promocode', 'published' );
 		// Insert values.
-		$values = array( $uid, $db->quote($now), $db->quote($tax['price']), $db->quote($tax['payable_amount']), $tax['promo'], 0, $db->quote($tax['currency']), $db->quote($paymethod), $tax['number_of_products'], $db->quote($status), $promoid, $db->quote($promocode), 1 );
+		$values = array( $uid, $db->quote($transectionid),$db->quote($now), $db->quote($tax['price']), $db->quote($tax['payable_amount']), $tax['promo'], 0, $db->quote($tax['currency']), $db->quote($paymethod), $tax['number_of_products'], $db->quote($status), $promoid, $db->quote($promocode), 1 );
 
 		// Prepare the insert query.
 		$query
