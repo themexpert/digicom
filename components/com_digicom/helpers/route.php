@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.5
  */
-abstract class DigiComHelperRoute
+abstract class DigiComSiteHelperRoute
 {
 	protected static $lookup = array();
 
