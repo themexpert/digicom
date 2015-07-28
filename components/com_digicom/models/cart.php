@@ -15,7 +15,7 @@ defined('_JEXEC') or die;
  * @package     DigiCom
  * @since       1.0.0
  */
-
+JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_digicom/tables', 'Table');
 class DigiComModelCart extends JModelItem
 {
 	public $orders 		= array();
