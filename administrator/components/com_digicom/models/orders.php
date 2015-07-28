@@ -535,7 +535,7 @@ class DigiComModelOrders extends JModelList{
 		$table->status = $status;
 
 		if(empty($table->transaction_number)){
-			$table->transaction_number = DigiComSiteHelper::getUniqueTransactionId($table->id);
+			$table->transaction_number = DigiComSiteHelperDigicom::getUniqueTransactionId($table->id);
 		}
 
 		if($status == 'Paid'){
@@ -861,7 +861,7 @@ class DigiComModelOrders extends JModelList{
 	* get the site template for frontend
 	*/
 
-	public static function getTemplate_x(){
+	public static function getTemplate(){
 		// Get the database object.
 		$db = JFactory::getDbo();
 		// Build the query.

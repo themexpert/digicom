@@ -213,7 +213,7 @@ class DigiComModelOrder extends JModelAdmin
 		}
 
 		if(empty($table->transaction_number)){
-			$data['transaction_number'] = DigiComSiteHelper::getUniqueTransactionId($table->id);
+			$data['transaction_number'] = DigiComSiteHelperDigicom::getUniqueTransactionId($table->id);
 		}
 
 		if(parent::save($data)){
