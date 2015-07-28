@@ -303,8 +303,7 @@ class DigiComModelProduct extends JModelItem
 		if ($hitcount)
 		{
 			$pk = (!empty($pk)) ? $pk : (int) $this->getState('product.id');
-
-			$table = JTable::getInstance('Content', 'JTable');
+			$table = JTable::getInstance('Product', 'Table');
 			$table->load($pk);
 			$table->hit($pk);
 		}
