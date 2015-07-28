@@ -202,11 +202,18 @@ class DigiComModelOrder extends JModelAdmin
 	{
 		$app = JFactory::getApplication();
 		$db = JFactory::getDBO();
+		$table = $this->getTable();
+		$table->load($data['id']);
+
 		//print_r($data);die;
 		$status = $data['status'];
 		if($status == 'Paid'){
-			$table->amount_paid = $table->amount;
+			$data['amount_paid'] = $table->amount;
 			$data['status'] = 'Active';
+		}
+
+		if(empty($table->transaction_number)){
+			$data['transaction_number'] = $this->getUniqueTransactionId($table->id);
 		}
 
 		if(parent::save($data)){
@@ -238,6 +245,12 @@ class DigiComModelOrder extends JModelAdmin
 
 		return true;
 
+	}
+
+	function getUniqueTransactionId($order_id){
+		$uniqueValue = $order_id.time();
+		$long = md5(uniqid($uniqueValue, true));
+		return substr($long, 0, 15);
 	}
 
 	function getConfigs() {
