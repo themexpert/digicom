@@ -619,7 +619,7 @@ class DigiComModelOrders extends JModelList{
 
 		$my = $cust_info;
 
-		/*		
+		/*
 		$emailinfo = $configs->get('email');
 		$message = $emailinfo->$type->body;
 		$subject = $emailinfo->$type->subject;
@@ -643,26 +643,26 @@ class DigiComModelOrders extends JModelList{
 		$heading = $emailinfo->heading;//jform[email_settings][heading]
 		if(!$enable) return;
 		//print_r($emailinfo);die;
-		
+
 		//-----------------------------------------------------------------------
 		$path = '/components/com_digicom/emails/';
-		
+
 		switch ($type) {
 			case 'new_order':
 				$emailType = JText::_('COM_DIGIOM_NEW_ORDER');
 				$filename = 'new-order.'.$email_type.'.php';
 				break;
-			
+
 			case 'process_order':
 				$emailType = JText::_('COM_DIGIOM_PROCESS_ORDER');
 				$filename = 'process-order.'.$email_type.'.php';
 				break;
-			
+
 			case 'cancel_order':
 				$emailType = JText::_('COM_DIGIOM_CANCEL_ORDER');
 				$filename = 'cancel-order.'.$email_type.'.php';
 				break;
-			
+
 			case 'complete_order':
 				$emailType = JText::_('COM_DIGIOM_COMPLETE_ORDER');
 				$filename = 'complete-order.'.$email_type.'.php';
@@ -688,7 +688,7 @@ class DigiComModelOrders extends JModelList{
 
 
 		//$email = $configs->get('email');
-		
+
 		/*$message = $email->$type->body;
 		$subject = $email->$type->subject;
 		*/
@@ -779,11 +779,11 @@ class DigiComModelOrders extends JModelList{
 		$subject = str_replace( "{site_title}", $sitename, $subject );
 		$subject = str_replace( "{order_number}", $cid, $subject );
 		$subject = str_replace( "{order_date}", date( $configs->get('time_format','d-m-Y'), $timestamp ), $subject );
-		
+
 		$message = str_replace( "{site_title}", $sitename, $message );
 		$message = str_replace( "{order_number}", $cid, $message );
 		$message = str_replace( "{order_date}", date( $configs->get('time_format','d-m-Y'), $timestamp ), $message );
-		
+
 		$subject = str_replace( "[PRODUCTS]", $product_list, $subject );
 
 		//replace styles
@@ -796,7 +796,7 @@ class DigiComModelOrders extends JModelList{
 		$message = str_replace( "[TMPL_COLOR]", $tmplcolor, $message );
 		$message = str_replace( "[TMPL_BG_COLOR]", $tmplbgcolor, $message );
 
-		
+
 
 		$subject = html_entity_decode( $subject, ENT_QUOTES );
 		$message = html_entity_decode( $message, ENT_QUOTES );
@@ -862,7 +862,7 @@ class DigiComModelOrders extends JModelList{
 	* get the site template for frontend
 	*/
 
-	public static function getTemplate(){
+	/*public static function getTemplate(){
 		// Get the database object.
 		$db = JFactory::getDbo();
 		// Build the query.
@@ -876,7 +876,7 @@ class DigiComModelOrders extends JModelList{
 		$db->setQuery($query);
 		return $db->loadObject();
 
-	}
+	}*/
 
 	
 	/**
@@ -889,7 +889,7 @@ class DigiComModelOrders extends JModelList{
 	 *
 	 * @since	3.2
 	 */
-	public function getForm($data = array(), $loadData = true)
+	/*public function getForm($data = array(), $loadData = true)
 	{
 		$form = $this->loadForm('com_digicom.order', 'order', array('control' => 'jform', 'load_data' => $loadData));
 		
@@ -899,6 +899,6 @@ class DigiComModelOrders extends JModelList{
 		}
 		
 		return $form;
-	}
+	}*/
 
 }
