@@ -9,22 +9,20 @@
 
 defined('_JEXEC') or die;
 
-require_once JPATH_SITE . '/components/com_digicom/helpers/route.php';
-
 JLoader::discover('DigiComSiteHelper', JPATH_SITE . '/components/com_digicom/helpers');
 JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_digicom/models', 'DigiComModel');
 
 // Lets cache some variable
-$app				= JFactory :: getApplication();
-$input			= $app->input;
+$app	   = JFactory :: getApplication();
+$input	   = $app->input;
 
-$customer	  = new DigiComSiteHelperSession();
-$cart		    = JModelLegacy::getInstance('Cart', 'DigiComModel', array('ignore_request' => true));
-$configs	  = JComponentHelper::getComponent('com_digicom')->params;
-$list       = $cart->getCartItems ($customer, $configs);
-$tax       =  $cart->calc_price($list, $customer, $configs);
-$item       = $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=cart', true);
-$Itemid     = isset($item->id) ? '&Itemid=' . $item->id : '';
+$customer  = new DigiComSiteHelperSession();
+$cart	   = JModelLegacy::getInstance('Cart', 'DigiComModel', array('ignore_request' => true));
+$configs   = JComponentHelper::getComponent('com_digicom')->params;
+$list      = $cart->getCartItems ($customer, $configs);
+$tax       = $cart->calc_price($list, $customer, $configs);
+$item      = $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=cart', true);
+$Itemid    = isset($item->id) ? '&Itemid=' . $item->id : '';
 
 $moduleclass_sfx  = htmlspecialchars($params->get('moduleclass_sfx'));
 $price_format     = '%'.$configs->get('totaldigits').'.'.$configs->get('decimaldigits').'f';
