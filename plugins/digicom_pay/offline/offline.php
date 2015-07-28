@@ -15,7 +15,7 @@ $lang = JFactory::getLanguage();
 $lang->load('plg_digicom_pay_offline', JPATH_ADMINISTRATOR);
 require_once(JPATH_SITE.'/plugins/digicom_pay/offline/offline/helper.php');
 
-class plgDigiCom_PayOffline extends JPlugin 
+class plgDigiCom_PayOffline extends JPlugin
 {
 	var $_payment_gateway = 'offline';
 	var $_log = null;
@@ -61,7 +61,7 @@ class plgDigiCom_PayOffline extends JPlugin
 		ob_start();
 		$layout = $this->buildLayoutPath($layout);
 		include($layout);
-		$html = ob_get_contents(); 
+		$html = ob_get_contents();
 		ob_end_clean();
 		return $html;
 	}
@@ -87,7 +87,7 @@ class plgDigiCom_PayOffline extends JPlugin
 	//Adds a row for the first time in the db, calls the layout view
 	function onTP_Processpayment($data)
 	{
-		
+
 		$payment_status = $this->translateResponse('Pending');
 		$data['payment_status'] = $payment_status;
 
@@ -104,7 +104,7 @@ class plgDigiCom_PayOffline extends JPlugin
 		);
 		return $result;
 	}
-	
+
 	function translateResponse($invoice_status){
 
 		foreach($this->responseStatus as $key=>$value)
@@ -113,7 +113,7 @@ class plgDigiCom_PayOffline extends JPlugin
 			return $value;
 		}
 	}
-	
+
 	function onTP_Storelog($data)
 	{
 		$log = plgDigiCom_PayOfflineHelper::Storelog($this->_name,$data);
@@ -122,8 +122,6 @@ class plgDigiCom_PayOffline extends JPlugin
 	function getUniqueTransactionId($order_id){
 		$uniqueValue = $order_id.time();
 		$long = md5(uniqid($uniqueValue, true));
-		return substr($long, 10);
+		return substr($long, 0, 15);
 	}
 }
-
-
