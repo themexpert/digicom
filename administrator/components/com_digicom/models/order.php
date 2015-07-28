@@ -213,7 +213,7 @@ class DigiComModelOrder extends JModelAdmin
 		}
 
 		if(empty($table->transaction_number)){
-			$data['transaction_number'] = $this->getUniqueTransactionId($table->id);
+			$data['transaction_number'] = DigiComSiteHelper::getUniqueTransactionId($table->id);
 		}
 
 		if(parent::save($data)){
@@ -245,12 +245,6 @@ class DigiComModelOrder extends JModelAdmin
 
 		return true;
 
-	}
-
-	function getUniqueTransactionId($order_id){
-		$uniqueValue = $order_id.time();
-		$long = md5(uniqid($uniqueValue, true));
-		return substr($long, 0, 15);
 	}
 
 	function getConfigs() {

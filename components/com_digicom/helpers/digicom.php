@@ -819,6 +819,12 @@ class DigiComSiteHelperDigicom {
 
 	}
 
+	public static function getUniqueTransactionId($order_id){
+		$uniqueValue = $order_id.time();
+		$long = md5(uniqid($uniqueValue, true));
+		return substr($long, 0, 15);
+	}
+
 	public static function prepareGCalendarUrl($item){
 		//href="<?php echo
 		//;&dates=20150522T090000/20150522T110000

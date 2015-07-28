@@ -468,5 +468,4 @@ class DigiComHelperDigiCom extends JHelperContent{
 		$document->addStyleSheet(JURI::root(true).'/media/digicom/assets/css/digicom-admin.css');
 	}
 
-
 }
