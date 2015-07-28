@@ -11,8 +11,8 @@ defined('_JEXEC') or die;
 ?>
 <ul class="nav nav-menu <?php echo $moduleclass_sfx; ?>">
 	<?php foreach($list as $item) :?>
-		<li <?php if ($_SERVER['REQUEST_URI'] == JRoute::_(DigiComHelperRoute::getCategoryRoute($item->id))) echo ' class="active"';?>>
-			<a href="<?php echo JRoute::_(DigiComHelperRoute::getCategoryRoute($item->id)); ?>">
+		<li <?php if ($_SERVER['REQUEST_URI'] == JRoute::_(DigiComSiteHelperRoute::getCategoryRoute($item->id))) echo ' class="active"';?>>
+			<a href="<?php echo JRoute::_(DigiComSiteHelperRoute::getCategoryRoute($item->id)); ?>">
 				<?php echo $item->title; ?>
 					<?php if ($params->get('numitems')) : ?>
 						(<?php echo $item->numitems; ?>)
