@@ -141,22 +141,24 @@ DROP TABLE IF EXISTS `#__digicom_orders`;
 CREATE TABLE IF NOT EXISTS `#__digicom_orders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userid` int(11) NOT NULL DEFAULT '0',
+  `transaction_number` varchar(250) NOT NULL,
   `order_date` int(11) NOT NULL DEFAULT '0',
-  `amount` float NOT NULL DEFAULT '0',
+  `price` varchar(100) NOT NULL COMMENT 'original price without discount',
+  `amount` float NOT NULL DEFAULT '0' COMMENT 'payable amount',
+  `discount` float NOT NULL DEFAULT '0',
+  `amount_paid` float NOT NULL DEFAULT '0',
   `number_of_products` int(11) NOT NULL DEFAULT '0',
   `currency` varchar(10) NOT NULL DEFAULT '',
   `status` varchar(10) NOT NULL DEFAULT '',
   `promocodeid` int(11) NOT NULL DEFAULT '0',
   `promocode` varchar(255) NOT NULL DEFAULT '',
-  `discount` float NOT NULL DEFAULT '0',
-  `amount_paid` float NOT NULL DEFAULT '0',
   `processor` varchar(100) NOT NULL,
   `published` int(11) NOT NULL DEFAULT '0',
   `chargeback` tinyint(1) NOT NULL DEFAULT '0',
   `comment` longtext NOT NULL,
   `params` longtext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=41 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=500 ;
 
 -- --------------------------------------------------------
 
@@ -181,7 +183,7 @@ CREATE TABLE IF NOT EXISTS `#__digicom_orders_details` (
   `cancelled_amount` float NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `orderid` (`orderid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=42 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
 -- --------------------------------------------------------
 
