@@ -26,7 +26,7 @@ if($this->configs->get('afteradditem',0) == "2"){
 		<?php if(!$this->item->id): ?>
 		<div class="alert alert-warning">
 			<p><?php echo JText::_('COM_DIGICOM_PRODUCT_NOT_AVAILABLE_NOTICE'); ?></p>
-			<p><a href="<?php echo JRoute::_(DigiComHelperRoute::getCategoryRoute($this->item->catid, $this->item->language)); ?>"><?php echo JText::_("COM_DIGICOM_CONTINUE_SHOPPING"); ?></a></p>
+			<p><a href="<?php echo JRoute::_(DigiComSiteHelperRoute::getCategoryRoute($this->item->catid, $this->item->language)); ?>"><?php echo JText::_("COM_DIGICOM_CONTINUE_SHOPPING"); ?></a></p>
 		</div>
 		<?php return true; ?>
 		<?php endif; ?>
@@ -89,7 +89,7 @@ if($this->configs->get('afteradditem',0) == "2"){
 						<h3><?php echo JText::_('COM_DIGICOM_PRODUCT_BUNDLE_ITEMS_TITLE');?></h3>
 						<ul>
 							<?php foreach($this->item->bundleitems as $key=>$bitem):
-								  $link = JRoute::_(DigiComHelperRoute::getProductRoute($bitem->id,$bitem->catid, $bitem->language));
+								  $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($bitem->id,$bitem->catid, $bitem->language));
 
 							?>
 								<li>

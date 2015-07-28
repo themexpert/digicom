@@ -100,7 +100,7 @@ $tax = $this->tax;
 				<tbody>
 					<?php
 					foreach($items as $itemnum => $item ):
-						$item_link = JRoute::_(DigiComHelperRoute::getProductRoute($item->id, $item->catid, $item->language));
+						$item_link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($item->id, $item->catid, $item->language));
 						?>
 						<tr>
 							<td>

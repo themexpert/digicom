@@ -59,7 +59,7 @@ $column = $this->category->params->get('category_cols',3);
 				  }else{
 				  	$price = '<span class="label label-success">'.JText::_('COM_DIGICOM_PRODUCT_PRICE_FREE').'</span>';
 				  }
-				  $link = JRoute::_(DigiComHelperRoute::getProductRoute($item->id, $item->catid, $item->language));
+				  $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($item->id, $item->catid, $item->language));
 				  ?>
 				  <li class="<?php echo $bsGrid[$column]?>">
 	                <div class="thumbnail">

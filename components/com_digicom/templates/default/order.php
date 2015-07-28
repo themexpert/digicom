@@ -125,7 +125,7 @@ $params = json_decode($this->order->params);
 		<tbody>
 			<?php
 			foreach($order->products as $key=>$product):
-			$productlink = JRoute::_(DigiComHelperRoute::getProductRoute($product->id, $product->catid, $product->language));
+			$productlink = JRoute::_(DigiComSiteHelperRoute::getProductRoute($product->id, $product->catid, $product->language));
 			?>
 			<tr>
 				<td>
