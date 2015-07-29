@@ -35,17 +35,15 @@ class DigiComViewCheckout extends JViewLegacy
 			$pg_plugin 	= $processor;
 		}
 		$Itemid 		= JRequest::getInt("Itemid", "0");
-		$order_id 	= JRequest::getInt("order_id", "0");
-		$dispatcher = JDispatcher::getInstance();
-		$plugin 		= JPluginHelper::importPlugin( 'digicom_pay', $pg_plugin );
+		JPluginHelper::importPlugin( 'digicom_pay', $pg_plugin );
 
 		$configs 	= JComponentHelper::getComponent('com_digicom')->params;
 		$order 		= $this->get('Order');//print_r($order);die;
 		$params 	= json_decode($order->params,true);//print_r($params);die;
 		$items 		= $params['products'];//print_r($items);die;
 
-		$vars 						= new stdClass();
-		$vars->items 			= $items;
+		$vars 				= new stdClass();
+		$vars->items 		= $items;
 		$vars->order_id 	= $params['order_id'];
 		$vars->user_id 		= JFactory::getUser()->id;
 		$vars->customer		= $customer->_customer;
