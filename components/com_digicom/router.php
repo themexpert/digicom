@@ -218,6 +218,7 @@ class DigiComRouter extends JComponentRouterBase
 						$db->setQuery($dbQuery);
 						$alias = $db->loadResult();
 						$query['id'] = $query['id'] . ':' . $alias;
+
 					}
 				}
 				else
@@ -258,7 +259,7 @@ class DigiComRouter extends JComponentRouterBase
 			}
 
 			$path = array_reverse($category->getPath());
-
+			//print_r($path);
 			$array = array();
 
 			foreach ($path as $id)
@@ -271,6 +272,8 @@ class DigiComRouter extends JComponentRouterBase
 				list($tmp, $id) = explode(':', $id, 2);
 
 				$array[] = $id;
+
+				if($tmp == $catid) break;
 			}
 
 			$array = array_reverse($array);
@@ -279,7 +282,7 @@ class DigiComRouter extends JComponentRouterBase
 			{
 				$array[0] = (int) $catid . ':' . $array[0];
 			}
-
+			//print_r($array);
 			$segments = array_merge($segments, $array);
 
 			if ($view == 'product')
