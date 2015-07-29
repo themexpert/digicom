@@ -62,6 +62,11 @@ function myValidate(f)
 		</div>
 
 		<div class="form-actions">
+
+			<input type='hidden' name='option' value="com_digicom" />
+			<input type='hidden' name='task' value="cart.processPayment" />
+			<input type='hidden' name='processor' value="offline" />
+
 			<input type='hidden' name='order_id' value="<?php echo $vars->order_id;?>" />
 			<input type='hidden' name="total" value="<?php //echo sprintf('%02.2f',$vars->amount) ?>" />
 			<input type="hidden" name="user_id" size="10" value="<?php echo $vars->user_id;?>" />
