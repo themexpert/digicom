@@ -279,7 +279,7 @@ class DigiComViewCategory extends JViewCategory
 
 			while (($menu->query['option'] != 'com_digicom' || $menu->query['view'] == 'product' || $id != $category->id) && $category->id > 1)
 			{
-				$path[] = array('title' => $category->title, 'link' => DigiComSiteHelperQuery::getCategoryRoute($category->id));
+				$path[] = array('title' => $category->title, 'link' => DigiComSiteHelperRoute::getCategoryRoute($category->id));
 				$category = $category->getParent();
 			}
 
