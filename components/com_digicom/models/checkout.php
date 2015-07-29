@@ -25,7 +25,7 @@ class DigiComModelCheckout extends JModelItem
 
 	public function getOrder(){
 		$input = JFactory::getApplication()->input; 
-		$order_id = $input->get('order_id','0'); 
+		$order_id = $input->get('id','0');
 		if(!isset( $this->orders[$order_id] )) {
 			$db 	= JFactory::getDbo();
 			$sql 	= 'SELECT * FROM `#__digicom_orders` WHERE `id`='.$order_id;
