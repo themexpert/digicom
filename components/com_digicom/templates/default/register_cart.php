@@ -151,11 +151,25 @@ $login_link = JRoute::_("index.php?option=com_digicom&view=register&task=profile
 
 			<tr>
 				<td>
+					<?php echo JText::_("COM_DIGICOM_STATE"); ?>&nbsp;<span class="error">*</span>
+				</td>
+
+				<td>
+					<?php
+					$customer = $this->customer;
+					$customer->state = $this->userinfo->state;
+					echo DigiComSiteHelperDigiCom::get_store_province($customer, false);
+					?>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
 					<?php echo Jtext::_("COM_DIGICOM_ADDRESS"); ?>&nbsp;<span class="error">*</span>
 				</td>
 
 				<td>
-					<input name="address" type="text" id="address"   size="30" class="digi_textbox" value="<?php echo $this->userinfo->address; ?>"><b>&nbsp;</b>
+					<textarea name="address" id="address"><?php echo $this->userinfo->address; ?></textarea>
 				</td>
 			</tr>
 
@@ -166,20 +180,6 @@ $login_link = JRoute::_("index.php?option=com_digicom&view=register&task=profile
 
 				<td>
 					<input id="city" type="text" value="<?php echo $this->userinfo->city; ?>" name="city"   size="30" class="digi_textbox" />
-				</td>
-			</tr>
-
-			<tr>
-				<td>
-					<?php echo JText::_("COM_DIGICOM_STATE"); ?>&nbsp;<span class="error">*</span>
-				</td>
-
-				<td>
-					<?php
-					$customer = $this->customer;
-					$customer->state = $this->userinfo->state;
-					echo DigiComSiteHelperDigiCom::get_store_province($customer, false);
-					?>
 				</td>
 			</tr>
 
