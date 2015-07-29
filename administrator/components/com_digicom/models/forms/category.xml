@@ -11,7 +11,7 @@
 
 	<field
 		name="hits"
-		type="text"
+		type="hidden"
 		default="0"
 		label="JGLOBAL_HITS"
 		description="COM_DIGICOM_CATEGORIES_FIELD_HITS_DESC"
@@ -230,7 +230,7 @@
 				description="COM_DIGICOM_CATEGORY_FIELD_IMAGE_LABEL_DESC" />
 			<field 
 				name="image_alt"
-				type="text"
+				type="hidden"
 				label="COM_DIGICOM_CATEGORY_FIELD_IMAGE_ALT_LABEL"
 				description="COM_DIGICOM_CATEGORY_FIELD_IMAGE_ALT_LABEL_DESC"
 				size="20" />
