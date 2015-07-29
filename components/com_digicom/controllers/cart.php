@@ -572,7 +572,7 @@ class DigiComControllerCart extends JControllerLegacy
 	function processPayment()
 	{
 
-	 	$session = JFactory::getSession();
+		$session = JFactory::getSession();
 	 	$app		= JFactory::getApplication();
 		$input 		= $app->input;
 
@@ -601,7 +601,6 @@ class DigiComControllerCart extends JControllerLegacy
 		$param['params'] = JPluginHelper::getPlugin('digicom_pay', $processor)->params;
 		$param['handle'] = &$this;
 
-		$customer 	= $this->_customer;
 		$configs 	= $this->_config;
 		$cart 		= $this->_model;
 		$items 		= $cart->getOrderItems($order_id, $configs);
@@ -619,7 +618,6 @@ class DigiComControllerCart extends JControllerLegacy
 		}
 
 		// after recieved payment request, get the status info
-
 		$dispatcher = JDispatcher::getInstance();
 		JPluginHelper::importPlugin('digicom_pay', $processor);
 		$data = $dispatcher->trigger('onTP_Processpayment', array($post));
@@ -628,8 +626,7 @@ class DigiComControllerCart extends JControllerLegacy
 		$param["cart_products"] = implode(" - ", $products);
 		$param["transaction"] = $data;
 
-		JPluginHelper::importPlugin('digicom_pay');
-		$results_plugins = $dispatcher->trigger('onReceivePayment', array(& $param));
+		$dispatcher->trigger('onReceivePayment', array(& $param));
 
 		$this->_model->proccessSuccess($post, $processor, $order_id, $sid,$data, $items);
 
@@ -686,6 +683,24 @@ class DigiComControllerCart extends JControllerLegacy
 		$module = JModuleHelper::getModule('mod_digicom_cart');
 		echo JModuleHelper::renderModule($module);
 		JFactory::getApplication()->close();
+	}
+
+	/*
+	 * PayOrder method
+	 * @since 1.0.0
+	 * redirect users to checkout page
+	 * */
+	function payOrder(){
+
+		$processor	= JRequest::getVar("processor", "");
+		$id			= JRequest::getVar("id", "");
+
+		$session = JFactory::getSession();
+		$session->set('processor', $processor);
+
+		$url = JRoute::_('index.php?option=com_digicom&view=checkout&id='.$id);
+		//print_r($url);die;
+		$this->setRedirect($url);
 	}
 
 	/**
