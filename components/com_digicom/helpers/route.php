@@ -229,7 +229,10 @@ abstract class DigiComSiteHelperRoute
 
 		//print_r(self::$lookup[$language]);die;
 		// lets search in big scal
-		if (isset(self::$lookup[$language]['category']))
+		if (isset(self::$lookup[$language]['categories']))
+		{
+			return self::$lookup[$language]['categories'][0];
+		}elseif(isset(self::$lookup[$language]['category']))
 		{
 			return self::$lookup[$language]['category'][0];
 		}
