@@ -61,7 +61,7 @@ abstract class DigiComSiteHelperRoute
 		{
 			$link .= '&Itemid=' . $item;
 		}
-
+		//echo $link;die;
 		return $link;
 	}
 
