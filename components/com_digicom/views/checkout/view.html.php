@@ -15,18 +15,18 @@ class DigiComViewCheckout extends JViewLegacy
 	function display($tpl = null)
 	{
 
-		$app 			= JFactory::getApplication();
+		$app 		= JFactory::getApplication();
 		$input 		= $app->input;
 		$Itemid 	= $input->get("Itemid", 0);
 		$return 	= base64_encode( JURI::getInstance()->toString() );
-		$customer = new DigiComSiteHelperSession();
+		$customer	= new DigiComSiteHelperSession();
 		if($customer->_user->id < 1)
 		{
 			$app->Redirect(JRoute::_('index.php?option=com_users&view=login&return='.$return.'&Itemid='.$Itemid, false));
 			return true;
 		}
 
-		$session 		= JFactory::getSession();
+		$session 	= JFactory::getSession();
 		$processor	= JRequest::getVar("processor", "");
 
 		if(empty($processor)){
@@ -35,7 +35,6 @@ class DigiComViewCheckout extends JViewLegacy
 			$pg_plugin 	= $processor;
 		}
 		$Itemid 		= JRequest::getInt("Itemid", "0");
-		JPluginHelper::importPlugin( 'digicom_pay', $pg_plugin );
 
 		$configs 	= JComponentHelper::getComponent('com_digicom')->params;
 		$order 		= $this->get('Order');//print_r($order);die;
@@ -56,7 +55,13 @@ class DigiComViewCheckout extends JViewLegacy
 		$vars->item_name = substr($vars->item_name, 0, strlen($vars->item_name)-2);
 
 		$vars->cancel_return = JRoute::_(JURI::root()."index.php?option=com_digicom&Itemid=".$Itemid."&task=cart.cancel&processor={$pg_plugin}", true, 0);
-		$vars->return = $vars->url = $vars->notify_url = JRoute::_(JURI::root()."index.php?option=com_digicom&task=cart.processPayment&processor={$pg_plugin}&order_id=".$params['order_id']."&sid=".$customer->_sid, true, false);
+
+		//prepare the url
+		///processPayment
+		$url = JRoute::_(JURI::root()."index.php?option=com_digicom&task=cart.processPayment&processor={$pg_plugin}&order_id=".$params['order_id']."&sid=".$customer->_sid, true, false);
+		$vars->url = JRoute::_("index.php?option=com_digicom&view=cart");
+		//echo $url;die;
+		$vars->return = $vars->notify_url = $url;
 		$vars->currency_code = $configs->get('currency','USD');
 		$vars->amount = $params['order_amount'];
 
