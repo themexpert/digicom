@@ -764,11 +764,11 @@ class DigiComModelCart extends JModelItem
 	function proccessSuccess($post, $pg_plugin, $order_id, $sid,$responce,$items)
 	{
 		$app = JFactory::getApplication();
-		$dispatcher = JDispatcher::getInstance();
 		$customer = $this->loadCustomer($sid);
 		if(!$customer){
 			$order = $this->getOrder($order_id);
-			$customer = $order->userid;
+			$sid = $customer = $order->userid;
+			//print_r($customer);
 		}
 		$conf = $this->getInstance( "config", "digicomModel" );
 		$configs = $conf->getConfigs();
@@ -796,17 +796,14 @@ class DigiComModelCart extends JModelItem
 				$app->enqueueMessage($msg, 'notice');
 			}
 
-			$config = JFactory::getConfig();
-			$tzoffset = $config->get('offset');
-			$now = date('Y-m-d H:i:s', time() + $tzoffset);
-			$now = strtotime($now);
-
 			$this->updateOrder($order_id,$result,$data,$pg_plugin,$status,$items,$customer);
 
 		}
 
 		if($status != "Active"){
-			$app->redirect(JRoute::_("index.php?option=com_digicom&view=order&id=".$order_id));
+			$url = JRoute::_("index.php?option=com_digicom&view=order&id=".$order_id);
+			//print_r($url);die;
+			$app->redirect($url);
 		}
 
 		// orders page
