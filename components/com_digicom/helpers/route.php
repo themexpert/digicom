@@ -97,6 +97,7 @@ abstract class DigiComSiteHelperRoute
 			$needles               = array();
 			$link                  = 'index.php?option=com_digicom&view=category&id=' . $id;
 			$catids                = array_reverse($category->getPath());
+
 			$needles['category']   = $catids;
 			$needles['categories'] = $catids;
 
@@ -110,7 +111,9 @@ abstract class DigiComSiteHelperRoute
 			{
 				$link .= '&Itemid=' . $item;
 			}
+
 		}
+
 
 		return $link;
 	}
@@ -155,43 +158,34 @@ abstract class DigiComSiteHelperRoute
 		$language = isset($needles['language']) ? $needles['language'] : '*';
 
 		// Prepare the reverse lookup array.
-		if (!isset(self::$lookup[$language]))
-		{
+		if (!isset(self::$lookup[$language])) {
 			self::$lookup[$language] = array();
 
-			$component  = JComponentHelper::getComponent('com_digicom');
-
+			$component = JComponentHelper::getComponent('com_digicom');
 			$attributes = array('component_id');
-			$values     = array($component->id);
+			$values = array($component->id);
 
-			if ($language != '*')
-			{
+			if ($language != '*') {
 				$attributes[] = 'language';
-				$values[]     = array($needles['language'], '*');
+				$values[] = array($needles['language'], '*');
 			}
 
 			$items = $menus->getItems($attributes, $values);
-
-			foreach ($items as $item)
-			{
-				if (isset($item->query) && isset($item->query['view']))
-				{
+			//print_r($items);die;
+			foreach ($items as $item) {
+				if (isset($item->query) && isset($item->query['view'])) {
 					$view = $item->query['view'];
-
-					if (!isset(self::$lookup[$language][$view]))
-					{
+					if (!isset(self::$lookup[$language][$view])) {
 						self::$lookup[$language][$view] = array();
 					}
 
-					if (isset($item->query['id']))
-					{
+					if (isset($item->query['id'])) {
 						/**
 						 * Here it will become a bit tricky
 						 * language != * can override existing entries
 						 * language == * cannot override existing entries
 						 */
-						if (!isset(self::$lookup[$language][$view][$item->query['id']]) || $item->language != '*')
-						{
+						if (!isset(self::$lookup[$language][$view][$item->query['id']]) || $item->language != '*') {
 							self::$lookup[$language][$view][$item->query['id']] = $item->id;
 						}
 					}
@@ -199,14 +193,21 @@ abstract class DigiComSiteHelperRoute
 			}
 		}
 
+		//print_r(self::$lookup[$language][$view]);die;
+		//Array([0] => 110)
+		//print_r($needles);die;//long array witt categorie=> 0=>10:uncategorised; categories prefix
+
 		if ($needles)
 		{
 			foreach ($needles as $view => $ids)
 			{
+
 				if (isset(self::$lookup[$language][$view]))
 				{
+
 					foreach ($ids as $id)
 					{
+
 						if (isset(self::$lookup[$language][$view][(int) $id]))
 						{
 							return self::$lookup[$language][$view][(int) $id];
@@ -217,13 +218,20 @@ abstract class DigiComSiteHelperRoute
 		}
 
 		// Check if the active menuitem matches the requested language
-		$active = $menus->getActive();
+//		$active = $menus->getActive();
+//
+//		if ($active
+//			&& $active->component == 'com_digicom'
+//			&& ($language == '*' || in_array($active->language, array('*', $language)) || !JLanguageMultilang::isEnabled()))
+//		{
+//			return $active->id;
+//		}
 
-		if ($active
-			&& $active->component == 'com_digicom'
-			&& ($language == '*' || in_array($active->language, array('*', $language)) || !JLanguageMultilang::isEnabled()))
+		//print_r(self::$lookup[$language]);die;
+		// lets search in big scal
+		if (isset(self::$lookup[$language]['category']))
 		{
-			return $active->id;
+			return self::$lookup[$language]['category'][0];
 		}
 
 		// If not found, return language specific home link
