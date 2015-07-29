@@ -9,205 +9,111 @@
 
 defined('_JEXEC') or die;
 
+
+JHtml::_('behavior.framework');
 JHtml::_('behavior.formvalidation');
 $app=JFactory::getApplication();
 $input = $app->input;
-
-require_once( JPATH_COMPONENT . '/helpers/sajax.php' );
-$configs = $this->configs;
-JHTML::_('behavior.modal');
-$login_link = JRoute::_("index.php?option=com_digicom&view=register&task=profile.login&returnpage=cart&tmpl=component&returnpage=cart&layout=login&graybox=true");
+$Itemid = $input->get("Itemid", 0);
 ?>
-<script type="text/javascript"><?php sajax_show_javascript(); ?></script>
-<form name="adminForm" id="adminForm" method="post" action="<?php echo JRoute::_('index.php?option=com_digicom&view=profile'); ?>" onsubmit="return validateForm('register');" >
-	<h2 class="digi-section-title"><?php echo JText::_('COM_DIGICOM_REGISTER');?></h2>
-	<table style="border-collapse:separate !important;">
 
-	<tr>
-		<td>
-			<?php echo JText::_("COM_DIGICOM_FIRST_NAME"); ?>&nbsp;<span class="error">*</span>
-		</td>
 
-		<td>
-			<input name="firstname" type="text" id="firstname"   size="30" class="digi_textbox" value="<?php echo $this->userinfo->firstname; ?>"><b>&nbsp;</b>
-		</td>
-	</tr>
+<div id="digicom">
 
-	<tr>
-		<td>
-			<?php echo JText::_("COM_DIGICOM_LAST_NAME"); ?>&nbsp;<span class="error">*</span>
-		</td>
-
-		<td>
-			<input name="lastname" type="text" id="lastname"   size="30" class="digi_textbox" value="<?php echo $this->userinfo->lastname; ?>"><b>&nbsp;</b>
-		</td>
-	</tr>
-
-	<?php if($this->askforcompany == 1){ ?>
-
-	<tr>
-		<td>
-			<?php echo JText::_("COM_DIGICOM_COMPANY"); ?><b></b>
-		</td>
-
-		<td>
-			<input name="company" type="text" id="company"   size="30" class="digi_textbox" value="<?php echo $this->userinfo->company; ?>">
-		</td>
-	</tr>
-
+	<?php if($this->configs->get('show_steps',0)){ ?>
+		<div class="pagination pagination-centered">
+			<ul>
+				<li><span><?php echo JText::_("COM_DIGICOM_BUYING_PROCESS_STEP_ONE"); ?></span></li>
+				<li class="active"><span><?php echo JText::_("COM_DIGICOM_BUYING_PROCESS_STEP_TWO"); ?></span></li>
+				<li><span><?php echo JText::_("COM_DIGICOM_BUYING_PROCESS_STEP_THREE"); ?></span></li>
+			</ul>
+		</div>
 	<?php } ?>
 
-	<tr>
-		<td>
-			<?php echo JText::_('COM_DIGICOM_EMAIL'); ?>&nbsp;<span class="error">*</span>
-		</td>
+	<h1 class="digi-page-title"><?php echo JText::_("COM_DIGICOM_LOGIN_REGISTER");?></h1>
 
-		<td>
-			<input name="email" type="text" id="email"  size="30" class="digi_textbox" value="<?php echo $this->userinfo->email; ?>" onchange="javascript:validateInput('email');" />
-			&nbsp;&nbsp;
-			<span class="" id="email_span">&nbsp;&nbsp;&nbsp;&nbsp;</span>
-			<br/>
-			<span style="display:none; color:#FF0000; font-size: 12px;" id="email_span_msg">
-				<?php
-				echo JText::_("COM_DIGICOM_REGISTRATION_EMAIL_ALREADY_USED")." ";
-				echo '<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">'
-			  . JText::_('COM_DIGICOM_REGISTRATION_CLICK_HERE_TO_LOGIN')
-				. '</a>';
-				 ?>
-			</span>
-		</td>
-	</tr>
+	<?php
+	$checked = "";
+	$display = "none";
+	$display1 = "block";
+	$login_register_invalid = isset($_SESSION["login_register_invalid"])?$_SESSION["login_register_invalid"]:'';
+	if(trim($login_register_invalid) == "notok"){
+		$checked = ' checked="checked" ';
+		$display = "block";
+		$display1 = "none";
+	}
+	?>
 
-	<tr>
-		<td>
-			<h2 class="digi-section-title"><?php echo JText::_("COM_DIGICOM_REGISTER_LOGIN_INFORMATION"); ?></h2>
-		</td>
-		<td>&nbsp;</td>
-	</tr>
+	<?php
+	if(count(JFactory::getApplication()->getMessageQueue())):
+		$message = JFactory::getApplication()->getMessageQueue();
+		?>
+		<div class="alert">
+			<?php echo $message[0]['message']; ?>
+		</div>
+	<?php endif; ?>
 
-	<tr>
-		<td>
-			<?php echo JText::_('COM_DIGICOM_USERNAME'); ?>&nbsp;<span class="error">*</span>
-		</td>
+	<div class="accordion" id="accordion2">
+		<div class="accordion-group">
+			<div class="accordion-heading">
+				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+					<?php echo JText::_("COM_DIGICOM_REGISTER_LOGIN_BELOW"); ?>
+				</a>
+			</div>
+			<div id="collapseOne" class="accordion-body collapse in">
+				<div class="accordion-inner">
+					<div id="log_form">
+						<form name="login" id="login" method="post" action="<?php echo JRoute::_('index.php?option=com_digicom&view=profile'); ?>">
+							<table width="100%" style="border-collapse:separate !important;">
+								<tr>
+									<td class="field-login"><?php echo JText::_("COM_DIGICOM_USERNAME");?>:
+										<input type="text" size="30" class="digi_textbox" id="user_name" name="username"  />
+									</td>
+								</tr>
+								<tr>
+									<td class="field-login"><?php echo JText::_("COM_DIGICOM_PASSWORD");?>:
+										<?php $link = JRoute::_("index.php?option=com_users&view=reset"); ?>
+										<input type="password" size="30" class="digi_textbox" id="passwd" name="passwd" /> (<a href="<?php echo $link;?>"><?php echo JText::_("COM_DIGICOM_REGISTER_LOGIN_FORGET_PASSWORD");?></a>)
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input type="checkbox" value="1" name="rememeber"> <span class="general_text_larger"><?php echo JText::_("COM_DIGICOM_REMEMBER_ME");?></span>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2">
+										<button type="submit" name="submit" class="btn btn-primary" style="margin-top: 10px;">Login <i class="ico-chevron-right ico-white"></i></button>
+									</td>
+								</tr>
+							</table>
 
-		<td>
-			<input name="username" type="text" id="username" size="30" class="digi_textbox" value="<?php echo $this->userinfo->username; ?>" onchange="javascript:validateInput('username');" />
-			&nbsp;&nbsp;
-			<span class="" id="username_span">&nbsp;&nbsp;&nbsp;&nbsp;</span>
-			<br/>
-			<span style="display:none; color:#FF0000; font-size: 12px;" id="username_span_msg">
-				<?php
-				echo JText::_("COM_DIGICOM_REGISTER_USERNAME_TAKEN")." ";
-				echo '<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">'
-				. JText::_('COM_DIGICOM_REGISTRATION_CLICK_HERE_TO_LOGIN')
-				. '</a>';
-				?>
-		</td>
-	</tr>
+							<input type="hidden" name="Itemid" value="<?php echo $Itemid;?>" />
+							<input type="hidden" name="option" value="com_digicom" />
+							<input type="hidden" name="task" value="profile.logCustomerIn" />
+							<input type="hidden" name="processor" value="<?php echo $input->get("processor", ""); ?>" />
+							<input type="hidden" name="return" value="<?php echo $input->get("return", ""); ?>" />
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 
-	<tr>
-		<td>
-			<?php echo JText::_("COM_DIGICOM_PASSWORD"); ?>&nbsp;<span class="error">*</span>
-		</td>
+		<div class="accordion-group">
+			<div class="accordion-heading">
+				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+					<?php echo JText::_("COM_DIGICOM_REGISTER_REGISTER_BELOW"); ?>
+				</a>
+			</div>
 
-		<td>
-			<input name="password" type="password" id="password" size="30" class="digi_textbox"   value="<?php echo $this->userinfo->password; ?>" ><b>&nbsp;</b>
-		</td>
-	</tr>
+			<div id="collapseTwo" class="accordion-body collapse">
+				<div class="accordion-inner">
+					<div id="reg_form">
+						<?php include('register_cart.php');	?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-	<tr>
-		<td>
-			<?php echo JText::_("COM_DIGICOM_CONFIRM_PASSWORD"); ?>&nbsp;<span class="error">*</span>
-		</td>
-
-		<td>
-			<input name="password_confirm" type="password" id="password_confirm"   size="30" class="digi_textbox" value="<?php echo $this->userinfo->password_confirm; ?>"><b>&nbsp;</b>
-		</td>
-	</tr>
-
-	<?php if($this->askforbilling == 1){ ?>
-
-		<tr>
-			<td>
-				<h2><?php echo JText::_("COM_DIGICOM_BILLING_ADDRESS"); ?></h2>
-			</td>
-			<td>&nbsp;</td>
-		</tr>
-
-		<tr>
-			<td>
-				<?php echo JText::_("COM_DIGICOM_COUNTRY"); ?>&nbsp;<span class="error">*</span>
-			</td>
-
-			<td>
-				<?php
-					$customer = $this->customer;
-					$customer->country = $this->userinfo->country;
-					$country_option = DigiComSiteHelperDigiCom::get_country_options($customer, false, $configs);
-					echo $country_option;
-				?>
-			</td>
-		</tr>
-
-		<tr>
-			<td>
-				<?php echo Jtext::_("COM_DIGICOM_ADDRESS"); ?>&nbsp;<span class="error">*</span>
-			</td>
-
-			<td>
-				<input name="address" type="text" id="address"   size="30" class="digi_textbox" value="<?php echo $this->userinfo->address; ?>"><b>&nbsp;</b>
-			</td>
-		</tr>
-
-		<tr>
-			<td>
-				<?php echo JText::_("COM_DIGICOM_CITY"); ?>&nbsp;<span class="error">*</span>
-			</td>
-
-			<td>
-				<input id="city" type="text" value="<?php echo $this->userinfo->city; ?>" name="city"   size="30" class="digi_textbox" />
-			</td>
-		</tr>
-
-		<tr>
-			<td>
-				<?php echo JText::_("COM_DIGICOM_STATE"); ?>&nbsp;<span class="error">*</span>
-			</td>
-
-			<td>
-				<?php
-					$customer = $this->customer;
-					$customer->state = $this->userinfo->state;
-					echo DigiComSiteHelperDigiCom::get_store_province($customer, false);
-				?>
-			</td>
-		</tr>
-
-		<tr>
-			<td>
-				<?php echo JText::_("COM_DIGICOM_ZIP"); ?>&nbsp;<span class="error">*</span>
-			</td>
-
-			<td>
-				<input name="zipcode" type="text" id="zipcode"   size="30" class="digi_textbox" value="<?php echo $this->userinfo->zipcode; ?>"><b>&nbsp;</b>
-			</td>
-		</tr>
-	<?php } ?>
-
-	</table>
-
-	<input type="hidden" name="option" value="com_digicom" >
-	<input type="hidden" name="task" value="profile.saveCustomer" >
-	<input type="hidden" name="processor" value="<?php echo $input->get("processor", ""); ?>" />
-	<input type="hidden" name="returnpage" value="<?php echo $input->get("return", ""); ?>" />
-	<input type="hidden" name="new_customer" value="true" >
-	<input type="hidden" name="view" value="profile" >
-
-	<table width="100%">
-		<tr>
-			<td align="left">
-				<button id="continue_button" type="submit" name="submit" class="btn btn-primary"><?php echo JText::_("COM_DIGICOM_REGISTER"); ?> <i class="ico-chevron-right ico-white"></i></button>
-			</td>
-		</tr>
-	</table>
-</form>
+</div>
