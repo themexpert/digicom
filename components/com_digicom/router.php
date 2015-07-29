@@ -38,6 +38,7 @@ class DigiComRouter extends JComponentRouterBase
 			// We need to have a view in the query or it is an invalid URL
 			return $segments;
 		}
+		//print_r($query);die;
 
 		// Get a menu item based on Itemid or currently active
 		$params = JComponentHelper::getParams('com_digicom');
@@ -49,6 +50,7 @@ class DigiComRouter extends JComponentRouterBase
 			// there are no menu Itemid found, lets dive into menu finder
 			$menu = JMenu::getInstance('site');
 			$menuItem = $menu->getItems('link', 'index.php?option=com_digicom&view='.$view, true);
+			//print_r($menuItem);die;
 			if(count($menuItem)){
 				$query['Itemid'] = $menuItem->id;
 				$menuItemGiven = true;
@@ -110,12 +112,27 @@ class DigiComRouter extends JComponentRouterBase
 
 			return $segments;
 		}
-
-
+		//print_r($segments);die;
 		if ($view == 'orders'
 			or $view == 'order')
 		{
 			unset($query['view']);
+
+			if(!$menuItemGiven){
+				// there are no menu Itemid found, lets dive into menu finder
+				$menu = JMenu::getInstance('site');
+				$menuItem = $menu->getItems('link', 'index.php?option=com_digicom&view=orders', true);
+
+				//print_r($menuItem);die;
+				if(count($menuItem)){
+					$query['Itemid'] = $menuItem->id;
+					$menuItemGiven = true;
+				}else{
+					$menuItem = $this->menu->getActive();
+					$menuItemGiven = false;
+				}
+			}
+
 
 			if(isset($query['layout'])){
 				$segments[] = $query['layout'];
@@ -131,8 +148,6 @@ class DigiComRouter extends JComponentRouterBase
 		if ($view == 'dashboard'
 			or $view == 'downloads'
 			or $view == 'profile'
-			or $view == 'checkout'
-			or $view == 'cart'
 			or $view == 'login'
 			or $view == 'register')
 		{
@@ -143,7 +158,41 @@ class DigiComRouter extends JComponentRouterBase
 			unset($query['view']);
 		}
 
+		if ($view == 'checkout'){
+			if (!$menuItemGiven)
+			{
+				$segments[] = $view;
 
+				// there are no menu Itemid found, lets dive into menu finder
+				$menu = JMenu::getInstance('site');
+				$menuItem = $menu->getItems('link', 'index.php?option=com_digicom&view=cart', true);
+
+				//print_r($menuItem);die;
+				if(count($menuItem)){
+					$query['Itemid'] = $menuItem->id;
+					$menuItemGiven = true;
+				}else{
+					$menuItem = $this->menu->getActive();
+					$menuItemGiven = false;
+				}
+			}
+			if(isset($query['id'])){
+				$segments[] = $query['id'];
+				unset($query['id']);
+			}
+			unset($query['view']);
+
+		}
+
+		if($view == 'cart')
+		{
+			if (!$menuItemGiven)
+			{
+				$segments[] = $view;
+			}
+
+			unset($query['view']);
+		}
 
 		// Handle product or category
 		if ($view == 'category' || $view == 'product')
@@ -377,10 +426,14 @@ class DigiComRouter extends JComponentRouterBase
 				break;
 			case "orders":
 			case "order":
+				//print_r($segments);die;//checkout
 				$vars['view'] = $item->query['view'];
-				if(isset($segments[0]) && !is_numeric($segments[0])){
+				if(isset($segments[0]) && !is_numeric($segments[0]) && $segments[0] == 'invoice'){
 					$vars['view'] = 'order';
 					$vars['layout'] = $segments[0];
+					$vars['id'] = $segments[1];
+				}elseif(isset($segments[0]) && !is_numeric($segments[0]) && $segments[0] == 'checkout'){
+					$vars['view'] = 'checkout';
 					$vars['id'] = $segments[1];
 				}elseif(isset($segments[0])  && is_numeric($segments[0])){
 					$vars['view'] = 'order';
@@ -393,11 +446,19 @@ class DigiComRouter extends JComponentRouterBase
 				//print_r($segments);
 				$vars['view'] = $item->query['view'];
 				//print_r($vars);die;
-				if(isset($segments[0])){
-					$vars['layout'] = $segments[0];
-				}
+
+//				if(isset($segments[0])){
+//					$vars['layout'] = $segments[0];
+//				}
+
 				if(isset($segments[0]) && $segments[0] !='cart_popup' && $segments[0] !='summary'){
 					$vars['view'] = $segments[0];
+				}elseif(isset($segments[0])){
+					$vars['layout'] = $segments[0];
+				}
+
+				if(isset($segments[1])  && is_numeric($segments[1])){
+					$vars['id'] = $segments[1];
 				}
 					//print_r($vars);die;
 					return $vars;
@@ -488,7 +549,7 @@ class DigiComRouter extends JComponentRouterBase
 
 		if (!$category)
 		{
-			JError::raiseError(404, JText::_('COM_CONTENT_ERROR_PARENT_CATEGORY_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_DIGICOM_ERROR_PARENT_CATEGORY_NOT_FOUND'));
 
 			return $vars;
 		}
@@ -535,16 +596,16 @@ class DigiComRouter extends JComponentRouterBase
 
 				$vars['id'] = $cid;
 
-				if ($item->query['view'] == 'archive' && $count != 1)
-				{
-					$vars['year'] = $count >= 2 ? $segments[$count - 2] : null;
-					$vars['month'] = $segments[$count - 1];
-					$vars['view'] = 'archive';
-				}
-				else
-				{
+//				if ($item->query['view'] == 'archive' && $count != 1)
+//				{
+//					$vars['year'] = $count >= 2 ? $segments[$count - 2] : null;
+//					$vars['month'] = $segments[$count - 1];
+//					$vars['view'] = 'archive';
+//				}
+//				else
+//				{
 					$vars['view'] = 'product';
-				}
+				//}
 			}
 
 			$found = 0;
