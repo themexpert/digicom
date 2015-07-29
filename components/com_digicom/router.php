@@ -42,7 +42,7 @@ class DigiComRouter extends JComponentRouterBase
 
 		// Get a menu item based on Itemid or currently active
 		$params = JComponentHelper::getParams('com_digicom');
-		$advanced = $params->get('sef_advanced_link', 0);
+		$advanced = $params->get('sef_advanced_link', 1);
 
 		// We need a menu item.  Either the one specified in the query, or the current active one if none specified
 		if (empty($query['Itemid']))
@@ -112,9 +112,10 @@ class DigiComRouter extends JComponentRouterBase
 
 			return $segments;
 		}
+
 		//print_r($segments);die;
-		if ($view == 'orders'
-			or $view == 'order')
+		// lets handle view specific routing
+		if ($view == 'orders' or $view == 'order')
 		{
 			unset($query['view']);
 
@@ -145,11 +146,7 @@ class DigiComRouter extends JComponentRouterBase
 
 		}
 
-		if ($view == 'dashboard'
-			or $view == 'downloads'
-			or $view == 'profile'
-			or $view == 'login'
-			or $view == 'register')
+		if ($view == 'dashboard' or $view == 'downloads' or $view == 'profile' or $view == 'login' or $view == 'register')
 		{
 			if (!$menuItemGiven)
 			{
@@ -197,11 +194,11 @@ class DigiComRouter extends JComponentRouterBase
 		// Handle product or category
 		if ($view == 'category' || $view == 'product')
 		{
-			if (!$menuItemGiven)
-			{
-				$segments[] = $view;
-			}
-
+//			if (!$menuItemGiven)
+//			{
+//				$segments[] = $view;
+//			}
+//
 			unset($query['view']);
 
 			if ($view == 'product')
@@ -394,7 +391,7 @@ class DigiComRouter extends JComponentRouterBase
 		// Get the active menu item.
 		$item = $this->menu->getActive();
 		$params = JComponentHelper::getParams('com_digicom');
-		$advanced = $params->get('sef_advanced_link', 0);
+		$advanced = $params->get('sef_advanced_link', 1);
 		$db = JFactory::getDbo();
 
 		// Count route segments
@@ -474,28 +471,32 @@ class DigiComRouter extends JComponentRouterBase
 		if ($count == 1)
 		{
 			// We check to see if an alias is given.  If not, we assume it is an product
-			if (strpos($segments[0], ':') === false)
+			if (!$advanced && strpos($segments[0], ':') === false)
 			{
 				$vars['view'] = 'product';
 				$vars['id'] = (int) $segments[0];
 
 				return $vars;
-			}
-
-			list($id, $alias) = explode(':', $segments[0], 2);
-
-			// First we check if it is a category
-			$category = JCategories::getInstance('DigiCom')->get($id);
-
-			if ($category && $category->alias == $alias)
-			{
+			}else{
 				$vars['view'] = 'category';
-				$vars['id'] = $id;
-
-				return $vars;
+				$vars['id'] = (int) $segments[0];
+				$id = (int) $segments[0];
 			}
-			else
-			{
+
+			if(strpos($segments[0], ':') === true){
+				list($id, $alias) = explode(':', $segments[0], 2);
+
+				// First we check if it is a category
+				$category = JCategories::getInstance('DigiCom')->get($id);
+
+				if ($category && $category->alias == $alias)
+				{
+					$vars['view'] = 'category';
+					$vars['id'] = $id;
+
+					return $vars;
+				}
+			}else{
 				$query = $db->getQuery(true)
 					->select($db->quoteName(array('alias', 'catid')))
 					->from($db->quoteName('#__digicom_products'))
