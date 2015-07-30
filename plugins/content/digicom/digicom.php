@@ -85,7 +85,7 @@ class plgContentDigiCom extends JPlugin{
 					if(isset($replace['id'])){
 						//select product from digicom_product with id = $replace['id']
 						$productid = $replace['id'];
-						$query = "SELECT * FROM #__digicom_products WHERE id = '".$productid."'";
+						$query = 'SELECT * FROM #__digicom_products WHERE id = "'.$productid.'" and hide_public="0"';
 						$db->setQuery($query);
 						$product = $db->loadAssoc();
 					}
