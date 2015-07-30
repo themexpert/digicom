@@ -194,11 +194,25 @@ class DigiComRouter extends JComponentRouterBase
 		// Handle product or category
 		if ($view == 'category' || $view == 'product')
 		{
-//			if (!$menuItemGiven)
-//			{
-//				$segments[] = $view;
-//			}
-//
+			if (!$menuItemGiven)
+			{
+				// there are no menu Itemid found, lets dive into menu finder
+				$menu = JMenu::getInstance('site');
+				$menuItem = $menu->getItems('link', 'index.php?option=com_digicom&view=category&id='.$query['catid'], true);
+
+				//print_r($menuItem);die;
+				if(count($menuItem)){
+					$query['Itemid'] = $menuItem->id;
+					$menuItemGiven = true;
+				}else{
+					$menuItem = $this->menu->getActive();
+					$query['Itemid'] = $menuItem->id;
+					$menuItemGiven = true;
+				}
+
+				//$segments[] = $view;
+			}
+
 			unset($query['view']);
 
 			if ($view == 'product')
@@ -251,7 +265,7 @@ class DigiComRouter extends JComponentRouterBase
 
 			$categories = JCategories::getInstance('DigiCom');
 			$category = $categories->get($catid);
-
+			//print_r($category);die;
 			if (!$category)
 			{
 				// We couldn't find the category we were given.  Bail.
@@ -259,7 +273,6 @@ class DigiComRouter extends JComponentRouterBase
 			}
 
 			$path = array_reverse($category->getPath());
-			//print_r($path);
 			$array = array();
 
 			foreach ($path as $id)
@@ -272,8 +285,6 @@ class DigiComRouter extends JComponentRouterBase
 				list($tmp, $id) = explode(':', $id, 2);
 
 				$array[] = $id;
-
-				if($tmp == $catid) break;
 			}
 
 			$array = array_reverse($array);
