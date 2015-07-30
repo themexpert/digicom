@@ -101,7 +101,7 @@ if($this->configs->get('afteradditem',0) == "2"){
 					</div>
 					<?php endif; ?>
 
-					<?php if ($this->configs->get('catalogue',0) == '0') : ?>
+					<?php if ($this->configs->get('catalogue',0) == '0' and !$this->item->hide_public) : ?>
 					<div class="well clearfix">
 						<div class="product-price">
 							<?php echo $price; ?>
