@@ -146,7 +146,7 @@ CREATE TABLE IF NOT EXISTS `#__digicom_log` (
   `message` varchar(255) NOT NULL COMMENT 'small message',
   `status` varchar(255) NOT NULL DEFAULT 'complete' COMMENT 'event status:complete',
   `ip` int(15) NOT NULL,
-  `creationtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `info` longtext NOT NULL COMMENT 'details info about event'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
