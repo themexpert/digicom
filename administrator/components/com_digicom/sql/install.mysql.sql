@@ -134,6 +134,25 @@ CREATE TABLE IF NOT EXISTS `#__digicom_licenses` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `#__digicom_log`
+--
+
+DROP TABLE IF EXISTS `#__digicom_log`;
+CREATE TABLE IF NOT EXISTS `#__digicom_log` (
+  `id` int(11) NOT NULL,
+  `userid` int(11) NOT NULL,
+  `type` varchar(255) NOT NULL COMMENT 'download|email|purchase|status',
+  `hook` varchar(255) NOT NULL COMMENT 'who trigger the event',
+  `message` varchar(255) NOT NULL COMMENT 'small message',
+  `status` varchar(255) NOT NULL DEFAULT 'complete' COMMENT 'event status:complete',
+  `ip` int(15) NOT NULL,
+  `creationtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `info` longtext NOT NULL COMMENT 'details info about event'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `#__digicom_orders`
 --
 
