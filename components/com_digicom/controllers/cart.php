@@ -573,18 +573,15 @@ class DigiComControllerCart extends JControllerLegacy
 		if(empty($processor)) $processor = $input->get('processor','');
 		$order_id 	= $input->get('order_id',0);
 		$sid 		= $input->get('sid','');
-		$pay 		= $input->get('pay','');
 		$post 		= $input->post->getArray();
 
 		if($processor == ''){
-			$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=cart', true);
 			$app->redirect(JRoute::_('index.php?option=com_digicom&view=orders'),JText::_('COM_DIGICOM_PAYMENT_NO_PROCESSOR_SELECTED'));
 			return false;
 		}
 
 		if($order_id == 0)
 		{
-			$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=cart', true);
 			$app->redirect(JRoute::_("index.php?option=com_digicom&view=orders"),JText::_('COM_DIGICOM_PAYMENT_NO_ORDER_PASSED'));
 		}
 
