@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+JTable::addIncludePath(JPATH_SITE . '/components/com_digicom/tables', 'Table');
 class DigiComSiteHelperLog {
 
     /*
@@ -20,24 +21,50 @@ class DigiComSiteHelperLog {
      * setLog method
      * use to trigger event to set log
      * @type = download,email,purchase,status
-     * @hook = from where event triggered or who did it
+     * @callback = from where event triggered or who did it
      * @message = short message about the event
      * @status = quick status about log event, if its complted or not
      * @info = log details or extra info encoded by json formet
+     * setLog($type, $hook, $message, $info, $status = 'complete');
      * */
-    public function setLog($type, $hook, $message, $info, $status = 'complete')
+    public static function setLog($type, $hook, $message, $info, $status = 'complete')
     {
-        $logTable = JTable::getInstance('log');
+        $logTable = JTable::getInstance('log','Table');
         $logTable->type     = $type;
-        $logTable->hook     = $hook;
+        $logTable->callback = $hook;
         $logTable->message  = $message;
-        $logTable->info     = json_encode($info);
+        $logTable->params     = json_encode($info);
         $logTable->status   = $status;
+        $logTable->ip       = DigiComSiteHelperLog::get_ip();
 
+        //print_r($logTable);die;
         $logTable->store();
 
         return true;
 
+    }
+
+    /*
+   * get the ip
+   */
+    public static function get_ip() {
+        //Just get the headers if we can or else use the SERVER global
+        if ( function_exists( 'apache_request_headers' ) ) {
+            $headers = apache_request_headers();
+        } else {
+            $headers = $_SERVER;
+        }
+        //Get the forwarded IP if it exists
+        if ( array_key_exists( 'X-Forwarded-For', $headers ) && filter_var( $headers['X-Forwarded-For'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 ) ) {
+            $the_ip = $headers['X-Forwarded-For'];
+        } elseif ( array_key_exists( 'HTTP_X_FORWARDED_FOR', $headers ) && filter_var( $headers['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 )
+        ) {
+            $the_ip = $headers['HTTP_X_FORWARDED_FOR'];
+        } else {
+
+            $the_ip = filter_var( $_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 );
+        }
+        return $the_ip;
     }
 
 }
