@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 class TableLog extends JTable {
 	
 	function __construct (&$db) {
-		parent::__construct('#__digicom_logs', 'id', $db);
+		parent::__construct('#__digicom_log', 'id', $db);
 	}
 
 	/**
@@ -29,8 +29,8 @@ class TableLog extends JTable {
 		$date	= JFactory::getDate();
 		$user	= JFactory::getUser();
 
-		$this->created		= $date->toSql();
-		$this->created_by = $user->get('id');
+		$this->created	= $date->toSql();
+		$this->userid 	= $user->get('id');
 
 		return parent::store($updateNulls);
 	}
