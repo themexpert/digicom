@@ -144,8 +144,8 @@ Joomla.submitbutton = function(task)
 				
 				<div id="discount_enable_range_product"<?php echo (($this->item->discount_enable_range == '1' || $this->item->discount_enable_range === null) ? " class='hide'":"");?>>
 				
-					<h3><?php echo JText::_( 'COM_DIGICOM_DISCOUNT_CODE_PRODUCT_RESTRICTION_TITLE' ); ?></h3>
-
+					<!--<h3><?php echo JText::_( 'COM_DIGICOM_DISCOUNT_CODE_PRODUCT_RESTRICTION_TITLE' ); ?></h3>-->
+					<br/>
 					<table id="productincludes" class="table table-striped table-hover" id="productList">
 						<tbody id="productincludes_items">
 							<?php
