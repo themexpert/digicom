@@ -666,6 +666,16 @@ class DigiComModelCart extends JModelItem
 
 		$orderid = $this->addOrder($items, $tax, $customer, $now, 'free');
 		$this->addOrderDetails($items, $orderid, $now, $customer);
+
+		if($orderid){
+			$info = array(
+				'products' => $items,
+				'tax' => $tax
+			);
+			DigiComSiteHelperLog::setLog('purchase', 'cart checkout', 'Order id#'.$orderid.' Free purchase with '.$tax['number_of_products'].' products', json_encode($info));
+		}
+
+
 		$type = 'complete_order';
 		DigiComSiteHelperLicense::addLicenceSubscription($items, $customer->_customer->id, $orderid, $type);
 		$this->goToSuccessURL($customer->_sid, '', $orderid , $type);
@@ -686,8 +696,16 @@ class DigiComModelCart extends JModelItem
 		// $shipping = $tax['shipping'];
 
 		$orderid = $this->addOrder($items, $tax, $customer, $now, $prosessor,$status);
-
 		$this->addOrderDetails($items, $orderid, $now, $customer,$status);
+
+		if($orderid){
+			$info = array(
+				'products' => $items,
+				'tax' => $tax
+			);
+			DigiComSiteHelperLog::setLog('purchase', 'cart checkout', 'Order id#'.$orderid.' just placed order with '.$tax['number_of_products'].' products & method is '.$prosessor, json_encode($info),$status);
+		}
+
 		DigiComSiteHelperLicense::addLicenceSubscription($items, $customer->_customer->id, $orderid, $status);
 
 		return $orderid;
