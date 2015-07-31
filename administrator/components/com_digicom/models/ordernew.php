@@ -183,9 +183,6 @@ class DigiComModelOrderNew extends JModelAdmin
 	 */
 	public function save($data)
 	{
-
-		$app = JFactory::getApplication();
-
 		$userid = $data['userid'];
 		$table = $this->getTable('Customer');
 		$table->loadCustommer($userid);
@@ -219,6 +216,16 @@ class DigiComModelOrderNew extends JModelAdmin
 			$recordId = $this->getState('ordernew.id');
 			//we have to add orderdetails now;
 			$this->addOrderDetails($data['product_id'], $recordId, $data['userid'], $data['status']);
+
+			$info = array(
+				'orderid' => $recordId,
+				'status' => $status,
+				'now_paid' => $data['amount_paid'],
+				'customer' => $cust->firstname ,
+				'username' => JFactory::getUser()->username
+			);
+
+			DigiComSiteHelperLog::setLog('purchase', 'admin ordernew save', 'Admin created order#'.$recordId.', status: '.$status.', paid: '.$data['amount_paid'], json_encode($info),$status);
 
 			// $orders = $this->getInstance( "Orders", "DigiComModel" );
 			// $orders->updateLicensesStatus($data['id'], $type);
