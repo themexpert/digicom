@@ -34,7 +34,6 @@ class DigiComControllerDownloads extends JControllerLegacy
 	
 	function makeDownload()
 	{
-		global $Itemid;
 		
 		if($this->_customer->_user->id < 1)
 		{
@@ -43,7 +42,7 @@ class DigiComControllerDownloads extends JControllerLegacy
 		}
 		
 		$fileInfo = $this->_model->getfileinfo();
-		
+		//print_r($fileInfo);die;
 		DigiComSiteHelperDigiCom::checkUserAccessToFile($fileInfo,$this->_customer->_user->id);
 		
 		if(empty($fileInfo->url)){
@@ -58,20 +57,30 @@ class DigiComControllerDownloads extends JControllerLegacy
 		}else{
 			$fileLink = $fileInfo->url;
 		}
-		
+
 		//update hits
-		$files =   JTable::getInstance('Files', 'Table');
+		$files = JTable::getInstance('Files', 'Table');
 		$files->load($fileInfo->id);
 		$files->hits = $files->hits+1;
 		$files->store();
 		
 		$downloadfile = new DigiComSiteHelperDownloadFile($fileLink);
+
+		$info = array(
+			'fileinfo' => $fileInfo
+		);
+
 		if (!$downloadfile->df_download()){
+
+			DigiComSiteHelperLog::setLog('download', 'downloads makeDownload', 'Download product : '.$fileInfo->product_name . ', file : '. $fileInfo->name, json_encode($info),'failed');
+
 			$itemid = JFactory::getApplication()->input->get('itemid',0);
 			$msg = JText::sprintf("COM_DIGICOM_FILE_DOWNLOAD_FAILED",$fileInfo->name);
 			JFactory::getApplication()->redirect('index.php?option=com_digicom&view=downloads&Itemid='.$itemid,$msg);
-		}			
-		
+
+		}
+		DigiComSiteHelperLog::setLog('download', 'downloads makeDownload', 'Download product : '.$fileInfo->product_name . ', file : '. $fileInfo->name, json_encode($info));
+
 	}
 	
 }
