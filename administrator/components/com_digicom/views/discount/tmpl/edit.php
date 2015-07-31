@@ -9,7 +9,12 @@
 
 defined('_JEXEC') or die;
 
+JHtml::_('jquery.framework');
+JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.tooltip');
+JHTML::_("behavior.calendar");
+JHtml::_('behavior.keepalive');
+jimport('joomla.html.pane');
 
 $document = JFactory::getDocument();
 $app = JFactory::getApplication();
@@ -17,8 +22,6 @@ $input = $app->input;
 $input->set('layout', 'dgform');
 $configs = $this->configs;
 $nullDate = 0;
-JHTML::_("behavior.calendar");
-jimport('joomla.html.pane');
 $f = $configs->get('time_format','DD-MM-YYYY');
 $f = str_replace ("-", "-%", $f);
 $f = "%".$f;
@@ -62,8 +65,15 @@ $doc->addScriptDeclaration( $ajax );
 ?>
 
 <script language="javascript" type="text/javascript">
-function submitbutton(pressbutton) {
-	submitform( pressbutton );
+//	function submitbutton(pressbutton) {
+//		submitform( pressbutton );
+//	}
+Joomla.submitbutton = function(task)
+{
+	if (task == 'discount.cancel' || document.formvalidator.isValid(document.id('adminForm')))
+	{
+		Joomla.submitform(task, document.getElementById('item-form'));
+	}
 }
 </script>
 
@@ -96,32 +106,10 @@ function submitbutton(pressbutton) {
 			<div class="span8">
 					<!--<h3><?php echo JText::_('COM_DIGICOM_DISCOUNT_TAB_TITLE_DISCOUNT_CODE_SETTINGS');?></h3>-->
 					<div class="form-horizontal">
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $this->form->getLabel('title'); ?>
-							</div>
-							<div class="controls">
-								<?php echo $this->form->getInput('title'); ?>
-							</div>
-						</div>
 
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $this->form->getLabel('code'); ?>
-							</div>
-							<div class="controls">
-								<?php echo $this->form->getInput('code'); ?>
-							</div>
-						</div>
+						<?php echo $this->form->getControlGroup('title'); ?>
 
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $this->form->getLabel('codelimit'); ?>
-							</div>
-							<div class="controls">
-								<?php echo $this->form->getInput('codelimit'); ?>
-							</div>
-						</div>
+						<?php echo $this->form->getControlGroup('code'); ?>
 
 						<div class="control-group">
 							<div class="control-label">
@@ -129,48 +117,19 @@ function submitbutton(pressbutton) {
 							</div>
 							<div class="controls">
 								<?php echo $this->form->getInput('amount'); ?>
-								<?php echo $this->form->getInput('promotype'); ?>								
+								<?php echo $this->form->getInput('promotype'); ?>
 							</div>
 						</div>
 
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $this->form->getLabel('codestart'); ?>
-							</div>							
-							<div class="controls">
-								<?php echo $this->form->getInput('codestart'); ?>
-							</div>
-						</div>
+						<?php echo $this->form->getControlGroup('codelimit'); ?>
 
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $this->form->getLabel('codeend'); ?>
-							</div>							
-							<div class="controls">
-								<?php echo $this->form->getInput('codeend'); ?>
-							</div>
-						</div>
+						<?php echo $this->form->getControlGroup('codestart'); ?>
 
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $this->form->getLabel('published'); ?>
-							</div>
-							<div class="controls">
-								<?php echo $this->form->getInput('published'); ?>
-							</div>
-						</div>
+						<?php echo $this->form->getControlGroup('codeend'); ?>
 
-						<div class="control-group">
-							<label for="" class="control-label"><?php echo JText::_("COM_DIGICOM_DISCOUNT_CODE_APPLY_ON");?></label>
-							<div class="controls">
-								<?php echo JText::_("COM_DIGICOM_DISCOUNT_CODE_APPLY_ON_NEW"); ?> 
-								<?php echo $this->form->getInput('validfornew'); ?>
+						<?php echo $this->form->getControlGroup('published'); ?>
 
-								<?php echo JText::_("COM_DIGICOM_DISCOUNT_CODE_APPLY_ON_RENEWAL"); ?> 
-								<?php echo $this->form->getInput('validforrenewal'); ?>
-							
-							</div>
-						</div>
+
 					</div>
 					
 			</div>
@@ -186,12 +145,6 @@ function submitbutton(pressbutton) {
 					<h3><?php echo JText::_( 'COM_DIGICOM_DISCOUNT_CODE_PRODUCT_RESTRICTION_TITLE' ); ?></h3>
 
 					<table id="productincludes" class="table table-striped table-hover" id="productList">
-						<thead>
-							<tr>
-								<td>Product Name</td>
-								<td width="1%">Action</td>
-							</tr>
-						</thead>
 						<tbody id="productincludes_items">
 							<?php
 							if(count($this->item->products) > 0):
@@ -215,7 +168,7 @@ function submitbutton(pressbutton) {
 					</table>
 					
 
-					<div style="margin:15px;padding:10px;">
+					<div>
 						<a class="btn btn-small btn-primary modal" title="Products" href="<?php echo $link; ?>" 
 						rel="{handler: 'iframe', size: {x: 800, y: 500}}">
 							<i class="icon-file-add"></i> 
@@ -274,11 +227,15 @@ function submitbutton(pressbutton) {
 		echo JHtml::_('bootstrap.endTabSet');
 		?>
 	</div>
-	<input type="hidden" name="images" value="" />
+	<div class="validity">
+		<?php echo $this->form->getInput('validfornew'); ?>
+		<?php echo $this->form->getInput('validforrenewal'); ?>
+	</div>
 	<input type="hidden" name="option" value="com_digicom" />
-	<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
-	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="view" value="discount" />
+	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
+
 	<?php echo JHtml::_('form.token'); ?>
 </form>
 
