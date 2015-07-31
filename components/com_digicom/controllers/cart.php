@@ -294,9 +294,7 @@ class DigiComControllerCart extends JControllerLegacy
 	{
 		$session 		= JFactory::getSession();
 		$app 				= JFactory::getApplication();
-		$Itemid 		= JRequest::getInt("Itemid", 0);
 		$processor	= JRequest::getVar("processor", '');
-		$returnpage = JRequest::getVar("returnpage", "");
 		$user 			= JFactory::getUser();
 		$cart 			= $this->_model;
 
@@ -358,8 +356,7 @@ class DigiComControllerCart extends JControllerLegacy
 
 			$name = $this->_customer->_user->name;
 			$name_array = explode(" ", $name);
-			$first_name = "";
-			$last_name = "";
+
 			if(count($name_array) == 1){
 				$first_name = $name;
 				$last_name = $name;
@@ -387,17 +384,13 @@ class DigiComControllerCart extends JControllerLegacy
 			$this->_customer = new DigiComSiteHelperSession();
 			$customer = $this->_customer;
 		}
-		$menu = $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=orders', true);
-		$Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
-
-		$total = 0;
-		$fromsum 	= JRequest::getVar('fromsum', '0');
 		$items 		= $cart->getCartItems($customer, $configs);
 		$tax 		= $cart->calc_price($items, $customer, $configs);
 		$total 		= $tax['taxed'];
-		$now 		= time();
+
 		if( (double)$total == 0 ) {
 			if(count($items) != "0"){
+
 				$orderid = $cart->addFreeProduct($items, $customer, $tax);
 
 				// Order complete, now redirect to the original page
@@ -415,7 +408,6 @@ class DigiComControllerCart extends JControllerLegacy
 		else
 		{
 			$db = JFactory::getDBO();
-			$profile = "";
 			$sql = "update #__digicom_session set transaction_details='" . base64_encode(serialize($customer)) . "' where sid=" . $customer->_sid;
 			$db->setQuery($sql);
 			$db->query();
@@ -430,6 +422,7 @@ class DigiComControllerCart extends JControllerLegacy
 
 			//store order
 			$order_id = $cart->addOrderInfo($items, $customer, $tax, $status = 'Pending', $prosessor);
+
 			$cart->getFinalize($this->_customer->_sid, $msg = '', $order_id, $type= 'new_order');
 
 			/* Prepare params*/
@@ -585,7 +578,6 @@ class DigiComControllerCart extends JControllerLegacy
 
 		if($processor == ''){
 			$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=cart', true);
-			$Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
 			$app->redirect(JRoute::_('index.php?option=com_digicom&view=orders'),JText::_('COM_DIGICOM_PAYMENT_NO_PROCESSOR_SELECTED'));
 			return false;
 		}
@@ -593,7 +585,6 @@ class DigiComControllerCart extends JControllerLegacy
 		if($order_id == 0)
 		{
 			$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=cart', true);
-			$Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
 			$app->redirect(JRoute::_("index.php?option=com_digicom&view=orders"),JText::_('COM_DIGICOM_PAYMENT_NO_ORDER_PASSED'));
 		}
 
