@@ -420,9 +420,11 @@ class DigiComModelDownloads extends JModelList
 		//print_r( $fileid );die;
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
-		$query->select($db->quoteName(array('id', 'product_id','name', 'url', 'hits')));
-		$query->from($db->quoteName('#__digicom_products_files'));
-		$query->where($db->quoteName('id') . ' = '. $db->quote($fileid->fileid));
+		$query->select($db->quoteName('p.name','product_name'));
+		$query->select($db->quoteName(array('pf.id', 'pf.product_id','pf.name', 'pf.url', 'pf.hits')));
+		$query->from($db->quoteName('#__digicom_products_files','pf'));
+		$query->join('INNER', $db->quoteName('#__digicom_products','p') . ' ON ( '.$db->quoteName('pf.product_id') . ' = ' . $db->quoteName('p.id') .')' );
+		$query->where($db->quoteName('pf.id') . ' = '. $db->quote($fileid->fileid));
 		$query->order('id DESC');
 		// Reset the query using our newly populated query object.
 		$db->setQuery($query);
