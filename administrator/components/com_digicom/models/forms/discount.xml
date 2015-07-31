@@ -3,15 +3,15 @@
 	<fields addfieldpath="/administrator/components/com_digicom/models/fields">
 	
 		<field name="id"  type="hidden" />
-		<field name="title"  type="text" label="JGLOBAL_TITLE" class="control-label" description="COM_DIGICOM_DICOUNT_TITLE_DESC" />
+		<field name="title" required="true" type="text" class="input-xxlarge input-large-text" label="JGLOBAL_TITLE" description="COM_DIGICOM_DICOUNT_TITLE_DESC" />
 
-		<field name="code"  type="text" label="COM_DIGICOM_DISCOUNT_CODE" description="COM_DIGICOM_DISCOUNT_CODE_DESC" />
+		<field name="code" required="true" type="text" class="input-xlarge input-large-text" label="COM_DIGICOM_DISCOUNT_CODE" description="COM_DIGICOM_DISCOUNT_CODE_DESC" />
 		
-		<field name="codelimit"  type="number" label="COM_DIGICOM_DISCOUNT_CODE_USAGE_LIMIT" description="COM_DIGICOM_DISCOUNT_CODE_USAGE_LIMIT_DESC" />
+		<field name="codelimit" type="number" label="COM_DIGICOM_DISCOUNT_CODE_USAGE_LIMIT" description="COM_DIGICOM_DISCOUNT_CODE_USAGE_LIMIT_DESC" />
 		
-		<field name="amount"  type="number" min="0"  class="input-small" label="COM_DIGICOM_DISCOUNT_AMOUNT" description="COM_DIGICOM_DISCOUNT_AMOUNT_DESC" />
+		<field name="amount" required="true" default="1" type="number" min="1"  class="input-xlarge input-short" label="COM_DIGICOM_DISCOUNT_AMOUNT" description="COM_DIGICOM_DISCOUNT_AMOUNT_DESC" />
 		
-		<field id="promotype" name="promotype" type="radio" class="btn-group" size="1" default="1" >
+		<field id="promotype" name="promotype" type="radio" class="btn-group btn-large" size="1" default="1" >
 			<option value="1"> COM_DIGICOM_DISCOUNT_TYPE_PERCENTAGE</option>
 			<option value="0"> COM_DIGICOM_DISCOUNT_TYPE_FIXED</option>
 		</field>
@@ -31,8 +31,8 @@
 
 		<field name="used" type="hidden" />
 
-		<field name="validfornew" type="checkbox" value="1" default="0" />
-		<field name="validforrenewal" type="checkbox" value="1" default="0" />
+		<field name="validfornew" type="hidden" value="1" default="1" label="COM_DIGICOM_DISCOUNT_CODE_APPLY_ON_NEW"/>
+		<field name="validforrenewal" type="hidden" value="1" default="1" label="COM_DIGICOM_DISCOUNT_CODE_APPLY_ON_RENEWAL"/>
 
 		<field name="products" type="hidden" />
 		
