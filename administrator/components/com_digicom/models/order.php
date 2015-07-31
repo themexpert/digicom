@@ -218,21 +218,30 @@ class DigiComModelOrder extends JModelAdmin
 
 		if(parent::save($data)){
 
-
 			if($status == "Pending"){
-				$sql = "update #__digicom_orders_details set published=0 where orderid in ('".$id."')";
+				$sql = "update #__digicom_orders_details set published=0 where orderid in ('".$table->id."')";
 				$type = 'process_order';
 			}
 			elseif($status == "Active" or $status == "Paid"){
-				$sql = "update #__digicom_orders_details set published=1 where orderid in ('" . $id  . "')";
+				$sql = "update #__digicom_orders_details set published=1 where orderid in ('" . $table->id  . "')";
 				$type = 'complete_order';
 			}
 			elseif($status == "Cancel"){
-				$sql = "update #__digicom_orders_details set published='-1' where orderid in ('" . $id  . "')";
+				$sql = "update #__digicom_orders_details set published='-1' where orderid in ('" . $table->id  . "')";
 				$type = 'cancel_order';
 			}
 			$db->setQuery($sql);
 			$db->execute();
+
+			$info = array(
+				'orderid' => $table->id,
+				'status' => $status,
+				'now_paid' => $data['amount_paid'],
+				'total_paid' => $table->amount_paid,
+				'username' => JFactory::getUser()->username
+			);
+
+			DigiComSiteHelperLog::setLog('status', 'Admin order save', 'Admin changed order#'.$table->id.', status: '.$status.', paid: '.$data['amount_paid'], json_encode($info),$status);
 
 			$orders = $this->getInstance( "Orders", "DigiComModel" );
 			$orders->updateLicensesStatus($data['id'], $type);
