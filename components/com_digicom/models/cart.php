@@ -816,6 +816,15 @@ class DigiComModelCart extends JModelItem
 
 			$this->updateOrder($order_id,$result,$data,$pg_plugin,$status,$items,$customer);
 
+
+			$info = array(
+				'orderid' => $order_id,
+				'data' => $data,
+				'plugin' => $pg_plugin
+			);
+			DigiComSiteHelperLog::setLog('purchase', 'cart proccessSuccess', 'Order id#'.$order_id.' updated & method is '.$pg_plugin, json_encode($info),$status);
+
+
 		}
 
 		if($status != "Active"){
