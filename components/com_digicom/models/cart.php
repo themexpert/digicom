@@ -822,7 +822,7 @@ class DigiComModelCart extends JModelItem
 				'data' => $data,
 				'plugin' => $pg_plugin
 			);
-			DigiComSiteHelperLog::setLog('purchase', 'cart proccessSuccess', 'Order id#'.$order_id.' updated & method is '.$pg_plugin, json_encode($info),$status);
+			DigiComSiteHelperLog::setLog('status', 'cart proccessSuccess', 'Order id#'.$order_id.' updated & method is '.$pg_plugin, json_encode($info),$status);
 
 
 		}
