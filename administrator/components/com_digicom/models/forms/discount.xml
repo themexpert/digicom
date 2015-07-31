@@ -25,8 +25,8 @@
 		<field name="aftertax" type="hidden" />
 		
 		<field id="discount_enable_range" name="discount_enable_range" type="radio" class="btn-group" size="1" default="1" >
-			<option value="1"> JYES</option>
-			<option value="0"> JNO</option>
+			<option value="1"> COM_DIGICOM_DISCOUNT_ON_CART</option>
+			<option value="0"> COM_DIGICOM_DISCOUNT_ON_SELECTED</option>
 		</field>
 
 		<field name="used" type="hidden" />

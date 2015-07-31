@@ -136,7 +136,9 @@ Joomla.submitbutton = function(task)
 
 			<div class="span4 well">
 				<div class="clearfix">
-					<label class="editlinktip hasTip" title="<?php echo JText::_('COM_DIGICOM_DISCOUNT_CODE_ENABLE_FOR_ALL_PRODUCTS_LABEL_DESC'); ?>" ><?php echo JText::_('COM_DIGICOM_DISCOUNT_CODE_ENABLE_FOR_ALL_PRODUCTS_LABEL');?></label>
+					<label class="editlinktip hasTip" title="<?php echo JText::_('COM_DIGICOM_DISCOUNT_CODE_ENABLE_FOR_ALL_PRODUCTS_LABEL_DESC'); ?>" >
+						<?php echo JText::_('COM_DIGICOM_DISCOUNT_CODE_ENABLE_FOR_ALL_PRODUCTS_LABEL');?>
+					</label>
 					<?php echo $this->form->getInput('discount_enable_range'); ?>
 				</div>
 				
@@ -184,7 +186,7 @@ Joomla.submitbutton = function(task)
 
 		</div>
 
-
+		<!--
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_DIGICOM_DISCOUNT_REPORTS');?></legend>
 			<?php
@@ -219,7 +221,7 @@ Joomla.submitbutton = function(task)
 
 			</table>
 		</fieldset>
-
+		-->
 		<?php
 		echo JHtml::_('bootstrap.endTab');
 		
