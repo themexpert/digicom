@@ -120,6 +120,9 @@ $input->set('layout', 'dgform');
 					<?php echo JHtml::_('bootstrap.endTab'); ?>
 
 				<?php endif; ?>
+
+				<?php echo $this->loadTemplate('params'); ?>
+
 			<?php echo JHtml::_('bootstrap.endTabSet'); ?>
 			</div>
 			<div class="span3">
