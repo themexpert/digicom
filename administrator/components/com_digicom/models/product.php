@@ -302,6 +302,33 @@ class DigiComModelProduct extends JModelAdmin
 	}
 
 	/**
+	 * Override preprocessForm to load custom form from templates
+	 *
+	 * @param   JForm   $form   A JForm object.
+	 * @param   mixed   $data   The data expected for the form.
+	 * @param   string  $group  The name of the plugin group to import (defaults to "content").
+	 *
+	 * @return  void
+	 *
+	 * @throws	Exception if there is an error in the form event.
+	 *
+	 * @since   1.6
+	 */
+	protected function preprocessForm(JForm $form, $data, $group = 'content')
+	{
+		$db = JFactory::getDBO();
+		$query = "SELECT template FROM #__template_styles WHERE client_id = 0 AND home = 1";
+		$db->setQuery($query);
+		$defaultemplate = $db->loadResult();
+
+		$params = JComponentHelper::getParams('com_digicom');
+		JForm::addFormPath(JPATH_SITE . '/templates/' . $defaultemplate . '/html/com_digicom/templates/'.$params->get('template','default'));
+		$form->loadFile('params', false);
+
+		parent::preprocessForm($form, $data, $group);
+	}
+
+	/**
 	 * Method to get a single record.
 	 *
 	 * @param   integer  $pk  The id of the primary key.
