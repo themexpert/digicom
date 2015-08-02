@@ -182,7 +182,7 @@ class DigiComModelProducts extends JModelList
 		$query->select(
 			$this->getState(
 				'list.select',
-				'a.id, a.name, a.alias,a.price, a.bundle_source,a.hide_public, a.description, a.fulldescription, ' .
+				'a.id, a.name, a.alias,a.price, a.bundle_source,a.hide_public, a.introtext, a.fulltext, ' .
 					'a.checked_out, a.checked_out_time, ' .
 					'a.catid, a.created, a.created_by, ' .
 					// Use created if modified is 0
@@ -191,7 +191,7 @@ class DigiComModelProducts extends JModelList
 					// Use created if publish_up is 0
 					'CASE WHEN a.publish_up = ' . $db->quote($db->getNullDate()) . ' THEN a.created ELSE a.publish_up END as publish_up,' .
 					'a.publish_down, a.images, a.attribs, a.metatitle,  a.metadata, a.metakey, a.metadesc, a.access, ' .
-					'a.hits, a.featured, a.language, ' . ' ' . $query->length('a.fulldescription') . ' AS readmore'
+					'a.hits, a.featured, a.language, ' . ' ' . $query->length('a.fulltext') . ' AS readmore'
 			)
 		);
 

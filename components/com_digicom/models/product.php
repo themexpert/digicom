@@ -87,7 +87,7 @@ class DigiComModelProduct extends JModelItem
 				$query = $db->getQuery(true)
 					->select(
 						$this->getState(
-							'item.select', 'a.id, a.name, a.alias, a.price, a.price_type,a.expiration_length, a.expiration_type, a.description, a.fulldescription,a.bundle_source,a.product_type,' .
+							'item.select', 'a.id, a.name, a.alias, a.price, a.price_type,a.expiration_length, a.expiration_type, a.introtext, a.fulltext,a.bundle_source,a.product_type,' .
 							'a.hide_public,' .
 							// If badcats is not null, this means that the product is inside an unpublished category
 							// In this case, the state is set to 0 to indicate Unpublished (even if the product state is Published)
