@@ -86,8 +86,8 @@ $input->set('layout', 'dgform');
 						<?php echo JLayoutHelper::render('edit.title_alias_price', $this); ?>
 
 						<div class="product-short-desc">
-							<?php echo $this->form->getLabel('description'); ?>
-							<?php echo $this->form->getInput('description'); ?>
+							<?php echo $this->form->getLabel('introtext'); ?>
+							<?php echo $this->form->getInput('introtext'); ?>
 						</div>
 					</div>
 
@@ -95,8 +95,8 @@ $input->set('layout', 'dgform');
 
 
 				<div class="control-group ">
-					<?php echo $this->form->getLabel('fulldescription'); ?>
-					<?php echo $this->form->getInput('fulldescription'); ?>
+					<?php echo $this->form->getLabel('fulltext'); ?>
+					<?php echo $this->form->getInput('fulltext'); ?>
 				</div>
 				<?php echo JHtml::_('bootstrap.endTab'); ?>
 				<?php // Do not show the publishing options if the edit form is configured not to. ?>
