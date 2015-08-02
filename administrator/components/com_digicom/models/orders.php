@@ -525,10 +525,10 @@ class DigiComModelOrders extends JModelList{
 		$input = JFactory::getApplication()->input;
 		//orderstatus
 		//print_r($_POST);die;
-		$cids = $input->get('cid', null, null);
+		$orderids = $input->get('cid', null, null);
 		$statuses = $input->post->get('orderstatus',null,null);
 		$status = $statuses['0'];
-		$id = $cids['0'];
+		$id = $orderids['0'];
 
 		$table = $this->getTable('order');
 		$table->load($id);
@@ -561,16 +561,16 @@ class DigiComModelOrders extends JModelList{
 			$type = 'cancel_order';
 		}
 
-		$this->updateLicensesStatus($id, $type);
-
-		
 		$db->setQuery($sql);
 		if(!$db->query()){
 			$res = false;
 		}
-		if($status == "Active" or $status == "Paid"){
-			$this->sendApprovedEmail($id, $type, $status);
-		}
+
+		// based on order status changes, we need to update license too :)
+		$this->updateLicensesStatus($id, $type);
+
+		// sent email as order status has changed
+		$this->sendApprovedEmail($id, $type, $status);
 
 		return true;
 	}
@@ -603,13 +603,13 @@ class DigiComModelOrders extends JModelList{
 	/*
 	* $type = process_order, new_order, cancel_order;
 	*/
-	function sendApprovedEmail( $cid = 0 , $type = 'complete_order', $status = 'Active', $paid = '')
+	function sendApprovedEmail( $orderid = 0 , $type = 'complete_order', $status = 'Active', $paid = '')
 	{
-		if ( $cid < 1 )
+		if ( $orderid < 1 )
 			return;
 		$db = JFactory::getDBO();
 		$order = $this->getTable( "Order" );
-		$order->load( $cid );
+		$order->load( $orderid );
 
 		$configs = JComponentHelper::getComponent('com_digicom')->params;
 
@@ -617,7 +617,7 @@ class DigiComModelOrders extends JModelList{
 		$cust_info->load( $order->userid );
 
 		$my = $cust_info;
-
+		//print_r($my);jexit();
 		/*
 		$emailinfo = $configs->get('email');
 		$message = $emailinfo->$type->body;
@@ -733,7 +733,7 @@ class DigiComModelOrders extends JModelList{
 		$message = str_replace( "[CUSTOMER_EMAIL]", $my->email, $message );
 
 		$message = str_replace( "[ORDER_DATE]", date( $configs->get('time_format','DD-MM-YYYY'), $timestamp ), $message );
-		$message = str_replace( "[ORDER_ID]", $cid, $message );
+		$message = str_replace( "[ORDER_ID]", $orderid, $message );
 		$message = str_replace( "[ORDER_AMOUNT]", $amount, $message );
 		$message = str_replace( "[NUMBER_OF_PRODUCTS]", $order->number_of_products, $message );
 		$message = str_replace( "[DISCOUNT_AMOUNT]", $order->discount, $message );
@@ -745,7 +745,7 @@ class DigiComModelOrders extends JModelList{
 		$displayed = array();
 		$product_list = '';
 
-		$sql = "select od.*, p.name from #__digicom_orders_details od, #__digicom_products p where od.productid=p.id and od.orderid=" . $cid;
+		$sql = "select od.*, p.name from #__digicom_orders_details od, #__digicom_products p where od.productid=p.id and od.orderid=" . $orderid;
 		$db->setQuery( $sql );
 		$items = $db->loadObjectList();
 
@@ -769,18 +769,18 @@ class DigiComModelOrders extends JModelList{
 
 
 		$subject = str_replace( "[ORDER_DATE]", date( $configs->get('time_format','DD-MM-YYYY'), $timestamp ), $subject );
-		$subject = str_replace( "[ORDER_ID]", $cid, $subject );
+		$subject = str_replace( "[ORDER_ID]", $orderid, $subject );
 		$subject = str_replace( "[ORDER_AMOUNT]", $amount, $subject );
 		$subject = str_replace( "[NUMBER_OF_PRODUCTS]", $order->number_of_products, $subject );
 		$subject = str_replace( "[DISCOUNT_AMOUNT]", $order->discount, $subject );
 		$subject = str_replace( "[ORDER_STATUS]", $status, $subject );
 
 		$subject = str_replace( "{site_title}", $sitename, $subject );
-		$subject = str_replace( "{order_number}", $cid, $subject );
+		$subject = str_replace( "{order_number}", $orderid, $subject );
 		$subject = str_replace( "{order_date}", date( $configs->get('time_format','d-m-Y'), $timestamp ), $subject );
 
 		$message = str_replace( "{site_title}", $sitename, $message );
-		$message = str_replace( "{order_number}", $cid, $message );
+		$message = str_replace( "{order_number}", $orderid, $message );
 		$message = str_replace( "{order_date}", date( $configs->get('time_format','d-m-Y'), $timestamp ), $message );
 
 		$subject = str_replace( "[PRODUCTS]", $product_list, $subject );
@@ -833,23 +833,21 @@ class DigiComModelOrders extends JModelList{
 		$mailSender->setSubject( $subject );
 		$mailSender->setBody( $message );
 
-		if ( !$mailSender->Send() ) {
+		$info = array(
+			'orderid' => $orderid,
+			'amount' => $amount,
+			'customer' => $cust_info,
+			'type' => $type,
+			'status' => $status
+		);
+		$message = 'admin: order#'.$orderid.', type:'.$type.', status: '.$status.', amount: '.$amount;
 
-			//<Your error code management>
-		}
-		//	mosMail( $adminEmail2, $adminName2, $my->email, $subject, $message, 1 ); // Send mail
-		if ( $configs->get('sendmailtoadmin',0) != 0 ) {
-
-			$mailSender = JFactory::getMailer();
-			$mailSender->IsHTML( true );
-			$mailSender->addRecipient( $adminEmail2 );
-			$mailSender->setSender( array($adminEmail2, $adminName2) );
-			$mailSender->setSubject( $subject );
-			$mailSender->setBody( $message );
-			if ( !$mailSender->Send() ) {
-				//<Your error code management>
-			}
-			//mosMail( $adminEmail2, $adminName2, $adminEmail2, $subject, $message, 1 ); // Send mail
+		if ( $mailSender->Send() !== true ) {
+			// lets set the email log with fal
+			DigiComSiteHelperLog::setLog('email', 'admin orders updated', $message, json_encode($info),'failed');
+		}else{
+			// lets set the email log with success
+			DigiComSiteHelperLog::setLog('email', 'admin orders updated', $message, json_encode($info),'success');
 		}
 
 		return true;
