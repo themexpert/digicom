@@ -6,7 +6,9 @@
 		<!--//product_type will be from now product_type-->
 		
 		<field name="id"  type="text" class="readonly" label="JGLOBAL_FIELD_ID_LABEL" description ="JGLOBAL_FIELD_ID_DESC" size="10" default="0" readonly="true" />
-		
+
+		<field name="asset_id" type="hidden" filter="unset" />
+
 		<field name="name" type="text" label="JGLOBAL_TITLE" description="JFIELD_TITLE_DESC" class="input-xxlarge input-large-text" size="40" required="true" />
 
 		<field name="alias" type="text" label="JFIELD_ALIAS_LABEL" description="JFIELD_ALIAS_DESC" hint="JFIELD_ALIAS_PLACEHOLDER" size="40" class="input-xlarge input-short"/>
@@ -32,9 +34,9 @@
 
 		<field name="images" type="digimedia" label="COM_DIGICOM_PRODUCT_FIELD_IMAGE" description="COM_DIGICOM_PRODUCT_FIELD_IMAGE_DESC" default=""/>
 		
-		<field name="description" type="textarea" rows="5" cols="20" label="COM_DIGICOM_PRODUCT_FIELD_INTROTEXT_LABEL" description="COM_DIGICOM_PRODUCT_FIELD_INTROTEXT_DESC"/>
+		<field name="introtext" type="textarea" rows="5" cols="20" label="COM_DIGICOM_PRODUCT_FIELD_INTROTEXT_LABEL" description="COM_DIGICOM_PRODUCT_FIELD_INTROTEXT_DESC"/>
 		
-		<field name="fulldescription" type="editor" label="COM_DIGICOM_PRODUCT_FIELD_FULLTEXT_LABEL" description="COM_DIGICOM_PRODUCT_FIELD_FULLTEXT_DESC" filter="JComponentHelper::filterText" buttons="true" />
+		<field name="fulltext" type="editor" label="COM_DIGICOM_PRODUCT_FIELD_FULLTEXT_LABEL" description="COM_DIGICOM_PRODUCT_FIELD_FULLTEXT_DESC" filter="JComponentHelper::filterText" buttons="true" />
 			
 		<field id="published" name="published" type="list" label="JSTATUS" description="JFIELD_PUBLISHED_DESC" class="advancedSelect chosen-select chzn-color-state" size="1" default="1" >
 			<option value="1"> JPUBLISHED</option>
