@@ -8,18 +8,37 @@
  */
 
 defined ('_JEXEC') or die ("Go away.");
+
+$configs = $this->configs;
+$monthlyDay = DigiComHelperChart::getMonthLabelDay();
+$monthlyPrice = DigiComHelperChart::getMonthLabelPrice($monthlyDay);
 ?>
 
-<div id="chart"></div>
+<div><canvas id="myChart" height="200"></canvas></div>
 
 <script type="text/javascript">
-var chart = c3.generate({
-  bindto: '#chart',
-  data: {
-    columns: [
-      ['Money', 30, 200, 100, 400, 150, 250],
-      ['Sales', 50, 20, 10, 40, 15, 25]
+  var data = {
+    labels: [<?php echo $monthlyDay; ?>],
+    datasets: [
+
+      {
+        label: "Monthly Report",
+        fillColor: "#e6f3f9",
+        strokeColor: "#1562AD",
+        pointColor: "#1562AD",
+        pointStrokeColor: "#1562AD",
+        pointHighlightFill: "#e6f3f9",
+        pointHighlightStroke: "#1562AD",
+        data: [<?php echo $monthlyPrice; ?>]
+      }
     ]
+  };
+  options ={
+    animation: true,
+    scaleShowLabels: true,
+    responsive: true,
+    tooltipTemplate: "<%if (label){%><%}%><%= value %> <?php echo $configs->get('currency','USD')?>",
   }
-});
+  var ctx = document.getElementById("myChart").getContext("2d");
+  var myLineChart = new Chart(ctx).Line(data,options);
 </script>

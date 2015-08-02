@@ -12,7 +12,6 @@ $app		= JFactory::getApplication();
 $input	= $app->input;
 $innertab		= $input->get('report','new_customers');
 ?>
-<h3><?php echo JText::_('COM_DIGICOM_REPORTS_CUSTOMERS_STATS');?></h3>
 
 <ul class="nav nav-pills">
   <li<?php echo ($innertab == 'customers_new' ? ' class="active"' : '');?>>
@@ -23,6 +22,8 @@ $innertab		= $input->get('report','new_customers');
   </li>
 </ul>
 <p class="clearfix"></p>
+
+<h3><?php echo JText::_('COM_DIGICOM_REPORTS_CUSTOMERS_STATS');?></h3>
 
 <section class="salesreportsWrapper">
   <?php echo $this->loadTemplate($innertab); ?>

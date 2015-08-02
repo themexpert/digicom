@@ -12,12 +12,10 @@ $app		= JFactory::getApplication();
 $input	= $app->input;
 $tab		= $input->get('tab','sales');
 
-JFactory::getDocument()->addStylesheet(JURI::root().'media/digicom/assets/c3js/c3.min.css');
-JFactory::getDocument()->addScript(JURI::root().'media/digicom/assets/c3js/d3.min.js');
-JFactory::getDocument()->addScript(JURI::root().'media/digicom/assets/c3js/c3.min.js');
+JFactory::getDocument()->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_digicom&view=reports'); ?>" method="post" name="adminFormStats" autocomplete="off" class="form-validate form-horizontal">
+<div id="digicom_reports" class="digicom">
 	<?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container">
 		<?php echo $this->sidebar; ?>
@@ -37,12 +35,14 @@ JFactory::getDocument()->addScript(JURI::root().'media/digicom/assets/c3js/c3.mi
 					<li<?php echo ($tab == 'sales' ? ' class="active"' : '');?>>
 						<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report=sales_by_date&range=7day');?>">Sales</a>
 					</li>
+					<!--
 					<li<?php echo ($tab == 'customers' ? ' class="active"' : '');?>>
 						<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=customers&report=customers_new&range=7day');?>">Customers</a>
 					</li>
 					<li<?php echo ($tab == 'downloads' ? ' class="active"' : '');?>>
 						<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=downloads&report=downloads_top&range=7day');?>">Downloads</a>
 					</li>
+					-->
 				</ul>
 			</div>
 		</div>
@@ -56,7 +56,7 @@ JFactory::getDocument()->addScript(JURI::root().'media/digicom/assets/c3js/c3.mi
 		<input type="hidden" name="option" value="com_digicom" />
 		<input type="hidden" name="task" value="showStats" />
 	</div>
-</form>
+</div>
 
 
 <div class="dg-footer">
