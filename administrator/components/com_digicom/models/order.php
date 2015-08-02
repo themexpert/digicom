@@ -247,7 +247,7 @@ class DigiComModelOrder extends JModelAdmin
 			$orders->updateLicensesStatus($data['id'], $type);
 
 			if($status == "Active" or $status == "Paid"){
-				$orders->sendApprovedEmail( $data['id'], $type, $status, $data['amount_paid'] );
+				DigiComHelperEmail::sendApprovedEmail($data['id'], $type, $status, $data['amount_paid']);
 			}
 
 		}

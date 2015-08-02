@@ -236,6 +236,8 @@ class DigiComModelOrderNew extends JModelAdmin
 			}
 			DigiComSiteHelperLicense::addLicenceSubscription($data['product_id'], $data['userid'], $recordId, $type);
 
+			DigiComHelperEmail::sendApprovedEmail($recordId, $type, $data['status'], $data['amount_paid']);
+
 			return true;
 
 		}
