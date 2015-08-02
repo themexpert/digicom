@@ -394,6 +394,18 @@
 					description="COM_DIGICOM_SETTINGS_EMAIL_FROM_LABEL_DESC"
 					/>
 
+				<field
+					name="sendmailtoadmin"
+					type="radio"
+					class="btn-group"
+					label="COM_DIGICOM_SETTINGS_EMAIL_SENDEMAILTOADMIN_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_SENDEMAILTOADMIN_DESC"
+					default="1"
+					>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
 				<field name="email_settings_spacer_template_notice" type="spacer" class="label label-info"
 					label="COM_DIGICOM_SETTINGS_EMAIL_SETTINGS_SPACER_TEMPLATE_NOTICE"
 					/>
