@@ -213,20 +213,22 @@ CREATE TABLE IF NOT EXISTS `#__digicom_orders_details` (
 DROP TABLE IF EXISTS `#__digicom_products`;
 CREATE TABLE IF NOT EXISTS `#__digicom_products` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `asset_id` int(11) NOT NULL COMMENT 'FK to the #__assets table.',
+  `catid` int(11) NOT NULL,
   `product_type` varchar(50) NOT NULL DEFAULT 'reguler' COMMENT 'reguler,bundle',
   `name` varchar(150) NOT NULL DEFAULT '',
   `alias` varchar(150) NOT NULL,
+  `introtext` mediumtext NOT NULL,
+  `fulltext` longtext NOT NULL COMMENT 'full desc',
+  `images` varchar(150) NOT NULL DEFAULT '',
   `price` varchar(50) NOT NULL,
   `price_type` tinyint(4) NOT NULL DEFAULT '3',
   `expiration_length` tinyint(4) NOT NULL,
   `expiration_type` varchar(15) NOT NULL,
-  `images` varchar(150) NOT NULL DEFAULT '',
-  `ordering` int(11) NOT NULL DEFAULT '0',
   `bundle_source` varchar(50) DEFAULT NULL,
-  `description` text NOT NULL,
-  `fulldescription` text NOT NULL COMMENT 'full desc',
-  `catid` int(11) NOT NULL,
   `language` char(7) NOT NULL DEFAULT '*',
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `featured` int(11) NOT NULL DEFAULT '0',
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_by` int(10) unsigned NOT NULL DEFAULT '0',
   `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -235,20 +237,20 @@ CREATE TABLE IF NOT EXISTS `#__digicom_products` (
   `publish_down` int(11) NOT NULL DEFAULT '0',
   `checked_out` int(11) NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `access` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `published` int(11) NOT NULL DEFAULT '0',
-  `used` int(11) NOT NULL DEFAULT '0',
   `metatitle` varchar(100) NOT NULL DEFAULT '',
   `metakey` text NOT NULL,
   `metadesc` text NOT NULL,
   `metadata` text NOT NULL,
-  `access` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `featured` int(11) NOT NULL DEFAULT '0',
   `hide_public` tinyint(1) NOT NULL DEFAULT '0',
+  `xreference` varchar(50) NOT NULL COMMENT 'A reference to enable linkages to external data sets.',
+  `used` int(11) NOT NULL DEFAULT '0',
   `hits` int(11) NOT NULL,
-  `attribs` varchar(5120) NOT NULL,
+  `attribs` longtext NOT NULL,
   PRIMARY KEY (`id`),
   KEY `published` (`published`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
 -- --------------------------------------------------------
 
