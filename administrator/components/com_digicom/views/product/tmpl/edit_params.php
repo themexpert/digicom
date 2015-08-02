@@ -9,12 +9,12 @@
 
 defined('_JEXEC') or die;
 ?>
-<?php $fields = $this->form->getFieldset('params'); ?>
+<?php $fields = $this->form->getFieldset('attribs'); ?>
 <?php if (count($fields)) : ?>
     <?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'params', JText::_('COM_DIGICOM_PRODUCT_BUNDLE_FILES_SELECTION', true)); ?>
 
-    <?php echo $this->form->getControlGroup('params'); ?>
-    <?php foreach ($this->form->getGroup('params') as $field) : ?>
+    <?php echo $this->form->getControlGroup('attribs'); ?>
+    <?php foreach ($this->form->getGroup('attribs') as $field) : ?>
         <?php echo $field->getControlGroup(); ?>
     <?php endforeach; ?>
 
