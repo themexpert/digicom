@@ -323,7 +323,7 @@ class DigiComModelProduct extends JModelAdmin
 
 		$params = JComponentHelper::getParams('com_digicom');
 		JForm::addFormPath(JPATH_SITE . '/templates/' . $defaultemplate . '/html/com_digicom/templates/'.$params->get('template','default'));
-		$form->loadFile('params', false);
+		$form->loadFile('attribs', false);
 
 		parent::preprocessForm($form, $data, $group);
 	}
@@ -341,6 +341,11 @@ class DigiComModelProduct extends JModelAdmin
 	{
 		if ($item = parent::getItem($pk))
 		{
+			// Convert the params field to an array.
+			$registry = new Registry;
+			$registry->loadString($item->attribs);
+			$item->attribs = $registry->toArray();
+
 			// Convert the metadata field to an array.
 			$registry = new Registry;
 			$registry->loadString($item->metadata);
@@ -458,6 +463,23 @@ class DigiComModelProduct extends JModelAdmin
 			$data['alias']	= $alias;
 			$data['state']	= 0;
 		}
+
+		/*
+		if (isset($data['images']) && is_array($data['images']))
+		{
+			$registry = new Registry;
+			$registry->loadArray($data['images']);
+			$data['images'] = (string) $registry;
+		}
+		*/
+
+		if (isset($data['attribs']) && is_array($data['attribs']))
+		{
+			$registry = new Registry;
+			$registry->loadArray($data['attribs']);
+			$data['attribs'] = (string) $registry;
+		}
+
 		if(parent::save($data)){
 			//hook the files here
 			$recordId = $this->getState('product.id');
@@ -647,6 +669,23 @@ class DigiComModelProduct extends JModelAdmin
 		$this->cleanCache();
 
 		return true;
+	}
+
+	/**
+	 * Custom clean the cache of com_content and content modules
+	 *
+	 * @param   string   $group      The cache group
+	 * @param   integer  $client_id  The ID of the client
+	 *
+	 * @return  void
+	 *
+	 * @since   1.6
+	 */
+	protected function cleanCache($group = null, $client_id = 0)
+	{
+		parent::cleanCache('com_digicom');
+		parent::cleanCache('mod_digicom_categories');
+		parent::cleanCache('mod_digicom_cart');
 	}
 
 	function getConfigs() {
