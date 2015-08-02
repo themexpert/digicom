@@ -141,15 +141,15 @@ class DigiComViewProduct extends JViewLegacy
 
 		if ($item->params->get('show_intro', '1') == '1')
 		{
-			$item->text = $item->description . ' ' . $item->fulldescription;
+			$item->text = $item->introtext . ' ' . $item->fulltext;
 		}
-		elseif ($item->fulldescription)
+		elseif ($item->fulltext)
 		{
-			$item->text = $item->fulldescription;
+			$item->text = $item->fulltext;
 		}
 		else
 		{
-			$item->text = $item->description;
+			$item->text = $item->introtext;
 		}
 
 		$item->tags = new JHelperTags;

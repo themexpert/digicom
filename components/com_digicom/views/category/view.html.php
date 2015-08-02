@@ -80,7 +80,7 @@ class DigiComViewCategory extends JViewCategory
 		$numIntro	= $params->def('num_products', 9);
 		$numLinks	= 0;
 
-		// Compute the product slugs and prepare description (runs content plugins).
+		// Compute the product slugs and prepare introtext (runs content plugins).
 		foreach ($this->items as $item)
 		{
 			$item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
@@ -101,14 +101,14 @@ class DigiComViewCategory extends JViewCategory
 			// Old plugins: Ensure that text property is available
 			if (!isset($item->text))
 			{
-				$item->text = $item->description;
+				$item->text = $item->introtext;
 			}
 
 			JPluginHelper::importPlugin('content');
 			$dispatcher->trigger('onContentPrepare', array ('com_digicom.category', &$item, &$item->params, 0));
 
-			// Old plugins: Use processed text as description
-			$item->description = $item->text;
+			// Old plugins: Use processed text as introtext
+			$item->introtext = $item->text;
 
 			$results = $dispatcher->trigger('onContentAfterTitle', array('com_digicom.category', &$item, &$item->params, 0));
 			$item->event->afterDisplayTitle = trim(implode("\n", $results));
