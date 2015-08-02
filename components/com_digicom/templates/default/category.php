@@ -79,7 +79,7 @@ $column = $this->category->params->get('category_cols',3);
 					  	<!-- Product Name & Intro text -->
 					  	<div class="caption">
 		                    <h3><a href="<?php echo $link;?>"><?php echo $item->name; ?></a></h3>
-		                    <p class="description"><?php echo $item->description; ?></p>
+		                    <p class="description"><?php echo $item->introtext; ?></p>
 
 												<!-- Price & Readmore Button -->
 		                    <div class="clearfix">

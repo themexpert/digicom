@@ -81,8 +81,8 @@ if($this->configs->get('afteradditem',0) == "2"){
 						<?php echo $this->item->tagLayout->render($this->item->tags->itemTags); ?>
 					<?php endif; ?>
 
-					<p class="short-desc"><?php echo $this->item->description; ?></p>
-					<div class="description"><?php echo $this->item->fulldescription; ?></div>
+					<p class="short-desc"><?php echo $this->item->introtext; ?></p>
+					<div class="description"><?php echo $this->item->fulltext; ?></div>
 
 					<?php if(!empty($this->item->bundle_source)):?>
 					<div class="bundled-products">
