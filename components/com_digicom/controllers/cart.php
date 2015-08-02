@@ -423,7 +423,7 @@ class DigiComControllerCart extends JControllerLegacy
 			//store order
 			$order_id = $cart->addOrderInfo($items, $customer, $tax, $status = 'Pending', $prosessor);
 
-			$cart->getFinalize($this->_customer->_sid, $msg = '', $order_id, $type= 'new_order');
+			$cart->getFinalize($this->_customer->_sid, $msg = '', $order_id, $type= 'new_order', $status);
 
 			/* Prepare params*/
 			$params = array();
