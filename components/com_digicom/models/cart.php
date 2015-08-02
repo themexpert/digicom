@@ -796,6 +796,7 @@ class DigiComModelCart extends JModelItem
 
 		$this->storelog($pg_plugin, $data);
 
+		//print_r($data);jexit();
 		if(isset($data['status']))
 		{
 			$_SESSION['in_trans'] = 1;
@@ -814,23 +815,16 @@ class DigiComModelCart extends JModelItem
 				$app->enqueueMessage($msg, 'notice');
 			}
 
-			$this->updateOrder($order_id,$result,$data,$pg_plugin,$status,$items,$customer);
-
-
 			$info = array(
 				'orderid' => $order_id,
 				'data' => $data,
 				'plugin' => $pg_plugin
 			);
+
 			DigiComSiteHelperLog::setLog('status', 'cart proccessSuccess', 'Order id#'.$order_id.' updated & method is '.$pg_plugin, json_encode($info),$status);
 
+			$this->updateOrder($order_id,$result,$data,$pg_plugin,$status,$items,$customer);
 
-		}
-
-		if($status != "Active"){
-			$url = JRoute::_("index.php?option=com_digicom&view=order&id=".$order_id);
-			//print_r($url);die;
-			$app->redirect($url);
 		}
 
 		// orders page
@@ -898,7 +892,6 @@ class DigiComModelCart extends JModelItem
 		$tzoffset = $config->get('offset');
 		$now = date('Y-m-d H:i:s', time() + $tzoffset);
 		$now = strtotime($now);
-
 		$this->dispatchMail( $order_id, $orderTable->amount_paid, $orderTable->number_of_products, $now, $items, $customer , $type, $status);
 
 		return true;
@@ -1074,8 +1067,6 @@ class DigiComModelCart extends JModelItem
 
 	function dispatchMail($orderid, $amount, $number_of_products, $timestamp, $items, $customer, $type = 'new_order', $status = '')
 	{
-
-		$app 	= JFactory::getApplication();
 		$db 	= JFactory::getDbo();
 		$site_config = JFactory::getConfig();
 		// get sid & uid
@@ -1084,8 +1075,10 @@ class DigiComModelCart extends JModelItem
 
 		if (is_object($customer) && isset($customer->_user->id))  $uid = $customer->_user->id;
 		if (is_array($customer)) $uid = $customer['userid'];
+		if(is_numeric($customer)) $uid = $customer;
+		//echo $customer;jexit();
 
-		if ( !$sid ) return;
+		if ( !$uid ) return;
 
 		$my = JFactory::getUser($uid);
 
@@ -1116,7 +1109,6 @@ class DigiComModelCart extends JModelItem
 		$heading = $emailinfo->heading;//jform[email_settings][heading]
 		if(!$enable) return;
 		//print_r($emailinfo);die;
-
 		//-----------------------------------------------------------------------
 		$path = '/components/com_digicom/emails/';
 
@@ -1330,6 +1322,8 @@ class DigiComModelCart extends JModelItem
 		}
 
 		if ( $email_settings->sendmailtoadmin) {
+			$message = 'Order email to Admin : '.$type.' email for order#'.$orderid.', status: '.$status;
+
 			$recipients =  $adminEmail2 . (!empty($recipients) ? ', '.$recipients : '');
 			$mailSender = JFactory::getMailer();
 			$mailSender->isHTML( true );
@@ -1340,8 +1334,10 @@ class DigiComModelCart extends JModelItem
 			$mailSender->setBody( $message );
 
 			//Log::write( $message );
-			if ( !$mailSender->Send() ) {
-				//error code
+			if ( $mailSender->Send() !== true ) {
+				DigiComSiteHelperLog::setLog('email', 'cart dispatch email', $message, json_encode($info),'failed');
+			}else{
+				DigiComSiteHelperLog::setLog('email', 'cart dispatch email', $message, json_encode($info),'success');
 			}
 		}
 
