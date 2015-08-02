@@ -953,14 +953,15 @@ class DigiComModelCart extends JModelItem
 		$total = $tax['taxed'];
 		$number_of_products = $tax['number_of_products'];
 
-		$this->dispatchMail( $orderid, $total, $number_of_products, $now, $items, $customer , $type);
+		$this->dispatchMail( $orderid, $total, $number_of_products, $now, $items, $customer , $type, 'Active');
+
 		$cart->emptyCart( $sid );
 
 		return true;
 
 	}
 
-	function getFinalize( $sid, $msg = '', $orderid = 0 , $type)
+	function getFinalize( $sid, $msg = '', $orderid = 0 , $type, $status)
 	{
 
 		global $Itemid;
@@ -998,7 +999,7 @@ class DigiComModelCart extends JModelItem
 
 		/* fixed return after payment, before paypal IPN */
 		$plugin = JRequest::getVar( 'plugin', '' );
-		$this->dispatchMail( $orderid, $total, $number_of_products, $now, $items, $customer , $type);
+		$this->dispatchMail( $orderid, $total, $number_of_products, $now, $items, $customer , $type, $status);
 		$cart->emptyCart( $sid );
 
 		return true;
@@ -1145,6 +1146,7 @@ class DigiComModelCart extends JModelItem
 		$template = $this->getTemplate();
 		$client   = JApplicationHelper::getClientInfo($template->client_id);
 		$filePath = JPath::clean($client->path . '/templates/' . $template->template . $override.'/'.$filename);
+
 		//echo $filePath;die;
 		if (file_exists($filePath))
 		{
@@ -1308,12 +1310,26 @@ class DigiComModelCart extends JModelItem
 		$mailSender->setSubject( $subject );
 		$mailSender->setBody( $message );
 
-		//Log::write( $message );
-		if ( !$mailSender->Send() ) {
-			//<Your error code management>
+		// Log::write( $message );
+		// $orderid, $amount, $number_of_products, $timestamp, $items, $customer,
+		// $type = 'new_order', $status = ''
+
+		$info = array(
+			'orderid' => $orderid,
+			'amount' => $amount,
+			'customer' => $customer,
+			'type' => $type,
+			'status' => $status
+		);
+		$message = $type.' email for order#'.$orderid.', status: '.$status;
+		////$type, $hook, $message, $info, $status = 'complete'
+		if ( $mailSender->Send() !== true ) {
+			DigiComSiteHelperLog::setLog('email', 'cart dispatch email', $message, json_encode($info),'failed');
+		}else{
+			DigiComSiteHelperLog::setLog('email', 'cart dispatch email', $message, json_encode($info),'success');
 		}
 
-		if ( $configs->get('sendmailtoadmin',1) != 0 ) {
+		if ( $email_settings->sendmailtoadmin) {
 			$recipients =  $adminEmail2 . (!empty($recipients) ? ', '.$recipients : '');
 			$mailSender = JFactory::getMailer();
 			$mailSender->isHTML( true );
