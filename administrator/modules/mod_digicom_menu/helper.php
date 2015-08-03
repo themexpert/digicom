@@ -87,7 +87,7 @@ abstract class ModDigiComMenuHelper {
 			4 => 'index.php?option=com_digicom&view=customers',
 			5 => 'index.php?option=com_digicom&view=orders',
 			6 => 'index.php?option=com_digicom&view=discounts',
-			7 => 'index.php?option=com_digicom&view=stats',
+			7 => 'index.php?option=com_digicom&view=reports',
 			8 => 'index.php?option=com_digicom&view=configs'
 		);
 	}
