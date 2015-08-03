@@ -12,6 +12,8 @@ $app      = JFactory::getApplication();
 $input    = $app->input;
 $this->innertab = $input->get('report','sales_by_date');
 $this->range = $input->get('range','7day');
+$this->start_date = $input->get('start_date','');
+$this->end_date = $input->get('end_date','');
 ?>
 
 <ul class="nav nav-pills">
@@ -21,6 +23,7 @@ $this->range = $input->get('range','7day');
   <li<?php echo ($this->innertab == 'sales_by_product' ? ' class="active"' : '');?>>
     <a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report=sales_by_product');?>" class=""><?php echo JText::_('COM_DIGICOM_REPORTS_SALES_PRODUCTS');?></a>
   </li>
+  
   <!--
   <li<?php echo ($this->innertab == 'sales_by_category' ? ' class="active"' : '');?>>
     <a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report=sales_by_category');?>" class=""><?php echo JText::_('COM_DIGICOM_REPORTS_SALES_CATEGORY');?></a>
@@ -60,8 +63,10 @@ $this->range = $input->get('range','7day');
       <form name="adminFormStatsRange" method="post" action="<?php echo JRoute::_('index.php?option=com_digicom&view=reports'); ?>" class="form-inline" style="display: inline-block;">
 
         <div>
-          <input type="text" size="9" placeholder="yyyy-mm-dd" value="" name="start_date" class="range_datepicker from hasDatepicker" id="dp1438523397955">
-          <input type="text" size="9" placeholder="yyyy-mm-dd" value="" name="end_date" class="range_datepicker to hasDatepicker" id="dp1438523397956">
+          <?php 
+          echo JHTML::calendar($this->start_date,'start_date', 'start_date', '%Y-%m-%d',array('size'=>'8','maxlength'=>'10','class'=>'validate',));
+          echo JHTML::calendar($this->end_date,'end_date', 'end_date', '%Y-%m-%d',array('size'=>'8','maxlength'=>'10','class'=>'validate',));
+          ?>
           <input type="submit" class="button" value="Go">
 
           <input type="hidden" name="option" value="com_digicom">
