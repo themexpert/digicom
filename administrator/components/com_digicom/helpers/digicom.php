@@ -460,6 +460,22 @@ class DigiComHelperDigiCom extends JHelperContent{
 		return $dropdown;
 	}
 
+	/**
+	* get the product name n id for options list
+	*/
+	public static function getProductsList(){
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName(array('name','id')))
+			  ->from($db->quoteName('#__digicom_products'))
+			  ->order($db->quoteName('id').' DESC');
+
+		// Reset the query using our newly populated query object.
+		$db->setQuery($query);
+
+		return $db->loadObjectList();
+	}
+
 	public static function addAdminStyles(){
 
 		// load core script

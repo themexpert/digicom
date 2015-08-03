@@ -39,22 +39,22 @@ $this->end_date = $input->get('end_date','');
   <h3 class="module-title nav-header"><?php echo JText::_('COM_DIGICOM_REPORTS_SALES_STATS');?></h3>
   <ul class="nav nav-tabs">
     <li<?php echo ($this->range == 'year' ? ' class="active"' : '');?>>
-      <a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report=sales_by_date&range=year');?>" class="current">
+      <a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report='.$this->innertab.'&range=year');?>" class="current">
         <?php echo JText::_('Year');?>
       </a>
     </li>
     <li<?php echo ($this->range == 'last_month' ? ' class="active"' : '');?>>
-      <a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report=sales_by_date&range=last_month');?>" class="current">
+      <a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report='.$this->innertab.'&range=last_month');?>" class="current">
         <?php echo JText::_('Last Month');?>
       </a>
     </li>
     <li<?php echo ($this->range == 'month' ? ' class="active"' : '');?>>
-      <a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report=sales_by_date&range=month');?>" class="current">
+      <a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report='.$this->innertab.'&range=month');?>" class="current">
         <?php echo JText::_('This Month');?>
       </a>
     </li>
     <li<?php echo ($this->range == '7day' ? ' class="active"' : '');?>>
-      <a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report=sales_by_date&range=7day');?>" class="current">
+      <a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report='.$this->innertab.'&range=7day');?>" class="current">
         <?php echo JText::_('Last 7 Days');?>
       </a>
     </li>
@@ -72,7 +72,7 @@ $this->end_date = $input->get('end_date','');
           <input type="hidden" name="option" value="com_digicom">
           <input type="hidden" name="view" value="reports">
           <input type="hidden" name="tab" value="sales">
-          <input type="hidden" name="report" value="sales_by_date">
+          <input type="hidden" name="report" value="<?php echo $this->innertab;?>">
           <input type="hidden" name="range" value="custom">
 
         </div>
