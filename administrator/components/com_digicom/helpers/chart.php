@@ -125,11 +125,55 @@ class DigiComHelperChart {
 		$result = DigiComHelperDigiCom::format_price($price, $config->get('currency','USD'), true, $config);
 		return $result;
 	}
+	
+
+	/*
+	* $month = Y-m ; 2015-1
+	*/
+	public static function getAmountByMonth($month){
+
+		$db = JFactory::getDBO();
+		$config = JComponentHelper::getComponent('com_digicom')->params;
+
+		$startdate = date($month."-1 00:00:00");
+		$start_date_int = strtotime($startdate);
+		$enddate = date('Y-m-d 00:00:0', strtotime($startdate . ' + 1 month'));
+		//echo $enddate;die;
+		$end_date_int = strtotime($enddate);
+
+		$and = "";
+		$and .= " and `order_date` >= '".$start_date_int."'";
+		$and .= " and `order_date` < '".$end_date_int . "'";
+
+		$sql = "SELECT SUM(`amount_paid`) as total from #__digicom_orders where 1=1 ".$and;
+		//$sql = "SELECT SUM(CASE WHEN `amount_paid` = '1' THEN `amount` ELSE `amount_paid` END) as total from #__digicom_orders where 1=1 ".$and;
+		$db->setQuery($sql);
+		$db->query();
+		$price = $db->loadResult();
+		$result = DigiComHelperDigiCom::format_price($price, $config->get('currency','USD'), true, $config);
+		return $result;
+	}
+
 
 	public static function getRangeDayLabel($range){
 		$days = '';
 		$prefix = '';
 		switch($range){
+			case "custom":
+				$app      = JFactory::getApplication();
+				$input    = $app->input;
+				$start_date = $input->get('start_date','');
+				$end_date = $input->get('end_date','');
+
+				$daterange = DigiComHelperChart::createDateRangeArray($start_date, $end_date);
+				//print_r($daterange);die;
+				foreach ($daterange as $key => $value) {
+					$date = new DateTime($value);
+					$days = $days . $prefix . '"' . DigiComHelperChart::addOrdinalNumberSuffix($date->format('d')) . ' '.$date->format('M').'"';
+					$prefix = ', ';
+				}
+				
+				break;
 			case "year":
 				//all months of current year
 				$date = new DateTime();
@@ -185,34 +229,53 @@ class DigiComHelperChart {
 		$price = '';
 		$prefix = '';
 		switch($range){
+			case "custom":
+				$app      = JFactory::getApplication();
+				$input    = $app->input;
+				$start_date = $input->get('start_date','');
+				$end_date = $input->get('end_date','');
+
+				$daterange = DigiComHelperChart::createDateRangeArray($start_date, $end_date);
+				//print_r($daterange);die;
+				foreach ($daterange as $key => $value) {
+					$date = new DateTime($value);
+					//$days = $days . $prefix . '"' . DigiComHelperChart::addOrdinalNumberSuffix($date->format('d')) . ' '.$date->format('M').'"';
+					//$prefix = ', ';
+
+					$dayPrice = ceil(DigiComHelperChart::getAmountByDate($date->format('Y-m-d')));
+					$price = $price . $prefix . $dayPrice;
+					$prefix = ', ';
+
+				}
+				
+				break;
 			case "year":
 				//all months of current year
 				$date = new DateTime();
 				$lastmonth = $date->format('m');
 
 				for ($m=1; $m<=$lastmonth; $m++) {
-				    $month = date('F', mktime(0,0,0,$m, 1, date('Y')));
-
-					$dayPrice = ceil(DigiComHelperChart::getAmountByDate($date->format('Y-m-d')));
+				    $month = date('Y-m', mktime(0,0,0,$m, 1, date('Y')));
+					$dayPrice = ceil(DigiComHelperChart::getAmountByMonth($month));
 					$price = $price . $prefix . $dayPrice;
 					$prefix = ', ';
 			    }
 
-			    $lastday = new DateTime('last day of last month');
-				$lastdate = $lastday->format('j');
-				for($i=0;$i<$lastdate;$i++){
-					//$date = new DateTime($i.' days ago');
-					$month = new DateTime('first day of last month');
-					$date = $month->modify("+$i days");
-					//echo $date->format('Y-m-j');die;
-					// $days = $days . $prefix . '"' . DigiComHelperChart::addOrdinalNumberSuffix($date->format('d')) . ' '.$date->format('M').'"';
-					// $price = $price . $prefix . $dayPrice;
-					// $prefix = ', ';
+			 //    $lastday = new DateTime('last day of last month');
+				// $lastdate = $lastday->format('j');
+				// for($i=0;$i<$lastdate;$i++){
+				// 	//$date = new DateTime($i.' days ago');
+				// 	$month = new DateTime('first day of last month');
+				// 	$date = $month->modify("+$i days");
+				// 	//echo $date->format('Y-m-j');die;
+				// 	// $days = $days . $prefix . '"' . DigiComHelperChart::addOrdinalNumberSuffix($date->format('d')) . ' '.$date->format('M').'"';
+				// 	// $price = $price . $prefix . $dayPrice;
+				// 	// $prefix = ', ';
 
-					$dayPrice = ceil(DigiComHelperChart::getAmountByDate($date->format('Y-m-d')));
-					$price = $price . $prefix . $dayPrice;
-					$prefix = ', ';
-				}
+				// 	$dayPrice = ceil(DigiComHelperChart::getAmountByDate($date->format('Y-m-d')));
+				// 	$price = $price . $prefix . $dayPrice;
+				// 	$prefix = ', ';
+				// }
 
 				break;
 			case "last_month":
@@ -258,7 +321,36 @@ class DigiComHelperChart {
 		return $price;
 
 	}
-	
+
+
+	/*
+	* createDateRangeArray
+	*/
+	public static function createDateRangeArray($strDateFrom,$strDateTo)
+	{
+	    // takes two dates formatted as YYYY-MM-DD and creates an
+	    // inclusive array of the dates between the from and to dates.
+
+	    // could test validity of dates here but I'm already doing
+	    // that in the main script
+
+	    $aryRange=array();
+
+	    $iDateFrom=mktime(1,0,0,substr($strDateFrom,5,2),     substr($strDateFrom,8,2),substr($strDateFrom,0,4));
+	    $iDateTo=mktime(1,0,0,substr($strDateTo,5,2),     substr($strDateTo,8,2),substr($strDateTo,0,4));
+
+	    if ($iDateTo>=$iDateFrom)
+	    {
+	        array_push($aryRange,date('Y-m-d',$iDateFrom)); // first entry
+	        while ($iDateFrom<$iDateTo)
+	        {
+	            $iDateFrom+=86400; // add 24 hours
+	            array_push($aryRange,date('Y-m-d',$iDateFrom));
+	        }
+	    }
+	    return $aryRange;
+	}
+
 	/*
 	public static function getSumScale($report, $max_value){
 		$scale = array();
