@@ -67,7 +67,7 @@ $this->end_date = $input->get('end_date','');
           echo JHTML::calendar($this->start_date,'start_date', 'start_date', '%Y-%m-%d',array('size'=>'8','maxlength'=>'10','class'=>'validate',));
           echo JHTML::calendar($this->end_date,'end_date', 'end_date', '%Y-%m-%d',array('size'=>'8','maxlength'=>'10','class'=>'validate',));
           ?>
-          <input type="submit" class="button" value="Go">
+          <input type="submit" class="btn" value="Go">
 
           <input type="hidden" name="option" value="com_digicom">
           <input type="hidden" name="view" value="reports">
