@@ -68,7 +68,7 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 					$monthlyPrice = DigiComHelperChart::getMonthLabelPrice($monthlyDay);
 					?>
 					<div class="panel-content">
-						<div><canvas id="myChart" height="200"></canvas></div>
+						<div><canvas id="myChart" height="150"></canvas></div>
 
 						<script type="text/javascript">
 							var data = {

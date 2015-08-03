@@ -11,10 +11,10 @@ defined ('_JEXEC') or die ("Go away.");
 
 $configs = $this->configs;
 $rangeDays = DigiComHelperChart::getRangeDayLabel($this->range);
-$rangePrices = DigiComHelperChart::getRangePricesLabel($rangeDays);
+$rangePrices = DigiComHelperChart::getRangePricesLabel($this->range,$rangeDays);
 ?>
 
-<div><canvas id="myChart" width="400" height="100"></canvas></div>
+<div><canvas id="myChart" width="400" height="150"></canvas></div>
 
 <script type="text/javascript">
   var data = {

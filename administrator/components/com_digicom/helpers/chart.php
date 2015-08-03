@@ -76,7 +76,7 @@ class DigiComHelperChart {
 	}
 
 	/*
-	 * method to get daily amount
+	 * method to get daily amount for current month
 	 * */
 	public static function getAmountDaily($day){
 		$db = JFactory::getDBO();
@@ -100,11 +100,67 @@ class DigiComHelperChart {
 		return $result;
 	}
 
+	/*
+	 * method to get daily amount for specific date
+	 * */
+	public static function getAmountByDate($day){
+
+		$db = JFactory::getDBO();
+		$config = JComponentHelper::getComponent('com_digicom')->params;
+
+		$startdate = date($day." 00:00:00");
+		$start_date_int = strtotime($startdate);
+		$enddate = date('Y-m-d 00:00:0', strtotime($startdate . ' + 1 day'));
+		$end_date_int = strtotime($enddate);
+
+		$and = "";
+		$and .= " and `order_date` >= '".$start_date_int."'";
+		$and .= " and `order_date` < '".$end_date_int . "'";
+
+		$sql = "SELECT SUM(`amount_paid`) as total from #__digicom_orders where 1=1 ".$and;
+		//$sql = "SELECT SUM(CASE WHEN `amount_paid` = '1' THEN `amount` ELSE `amount_paid` END) as total from #__digicom_orders where 1=1 ".$and;
+		$db->setQuery($sql);
+		$db->query();
+		$price = $db->loadResult();
+		$result = DigiComHelperDigiCom::format_price($price, $config->get('currency','USD'), true, $config);
+		return $result;
+	}
+
 	public static function getRangeDayLabel($range){
 		$days = '';
 		$prefix = '';
 		switch($range){
-			case "":
+			case "year":
+				//all months of current year
+				$date = new DateTime();
+				$lastmonth = $date->format('m');
+
+				for ($m=1; $m<=$lastmonth; $m++) {
+				    $month = date('F', mktime(0,0,0,$m, 1, date('Y')));
+				    $days = $days . $prefix . '"' . $month .'"';
+					$prefix = ', ';
+			    }
+
+				break;
+			case "last_month":
+				//previous month
+				
+				$lastday = new DateTime('last day of last month');
+				$lastdate = $lastday->format('j');
+				for($i=0;$i<$lastdate;$i++){
+					//$date = new DateTime($i.' days ago');
+					$month = new DateTime('first day of last month');
+					$date = $month->modify("+$i days");
+					//echo $date->format('Y-m-j');die;
+					$days = $days . $prefix . '"' . DigiComHelperChart::addOrdinalNumberSuffix($date->format('d')) . ' '.$date->format('M').'"';
+					$prefix = ', ';
+				}
+
+				break;
+			case "month":
+				//current month
+				return DigiComHelperChart::getMonthLabelDay();
+
 				break;
 			case "7day":
 			default:
@@ -116,18 +172,70 @@ class DigiComHelperChart {
 					$prefix = ', ';
 				}
 
-				return $days;
+				
 
 			break;
 		}
+		//echo $days;die;
+		return $days;
 
 	}
-	public static function getRangePricesLabel($monthlyDay){
+	public static function getRangePricesLabel($range,$rangeDays = null){
 
-		$days = '';
+		$price = '';
 		$prefix = '';
 		switch($range){
-			case "":
+			case "year":
+				//all months of current year
+				$date = new DateTime();
+				$lastmonth = $date->format('m');
+
+				for ($m=1; $m<=$lastmonth; $m++) {
+				    $month = date('F', mktime(0,0,0,$m, 1, date('Y')));
+
+					$dayPrice = ceil(DigiComHelperChart::getAmountByDate($date->format('Y-m-d')));
+					$price = $price . $prefix . $dayPrice;
+					$prefix = ', ';
+			    }
+
+			    $lastday = new DateTime('last day of last month');
+				$lastdate = $lastday->format('j');
+				for($i=0;$i<$lastdate;$i++){
+					//$date = new DateTime($i.' days ago');
+					$month = new DateTime('first day of last month');
+					$date = $month->modify("+$i days");
+					//echo $date->format('Y-m-j');die;
+					// $days = $days . $prefix . '"' . DigiComHelperChart::addOrdinalNumberSuffix($date->format('d')) . ' '.$date->format('M').'"';
+					// $price = $price . $prefix . $dayPrice;
+					// $prefix = ', ';
+
+					$dayPrice = ceil(DigiComHelperChart::getAmountByDate($date->format('Y-m-d')));
+					$price = $price . $prefix . $dayPrice;
+					$prefix = ', ';
+				}
+
+				break;
+			case "last_month":
+				$lastday = new DateTime('last day of last month');
+				$lastdate = $lastday->format('j');
+				for($i=0;$i<$lastdate;$i++){
+					//$date = new DateTime($i.' days ago');
+					$month = new DateTime('first day of last month');
+					$date = $month->modify("+$i days");
+					//echo $date->format('Y-m-j');die;
+					// $days = $days . $prefix . '"' . DigiComHelperChart::addOrdinalNumberSuffix($date->format('d')) . ' '.$date->format('M').'"';
+					// $price = $price . $prefix . $dayPrice;
+					// $prefix = ', ';
+
+					$dayPrice = ceil(DigiComHelperChart::getAmountByDate($date->format('Y-m-d')));
+					$price = $price . $prefix . $dayPrice;
+					$prefix = ', ';
+				}
+
+				break;
+			case "month":
+				return DigiComHelperChart::getMonthLabelPrice($rangeDays);
+
 				break;
 			case "7day":
 			default:
@@ -135,40 +243,19 @@ class DigiComHelperChart {
 
 				for($i=6;$i>=0;$i--){
 					$date = new DateTime($i.' days ago');
-					$days = $days . $prefix . '"' . DigiComHelperChart::addOrdinalNumberSuffix($date->format('d')) . ' '.$date->format('M').'"';
+
+					//$price = $price . $prefix . '"' . DigiComHelperChart::addOrdinalNumberSuffix($date->format('d')) . ' '.$date->format('M').'"';
+					//$prefix = ', ';
+					
+					$dayPrice = ceil(DigiComHelperChart::getAmountByDate($date->format('Y-m-d')));
+					$price = $price . $prefix . $dayPrice;
 					$prefix = ', ';
 				}
-
-				return $days;
 
 				break;
 		}
 
-
-		echo $monthlyDay;jexit();
-		$date = new DateTime('now');
-		$date->modify('first day of this month');
-		$startdate = $date->format('Y-m-d') . ' 00:00:00';
-
-		$date->modify('first day of next month');
-		$enddate = $date->format('Y-m-d') . ' 00:00:00';
-
-		$days = explode(', ', $monthlyDay);
-		$price = '';
-		$prefix = '';
-		foreach($days as $day){
-			$day = str_replace('"','',$day);
-			//$day = str_replace(' Aug','',$day);
-			//$day = substr($day,0,-2);
-			$day = substr($day,0,-6);
-			//echo $day;jexit();
-			//"1st Aug"
-
-
-			$dayPrice = ceil(DigiComHelperChart::getAmountDaily($day));
-			$price = $price . $prefix . $dayPrice;
-			$prefix = ', ';
-		}
+		return $price;
 
 	}
 	
