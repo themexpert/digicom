@@ -31,6 +31,10 @@ class DigiComViewReports extends JViewLegacy {
 
 	protected $range;
 
+	protected $start_date;
+	
+	protected $end_date;
+
 	function display ($tpl =  null )
 	{
 
