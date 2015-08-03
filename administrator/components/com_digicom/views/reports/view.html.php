@@ -24,6 +24,13 @@ class DigiComViewReports extends JViewLegacy {
 
 	protected $configs;
 
+	/*
+	* innertab
+	*/
+	protected $innertab;
+
+	protected $range;
+
 	function display ($tpl =  null )
 	{
 

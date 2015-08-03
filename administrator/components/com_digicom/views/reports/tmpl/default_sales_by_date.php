@@ -10,26 +10,26 @@
 defined ('_JEXEC') or die ("Go away.");
 
 $configs = $this->configs;
-$monthlyDay = DigiComHelperChart::getMonthLabelDay();
-$monthlyPrice = DigiComHelperChart::getMonthLabelPrice($monthlyDay);
+$rangeDays = DigiComHelperChart::getRangeDayLabel($this->range);
+$rangePrices = DigiComHelperChart::getRangePricesLabel($rangeDays);
 ?>
 
-<div><canvas id="myChart" height="200"></canvas></div>
+<div><canvas id="myChart" width="400" height="100"></canvas></div>
 
 <script type="text/javascript">
   var data = {
-    labels: [<?php echo $monthlyDay; ?>],
+    labels: [<?php echo $rangeDays; ?>],
     datasets: [
 
       {
-        label: "Monthly Report",
+        label: "Range Report",
         fillColor: "#e6f3f9",
         strokeColor: "#1562AD",
         pointColor: "#1562AD",
         pointStrokeColor: "#1562AD",
         pointHighlightFill: "#e6f3f9",
         pointHighlightStroke: "#1562AD",
-        data: [<?php echo $monthlyPrice; ?>]
+        data: [<?php echo $rangePrices; ?>]
       }
     ]
   };
