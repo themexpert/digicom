@@ -47,7 +47,7 @@ class DigiComHelperChart {
 	 * method to get price of orders on selected dates
 	 * @return : 1st jan, 2nd jan
 	 * */
-	public static function getMonthLabelPrice($monthlyDay){
+	public static function getMonthLabelPrice($monthlyDay, $byproduct = false){
 		$date = new DateTime('now');
 		$date->modify('first day of this month');
 		$startdate = $date->format('Y-m-d') . ' 00:00:00';
@@ -67,7 +67,7 @@ class DigiComHelperChart {
 			//"1st Aug"
 
 
-			$dayPrice = ceil(DigiComHelperChart::getAmountDaily($day));
+			$dayPrice = ceil(DigiComHelperChart::getAmountDaily($day,$byproduct));
 			$price = $price . $prefix . $dayPrice;
 			$prefix = ', ';
 		}
@@ -78,23 +78,53 @@ class DigiComHelperChart {
 	/*
 	 * method to get daily amount for current month
 	 * */
-	public static function getAmountDaily($day){
+	public static function getAmountDaily($day, $byproduct){
 		$db = JFactory::getDBO();
+		$input = JFactory::getApplication()->input;
 		$config = JComponentHelper::getComponent('com_digicom')->params;
+		$session  = JFactory::getSession();
+		if($byproduct){
+			$productid = $input->get('productid','');
+  
+			  if(empty($productid)){
+			    $productid = $session->get( 'productid', '' );  
+			  }
+
+			if(empty($productid)) return DigiComHelperDigiCom::format_price(0, $config->get('currency','USD'), true, $config);
+
+		}
 
 		$startdate = date("Y-m-".$day." 00:00:00");
 		$start_date_int = strtotime($startdate);
 		$enddate = date('Y-m-d 00:00:0', strtotime($startdate . ' + 1 day'));
 		$end_date_int = strtotime($enddate);
 
-		$and = "";
-		$and .= " and `order_date` >= '".$start_date_int."'";
-		$and .= " and `order_date` < '".$end_date_int . "'";
+		//$and = "";
+		//$and .= " and `order_date` >= '".$start_date_int."'";
+		//$and .= " and `order_date` < '".$end_date_int . "'";
 
-		$sql = "SELECT SUM(`amount_paid`) as total from #__digicom_orders where 1=1 ".$and;
-		//$sql = "SELECT SUM(CASE WHEN `amount_paid` = '1' THEN `amount` ELSE `amount_paid` END) as total from #__digicom_orders where 1=1 ".$and;
-		$db->setQuery($sql);
-		$db->query();
+		// set query
+		$query = $db->getQuery(true);
+		$query->select('SUM('.$db->quoteName('o.amount_paid').') as '.$db->quoteName('total'))
+			  ->from($db->quoteName('#__digicom_orders', 'o'));
+
+		if($byproduct){
+			$query->join('inner',$db->quoteName('#__digicom_orders_details','od') . ' ON ('.$db->quoteName('od.orderid').'='.$db->quoteName('o.id').')');
+		}
+
+		$query->where($db->quoteName('o.order_date')." >= ".$db->quote($start_date_int));
+		$query->where($db->quoteName('o.order_date')." < ".$db->quote($end_date_int));
+
+		if($byproduct){
+			$query->where($db->quoteName('od.productid')." = " . $db->quote($productid));
+		}
+
+		$db->setQuery($query);
+
+		// $sql = "SELECT SUM(`amount_paid`) as total from #__digicom_orders where 1=1 ".$and;
+		// //$sql = "SELECT SUM(CASE WHEN `amount_paid` = '1' THEN `amount` ELSE `amount_paid` END) as total from #__digicom_orders where 1=1 ".$and;
+		// $db->setQuery($sql);
+		// $db->query();
 		$price = $db->loadResult();
 		$result = DigiComHelperDigiCom::format_price($price, $config->get('currency','USD'), true, $config);
 		return $result;
@@ -108,6 +138,19 @@ class DigiComHelperChart {
 		$db = JFactory::getDBO();
 		$input = JFactory::getApplication()->input;
 		$config = JComponentHelper::getComponent('com_digicom')->params;
+		$session  = JFactory::getSession();
+
+		if($byproduct){
+			$productid = $input->get('productid','');
+  
+			  if(empty($productid)){
+			    $productid = $session->get( 'productid', '' );  
+			  }
+
+			if(empty($productid)) return DigiComHelperDigiCom::format_price(0, $config->get('currency','USD'), true, $config);
+
+		}
+
 
 		$startdate = date($day." 00:00:00");
 		$start_date_int = strtotime($startdate);
@@ -126,7 +169,6 @@ class DigiComHelperChart {
 		$query->where($db->quoteName('o.order_date')." < ".$db->quote($end_date_int));
 
 		if($byproduct){
-			$productid = $input->get('productid','');
 			$query->where($db->quoteName('od.productid')." = " . $db->quote($productid));
 		}
 
@@ -143,10 +185,23 @@ class DigiComHelperChart {
 	/*
 	* $month = Y-m ; 2015-1
 	*/
-	public static function getAmountByMonth($month){
+	public static function getAmountByMonth($month,$byproduct){
 
 		$db = JFactory::getDBO();
+		$input = JFactory::getApplication()->input;
 		$config = JComponentHelper::getComponent('com_digicom')->params;
+		$session  = JFactory::getSession();
+
+		if($byproduct){
+			$productid = $input->get('productid','');
+  
+			  if(empty($productid)){
+			    $productid = $session->get( 'productid', '' );  
+			  }
+
+			if(empty($productid)) return DigiComHelperDigiCom::format_price(0, $config->get('currency','USD'), true, $config);
+
+		}
 
 		$startdate = date($month."-1 00:00:00");
 		$start_date_int = strtotime($startdate);
@@ -154,14 +209,32 @@ class DigiComHelperChart {
 		//echo $enddate;die;
 		$end_date_int = strtotime($enddate);
 
-		$and = "";
-		$and .= " and `order_date` >= '".$start_date_int."'";
-		$and .= " and `order_date` < '".$end_date_int . "'";
+		// $and = "";
+		// $and .= " and `order_date` >= '".$start_date_int."'";
+		// $and .= " and `order_date` < '".$end_date_int . "'";
 
-		$sql = "SELECT SUM(`amount_paid`) as total from #__digicom_orders where 1=1 ".$and;
-		//$sql = "SELECT SUM(CASE WHEN `amount_paid` = '1' THEN `amount` ELSE `amount_paid` END) as total from #__digicom_orders where 1=1 ".$and;
-		$db->setQuery($sql);
-		$db->query();
+		// $sql = "SELECT SUM(`amount_paid`) as total from #__digicom_orders where 1=1 ".$and;
+		
+		// set make active query
+		$query = $db->getQuery(true);
+		$query->select('SUM('.$db->quoteName('o.amount_paid').') as '.$db->quoteName('total'))
+			  ->from($db->quoteName('#__digicom_orders', 'o'));
+
+		if($byproduct){
+			$query->join('inner',$db->quoteName('#__digicom_orders_details','od') . ' ON ('.$db->quoteName('od.orderid').'='.$db->quoteName('o.id').')');
+		}
+
+		$query->where($db->quoteName('o.order_date')." >= ".$db->quote($start_date_int));
+		$query->where($db->quoteName('o.order_date')." < ".$db->quote($end_date_int));
+
+		if($byproduct){
+			$query->where($db->quoteName('od.productid')." = " . $db->quote($productid));
+		}
+		$db->setQuery($query);
+
+
+		// $db->setQuery($sql);
+		// $db->query();
 		$price = $db->loadResult();
 		$result = DigiComHelperDigiCom::format_price($price, $config->get('currency','USD'), true, $config);
 		return $result;
@@ -256,7 +329,7 @@ class DigiComHelperChart {
 					//$days = $days . $prefix . '"' . DigiComHelperChart::addOrdinalNumberSuffix($date->format('d')) . ' '.$date->format('M').'"';
 					//$prefix = ', ';
 
-					$dayPrice = ceil(DigiComHelperChart::getAmountByDate($date->format('Y-m-d')),$byproduct);
+					$dayPrice = ceil(DigiComHelperChart::getAmountByDate($date->format('Y-m-d'),$byproduct));
 					$price = $price . $prefix . $dayPrice;
 					$prefix = ', ';
 
@@ -270,7 +343,7 @@ class DigiComHelperChart {
 
 				for ($m=1; $m<=$lastmonth; $m++) {
 				    $month = date('Y-m', mktime(0,0,0,$m, 1, date('Y')));
-					$dayPrice = ceil(DigiComHelperChart::getAmountByMonth($month));
+					$dayPrice = ceil(DigiComHelperChart::getAmountByMonth($month,$byproduct));
 					$price = $price . $prefix . $dayPrice;
 					$prefix = ', ';
 			    }
@@ -288,14 +361,14 @@ class DigiComHelperChart {
 					// $price = $price . $prefix . $dayPrice;
 					// $prefix = ', ';
 
-					$dayPrice = ceil(DigiComHelperChart::getAmountByDate($date->format('Y-m-d')),$byproduct);
+					$dayPrice = ceil(DigiComHelperChart::getAmountByDate($date->format('Y-m-d'),$byproduct));
 					$price = $price . $prefix . $dayPrice;
 					$prefix = ', ';
 				}
 
 				break;
 			case "month":
-				return DigiComHelperChart::getMonthLabelPrice($rangeDays);
+				return DigiComHelperChart::getMonthLabelPrice($rangeDays,$byproduct);
 
 				break;
 			case "7day":
