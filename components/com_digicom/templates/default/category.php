@@ -55,7 +55,7 @@ $column = $this->category->params->get('category_cols',3);
 				 	if(! ($i % $column) )  echo '</ul></div><div class="row-fluid"><ul class="thumbnails">';
 				  	// echo ( $i == $this->configs->get('category_cols') ) ? '<div class="clearfix"></div>' : '';
 				 if($item->price > 0){
-					 $price = DigiComSiteHelperDigicom::format_price2($item->price, $this->configs->get('currency','USD'), true, $this->configs);
+					 $price = DigiComSiteHelperPrice::format_price($item->price, $this->configs->get('currency','USD'), true, $this->configs);
 				  }else{
 				  	$price = '<span class="label label-success">'.JText::_('COM_DIGICOM_PRODUCT_PRICE_FREE').'</span>';
 				  }

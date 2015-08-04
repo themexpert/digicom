@@ -61,22 +61,22 @@ $params = json_decode($this->order->params);
 
 			<tr>
 				<td><strong><?php echo JText::_('COM_DIGICOM_PRICE'); ?></strong></td>
-				<td><?php echo DigiComSiteHelperDigiCom::format_price($order->price, $configs->get('currency','USD'), true, $configs);?></td>
+				<td><?php echo DigiComSiteHelperPrice::format_price($order->price, $configs->get('currency','USD'), true, $configs);?></td>
 			</tr>
 
 			<tr>
 				<td><strong><?php echo JText::_('COM_DIGICOM_DISCOUNT'); ?></strong></td>
-				<td><?php echo DigiComSiteHelperDigiCom::format_price($order->discount, $configs->get('currency','USD'), true, $configs);?></td>
+				<td><?php echo DigiComSiteHelperPrice::format_price($order->discount, $configs->get('currency','USD'), true, $configs);?></td>
 			</tr>
 
 			<tr>
 				<td><strong><?php echo JText::_('COM_DIGICOM_TOTAL'); ?></strong> (<?php echo JText::_('COM_DIGICOM_TOTAL_PAYABLE_AMOUNT'); ?>)</td>
-				<td><?php echo DigiComSiteHelperDigiCom::format_price($order->amount, $configs->get('currency','USD'), true, $configs);?></td>
+				<td><?php echo DigiComSiteHelperPrice::format_price($order->amount, $configs->get('currency','USD'), true, $configs);?></td>
 			</tr>
 
 			<tr>
 				<td><strong><?php echo JText::_('COM_DIGICOM_PAYMENT_PAID'); ?></strong></td>
-				<td><span class="label label-info"><?php echo DigiComSiteHelperDigiCom::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs);?></span></td>
+				<td><span class="label label-info"><?php echo DigiComSiteHelperPrice::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs);?></span></td>
 			</tr>
 
 			<tr>
@@ -142,7 +142,7 @@ $params = json_decode($this->order->params);
 					<?php endif; ?>
 				</td>
 				<td><?php echo ucfirst( $product->package_type ); ?></td>
-				<td><?php echo DigiComSiteHelperDigiCom::format_price($product->price, $configs->get('currency','USD'), true, $configs);?></td>
+				<td><?php echo DigiComSiteHelperPrice::format_price($product->price, $configs->get('currency','USD'), true, $configs);?></td>
 			</tr>
 			<?php endforeach; ?>
 		</tbody>

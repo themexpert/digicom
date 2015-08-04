@@ -155,7 +155,7 @@ $user = $this->customer->_customer;
 									</td>
 
 									<td style="text-align: right;">
-										<?php echo DigiComSiteHelperDigiCom::format_price($prod->price, $prod->currency, true, $configs);?>
+										<?php echo DigiComSiteHelperPrice::format_price($prod->price, $prod->currency, true, $configs);?>
 									</td>
 								</tr>
 							<?php
@@ -175,7 +175,7 @@ $user = $this->customer->_customer;
 									<td style="font-weight:bold;text-align: right;" width="70%"><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></td>
 									<td style="text-align: right;">
 										<span style="white-space:nowrap;font-weight: bold;">
-											<?php echo DigiComSiteHelperDigiCom::format_price2($total, $prod->currency, true, $configs);?>
+											<?php echo DigiComSiteHelperPrice::format_price($total, $prod->currency, true, $configs);?>
 										</span>
 									</td>
 								</tr>
@@ -188,7 +188,7 @@ $user = $this->customer->_customer;
 									<td style="font-weight:bold;text-align: right;" width="70%"><?php echo JText::sprintf("COM_DIGICOM_DISCOUNT",$order->promocode);?></td>
 									<td style="text-align: right;">
 										<span style="white-space:nowrap;font-weight: bold;">
-											<?php echo DigiComSiteHelperDigiCom::format_price($order->discount, $prod->currency, true, $configs);?>
+											<?php echo DigiComSiteHelperPrice::format_price($order->discount, $prod->currency, true, $configs);?>
 										</span>
 									</td>
 								</tr>
@@ -203,7 +203,7 @@ $user = $this->customer->_customer;
 											$total = $order->amount_paid;
 										}
 									?>
-									<td style="text-align: right;"><span style="white-space:nowrap;font-weight: bold;font-size: 18px;"><?php echo DigiComSiteHelperDigiCom::format_price($total, $prod->currency, true, $configs);?></span></td>
+									<td style="text-align: right;"><span style="white-space:nowrap;font-weight: bold;font-size: 18px;"><?php echo DigiComSiteHelperPrice::format_price($total, $prod->currency, true, $configs);?></span></td>
 								</tr>
 
 							</tbody>

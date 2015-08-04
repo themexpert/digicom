@@ -114,7 +114,7 @@ $tax = $this->tax;
 
 							<td nowrap="nowrap">
 								<span id="cart_item_price<?php echo $item->cid; ?>">
-									<?php echo DigiComSiteHelperDigiCom::format_price2($item->price, $item->currency, true, $configs); ?>
+									<?php echo DigiComSiteHelperPrice::format_price($item->price, $item->currency, true, $configs); ?>
 								</span>
 							</td>
 
@@ -143,15 +143,15 @@ $tax = $this->tax;
 									{
 										$value_discount = ($item->price * $item->percent_discount) / 100;
 									}
-									//echo (isset($item->percent_discount) && $item->percent_discount > 0) ? $item->percent_discount : DigiComSiteHelperDigiCom::format_price2($item->discount, $item->currency, true, $configs);
-									echo DigiComSiteHelperDigiCom::format_price2($value_discount, $item->currency, true, $configs);?>
+									//echo (isset($item->percent_discount) && $item->percent_discount > 0) ? $item->percent_discount : DigiComSiteHelperPrice::format_price($item->discount, $item->currency, true, $configs);
+									echo DigiComSiteHelperPrice::format_price($value_discount, $item->currency, true, $configs);?>
 								</span>
 							</td>
 							<?php endif; ?>
 
 							<td nowrap>
 								<span id="cart_item_total<?php echo $item->cid; ?>" class="digi_cart_amount"><?php
-									echo DigiComSiteHelperDigiCom::format_price2($item->subtotal-(isset($value_discount) ? $value_discount : 0), $item->currency, true, $configs); ?>
+									echo DigiComSiteHelperPrice::format_price($item->subtotal-(isset($value_discount) ? $value_discount : 0), $item->currency, true, $configs); ?>
 								</span>
 							</td>
 
@@ -177,19 +177,19 @@ $tax = $this->tax;
 						<ul class="unstyled">
 
 							<?php if ($tax['promo'] > 0 && $tax['promoaftertax'] == '0') : ?>
-							<li class="digi_cart_amount" style="text-align:right;" id="digicom_cart_discount"><?php echo DigiComSiteHelperDigiCom::format_price2($tax['promo'], $tax['currency'], true, $configs) ?></li>
+							<li class="digi_cart_amount" style="text-align:right;" id="digicom_cart_discount"><?php echo DigiComSiteHelperPrice::format_price($tax['promo'], $tax['currency'], true, $configs) ?></li>
 							<?php endif;?>
 
 							<?php if (($tax['value'] > 0 || $configs->get('tax_zero',1) == 1) && $this->customer->_user->id > 0) : ?>
-							<li class="digi_cart_amount" style="text-align:right;" id="digicom_cart_tax"><?php echo DigiComSiteHelperDigiCom::format_price2($tax['value'], $tax['currency'], true, $configs); ?></li>
+							<li class="digi_cart_amount" style="text-align:right;" id="digicom_cart_tax"><?php echo DigiComSiteHelperPrice::format_price($tax['value'], $tax['currency'], true, $configs); ?></li>
 							<?php endif; ?>
 
 							<?php if ($tax['shipping'] > 0 && $this->customer->_user->id > 0) : ?>
-							<li class="digi_cart_amount" style="text-align:right;"><?php echo DigiComSiteHelperDigiCom::format_price2($tax['shipping'], $tax['currency'], true, $configs); ?></li>
+							<li class="digi_cart_amount" style="text-align:right;"><?php echo DigiComSiteHelperPrice::format_price($tax['shipping'], $tax['currency'], true, $configs); ?></li>
 							<?php endif; ?>
 
 							<?php if ($tax['promo'] > 0 && $tax['promoaftertax'] == '1') : ?>
-								<li class="digi_cart_amount" style="text-align:right;"><?php echo DigiComSiteHelperDigiCom::format_price2($tax['promo'], $tax['currency'], true, $configs); ?></li>
+								<li class="digi_cart_amount" style="text-align:right;"><?php echo DigiComSiteHelperPrice::format_price($tax['promo'], $tax['currency'], true, $configs); ?></li>
 							<?php endif; ?>
 						</ul>
 					</td>
@@ -233,15 +233,15 @@ $tax = $this->tax;
 						<ul style="margin: 0; padding: 0;list-style-type: none;">
 							<?php if ($tax['discount_calculated']): ?>
 							<li class="digi_cart_subtotal_price" id="cart_total" style="font-size: 15px;text-align:right;">
-								<?php echo DigiComSiteHelperDigiCom::format_price2($tax['price'], $tax['currency'], true, $configs); ?>
+								<?php echo DigiComSiteHelperPrice::format_price($tax['price'], $tax['currency'], true, $configs); ?>
 							</li>
 							<li class="digi_cart_discount_price" id="cart_total" style="font-size: 15px;text-align:right;">
-								<?php echo DigiComSiteHelperDigiCom::format_price2($tax['promo'], $tax['currency'], true, $configs); ?>
+								<?php echo DigiComSiteHelperPrice::format_price($tax['promo'], $tax['currency'], true, $configs); ?>
 							</li>
 							<?php endif; ?>
 
 							<li class="digi_cart_total_price" id="cart_total" style="font-weight: bold;font-size: 18px;text-align:right;">
-								<?php echo DigiComSiteHelperDigiCom::format_price2($tax['taxed'], $tax['currency'], true, $configs); ?>
+								<?php echo DigiComSiteHelperPrice::format_price($tax['taxed'], $tax['currency'], true, $configs); ?>
 							</li>
 						</ul>
 					</td>

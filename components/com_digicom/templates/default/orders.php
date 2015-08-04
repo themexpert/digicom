@@ -54,7 +54,7 @@ $n = count ($this->orders);
 					$rec_link = '<a class="btn btn-info" href="'.$rec_link.'" target="_blank">'.JText::_('COM_DIGICOM_VIEW_AND_PRINT').'</a>';
 
 					// Price
-					$order_price = DigiComSiteHelperDigiCom::format_price($order->amount_paid, $order->currency, true, $configs);
+					$order_price = DigiComSiteHelperPrice::format_price($order->amount_paid, $order->currency, true, $configs);
 					?>
 					<tr>
 						<td>
@@ -72,7 +72,7 @@ $n = count ($this->orders);
 							<span class="label <?php echo $labelClass; ?>"><?php echo $order->status; ?></span>
 						</td>
 						<td>
-							<?php echo DigiComSiteHelperDigiCom::format_price($order->amount, $order->currency, true, $configs);; ?>
+							<?php echo DigiComSiteHelperPrice::format_price($order->amount, $order->currency, true, $configs);; ?>
 						</td>
 						<td>
 							<?php echo $order_price; ?>

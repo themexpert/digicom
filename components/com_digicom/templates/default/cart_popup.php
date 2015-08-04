@@ -100,7 +100,7 @@ $currency = $configs->get('currency','USD');
 			<!-- Price -->
 			<td align="center" style="vertical-align:top;">
 				<?php
-					echo DigiComSiteHelperDigiCom::format_price2($item->price, $item->currency, true, $configs);
+					echo DigiComSiteHelperPrice::format_price($item->price, $item->currency, true, $configs);
 					$currency = $item->currency;
 				?>
 			</td>
@@ -114,7 +114,7 @@ $currency = $configs->get('currency','USD');
 
 			<td nowrap>
 				<span id="cart_item_total<?php echo $item->cid; ?>" class="digi_cart_amount"><?php
-					echo DigiComSiteHelperDigiCom::format_price2($item->subtotal-(isset($value_discount) ? $value_discount : 0), $item->currency, true, $configs); ?>
+					echo DigiComSiteHelperPrice::format_price($item->subtotal-(isset($value_discount) ? $value_discount : 0), $item->currency, true, $configs); ?>
 				</span>
 			</td>
 
@@ -144,7 +144,7 @@ $currency = $configs->get('currency','USD');
 			</td>
 			<td><b><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></b></td>
 			<td>
-				<b><?php echo DigiComSiteHelperDigiCom::format_price2($total, $currency, true, $configs); ?></b>
+				<b><?php echo DigiComSiteHelperPrice::format_price($total, $currency, true, $configs); ?></b>
 			</td>
 		</tr>
 		</tfoot>

@@ -59,7 +59,7 @@ if($this->configs->get('afteradditem',0) == "2"){
 				<div class="span12">
 					<?php
 						if($this->item->price > 0){
-							 $price = '<span>'.JText::_('COM_DIGICOM_PRODUCT_PRICE').": ".DigiComSiteHelperDigicom::format_price2($this->item->price, $conf->get('currency','USD'), true, $conf).'</span>';
+							 $price = '<span>'.JText::_('COM_DIGICOM_PRODUCT_PRICE').": ".DigiComSiteHelperPrice::format_price($this->item->price, $conf->get('currency','USD'), true, $conf).'</span>';
 						  }else{
 						  	$price = '<span>'.JText::_('COM_DIGICOM_PRODUCT_PRICE_FREE').'</span>';
 						  }
@@ -94,7 +94,7 @@ if($this->configs->get('afteradditem',0) == "2"){
 							?>
 								<li>
 									<a href="<?php echo $link; ?>"><?php echo $bitem->name; ?></a>
-									<span class="label"><?php echo DigiComSiteHelperDigicom::format_price2($bitem->price, $conf->get('currency','USD'), true, $conf); ?></span>
+									<span class="label"><?php echo DigiComSiteHelperPrice::format_price($bitem->price, $conf->get('currency','USD'), true, $conf); ?></span>
 								</li>
 							<?php endforeach; ?>
 						</ul>

@@ -102,7 +102,7 @@ if($configs->get('show_steps',1) == 1){
 					</td>
 					<!-- /End Quantity -->
 					<td class="item_column" style="text-align:center;">
-						<?php echo  DigiComSiteHelperDigiCom::format_price($item->price, $item->currency, true, $configs);?>
+						<?php echo  DigiComSiteHelperPrice::format_price($item->price, $item->currency, true, $configs);?>
 					</td>
 
 					<td class="item_column" style="text-align:center; <?php if ($discount!=1) echo 'display:none;'?>">
@@ -110,7 +110,7 @@ if($configs->get('show_steps',1) == 1){
 					</td>
 
 				  	<td class="item_column" nowrap style="text-align:center;">
-				  		<?php echo DigiComSiteHelperDigiCom::format_price($item->subtotal, $item->currency, true, $configs); ?>
+				  		<?php echo DigiComSiteHelperPrice::format_price($item->subtotal, $item->currency, true, $configs); ?>
 					</td>
 				</tr>
 				<?php
@@ -125,7 +125,7 @@ if($configs->get('show_steps',1) == 1){
 		  		</td>
 
 				<td class="item_column_right" style="text-align:center;">
-			  		<?php echo DigiComSiteHelperDigiCom::format_price($total, $tax['currency'], true, $configs);	?>
+			  		<?php echo DigiComSiteHelperPrice::format_price($total, $tax['currency'], true, $configs);	?>
 				</td>
 			</tr>
 
@@ -138,7 +138,7 @@ if($configs->get('show_steps',1) == 1){
 		  		</td>
 
 				<td class="item_column_right" style="text-align:center;">
-			  		<?php echo DigiComSiteHelperDigiCom::format_price($tax['promo'], $tax['currency'], true, $configs);	?>
+			  		<?php echo DigiComSiteHelperPrice::format_price($tax['promo'], $tax['currency'], true, $configs);	?>
 				</td>
 			</tr>
 			<?php endif; ?>
@@ -148,7 +148,7 @@ if($configs->get('show_steps',1) == 1){
 					<?php echo JText::_("COM_DIGICOM_TOTAL");?><br />
 				</td>
 				<td class="item_column_right" nowrap style="text-align:center; padding-top:10px;">
-					<span class="label label-success"><?php echo DigiComSiteHelperDigiCom::format_price($tax['taxed'], $tax['currency'], true, $configs); ?></span>
+					<span class="label label-success"><?php echo DigiComSiteHelperPrice::format_price($tax['taxed'], $tax['currency'], true, $configs); ?></span>
 				</td>
 			</tr>
 
