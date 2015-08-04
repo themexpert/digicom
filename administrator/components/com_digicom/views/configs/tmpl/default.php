@@ -46,7 +46,7 @@ JHtml::_('formbehavior.chosen', 'select');
 					<?php $fieldSets = $this->form->getFieldsets(); ?>
 					<?php foreach ($fieldSets as $name => $fieldSet) : ?>
 						<?php $label = empty($fieldSet->label) ? 'COM_DIGICOM_SETTINGS_' . $name . '_FIELDSET_LABEL' : $fieldSet->label; ?>
-						<li><a href="#<?php echo $name; ?>" data-toggle="tab"><?php echo JText::_($label); ?></a></li>
+						<li<?php echo ($name == 'GENERAL' ? ' class="active"' : '');?>><a href="#<?php echo $name; ?>" data-toggle="tab"><?php echo JText::_($label); ?></a></li>
 					<?php endforeach; ?>
 				</ul>
 				<div class="tab-content">
@@ -54,7 +54,7 @@ JHtml::_('formbehavior.chosen', 'select');
 					<?php 
 					foreach ($fieldSets as $name => $fieldSet) : 
 					?>
-						<div class="tab-pane" id="<?php echo $name; ?>">
+						<div class="tab-pane<?php echo ($name == 'GENERAL' ? ' active' : '');?>" id="<?php echo $name; ?>">
 							<?php
 							if($name != 'email_settings'):
 							
@@ -103,7 +103,7 @@ JHtml::_('formbehavior.chosen', 'select');
 							<?php else: ?>
 							
 								<ul class="nav nav-tabs" id="emailTabs">
-									<li class=""><a href="#COMMON" data-toggle="tab"><?php echo JText::_('COM_DIGICOM_CONFIG_EMAIL_TEMPLATES_COMMON');?></a></li>
+									<li class="active"><a href="#COMMON" data-toggle="tab"><?php echo JText::_('COM_DIGICOM_CONFIG_EMAIL_TEMPLATES_COMMON');?></a></li>
 									<li><a href="#NEW_ORDER" data-toggle="tab"><?php echo JText::_('COM_DIGICOM_CONFIG_EMAIL_TEMPLATES_NEW_ORDER');?></a></li>
 									<li><a href="#COMPLETE_ORDER" data-toggle="tab"><?php echo JText::_('COM_DIGICOM_CONFIG_EMAIL_TEMPLATES_COMPLETE_ORDER');?></a></li>
 									<li><a href="#PROCESS_ORDER" data-toggle="tab"><?php echo JText::_('COM_DIGICOM_CONFIG_EMAIL_TEMPLATES_PROCESS_ORDER');?></a></li>
@@ -112,7 +112,7 @@ JHtml::_('formbehavior.chosen', 'select');
 								
 								<div class="tab-content">
 								
-									<div class="tab-pane" id="COMMON">
+									<div class="tab-pane active" id="COMMON">
 										<?php foreach ($this->form->getGroup('email_settings') as $field) : ?>
 											<?php echo $field->getControlGroup(); ?>
 										<?php endforeach; ?>
