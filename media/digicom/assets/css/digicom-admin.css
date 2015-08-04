@@ -171,6 +171,13 @@ body.com_digicom .btn-danger {
   background: #d32f2f;
   border-color: #888;
 }
+body.com_digicom .digi-micro-btn {
+  background: #fefefe;
+  font-size: 9px;
+  text-align: center;
+  border-radius: 16px;
+  line-height: 15px;
+}
 body.com_digicom .product-thumb {
   width: 48px;
   height: 48px;
