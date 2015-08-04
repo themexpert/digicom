@@ -16,7 +16,12 @@ class plgDigiCom_PayPaypalHelper
 	public static $ipn_log = null;
 	public static $ipn_log_file = null;
 	
-	//gets the paypal URL
+	/*
+	* get the payment submit url
+	* usefull for thurdparty
+	* @secure_post = if you want https
+	* @sandbox = if you use sandbox or demo or dev mode
+	*/
 	public static function buildPaymentSubmitUrl($secure_post = true, $sandbox = false )
 	{
 		$url = $sandbox? 'www.sandbox.paypal.com' : 'www.paypal.com';

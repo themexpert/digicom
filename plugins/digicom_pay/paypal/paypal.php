@@ -13,20 +13,29 @@ require_once(dirname(__FILE__) . '/paypal/helper.php');
 
 class  plgDigiCom_PayPaypal extends JPlugin
 {
-	public $responseStatus = array (
-		'Completed' 		=> 'C',
-		'Pending' 			=> 'P',
-		'Failed' 			=> 'E',
-		'Denied' 			=> 'D',
-		'Refunded'			=> 'RF',
-		'Canceled_Reversal' => 'CRV',
-		'Reversed'			=> 'RV'
-	);
+	/**
+	 * Load the language file on instantiation. Note this is only available in Joomla 3.1 and higher.
+	 * If you want to support 3.0 series you must override the constructor
+	 *
+	 * @var    boolean
+	 * @since  3.1
+	 */
+	protected $autoloadLanguage = true;
+
+	/*
+	* initialized response status for quickr use
+	*/
+	protected $responseStatus;
+
+	/*
+	* construct method
+	* default joomla plugin params
+	* initialize responseStatus for payment use
+	*/
 
 	function __construct($subject, $config)
 	{
 		parent::__construct($subject, $config);
-		$this->loadLanguage('plg_digicom_pay_paypal', JPATH_ADMINISTRATOR);
 
 		//Define Payment Status codes in API  And Respective Alias in Framework
 		$this->responseStatus= array (
@@ -41,42 +50,56 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	}
 
 	/*
-	*
+	* method : onSidebarMenuItem
+	* its been used to set a short edit menu link to digicom 
+	* right sidebar
+	* return links to edit
 	*/
 	public function onSidebarMenuItem()
 	{
 		$pluginid = $this->getPluginId('paypal','digicom_pay','plugin');
 
-		//$link = JRoute::_("index.php?option=com_plugins&amp;client_id=0&amp;task=plugin.edit&amp;extension_id=".$pluginid . '&amp;tmpl=component&amp;layout=modal');
-		// return '<li><a class="modal" href="' . $link . '" rel="{handler: \'iframe\', size: {x: 900, y: 550}}" title="'.JText::_("PLG_DIGICOM_PAY_PAYPAL").'" id="plugin-'.$pluginid.'">' . JText::_("PLG_DIGICOM_PAY_PAYPAL") . '</a></li>';
-
-		$link = JRoute::_("index.php?option=com_plugins&amp;client_id=0&amp;task=plugin.edit&amp;extension_id=".$pluginid);
+		$link = JRoute::_("index.php?option=com_plugins&client_id=0&task=plugin.edit&extension_id=".$pluginid);
 		return '<a target="_blank" href="' . $link . '" title="'.JText::_("PLG_DIGICOM_PAY_PAYPAL").'" id="plugin-'.$pluginid.'">' . JText::_("PLG_DIGICOM_PAY_PAYPAL") . '</a>';
 
 	}
 
 	/*
-	* Internal use functions
-	* to override the view or output styles
+	* method buildLayoutPath
+	* @layout = ask for tmpl file name, default is default, but can be used others name
+	* return propur file to take htmls
 	*/
-	function buildLayoutPath($layout) {
-		jimport('joomla.filesystem.file');
+	function buildLayoutPath($layout) 
+	{
+		if(empty($layout)) $layout = "default";
+		
 		$app = JFactory::getApplication();
-		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
-		$override	= JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout . '.php';
 
+		// core path
+		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/' . $layout . '.php';
+		
+		// override path from site active template
+		$override	= JPATH_BASE .'/templates/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout . '.php';
+		
 		if(JFile::exists($override))
 		{
-			return $override;
+			$file = $override;
 		}
 		else
 		{
-			return  $core_file;
+	  		$file =  $core_file;
 		}
+
+		return $file;
+
 	}
 
 	/*
+	* method buildLayout
+	* @vars = object with product, order, user info
+	* @layout = tmpl name
 	* Builds the layout to be shown, along with hidden fields.
+	* @return html
 	*/
 	function buildLayout($vars, $layout = 'default' )
 	{
@@ -90,13 +113,15 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	}
 
 	/*
-	* Used to Build List of Payment Gateway in the respective Components
+	* method onTP_GetInfo
+	* can be used Build List of Payment Gateway in the respective Components
+	* for payment process its not used
 	*/
 	function onTP_GetInfo($config)
 	{
 
-		if(!in_array($this->_name,$config))
-		return;
+		if(!in_array($this->_name,$config)) return;
+
 		$obj 		= new stdClass;
 		$obj->name 	=$this->params->get( 'plugin_name' );
 		$obj->id	= $this->_name;
@@ -104,8 +129,11 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	}
 
 	/*
-	* Constructs the Payment form in case of On Site Payment gateways like
-	* Auth.net & constructs the Submit button in case of offsite ones like Paypal
+	* method onTP_GetHTML
+	* on transection process this function is being used to get html from component
+	* @dependent : self::buildLayout()
+	* @return html for view
+	* @vars : passed from component, all info regarding payment n order  
 	*/
 	function onTP_GetHTML($vars)
 	{
@@ -115,8 +143,8 @@ class  plgDigiCom_PayPaypal extends JPlugin
 		$vars->action_url = plgDigiCom_PayPaypalHelper::buildPaymentSubmitUrl($secure_post , $sandbox);
 
 		//Take this receiver email address from plugin if component not provided it
-		if(empty($vars->business))
-		$vars->business = $this->params->get('business');
+		if(empty($vars->business)) $vars->business = $this->params->get('business');
+		
 		$html = $this->buildLayout($vars);
 		return $html;
 
@@ -124,7 +152,12 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	}
 
 
-
+	/*
+	* method onTP_Processpayment
+	* used when we recieve payment from site or thurd party
+	* @data : the necessary info recieved from form about payment
+	* @return payment process final status
+	*/
 	function onTP_Processpayment($data)
 	{
 		$params 		= $this->params;
@@ -150,19 +183,37 @@ class  plgDigiCom_PayPaypal extends JPlugin
 		);
 		return $result;
 	}
+
+	/*
+	* method translateResponse
+	* used to set proper sesponce for order status
+	* @invoice_status : payment status recieved from payment site: processor
+	* @return order status
+	*/
 	function translateResponse($payment_status){
 			if(array_key_exists($payment_status,$this->responseStatus)){
 				return $this->responseStatus[$payment_status];
 			}
 	}
+
+	/*
+	* method onTP_Storelog
+	* used to store log for plugin debug payment
+	* @data : the necessary info recieved from form about payment
+	* @return null
+	*/
 	function onTP_Storelog($data)
 	{
-			$log = plgDigiCom_PayPaypalHelper::Storelog($this->_name,$data);
-
+		$log = plgDigiCom_PayPaypalHelper::Storelog($this->_name,$data);
 	}
 
 	/*
-	* element, folder, type
+	* method getPluginId
+	* used to get plugin for use
+	* @element : joomla plugin element name
+	* @folder : joomla plugin folder name
+	* @type : joomla plugin type
+	* @return extension_id
 	*/
 	function getPluginId($element,$folder, $type)
 	{
