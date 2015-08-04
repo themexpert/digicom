@@ -73,10 +73,15 @@ class DigiComRouter extends JComponentRouterBase
 		}
 
 		//lets check if its not in proper itemid
-		if (($menuItem instanceof stdClass)
-			&& $menuItem->query['view'] != $query['view']){
+		if (
+			($menuItem instanceof stdClass)
+			&& 
+			$menuItem->query['view'] != $query['view']
+			&&
+			!isset($query['id'])
+		){
 
-			// there are no menu Itemid found, lets dive into menu finder
+			// there are no exact menu Itemid found, lets dive into menu finder
 			$menu = JMenu::getInstance('site');
 			$menuItem = $menu->getItems('link', 'index.php?option=com_digicom&view='.$view, true);
 
