@@ -32,13 +32,13 @@ $doc->addStyleSheet( JUri::root(true). '/modules/mod_digicom_cart/assets/css/mod
 		<?php if($tax['promo'] > 0): ?>
 		<p class="dg-amount-discount">
 			<strong><?php echo JText::_('MOD_DIGICOM_CART_PROMO_DISCOUNT')?>:</strong>
-			<?php echo DigiComSiteHelperDigiCom::format_price2($tax["promo"], $tax["currency"], true, $configs); ?>
+			<?php echo DigiComSiteHelperPrice::format_price($tax["promo"], $tax["currency"], true, $configs); ?>
 		</p>
 		<?php endif; ?>
 
 		<p class="dg-amount">
 			<strong><?php echo JText::_('MOD_DIGICOM_CART_PRICE_SUBTOTAL')?>:</strong>
-			<?php echo DigiComSiteHelperDigiCom::format_price2($tax["payable_amount"], $tax["currency"], true, $configs); ?>
+			<?php echo DigiComSiteHelperPrice::format_price($tax["payable_amount"], $tax["currency"], true, $configs); ?>
 		</p>
 
 
