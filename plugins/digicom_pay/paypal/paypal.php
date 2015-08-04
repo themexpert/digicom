@@ -51,7 +51,7 @@ class  plgDigiCom_PayPaypal extends JPlugin
 		// return '<li><a class="modal" href="' . $link . '" rel="{handler: \'iframe\', size: {x: 900, y: 550}}" title="'.JText::_("PLG_DIGICOM_PAY_PAYPAL").'" id="plugin-'.$pluginid.'">' . JText::_("PLG_DIGICOM_PAY_PAYPAL") . '</a></li>';
 
 		$link = JRoute::_("index.php?option=com_plugins&amp;client_id=0&amp;task=plugin.edit&amp;extension_id=".$pluginid);
-		return '<li><a target="_blank" href="' . $link . '" title="'.JText::_("PLG_DIGICOM_PAY_PAYPAL").'" id="plugin-'.$pluginid.'">' . JText::_("PLG_DIGICOM_PAY_PAYPAL") . '</a></li>';
+		return '<a target="_blank" href="' . $link . '" title="'.JText::_("PLG_DIGICOM_PAY_PAYPAL").'" id="plugin-'.$pluginid.'">' . JText::_("PLG_DIGICOM_PAY_PAYPAL") . '</a>';
 
 	}
 

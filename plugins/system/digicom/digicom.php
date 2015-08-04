@@ -10,8 +10,8 @@
 defined('_JEXEC') or die;
 
 // load digicom helperfile
-require_once JPATH_SITE . '/components/com_digicom/helpers/digicom.php';
 
+JLoader::discover('DigiComSiteHelper', JPATH_SITE . '/components/com_digicom/helpers/');
 class plgSystemDigiCom extends JPlugin{
 
 	/**
@@ -37,10 +37,31 @@ class plgSystemDigiCom extends JPlugin{
 
 	public function onAfterSidebarMenu($params = array()) {
 
+		JPluginHelper::importPlugin('digicom');
 		JPluginHelper::importPlugin('digicom_pay');
-
 		$dispatcher = JDispatcher::getInstance();
-		$results = $dispatcher->trigger( 'onSidebarMenuItem', array());
+
+		$db = JFactory::getDBO();
+		$sql = "SELECT `extension_id`,`element`,`folder`,`enabled`,`params` from `#__extensions` WHERE `type` = 'plugin' AND `folder` in ('digicom', 'digicom_pay')";
+		$db->setQuery($sql);
+		$plugins = $db->loadObjectList();
+		if(!count($plugins)) return false;
+
+		$results = array();
+		$subject = 'JEventDispatcher';
+		$subject = '';
+		foreach ($plugins as $key => $value) {
+			JLoader::registerPrefix('plg'.$value->folder, JPATH_SITE . '/plugins/'.$value->folder);
+			$config = json_decode($value->params, true); 
+
+			$className = 'plg'.$value->folder.$value->element;
+			if(method_exists($className,'onSidebarMenuItem')){
+				JFactory::getLanguage()->load('plg_'.$value->folder.'_'.$value->element, JPATH_ADMINISTRATOR);
+				$class = new $className($dispatcher, $config);
+				$results []= '<i class="digi-micro-btn icon-'.($value->enabled ? 'publish' : 'unpublish').'"></i> '. $class->onSidebarMenuItem(array());					
+			}
+		}
+
 		if(!$results) return;
 
 		echo '<h3>' . JText::_('PLG_SYSTEM_DIGICOM_PLUGINS_LIST') . '</h3>';
@@ -49,6 +70,8 @@ class plgSystemDigiCom extends JPlugin{
 					echo '<li>'. $value .'</li>';
 			}
 		echo '</ul>';
+
+		return;
 
 	}
 
