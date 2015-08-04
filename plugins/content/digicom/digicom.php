@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\Registry\Registry;
-require_once JPATH_SITE . '/components/com_digicom/helpers/digicom.php';
+JLoader::discover('DigiComSiteHelper', JPATH_SITE . '/components/com_digicom/helpers/');
 
 class plgContentDigiCom extends JPlugin{
 
@@ -125,7 +125,7 @@ class plgContentDigiCom extends JPlugin{
 						$show_price = isset($replace['show_price']) ? $replace['show_price']:1;
 
 						if ($show_price) { // display price
-							$html .= "<h3>".DigiComSiteHelperDigicom::format_price2($product['price'],$configs->get('currency','USD'), true, $configs)."</h3>";
+							$html .= "<h3>".DigiComSiteHelperPrice::format_price($product['price'],$configs->get('currency','USD'), true, $configs)."</h3>";
 						}
 						$html .= "
 							<input name=\"pid\" type=\"hidden\" id=\"product_id\" value=\"".$replace['id']."\">
@@ -220,7 +220,7 @@ class plgContentDigiCom extends JPlugin{
 					<button type="submit" role="button" name="Button" class="btn btn-default btn-block">
 			';
 			if ( $item->price ) {
-				$html .= DigiComSiteHelperDigicom::format_price2($item->price,$configs->get('currency'), true, $configs).' | ';
+				$html .= DigiComSiteHelperPrice::format_price($item->price,$configs->get('currency'), true, $configs).' | ';
 			}
 			$html .= '
 						'.JText::_("PLG_CONTENT_DIGICOM_ADD_TO_CART_BTN_LBL").'</button>
