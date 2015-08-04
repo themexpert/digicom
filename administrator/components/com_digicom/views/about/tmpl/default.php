@@ -13,6 +13,7 @@ $mosConfig_absolute_path = JPATH_ROOT;
 $document = JFactory::getDocument();
 $app = JFactory::getApplication();
 $input = $app->input;
+$input->set('layout', 'dgform');
 ?>
 
 <form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=about'); ?>" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
@@ -33,7 +34,7 @@ $input = $app->input;
 				<a href="#">Digicom Logo</a>
 			</div>
 
-			<div class="well">
+			<div class="about-content">
 				<?php echo JText::_("COM_DIGICOM_ABOUT_DIGICOM_DETAILS"); ?>
 			</div>
 
