@@ -13,7 +13,7 @@ $mosConfig_absolute_path = JPATH_ROOT;
 $document = JFactory::getDocument();
 $app = JFactory::getApplication();
 $input = $app->input;
-$input->set('layout', 'dgform');
+$input->set('layout', 'dgtabs');
 ?>
 
 <form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=about'); ?>" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">

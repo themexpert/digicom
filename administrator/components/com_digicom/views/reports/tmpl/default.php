@@ -11,7 +11,7 @@ defined ('_JEXEC') or die ("Go away.");
 $app		= JFactory::getApplication();
 $input	= $app->input;
 $tab		= $input->get('tab','sales');
-$input->set('layout', 'dgform');
+$input->set('layout', 'dgtabs');
 JFactory::getDocument()->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 
 ?>
