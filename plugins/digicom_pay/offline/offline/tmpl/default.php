@@ -46,7 +46,7 @@ function myValidate(f)
 
 		<div class="control-group">
 			<label for="cardlname" class="control-label"><?php echo JText::_( 'PLG_DIGICOM_PAY_OFFLINE_PAYABLE_AMOUNT' ); ?></label>
-			<div class="controls"><span class="label label-success"><?php echo DigiComSiteHelperDigiCom::format_price( $vars->amount, $configs->get('currency','USD'), true, $configs ); ?></span></div>
+			<div class="controls"><span class="label label-success"><?php echo DigiComSiteHelperPrice::format_price( $vars->amount, $configs->get('currency','USD'), true, $configs ); ?></span></div>
 		</div>
 	
 		<div class="control-group">
