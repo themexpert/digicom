@@ -8,12 +8,12 @@
  */
 
 defined ('_JEXEC') or die ("Go away.");
-$app      = JFactory::getApplication();
-$input    = $app->input;
-$configs = $this->configs;
-$this->range = $input->get('range','7day');
-$productid = $input->get('productid','');
-
+$app    		= JFactory::getApplication();
+$input  		= $app->input;
+$configs		= $this->configs;
+$this->range 	= $input->get('range','7day');
+$session  = JFactory::getSession();
+$productid = $session->get( 'productid', '' );
 $rangeDays = DigiComHelperChart::getRangeDayLabel($this->range);
 $rangePrices = DigiComHelperChart::getRangePricesLabel($this->range,$rangeDays,true);
 
