@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-require_once(JPATH_SITE.'/plugins/digicom_pay/offline/offline/helper.php');
+require_once(dirname(__FILE__) . '/offline/helper.php');
 
 class plgDigiCom_PayOffline extends JPlugin
 {
@@ -69,6 +69,7 @@ class plgDigiCom_PayOffline extends JPlugin
 		return $file;
 
 	}
+	
 	/*
 	* method buildLayout
 	* @vars = object with product, order, user info

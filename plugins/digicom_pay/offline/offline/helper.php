@@ -8,17 +8,29 @@
  */
 
 defined('_JEXEC') or die;
-jimport('joomla.html.html');
-jimport( 'joomla.plugin.helper' );
+
+
 class plgDigiCom_PayOfflineHelper
 { 
-
-	function buildOfflineHelperUrl($secure = true)
+	/*
+	* get the payment submit url
+	* usefull for thurdparty
+	* @secure_post = if you want https
+	* @sandbox = if you use sandbox or demo or dev mode
+	*/
+	function buildPaymentSubmitUrl($secure_post = true, $sandbox = false )
 	{
 
 		return '';
 
 	}
+
+	/*
+	* method onTP_Storelog
+	* used to store log for plugin debug payment
+	* @data : the necessary info recieved from form about payment
+	* @return null
+	*/
 
 	public static function Storelog($name,$logdata)
 	{
