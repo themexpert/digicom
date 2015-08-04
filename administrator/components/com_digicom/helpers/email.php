@@ -214,6 +214,7 @@ class DigiComHelperEmail {
         // Send email to user
         //global $mosConfig_mailfrom, $mosConfig_fromname, $configs;
 
+
         $mosConfig_mailfrom = $app->getCfg( "mailfrom" );
         $mosConfig_fromname = $app->getCfg( "fromname" );
         if ( $configs->get('usestoremail',0) == '1' && strlen( trim( $configs->get('store_name','DigiCom Store') ) ) > 0 && strlen( trim( $configs->get('store_email',JFactory::getConfig()->get('mailfrom')) ) ) > 0 ) {
@@ -236,6 +237,14 @@ class DigiComHelperEmail {
             $adminEmail2 = $row2->email;
         }
 
+        // now override the value with digicom config
+        if(!empty($email_settings->from_name)){
+            $adminName2 = $email_settings->from_name;
+        }
+        if(!empty($email_settings->from_email)){
+            $adminEmail2 = $email_settings->from_email;
+        }
+        
 
         $mailSender = JFactory::getMailer();
         $mailSender->IsHTML( true );
