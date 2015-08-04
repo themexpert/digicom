@@ -241,6 +241,14 @@ class DigiComSiteHelperEmail {
 			$adminEmail2 = $mosConfig_mailfrom;
 		}
 
+		// now override the value with digicom config
+        if(!empty($email_settings->from_name)){
+            $adminName2 = $email_settings->from_name;
+        }
+        if(!empty($email_settings->from_email)){
+            $adminEmail2 = $email_settings->from_email;
+        }
+        
 		$mailSender = JFactory::getMailer();
 		$mailSender->isHTML( true );
 		$mailSender->Encoding = 'base64';
