@@ -77,8 +77,6 @@ class DigiComRouter extends JComponentRouterBase
 			($menuItem instanceof stdClass)
 			&& 
 			$menuItem->query['view'] != $query['view']
-			&&
-			!isset($query['id'])
 		){
 
 			// there are no exact menu Itemid found, lets dive into menu finder
@@ -89,6 +87,8 @@ class DigiComRouter extends JComponentRouterBase
 			if(count($menuItem)){
 				$query['Itemid'] = $menuItem->id;
 				$menuItemGiven = true;
+			}elseif(!isset($query['id'])){
+				// nothing to do;
 			}else{
 				$menuItem = $this->menu->getActive();
 				$menuItemGiven = false;
