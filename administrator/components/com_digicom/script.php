@@ -67,14 +67,38 @@ class Com_DigiComInstallerScript
 			$category->rebuildPath($category->id);
 		}
 
+		self::enablePlugins();
 		self::createDigiComMenu();
 		self::createUploadDirectory();
 
 		return;
 	}
+	
+	/**
+	* enable necessary plugins to avoid bad experience
+	*/
+	function enablePlugins(){
+		$db = JFactory::getDBO();
+		$sql = "SELECT `element`,`folder` from `#__extensions` WHERE `type` = 'plugin' AND `folder` in ('finder', 'system', 'digicom_pay') AND `name` like '%digicom%'";
+		$db->setQuery($sql);
+		$plugins = $db->loadObjectList();
+		if(!count($plugins)) return false;
+		foreach ($plugins as $key => $value) {
+			if($value->folder == 'finder' or $value->folder == 'system' or ($value->folder=='digicom_pay' && $value->element=='offline'))
+			{
+		    	$query = "UPDATE `#__extensions` SET `enabled`='1' WHERE `type`='plugin' AND `element`='".$db->Quote($value->element)."' AND `folder`='".$db->Quote($value->group)."'";
+	        	$db->setQuery($query);
+	        	$db->execute();
+			}
+			
+		}
+
+		return true;
+
+	}
 
 	/**
-	 * @TODO: get this function works on Joomla 3
+	 * method to create digicom toolber menu
 	 */
 	function createDigiComMenu(){
 
