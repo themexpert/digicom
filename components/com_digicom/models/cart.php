@@ -200,8 +200,8 @@ class DigiComModelCart extends JModelItem
 		}
 
 
-		$this->_items = $items;
-
+		return $this->_items = $items;
+		
 		if(count($items) > 0){
 			$this->calc_price($items, $customer, $configs);
 			foreach($items as $i => $v){
