@@ -8,25 +8,29 @@
  */
 
 defined('_JEXEC') or die;
-//Import filesystem libraries. Perhaps not necessary, but does not hurt
-jimport('joomla.filesystem.file');
 
-$lang = JFactory::getLanguage();
-$lang->load('plg_digicom_pay_offline', JPATH_ADMINISTRATOR);
 require_once(JPATH_SITE.'/plugins/digicom_pay/offline/offline/helper.php');
 
 class plgDigiCom_PayOffline extends JPlugin
 {
-	var $_payment_gateway = 'offline';
-	var $_log = null;
+	/**
+	 * Load the language file on instantiation. Note this is only available in Joomla 3.1 and higher.
+	 * If you want to support 3.0 series you must override the constructor
+	 *
+	 * @var    boolean
+	 * @since  3.1
+	 */
+	protected $autoloadLanguage = true;
 
+	/*
+	* construct method
+	* default joomla plugin params
+	* initialize responseStatus for payment use
+	*/
 	function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
-		//Set the language in the class
-		$config = JFactory::getConfig();
-
-
+	
 		//Define Payment Status codes in Authorise  And Respective Alias in Framework
 		//1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review
 		$this->responseStatus= array(
@@ -36,24 +40,43 @@ class plgDigiCom_PayOffline extends JPlugin
 		);
 	}
 
+	/*
+	* method buildLayoutPath
+	* @layout = ask for tmpl file name, default is default, but can be used others name
+	* return propur file to take htmls
+	*/
+	function buildLayoutPath($layout) 
+	{
+		if(empty($layout)) $layout = "default";
+		
+		$app = JFactory::getApplication();
 
-	function buildLayoutPath($layout) {
-		if(empty($layout))
-		$layout="default";
-		$app=JFactory::getApplication();
+		// core path
 		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/' . $layout . '.php';
-		$override		= JPATH_BASE .'/templates/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout . '.php';
+		
+		// override path from site active template
+		$override	= JPATH_BASE .'/templates/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout . '.php';
+		
 		if(JFile::exists($override))
 		{
-			return $override;
+			$file = $override;
 		}
 		else
 		{
-	  	return  $core_file;
+	  		$file =  $core_file;
 		}
-	}
 
-	//Builds the layout to be shown, along with hidden fields.
+		return $file;
+
+	}
+	/*
+	* method buildLayout
+	* @vars = object with product, order, user info
+	* @layout = tmpl name
+	* Builds the layout to be shown, along with hidden fields.
+	* @return html
+	*/
+
 	function buildLayout($vars, $layout = 'default' )
 	{
 
@@ -66,6 +89,13 @@ class plgDigiCom_PayOffline extends JPlugin
 		return $html;
 	}
 
+	/*
+	* method onTP_GetHTML
+	* on transection process this function is being used to get html from component
+	* @dependent : self::buildLayout()
+	* @return html for view
+	* @vars : passed from component, all info regarding payment n order  
+	*/
 	function onTP_GetHTML($vars)
 	{
 		$vars->custom_name= $this->params->get( 'plugin_name' );
@@ -74,17 +104,28 @@ class plgDigiCom_PayOffline extends JPlugin
 		return $html;
 	}
 
+	/*
+	* method onTP_GetInfo
+	* can be used Build List of Payment Gateway in the respective Components
+	* for payment process its not used
+	*/
+
 	function onTP_GetInfo($config)
 	{
 
-		if(!in_array($this->_name,$config))
-		return;
+		if(!in_array($this->_name,$config)) return;
 		$obj 		= new stdClass;
-		$obj->name 	=$this->params->get( 'plugin_name' );
+		$obj->name 	= $this->params->get( 'plugin_name' );
 		$obj->id	= $this->_name;
 		return $obj;
 	}
-	//Adds a row for the first time in the db, calls the layout view
+
+	/*
+	* method onTP_Processpayment
+	* used when we recieve payment from site or thurd party
+	* @data : the necessary info recieved from form about payment
+	* @return payment process final status
+	*/
 	function onTP_Processpayment($data)
 	{
 
@@ -105,6 +146,12 @@ class plgDigiCom_PayOffline extends JPlugin
 		return $result;
 	}
 
+	/*
+	* method translateResponse
+	* used to set proper sesponce for order status
+	* @invoice_status : payment status recieved from payment site: processor
+	* @return order status
+	*/
 	function translateResponse($invoice_status){
 
 		foreach($this->responseStatus as $key=>$value)
@@ -114,11 +161,23 @@ class plgDigiCom_PayOffline extends JPlugin
 		}
 	}
 
+	/*
+	* method onTP_Storelog
+	* used to store log for plugin debug payment
+	* @data : the necessary info recieved from form about payment
+	* @return null
+	*/
 	function onTP_Storelog($data)
 	{
 		$log = plgDigiCom_PayOfflineHelper::Storelog($this->_name,$data);
 	}
 
+	/*
+	* method getUniqueTransactionId
+	* used for local perpose to generate transection id
+	* @order_id : order_id
+	* @return long 15ch code
+	*/
 	function getUniqueTransactionId($order_id){
 		$uniqueValue = $order_id.time();
 		$long = md5(uniqid($uniqueValue, true));
