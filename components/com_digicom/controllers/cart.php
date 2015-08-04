@@ -506,19 +506,19 @@ class DigiComControllerCart extends JControllerLegacy
 				{
 					$result['cid'] = $cid;
 					$result['cart_item_qty'.$cid] = $item->quantity;
-					$result['cart_item_price'.$cid] = DigiComSiteHelperDigiCom::format_price($item->price, $item->currency, true, $configs);
-					$result['cart_item_discount'.$cid] = DigiComSiteHelperDigiCom::format_price($item->discount, $item->currency, true, $configs);
-					$result['cart_item_total'.$cid] = DigiComSiteHelperDigiCom::format_price($item->subtotal-$item->discount, $item->currency, true, $configs);
+					$result['cart_item_price'.$cid] = DigiComSiteHelperPrice::format_price($item->price, $item->currency, true, $configs);
+					$result['cart_item_discount'.$cid] = DigiComSiteHelperPrice::format_price($item->discount, $item->currency, true, $configs);
+					$result['cart_item_total'.$cid] = DigiComSiteHelperPrice::format_price($item->subtotal-$item->discount, $item->currency, true, $configs);
 				}
 			}
 			//print_r($items);die;
-			$total = DigiComSiteHelperDigiCom::format_price($tax['taxed'], $tax['currency'], true, $configs);
+			$total = DigiComSiteHelperPrice::format_price($tax['taxed'], $tax['currency'], true, $configs);
 			$result['cart_total'] = $total;//"{$tax['taxed']}";
 
 			//$cart = $this->_model;
 			//$tax = $cart->calc_price($items, $customer, $configs);
-			$result['cart_discount'] = DigiComSiteHelperDigiCom::format_price($tax["promo"], $tax['currency'], true, $configs);
-			$result['cart_tax'] = DigiComSiteHelperDigiCom::format_price($tax["value"], $tax['currency'], true, $configs);
+			$result['cart_discount'] = DigiComSiteHelperPrice::format_price($tax["promo"], $tax['currency'], true, $configs);
+			$result['cart_tax'] = DigiComSiteHelperPrice::format_price($tax["value"], $tax['currency'], true, $configs);
 			echo json_encode($result);
 
 		} else {
