@@ -11,7 +11,7 @@ defined ('_JEXEC') or die ("Go away.");
 $app		= JFactory::getApplication();
 $input	= $app->input;
 $tab		= $input->get('tab','sales');
-
+$input->set('layout', 'dgform');
 JFactory::getDocument()->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 
 ?>
@@ -25,27 +25,20 @@ JFactory::getDocument()->addScript( JURI::root(true)."/media/digicom/assets/js/c
 	<div id="j-main-container">
 <?php endif;?>
 
-		<p class="dg-alert dg-alert-danger">
-			<?php echo JText::_(' Reports is now on the reactor and we need additional flux capacitor in ThemeXpert to generate 1.21 gigawatts reporting feature. Its coming with next Beta version.'); ?>
-		</p>
-
-		<div class="navbar">
-			<div class="navbar-inner">
-				<ul class="nav">
-					<li<?php echo ($tab == 'sales' ? ' class="active"' : '');?>>
-						<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report=sales_by_date&range=7day');?>">Sales</a>
-					</li>
-					<!--
-					<li<?php echo ($tab == 'customers' ? ' class="active"' : '');?>>
-						<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=customers&report=customers_new&range=7day');?>">Customers</a>
-					</li>
-					<li<?php echo ($tab == 'downloads' ? ' class="active"' : '');?>>
-						<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=downloads&report=downloads_top&range=7day');?>">Downloads</a>
-					</li>
-					-->
-				</ul>
-			</div>
-		</div>
+		<ul class="nav nav-tabs">
+			<li<?php echo ($tab == 'sales' ? ' class="active"' : '');?>>
+				<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report=sales_by_date&range=7day');?>">Sales</a>
+			</li>
+			<!--
+			<li<?php echo ($tab == 'customers' ? ' class="active"' : '');?>>
+				<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=customers&report=customers_new&range=7day');?>">Customers</a>
+			</li>
+			<li<?php echo ($tab == 'downloads' ? ' class="active"' : '');?>>
+				<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=downloads&report=downloads_top&range=7day');?>">Downloads</a>
+			</li>
+			-->
+		</ul>
+		
 		<p class="clearfix"></p>
 
 		<section class="reportsWrapper">
