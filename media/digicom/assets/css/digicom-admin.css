@@ -527,32 +527,41 @@ body.com_digicom .input-prepend .uneditable-input {
   border: 1px solid #ddd;
 }
 /* Layout Dgform Styling */
+body.layout-dgtabs #j-main-container .form-inline .controls,
 body.layout-dgform #j-main-container .form-inline .controls {
   margin-left: 0;
 }
+body.layout-dgtabs #j-main-container .nav-tabs,
 body.layout-dgform #j-main-container .nav-tabs {
   margin-bottom: 0;
   border: 0;
   background: #343f51;
 }
+body.layout-dgtabs #j-main-container .nav-tabs > li > a,
 body.layout-dgform #j-main-container .nav-tabs > li > a {
   border: 0;
   border-radius: 0;
   padding: 15px;
   color: #c9d1dd;
 }
+body.layout-dgtabs #j-main-container .nav-tabs > li > a:hover,
 body.layout-dgform #j-main-container .nav-tabs > li > a:hover,
+body.layout-dgtabs #j-main-container .nav-tabs > li > a:focus,
 body.layout-dgform #j-main-container .nav-tabs > li > a:focus {
   color: #fefefe;
   background: none;
 }
+body.layout-dgtabs #j-main-container .nav-tabs .active a,
 body.layout-dgform #j-main-container .nav-tabs .active a,
+body.layout-dgtabs #j-main-container .nav-tabs .active a:hover,
 body.layout-dgform #j-main-container .nav-tabs .active a:hover,
+body.layout-dgtabs #j-main-container .nav-tabs .active a:focus,
 body.layout-dgform #j-main-container .nav-tabs .active a:focus {
   border-top: 4px solid #1f82e0;
   color: #444;
   background: #fff;
 }
+body.layout-dgtabs #j-main-container .tab-content,
 body.layout-dgform #j-main-container .tab-content {
   padding: 15px;
   background: #fff;
