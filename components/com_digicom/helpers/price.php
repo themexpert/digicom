@@ -11,6 +11,27 @@ defined('_JEXEC') or die;
 
 class DigiComSiteHelperPrice {
 
+
+	/**
+	* price formet helper
+	*/
+	public static function format_price( $amount, $ccode, $add_sym = false, $configs ) 
+	{
+
+		$price_format = '%' . $configs->get('totaldigits','') . '.' . $configs->get('decimaldigits','2') . 'f';
+		$res          = sprintf( $price_format, $amount );
+		$res          = number_format( $res, $configs->get('decimaldigits','2'), '.', $configs->get('thousands_group_symbol','') );
+		if ( $add_sym ) {
+			if ( $configs->get('currency_position','1') ) {
+				$res = $res . " " . $ccode;
+			} else {
+				$res = $ccode . " " . $res;
+			}
+		}
+
+		return $res;
+	}
+
 	/*
 	* $item = product object
 	* show product subscription or validity period for purchase
