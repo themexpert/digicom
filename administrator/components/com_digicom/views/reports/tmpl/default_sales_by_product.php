@@ -23,20 +23,20 @@ $rangePrices = DigiComHelperChart::getRangePricesLabel($this->range,$rangeDays,t
 		<div class="well well-small">
 			<h3 class="nav-header">Search Product</h3>
 
-			<form name="adminFormStatsRange" method="post" action="<?php echo JRoute::_('index.php?option=com_digicom&view=reports'); ?>" class="form-inline" style="display: inline-block;">
-				<div>
-					
-<?php
-$productsList = DigiComHelperDigiCom::getProductsList();
-$arr = array();
-$arr[] = JHTML::_('select.option', '', JText::_('JSELECT') );
-foreach ($productsList as $key => $value) {
-	$arr[] = JHTML::_('select.option', $value->id, $value->name );
-}
- 
-echo JHTML::_('select.genericlist', $arr, 'productid', null, 'value', 'text', $productid); 
-?>					
-
+			<form name="adminFormStatsRange" method="post" action="<?php echo JRoute::_('index.php?option=com_digicom&view=reports'); ?>" class="form-horizontal" style="display: inline-block;">
+				<div class="control-group">
+					<?php
+					$productsList = DigiComHelperDigiCom::getProductsList();
+					$arr = array();
+					$arr[] = JHTML::_('select.option', '', JText::_('JSELECT') );
+					foreach ($productsList as $key => $value) {
+						$arr[] = JHTML::_('select.option', $value->id, $value->name );
+					}
+					 
+					echo JHTML::_('select.genericlist', $arr, 'productid', null, 'value', 'text', $productid); 
+					?>					
+				</div>
+			 	<div class="control-group">
 					<input type="submit" class="btn" value="Show">
 
 					<input type="hidden" name="option" value="com_digicom">
@@ -44,8 +44,8 @@ echo JHTML::_('select.genericlist', $arr, 'productid', null, 'value', 'text', $p
 					<input type="hidden" name="tab" value="sales">
 					<input type="hidden" name="report" value="sales_by_product">
 					<input type="hidden" name="range" value="<?php echo $this->range; ?>">
-
 				</div>
+
 			</form>
 		</div>
 	</div>
