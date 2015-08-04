@@ -9,11 +9,22 @@
 
 defined ('_JEXEC') or die ("Go away.");
 $app      = JFactory::getApplication();
+$session  = JFactory::getSession();
 $input    = $app->input;
 $this->innertab = $input->get('report','sales_by_date');
 $this->range = $input->get('range','7day');
 $this->start_date = $input->get('start_date','');
 $this->end_date = $input->get('end_date','');
+
+if($this->innertab == 'sales_by_product'){
+  
+  $productid = $input->get('productid','');
+  
+  if(empty($productid)){
+    $productid = $session->get( 'productid', '' );  
+  }
+  $session->set( 'productid', $productid );
+}
 ?>
 
 <ul class="nav nav-pills">
