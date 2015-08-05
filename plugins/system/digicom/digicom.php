@@ -51,7 +51,7 @@ class plgSystemDigiCom extends JPlugin{
 		$subject = 'JEventDispatcher';
 		$subject = '';
 		foreach ($plugins as $key => $value) {
-			JLoader::registerPrefix('plg'.$value->folder, JPATH_SITE . '/plugins/'.$value->folder);
+			JLoader::register('plg'.ucfirst($value->folder).ucfirst($value->element), JPATH_SITE . '/plugins/'.$value->folder.'/'.$value->element.'/'.$value->element.'.php');
 			$config = json_decode($value->params, true); 
 
 			$className = 'plg'.$value->folder.$value->element;
