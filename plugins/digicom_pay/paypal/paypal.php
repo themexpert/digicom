@@ -160,11 +160,6 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	*/
 	function onTP_Processpayment($data)
 	{
-		$params 		= $this->params;
-		$secure_post 	= $params->get('secure_post');
-		$sandbox 		= $params->get('sandbox');
-		$paypal_url 	= plgDigiCom_PayPaypalHelper::buildPaymentSubmitUrl($secure_post , $sandbox);
-
 		$verify 		= plgDigiCom_PayPaypalHelper::validateIPN($data);
 
 		if (!$verify) { return false; }
@@ -204,7 +199,7 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	*/
 	function onTP_Storelog($data)
 	{
-		$log = plgDigiCom_PayPaypalHelper::Storelog($this->_name,$data);
+		plgDigiCom_PayPaypalHelper::Storelog($this->_name,$data);
 	}
 
 	/*
