@@ -70,7 +70,11 @@ if($this->configs->get('afteradditem',0) == "2"){
 
 					<h1 class="digi-page-title">
 					<?php echo $this->item->name; ?>
-						<span class="label label-important">Featured</span>
+						
+						<?php if($this->item->featured):?>
+						<span class="label label-important"><?php echo JText::_('JFEATURED');?></span>
+						<?php endif; ?>
+
 						<?php if(!empty($this->item->bundle_source)):?>
 						<span class="label"><?php echo JText::sprintf('COM_DIGICOM_PRODUCT_TYPE_BUNDLE');?></span>
 						<?php endif; ?>
