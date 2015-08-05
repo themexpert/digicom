@@ -73,5 +73,8 @@ class DigiComViewDiscounts extends JViewLegacy
 			JToolBarHelper::deleteList(JText::_('COM_DIGICOM_DISCOUNTS_DELETE_CONFIRMATION'),'discounts.delete');
 			JToolBarHelper::divider();
 		}
+
+		$layout = new JLayoutFile('toolbar.video');
+		$bar->appendButton('Custom', $layout->render(array()), 'video');
 	}
 }
