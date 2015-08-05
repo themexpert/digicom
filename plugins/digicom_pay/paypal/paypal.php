@@ -58,9 +58,9 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	public function onSidebarMenuItem()
 	{
 		$pluginid = $this->getPluginId('paypal','digicom_pay','plugin');
-
+		$params 		= $this->params;
 		$link = JRoute::_("index.php?option=com_plugins&client_id=0&task=plugin.edit&extension_id=".$pluginid);
-		return '<a target="_blank" href="' . $link . '" title="'.JText::_("PLG_DIGICOM_PAY_PAYPAL").'" id="plugin-'.$pluginid.'">' . JText::_("PLG_DIGICOM_PAY_PAYPAL") . '</a>';
+		return '<a target="_blank" href="' . $link . '" title="'.JText::_("PLG_DIGICOM_PAY_PAYPAL").'" id="plugin-'.$pluginid.'">' . JText::_("PLG_DIGICOM_PAY_PAYPAL_NICKNAME") . '</a>';
 
 	}
 
