@@ -14,6 +14,7 @@
     <version>1.0.0-beta.2</version>
     <license>GNU General Public License version 3 or later;</license>
     <description>PKG_DIGICOM_XML_DESCRIPTION</description>
+    <scriptfile>pkg.script.php</scriptfile>
 
     <files>
         <!-- The id for each extension is the element stored in the DB -->
