@@ -8,6 +8,7 @@
  */
 
 defined('_JEXEC') or die;
+
 class plgDigiCom_PayPaypalHelper
 {
 	public static $ipn_data = array();
@@ -34,23 +35,42 @@ class plgDigiCom_PayPaypalHelper
 		return $url;
 	}
 
+	/*
+	* method Storelog
+	* from onTP_Storelog
+	* used to store log for plugin debug payment
+	* @data : the necessary info recieved from form about payment
+	* @return null
+	*/
 	public static function Storelog($name,$logdata)
 	{
 
-		jimport('joomla.error.log');
-		$options = array('format' => "{DATE}\t{TIME}\t{USER}\t{DESC}");
-		$path=JPATH_SITE.'/plugins/digicom-pay/'.$name.'/'.$name.'/';
-	
+		jimport('joomla.log.log');
+
 		$my 	= JFactory::getUser();  
 		JLog::addLogger(
 			array(
-				'user' => $my->name.'('.$my->id.')', 
-				'desc' => json_encode($logdata['raw_data'])
-			)
+				'plugin' => $name,
+				'user' => $my->name.'('.$my->id.')',
+				'desc' => json_encode($logdata['raw_data']),
+				// Sets file name
+				'text_file' => 'com_digicom.pay.paypal.php',
+				'text_entry_format' => '{plugin} {DATE} {TIME} {USER} {DESC}'
+			),
+			// Sets messages of all log levels to be sent to the file
+			JLog::ALL,
+			array('com_digicom')
 		);
 		
 	}
 
+	/*
+	* method validateIPN
+	* from onTP_Processpayment
+	* used to validate the data recieved from payment is untouched
+	* @data : the necessary info recieved from form about payment
+	* @return null
+	*/
 	public static function validateIPN( $data, $paypal_url = '')
 	{
 		// parse the paypal URL
@@ -108,7 +128,11 @@ class plgDigiCom_PayPaypalHelper
 		}
 
 	}
-	
+
+	/*
+	 * method to log the result
+	 * @success : responce
+	 * */
 	public static function log_ipn_results($success) {
 		if (!self::$ipn_log) return; 
 		// Timestamp
@@ -130,8 +154,11 @@ class plgDigiCom_PayPaypalHelper
 		$text .= "\nIPN Response from Paypal Server:\n ".self::$ipn_response;
 		
 		// Write to log
-		$fp=fopen(self::$ipn_log_file,'a');
-		fwrite($fp, $text . "\n\n");
-		fclose($fp);  // close file
+		//$fp=fopen(self::$ipn_log_file,'a');
+		//fwrite($fp, $text . "\n\n");
+		//fclose($fp);  // close file
+
+		plgDigiCom_PayPaypalHelper::Storelog('paypal',$text . "\n\n");
+
 	}
 }
