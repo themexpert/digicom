@@ -180,9 +180,12 @@ class DigiComSiteHelperSession
 		// dont allow empty value, so define blank
 		if (!isset($this->_customer->firstname)) $this->_customer->firstname = '';
 		if (!isset($this->_customer->lastname)) $this->_customer->lastname = '';
+		if (!isset($this->_customer->company)) $this->_customer->company = '';
 		if (!isset($this->_customer->email)) $this->_customer->email = '';
 		if (!isset($this->_customer->country)) $this->_customer->country = '';
 		if (!isset($this->_customer->state)) $this->_customer->state = '';
+		if (!isset($this->_customer->address)) $this->_customer->address = '';
+		if (!isset($this->_customer->city)) $this->_customer->city = '';
 		if (!isset($this->_customer->zipcode)) $this->_customer->zipcode = '';
 		if (!isset($this->_customer->registerDate)) $this->_customer->registerDate = $my->registerDate;
 		if (!isset($this->_customer->id) && $my->id ) $this->_customer->id = $my->id;
