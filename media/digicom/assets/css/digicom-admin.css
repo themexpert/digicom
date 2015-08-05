@@ -208,6 +208,7 @@ body.com_digicom header.header {
 body.com_digicom .subhead-collapse {
   z-index: 11;
   position: relative;
+  height: 40px !important;
 }
 body.com_digicom .subhead {
   margin-bottom: 0;
@@ -273,7 +274,7 @@ body.com_digicom .subhead #toolbar .btn-success {
   width: auto;
 }
 body.com_digicom .container-main {
-  padding: 12px 0 0 0;
+  padding: 0;
 }
 body.com_digicom #j-sidebar-container {
   background: #343f51;
