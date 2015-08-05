@@ -26,21 +26,31 @@ class plgDigiCom_PayOfflineHelper
 	}
 
 	/*
-	* method onTP_Storelog
+	* method Storelog
+	* from onTP_Storelog
 	* used to store log for plugin debug payment
 	* @data : the necessary info recieved from form about payment
 	* @return null
 	*/
-
 	public static function Storelog($name,$logdata)
 	{
+
 		jimport('joomla.log.log');
-		
-		$options = array('format' => "{DATE}\t{TIME}\t{USER}\t{DESC}");
-		$path=JPATH_SITE.'/plugins/digicom_pay/'.$name.'/'.$name.'/';
-		$my = JFactory::getUser();
-		//$logs = &JLog::getInstance($logdata['JT_CLIENT'].'_'.$name.'.log',$options,$path);
-		JLog::addLogger(array('user' => $my->name.'('.$my->id.')','desc'=>json_encode($logdata['raw_data'])));
+
+		$my 	= JFactory::getUser();
+		JLog::addLogger(
+			array(
+				'user' => $my->name.'('.$my->id.')',
+				'desc' => json_encode($logdata['raw_data']),
+				// Sets file name
+				'text_file' => 'com_digicom.pay.paypal.php',
+				'text_entry_format' => '{DATE} {TIME} {USER} {DESC}'
+			),
+			// Sets messages of all log levels to be sent to the file
+			JLog::ALL,
+			array('com_digicom')
+		);
+
 	}
 
 
