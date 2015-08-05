@@ -329,6 +329,8 @@ class DigiComControllerCart extends JControllerLegacy
 		//if username, firstname, email, id not found for user
 		if( $res < 1 ) {
 			$this->setRedirect('index.php?option=com_digicom&view=profile&layout=edit&return='.$return);
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_DIGICOM_PROFILE_MUST_COMPLETE'));
+			return true;
 		}
 
 		$plugin 			= JPluginHelper::getPlugin('digicom_pay',$processor);
