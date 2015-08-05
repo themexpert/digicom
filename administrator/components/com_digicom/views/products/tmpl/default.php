@@ -56,9 +56,6 @@ JFactory::getDocument()->addScriptDeclaration('
 	};
 ');
 ?>
-
-
-?>
 <form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&view=products'); ?>" method="post" name="adminForm" autocomplete="off" class="form-horizontal">
 	<?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="">
@@ -69,7 +66,12 @@ JFactory::getDocument()->addScriptDeclaration('
 	<div id="j-main-container" class="">
 <?php endif;?>
 		<div class="dg-alert dg-alert-with-icon">
-			<span class="icon-support"></span><?php echo JText::_("COM_DIGICOM_PRODUCTS_HEADER_NOTICE"); ?>
+			
+			<span class="icon-video"></span><?php echo JText::_("COM_DIGICOM_PRODUCTS_HEADER_NOTICE"); ?>
+			<a href="#videoTutorialModal" role="button" class="btn btn-primary btn-small pull-right" data-toggle="modal">
+				<?php echo JText::_("COM_DIGICOM_GUIDE_VIDEO"); ?> <i class="icon-arrow-right-4"></i>
+			</a>
+
 		</div>
 
 		<?php
@@ -277,6 +279,21 @@ JFactory::getDocument()->addScriptDeclaration('
 	<?php echo JHtml::_('form.token'); ?>
 
 </form>
+
+<?php 
+	echo JHtml::_(
+		'bootstrap.renderModal',
+		'videoTutorialModal',
+		array(
+			'url' => 'https://www.youtube-nocookie.com/embed/pIfktnNwNsU?list=PL5eH3TQ0wUTZXKs632GyKMzGVkxdfPB4f&amp;showinfo=0',//&amp;autoplay=1
+			'title' => JText::_('COM_DIGICOM_ABOUT_PRODUCT_USE_VIDEO'),
+			'height' => '400px',
+			'width' => '1280'
+		)
+	); 
+?>
+
+
 <div class="dg-footer">
 	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
 </div>
