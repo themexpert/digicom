@@ -43,7 +43,7 @@
     <languages folder="language">
         <language tag="en-GB">en-GB/en-GB.pkg_digicom.sys.ini</language>
     </languages>
-
+    
     <updateservers>
          <!-- Note: No spaces or linebreaks allowed between the server tags -->
         <server type="extension" priority="1" name="DigiCom Update Site"><![CDATA[https://raw.githubusercontent.com/themexpert/digicom/develop/manifest.xml]]></server>
