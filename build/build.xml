@@ -259,6 +259,7 @@
         <copy todir="release" >
             <fileset dir="./pkg_template">
                 <include name="language/**" />
+                <include name="pkg.script.php" />
                 <include name="pkg_${package}.xml" />
             </fileset>
         </copy>
