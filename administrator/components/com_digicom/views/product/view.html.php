@@ -104,9 +104,11 @@ class DigiComViewProduct extends JViewLegacy
 		}
 
 		JToolbarHelper::divider();
-		JToolbarHelper::help('JHELP_COMPONENTS_DIGICOM_PRODUCTS_LINKS_EDIT');
 
 		$bar = JToolBar::getInstance('toolbar');
+		
+		$layout = new JLayoutFile('toolbar.video');
+		$bar->appendButton('Custom', $layout->render(array()), 'video');
 		
 		$layout = new JLayoutFile('toolbar.title');
 		$title=array(
