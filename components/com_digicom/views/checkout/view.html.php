@@ -74,11 +74,12 @@ class DigiComViewCheckout extends JViewLegacy
 		if (!isset($html[0])) {
 			$html[0] = '';
 		}
+		
 		if ($pg_plugin == 'paypal')
 		{
 			$html[0] = $html[0] . '<script type="text/javascript">';
-			$html[0] = $html[0] . 'jQuery(".akeeba-bootstrap").hide();';
-			$html[0] = $html[0] . 'jQuery(window).load(function() {jQuery(".akeeba-bootstrap form").submit();});';
+			$html[0] = $html[0] . 'jQuery(".digicom-payment-form").hide();';
+			$html[0] = $html[0] . 'jQuery(window).load(function() {jQuery(".digicom-payment-form form.autoSubmit").submit();});';
 			$html[0] = $html[0] . '</script>';
 		}
 
