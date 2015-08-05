@@ -104,6 +104,7 @@ $tax = $this->tax;
 						?>
 						<tr>
 							<td>
+								
 								<a href="<?php echo $item_link; ?>" target="blank"><?php echo $item->name; ?></a>
 								<?php if ($this->configs->get('show_validity',1) == 1) : ?>
 								<div class="muted">
