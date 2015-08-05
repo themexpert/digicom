@@ -31,7 +31,7 @@ function jSelectProduct(id, title, catid, object, link, lang,price)
 		var hreflang = ' hreflang = \"' + lang + '\"';
 	}
 
-	var tag = '<tr id=\"productincludes_item_' + id + '\"><td><input type=\"hidden\" id=\"product_include_id'+id+'\" name=\"jform[bundle_product][]\" value=\"'+id+'\" /> <a' + hreflang + ' href=\"' + link + '\">' + title + '</a></td><td>'+ price +'</td><td><a href=\#\" onclick=\"jRemveProduct('+ id +');\"><i class=\"icon-remove\"></i></a></td></tr>';
+	var tag = '<tr id=\"productincludes_item_' + id + '\"><td><input type=\"hidden\" id=\"product_include_id'+id+'\" name=\"jform[bundle_product][]\" value=\"'+id+'\" /> <a target=\"_blank\"' + hreflang + ' href=\"' + link + '\">' + title + '</a></td><td>'+ price +'</td><td><a href=\#\" onclick=\"jRemveProduct('+ id +');\"><i class=\"icon-remove\"></i></a></td></tr>';
 	//jInsertEditorText(tag, '" . 'productincludes_items' . "');
 	jQuery('#productincludes_items').append(tag);
 	jModalClose();
@@ -104,7 +104,7 @@ $bundle_source = $form_data->get('bundle_source');
 						<tr id="productincludes_item_<?php echo $include->id;?>">
 							<td>
 								<input type="hidden" id="product_include_id<?php echo $include->id;?>" name="jform[bundle_product][]" value="<?php echo $include->id;?>">
-								<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=product&layout=edit&id='.$include->id);?>"><?php echo $include->name;?></a>
+								<a target="_blank" href="<?php echo JRoute::_('index.php?option=com_digicom&view=product&task=product.edit&id='.$include->id);?>"><?php echo $include->name;?></a>
 							</td>
 							<td width="100px"><?php echo $price;?></td>
 							<td width="1%"><a href="#" onclick="jRemveProduct('<?php echo $include->id;?>');"><i class="icon-remove"></i></a></td>
