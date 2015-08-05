@@ -38,6 +38,9 @@ class DigiComViewDiscount extends JViewLegacy
 		$bar->appendButton('Custom', $layout->render($title), 'title');
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
+
+		$layout = new JLayoutFile('toolbar.video');
+		$bar->appendButton('Custom', $layout->render(array()), 'video');
 		
 		JToolBarHelper::apply('discount.apply');
 		JToolBarHelper::save('discount.save');
