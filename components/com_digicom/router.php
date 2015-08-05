@@ -89,9 +89,7 @@ class DigiComRouter extends JComponentRouterBase
 				$menuItem = $checkmenuItem;
 				$query['Itemid'] = $menuItem->id;
 				$menuItemGiven = true;
-			}elseif( isset($query['id']) && ($query['view'] == 'product') ){
-				// nothing to do
-			}else{
+			}elseif(!(isset($query['id']) && ($query['view'] == 'product' or $query['view'] == 'category')) ){
 				$menuItem = $this->menu->getActive();
 				$menuItemGiven = false;
 			}
