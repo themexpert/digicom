@@ -79,14 +79,20 @@ class Com_DigiComInstallerScript
 	*/
 	function enablePlugins(){
 		$db = JFactory::getDBO();
-		$sql = "SELECT `element`,`folder` from `#__extensions` WHERE `type` = 'plugin' AND `folder` in ('finder', 'system', 'digicom_pay') AND `name` like '%digicom%'";
+		$sql = "SELECT `element`,`folder` from `#__extensions` WHERE `type` = 'plugin' AND `folder` in ('finder', 'system', 'digicom_pay') AND `name` like '%digicom%' AND `enabled`='0'";
 		$db->setQuery($sql);
 		$plugins = $db->loadObjectList();
+
 		if(!count($plugins)) return false;
 		foreach ($plugins as $key => $value) {
 			if($value->folder == 'finder' or $value->folder == 'system' or ($value->folder=='digicom_pay' && $value->element=='offline'))
 			{
-		    	$query = "UPDATE `#__extensions` SET `enabled`='1' WHERE `type`='plugin' AND `element`='".$db->Quote($value->element)."' AND `folder`='".$db->Quote($value->group)."'";
+		    	$query = $db->getQuery(true);
+		    	$query->update($db->quoteName('#__extensions'));
+		    	$query->set($db->quoteName('enabled') . ' = '.$db->quote('1'));
+		    	$query->where($db->quoteName('type') . ' = '.$db->quote('plugin'));
+		    	$query->where($db->quoteName('element') . ' = '.$db->quote($value->element));
+		    	$query->where($db->quoteName('folder') . ' = '.$db->quote($value->folder));
 	        	$db->setQuery($query);
 	        	$db->execute();
 			}
