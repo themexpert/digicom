@@ -13,10 +13,7 @@
 	<description>Thank you for installing DigiCom system Plugin.</description>
 
 	<files>
-
 		<filename plugin="digicom">digicom.php</filename>
-		<folder>language</folder>
-
 	</files>
 
 	<languages folder="language">
