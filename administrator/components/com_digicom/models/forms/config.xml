@@ -129,7 +129,7 @@
 				multiple="true"
 				description="COM_DIGICOM_SETTINGS_GENERAL_TOP_COUNTRIES_DESC"
 			/>
-			<!--
+			
 			<field
 				name="askterms"
 				type="radio"
@@ -149,7 +149,7 @@
 				query="SELECT id, title FROM #__content"
 				key_field="id"
 				value_field="title">
-			</field> -->
+			</field>
 
 			<field
 				name="buyprocess_spacer"

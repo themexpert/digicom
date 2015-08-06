@@ -18,6 +18,7 @@ $document=JFactory::getDocument();
 $app=JFactory::getApplication();
 $input = $app->input;
 $configs = $this->configs;
+$agreeterms = JRequest::getVar("agreeterms", "");
 $processor = $this->session->get('processor');
 $Itemid = $input->get("Itemid", 0);
 $items = $this->items;
@@ -27,6 +28,10 @@ $onclick = "document.getElementById('returnpage').value='checkout'; document.get
 if($user->id == 0 || $this->customer->_customer->country == "")
 {
 	$button_value = "COM_DIGICOM_CONTINUE";
+}
+if($configs->get('askterms',0) == '1')
+{
+	$onclick= "if(document.cart_form.agreeterms.checked != true){ alert(\'".JText::_("ACCEPT_TERMS_CONDITIONS")."\'); return false; }".$onclick;
 }
 
 $url="index.php?option=com_digicom&view=cart&task=cart.gethtml&tmpl=component&format=raw&processor=".$processor;
@@ -253,6 +258,23 @@ $tax = $this->tax;
 			<div id="digicomcartcontinue" class="row-fluid continue-shopping">
 				<div class="span8" style="margin-bottom:10px;">
 					<!--<a href="<?php echo $cat_url; ?>" class="btn"><i class="icon-cart"></i> <?php echo JText::_("DSCONTINUESHOPING")?></a>-->
+					<?php if($configs->get('askterms',0) == '1' && ($configs->get('termsid') > 0)):?>
+						<div class="accept-terms">
+							<input type="checkbox" name="agreeterms" id="agreeterms" style="margin-top: 0;"/><?php
+							$db = JFactory::getDBO();
+							$sql = "select `title`, `alias`, `catid`, `introtext`
+											from #__content
+											where id=".intval($configs->get('termsid'));
+							$db->setQuery($sql);
+							$db->query();
+							$result = $db->loadAssocList();
+							$terms_title = $result["0"]["title"];
+							$terms_content = $result["0"]["introtext"];
+							$alias = $result["0"]["alias"];
+							$catid = $result["0"]["catid"]; ?>
+							<a href="javascript:;" onclick="jQuery('#myModalTerms').modal('show');"><?php echo JText::_("COM_DIGICOM_CART_AGREE_TERMS"); ?></a>
+						</div>
+					<?php endif;?>
 				</div>
 				<div class="span4" style="margin-bottom: 10px;">
 					<p><strong><?php echo JText::_('COM_DIGICOM_PAYMENT_METHOD'); ?></strong></p>
@@ -265,8 +287,15 @@ $tax = $this->tax;
 					{
 						$button_value = "COM_DIGICOM_CONTINUE";
 					}
+					if($configs->get('askterms',0) == '1')
+					{
+						$onclick.= "if(ShowTermsAlert()) {" . $onclick . " jQuery('#cart_form').submit(); }else{ return false; }";
+					}
+					else
+					{
+						$onclick.= "jQuery('#cart_form').submit();";
+					}
 
-					$onclick.= "jQuery('#cart_form').submit();";
 					?>
 
 					<?php echo DigiComSiteHelperDigicom::getPaymentPlugins($configs); ?>
@@ -380,14 +409,53 @@ $tax = $this->tax;
 		</div>
 	</div>
 
+	<?php if($configs->get('askterms',0) == '1' && ($configs->get('termsid',0) > 0)):?>
+	<div id="myModalTerms" class="modal" style="display:none;">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 style="line-height: 1;"><?php echo JText::_("COM_DIGICOM_TERMS");?></h3>
+		</div>
+		<div class="modal-body">
+			<h3><?php echo $terms_title;?></h3>
+			<?php echo $terms_content;?>
+		</div>
+		<div class="modal-footer">
+			<button class="action-agree btn btn-success" data-dismiss="modal" aria-hidden="true"><?php echo JText::_("COM_DIGICOM_CART_AGREE_TERMS_BUTTON");?></button>
+			<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_("COM_DIGICOM_CLOSE");?></button>
+		</div>
+	</div>
+	<?php endif;?>
+
 	<script>
+		jQuery('.action-agree').click(function() {
+		    jQuery('input[name="agreeterms"]').attr('checked', 'checked');
+		});
+
 		<?php
+		if ($agreeterms != '')
+		{
+			echo 'jQuery("#agreeterms").attr("checked","checked");';
+		}
 
 		if ($processor != '')
 		{
 			echo 'jQuery("#processor").val("' . $processor . '");';
 		}
 		?>
+		function ShowTermsAlert()
+		{
+			if (document.cart_form.agreeterms.checked != true)
+			{
+				jQuery('#myModalLabel').html("<?php echo JText::_("COM_DIGICOM_WARNING");?>");
+				jQuery('#myModalBody').html("<p><?php echo JText::_("COM_DIGICOM_CART_ACCEPT_TERMS_CONDITIONS_REQUIRED_NOTICE");?></p>");
+				jQuery('#myModal').modal('show');
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
 
 		function ShowPaymentAlert()
 		{
