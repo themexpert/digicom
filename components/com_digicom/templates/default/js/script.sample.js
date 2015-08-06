@@ -344,9 +344,9 @@ function closePopupLogin(div) {
 	}
 }
 
-function RemoveFromCart(CARTID)
+function RemoveFromCart(CARTID,e)
 {
-	event.preventDefault();
+	e.preventDefault();
 	var url 		= digicom_site + "index.php?option=com_digicom&task=getSefUrl";
 	var sefUrl	= "index.php?option=com_digicom&view=cart&task=cart.deleteFromCart&cartid="+CARTID+"&processor="+jQuery("#processor").val();
 
