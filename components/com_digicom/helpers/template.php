@@ -17,8 +17,6 @@ class DigiComSiteHelperTemplate extends JViewLegacy {
 	
 	function __construct($view){
 		
-		$this->addStyleSheet(JURI::root()."media/digicom/assets/css/digicom.css");
-
 		$this->view = $view;
 		$this->addScriptDeclaration('var digicom_site = "'. JUri::root() . '";');
 		$this->addScriptDeclaration('var DIGI_ATENTION = "'. JText::_("COM_DIGICOM_REGISTER_NOTICE_ATTENTION") . '";');
@@ -54,6 +52,8 @@ class DigiComSiteHelperTemplate extends JViewLegacy {
 			$this->addStyleSheet( JUri::root(true) . '/templates/' . $app->getTemplate() . '/html/com_digicom/templates/' . $params->get('template','default') . '/css/style.css');
 		}elseif( is_file(JPATH_COMPONENT . '/templates/' . $params->get('template','default') . '/css/style.css') ) {
 			$this->addStyleSheet( JUri::root(true) . '/components/com_digicom/templates/' . $params->get('template','default') . '/css/style.css');
+		}else{
+			$this->addStyleSheet(JURI::root()."media/digicom/assets/css/digicom.css");
 		}
 
 		// CUSTOM JS
@@ -61,6 +61,8 @@ class DigiComSiteHelperTemplate extends JViewLegacy {
 			$this->addScript(JUri::root(true) . '/templates/' . $app->getTemplate() . '/html/com_digicom/templates/' . $params->get('template','default') . '/js/script.js');
 		}elseif( is_file( JPATH_COMPONENT . '/templates/' . $params->get('template','default') . '/js/script.js')) {
 			$this->addScript(JUri::root(true) . '/components/com_digicom/templates/' . $params->get('template','default') . '/js/script.js');
+		}else{
+			$this->addScript(JURI::root()."media/digicom/assets/js/digicom.js");
 		}
 		
 	}
