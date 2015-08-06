@@ -56,6 +56,9 @@ class DigiComRouter extends JComponentRouterBase
 				$menuItemGiven = true;
 			}else{
 				$menuItem = $this->menu->getActive();
+				if(!$menuItem){
+					$menuItem = $this->menu->getDefault();
+				}
 				$menuItemGiven = false;
 			}
 		}
@@ -91,6 +94,9 @@ class DigiComRouter extends JComponentRouterBase
 				$menuItemGiven = true;
 			}elseif(!(isset($query['id']) && ($query['view'] == 'product' or $query['view'] == 'category')) ){
 				$menuItem = $this->menu->getActive();
+				if(!$menuItem){
+					$menuItem = $this->menu->getDefault();
+				}
 				$menuItemGiven = false;
 			}
 		}
@@ -135,6 +141,9 @@ class DigiComRouter extends JComponentRouterBase
 					$menuItemGiven = true;
 				}else{
 					$menuItem = $this->menu->getActive();
+					if(!$menuItem){
+						$menuItem = $this->menu->getDefault();
+					}
 					$menuItemGiven = false;
 				}
 			}
@@ -175,6 +184,9 @@ class DigiComRouter extends JComponentRouterBase
 					$menuItemGiven = true;
 				}else{
 					$menuItem = $this->menu->getActive();
+					if(!$menuItem){
+						$menuItem = $this->menu->getDefault();
+					}
 					$menuItemGiven = false;
 				}
 			}
@@ -211,6 +223,9 @@ class DigiComRouter extends JComponentRouterBase
 					$menuItemGiven = true;
 				}else{
 					$menuItem = $this->menu->getActive();
+					if(!$menuItem){
+						$menuItem = $this->menu->getDefault();
+					}
 					$query['Itemid'] = $menuItem->id;
 					$menuItemGiven = true;
 				}
@@ -409,6 +424,9 @@ class DigiComRouter extends JComponentRouterBase
 
 		// Get the active menu item.
 		$item = $this->menu->getActive();
+		if(!$item){
+			$item = $this->menu->getDefault();
+		}
 		$params = JComponentHelper::getParams('com_digicom');
 		$advanced = $params->get('sef_advanced_link', 1);
 		$db = JFactory::getDbo();
@@ -564,7 +582,12 @@ class DigiComRouter extends JComponentRouterBase
 		}
 
 		// We get the category id from the menu item and search from there
-		$id = $item->query['id'];
+		if(isset($item->query['id'])){
+			$id = $item->query['id'];
+		}else{
+			$id = 0;
+		}
+		
 		$category = JCategories::getInstance('DigiCom')->get($id);
 
 		if (!$category)
