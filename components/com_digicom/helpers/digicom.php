@@ -690,10 +690,11 @@ class DigiComSiteHelperDigicom {
 
 		## Initialize array to store dropdown options ##
 		$options = array();
+	    $options[] = JHTML::_('select.option', '', JText::_('COM_DIGICOM_SELECT_COUNTRY_TITLE'));
 
 		#Top Countries#
 		$topcountries = $configs->get('topcountries', array());
-
+	    
 	    $options[] = JHTML::_('select.optgroup', JText::_('COM_DIGICOM_SELECT_FAVORITE_COUNTRY_TITLE'));
 
 		if ( count( $topcountries ) > 0 ) {

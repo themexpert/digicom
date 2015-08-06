@@ -404,7 +404,7 @@ function phpchangeProvince($country, $type = '') {
 			$state_option .= "<option value='" . $state->state . "'>" . $state->state . "</option>";	
 		}
 	} else {
-			$state_option .= "<option value=''>".(JText::_("DSSELECTCOUNTRYFIRST"))."</option>";	
+			$state_option .= "<option value=''>".(JText::_("COM_DIGICOM_SELECT_COUNTRY_FIRST"))."</option>";	
 
 	}
 
