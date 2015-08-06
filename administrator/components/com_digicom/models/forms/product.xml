@@ -13,7 +13,7 @@
 
 		<field name="alias" type="text" label="JFIELD_ALIAS_LABEL" description="JFIELD_ALIAS_DESC" hint="JFIELD_ALIAS_PLACEHOLDER" size="40" class="input-xlarge input-short"/>
 		
-		<field name="price" type="text" label="COM_DIGICOM_PRICE" description="COM_DIGICOM_PRODUCT_FIELD_PRICE_DESC" hint="COM_DIGICOM_PRODUCT_FIELD_PRICE_PLACEHOLDER" class="span12 input-large-text" size="10" required="true"/>
+		<field name="price" type="text" label="COM_DIGICOM_PRICE" description="COM_DIGICOM_PRODUCT_FIELD_PRICE_DESC" hint="" class="span12 input-large-text" size="10" required="true"/>
 		
 		<field name="price_type" type="list" label="COM_DIGICOM_PRODUCT_PRICE_TYPE" description="COM_DIGICOM_PRODUCT_FIELD_PRICE_TYPE_DESC" class="span4 input-xlarge advancedSelect"
 		onchange="changeValidity(this);"
