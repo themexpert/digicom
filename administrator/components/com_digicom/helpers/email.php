@@ -264,10 +264,10 @@ class DigiComHelperEmail {
 
         if ( $mailSender->Send() !== true ) {
             // lets set the email log with fal
-            DigiComSiteHelperLog::setLog('email', 'admin orders email', $message, json_encode($info),'failed');
+            DigiComSiteHelperLog::setLog('email', 'admin orders email', $orderid, $message, json_encode($info),'failed');
         }else{
             // lets set the email log with success
-            DigiComSiteHelperLog::setLog('email', 'admin orders email', $message, json_encode($info),'success');
+            DigiComSiteHelperLog::setLog('email', 'admin orders email', $orderid, $message, json_encode($info),'success');
         }
 
         return true;

@@ -197,7 +197,7 @@ CREATE TABLE IF NOT EXISTS `#__digicom_orders_details` (
   `published` int(2) NOT NULL DEFAULT '1',
   `package_type` varchar(50) NOT NULL,
   `purchase_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `expires` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `cancelled` tinyint(1) NOT NULL DEFAULT '0',
   `cancelled_amount` float NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),

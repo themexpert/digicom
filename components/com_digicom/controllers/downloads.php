@@ -72,14 +72,14 @@ class DigiComControllerDownloads extends JControllerLegacy
 
 		if (!$downloadfile->df_download()){
 
-			DigiComSiteHelperLog::setLog('download', 'downloads makeDownload', 'Download product : '.$fileInfo->product_name . ', file : '. $fileInfo->name, json_encode($info),'failed');
+			DigiComSiteHelperLog::setLog('download', 'downloads makeDownload', $fileInfo->id, 'Download product : '.$fileInfo->product_name . ', file : '. $fileInfo->name, json_encode($info),'failed');
 
 			$itemid = JFactory::getApplication()->input->get('itemid',0);
 			$msg = JText::sprintf("COM_DIGICOM_FILE_DOWNLOAD_FAILED",$fileInfo->name);
 			JFactory::getApplication()->redirect('index.php?option=com_digicom&view=downloads&Itemid='.$itemid,$msg);
 
 		}
-		DigiComSiteHelperLog::setLog('download', 'downloads makeDownload', 'Download product : '.$fileInfo->product_name . ', file : '. $fileInfo->name, json_encode($info));
+		DigiComSiteHelperLog::setLog('download', 'downloads makeDownload', $fileInfo->id, 'Download product : '.$fileInfo->product_name . ', file : '. $fileInfo->name, json_encode($info));
 
 	}
 	

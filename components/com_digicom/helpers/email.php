@@ -271,9 +271,9 @@ class DigiComSiteHelperEmail {
 		$message = $type.' email for order#'.$orderid.', status: '.$status;
 		////$type, $hook, $message, $info, $status = 'complete'
 		if ( $mailSender->Send() !== true ) {
-			DigiComSiteHelperLog::setLog('email', 'cart dispatch email', $message, json_encode($info),'failed');
+			DigiComSiteHelperLog::setLog('email', 'cart dispatch email', $orderid, $message, json_encode($info),'failed');
 		}else{
-			DigiComSiteHelperLog::setLog('email', 'cart dispatch email', $message, json_encode($info),'success');
+			DigiComSiteHelperLog::setLog('email', 'cart dispatch email', $orderid, $message, json_encode($info),'success');
 		}
 
 		if ( $email_settings->sendmailtoadmin) {
@@ -290,9 +290,9 @@ class DigiComSiteHelperEmail {
 
 			//Log::write( $message );
 			if ( $mailSender->Send() !== true ) {
-				DigiComSiteHelperLog::setLog('email', 'cart dispatch email', $message, json_encode($info),'failed');
+				DigiComSiteHelperLog::setLog('email', 'cart dispatch email', $orderid, $message, json_encode($info),'failed');
 			}else{
-				DigiComSiteHelperLog::setLog('email', 'cart dispatch email', $message, json_encode($info),'success');
+				DigiComSiteHelperLog::setLog('email', 'cart dispatch email', $orderid, $message, json_encode($info),'success');
 			}
 		}
 

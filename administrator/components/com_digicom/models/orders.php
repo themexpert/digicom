@@ -196,10 +196,9 @@ class DigiComModelOrders extends JModelList{
 				$price = $product->price;
 				$date = JFactory::getDate();
 				$purchase_date = $date->toSql();
-				$expire_string = "0000-00-00 00:00:00";
 				$package_type = (!empty($product->bundle_source) ? $product->bundle_source : 'reguler');
-				$sql = "insert into #__digicom_orders_details(userid, productid,quantity,price, orderid, amount_paid, published, package_type, purchase_date, expires) "
-						. "values ('{$user_id}', '{$item}', '1','{$price}','".$orderid."', '0', ".$published.", '".$package_type."', '".$purchase_date."', '".$expire_string."')";
+				$sql = "insert into #__digicom_orders_details(userid, productid,quantity,price, orderid, amount_paid, published, package_type, purchase_date) "
+						. "values ('{$user_id}', '{$item}', '1','{$price}','".$orderid."', '0', ".$published.", '".$package_type."', '".$purchase_date."')";
 				$database->setQuery($sql);
 				$database->query();
 

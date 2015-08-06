@@ -672,7 +672,7 @@ class DigiComModelCart extends JModelItem
 				'products' => $items,
 				'tax' => $tax
 			);
-			DigiComSiteHelperLog::setLog('purchase', 'cart checkout', 'Order id#'.$orderid.' Free purchase with '.$tax['number_of_products'].' products', json_encode($info));
+			DigiComSiteHelperLog::setLog('purchase', 'cart checkout', $orderid, 'Order id#'.$orderid.' Free purchase with '.$tax['number_of_products'].' products', json_encode($info));
 		}
 
 
@@ -703,7 +703,7 @@ class DigiComModelCart extends JModelItem
 				'products' => $items,
 				'tax' => $tax
 			);
-			DigiComSiteHelperLog::setLog('purchase', 'cart checkout', 'Order id#'.$orderid.' just placed order with '.$tax['number_of_products'].' products & method is '.$prosessor, json_encode($info),$status);
+			DigiComSiteHelperLog::setLog('purchase', 'cart checkout', $orderid, 'Order id#'.$orderid.' just placed order with '.$tax['number_of_products'].' products & method is '.$prosessor, json_encode($info),$status);
 		}
 
 		DigiComSiteHelperLicense::addLicenceSubscription($items, $customer->_customer->id, $orderid, $status);
@@ -821,7 +821,7 @@ class DigiComModelCart extends JModelItem
 				'plugin' => $pg_plugin
 			);
 
-			DigiComSiteHelperLog::setLog('status', 'cart proccessSuccess', 'Order id#'.$order_id.' updated & method is '.$pg_plugin, json_encode($info),$status);
+			DigiComSiteHelperLog::setLog('status', 'cart proccessSuccess', $order_id, 'Order id#'.$order_id.' updated & method is '.$pg_plugin, json_encode($info),$status);
 
 			$this->updateOrder($order_id,$result,$data,$pg_plugin,$status,$items,$customer);
 
@@ -1186,10 +1186,9 @@ class DigiComModelCart extends JModelItem
 				$price = (isset($item->discount) && ($item->discount > 0)) ? $item->discount : $item->subtotal_formated;
 				$date = JFactory::getDate();
 				$purchase_date = $date->toSql();
-				$expire_string = "0000-00-00 00:00:00";
 				$package_type = (!empty($item->bundle_source) ? $item->bundle_source : 'reguler');
-				$sql = "insert into #__digicom_orders_details(userid, productid,quantity, orderid, amount_paid, published, package_type, purchase_date, expires) "
-						. "values ('{$user_id}', '{$item->item_id}', '{$item->quantity}', '".$orderid."', '{$price}', ".$published.", '".$package_type."', '".$purchase_date."', '".$expire_string."')";
+				$sql = "insert into #__digicom_orders_details(userid, productid,quantity, orderid, amount_paid, published, package_type, purchase_date) "
+						. "values ('{$user_id}', '{$item->item_id}', '{$item->quantity}', '".$orderid."', '{$price}', ".$published.", '".$package_type."', '".$purchase_date."')";
 				//echo $sql;die;
 				$database->setQuery($sql);
 				$database->query();

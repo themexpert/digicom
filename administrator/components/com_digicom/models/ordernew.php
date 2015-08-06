@@ -225,7 +225,7 @@ class DigiComModelOrderNew extends JModelAdmin
 				'username' => JFactory::getUser()->username
 			);
 
-			DigiComSiteHelperLog::setLog('purchase', 'admin ordernew save', 'Admin created order#'.$recordId.', status: '.$status.', paid: '.$data['amount_paid'], json_encode($info),$status);
+			DigiComSiteHelperLog::setLog('purchase', 'admin ordernew save', $recordId, 'Admin created order#'.$recordId.', status: '.$status.', paid: '.$data['amount_paid'], json_encode($info),$status);
 
 			// $orders = $this->getInstance( "Orders", "DigiComModel" );
 			// $orders->updateLicensesStatus($data['id'], $type);
@@ -276,10 +276,9 @@ class DigiComModelOrderNew extends JModelAdmin
 				$price = $product->price;
 				$date = JFactory::getDate();
 				$purchase_date = $date->toSql();
-				$expire_string = "0000-00-00 00:00:00";
 				$package_type = (!empty($product->bundle_source) ? $product->bundle_source : 'reguler');
-				$sql = "insert into #__digicom_orders_details(userid, productid,quantity,price, orderid, amount_paid, published, package_type, purchase_date, expires) "
-						. "values ('{$user_id}', '{$item}', '1','{$price}','".$orderid."', '0', ".$published.", '".$package_type."', '".$purchase_date."', '".$expire_string."')";
+				$sql = "insert into #__digicom_orders_details(userid, productid,quantity,price, orderid, amount_paid, published, package_type, purchase_date) "
+						. "values ('{$user_id}', '{$item}', '1','{$price}','".$orderid."', '0', ".$published.", '".$package_type."', '".$purchase_date."')";
 				//print_r($sql);die;
 				$database->setQuery($sql);
 				$database->query();

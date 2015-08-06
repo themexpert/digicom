@@ -241,7 +241,7 @@ class DigiComModelOrder extends JModelAdmin
 				'username' => JFactory::getUser()->username
 			);
 
-			DigiComSiteHelperLog::setLog('status', 'Admin order save', 'Admin changed order#'.$table->id.', status: '.$status.', paid: '.$data['amount_paid'], json_encode($info),$status);
+			DigiComSiteHelperLog::setLog('status', 'Admin order save', $table->id, 'Admin changed order#'.$table->id.', status: '.$status.', paid: '.$data['amount_paid'], json_encode($info),$status);
 
 			$orders = $this->getInstance( "Orders", "DigiComModel" );
 			$orders->updateLicensesStatus($data['id'], $type);

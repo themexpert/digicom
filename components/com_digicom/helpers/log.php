@@ -27,11 +27,12 @@ class DigiComSiteHelperLog {
      * @info = log details or extra info encoded by json formet
      * setLog($type, $hook, $message, $info, $status = 'complete');
      * */
-    public static function setLog($type, $hook, $message, $info, $status = 'complete')
+    public static function setLog($type, $hook, $callbackid, $message, $info, $status = 'complete')
     {
         $logTable = JTable::getInstance('log','Table');
         $logTable->type     = $type;
         $logTable->callback = $hook;
+        $logTable->callbackid = $callbackid;
         $logTable->message  = $message;
         $logTable->params     = json_encode($info);
         $logTable->status   = $status;
