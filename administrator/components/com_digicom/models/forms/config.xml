@@ -107,6 +107,17 @@
 					<option value="1">JYES</option>
 			</field>
 			<field
+				name="show_changepass"
+				type="radio"
+				class="btn-group"
+				label="COM_DIGICOM_SETTINGS_GENERAL_SHOW_CHANGEPASS"
+				default="1"
+				description="COM_DIGICOM_SETTINGS_GENERAL_SHOW_CHANGEPASS_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+			</field>
+			
+			<field
 				name="topcountries"
 				type="sql"
 				query="SELECT distinct country FROM #__digicom_states order by country"

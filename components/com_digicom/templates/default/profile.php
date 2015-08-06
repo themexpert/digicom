@@ -64,6 +64,7 @@ $configs = $this->configs;
 				</div>
 			</div>
 
+			<?php if($user->guest or $configs->get('show_changepass',1)): ?>
 			<h3 class="digi-section-title"><?php echo JText::_('COM_DIGICOM_PROFILE_SECTION_TITLE_LOGIN_INFO'); ?></h3>
 
 			<div class="row-fluid">
@@ -90,7 +91,7 @@ $configs = $this->configs;
 					</div>
 				</div>
 			</div>
-
+			<?php endif; ?>
 
 			<h3 class="digi-section-title"><?php echo JText::_('COM_DIGICOM_PROFILE_SECTION_TITLE_BILLING_ADDRESS'); ?></h3>
 			<div class="row-fluid">
