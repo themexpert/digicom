@@ -203,7 +203,7 @@ class DigiComRouter extends JComponentRouterBase
 			{
 				// there are no menu Itemid found, lets dive into menu finder
 				$menu = JMenu::getInstance('site');
-				$menuItem = $menu->getItems('link', 'index.php?option=com_digicom&view=category&id='.$query['catid'], true);
+				$menuItem = $menu->getItems('link', 'index.php?option=com_digicom&view=category&id='.$query['id'], true);
 
 				//print_r($menuItem);die;
 				if(count($menuItem)){
