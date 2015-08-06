@@ -249,7 +249,14 @@ CREATE TABLE IF NOT EXISTS `#__digicom_products` (
   `hits` int(11) NOT NULL,
   `attribs` longtext NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `published` (`published`)
+  KEY `idx_access` (`access`),
+  KEY `idx_checkout` (`checked_out`),
+  KEY `idx_state` (`published`),
+  KEY `idx_catid` (`catid`),
+  KEY `idx_createdby` (`created_by`),
+  KEY `idx_featured_catid` (`featured`,`catid`),
+  KEY `idx_language` (`language`),
+  KEY `idx_xreference` (`xreference`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
 -- --------------------------------------------------------

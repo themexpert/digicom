@@ -70,6 +70,7 @@ class Com_DigiComInstallerScript
 		self::enablePlugins();
 		self::createDigiComMenu();
 		self::createUploadDirectory();
+		self::removeTemplateScript();
 
 		return;
 	}
@@ -143,6 +144,7 @@ class Com_DigiComInstallerScript
 
 		return true;
 	}
+	
 	/*
 	* create digicom folder at root filemanager folder
 	*/
@@ -171,6 +173,29 @@ class Com_DigiComInstallerScript
 		if (!(file_exists($defaultPath . '/index.html') || file_exists($defaultPath . '/index.php')))
 		{
 			file_put_contents($defaultPath . '/index.html', '<!DOCTYPE html><title></title>' . "\n");
+		}
+
+		return true;
+	}
+	
+	/*
+	* remove old script.js file from component template js default
+	*/
+	function removeTemplateScript()
+	{
+		//Import filesystem libraries. Perhaps not necessary, but does not hurt
+		jimport('joomla.filesystem.file');
+
+		$defaultPath = JPATH_ROOT . '/components/com_digicom/templates/default/js/script.js';
+		
+		// delete file if exist
+		try{
+			JFile::delete($defaultPath);
+		}
+		catch (Exception $e)
+		{
+			echo JText::sprintf('COM_DIGICOM_ERROR_REMOVING_TMPL_SCRIPT_OLD', $e->getCode(), $e->getMessage()) . '<br />';
+			return;
 		}
 
 		return true;
