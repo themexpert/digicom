@@ -5,12 +5,12 @@
 		   method="upgrade">
 	<name>DigiCom Shopping Cart</name>
 	<author>ThemeXpert</author>
-	<creationDate>Mar 2015</creationDate>
+	<creationDate>2015-08-05</creationDate>
 	<copyright>Copyright (C) 2010-2015 ThemeXpert. All rights reserved.</copyright>
 	<license>GNU/GPLv3</license>
 	<authorEmail>info@themexpert.com</authorEmail>
 	<authorUrl>www.themexpert.com</authorUrl>
-	<version>1.0.0</version>
+	<version>1.0.0-rc.1</version>
 	<description>DigiCom Shopping Cart</description>
 	<files>
 		<filename module="mod_digicom_cart">mod_digicom_cart.xml</filename>

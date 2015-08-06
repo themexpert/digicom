@@ -2,12 +2,12 @@
 <extension type="component" version="3.1" method="upgrade">
 	<name>com_digicom</name>
 	<author>ThemeXpert</author>
-	<creationDate>March 2015</creationDate>
+	<creationDate>2015-08-05</creationDate>
 	<copyright>(C) 2005 - 2015 Open Source Matters. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>admin@themexpert.com</authorEmail>
 	<authorUrl>www.themexpert.com</authorUrl>
-	<version>1.0.0-beta.2</version>
+	<version>1.0.0-rc.1</version>
 	<description>COM_DIGICOM_XML_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>
 
