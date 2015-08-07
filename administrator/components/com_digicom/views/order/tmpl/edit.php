@@ -179,7 +179,7 @@ $date = date( $configs->get('time_format','d M Y'), $order->order_date);
 	</div>
 
 	<input type="hidden" name="option" value="com_digicom" />
-	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="task" value="order.apply" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="view" value="order" />
 	<input type="hidden" name="jform[id]" value="<?php echo $order->id; ?>" />
