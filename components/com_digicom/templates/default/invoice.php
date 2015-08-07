@@ -131,7 +131,6 @@ $user = $this->customer->_customer;
 
 								for ($i = 0; $i < $n; $i++):
 									$prod = $order->products[$i];
-									$id = $order->id;
 									if (!isset($prod->currency)) $prod->currency = $configs->get('currency','USD');
 							?>
 								<tr class="row<?php echo $k;?> sectiontableentry<?php echo ($i%2 + 1);?>">
@@ -145,7 +144,7 @@ $user = $this->customer->_customer;
 									 	<?php echo $prod->name;?>
 									 	<?php if ($configs->get('show_validity',1) == 1) : ?>
 										<div class="muted">
-											<small><?php echo JText::_('COM_DIGICOM_PRODUCT_VALIDITY'); ?> : <?php echo DigiComSiteHelperPrice::getProductValidityPeriod($order); ?></small>
+											<small><?php echo JText::_('COM_DIGICOM_PRODUCT_VALIDITY'); ?> : <?php echo DigiComSiteHelperPrice::getProductValidityPeriod($prod); ?></small>
 										</div>
 										<?php endif; ?>
 									</td>
@@ -175,7 +174,7 @@ $user = $this->customer->_customer;
 									<td style="font-weight:bold;text-align: right;" width="70%"><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></td>
 									<td style="text-align: right;">
 										<span style="white-space:nowrap;font-weight: bold;">
-											<?php echo DigiComSiteHelperPrice::format_price($total, $prod->currency, true, $configs);?>
+											<?php echo DigiComSiteHelperPrice::format_price($total, $order->currency, true, $configs);?>
 										</span>
 									</td>
 								</tr>
@@ -188,7 +187,7 @@ $user = $this->customer->_customer;
 									<td style="font-weight:bold;text-align: right;" width="70%"><?php echo JText::sprintf("COM_DIGICOM_DISCOUNT",$order->promocode);?></td>
 									<td style="text-align: right;">
 										<span style="white-space:nowrap;font-weight: bold;">
-											<?php echo DigiComSiteHelperPrice::format_price($order->discount, $prod->currency, true, $configs);?>
+											<?php echo DigiComSiteHelperPrice::format_price($order->discount, $order->currency, true, $configs);?>
 										</span>
 									</td>
 								</tr>
@@ -203,7 +202,7 @@ $user = $this->customer->_customer;
 											$total = $order->amount_paid;
 										}
 									?>
-									<td style="text-align: right;"><span style="white-space:nowrap;font-weight: bold;font-size: 18px;"><?php echo DigiComSiteHelperPrice::format_price($total, $prod->currency, true, $configs);?></span></td>
+									<td style="text-align: right;"><span style="white-space:nowrap;font-weight: bold;font-size: 18px;"><?php echo DigiComSiteHelperPrice::format_price($total, $order->currency, true, $configs);?></span></td>
 								</tr>
 
 							</tbody>
@@ -212,7 +211,8 @@ $user = $this->customer->_customer;
 						<input type="hidden" name="option" value="com_digicom" />
 						<input type="hidden" name="task" value="" />
 						<input type="hidden" name="boxchecked" value="0" />
-						<input type="hidden" name="controller" value="Orders" />
+						<input type="hidden" name="view" value="order" />
+						<input type="hidden" name="layout" value="invoice" />
 					</form>
 					<?php endif; ?>
 					<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>

@@ -39,7 +39,7 @@ class DigiComModelOrder extends JModelItem
 			$db->setQuery($sql);
 			$this->_order = $db->loadObject();
 
-			$sql = "SELECT p.id, p.name, p.images,p.language, p.catid, od.package_type, od.amount_paid as price , od.userid";
+			$sql = "SELECT p.*, od.package_type, od.amount_paid as price , od.userid";
 			$sql .= " FROM #__digicom_products as p, #__digicom_orders_details as od WHERE p.id=od.productid AND od.orderid='". $this->_order->id ."'";
 			$db->setQuery($sql);
 			$prods = $db->loadObjectList();
