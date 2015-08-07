@@ -42,7 +42,7 @@ function openModal(a){
 }
 
 function changeOrderStatus(id,task,index,val){
-  
+
   var f = document.adminForm, i, cbx,
     cb = f[id],
     status = f['orderstatus'+index];
@@ -55,7 +55,7 @@ function changeOrderStatus(id,task,index,val){
         } // for
         cb.checked = true;
     }
-    
+
     if(status){
       orderstatus = f['orderstatus'+index];
       for (i = 0; true; i++) {
@@ -73,9 +73,9 @@ function changeOrderStatus(id,task,index,val){
     submitbutton(task);
 }
 
-function showProperTemplateEmail(type){
+function showProperTemplateEmail(type, e){
 	//console.log(type);return;
-  event.preventDefault();
+  e.preventDefault();
 
   var templateType = jQuery('#jform_'+ type +'_email_type').chosen(),
 		htmlTemplate = jQuery('.email_template_digicom.email_template_digicom_'+type+'_html'),
@@ -179,15 +179,15 @@ jQuery(document).ready(function() {
     jQuery('#digicom-product-alias').show();
     jQuery('#digicom-product-alias-edit').hide();
   });
-  
+
 	var sortable = {
 		update: function (event, ui) {
 			//create the array that hold the positions...
-		  var order = []; 
+		  var order = [];
 			//loop trought each li...
 		   jQuery('#digicom_item_files_items .container tr').each( function(e) {
 			jQuery(this).find('input[id^=files_ordering_]').val(jQuery(this).index());
-		  
+
 		  });
 		}
 	};
@@ -196,7 +196,7 @@ jQuery(document).ready(function() {
 			'sortable_options': sortable
 		});
 	});
-	
-	
-	
+
+
+
 });

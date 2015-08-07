@@ -116,7 +116,7 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 			</field>
-			
+
 			<field
 				name="topcountries"
 				type="sql"
@@ -129,7 +129,7 @@
 				multiple="true"
 				description="COM_DIGICOM_SETTINGS_GENERAL_TOP_COUNTRIES_DESC"
 			/>
-			
+
 			<field
 				name="askterms"
 				type="radio"
@@ -506,7 +506,7 @@
 				<field name="email_type" type="list"
 					label="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_LABEL"
 					description="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_DESC"
-					onchange="showProperTemplateEmail('new_order')"
+					onchange="showProperTemplateEmail('new_order',event)"
 				>
 					<option value="html">COM_DIGICOM_SETTINGS_EMAIL_TYPE_HTML</option>
 					<option value="raw">COM_DIGICOM_SETTINGS_EMAIL_TYPE_TEXT</option>
@@ -582,7 +582,7 @@
 				<field name="email_type" type="list"
 					label="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_LABEL"
 					description="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_DESC"
-					onchange="showProperTemplateEmail('process_order')"
+					onchange="showProperTemplateEmail('process_order',event)"
 				>
 					<option value="html">COM_DIGICOM_SETTINGS_EMAIL_TYPE_HTML</option>
 					<option value="raw">COM_DIGICOM_SETTINGS_EMAIL_TYPE_TEXT</option>
@@ -658,7 +658,7 @@
 				<field name="email_type" type="list"
 					label="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_LABEL"
 					description="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_DESC"
-					onchange="showProperTemplateEmail('complete_order')"
+					onchange="showProperTemplateEmail('complete_order',event)"
 				>
 					<option value="html">COM_DIGICOM_SETTINGS_EMAIL_TYPE_HTML</option>
 					<option value="raw">COM_DIGICOM_SETTINGS_EMAIL_TYPE_TEXT</option>
@@ -734,7 +734,7 @@
 				<field name="email_type" type="list"
 					label="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_LABEL"
 					description="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_DESC"
-					onchange="showProperTemplateEmail('cancel_order')"
+					onchange="showProperTemplateEmail('cancel_order',event)"
 				>
 					<option value="html">COM_DIGICOM_SETTINGS_EMAIL_TYPE_HTML</option>
 					<option value="raw">COM_DIGICOM_SETTINGS_EMAIL_TYPE_TEXT</option>
