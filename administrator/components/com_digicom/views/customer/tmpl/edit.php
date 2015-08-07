@@ -43,24 +43,24 @@ $input->set('layout', 'dgform');
 		changeProvince_ship();
 		request_processed = 1;
 	}
-	
+
 	function changeProvince() {
 		// get the folder name
 		var country;
 		country = document.getElementById('country').value;
 		var euc = Array();
-		
+
 		var flag = 0;
 		for (i = 0; i< euc.length; i++)
 			if (country == euc[i]) flag = 1;
-		
+
 		x_phpchangeProvince(country, 'main', changeProvince_cb);
 	}
-	 
+
 	function changeProvince_cb(province_option) {
 		document.getElementById("province").innerHTML = province_option;
 	}
-	
+
 	 -->
 </script>
 
@@ -78,7 +78,7 @@ $input->set('layout', 'dgform');
 					<?php echo JHtml::_('bootstrap.startTabSet', 'digicomTab', array('active' => 'details')); ?>
 
 					<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'details', JText::_('COM_DIGICOM_CUSTOMER_TAB_HEADING_CUSTOMER_INFO', true)); ?>
-				
+
 					<div class="form-horizontal">
 						<div class="row-fluid">
 							<div class="span6">
@@ -110,7 +110,7 @@ $input->set('layout', 'dgform');
 									</div>
 								</div>
 
-								
+
 
 								<div class="control-group">
 									<label class="control-label">
@@ -121,7 +121,7 @@ $input->set('layout', 'dgform');
 									</div>
 								</div>
 
-								
+
 							</div>
 
 							<div class="span6">
@@ -131,7 +131,7 @@ $input->set('layout', 'dgform');
 									<label class="control-label">
 										<?php echo JText::_( "COM_DIGICOM_CUSTOMER_TYPE" ); ?>
 									</label>
-									<div class="controls">	
+									<div class="controls">
 										<fieldset id="customer_person_select" class="radio btn-group">
 											<input type="radio" class="jform_customer_person_select" name="person" id="customer_person_select_1" value="1" <?php echo (($cust->person == '1' || $cust->person === null)?"checked='checked'":"");?> />
 											<label class="btn" for="customer_person_select_1"><?php echo JText::_('COM_DIGICOM_CUSTOMER_TYPE_PERSON'); ?></label>
@@ -139,9 +139,9 @@ $input->set('layout', 'dgform');
 											<label class="btn" for="customer_person_select_0"><?php echo JText::_('COM_DIGICOM_CUSTOMER_TYPE_COMPANY'); ?></label>
 										</fieldset>
 									</div>
-									
+
 								</div>
-								
+
 								<div class="control-group">
 									<label class="control-label"><?php echo JText::_( "COM_DIGICOM_CUSTOMER_TYPE_COMPANY" ); ?><b></b></label>
 									<div class="controls">
@@ -174,14 +174,14 @@ $input->set('layout', 'dgform');
 										?>
 									</div>
 								</div>
-								
+
 								<div class="control-group">
 									<label for="" class="control-label"><?php echo JText::_( "COM_DIGICOM_CUSTOMER_CITY" ); ?></label>
 									<div class="controls">
 										<input name="city" type="text" id="city" size="30" value="<?php echo $cust->city; ?>">
 									</div>
 								</div>
-								
+
 								<div class="control-group">
 									<label for="" class="control-label"><?php echo JText::_( "COM_DIGICOM_CUSTOMER_TAX_NUMBER" ); ?></label>
 									<div class="controls">
@@ -191,7 +191,7 @@ $input->set('layout', 'dgform');
 
 							</div>
 						</div>
-						
+
 					</div>
 
 					<?php echo JHtml::_('bootstrap.endTab'); ?>
@@ -223,9 +223,9 @@ $input->set('layout', 'dgform');
 							</thead>
 
 							<tbody>
-								<?php 
+								<?php
 								$n = count($cust->orders);
-								if($n > 0):  
+								if($n > 0):
 								?>
 								<?php
 								$z = 0;
@@ -235,33 +235,32 @@ $input->set('layout', 'dgform');
 									$order =  $cust->orders[$i];
 
 									$id = $order->id;
-									$link = JRoute::_( "index.php?option=com_digicom&controller=licenses&task=list&oid[]=" . $id );
-									$olink = JRoute::_( "index.php?option=com_digicom&controller=orders&task=show&cid[]=" . $id );
+									$olink = JRoute::_( "index.php?option=com_digicom&task=order.edit&id=" . $id );
 									$order->published = 1;
 									$published = JHTML::_( 'grid.published', $order, $i );
 
 								?>
 									<tr class="row<?php echo $k; ?>">
 										<td align="center">
-											<a href="<?php echo $olink; ?>"><?php echo $id; ?></a>
+											<a href="<?php echo $olink; ?>" target="_blank"><?php echo $id; ?></a>
 										</td>
 										<td align="center">
 											<?php echo date( $configs->get('time_format','DD-MM-YYYY'), $order->order_date ); ?>
 										</td>
 										<td align="center">
-											<?php 
-												echo DigiComHelperDigiCom::format_price($order->amount, $configs->get('currency','USD'), true, $configs); 												
+											<?php
+												echo DigiComHelperDigiCom::format_price($order->amount, $configs->get('currency','USD'), true, $configs);
 											?>
 										</td>
 										<td align="center">
-											<?php 
-												
+											<?php
+
 												if ($order->amount_paid == "-1") $order->amount_paid = $order->amount;
 												$refunds = DigiComHelperDigiCom::getRefunds($order->id);
 												$chargebacks = DigiComHelperDigiCom::getChargebacks($order->id);
 												$order->amount_paid = $order->amount_paid - $refunds - $chargebacks;
-												echo DigiComHelperDigiCom::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs); 
-												
+												echo DigiComHelperDigiCom::format_price($order->amount_paid, $configs->get('currency','USD'), true, $configs);
+
 											?>
 										</td>
 										<td align="center">
@@ -278,7 +277,7 @@ $input->set('layout', 'dgform');
 										<td align="center">
 											<?php echo $order->processor; ?>
 										</td>
-										
+
 									</tr>
 									<?php
 									$k = 1 - $k;
@@ -292,7 +291,7 @@ $input->set('layout', 'dgform');
 									</tr>
 								<?php endif; ?>
 							</tbody>
-							
+
 						</table>
 
 					<?php echo JHtml::_('bootstrap.endTab'); ?>
