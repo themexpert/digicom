@@ -230,7 +230,7 @@ class DigiComHelperDigiCom extends JHelperContent{
 	 */
 	public static function getProducts($limit) {
 		$db = JFactory::getDBO();
-		$sql = 'SELECT DISTINCT p.id,p.name,p.catid, p.description, p.publish_up, c.name AS category FROM #__digicom_products p, #__digicom_categories c WHERE p.published = 1 AND c.published = 1 AND p.catid = c.id ORDER BY p.id DESC LIMIT '.$limit;
+		$sql = 'SELECT DISTINCT p.id,p.name,p.catid, p.introtext, p.publish_up, c.name AS category FROM #__digicom_products p, #__digicom_categories c WHERE p.published = 1 AND c.published = 1 AND p.catid = c.id ORDER BY p.id DESC LIMIT '.$limit;
 		$db->setQuery($sql);
 		if (!$products = $db->loadObjectList()) {
 			echo $db->getErrorMsg();
