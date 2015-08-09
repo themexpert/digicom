@@ -26,7 +26,15 @@ JHtmlBehavior::core();
 				<li>
 					<a class="dglogo" href="index.php?option=com_digicom">DigiCom</a>
 				</li>
-				<?php foreach ($displayData->list as $item) :
+				<?php
+				$total = count($displayData->list);
+				$i = 1;
+				foreach ($displayData->list as $item) :
+					if($i==$total){
+						$dispatcher = JDispatcher::getInstance();
+						$dispatcher->trigger( 'onAfterMainMenu', array());						
+					}
+
 				if (isset ($item[2]) && $item[2] == 1) : ?>
 					<li class="active" title="<?php echo $item[0]; ?>">
 				<?php else : ?>
@@ -42,7 +50,11 @@ JHtmlBehavior::core();
 					<?php endif;
 				endif; ?>
 				</li>
-				<?php endforeach; ?>
+				<?php
+				$i++;
+				endforeach;
+				?>
+
 			</ul>
 			<?php endif; ?>
 			<?php if ($displayData->displayMenu && $displayData->displayFilters) : ?>
