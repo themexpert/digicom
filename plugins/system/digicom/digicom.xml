@@ -3,12 +3,12 @@
 
 	<name>System - DigiCom system plugin</name>
 	<author>ThemeXpert</author>
-	<creationDate>2015-08-05</creationDate>
+	<creationDate>2015-08-07</creationDate>
 	<copyright>Copyright (C) 2013 themexpert.com. All rights reserved.</copyright>
 	<license>GNU/GPL</license>
 	<authorEmail>info@themexpert.com</authorEmail>
 	<authorUrl>www.themexpert.com</authorUrl>
-	<version>1.0.0-rc.1</version>
+	<version>1.0.0-rc.1+build.1</version>
 
 	<description>Thank you for installing DigiCom system Plugin.</description>
 

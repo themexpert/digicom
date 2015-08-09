@@ -52,13 +52,13 @@ class plgSystemDigiCom extends JPlugin{
 		$subject = '';
 		foreach ($plugins as $key => $value) {
 			JLoader::register('plg'.ucfirst($value->folder).ucfirst($value->element), JPATH_SITE . '/plugins/'.$value->folder.'/'.$value->element.'/'.$value->element.'.php');
-			$config = json_decode($value->params, true); 
+			$config = json_decode($value->params, true);
 
 			$className = 'plg'.$value->folder.$value->element;
 			if(method_exists($className,'onSidebarMenuItem')){
 				JFactory::getLanguage()->load('plg_'.$value->folder.'_'.$value->element, JPATH_ADMINISTRATOR);
 				$class = new $className($dispatcher, $config);
-				$results []= '<i class="digi-micro-btn icon-'.($value->enabled ? 'publish' : 'unpublish').'"></i> '. $class->onSidebarMenuItem(array());					
+				$results []= '<i class="digi-micro-btn icon-'.($value->enabled ? 'publish' : 'unpublish').'"></i> '. $class->onSidebarMenuItem(array());
 			}
 		}
 
@@ -72,6 +72,46 @@ class plgSystemDigiCom extends JPlugin{
 		echo '</ul>';
 
 		return;
+
+	}
+
+	/**
+	 * Plugin method with the same name as the event will be called automatically.
+	 */
+
+	public function onAfterMainMenu($params = array()) {
+
+		JPluginHelper::importPlugin('digicom');
+		$dispatcher = JDispatcher::getInstance();
+
+		$db = JFactory::getDBO();
+		$sql = "SELECT `extension_id`,`element`,`folder`,`enabled`,`params` from `#__extensions` WHERE `type` = 'plugin' AND `folder` in ('digicom', 'digicom_pay')";
+		$db->setQuery($sql);
+		$plugins = $db->loadObjectList();
+		if(!count($plugins)) return false;
+
+		$results = array();
+		$subject = 'JEventDispatcher';
+		$subject = '';
+		foreach ($plugins as $key => $value) {
+			JLoader::register('plg'.ucfirst($value->folder).ucfirst($value->element), JPATH_SITE . '/plugins/'.$value->folder.'/'.$value->element.'/'.$value->element.'.php');
+			$config = json_decode($value->params, true);
+
+			$className = 'plg'.$value->folder.$value->element;
+			if(method_exists($className,'onMainMenuItem')){
+				JFactory::getLanguage()->load('plg_'.$value->folder.'_'.$value->element, JPATH_ADMINISTRATOR);
+				$class = new $className($dispatcher, $config);
+				$results[] = $class->onMainMenuItem(array());
+			}
+		}
+
+		if(!$results) return;
+
+		foreach ($results as $key => $value) {
+				echo $value;
+		}
+
+		return true;
 
 	}
 
