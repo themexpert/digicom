@@ -13,7 +13,7 @@ $input = $app->input;
 $input->set('layout', 'dgtabs');
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_digicom&view=task'); ?>" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
+<div id="digicom" class="digicom-task">
 	<?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="">
 		<?php echo $this->sidebar; ?>
@@ -30,4 +30,4 @@ $input->set('layout', 'dgtabs');
 		?>
 
 	</div>
-</form>
+</div>
