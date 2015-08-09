@@ -3,12 +3,12 @@
 
 	<name>Offline Payment - DigiCom Pay Plugin</name>
 	<author>ThemeXpert</author>
-	<creationDate>2015-08-05</creationDate>
+	<creationDate>2015-08-07</creationDate>
 	<copyright>themexpert.com. All Rights Reserved.</copyright>
 	<authorEmail>extensions@themexpert.com</authorEmail>
 	<authorUrl>http://www.themexpert.com</authorUrl>
 	<license>GNU/GPLv3</license>
-	<version>1.0.0-rc.1</version>
+	<version>1.0.0-rc.1+build.1</version>
 	<description>Offline Payment - DigiCom Pay Plugin by themexpert.com. </description>
 
 	<files>
