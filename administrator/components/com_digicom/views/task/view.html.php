@@ -28,11 +28,6 @@ class DigiComViewTask extends JViewLegacy {
 
 		JToolBarHelper::title($pagetitle, 'generic.png');
 
-		// Prepare the view from plugin
-		// $this->info			= $this->get('info');
-		// $this->directory	= $this->get('directory');
-		// $this->plugins	= $this->get('plugins');
-
 		// Set the title toolber
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout
