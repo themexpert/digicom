@@ -72,14 +72,14 @@ class DigiComController extends JControllerLegacy
 	{
 		try
 		{
-		    $db 	= JFactory::getDbo();
+		  $db 	= JFactory::getDbo();
 			$query 	= $db->getQuery(true);
-			$query->update($db->quoteName('#__digicom_licensess'));
+			$query->update($db->quoteName('#__digicom_licenses'));
 			$query->set($db->quoteName('active') . ' = ' . $db->quote('0'));
 			$query->where('DATEDIFF('.$db->quoteName('expires').', now()) <= ' .$db->quote('-1'));
 			//echo $query->__tostring();die;
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 
 			echo JText::_('COM_DIGICOM_LICENSE_CHECK_SUCCESSFUL');
 		}
