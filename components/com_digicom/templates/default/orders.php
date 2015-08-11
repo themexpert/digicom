@@ -61,7 +61,7 @@ $n = count ($this->orders);
 							#<?php echo $order->id; ?>
 						</td>
 						<td>
-							<?php echo date($configs->get('time_format','d-M-Y'), $order->order_date);?>
+							<?php echo $order->order_date;?>
 						</td>
 						<td>
 							<?php

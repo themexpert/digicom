@@ -13,7 +13,7 @@ $n = count ($this->order->products);
 $configs = $this->configs;
 $order = $this->order;
 
-$date = date( $configs->get('time_format','d M Y'), $order->order_date);
+$date = $order->order_date;
 if ($this->order->id < 1){
 	echo JText::_('DSEMPTYORDER');
 }

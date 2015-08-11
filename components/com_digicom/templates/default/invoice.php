@@ -87,7 +87,7 @@ $user = $this->customer->_customer;
 									</div>
 									<div>
 										<span><?php echo JText::_("JDATE");?><span>
-										<code><?php echo date( $configs->get('time_format','d-m-Y'), $order->order_date); ?></code>
+										<code><?php echo $order->order_date; ?></code>
 									</div>
 									<div>
 										<span><?php echo JText::_("COM_DIGICOM_PAYMENT_METHOD");?><span>
