@@ -19,7 +19,7 @@ class DigiComViewCustomer extends JViewLegacy {
 		//print_r($customer);die;
 		$user = $this->get('User');
 		$isNew = ($customer->id < 1);
-		$text = $isNew?JText::_('COM_DIGICOM_NEW'):JText::_('COM_DIGICOM_EDIT')." : ".$customer->firstname;
+		$text = $isNew?JText::_('COM_DIGICOM_NEW'):JText::_('COM_DIGICOM_EDIT')." : ".$customer->name;
 
 		JToolBarHelper::title(JText::_('COM_DIGICOM_CUSTOMER').":<small>[".$text."]</small>");
 
@@ -30,32 +30,32 @@ class DigiComViewCustomer extends JViewLegacy {
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
-		
+
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
 
 		JToolBarHelper::apply('customer.apply');
 		JToolBarHelper::save('customer.save');
-		
+
 		JToolBarHelper::divider();
 		JToolBarHelper::cancel ('customer.cancel');
-	
+
 
 		$this->assign("cust", $customer);
 		$this->assign("user", $user);
 
 		$configs = $this->get("Configs");
-		
+
 		$this->assign("configs", $configs);
-		
+
 		DigiComHelperDigiCom::addSubmenu('customers');
 		$this->sidebar = DigiComHelperDigiCom::renderSidebar();
 
 		parent::display($tpl);
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 }

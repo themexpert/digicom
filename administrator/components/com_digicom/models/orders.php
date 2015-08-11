@@ -384,12 +384,16 @@ class DigiComModelOrders extends JModelList{
 					#__digicom_customers c ON o.userid=c.id ";
 
 		$where = array();
-		if($startdate > 0)
+		if($startdate > 0){
 			$where[]=" o.order_date > " . $startdate . " ";
-		if($enddate > 0)
+		}
+		if($enddate > 0){
 			$where[]=" o.order_date < " . $enddate . " ";
-		if(strlen( trim( $keyword ) ) > 0)
+		}
+		if(strlen( trim( $keyword ) ) > 0){
 			$where[]=$keyword_where;
+		}
+
 		$where_clause = (count($where))? ' WHERE '. implode(' AND ',$where) : '';
 		$sql .= $where_clause. " ORDER BY o.id DESC";
 

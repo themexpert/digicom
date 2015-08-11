@@ -141,7 +141,7 @@ $input->set('layout', 'dgform');
 	</div>
 </div>
 </form>
-<?php 
+<?php
 	echo JHtml::_(
 		'bootstrap.renderModal',
 		'videoTutorialModal',
@@ -151,7 +151,7 @@ $input->set('layout', 'dgform');
 			'height' => '400px',
 			'width' => '1280'
 		)
-	); 
+	);
 ?>
 <div class="dg-footer">
 	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
