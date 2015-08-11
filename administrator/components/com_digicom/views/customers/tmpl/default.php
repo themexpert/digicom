@@ -84,9 +84,9 @@ $n = count ($this->custs);
 						<td><?php echo $id;?></td>
 						<td>
 							<?php if ($canDo->get('core.edit')) : ?>
-								<a href="<?php echo $link;?>" ><?php echo $cust->firstname." ".$cust->lastname;?></a>
+								<a href="<?php echo $link;?>" ><?php echo $cust->name;?></a>
 							<?php else: ?>
-								<span><?php echo $cust->firstname." ".$cust->lastname;?></span>
+								<span><?php echo $cust->name;?></span>
 							<?php endif; ?>
 						</td>
 						<td><?php echo ($cust->username ? $cust->username : $cust->email) ;?></td>

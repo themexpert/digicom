@@ -164,7 +164,7 @@ class DigiComModelOrder extends JModelAdmin
 	public function getProducts($order)
 	{
 		$db = JFactory::getDBO();
-		$sql = "SELECT p.id, p.name, p.catid, od.quantity,od.package_type, od.amount_paid, p.price FROM #__digicom_products as p, #__digicom_orders_details as od WHERE p.id=od.productid AND od.orderid='". $order ."'";
+		$sql = "SELECT p.id, p.name, p.catid, od.quantity,od.package_type, od.amount_paid, od.price FROM #__digicom_products as p, #__digicom_orders_details as od WHERE p.id=od.productid AND od.orderid='". $order ."'";
 		$db->setQuery($sql);
 		return $db->loadObjectList();
 	}

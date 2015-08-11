@@ -13,7 +13,7 @@ jimport('joomla.utilities.date');
 
 class DigiComModelCustomers extends JModelList {
 
-	protected $_context = 'com_digicom.customers';   
+	protected $_context = 'com_digicom.customers';
 	protected $_customers;
 	protected $_customer;
 	protected $_id = null;
@@ -45,7 +45,7 @@ class DigiComModelCustomers extends JModelList {
 		if($pagination->total%$pagination->limit>0){
 			$nr_pages=intval($pagination->total/$pagination->limit)+1;
 		}
-		else{ 
+		else{
 			$nr_pages=intval($pagination->total/$pagination->limit);
 		}
 		$pagination->set('pages.total',$nr_pages);
@@ -61,7 +61,7 @@ class DigiComModelCustomers extends JModelList {
 		$where = " 1=1 ";
 
 		if(trim($keyword) != ""){
-			$where .= " and (u.username like '%".$keyword."%' or c.firstname like '%".$keyword."%' or c.lastname like '%".$keyword."%' ) ";
+			$where .= " and (u.username like '%".$keyword."%' or c.name like '%".$keyword."%' ) ";
 		}
 		$where .= " and c.id=(SELECT od.userid from #__digicom_orders od where od.userid=c.id limit 1)";
 
@@ -94,11 +94,11 @@ class DigiComModelCustomers extends JModelList {
 			$this->_customer = $this->getTable("Customer");
 			$this->_customer->load($this->_id);
 		}
-		
+
 		$user = JFactory::getUser($this->_id);
-		
+
 		if (!isset($this->_customer->registerDate)) $this->_customer->registerDate = $user->registerDate;
-		
+
 		$this->_customer->orders = $this->getlistCustomerOrders($this->_id);
 
 		return $this->_customer;
@@ -131,12 +131,12 @@ class DigiComModelCustomers extends JModelList {
 
 	function store (&$error){
 		jimport("joomla.database.table.user");
-		
+
 		$db = JFactory::getDBO();
 		$user = new JUser();
 		$my = new stdClass;
 		$item = $this->getTable('Customer');
-		
+
 		$id = JRequest::getVar("id", "0");
 		if($id != "0"){
 			$data = JRequest::get('post');
@@ -180,12 +180,12 @@ class DigiComModelCustomers extends JModelList {
 
 		$this->setId($item->id);
 		$this->getCustomer();
-		
+
 		return $res;
 	}
 
 	function delete () {
-		
+
 		$cids = JRequest::getVar('cid', array(0), 'post', 'array');
 		$item = $this->getTable('Customer');
 		foreach ($cids as $cid) {
@@ -195,7 +195,7 @@ class DigiComModelCustomers extends JModelList {
 
 			}
 		}
-		
+
 		jimport("joomla.database.table.user");
 		$db = JFactory::getDBO();
 		$user = new JUser();
@@ -272,7 +272,7 @@ class DigiComModelCustomers extends JModelList {
 		$result = $db->loadObject();
 		if($result->total==0){
 			return false;
-		} 
+		}
 		return true;
 	}
 

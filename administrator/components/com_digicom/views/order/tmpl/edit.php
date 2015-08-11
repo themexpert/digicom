@@ -13,15 +13,13 @@ $document = JFactory::getDocument();
 
 $k = 0;
 $n = count ($this->item->products);
-//Log::debug($n);
 $configs = $this->configs;
 $order = $this->item;
 $refunds = DigiComHelperDigiCom::getRefunds($order->id);
 $chargebacks = DigiComHelperDigiCom::getChargebacks($order->id);
 $deleted = DigiComHelperDigiCom::getDeleted($order->id);
-$date = date( $configs->get('time_format','d M Y'), $order->order_date);
-
-	?>
+$date = $order->order_date;
+?>
 
 <?php if (!empty( $this->sidebar)) : ?>
 <div id="j-sidebar-container" class="">

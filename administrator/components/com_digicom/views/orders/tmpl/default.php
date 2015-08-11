@@ -169,7 +169,7 @@ Joomla.submitbutton = function (pressbutton) {
               <?php endif; ?>
 						</td>
 						<td align="center">
-							<?php echo date( $configs->get('time_format','D-M-Y'), $order->order_date ); ?>
+							<?php echo $order->order_date; ?>
 						</td>
 						<td>
 							<?php echo $order->number_of_products; ?></a>
@@ -190,10 +190,10 @@ Joomla.submitbutton = function (pressbutton) {
 						 <td align="center">
 							<?php if ($canDo->get('core.edit')) : ?>
               <a href="<?php echo $customerlink; ?>" >
-                <?php echo ($order->firstname . " " . $order->lastname); ?>
+                <?php echo $order->name; ?>
               </a>
             <?php else: ?>
-              <?php echo ($order->firstname . " " . $order->lastname); ?>
+              <?php echo $order->name; ?>
             <?php endif; ?>
 						</td>
 						<td align="center" width="1%">

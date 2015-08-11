@@ -216,7 +216,7 @@ class DigiComHelperDigiCom extends JHelperContent{
 	 */
 	public static function getOrders($limit) {
 		$db = JFactory::getDBO();
-		$sql = 'SELECT o.*, c.firstname, c.lastname FROM #__digicom_orders o, #__digicom_customers c WHERE `c`.`id`=`o`.`userid` AND `status` = "Active" ORDER BY `o`.`order_date` DESC LIMIT '.$limit.'';
+		$sql = 'SELECT o.*, c.name FROM #__digicom_orders o, #__digicom_customers c WHERE `c`.`id`=`o`.`userid` AND `status` = "Active" ORDER BY `o`.`order_date` DESC LIMIT '.$limit.'';
 		$db->setQuery($sql);
 		if (!$orders = $db->loadObjectList()) {
 			echo $db->getErrorMsg();

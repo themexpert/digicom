@@ -99,7 +99,7 @@ $input->set('layout', 'dgform');
 								<div class="control-group">
 									<label class="control-label"><?php echo JText::_( "COM_DIGICOM_FULL_NAME" ); ?></label>
 									<div class="controls">
-										<?php echo $cust->firstname . ' ' . $cust->lastname ?>
+										<?php echo $cust->name ?>
 									</div>
 								</div>
 
@@ -242,10 +242,10 @@ $input->set('layout', 'dgform');
 								?>
 									<tr class="row<?php echo $k; ?>">
 										<td align="center">
-											<a href="<?php echo $olink; ?>" target="_blank"><?php echo $id; ?></a>
+											<a href="<?php echo $olink; ?>" target="_blank">#<?php echo $id; ?></a>
 										</td>
 										<td align="center">
-											<?php echo date( $configs->get('time_format','DD-MM-YYYY'), $order->order_date ); ?>
+											<?php echo $order->order_date; ?>
 										</td>
 										<td align="center">
 											<?php

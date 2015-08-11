@@ -132,14 +132,14 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 							<td>
 								<strong class="row-title">
 									<a href="<?php echo JRoute::_('index.php?option=com_digicom&task=customer.edit&id='.$order->userid);?>">
-										<?php echo $order->firstname.' '.$order->lastname;?>
+										<?php echo $order->name;?>
 									</a>
 								</strong>
 							</td>
 							<td><span class="small pull-right"><?php echo DigiComHelperDigiCom::format_price($order->amount, $order->currency, true, $configs); ?></span></td>
-							<td><span class="small"><?php echo date("Y-m-d", $order->order_date); ?></span></td>
+							<td><span class="small"><?php echo $order->order_date; ?></span></td>
 						</tr>
-						
+
 					<?php endforeach; ?>
 					</table>
 					<a href="index.php?option=com_digicom&view=orders"><?php echo JText::_('COM_DIGICOM_ALL_ORDERS'); ?></a>
@@ -172,10 +172,10 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 				</div>
 			</div>
 		</div>
-		
+
 	</div>
 </form>
-<?php 
+<?php
 	echo JHtml::_(
 		'bootstrap.renderModal',
 		'videoTutorialModal',
@@ -185,7 +185,7 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 			'height' => '400px',
 			'width' => '1280'
 		)
-	); 
+	);
 ?>
 <div class="dg-footer">
 	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
