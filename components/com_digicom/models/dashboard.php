@@ -50,7 +50,7 @@ class DigiComModelDashboard extends JModelList
 		$this->setState('list.limit', $params->get('maximum', 200));
 
 		$this->setState('filter.published', 1);
-		
+
 		// Optional filter text
 		$itemid = $app->input->getInt('Itemid', 0);
 		$filterSearch = $app->getUserStateFromRequest('com_digicom.dashboard.list.' . $itemid . '.filter_search', 'filter-search', '', 'string');
@@ -111,9 +111,9 @@ class DigiComModelDashboard extends JModelList
 			  ->select(' DATEDIFF(expires, now()) as dayleft')
 			  ->from($db->quoteName('#__digicom_products') . ' AS p');
 
-		//JOIN employee ON employee.id=borrowed.employeeid 
+		//JOIN employee ON employee.id=borrowed.employeeid
 		$query->join('inner', '#__digicom_licenses AS l ON l.productid = p.id');
-		
+
 		if ($this->state->params->get('show_pagination_limit'))
 		{
 			$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->get('list_limit'), 'uint');
@@ -137,7 +137,7 @@ class DigiComModelDashboard extends JModelList
 				.
 				' or '
 				.
-				$db->quoteName('l.licenseid') . ' = '	 . $db->quote( $this->state->get('list.filter') ) 
+				$db->quoteName('l.licenseid') . ' = '	 . $db->quote( $this->state->get('list.filter') )
 			);
 		}
 

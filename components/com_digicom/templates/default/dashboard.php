@@ -94,7 +94,7 @@ $configs 	= $this->configs;
 		</table>
 		<?php else: ?>
 			<div class="alert alert-warning">
-				<?php echo JText::_('COM_DIGICOM_ORDERS_NO_ORDER_FOUND_NOTICE'); ?>
+				<?php echo JText::_('COM_DIGICOM_DASHBOARD_NO_ACTIVE_PRODUCT_FOUND'); ?>
 			</div>
 		<?php endif;?>
 	</form>
