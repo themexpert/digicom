@@ -51,7 +51,7 @@ class DigiComSiteHelperLicense {
 		);
 		$query->update($db->quoteName('#__digicom_licenses'))->set($fields)->where($conditions);
 
-		$db->setQuery($sql);
+		$db->setQuery($query);
 
 		return $db->execute();
 	}
