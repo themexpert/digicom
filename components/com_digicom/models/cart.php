@@ -55,7 +55,7 @@ class DigiComModelCart extends JModelItem
 
 	/*
 	function existUser($username, $email){
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		if(trim($username) == "" || trim($email) == ""){
 			return false;
 		}else{
@@ -105,7 +105,7 @@ class DigiComModelCart extends JModelItem
 	function addToCart()
 	{
 		$user			= JFactory::getUser();
-		$db				= JFactory::getDBO();
+		$db				= JFactory::getDbo();
 		$customer		= $this->customer;
 
 		$sid			= $customer->_sid; //digicom session id
@@ -230,9 +230,9 @@ class DigiComModelCart extends JModelItem
 			$uid = $customer['userid'];
 		}
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
-		$query->select($db->quoteName(array('c.*', 'p.*')))
+		$query->select(array('c.*', 'p.*'))
 			  ->from($db->quoteName('#__digicom_products','p'))
 			  ->join('INNER', $db->quoteName('#__digicom_cart', 'c') . ' ON (' . $db->quoteName('c.item_id') . ' = ' . $db->quoteName('p.id') . ')')
 			  ->where($db->quoteName('c.sid') . '='.$db->quote(intval($sid)))
@@ -293,7 +293,7 @@ class DigiComModelCart extends JModelItem
 
 	function calc_price($items,$cust_info,$configs)
 	{
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$user = JFactory::getUser();
 		if (is_object($cust_info))	$sid = $cust_info->_sid;
 		if (is_array($cust_info))	$sid = $cust_info['sid'];
@@ -397,7 +397,8 @@ class DigiComModelCart extends JModelItem
 						$promoamount = $item->price * $promo->amount / 100;
 						$promovalue += $promoamount;
 					}
-
+					/*
+					// we should not add used when its in the cart only.
 					$db->clear();
 					$query = $db->getQuery(true);
 					// Fields to update.
@@ -413,7 +414,7 @@ class DigiComModelCart extends JModelItem
 					$query->update($db->quoteName('#__digicom_promocodes'))->set($fields)->where($conditions);
 					$db->setQuery($query);
 					$db->execute();
-
+					*/
 					// $sql = "update #__digicom_promocodes set used=used+1 where id = '" . $promo->id . "'";
 					// $this->_db->setQuery( $sql );
 					// $this->_db->query();
@@ -455,7 +456,8 @@ class DigiComModelCart extends JModelItem
 			$payprocess['promo'] = $promovalue;
 			$promo_applied = 1;
 
-
+			/*
+			// we should not update used when its only in cart
 			$db->clear();
 			$query = $db->getQuery(true);
 			// Fields to update.
@@ -471,7 +473,7 @@ class DigiComModelCart extends JModelItem
 			$query->update($db->quoteName('#__digicom_promocodes'))->set($fields)->where($conditions);
 			$db->setQuery($query);
 			$db->execute();
-			
+			*/
 			// $sql = "update #__digicom_promocodes set used=used+1 where id = '" . $promo->id . "'";
 			// $this->_db->setQuery( $sql );
 			// $this->_db->query();
@@ -540,7 +542,7 @@ class DigiComModelCart extends JModelItem
 		if ( !$sid )
 			return null; //$sid = get_sid();
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$sql = "select cart_details from #__digicom_session where sid='" . intval($sid) . "'";
 		$db->setQuery( $sql );
 		$promodata = $db->loadResult();
@@ -599,15 +601,15 @@ class DigiComModelCart extends JModelItem
 			if ( ($promo_data->codeend >= $now || $promo_data->codeend == 0) && $promo_data->published == '1' && (($promo_data->codelimit - $promo_data->used) > 0 || $promo_data->codelimit == 0 ) && !($promo_data->forexisting != 0 && ($uid < 1 || $licensecount < 1)) ) {
 				$error = 0; //code is valid
 			} else if ( $promo_data->published != '1' ) {
-				$promoerror = _PROMO_NOT_PUBLISHED;
+				$promoerror = JText::_( "COM_DIGICOM_DISCOUNT_CODE_UNP" );
 			} else if ( $promo_data->codeend < $now && $promo_data->codeend != 0 ) {
-				$promoerror = DS_PROMO_EXPIRED_DATE;
+				$promoerror = JText::_( "COM_DIGICOM_DISCOUNT_CODE_EXPIRED_DATE" );
 			} else if ( ($promo_data->codelimit - $promo_data->used) < 1 && $promo_data->codelimit != 0 ) {
-				$promoerror = DS_PROMO_EXPIRED_AMOUNT;
+				$promoerror = JText::_( "COM_DIGICOM_DISCOUNT_CODE_EXPIRED_AMOUNT" );
 			} else if ( $promo_data->forexisting != 0 && ($my->id < 1 || $licensecount < 1) ) {
-				$promoerror = DS_PROMO_REGISTERED_ONLY;
+				$promoerror = JText::_( "COM_DIGICOM_DISCOUNT_CODE_EXPIRED_ACTIVE_CUSTOMER_ONLY" );
 			} else {
-				$promoerror = DS_PROMO_CANT_BEUSED;
+				$promoerror = JText::_( "COM_DIGICOM_DISCOUNT_CODE_ENA" );
 			}
 			if ( $error ) {//promo code is invalid
 				$promo->error = $promoerror;
@@ -615,7 +617,7 @@ class DigiComModelCart extends JModelItem
 				$promo->error = "";
 			}
 		}
-
+		//print_r($promo);die;
 		return $promo;
 
 	}
@@ -623,7 +625,7 @@ class DigiComModelCart extends JModelItem
 	function updateCart( $customer, $configs )
 	{
 		$jAp = JFactory::getApplication();
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$sid = $customer->_sid;
 		$uid = $customer->_user->id;
 
@@ -687,7 +689,7 @@ class DigiComModelCart extends JModelItem
 				} else if ( ($promo_data->codelimit - $promo_data->used) < 1 && $promo_data->codelimit != 0 ) {
 					$sql = "update #__digicom_session set cart_details='promoerror=" . (JText::_( "COM_DIGICOM_DISCOUNT_CODE_EXPIRED_AMOUNT" )) . "' where sid='" . intval($sid) . "'";
 				} else if ( $promo_data->forexisting != 0 && ($my->id < 1 || $licensecount < 1) ) {
-					$sql = "update #__digicom_session set cart_details='promoerror=" . (JText::_( "COM_DIGICOM_DISCOUNT_CODE_EXPIRED_REG_USER_ONLY" )) . "' where sid='" . intval($sid) . "'";
+					$sql = "update #__digicom_session set cart_details='promoerror=" . (JText::_( "COM_DIGICOM_DISCOUNT_CODE_EXPIRED_ACTIVE_CUSTOMER_ONLY" )) . "' where sid='" . intval($sid) . "'";
 				} else {
 					$sql = "update #__digicom_session set cart_details='promoerror=" . (JText::_( "COM_DIGICOM_DISCOUNT_CODE_ENA" )) . "' where sid='" . intval($sid) . "'";
 				}
@@ -721,7 +723,7 @@ class DigiComModelCart extends JModelItem
 	function deleteFromCart( $customer, $configs )
 	{
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$cid = JRequest::getInt( 'cartid', -1 );
 		$qty = JRequest::getInt( 'qty', 0 );
@@ -757,7 +759,7 @@ class DigiComModelCart extends JModelItem
 
 	function emptyCart($sid = 0)
 	{
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$reg = JSession::getInstance("none", array());
 
 		//$sid = $reg->set("digisid", 0);
@@ -879,7 +881,7 @@ class DigiComModelCart extends JModelItem
 			dsdebug( 'Empty sid' );
 			die;
 		}
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$sql = "select count(sid) from #__digicom_cart where sid='" . intval($sid) . "'";
 		$db->setQuery( $sql );
 		$sidcount = $db->loadResult();
@@ -1137,7 +1139,7 @@ class DigiComModelCart extends JModelItem
 	 * @return Array
 	 */
 	function loadCustomer($sid){
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$sql = "select transaction_details from #__digicom_session where sid=" . intval($sid);
 		$db->setQuery( $sql );
 		$prof = $db->loadResult();
@@ -1152,7 +1154,7 @@ class DigiComModelCart extends JModelItem
 
 		global $Itemid;
 
-		$database = JFactory::getDBO();
+		$database = JFactory::getDbo();
 		$my = JFactory::getUser();
 
 		$data = array();
@@ -1299,7 +1301,7 @@ class DigiComModelCart extends JModelItem
 		else
 			$published = 0;
 
-		$database = JFactory::getDBO();
+		$database = JFactory::getDbo();
 		$license_index = 0;
 		$jconfig = JFactory::getConfig();
 
@@ -1314,7 +1316,7 @@ class DigiComModelCart extends JModelItem
 		// start foreach
 		foreach($items as $key=>$item)
 		{
-			$price = (isset($item->discount) && ($item->discount > 0)) ? $item->discount : $item->price;
+			$price = (isset($item->discount) && ($item->discount > 0)) ? $item->discount : $item->amount_paid;
 			$date = JFactory::getDate();
 			$purchase_date = $date->toSql();
 			$package_type = (!empty($item->bundle_source) ? $item->bundle_source : 'reguler');
