@@ -119,10 +119,9 @@ class DigiComSiteHelperEmail {
 		$message = str_replace( "%5BSITEURL%5D", $siteurl, $message );
 		$message = str_replace( "[SITEURL]", $siteurl, $message );
 
-		$query = "select lastname, company from #__digicom_customers where id=" . $my->id;
+		$query = "select company from #__digicom_customers where id=" . $my->id;
 		$db->setQuery( $query );
 		$customer_database = $db->loadAssocList();
-		$lastname = (isset($customer_database["0"]["lastname"]) ? $customer_database["0"]["lastname"] : '');
 		$copany = (isset($customer_database["0"]["copany"]) ? $customer_database["0"]["copany"] : '');
 
 		$message = str_replace("[EMAIL_TYPE]", $emailType, $message);
@@ -131,8 +130,7 @@ class DigiComSiteHelperEmail {
 
 		$message = str_replace("[CUSTOMER_COMPANY_NAME]", $copany, $message);
 		$message = str_replace( "[CUSTOMER_USER_NAME]", $my->username, $message );
-		$message = str_replace( "[CUSTOMER_FIRST_NAME]", $my->name, $message );
-		$message = str_replace( "[CUSTOMER_LAST_NAME]", $lastname, $message );
+		$message = str_replace( "[CUSTOMER_NAME]", $my->name, $message );
 		$message = str_replace( "[CUSTOMER_EMAIL]", $my->email, $message );
 
 		$message = str_replace( "[ORDER_DATE]", date( $configs->get('time_format','d-m-Y'), $timestamp), $message );
@@ -180,8 +178,7 @@ class DigiComSiteHelperEmail {
 		$subject = str_replace( "[SITEURL]", $siteurl, $subject );
 
 		$subject = str_replace( "[CUSTOMER_USER_NAME]", $my->username, $subject );
-		$subject = str_replace( "[CUSTOMER_FIRST_NAME]", $my->name, $subject );
-		$subject = str_replace( "[CUSTOMER_LAST_NAME]", $lastname, $subject );
+		$subject = str_replace( "[CUSTOMER_NAME]", $my->name, $subject );
 		$subject = str_replace( "[CUSTOMER_EMAIL]", $my->email, $subject );
 
 		$subject = str_replace( "[ORDER_DATE]", date( $configs->get('time_format','d-m-Y'), $timestamp ), $subject );

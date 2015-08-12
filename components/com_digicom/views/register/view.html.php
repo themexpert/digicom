@@ -82,8 +82,7 @@ class DigiComViewRegister extends JViewLegacy {
 			$old_values = $_SESSION["new_customer"];
 		}
 		$userinfo = new StdClass();
-		$userinfo->firstname = "";
-		$userinfo->lastname = "";
+		$userinfo->name = "";
 		$userinfo->company = "";
 		$userinfo->email = "";
 		$userinfo->username = "";
@@ -95,8 +94,7 @@ class DigiComViewRegister extends JViewLegacy {
 		$userinfo->country = "";
 		$userinfo->state = "";
 		if(isset($old_values) && count($old_values) > 0){
-			$userinfo->firstname = $old_values["firstname"];
-			$userinfo->lastname = $old_values["lastname"];
+			$userinfo->name = $old_values["name"];
 			$userinfo->company = $old_values["company"];
 			$userinfo->email = $old_values["email"];
 			$userinfo->username = $old_values["username"];

@@ -29,17 +29,7 @@ $login_link = JRoute::_("index.php?option=com_digicom&view=register&task=profile
 			</td>
 
 			<td>
-				<input name="firstname" type="text" id="firstname"   size="30" class="digi_textbox" value="<?php echo $this->userinfo->firstname; ?>"><b>&nbsp;</b>
-			</td>
-		</tr>
-
-		<tr>
-			<td>
-				<?php echo JText::_("COM_DIGICOM_LAST_NAME"); ?>&nbsp;<span class="error">*</span>
-			</td>
-
-			<td>
-				<input name="lastname" type="text" id="lastname"   size="30" class="digi_textbox" value="<?php echo $this->userinfo->lastname; ?>"><b>&nbsp;</b>
+				<input name="name" type="text" id="name"   size="30" class="digi_textbox" value="<?php echo $this->userinfo->name; ?>"><b>&nbsp;</b>
 			</td>
 		</tr>
 

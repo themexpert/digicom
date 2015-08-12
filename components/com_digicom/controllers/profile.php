@@ -132,8 +132,7 @@ class DigiComControllerProfile extends JControllerLegacy
 				$msg = JText::_("COM_DIGICOM_REGISTER_NOTICE_INVALID_USERNAME");
 			}
 
-			$firstname			= JRequest::getVar("firstname", "");
-			$lastname			= JRequest::getVar("lastname", "");
+			$name			= JRequest::getVar("name", "");
 			$company			= JRequest::getVar("company", "");
 			$email 				= JRequest::getVar("email", "");
 			$username 			= JRequest::getVar("username", "");
@@ -144,7 +143,7 @@ class DigiComControllerProfile extends JControllerLegacy
 			$zipcode 			= JRequest::getVar("zipcode", "");
 			$country			= JRequest::getVar("country", "");
 			$state 				= JRequest::getVar("state", "");
-			$array 				= array("firstname"=>$firstname, "lastname"=>$lastname, "company"=>$company, "email"=>$email, "username"=>$username, "password"=>$password, "password_confirm"=>$password_confirm, "address"=>$address, "city"=>$city, "zipcode"=>$zipcode, "country"=>$country, "state"=>$state);
+			$array 				= array("name"=>$name, "company"=>$company, "email"=>$email, "username"=>$username, "password"=>$password, "password_confirm"=>$password_confirm, "address"=>$address, "city"=>$city, "zipcode"=>$zipcode, "country"=>$country, "state"=>$state);
 
 			$session->set('new_customer', $array);
 			$uri = JURI::getInstance();
@@ -189,8 +188,7 @@ class DigiComControllerProfile extends JControllerLegacy
 					$msg = JText::_("DIGI_REGISTRATION_INVALID_USERNAME");
 				}
 
-				$firstname = JRequest::getVar("firstname", "");
-				$lastname = JRequest::getVar("lastname", "");
+				$name = JRequest::getVar("name", "");;
 				$company = JRequest::getVar("company", "");
 				$email = JRequest::getVar("email", "");
 				$username = JRequest::getVar("username", "");
@@ -201,7 +199,7 @@ class DigiComControllerProfile extends JControllerLegacy
 				$zipcode = JRequest::getVar("zipcode", "");
 				$country = JRequest::getVar("country", "");
 				$state = JRequest::getVar("state", "");
-				$array = array("firstname"=>$firstname, "lastname"=>$lastname, "company"=>$company, "email"=>$email, "username"=>$username, "password"=>$password, "password_confirm"=>$password_confirm, "address"=>$address, "city"=>$city, "zipcode"=>$zipcode, "country"=>$country, "state"=>$state);
+				$array = array("name"=>$name, "company"=>$company, "email"=>$email, "username"=>$username, "password"=>$password, "password_confirm"=>$password_confirm, "address"=>$address, "city"=>$city, "zipcode"=>$zipcode, "country"=>$country, "state"=>$state);
 				$_SESSION["new_customer"] = $array;
 
 				$this->setRedirect($link, $msg, "notice");

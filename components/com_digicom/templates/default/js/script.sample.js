@@ -105,10 +105,9 @@ function cartformsubmit(user_id){
 
 		type_button_value = document.cart_form.type_button.value;
 		if(type_button_value == "checkout"){
-			if(jQuery("#firstname").length > 0)
+			if(jQuery("#name").length > 0)
 			{
-				if(document.cart_form.firstname.value==""
-				|| document.cart_form.lastname.value==""
+				if(document.cart_form.name.value==""
 				|| document.cart_form.email.value==""
 				|| document.cart_form.address.value==""
 				|| document.cart_form.city.value==""
@@ -168,8 +167,7 @@ function validateUSZip( strValue , country) {
 
 function validateForm(register){
 		//console.log(register);
-		if ((document.adminForm.firstname && document.adminForm.firstname.value=="")
-			|| (document.adminForm.lastname && document.adminForm.lastname.value=="")
+		if ((document.adminForm.name && document.adminForm.name.value=="")
 			|| (document.adminForm.email && document.adminForm.email.value=="")
 			|| (document.adminForm.address && document.adminForm.address.value=="")
 			|| (document.adminForm.city && document.adminForm.city.value=="")
@@ -179,9 +177,9 @@ function validateForm(register){
 
 		){
 				if(register){
-					var field_required = new Array("firstname", "lastname", "email", "address", "city", "zipcode", "country", "username", "password", "password_confirm");
+					var field_required = new Array("name", "email", "address", "city", "zipcode", "country", "username", "password", "password_confirm");
 				}else{
-					var field_required = new Array("firstname", "lastname", "email", "address", "city", "zipcode", "country", "username2");
+					var field_required = new Array("name", "email", "address", "city", "zipcode", "country", "username2");
 				}
 
 				var found = false;
@@ -206,7 +204,7 @@ function validateForm(register){
 		}
 
 		if (document.adminForm.password.value != document.adminForm.password_confirm.value) {
-			var field_required = new Array("firstname", "lastname", "email", "address", "city", "zipcode", "country", "username");
+			var field_required = new Array("name", "email", "address", "city", "zipcode", "country", "username");
 			for(i=0; i<field_required.length; i++){
 				if(document.getElementById(field_required[i])){
 					document.getElementById(field_required[i]).style.borderColor = "";
@@ -221,7 +219,7 @@ function validateForm(register){
 		}
 
 		if (!isEmail(document.adminForm.email.value)){
-			var field_required = new Array("firstname", "lastname", "address", "city", "zipcode", "country", "username", "password", "password_confirm");
+			var field_required = new Array("name", "address", "city", "zipcode", "country", "username", "password", "password_confirm");
 			for(i=0; i<field_required.length; i++){
 				if(document.getElementById(field_required[i])){
 					document.getElementById(field_required[i]).style.borderColor = "";
@@ -235,7 +233,7 @@ function validateForm(register){
 		}
 
 		if ((document.adminForm.zipcode) && !validateUSZip(document.adminForm.zipcode.value,document.adminForm.country.value)){
-		   	var field_required = new Array("firstname", "lastname", "email", "address", "city", "country", "username", "password", "password_confirm");
+		   	var field_required = new Array("name", "email", "address", "city", "country", "username", "password", "password_confirm");
 			for(i=0; i<field_required.length; i++){
 				if(document.getElementById(field_required[i])){
 					document.getElementById(field_required[i]).style.borderColor = "";
@@ -247,7 +245,7 @@ function validateForm(register){
 		   return false;
 		}
 
-		document.adminForm.name.value = document.adminForm.firstname.value+" "+document.adminForm.lastname.value;
+		document.adminForm.name.value = document.adminForm.name.value;
 		return true;
 }
 

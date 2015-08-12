@@ -187,8 +187,7 @@ class DigiComControllerCart extends JControllerLegacy
 			$rp = JRequest::getVar('returnpage', '', 'request');
 			$Itemid = JRequest::getInt('Itemid', 0);
 
-			$firstname = JRequest::getVar("firstname", "");
-			$lastname = JRequest::getVar("lastname", "");
+			$name = JRequest::getVar("name", "");
 			$company = JRequest::getVar("company", "");
 			$email = JRequest::getVar("email", "");
 			$username = JRequest::getVar("username", "");
@@ -199,7 +198,7 @@ class DigiComControllerCart extends JControllerLegacy
 			$zipcode = JRequest::getVar("zipcode", "");
 			$country = JRequest::getVar("country", "");
 			$state = JRequest::getVar("state", "");
-			$array = array("firstname"=>$firstname, "lastname"=>$lastname, "company"=>$company, "email"=>$email, "username"=>$username, "password"=>$password, "password_confirm"=>$password_confirm, "address"=>$address, "city"=>$city, "zipcode"=>$zipcode, "country"=>$country, "state"=>$state);
+			$array = array("name"=>$name, "company"=>$company, "email"=>$email, "username"=>$username, "password"=>$password, "password_confirm"=>$password_confirm, "address"=>$address, "city"=>$city, "zipcode"=>$zipcode, "country"=>$country, "state"=>$state);
 			$processor = JRequest::getVar("processor", "");
 			$session->set('new_customer', $array);
 			$session->set('processor', $processor);
@@ -326,7 +325,7 @@ class DigiComControllerCart extends JControllerLegacy
 		// return -1 for not found core info, 2 for missing billing info, 1 for has core info
 		$res = DigiComSiteHelperDigiCom::checkProfileCompletion($customer, $askforbilling);
 
-		//if username, firstname, email, id not found for user
+		//if username, name, email, id not found for user
 		if( $res < 1 ) {
 			$this->setRedirect('index.php?option=com_digicom&view=profile&layout=edit&return='.$return);
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_DIGICOM_PROFILE_MUST_COMPLETE'));
@@ -357,28 +356,17 @@ class DigiComControllerCart extends JControllerLegacy
 			}
 
 			$name = $this->_customer->_user->name;
-			$name_array = explode(" ", $name);
-
-			if(count($name_array) == 1){
-				$first_name = $name;
-				$last_name = $name;
-			}
-			else{
-				$last_name = $name_array[count($name_array)-1];
-				unset($name_array[count($name_array)-1]);
-				$first_name = implode(" ", $name_array);
-			}
-
 			$db = JFactory::getDBO();
 
-			$sql = "SELECT `firstname`, `lastname` FROM #__digicom_customers WHERE id=".intval($this->_customer->_user->id);
+			$sql = "SELECT `name` FROM #__digicom_customers WHERE id=".intval($this->_customer->_user->id);
 			$db->setQuery($sql);
 			$db->query();
 			$result = $db->loadObject();
-			if(isset($result) && (trim($result->firstname) == "" || trim($result->lastname) == "")){
-				$sql = "UPDATE #__digicom_customers set `firstname`='".addslashes(trim($first_name))."', `lastname`='".addslashes(trim($last_name))."' where id=".intval($this->_customer->_user->id);
+			if(isset($result) && (trim($result->name) == ""))
+			{
+				$sql = "UPDATE #__digicom_customers set `name`='".addslashes(trim($name))."' where id=".intval($this->_customer->_user->id);
 			} elseif (!$result){
-				$sql = "INSERT INTO #__digicom_customers(`id`, `firstname`, `lastname`) VALUES (".intval($this->_customer->_user->id).", '".addslashes(trim($first_name))."', '".addslashes(trim($last_name))."')";
+				$sql = "INSERT INTO #__digicom_customers(`id`, `name`) VALUES (".intval($this->_customer->_user->id).", '".addslashes(trim($name))."')";
 			}
 
 			$db->setQuery($sql);

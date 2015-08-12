@@ -469,7 +469,11 @@ class DigiComModelCart extends JModelItem
 
 			$licensecount = 0;
 
-			$now = time();
+			//triggere email
+			$config = JFactory::getConfig();
+			$tzoffset = $config->get('offset');
+			$now = date('Y-m-d H:i:s', time() + $tzoffset);
+
 			$promo_data = $promo;
 			$error = 1;
 			//if code is published and not expired by date or amount
@@ -547,7 +551,11 @@ class DigiComModelCart extends JModelItem
 			if ( count( $promo_exists ) > 0 ) {//and there is such code in dabase
 				$promo_data = $promo_exists[0];
 
-				$now = time();
+				//triggere email
+				$config = JFactory::getConfig();
+				$tzoffset = $config->get('offset');
+				$now = date('Y-m-d H:i:s', time() + $tzoffset);
+				
 				//if code is published and not expired by date or amount
 				if ( ($promo_data->codeend >= $now || $promo_data->codeend == 0) && $promo_data->published == '1' && (($promo_data->codelimit - $promo_data->used) > 0 || $promo_data->codelimit == 0 ) && !($promo_data->forexisting != 0 && ($my->id < 1 || $licensecount < 1)) ) {
 					//add this code to user's cart
@@ -651,7 +659,6 @@ class DigiComModelCart extends JModelItem
 		$config			= JFactory::getConfig();
 		$tzoffset		= $config->get('offset');//$now = time();
 		$now 				= date('Y-m-d H:i:s', time() + $tzoffset);
-		$now 				= strtotime($now);
 
 		// $non_taxed 	= $tax['total']; //$total;
 		// $total 			= $tax['taxed'];
@@ -687,7 +694,6 @@ class DigiComModelCart extends JModelItem
 		$tzoffset = $config->get('offset');
 		//$now = time();
 		$now = date('Y-m-d H:i:s', time() + $tzoffset);
-		$now = strtotime($now);
 
 		// $non_taxed = $tax['total']; //$total;
 		// $total = $tax['taxed'];
@@ -891,7 +897,6 @@ class DigiComModelCart extends JModelItem
 		$config = JFactory::getConfig();
 		$tzoffset = $config->get('offset');
 		$now = date('Y-m-d H:i:s', time() + $tzoffset);
-		$now = strtotime($now);
 		DigiComSiteHelperEmail::dispatchMail( $order_id, $orderTable->amount_paid, $orderTable->number_of_products, $now, $items, $customer , $type, $status);
 
 		return true;
@@ -942,7 +947,11 @@ class DigiComModelCart extends JModelItem
 		if ( $orderid == 0 && is_object( $cust_info ) && isset( $cust_info->cart['orderid'] ) )
 			$orderid = $cust_info->cart['orderid']; // перестраховка если cart это об'ект
 
-		$now = time();
+		//triggere email
+		$config = JFactory::getConfig();
+		$tzoffset = $config->get('offset');
+		$now = date('Y-m-d H:i:s', time() + $tzoffset);
+
 		$total = $tax['taxed'];
 		$number_of_products = $tax['number_of_products'];
 
@@ -986,7 +995,11 @@ class DigiComModelCart extends JModelItem
 
 		$tax = $cart->calc_price( $items, $customer, $configs );
 
-		$now = time();
+		//triggere email
+		$config = JFactory::getConfig();
+		$tzoffset = $config->get('offset');
+		$now = date('Y-m-d H:i:s', time() + $tzoffset);
+
 		$total = $tax['taxed'];
 		$number_of_products = $tax['number_of_products'];
 

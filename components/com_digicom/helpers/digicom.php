@@ -204,8 +204,7 @@ class DigiComSiteHelperDigicom {
 
 		if ( ! isset( $tcustomer->id )
 		     || ( (int) $tcustomer->id <= 0 )
-		     || strlen( trim( $tcustomer->firstname ) ) < 1
-		     || strlen( trim( $tcustomer->lastname ) ) < 1
+		     || strlen( trim( $tcustomer->name ) ) < 1
 		     || strlen( trim( $user_email ) ) < 1
 		) {
 			return - 1;
@@ -218,8 +217,7 @@ class DigiComSiteHelperDigicom {
 		if(empty($table->id) or $table->id < 0){
 			$cust = new stdClass();
 			$cust->id = $user->id;
-			$cust->firstname = $tcustomer->firstname;
-			$cust->lastname =  $tcustomer->lastname;
+			$cust->name = $tcustomer->name;
 			$cust->email =  $user->email;
 			$table->bind($cust);
 			$table->store();

@@ -59,8 +59,8 @@ $user = $this->customer->_customer;
 
 							<tr>
 								<td align="left">
-									<?php if(!empty($user->firstname)) : ?>
-									<strong><?php echo $user->firstname?>&nbsp;<?php echo $user->lastname;?></strong><br />
+									<?php if(!empty($user->name)) : ?>
+									<strong><?php echo $user->name?></strong><br />
 									<?php endif; ?>
 									<?php if(!empty($user->address)) : ?>
 										<?php echo $user->address?><br />

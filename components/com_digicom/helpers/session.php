@@ -163,8 +163,7 @@ class DigiComSiteHelperSession
 
 				$email = $my->email;
 
-				if (empty( $this->_customer->firstname )&& $my->id ) $this->_customer->firstname 	= $first_name;
-				if (empty( $this->_customer->lastname )&& $my->id ) $this->_customer->lastname 	= $last_name;
+				if (empty( $this->_customer->name )&& $my->id ) $this->_customer->name 	= $first_name;
 				if (empty( $this->_customer->email )&& $my->id ) $this->_customer->email = $email;
 
 			} else {
@@ -178,8 +177,7 @@ class DigiComSiteHelperSession
 		}
 
 		// dont allow empty value, so define blank
-		if (!isset($this->_customer->firstname)) $this->_customer->firstname = '';
-		if (!isset($this->_customer->lastname)) $this->_customer->lastname = '';
+		if (!isset($this->_customer->name)) $this->_customer->name = '';
 		if (!isset($this->_customer->company)) $this->_customer->company = '';
 		if (!isset($this->_customer->email)) $this->_customer->email = '';
 		if (!isset($this->_customer->country)) $this->_customer->country = '';

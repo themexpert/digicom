@@ -30,17 +30,9 @@ $configs = $this->configs;
 
 			<div class="row-fluid">
 				<div class="control-group">
-					<label class="control-label" for="firstname"><?php echo JText::_("COM_DIGICOM_FIRST_NAME"); ?> <span class="error">*</span></label>
+					<label class="control-label" for="name"><?php echo JText::_("COM_DIGICOM_NAME"); ?> <span class="error">*</span></label>
 					<div class="controls" style="display:inherit;">
-						<input name="firstname" type="text" id="firstname" size="30" value="<?php echo $cust->firstname ?>" />
-					</div>
-				</div>
-			</div>
-			<div class="row-fluid">
-				<div class="control-group">
-					<label class="control-label" for="lastname"><?php echo JText::_("COM_DIGICOM_LAST_NAME"); ?> <span class="error">*</span></label>
-					<div class="controls" style="display:inherit;">
-						<input name="lastname" type="text" id="lastname" size="30" value="<?php echo $cust->lastname ?>" />
+						<input name="name" type="text" id="name" size="30" value="<?php echo $cust->name ?>" />
 					</div>
 				</div>
 			</div>

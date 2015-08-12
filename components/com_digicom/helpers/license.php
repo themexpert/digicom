@@ -34,18 +34,26 @@ class DigiComSiteHelperLicense {
 	public static function updateLicenses($order_id, $number_of_products = 0, $items, $customer , $type){
 
 		$db 	= JFactory::getDbo();
-
+		$query 	= $db->getQuery(true);
+		
 		if($type == 'complete_order'){
-			$sql = "UPDATE #__digicom_licenses SET active=1 WHERE orderid=" . $order_id . " and userid=" . $customer;
-		}elseif($type == 'process_order'){
-			$sql = "UPDATE #__digicom_licenses SET active=0 WHERE orderid=" . $order_id . " and userid=" . $customer;
+			$fields = array(
+			    $db->quoteName('active') . ' = 1'
+			);
 		}else{
-			$sql = "UPDATE #__digicom_licenses SET active='-1' WHERE orderid=" . $order_id . " and userid=" . $customer;
+			$fields = array(
+			    $db->quoteName('active') . ' = 0'
+			);
 		}
+		$conditions = array(
+		    $db->quoteName('orderid') . ' = '.$order_id, 
+		    $db->quoteName('userid') . ' = ' . $customer
+		);
+		$query->update($db->quoteName('#__digicom_licenses'))->set($fields)->where($conditions);
 
 		$db->setQuery($sql);
 
-		return $db->query();
+		return $db->execute();
 	}
 
 	/**
@@ -69,9 +77,9 @@ class DigiComSiteHelperLicense {
 		$time_unit = array( 'day'=>'DAY', 'month'=>'MONTH', 'year'=>'YEAR');//HOUR
 		//echo $product->price_type;die;
 		if( $product->price_type!=0 ) {
-			$expires = ' DATE_ADD(FROM_UNIXTIME('.$order->order_date.'), INTERVAL '.$product->expiration_length.' '.$time_unit[$product->expiration_type].') ';
+			$expires = ' DATE_ADD('.$db->quote($order->order_date).', INTERVAL '.$product->expiration_length.' '.$time_unit[$product->expiration_type].') ';
 		} else {
-			$expires = ' "0000-00-00 00:00:00" ';
+			$expires = $db->quote('0000-00-00 00:00:00');
 		}
 
 		if($published == 'complete_order'){
@@ -80,21 +88,39 @@ class DigiComSiteHelperLicense {
 			$active = 0;
 		}
 
-		$sql = 'INSERT INTO `#__digicom_licenses`
-					( `licenseid`,`orderid`, `userid`, `productid`, `purchase`, `expires`, `active`)
-						VALUES
-					("'.$licenseid.'", '.$order_id.', '.$user_id.', '.$product->id.', FROM_UNIXTIME('.$order->order_date.'), '.$expires.', '.$active.')';
-		$db->setQuery($sql);
-		$db->query();
+		// Create a new query object.
+		$query = $db->getQuery(true);
+
+		// Insert columns.
+		$columns = array('licenseid', 'orderid', 'userid', 'productid', 'purchase', 'expires', 'active');
+
+		// Insert values.
+		$values = array($licenseid, $order_id, $user_id, $product->id, $db->quote($order->order_date), $expires, $active);
+
+		// Prepare the insert query.
+		$query
+		    ->insert($db->quoteName('#__digicom_licenses'))
+		    ->columns($db->quoteName($columns))
+		    ->values(implode(',', $values));
+		//echo $query->__toString();die;
+		$db->setQuery($query);
+		$db->execute();
 		if($db->getErrorNum()){
 			$app->enqueuemessage($db->getErrorMsg(), 'error');
 		}
+		return true;
 	}
 
 	public static function getNewLicenseId(){
 		$db 	= JFactory::getDbo();
-		$sql 	= "SELECT max(licenseid) FROM `#__digicom_licenses` WHERE CONCAT('',`licenseid`*1)=`licenseid`";
-		$db->setQuery( $sql );
+		// Create a new query object.
+		$query = $db->getQuery(true);
+		$query->select('max('.$db->quoteName('licenseid').')')
+			  ->from($db->quoteName('#__digicom_licenses'))
+			  ->where("CONCAT('',".$db->quoteName('licenseid')."*1) = ".$db->quoteName('licenseid'));
+		//$sql 	= "SELECT max(licenseid) FROM `#__digicom_licenses` WHERE CONCAT('',`licenseid`*1)=`licenseid`";
+
+		$db->setQuery( $query );
 		$licenseid = $db->loadResult();
 		if(isset($licenseid) && intval($licenseid) != "0"){
 			$licenseid = intval($licenseid)+1;
@@ -103,10 +129,16 @@ class DigiComSiteHelperLicense {
 		}
 		return $licenseid;
 	}
+
 	public static function getOrder( $order_id ){
 		$db 	= JFactory::getDbo();
-		$sql 	= 'SELECT * FROM `#__digicom_orders` WHERE `id`='.$order_id;
-		$db->setQuery($sql);
+		// Create a new query object.
+		$query = $db->getQuery(true);
+		$query->select('*')
+			  ->from($db->quoteName('#__digicom_orders'))
+			  ->where($db->quoteName('id') . " = ".$db->quote($order_id));
+		//$sql 	= 'SELECT * FROM `#__digicom_orders` WHERE `id`='.$order_id;
+		$db->setQuery($query);
 
 		return $db->loadObject();
 	}

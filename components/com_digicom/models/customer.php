@@ -45,10 +45,9 @@ class DigiComModelCustomer extends JModelItem {
 			$this->_customer = $this->getTable( "Customer" );
 			$this->_customer->load( $this->_id );
 
-			if ( $this->_customer->firstname == '' ) {
-				$name = $this->getPartName( $user->name );
-				$this->_customer->firstname = $name->firstname;
-				$this->_customer->lastname  = $name->lastname;
+			if ( $this->_customer->name == '' ) {
+				$name = $user->name;
+				$this->_customer->name = $name->name;
 			}
 
 			if ( intval( $cid ) == 0 ) {
@@ -80,7 +79,7 @@ class DigiComModelCustomer extends JModelItem {
 
 		$data['password1'] = $data['password'];
 		$data['password2'] = $data['password_confirm'];
-		$data['name']      = $data['firstname'];
+		$data['name']      = $data['name'];
 		$res               = array( "err" => true, "error" => "" );
 		$reg               = JSession::getInstance( "none", array() );//new JSession();
 
@@ -241,13 +240,8 @@ class DigiComModelCustomer extends JModelItem {
 		$message  = str_replace( "%5BSITEURL%5D", $siteurl, $message );
 		$message  = str_replace( "[SITEURL]", $siteurl, $message );
 
-		$query = "select `lastname` from `#__digicom_customers` where `id`=" . $my->id;
-		$database->setQuery( $query );
-		$lastname = $database->loadResult();
-
 		$message = str_replace( "[CUSTOMER_USER_NAME]", $my->username, $message );
-		$message = str_replace( "[CUSTOMER_FIRST_NAME]", $my->name, $message );
-		$message = str_replace( "[CUSTOMER_LAST_NAME]", $lastname, $message );
+		$message = str_replace( "[CUSTOMER_NAME]", $my->name, $message );
 		$message = str_replace( "[CUSTOMER_EMAIL]", $my->email, $message );
 
 		$message      = str_replace( "[TODAY_DATE]", date( $configs->get('time_format','d-m-Y'), $timestamp ), $message );
@@ -267,8 +261,7 @@ class DigiComModelCustomer extends JModelItem {
 		$subject = str_replace( "[SITEURL]", $siteurl, $subject );
 
 		$subject = str_replace( "[CUSTOMER_USER_NAME]", $my->username, $subject );
-		$subject = str_replace( "[CUSTOMER_FIRST_NAME]", $my->name, $subject );
-		$subject = str_replace( "[CUSTOMER_LAST_NAME]", $lastname, $subject );
+		$subject = str_replace( "[CUSTOMER_NAME]", $my->name, $subject );
 		$subject = str_replace( "[CUSTOMER_EMAIL]", $my->email, $subject );
 
 		$subject = str_replace( "[TODAY_DATE]", date( $configs->get('time_format','d-m-Y'), $timestamp ), $subject );
@@ -338,27 +331,6 @@ class DigiComModelCustomer extends JModelItem {
 			$db->setQuery( $sql );
 			$db->query();
 		}
-	}
-
-	/**
-	 * Get firstname and lastname from a fullname
-	 *
-	 * @param unknown $name
-	 * @param number $part
-	 */
-	function getPartName( $name ) {
-		$results = array();
-		preg_match( '#^(\w+\.)?\s*([\'\’\w]+)\s+([\'\’\w]+)\s*(\w+\.?)?$#', $name, $results );
-		$nameObj = new stdClass();
-		if ( ! count( $results ) ) {
-			$nameObj->firstname = $name;
-			$nameObj->lastname  = $name;
-		} else {
-			$nameObj->firstname = $results[2];
-			$nameObj->lastname  = $results[3];
-		}
-
-		return $nameObj;
 	}
 }
 

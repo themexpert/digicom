@@ -31,7 +31,7 @@ $configs 	= $this->configs;
 		</div>
 		<div class="span5">
 			<div class="customer-info">
-				<h4><?php echo $customer->firstname; ?> <?php echo $customer->lastname; ?> </h4>
+				<h4><?php echo $customer->name; ?> </h4>
 				<p>
 					<?php echo JText::_('COM_DIGICOM_CUSTOMER_ID'); ?>: <?php echo $customer->id; ?> <br>
 					<?php echo JText::_('COM_DIGICOM_EMAIL'); ?>: <?php echo $user->email; ?> <br>
