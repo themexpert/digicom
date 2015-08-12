@@ -66,7 +66,7 @@ JFactory::getDocument()->addScriptDeclaration('
 	<div id="j-main-container" class="">
 <?php endif;?>
 		<div class="dg-alert dg-alert-with-icon">
-			
+
 			<span class="icon-video"></span><?php echo JText::_("COM_DIGICOM_PRODUCTS_HEADER_NOTICE"); ?>
 			<a href="#videoTutorialModal" role="button" class="btn btn-primary btn-small pull-right" data-toggle="modal">
 				<?php echo JText::_("COM_DIGICOM_GUIDE_VIDEO"); ?> <i class="icon-arrow-right-4"></i>
@@ -215,13 +215,6 @@ JFactory::getDocument()->addScriptDeclaration('
 								</div>
 							</div>
 						</td>
-						<?php if ($assoc) : ?>
-						<td class="hidden-phone">
-							<?php if ($item->association) : ?>
-								<?php echo JHtml::_('contentadministrator.association', $item->id); ?>
-							<?php endif; ?>
-						</td>
-						<?php endif;?>
 						<td>
 							<?php
 								switch ( $item->product_type )
@@ -280,7 +273,7 @@ JFactory::getDocument()->addScriptDeclaration('
 
 </form>
 
-<?php 
+<?php
 	echo JHtml::_(
 		'bootstrap.renderModal',
 		'videoTutorialModal',
@@ -290,7 +283,7 @@ JFactory::getDocument()->addScriptDeclaration('
 			'height' => '400px',
 			'width' => '1280'
 		)
-	); 
+	);
 ?>
 
 
