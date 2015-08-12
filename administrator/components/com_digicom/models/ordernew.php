@@ -189,12 +189,10 @@ class DigiComModelOrderNew extends JModelAdmin
 
 		if(empty($table->id) or $table->id < 0){
 			$user = JFactory::getUser($userid);
-			$name = explode(' ',$user->name);
 
 			$cust = new stdClass();
 			$cust->id = $user->id;
-			$cust->firstname = $name[0];
-			$cust->lastname =  (!empty($name[1]) ? $name[1] : '');
+			$cust->name = $user->name;
 			$table->bind($cust);
 			$table->store();
 		}
@@ -221,7 +219,7 @@ class DigiComModelOrderNew extends JModelAdmin
 				'orderid' => $recordId,
 				'status' => $status,
 				'now_paid' => $data['amount_paid'],
-				'customer' => $cust->firstname ,
+				'customer' => $cust->name ,
 				'username' => JFactory::getUser()->username
 			);
 

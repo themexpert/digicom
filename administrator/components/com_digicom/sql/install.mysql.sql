@@ -90,8 +90,7 @@ INSERT INTO `#__digicom_currencies` (`id`, `pluginid`, `currency_name`, `currenc
 DROP TABLE IF EXISTS `#__digicom_customers`;
 CREATE TABLE IF NOT EXISTS `#__digicom_customers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `firstname` varchar(50) NOT NULL DEFAULT '',
-  `lastname` varchar(50) NOT NULL DEFAULT '',
+  `name` varchar(50) NOT NULL DEFAULT '',
   `email` varchar(250) NOT NULL,
   `address` varchar(200) NOT NULL DEFAULT '',
   `city` varchar(100) DEFAULT NULL,

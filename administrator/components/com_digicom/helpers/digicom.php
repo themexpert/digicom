@@ -298,7 +298,7 @@ class DigiComHelperDigiCom extends JHelperContent{
 	 */
 	public static function getCustomers($limit) {
 		$db = JFactory::getDBO();
-		$sql = 'SELECT o.*, c.firstname, c.lastname, c.email FROM #__digicom_orders o, #__digicom_customers c WHERE c.id=o.userid AND status = "Active" GROUP BY o.userid LIMIT '.$limit;
+		$sql = 'SELECT o.*, c.name, c.email FROM #__digicom_orders o, #__digicom_customers c WHERE c.id=o.userid AND status = "Active" GROUP BY o.userid LIMIT '.$limit;
 		$db->setQuery($sql);
 		if (!$customers = $db->loadObjectList()) {
 			echo $db->getErrorMsg();

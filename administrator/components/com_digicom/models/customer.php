@@ -84,8 +84,6 @@ class DigiComModelCustomer extends JModelAdmin {
 		
 		if($id != "0"){
 			$data = JRequest::get('post');
-			//$data['password2'] = $data['password_confirm'];
-			//$data['name'] = $data['firstname'];
 			$data['groups']= array(2);
 			$data['block'] = 0;
 			$user->bind($data);

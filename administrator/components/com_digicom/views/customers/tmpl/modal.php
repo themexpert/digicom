@@ -81,8 +81,8 @@ $n = count ($this->custs);
 								<?php echo $id;?>
 					</td>
 						<td>
-<a href="javascript:void(0)" onclick="if (window.parent) window.parent.<?php echo $this->escape($function); ?>('<?php echo $id; ?>', '<?php echo $this->escape(addslashes($cust->firstname." ".$cust->lastname)); ?>');" >
-	<?php echo $cust->firstname." ".$cust->lastname;?>
+<a href="javascript:void(0)" onclick="if (window.parent) window.parent.<?php echo $this->escape($function); ?>('<?php echo $id; ?>', '<?php echo $this->escape(addslashes($cust->name)); ?>');" >
+	<?php echo $cust->name;?>
 </a>
 
 

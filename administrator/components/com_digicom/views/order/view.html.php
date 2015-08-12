@@ -160,7 +160,7 @@ class DigiComViewOrder extends JViewLegacy
 		if (!empty($user->id)) {
 			$customer = $this->_models['customer']->getCustomerbyID($user->id);
 			if (empty($customer->email)) $customer->email = $user->email;
-			if (empty($customer->firstname)) $customer->firstname = $user->name;
+			if (empty($customer->name)) $customer->name = $user->name;
 		} else {
 			$customer = $this->_models['customer']->getCustomerbyID(0);
 			if (empty($customer->username)) $customer->username = $username;

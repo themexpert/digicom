@@ -139,8 +139,7 @@ class DigiComHelperEmail {
 
 
         $message = str_replace( "[CUSTOMER_USER_NAME]", $my->username, $message );
-        $message = str_replace( "[CUSTOMER_FIRST_NAME]", $my->firstname, $message );
-        $message = str_replace( "[CUSTOMER_LAST_NAME]", $my->lastname, $message );
+        $message = str_replace( "[CUSTOMER_NAME]", $my->name, $message );
         $message = str_replace( "[CUSTOMER_EMAIL]", $my->email, $message );
 
         $message = str_replace( "[ORDER_DATE]", date( $configs->get('time_format','DD-MM-YYYY'), $timestamp ), $message );
@@ -174,8 +173,7 @@ class DigiComHelperEmail {
         $subject = str_replace( "[SITEURL]", $siteurl, $subject );
 
         $subject = str_replace( "[CUSTOMER_USER_NAME]", $my->username, $subject );
-        $subject = str_replace( "[CUSTOMER_FIRST_NAME]", $my->firstname, $subject );
-        $subject = str_replace( "[CUSTOMER_LAST_NAME]", $my->lastname, $subject );
+        $subject = str_replace( "[CUSTOMER_NAME]", $my->name, $subject );
         $subject = str_replace( "[CUSTOMER_EMAIL]", $my->email, $subject );
 
 
