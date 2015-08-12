@@ -15,21 +15,19 @@ class DigiComSiteHelperPrice {
 	/**
 	* price formet helper
 	*/
-	public static function format_price( $amount, $ccode, $add_sym = false, $configs ) 
+	public static function format_price( $amount, $ccode, $add_sym = false, $configs )
 	{
 
-		$price_format = '%' . $configs->get('totaldigits','') . '.' . $configs->get('decimaldigits','2') . 'f';
-		$res          = sprintf( $price_format, $amount );
-		$res          = number_format( $res, $configs->get('decimaldigits','2'), '.', $configs->get('thousands_group_symbol','') );
+		$price = number_format( $amount, $configs->get('decimaldigits','2') , $configs->get('dec_group_symbol',',') , $configs->get('thousands_group_symbol',',') );
 		if ( $add_sym ) {
 			if ( $configs->get('currency_position','1') ) {
-				$res = $res . " " . $ccode;
+				$price = $price . " " . $ccode;
 			} else {
-				$res = $ccode . " " . $res;
+				$price = $ccode . " " . $price;
 			}
 		}
-
-		return $res;
+		
+		return $price;
 	}
 
 	/*
@@ -40,8 +38,8 @@ class DigiComSiteHelperPrice {
 		//print_r($item);die;
 		if(
 			!isset( $item->price_type )
-			or 
-			( $item->price_type == 0 ) 
+			or
+			( $item->price_type == 0 )
 		) return JText::_('COM_DIGICOM_PRODUCT_EXPIRATION_NEVER');
 
 		$expiration_type = $item->expiration_type;
@@ -54,7 +52,7 @@ class DigiComSiteHelperPrice {
 					return $item->expiration_length . ' ' . JText::_('COM_DIGICOM_YEAR');
 				}
 				break;
-			
+
 			case 'day':
 				if($item->expiration_length > 1){
 					return $item->expiration_length . ' ' . JText::_('COM_DIGICOM_DAYS');
@@ -62,7 +60,7 @@ class DigiComSiteHelperPrice {
 					return $item->expiration_length . ' ' . JText::_('COM_DIGICOM_DAY');
 				}
 				break;
-			
+
 			case 'month':
 				if($item->expiration_length > 1){
 					return $item->expiration_length . ' ' . JText::_('COM_DIGICOM_MONTHS');
@@ -75,6 +73,6 @@ class DigiComSiteHelperPrice {
 				break;
 		}
 
-	} 
+	}
 
 }

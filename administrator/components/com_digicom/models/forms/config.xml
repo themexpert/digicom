@@ -212,15 +212,32 @@
 				name="decimaldigits"
 				type="list"
 				class="btn-group"
-				label="COM_DIGICOM_SETTINGS_CURRENCY_PRICE_FORMAT"
+				label="COM_DIGICOM_SETTINGS_CURRENCY_DECIMALDIGITS_LABEL"
 				default="2"
-				description="COM_DIGICOM_SETTINGS_CURRENCY_PRICE_FORMAT_DESC">
-					<option value="1">X</option>
-					<option value="2">XX</option>
-					<option value="3">XXX</option>
-					<option value="4">XXXX</option>
-					<option value="5">XXXXX</option>
+				description="COM_DIGICOM_SETTINGS_CURRENCY_DECIMALDIGITS_DESC">
+					<option value="1">00.0</option>
+					<option value="2">00.00</option>
+					<option value="3">00.000</option>
+					<option value="4">00.0000</option>
+					<option value="5">00.00000</option>
 			</field>
+			<field
+				name="thousands_group_symbol"
+				type="text"
+				class="btn-group"
+				label="COM_DIGICOM_SETTINGS_CURRENCY_THOUSANDS_GROUP_SYMBOL_LABEL"
+				default=","
+				description="COM_DIGICOM_SETTINGS_CURRENCY_THOUSANDS_GROUP_SYMBOL_DESC" />
+
+			<field
+				name="dec_group_symbol"
+				type="text"
+				class="btn-group"
+				label="COM_DIGICOM_SETTINGS_CURRENCY_DEC_GROUP_SYMBOL_LABEL"
+				default="."
+				description="COM_DIGICOM_SETTINGS_CURRENCY_DEC_GROUP_SYMBOL_DESC" />
+
+
 			<field
 				name="currency"
 				type="sql"
@@ -234,7 +251,7 @@
 
 			<field
 				name="currency_position"
-				type="currencysupport"
+				type="list"
 				class="btn-group"
 				label="COM_DIGICOM_SETTINGS_CURRENCY_DISPLAY_POSITION"
 				default="1"
@@ -250,13 +267,7 @@
 				label="VIEWCONFIGIMGFORCUR"
 				default="0"
 				description="" />
-			<field
-				name="thousands_group_symbol"
-				type="text"
-				class="btn-group"
-				label="COM_DIGICOM_SETTINGS_CURRENCY_THOUSANDS_GROUP_SYMBOL"
-				default=","
-				description="COM_DIGICOM_SETTINGS_CURRENCY_THOUSANDS_GROUP_SYMBOL_DESC" />
+
 		</fieldset>
 
 		<fieldset name="STORE">

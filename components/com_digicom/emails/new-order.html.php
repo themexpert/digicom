@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 //----------------------------------------------
-// New Order Html Template 
+// New Order Html Template
 //----------------------------------------------
 ?>
 
@@ -28,7 +28,7 @@ defined('_JEXEC') or die;
                   <div id="template_header_image">
                     <p style="margin-top: 0;">
                       [HEADER_IMAGE]
-                    </p>           
+                    </p>
                   </div>
                   <table border="0" cellpadding="0" cellspacing="0" width="600" id="template_container" style="box-shadow: 0 1px 4px rgba(0,0,0,0.1) !important; background-color: [TMPL_BG_COLOR];color: [TMPL_COLOR];border: 1px solid #dcdcdc; border-radius: 3px !important;">
                      <tr>
@@ -59,7 +59,7 @@ defined('_JEXEC') or die;
                                              <div id="body_content_inner" style='color: #737373; font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif; font-size: 14px; line-height: 150%; text-align: left;'>
                                                 <p style="margin: 0 0 16px;">Hi, [CUSTOMER_USER_NAME]</p>
                                                 <p style="margin: 0 0 16px;">This is an email to let you inform about your order from [SITENAME]. The order is as follows: </p>
-                                                
+
                                                 <h2 style='color: [BASE_COLOR]; display: block; font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif; font-size: 18px; font-weight: bold; line-height: 130%; margin: 16px 0 8px; text-align: left;'>
                                                   Order #[ORDER_ID] (<time datetime="[ORDER_DATE]">[ORDER_DATE]</time>)
                                                 </h2>
