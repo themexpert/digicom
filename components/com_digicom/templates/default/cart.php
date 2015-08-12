@@ -23,15 +23,10 @@ $processor = $this->session->get('processor');
 $Itemid = $input->get("Itemid", 0);
 $items = $this->items;
 $button_value = "COM_DIGICOM_CHECKOUT";
-$onclick = "document.getElementById('returnpage').value='checkout'; document.getElementById('type_button').value='checkout';";
 
 if($user->id == 0 || $this->customer->_customer->country == "")
 {
 	$button_value = "COM_DIGICOM_CONTINUE";
-}
-if($configs->get('askterms',0) == '1')
-{
-	$onclick= "if(document.cart_form.agreeterms.checked != true){ alert(\'".JText::_("ACCEPT_TERMS_CONDITIONS")."\'); return false; }".$onclick;
 }
 
 $url="index.php?option=com_digicom&view=cart&task=cart.gethtml&tmpl=component&format=raw&processor=".$processor;
@@ -272,7 +267,7 @@ $tax = $this->tax;
 							$terms_content = $result["0"]["introtext"];
 							$alias = $result["0"]["alias"];
 							$catid = $result["0"]["catid"]; ?>
-							<a href="javascript:;" onclick="jQuery('#myModalTerms').modal('show');"><?php echo JText::_("COM_DIGICOM_CART_AGREE_TERMS"); ?></a>
+							<a href="javascript:;" onclick="jQuery('#termsShowModal').modal('show');"><?php echo JText::_("COM_DIGICOM_CART_AGREE_TERMS"); ?></a>
 						</div>
 					<?php endif;?>
 				</div>
@@ -280,7 +275,8 @@ $tax = $this->tax;
 					<p><strong><?php echo JText::_('COM_DIGICOM_PAYMENT_METHOD'); ?></strong></p>
 					<?php
 					$button_value = "COM_DIGICOM_CHECKOUT";
-					$onclick = "if(jQuery('#processor').val() == ''){ ShowPaymentAlert(); return false; }";
+					$onclick = "console.log(jQuery('#processor').val());";
+					$onclick .= "if(jQuery('#processor').val() === null){ ShowPaymentAlert(); return false; }";
 					$onclick.= "jQuery('#returnpage').val('checkout'); jQuery('#type_button').val('checkout');";
 
 					if($user->id == 0 || $this->customer->_customer->country == "")
@@ -395,36 +391,48 @@ $tax = $this->tax;
 			</div>
 		</div>
 	<?php endif;?>
+	
+	<?php
+		echo JHtml::_(
+			'bootstrap.renderModal',
+			'paymentAlertModal',
+			array(
+				'title' => JText::_("COM_DIGICOM_WARNING"),
+				'height' => '400px',
+				'width' => '1280',
+				'footer' => '<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>'
+			),
+			JText::_("COM_DIGICOM_CART_PAYMENT_METHOD_REQUIRED_NOTICE")
+		);
 
-	<div id="myModal" class="modal" style="display:none;">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			<h3 id="myModalLabel" style="line-height: 1;">...</h3>
-		</div>
-		<div id="myModalBody" class="modal-body">
+		if($configs->get('askterms',0) == '1' && ($configs->get('termsid',0) > 0)):
 
-		</div>
-		<div id="myModalFooter" class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_("COM_DIGICOM_CLOSE");?></button>
-		</div>
-	</div>
+			echo JHtml::_(
+				'bootstrap.renderModal',
+				'termsAlertModal',
+				array(
+					'title' => JText::_("COM_DIGICOM_WARNING"),
+					'height' => '400px',
+					'width' => '1280',
+					'footer' => '<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>'
+				),
+				JText::_("COM_DIGICOM_CART_ACCEPT_TERMS_CONDITIONS_REQUIRED_NOTICE")
+			);
 
-	<?php if($configs->get('askterms',0) == '1' && ($configs->get('termsid',0) > 0)):?>
-	<div id="myModalTerms" class="modal" style="display:none;">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			<h3 style="line-height: 1;"><?php echo JText::_("COM_DIGICOM_TERMS");?></h3>
-		</div>
-		<div class="modal-body">
-			<h3><?php echo $terms_title;?></h3>
-			<?php echo $terms_content;?>
-		</div>
-		<div class="modal-footer">
-			<button class="action-agree btn btn-success" data-dismiss="modal" aria-hidden="true"><?php echo JText::_("COM_DIGICOM_CART_AGREE_TERMS_BUTTON");?></button>
-			<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_("COM_DIGICOM_CLOSE");?></button>
-		</div>
-	</div>
-	<?php endif;?>
+			echo JHtml::_(
+				'bootstrap.renderModal',
+				'termsShowModal',
+				array(
+					'title' => $terms_title,
+					'height' => 'auto',
+					'width' => '1280',
+					'footer' => '<button class="action-agree btn btn-success" data-dismiss="modal" aria-hidden="true">' . JText::_("COM_DIGICOM_CART_AGREE_TERMS_BUTTON") . '</button> <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>'
+
+				),
+				$terms_content
+			);
+		endif;
+	?>
 
 	<script>
 		jQuery('.action-agree').click(function() {
@@ -446,10 +454,7 @@ $tax = $this->tax;
 		{
 			if (document.cart_form.agreeterms.checked != true)
 			{
-				jQuery('#myModalLabel').html("<?php echo JText::_("COM_DIGICOM_WARNING");?>");
-				jQuery('#myModalBody').html("<p><?php echo JText::_("COM_DIGICOM_CART_ACCEPT_TERMS_CONDITIONS_REQUIRED_NOTICE");?></p>");
-				jQuery('#myModal').modal('show');
-				return false;
+				jQuery('#termsAlertModal').modal('show');
 			}
 			else
 			{
@@ -459,9 +464,8 @@ $tax = $this->tax;
 
 		function ShowPaymentAlert()
 		{
-			jQuery('#myModalLabel').html("<?php echo JText::_("COM_DIGICOM_WARNING");?>");
-			jQuery('#myModalBody').html("<p><?php echo JText::_("COM_DIGICOM_CART_PAYMENT_METHOD_REQUIRED_NOTICE");?></p>");
-			jQuery('#myModal').modal('show');
+			 
+			jQuery('#paymentAlertModal').modal('show');
 		}
 
 		if(jQuery(window).width() > jQuery("#digicomcarttable").width() && jQuery(window).width() < 550)

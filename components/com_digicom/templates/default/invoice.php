@@ -196,7 +196,7 @@ $user = $this->customer->_customer;
 								?>
 
 								<tr>
-							   		<td style="font-weight:bold;text-align: right;" width="70%"><?php echo JText::_("COM_DIGICOM_TOTAL");?></td>
+							   		<td style="font-weight:bold;text-align: right;" width="70%"><?php echo JText::_("COM_DIGICOM_TOTAL_PAID");?></td>
 									<?php
 										if($order->amount_paid != "" && $order->amount_paid != "-1" && $order->amount_paid != $total){
 											$total = $order->amount_paid;
