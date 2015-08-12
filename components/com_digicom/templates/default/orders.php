@@ -72,7 +72,7 @@ $n = count ($this->orders);
 							<span class="label <?php echo $labelClass; ?>"><?php echo $order->status; ?></span>
 						</td>
 						<td>
-							<?php echo DigiComSiteHelperPrice::format_price($order->amount, $order->currency, true, $configs);; ?>
+							<?php echo DigiComSiteHelperPrice::format_price($order->amount, $order->currency, true, $configs); ?>
 						</td>
 						<td>
 							<?php echo $order_price; ?>

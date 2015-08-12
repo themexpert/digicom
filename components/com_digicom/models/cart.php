@@ -183,18 +183,18 @@ class DigiComModelCart extends JModelItem
 					ORDER BY `p`.`ordering`";
 		$db->setQuery($sql);
 		$items = $db->loadObjectList();
-
+		//print_r($items);die;
 		//change the price of items if needed
 		for ( $i = 0; $i < count( $items ); $i++ )
 		{
 			$item = &$items[$i];
 			$item->discount = 0;
 			$item->currency = $configs->get('currency','USD');
-			$item->price = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
-			$item->subtotal = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
+			//$item->price = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
+			//$item->subtotal = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
 
-			$item->price_formated = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
-			$item->subtotal_formated = DigiComSiteHelperPrice::format_price( $item->subtotal, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
+			//$item->price_formated = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
+			//$item->subtotal_formated = DigiComSiteHelperPrice::format_price( $item->subtotal, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
 
 			$item->subtotal = $item->price * $item->quantity;
 		}
@@ -376,8 +376,7 @@ class DigiComModelCart extends JModelItem
 
 		$payprocess['taxed'] = $payprocess['shipping'] + $sum_tax;
 		$payprocess['discount_calculated'] = (isset($payprocess['discount_calculated']) ? $payprocess['discount_calculated'] : 0);
-		$payprocess['shipping'] = DigiComSiteHelperPrice::format_price( $payprocess['shipping'], $payprocess['currency'], false, $configs ); //sprintf($price_format, $payprocess['shipping']);
-		$payprocess['taxed'] = DigiComSiteHelperPrice::format_price( $payprocess['taxed'], $payprocess['currency'], false, $configs ); //sprintf($price_format, $payprocess['taxed']);//." ".$payprocess['currency'];
+		//$payprocess['taxed'] = DigiComSiteHelperPrice::format_price( $payprocess['taxed'], $payprocess['currency'], false, $configs ); //sprintf($price_format, $payprocess['taxed']);//." ".$payprocess['currency'];
 		$payprocess['type'] = 'TAX';
 
 		$this->_tax = $payprocess;
@@ -1135,6 +1134,7 @@ class DigiComModelCart extends JModelItem
 		    ->values(implode(',', $values));
 		// Set the query using our newly populated query object and execute it.
 		$db->setQuery($query);
+		//echo $query->__toString();die;
 		$db->execute();
 
 		//--------------------------------------------------------
