@@ -53,23 +53,40 @@ class DigiComModelCart extends JModelItem
 
 	}
 
+	/*
 	function existUser($username, $email){
 		$db = JFactory::getDBO();
 		if(trim($username) == "" || trim($email) == ""){
 			return false;
-		}
-		else{
-			$sql = "select count(*) from #__users where username='".addslashes(trim($username))."'";
-			$db->setQuery($sql);
-			$db->query();
+		}else{
+			$query = $db->getQuery(true);
+
+			$query->select('count(*)')
+				  ->from($db->quoteName('#__users'))
+				  ->where($db->quoteName('username') . '='.$db->quote($username));
+			$db->setQuery($query);
+			$db->execute();
+
+			// $sql = "select count(*) from #__users where username='".addslashes(trim($username))."'";
+			// $db->setQuery($sql);
+			// $db->query();
+
 			$result = $db->loadResult();
 			if($result > 0){
 				return true;
 			}
 
-			$sql = "select count(*) from #__users where email='".addslashes(trim($email))."'";
-			$db->setQuery($sql);
-			$db->query();
+			$db->clear();
+			$query = $db->getQuery(true);
+			$query->select('count(*)')
+				  ->from($db->quoteName('#__users'))
+				  ->where($db->quoteName('email') . '='.$db->quote($email));
+			$db->setQuery($query);
+			$db->execute();
+
+			// $sql = "select count(*) from #__users where email='".addslashes(trim($email))."'";
+			// $db->setQuery($sql);
+			// $db->query();
 			$result = $db->loadResult();
 			if($result > 0){
 				return true;
@@ -77,6 +94,7 @@ class DigiComModelCart extends JModelItem
 		}
 		return false;
 	}
+	*/
 
 	/**
 	 * Method to add product to cart object
@@ -86,9 +104,9 @@ class DigiComModelCart extends JModelItem
 	 */
 	function addToCart()
 	{
-		$user			=	JFactory::getUser();
+		$user			= JFactory::getUser();
 		$db				= JFactory::getDBO();
-		$customer	= $this->customer;
+		$customer		= $this->customer;
 
 		$sid			= $customer->_sid; //digicom session id
 		$uid			= $customer->_user->id; //joomla user id
@@ -103,10 +121,10 @@ class DigiComModelCart extends JModelItem
 		// now get the product with access label
 		$query = $db->getQuery(true);
 		$query->select(array('name', 'access'))
-					->from('#__digicom_products');
+			  ->from($db->quoteName('#__digicom_products'));
 
 		$groups = implode(',', $user->getAuthorisedViewLevels());
-		$query->where('access IN (' . $groups . ')');
+		$query->where($db->quoteName('access').' IN (' . $groups . ')');
 
 		$db->setQuery( $query );
 		$res = $db->loadObject();
@@ -122,9 +140,17 @@ class DigiComModelCart extends JModelItem
 		// now we have passed basic check, move on ...
 		$qty = JRequest::getVar( 'qty', 1, 'request' ); //product quantity
 
+		$db->clear();
+		$query = $db->getQuery(true);
+		$query->select(array('cid','item_id','quantity'))
+			  ->from($db->quoteName('#__digicom_cart'))
+			  ->where($db->quoteName('sid') . '='.$db->quote($sid))
+			  ->where($db->quoteName('item_id') . '='.$db->quote($pid));
+		$db->setQuery($query);
+		//$db->execute();
 		//check if item already in the cart
-		$sql = "select cid, item_id, quantity from #__digicom_cart where sid='".intval($sid)."' AND item_id='".intval($pid)."'";
-		$db->setQuery($sql);
+		//$sql = "select cid, item_id, quantity from #__digicom_cart where sid='".intval($sid)."' AND item_id='".intval($pid)."'";
+		//$db->setQuery($sql);
 		$data = $db->loadObject();
 
 		if($data){
@@ -135,18 +161,48 @@ class DigiComModelCart extends JModelItem
 
 			//lets update if not same quantity
 			if($item_qty != $qty){
-				$sql = "update #__digicom_cart set quantity =quantity+".$qty." where sid='".intval($sid)."' AND item_id='".intval($pid)."'";
-				$db->setQuery($sql);
-				$db->query();
+				$db->clear();
+				$query = $db->getQuery(true);
+				// Fields to update.
+				$fields = array(
+				    $db->quoteName('quantity') . ' = ' . $db->quoteName('quantity') . ' + ' . $qty
+				);
+				 
+				// Conditions for which records should be updated.
+				$conditions = array(
+				    $db->quoteName('sid') . ' = '.intval($sid), 
+				    $db->quoteName('item_id') . ' = ' . $db->quote($pid)
+				);
+
+				$query->update($db->quoteName('#__digicom_cart'))->set($fields)->where($conditions);
+
+				//$sql = "update #__digicom_cart set quantity =quantity+".$qty." where sid='".intval($sid)."' AND item_id='".intval($pid)."'";
+				$db->setQuery($query);
+				$db->execute();
 			}
 		}
 
 		if(!isset($item_id)){
+			$db->clear();
+			$query = $db->getQuery(true);
+
+			// Insert columns.
+			$columns = array('quantity', 'item_id', 'sid', 'userid');
+			 
+			// Insert values.
+			$values = array($db->quote(intval($qty)),$db->quote(intval($pid)), $db->quote(intval($sid)), $db->quote(intval($uid)));
+
+			// Prepare the insert query.
+			$query
+			    ->insert($db->quoteName('#__digicom_cart'))
+			    ->columns($db->quoteName($columns))
+			    ->values(implode(',', $values));
+
 			//no such item in cart- inserting new row
-			$sql = "insert into #__digicom_cart (quantity, item_id, sid, userid)"
-				. " values ('".$qty."', '".intval($pid)."', '".intval($sid)."', '".intval($uid)."')";
-			$db->setQuery($sql);
-			$db->query();
+			//$sql = "insert into #__digicom_cart (quantity, item_id, sid, userid)"
+			//	. " values ('".$qty."', '".intval($pid)."', '".intval($sid)."', '".intval($uid)."')";
+			$db->setQuery($query);
+			$db->execute();
 			$cid = $db->insertid(); //cart id of the item inserted
 		}
 
@@ -155,6 +211,10 @@ class DigiComModelCart extends JModelItem
 
 	function getCartItems($customer, $configs)
 	{
+
+		if(count($this->_items)){
+			return $this->_items;
+		}
 
 		if(is_object($customer)){
 			$sid = $customer->_sid;
@@ -171,37 +231,54 @@ class DigiComModelCart extends JModelItem
 		}
 
 		$db = JFactory::getDBO();
-		$sql = "SELECT
-						`c`.*,
-						`p`.*
-					FROM
-						`#__digicom_products` AS `p`
-							INNER JOIN
-						`#__digicom_cart` AS `c` ON (`c`.`item_id` = `p`.`id`)
-					WHERE
-						`c`.`sid` = '" . intval($sid) . "' AND `c`.`item_id` = `p`.`id`
-					ORDER BY `p`.`ordering`";
-		$db->setQuery($sql);
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName(array('c.*', 'p.*')))
+			  ->from($db->quoteName('#__digicom_products','p'))
+			  ->join('INNER', $db->quoteName('#__digicom_cart', 'c') . ' ON (' . $db->quoteName('c.item_id') . ' = ' . $db->quoteName('p.id') . ')')
+			  ->where($db->quoteName('c.sid') . '='.$db->quote(intval($sid)))
+			  ->where($db->quoteName('c.item_id') . '='.$db->quoteName('p.id'))
+			  ->order($db->quoteName('p.ordering') . ' DESC');
+		$db->setQuery($query);
 		$items = $db->loadObjectList();
+
+		// $sql = "SELECT
+		// 				`c`.*,
+		// 				`p`.*
+		// 			FROM
+		// 				`#__digicom_products` AS `p`
+		// 					INNER JOIN
+		// 				`#__digicom_cart` AS `c` ON (`c`.`item_id` = `p`.`id`)
+		// 			WHERE
+		// 				`c`.`sid` = '" . intval($sid) . "' AND `c`.`item_id` = `p`.`id`
+		// 			ORDER BY `p`.`ordering`";
+		// $db->setQuery($sql);
+		
 		//print_r($items);die;
 		//change the price of items if needed
 		for ( $i = 0; $i < count( $items ); $i++ )
 		{
-			$item = &$items[$i];
+			$item = $items[$i];
 			$item->discount = 0;
 			$item->currency = $configs->get('currency','USD');
-			//$item->price = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
-			//$item->subtotal = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
-
-			//$item->price_formated = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
-			//$item->subtotal_formated = DigiComSiteHelperPrice::format_price( $item->subtotal, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
-
 			$item->subtotal = $item->price * $item->quantity;
+
+			//$item->price = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); 
+			//sprintf( $price_format, $item->product_price );
+			//$item->subtotal = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); 
+			//sprintf( $price_format, $item->subtotal );
+
+			//$item->price_formated = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); 
+			//sprintf( $price_format, $item->product_price );
+			//$item->subtotal_formated = DigiComSiteHelperPrice::format_price( $item->subtotal, $item->currency, false, $configs ); 
+			//sprintf( $price_format, $item->subtotal );
+
+			
 		}
 
 
 		return $this->_items = $items;
 		
+		/*
 		if(count($items) > 0){
 			$this->calc_price($items, $customer, $configs);
 			foreach($items as $i => $v){
@@ -211,6 +288,7 @@ class DigiComModelCart extends JModelItem
 			}
 		}
 		return $this->_items;
+		*/
 	}
 
 	function calc_price($items,$cust_info,$configs)
@@ -287,9 +365,18 @@ class DigiComModelCart extends JModelItem
 			if($addPromo && $onProduct){
 				//TODO: Apply Product promo
 				// Get product restrictions
-				$sql = "SELECT p.`productid` FROM `#__digicom_promocodes_products` AS p WHERE p.`promoid`=" . $promo->id ." and p.`productid`=".$item->id;
-				$this->_db->setQuery( $sql );
-				$promo->product = $this->_db->loadObject();
+				$query = $db->getQuery(true);
+				$query->select($db->quoteName('p.productid'))
+					  ->from($db->quoteName('#__digicom_promocodes_products','p'))
+					  ->where($db->quoteName('p.promoid') . '='.$db->quote($promo->id))
+					  ->where($db->quoteName('p.productid') . '='.$db->quote($item->id));
+				$db->setQuery($query);
+				$promo->product = $db->loadObject();
+
+				// $sql = "SELECT p.`productid` FROM `#__digicom_promocodes_products` AS p WHERE p.`promoid`=" 
+				// 	. $promo->id ." and p.`productid`=".$item->id;
+				// $this->_db->setQuery( $sql );
+				//$promo->product = $this->_db->loadObject();
 
 				if (count($promo->product) && $promo->aftertax == '0')
 				{
@@ -311,9 +398,25 @@ class DigiComModelCart extends JModelItem
 						$promovalue += $promoamount;
 					}
 
-					$sql = "update #__digicom_promocodes set used=used+1 where id = '" . $promo->id . "'";
-					$this->_db->setQuery( $sql );
-					$this->_db->query();
+					$db->clear();
+					$query = $db->getQuery(true);
+					// Fields to update.
+					$fields = array(
+					    $db->quoteName('used') . ' = ' . $db->quoteName('used') . ' + ' . '1'
+					);
+					 
+					// Conditions for which records should be updated.
+					$conditions = array(
+					    $db->quoteName('id') . ' = '.$db->quote($promo->id)
+					);
+
+					$query->update($db->quoteName('#__digicom_promocodes'))->set($fields)->where($conditions);
+					$db->setQuery($query);
+					$db->execute();
+
+					// $sql = "update #__digicom_promocodes set used=used+1 where id = '" . $promo->id . "'";
+					// $this->_db->setQuery( $sql );
+					// $this->_db->query();
 					if($promoamount > 0){
 						$item->discount = $promoamount;
 						$payprocess['item_discount'] = 1;
@@ -352,9 +455,26 @@ class DigiComModelCart extends JModelItem
 			$payprocess['promo'] = $promovalue;
 			$promo_applied = 1;
 
-			$sql = "update #__digicom_promocodes set used=used+1 where id = '" . $promo->id . "'";
-			$this->_db->setQuery( $sql );
-			$this->_db->query();
+
+			$db->clear();
+			$query = $db->getQuery(true);
+			// Fields to update.
+			$fields = array(
+			    $db->quoteName('used') . ' = ' . $db->quoteName('used') . ' + ' . '1'
+			);
+			 
+			// Conditions for which records should be updated.
+			$conditions = array(
+			    $db->quoteName('id') . ' = '.$db->quote($promo->id)
+			);
+
+			$query->update($db->quoteName('#__digicom_promocodes'))->set($fields)->where($conditions);
+			$db->setQuery($query);
+			$db->execute();
+			
+			// $sql = "update #__digicom_promocodes set used=used+1 where id = '" . $promo->id . "'";
+			// $this->_db->setQuery( $sql );
+			// $this->_db->query();
 			$payprocess['discount_calculated'] = 1;
 		}
 
@@ -1194,23 +1314,20 @@ class DigiComModelCart extends JModelItem
 		// start foreach
 		foreach($items as $key=>$item)
 		{
-			if($key >= 0)
-			{
-				$price = (isset($item->discount) && ($item->discount > 0)) ? $item->discount : $item->subtotal_formated;
-				$date = JFactory::getDate();
-				$purchase_date = $date->toSql();
-				$package_type = (!empty($item->bundle_source) ? $item->bundle_source : 'reguler');
-				$sql = "insert into #__digicom_orders_details(userid, productid,quantity, orderid, amount_paid, published, package_type, purchase_date) "
-						. "values ('{$user_id}', '{$item->item_id}', '{$item->quantity}', '".$orderid."', '{$price}', ".$published.", '".$package_type."', '".$purchase_date."')";
-				//echo $sql;die;
-				$database->setQuery($sql);
-				$database->query();
+			$price = (isset($item->discount) && ($item->discount > 0)) ? $item->discount : $item->price;
+			$date = JFactory::getDate();
+			$purchase_date = $date->toSql();
+			$package_type = (!empty($item->bundle_source) ? $item->bundle_source : 'reguler');
+			$sql = "insert into #__digicom_orders_details(userid, productid,quantity, orderid, amount_paid, published, package_type, purchase_date) "
+					. "values ('{$user_id}', '{$item->item_id}', '{$item->quantity}', '".$orderid."', '{$price}', ".$published.", '".$package_type."', '".$purchase_date."')";
+			//echo $sql;die;
+			$database->setQuery($sql);
+			$database->query();
 
-				$sql = "update #__digicom_products set used=used+1 where id = '" . $item->item_id . "'";
-				$database->setQuery( $sql );
-				$database->query();
+			$sql = "update #__digicom_products set used=used+1 where id = '" . $item->item_id . "'";
+			$database->setQuery( $sql );
+			$database->query();
 
-			}
 		}
 		// end foreach
 

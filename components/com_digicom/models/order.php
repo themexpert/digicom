@@ -32,17 +32,39 @@ class DigiComModelOrder extends JModelItem
 			if ($id > 0) $this->_id = $id;
 			else $id = $this->_id;
 
-			$sql = "SELECT o.*"
-					." FROM #__digicom_orders o"
-					." WHERE o.id='".intval($id)."' AND o.published='1'"
-			;
-			$db->setQuery($sql);
+			$query = $db->getQuery(true);
+			$query->select('o.*')
+				  ->from($db->quoteName('#__digicom_orders','o'))
+				  ->where($db->quoteName('o.id').'='.intval($id))
+				  ->where($db->quoteName('o.published').'='.'1');
+
+
+			// $sql = "SELECT o.*"
+			// 		." FROM #__digicom_orders o"
+			// 		." WHERE o.id='".intval($id)."' AND o.published='1'"
+			// ;
+			$db->setQuery($query);
 			$this->_order = $db->loadObject();
 
-			$sql = "SELECT p.*, od.package_type, od.amount_paid as price , od.userid";
-			$sql .= " FROM #__digicom_products as p, #__digicom_orders_details as od WHERE p.id=od.productid AND od.orderid='". $this->_order->id ."'";
-			$db->setQuery($sql);
+			$db->clear();
+			$query = $db->getQuery(true);
+			$query->select($db->quoteName('p').'.*')
+				  ->select($db->quoteName('od.package_type'))
+				  ->select($db->quoteName('od.amount_paid', 'price'))
+				  ->select($db->quoteName('od.userid'))
+				  ->from($db->quoteName('#__digicom_products','p'))
+				  ->from($db->quoteName('#__digicom_orders_details','od'))
+				  ->where($db->quoteName('p.id').'='.$db->quoteName('od.productid'))
+				  ->where($db->quoteName('od.orderid').'='.$db->quote($this->_order->id));
+			$db->setQuery($query);
 			$prods = $db->loadObjectList();
+
+
+			// $sql = "SELECT p.*, od.package_type, od.amount_paid as price , od.userid";
+			// $sql .= " FROM #__digicom_products as p, #__digicom_orders_details as od 
+			// WHERE p.id=od.productid AND od.orderid='". $this->_order->id ."'";
+			// $db->setQuery($sql);
+			//$prods = $db->loadObjectList();
 
 			$this->_order->products = $prods;
 		}
