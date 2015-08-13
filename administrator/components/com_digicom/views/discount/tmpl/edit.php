@@ -47,15 +47,15 @@ function jSelectProduct(id, title, catid, object, link, lang,price)
 		var hreflang = ' hreflang = \"' + lang + '\"';
 	}
 
-	var tag = '<tr id=\"productincludes_item_' + id + '\"><td><input type=\"hidden\" id=\"product_include_id'+id+'\" name=\"jform[products][]\" value=\"'+id+'\" /> <a' + hreflang + ' href=\"' + link + '\">' + title + '</a></td><td><a href=\#\" onclick=\"digiRemoveProduct('+ id +');\"><i class=\"icon-remove\"></i></a></td></tr>';
+	var tag = '<tr id=\"productincludes_item_' + id + '\"><td><input type=\"hidden\" id=\"product_include_id'+id+'\" name=\"jform[products][]\" value=\"'+id+'\" /> <a' + hreflang + ' href=\"' + link + '\">' + title + '</a></td><td><a href=\#\" onclick=\"digiRemoveProduct('+ id +', event);\"><i class=\"icon-remove\"></i></a></td></tr>';
 	//jInsertEditorText(tag, '" . 'productincludes_items' . "');
 	jQuery('#productincludes_items').append(tag);
 	jModalClose();
 }
-function digiRemoveProduct(id){
-	event.preventDefault();
+function digiRemoveProduct(id,e){
+	e.preventDefault();
 	jQuery('tr#productincludes_item_'+id).remove();
-	changePlain();
+	//changePlain();
 }
 
 /* ]]> */
@@ -157,7 +157,7 @@ Joomla.submitbutton = function(task)
 										<a href="index.php?option=com_digicom&view=product&id=<?php echo $product->id; ?>"><?php echo $product->name; ?></a>
 									</td>
 									<td>
-										<a href="#&quot;" onclick="digiRemoveProduct(<?php echo $product->id; ?>);">
+										<a href="#&quot;" onclick="digiRemoveProduct(<?php echo $product->id; ?>, event);">
 											<i class="icon-remove"></i>
 										</a>
 									</td>
