@@ -1,9 +1,9 @@
 --
 -- Insert into Joomla core content type
 --
-INSERT IGNORE INTO `#__content_types` (`type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`, `content_history_options`) VALUES
-('Digicom Product', 'com_digicom.product', '{"special":{"dbtable":"#__digicom_products","key":"id","type":"product","prefix":"Table","config":"array()"},"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}', '', '{"common":{"core_content_item_id":"id","core_title":"name","core_state":"state","core_alias":"alias","core_created_time":"created","core_modified_time":"modified","core_body":"description", "core_hits":"hits","core_publish_up":"publish_up","core_publish_down":"publish_down","core_access":"access", "core_params":"params", "core_featured":"featured", "core_metadata":"metadata", "core_language":"language", "core_images":"images", "core_urls":"urls", "core_version":"version", "core_ordering":"ordering", "core_metakey":"metakey", "core_metadesc":"metadesc", "core_catid":"catid", "core_xreference":"xreference", "asset_id":"null"}, "special":{}}', 'DigiComSiteHelperRoute::getProductRoute', '{"formFile":"administrator\\/components\\/com_digicom\\/models\\/forms\\/product.xml", "hideFields":["asset_id","checked_out","checked_out_time","version","featured","images"], "ignoreChanges":["modified_by", "modified", "checked_out", "checked_out_time", "version", "hits"], "convertToInt":["publish_up", "publish_down", "featured", "ordering"], "displayLookup":[{"sourceColumn":"catid","targetTable":"#__categories","targetColumn":"id","displayColumn":"title"},{"sourceColumn":"created_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"access","targetTable":"#__viewlevels","targetColumn":"id","displayColumn":"title"},{"sourceColumn":"modified_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"} ]}'),
-('Digicom Category', 'com_digicom.category', '{"special":{"dbtable":"#__categories","key":"id","type":"Category","prefix":"JTable","config":"array()"},"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}', '', '{"common":{"core_content_item_id":"id","core_title":"title","core_state":"published","core_alias":"alias","core_created_time":"created_time","core_modified_time":"modified_time","core_body":"description", "core_hits":"hits","core_publish_up":"null","core_publish_down":"null","core_access":"access", "core_params":"params", "core_featured":"null", "core_metadata":"metadata", "core_language":"language", "core_images":"null", "core_urls":"null", "core_version":"version", "core_ordering":"null", "core_metakey":"metakey", "core_metadesc":"metadesc", "core_catid":"parent_id", "core_xreference":"null", "asset_id":"asset_id"}, "special":{"parent_id":"parent_id","lft":"lft","rgt":"rgt","level":"level","path":"path","extension":"extension","note":"note"}}', 'DigiComSiteHelperRoute::getCategoryRoute', '{"formFile":"administrator\\/components\\/com_categories\\/models\\/forms\\/category.xml", "hideFields":["asset_id","checked_out","checked_out_time","version","lft","rgt","level","path","extension"], "ignoreChanges":["modified_user_id", "modified_time", "checked_out", "checked_out_time", "version", "hits", "path"],"convertToInt":["publish_up", "publish_down"], "displayLookup":[{"sourceColumn":"created_user_id","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"access","targetTable":"#__viewlevels","targetColumn":"id","displayColumn":"title"},{"sourceColumn":"modified_user_id","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"parent_id","targetTable":"#__categories","targetColumn":"id","displayColumn":"title"}]}');
+INSERT INTO `#__content_types` (`type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`, `content_history_options`) VALUES
+('Digicom Product', 'com_digicom.product', '{"special":{"dbtable":"#__digicom_products","key":"id","type":"product","prefix":"Table","config":"array()"},"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}', '', '{"common":{"core_content_item_id":"id","core_title":"name","core_state":"published","core_alias":"alias","core_created_time":"created","core_modified_time":"modified","core_body":"fulltext","core_hits":"hits","core_publish_up":"publish_up","core_publish_down":"publish_down","core_access":"access","core_params":"attribs","core_featured":"featured","core_metadata":"metadata","core_language":"language","core_images":"images","core_urls":"urls","core_version":"version","core_ordering":"ordering","core_metakey":"metakey","core_metadesc":"metadesc","core_catid":"catid","core_xreference":"xreference","asset_id":"asset_id"},"special":{"imptotal":"imptotal","impmade":"impmade","clicks":"clicks","clickurl":"clickurl","custombannercode":"custombannercode","cid":"cid","purchase_type":"purchase_type","track_impressions":"track_impressions","track_clicks":"track_clicks"}}', 'DigiComSiteHelperRoute::getProductRoute', '{"formFile":"administrator\\/components\\/com_digicom\\/models\\/forms\\/product.xml","hideFields":["checked_out","checked_out_time","version","reset"],"ignoreChanges":["modified_by","modified","checked_out","checked_out_time","version","imptotal","impmade","reset"],"convertToInt":["publish_up","publish_down","ordering"],"displayLookup":[{"sourceColumn":"catid","targetTable":"#__categories","targetColumn":"id","displayColumn":"title"}{"sourceColumn":"created_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"modified_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"}]}'),
+('Digicom Category', 'com_digicom.category', '{"special":{"dbtable":"#__categories","key":"id","type":"Category","prefix":"Table","config":"array()"},"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}', '', '{"common":{"core_content_item_id":"id","core_title":"title","core_state":"published","core_alias":"alias","core_created_time":"created_time","core_modified_time":"modified_time","core_body":"description","core_hits":"hits","core_publish_up":"null","core_publish_down":"null","core_access":"access","core_params":"params","core_featured":"null","core_metadata":"metadata","core_language":"language","core_images":"null","core_urls":"null","core_version":"version","core_ordering":"null","core_metakey":"metakey","core_metadesc":"metadesc","core_catid":"parent_id","core_xreference":"null","asset_id":"asset_id"},"special":{"parent_id":"parent_id","lft":"lft","rgt":"rgt","level":"level","path":"path","extension":"extension","note":"note"}}', 'DigiComSiteHelperRoute::getCategoryRoute', '{"formFile":"administrator/components/com_digicom/models/forms/category.xml","hideFields":["asset_id","checked_out","checked_out_time","version","lft","rgt","level","path","extension"],"ignoreChanges":["modified_user_id","modified_time","checked_out","checked_out_time","version","hits","path"],"convertToInt":["publish_up","publish_down"],"displayLookup":[{"sourceColumn":"created_user_id","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"access","targetTable":"#__viewlevels","targetColumn":"id","displayColumn":"title"},{"sourceColumn":"modified_user_id","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"parent_id","targetTable":"#__categories","targetColumn":"id","displayColumn":"title"}]}');
 
 -- --------------------------------------------------------
 
@@ -138,15 +138,17 @@ CREATE TABLE IF NOT EXISTS `#__digicom_licenses` (
 
 DROP TABLE IF EXISTS `#__digicom_log`;
 CREATE TABLE IF NOT EXISTS `#__digicom_log` (
-  `id` int(11) NOT NULL,
+  `id` INT( 11 ) NOT NULL AUTO_INCREMENT,
   `userid` int(11) NOT NULL,
   `type` varchar(255) NOT NULL COMMENT 'download|email|purchase|status',
   `callback` varchar(255) NOT NULL COMMENT 'who trigger the event',
+  `callbackid` INT NULL DEFAULT NULL COMMENT  'orderid | fileid ; quickid to find items',
   `message` varchar(255) NOT NULL COMMENT 'small message',
   `status` varchar(255) NOT NULL DEFAULT 'complete' COMMENT 'event status:complete',
   `ip` varchar(255) NOT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `params` longtext NOT NULL COMMENT 'details info about event'
+  `params` longtext NOT NULL COMMENT 'details info about event',
+  PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -160,11 +162,11 @@ CREATE TABLE IF NOT EXISTS `#__digicom_orders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userid` int(11) NOT NULL DEFAULT '0',
   `transaction_number` varchar(250) NOT NULL,
-  `order_date` int(11) NOT NULL DEFAULT '0',
-  `price` varchar(100) NOT NULL COMMENT 'original price without discount',
-  `amount` float NOT NULL DEFAULT '0' COMMENT 'payable amount',
-  `discount` float NOT NULL DEFAULT '0',
-  `amount_paid` float NOT NULL DEFAULT '0',
+  `order_date` DATETIME NOT NULL,
+  `price` DECIMAL( 13, 3 ) NOT NULL DEFAULT '0' COMMENT 'original price without discount',
+  `amount` DECIMAL( 13, 3 ) NOT NULL DEFAULT '0' COMMENT 'payable amount',
+  `discount` DECIMAL( 13, 3 ) NOT NULL DEFAULT '0',
+  `amount_paid` DECIMAL( 13, 3 ) NOT NULL DEFAULT '0',
   `number_of_products` int(11) NOT NULL DEFAULT '0',
   `currency` varchar(10) NOT NULL DEFAULT '',
   `status` varchar(10) NOT NULL DEFAULT '',
@@ -174,6 +176,7 @@ CREATE TABLE IF NOT EXISTS `#__digicom_orders` (
   `published` int(11) NOT NULL DEFAULT '0',
   `chargeback` tinyint(1) NOT NULL DEFAULT '0',
   `comment` longtext NOT NULL,
+  `update_date` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `params` longtext NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=500 ;
@@ -190,13 +193,13 @@ CREATE TABLE IF NOT EXISTS `#__digicom_orders_details` (
   `userid` int(11) NOT NULL DEFAULT '0',
   `productid` int(11) NOT NULL DEFAULT '0',
   `quantity` int(11) NOT NULL,
-  `price` float NOT NULL,
-  `amount_paid` float NOT NULL DEFAULT '0',
+  `price` DECIMAL( 13,3 ) NOT NULL ,
+  `amount_paid` DECIMAL( 13,3 ) NOT NULL,
   `orderid` int(11) NOT NULL DEFAULT '0',
   `published` int(2) NOT NULL DEFAULT '1',
   `package_type` varchar(50) NOT NULL,
   `purchase_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `update` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
   `cancelled` tinyint(1) NOT NULL DEFAULT '0',
   `cancelled_amount` float NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -220,7 +223,7 @@ CREATE TABLE IF NOT EXISTS `#__digicom_products` (
   `introtext` mediumtext NOT NULL,
   `fulltext` longtext NOT NULL COMMENT 'full desc',
   `images` varchar(150) NOT NULL DEFAULT '',
-  `price` varchar(50) NOT NULL,
+  `price` DECIMAL( 12, 2 ) NOT NULL ,
   `price_type` tinyint(4) NOT NULL DEFAULT '3',
   `expiration_length` tinyint(4) NOT NULL,
   `expiration_type` varchar(15) NOT NULL,
@@ -232,8 +235,8 @@ CREATE TABLE IF NOT EXISTS `#__digicom_products` (
   `created_by` int(10) unsigned NOT NULL DEFAULT '0',
   `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_by` int(10) unsigned NOT NULL DEFAULT '0',
-  `publish_up` int(11) NOT NULL DEFAULT '0',
-  `publish_down` int(11) NOT NULL DEFAULT '0',
+  `publish_up` DATETIME NOT NULL DEFAULT  '0000-00-00 00:00:00',
+  `publish_down` DATETIME NOT NULL DEFAULT  '0000-00-00 00:00:00',
   `checked_out` int(11) NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `access` tinyint(3) unsigned NOT NULL DEFAULT '0',
@@ -244,6 +247,8 @@ CREATE TABLE IF NOT EXISTS `#__digicom_products` (
   `metadata` text NOT NULL,
   `hide_public` tinyint(1) NOT NULL DEFAULT '0',
   `xreference` varchar(50) NOT NULL COMMENT 'A reference to enable linkages to external data sets.',
+  `version` int(10) unsigned NOT NULL DEFAULT '1',
+  `urls` text NOT NULL,
   `used` int(11) NOT NULL DEFAULT '0',
   `hits` int(11) NOT NULL,
   `attribs` longtext NOT NULL,
