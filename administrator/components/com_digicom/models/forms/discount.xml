@@ -7,7 +7,7 @@
 
 		<field name="code" required="true" type="text" class="input-xlarge input-large-text" label="COM_DIGICOM_DISCOUNT_CODE" description="COM_DIGICOM_DISCOUNT_CODE_DESC" />
 		
-		<field name="codelimit" type="number" label="COM_DIGICOM_DISCOUNT_CODE_USAGE_LIMIT" description="COM_DIGICOM_DISCOUNT_CODE_USAGE_LIMIT_DESC" min="1"/>
+		<field name="codelimit" type="number" label="COM_DIGICOM_DISCOUNT_CODE_USAGE_LIMIT" description="COM_DIGICOM_DISCOUNT_CODE_USAGE_LIMIT_DESC" min="0"/>
 		
 		<field name="amount" required="true" default="1" type="number" min="1"  class="input-xlarge input-short" label="COM_DIGICOM_DISCOUNT_AMOUNT" description="COM_DIGICOM_DISCOUNT_AMOUNT_DESC" />
 		
