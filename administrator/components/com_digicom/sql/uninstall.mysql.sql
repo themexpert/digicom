@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS
 `#__digicom_currencies`,
 `#__digicom_customers`,
 `#__digicom_licenses`,
+`#__digicom_log`,
 `#__digicom_orders`,
 `#__digicom_orders_details`,
 `#__digicom_promocodes`,
