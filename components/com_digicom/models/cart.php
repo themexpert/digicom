@@ -261,7 +261,7 @@ class DigiComModelCart extends JModelItem
 			$item->discount = 0;
 			$item->currency = $configs->get('currency','USD');
 			$item->subtotal = $item->price * $item->quantity;
-			$item->subtotal_formated = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
+			$item->price_formated = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
 
 			//$item->price = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); 
 			//sprintf( $price_format, $item->product_price );
@@ -417,6 +417,7 @@ class DigiComModelCart extends JModelItem
 					// $this->_db->query();
 					if($promoamount > 0){
 						$item->discount = $promoamount;
+						$item->price_formated = $item->price - $promoamount;
 						//$item->subtotal = $item->subtotal - $promoamount;
 						$payprocess['item_discount'] = 1;
 					}
@@ -1332,7 +1333,7 @@ class DigiComModelCart extends JModelItem
 		// start foreach
 		foreach($items as $key=>$item)
 		{
-			$price = (isset($item->discount) && ($item->discount > 0)) ? $item->subtotal_formated : $item->price ;
+			$price = (isset($item->discount) && ($item->discount > 0)) ? $item->price_formated : $item->price ;
 			$date = JFactory::getDate();
 			$purchase_date = $date->toSql();
 			$package_type = (!empty($item->bundle_source) ? $item->bundle_source : 'reguler');
