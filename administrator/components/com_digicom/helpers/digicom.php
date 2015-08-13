@@ -308,8 +308,27 @@ class DigiComHelperDigiCom extends JHelperContent{
 
 	public static function publishAndExpiryHelper(&$img, &$alt, &$times, &$status, $timestart, $timeend, $published, $configs, $limit = 0, $used = 0) {
 
-		$now = time();
-		$nullDate = 0;
+		
+		$today = date('Y-m-d 00:00:00');
+		$tomorrow = date('Y-m-d  00:00:00',strtotime($today . "+1 days"));
+		
+		$now = strtotime($today);
+		$tomorrow = strtotime($tomorrow);
+		$timestart = strtotime($timestart);
+		$timeend = strtotime($timeend);
+		$nullDate = strtotime('0000-00-00 00:00:00');
+			
+		/*if($tomorrow < $now){
+			echo 'stop';
+		}else{
+			echo 'move';
+		}
+		die;*/
+		/*
+		// echo $now . '<br/>' ;
+		// echo $timestart . '<br/>' ;
+		// echo $timeend . '<br/>' ;
+		// echo $nullDate;die;
 
 		if ( $now <= $timestart && $published == "1" ) {
 					$img = "tick.png";
@@ -344,6 +363,7 @@ class DigiComHelperDigiCom extends JHelperContent{
 				$times .= "<tr><td>".(JText::_("HELPEXPAT"))." ".date($configs->get('time_format','DD-MM-YYYY'), $timeend)."</td></tr>";
 			}
 		}
+		*/
 
 		$status = '';
 		$promo = new stdClass();
@@ -355,19 +375,34 @@ class DigiComHelperDigiCom extends JHelperContent{
 		}
 
 		$remain = $promo->codelimit - $promo->used;
-		if (($timeend > $now || $timeend == $nullDate )&& ($limit == 0 || $used < $limit) && $published == "1") {
+
+		if ( ($timestart >= $now) && ($timeend >= $now || $timeend == $nullDate ) && ($limit == 0 || $used < $limit) && $published == "1") 
+		{
 			$status = JText::_("COM_DIGICOM_ACTIVE");
-		} else if ($published == "0") {
+		}
+		else if ($published == "0") 
+		{
 			$status = "<span style='color:red'>".(JText::_("COM_DIGICOM_UNPUBLISHED"))." </span>";
-		} else if ($limit >0  && $used  >= $limit) {
+		}
+		else if ($limit > 0  && $used  >= $limit) 
+		{
 			$status = "<span style='color:red'>".(JText::_("COM_DIGICOM_EXPIRED")).": (".(JText::_("Amount")).")</span>";
-		} else if ($timeend != $nullDate && $timeend < $now && ($remain < 1 && $promo->codelimit > 0)) {
+		}
+		else if ($timeend != $nullDate && $timeend < $tomorrow && ($remain < 1 && $promo->codelimit > 0)) 
+		{
 			$status = "<span style='color:red'>".(JText::_("COM_DIGICOM_EXPIRED")).": (".(JText::_("Date"))." ,".(JText::_("Amount")).")</span>";
-		} else if ($timeend < $now && $timeend != $nullDate){
+		}
+		else if ($timeend < $tomorrow && $timeend != $nullDate)
+		{
 			$status = "<span style='color:red'>".(JText::_("COM_DIGICOM_EXPIRED")).": (".(JText::_("Date")).")</span>";
-		} else {
+		}
+		else 
+		{
 			$status = "<span style='color:red'>".(JText::_("COM_DIGICOM_DISCOUNT_CODE_ERROR"))."</span>";
 		}
+
+		return $status;
+
 	}
 
 	//This function transforms the php.ini notation for numbers (like '2M') to an integer (2*1024*1024 in this case)
