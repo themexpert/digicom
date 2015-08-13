@@ -49,8 +49,9 @@ class DigiComModelOrder extends JModelItem
 			$db->clear();
 			$query = $db->getQuery(true);
 			$query->select($db->quoteName('p').'.*')
+				  ->select($db->quoteName('od.quantity'))
 				  ->select($db->quoteName('od.package_type'))
-				  ->select($db->quoteName('od.amount_paid', 'price'))
+				  ->select($db->quoteName('od.price', 'price'))
 				  ->select($db->quoteName('od.userid'))
 				  ->from($db->quoteName('#__digicom_products','p'))
 				  ->from($db->quoteName('#__digicom_orders_details','od'))
