@@ -60,7 +60,7 @@ class TableDiscount extends JTable
 		// Set codestart to null date if not set
 		if (!$this->codestart)
 		{
-			$this->codestart = $this->_db->getNullDate();
+			$this->codestart = date('Y-m-d 00:00:00');
 		}
 
 		// Set codeend to null date if not set
