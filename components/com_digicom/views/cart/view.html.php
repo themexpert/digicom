@@ -31,7 +31,6 @@ class DigiComViewCart extends JViewLegacy
 		$disc = 0;
 		foreach ($this->items as $i => $item) {
 
-			if ($i < 0 ) continue;
 			if (isset($item->discounted_price) && $item->discounted_price && $item->discount > 0) $disc = 1;
 			
 		}
