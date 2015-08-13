@@ -261,6 +261,7 @@ class DigiComModelCart extends JModelItem
 			$item->discount = 0;
 			$item->currency = $configs->get('currency','USD');
 			$item->subtotal = $item->price * $item->quantity;
+			$item->subtotal_formated = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
 
 			//$item->price = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); 
 			//sprintf( $price_format, $item->product_price );
@@ -276,19 +277,15 @@ class DigiComModelCart extends JModelItem
 		}
 
 
-		return $this->_items = $items;
+		//return $this->_items = $items;
+		$this->_items = $items;
 		
-		/*
+		
 		if(count($items) > 0){
 			$this->calc_price($items, $customer, $configs);
-			foreach($items as $i => $v){
-				if($i < 0){
-					continue;
-				}
-			}
 		}
 		return $this->_items;
-		*/
+		
 	}
 
 	function calc_price($items,$cust_info,$configs)
@@ -420,6 +417,7 @@ class DigiComModelCart extends JModelItem
 					// $this->_db->query();
 					if($promoamount > 0){
 						$item->discount = $promoamount;
+						//$item->subtotal = $item->subtotal - $promoamount;
 						$payprocess['item_discount'] = 1;
 					}
 					$payprocess['discount_calculated'] = 1;
@@ -1226,11 +1224,29 @@ class DigiComModelCart extends JModelItem
 		// $number_of_products = $tax['number_of_products'];
 
 		$promo = $cart->get_promo( $cust_info );
-		if($promo->id > 0){
+		if ( $promo->id > 0 ) {
+			$query = $db->getQuery(true);
+
+			// Fields to update.
+			$fields = array(
+			    $db->quoteName('used') . ' = ' . $db->quote($promo->used+1)
+			);
+			// Conditions for which records should be updated.
+			$conditions = array(
+			    $db->quoteName('id') . ' = '.$promo->id
+			);
+			$query->update($db->quoteName('#__digicom_promocodes'))->set($fields)->where($conditions);
+			// Set the query using our newly updated query object and execute it.
+			$db->setQuery($query);
+			//echo $query->__toString();die;
+			$db->execute();
+
+			//$sql = "update #__digicom_promocodes set `used`=`used`+1 where id=" . $promoid;
+			//$db->setQuery( $sql );
+			//$db->query();
 			$promoid = $promo->id;
 			$promocode = $promo->code;
-		}
-		else{
+		}else{
 			$promoid = '0';
 			$promocode = '0';
 		}
@@ -1268,12 +1284,12 @@ class DigiComModelCart extends JModelItem
 		$orderid = $db->insertid();
 		$this->storeTransactionData( $items, $orderid, $tax, $sid );
 
-		if ( $promoid > 0 ) {
+		/*if ( $promoid > 0 ) {
 			$query = $db->getQuery(true);
 
 			// Fields to update.
 			$fields = array(
-			    $db->quoteName('used') . ' = ' . $db->quote($db->quoteName('used') + 1)
+			    $db->quoteName('used') . ' = ' . $db->quoteName('used') + 1
 			);
 			// Conditions for which records should be updated.
 			$conditions = array(
@@ -1287,7 +1303,7 @@ class DigiComModelCart extends JModelItem
 			//$sql = "update #__digicom_promocodes set `used`=`used`+1 where id=" . $promoid;
 			//$db->setQuery( $sql );
 			//$db->query();
-		}
+		}*/
 
 		return $orderid;
 
@@ -1316,11 +1332,11 @@ class DigiComModelCart extends JModelItem
 		// start foreach
 		foreach($items as $key=>$item)
 		{
-			$price = (isset($item->discount) && ($item->discount > 0)) ? $item->discount : $item->amount_paid;
+			$price = (isset($item->discount) && ($item->discount > 0)) ? $item->subtotal_formated : $item->price ;
 			$date = JFactory::getDate();
 			$purchase_date = $date->toSql();
 			$package_type = (!empty($item->bundle_source) ? $item->bundle_source : 'reguler');
-			$sql = "insert into #__digicom_orders_details(userid, productid,quantity, orderid, amount_paid, published, package_type, purchase_date) "
+			$sql = "insert into #__digicom_orders_details(userid, productid,quantity, orderid, price, published, package_type, purchase_date) "
 					. "values ('{$user_id}', '{$item->item_id}', '{$item->quantity}', '".$orderid."', '{$price}', ".$published.", '".$package_type."', '".$purchase_date."')";
 			//echo $sql;die;
 			$database->setQuery($sql);
@@ -1368,10 +1384,10 @@ class DigiComModelCart extends JModelItem
 			$item->discount = 0;
 			$item->currency = $configs->get('currency','USD');
 			$item->price = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
-			$item->subtotal = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
+			//$item->subtotal = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
 
-			$item->price_formated = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
-			$item->subtotal_formated = DigiComSiteHelperPrice::format_price( $item->subtotal, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
+			//$item->price_formated = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
+			//$item->subtotal_formated = DigiComSiteHelperPrice::format_price( $item->subtotal, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
 
 			$item->subtotal = $item->price * $item->quantity;
 		}
