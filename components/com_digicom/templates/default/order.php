@@ -118,6 +118,7 @@ $params = json_decode($this->order->params);
 				<th><?php echo JText::_('COM_DIGICOM_IMAGE'); ?></th>
 				<th><?php echo JText::_('JGLOBAL_TITLE'); ?></th>
 				<th><?php echo JText::_('COM_DIGICOM_TYPE'); ?></th>
+				<th><?php echo JText::_("COM_DIGICOM_PRODUCTS"); ?></th>
 				<th><?php echo JText::_('COM_DIGICOM_PRODUCT_PRICE'); ?></th>
 			</tr>
 		</thead>
@@ -142,6 +143,9 @@ $params = json_decode($this->order->params);
 					<?php endif; ?>
 				</td>
 				<td><?php echo ucfirst( $product->package_type ); ?></td>
+				<td>
+					<?php echo $product->quantity; ?>
+				</td>
 				<td><?php echo DigiComSiteHelperPrice::format_price($product->price, $configs->get('currency','USD'), true, $configs);?></td>
 			</tr>
 			<?php endforeach; ?>
