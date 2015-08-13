@@ -497,7 +497,7 @@ class DigiComModelCart extends JModelItem
 		} else {
 			//TODO:: handle the exception correctly so it dosent return complete table object;
 			//$promo = $this->getTable( "Discount" );
-			$promo = new object();
+			$promo = new StdClass();
 			$promo->id = '';
 			$promo->code = '';
 		}
@@ -528,6 +528,7 @@ class DigiComModelCart extends JModelItem
 			if ( ($timestart >= $now) && ($timeend >= $now || $timeend == $nullDate ) && ($limit == 0 || $used < $limit) && $published == "1") 
 			{
 				$error = 0; //code is valid
+				$promoerror = '';
 			}
 			else if ($published == "0") 
 			{
@@ -545,9 +546,10 @@ class DigiComModelCart extends JModelItem
 			{
 				$promoerror = JText::_( "COM_DIGICOM_DISCOUNT_CODE_ENA" );
 			}
-
-			if ( $error ) {//promo code is invalid
+			
+			if ( !empty($promoerror) ) {//promo code is invalid
 				$promo->error = $promoerror;
+				JFactory::getApplication()->enqueueMessage(JText::_($promoerror),'warning');
 			} else {
 				$promo->error = "";
 			}
@@ -626,7 +628,7 @@ class DigiComModelCart extends JModelItem
 				{
 					//add this code to user's cart
 					$sql = "update #__digicom_session set cart_details='promocode=" . $promo . "' where sid='" . $sid . "'";
-					$jAp->enqueueMessage(JText::sprintf('COM_DIGICOM_CART_PROMOCODE_APPLIED',$promo),'success');
+					//$jAp->enqueueMessage(JText::sprintf('COM_DIGICOM_CART_PROMOCODE_APPLIED',$promo),'success');
 				}
 				else if ($published == "0") 
 				{

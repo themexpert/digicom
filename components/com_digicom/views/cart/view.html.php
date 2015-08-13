@@ -38,7 +38,7 @@ class DigiComViewCart extends JViewLegacy
 		$this->discount = $disc;
 		
 		$this->tax = $model->calc_price($this->items, $this->customer, $this->configs);
-
+		//print_r($this->tax);die;
 		$promo = $model->get_promo($this->customer , 1);
 		
 		if(isset($promo)){

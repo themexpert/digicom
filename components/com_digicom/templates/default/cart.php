@@ -209,7 +209,7 @@ $tax = $this->tax;
 							<div class="digi_error alert alert-warning">
 								<?php echo $this->promoerror; ?>
 								<?php if($tax['promo'] <= 0 && $this->promocode != ''):?>
-									<?php echo JText::_('COM_DIGICOM_PROMO_NO_ACCESS');?>
+									<?php echo JText::_('COM_DIGICOM_PROMO_NOT_APPLICABLE');?>
 								<?php endif;?>
 							</div>
 						<?php endif;?>
