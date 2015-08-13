@@ -202,6 +202,7 @@ class DigiComModelDiscount extends JModelAdmin
 		}
 
 		if(parent::save($data)){
+			
 			//hook the files here
 			$recordId = $this->getState('discount.id');
 

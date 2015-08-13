@@ -77,7 +77,7 @@ Joomla.submitbutton = function(task)
 }
 </script>
 
-<form action="index.php?option=com_digicom&controller=promos" method="post" name="adminForm" id="adminForm" class="form-horizontal">
+<form action="index.php?option=com_digicom&view=discount" method="post" name="adminForm" id="adminForm" class="form-horizontal">
 	<?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="">
 		<?php echo $this->sidebar; ?>
@@ -185,43 +185,7 @@ Joomla.submitbutton = function(task)
 			</div>
 
 		</div>
-
-		<!--
-		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_DIGICOM_DISCOUNT_REPORTS');?></legend>
-			<?php
-			if ($this->item->codeend != $nullDate) {
-				$period = $this->item->codeend - time(); //$promo->codestart;
-				$days = (int ) ($period / (3600 * 24)) ;
-				$left = $period % (3600 * 24);
-				$hours = (int ) ($left / 3600 );
-				$mins = (int )(($left - $hours*3600)/60) ;//$left % (3600 );
-
-			} else {
-				$period = 0;// $promo->codeend - time(); //$promo->codestart;
-				$days = JText::_("COM_DIGICOM_UNLIMITED");//(int ) ($period / (3600 * 24)) ;
-				$left = JText::_("COM_DIGICOM_UNLIMITED");//$period % (3600 * 24);
-				$hours = JText::_("COM_DIGICOM_UNLIMITED");//(int ) ($left / 3600 );
-				$mins = JText::_("COM_DIGICOM_UNLIMITED");//(int )(($left - $hours*3600)/60) ;//$left % (3600 );
-			}
-			$codelimit = ($this->item->codelimit != 0)?$this->item->codelimit:JText::_("COM_DIGICOM_INFINITE");
-			$codeleft = ($this->item->codelimit != 0)?($this->item->codelimit - $this->item->used):JText::_("COM_DIGICOM_INFINITE");
-			?>
-			<table class="table" border="0">
-				<tr>
-					<td><h3><?php echo JText::_("COM_DIGICOM_DISCOUNT_REPORTS_TOTAL_USAGES")." <small>".$codelimit;?></small></h3></td>
-					<td><h3><?php echo JText::_("COM_DIGICOM_DISCOUNT_REPORTS_REMAINING_USAGES")." <small>".$codeleft;?></small></h3></td>
-					<td><h3><?php echo JText::_("COM_DIGICOM_DISCOUNT_REPORTS_TOTAL_USED")." <small>".$this->item->used;?></small></h3></td>
-				</tr>
-				<tr>
-					<td><?php echo JText::_("COM_DIGICOM_DISCOUNT_REPORTS_TIME_UNTIL_EXPIRE") ." ". $days ." ". JText::_("COM_DIGICOM_DAYS"); ?></td>
-					<td><?php echo $hours ." ". JText::_("COM_DIGICOM_HOURS"); ?></td>
-					<td><?php echo $mins ." ". JText::_("COM_DIGICOM_MINUTES"); ?></td>
-				</tr>
-
-			</table>
-		</fieldset>
-		-->
+		
 		<?php
 		echo JHtml::_('bootstrap.endTab');
 		

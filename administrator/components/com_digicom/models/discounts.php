@@ -53,7 +53,7 @@ class DigiComModelDiscounts extends JModelList {
 	protected function getListQuery()
 	{
 		$promosearch = JRequest::getVar("promosearch", "");
-		$condition = JRequest::getVar("condition", '1');
+		$condition = JRequest::getVar("condition", '-1');
 		$status = JRequest::getVar("status", '');
 		$where = array();
 
@@ -67,13 +67,13 @@ class DigiComModelDiscounts extends JModelList {
 			$where[] = "(published='$status')";
 		}
 
-		if($condition == 0)
+		if($condition == 0) // expired
 		{
-			$where[] = "(( `codestart` >= UNIX_TIMESTAMP() ) OR  ( `codeend` <= UNIX_TIMESTAMP() AND `codeend`<>0 ) OR ( `codestart` <= UNIX_TIMESTAMP() AND `codeend`<>0 ) OR ( `codelimit` = `used` AND `codelimit` > 0 ))";
+			$where[] = "( `codestart` >= UNIX_TIMESTAMP() ) OR ( `codeend` <= UNIX_TIMESTAMP() ) OR ( `codelimit` = `used` AND `codelimit` > 0 )";
 		}
-		elseif ($condition == 1)
+		elseif ($condition == 1) // active
 		{
-			$where[] = "((codestart<=UNIX_TIMESTAMP() AND codeend>=UNIX_TIMESTAMP()) OR (codestart<=UNIX_TIMESTAMP() AND codeend=0)) AND (codelimit=0 OR codelimit>used)";
+			$where[] = "( `codestart` <= UNIX_TIMESTAMP()  AND  `codeend` >= UNIX_TIMESTAMP() ) AND ( codelimit=0 OR codelimit>used )";
 		}
 
 		$sql = "select *
@@ -102,7 +102,7 @@ class DigiComModelDiscounts extends JModelList {
 		return $result;
 	}
 
-	function getlistPromosValid () {
+	function getlistPromosValid_x () {
 		if (empty ($this->_valid_promos)) {
 
 			$sql = "select * from #__digicom_promocodes order by id desc";
@@ -195,7 +195,7 @@ class DigiComModelDiscounts extends JModelList {
 		}
 	}
 
-	function store()
+	function store_x()
 	{
 		$item = $this->getTable('Discount');
 		$data = JRequest::get('post');
