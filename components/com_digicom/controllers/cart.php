@@ -307,7 +307,7 @@ class DigiComControllerCart extends JControllerLegacy
 
 		// Check Login
 		if(!$user->id or $this->_customer->_user->id < 1){
- 			$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=register&layout=register_cart&return=".$return));
+ 			$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=register&layout=register&return=".$return));
 			return true;
 		}
 

@@ -9,12 +9,15 @@
 
 defined('_JEXEC') or die;
 
+jimport('joomla.html.pane');
+
 JHtml::_('jquery.framework');
+JHtml::_('jquery.ui');
 JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.tooltip');
 JHTML::_("behavior.calendar");
 JHtml::_('behavior.keepalive');
-jimport('joomla.html.pane');
+JHtml::_('formbehavior.chosen');
 
 $document = JFactory::getDocument();
 $app = JFactory::getApplication();
@@ -65,9 +68,7 @@ $doc->addScriptDeclaration( $ajax );
 ?>
 
 <script language="javascript" type="text/javascript">
-//	function submitbutton(pressbutton) {
-//		submitform( pressbutton );
-//	}
+
 Joomla.submitbutton = function(task)
 {
 	if (task == 'discount.cancel' || document.formvalidator.isValid(document.id('adminForm')))
