@@ -140,7 +140,7 @@ class  plgDigiCom_PayPaypal extends JPlugin
 		$params 		= $this->params;
 		$secure_post 	= $params->get('secure_post');
 		$sandbox 		= $params->get('sandbox');
-		$vars->sandbox = $sandbox;
+		$vars->sandbox 	= $sandbox;
 		$vars->action_url = plgDigiCom_PayPaypalHelper::buildPaymentSubmitUrl($secure_post , $sandbox);
 
 		//Take this receiver email address from plugin if component not provided it
