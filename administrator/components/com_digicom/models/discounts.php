@@ -69,11 +69,11 @@ class DigiComModelDiscounts extends JModelList {
 
 		if($condition == 0) // expired
 		{
-			$where[] = "( `codestart` >= UNIX_TIMESTAMP() ) OR ( `codeend` <= UNIX_TIMESTAMP() ) OR ( `codelimit` = `used` AND `codelimit` > 0 )";
+			$where[] = "( `codestart` >= now() ) OR ( `codeend` <= now() ) OR ( `codelimit` = `used` AND `codelimit` > 0 )";
 		}
 		elseif ($condition == 1) // active
 		{
-			$where[] = "( `codestart` <= UNIX_TIMESTAMP()  AND  `codeend` >= UNIX_TIMESTAMP() ) AND ( codelimit=0 OR codelimit>used )";
+			$where[] = "( `codestart` <= now()  AND  `codeend` >= now() ) AND ( codelimit=0 OR codelimit>used )";
 		}
 
 		$sql = "select *
