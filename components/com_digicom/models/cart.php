@@ -932,7 +932,7 @@ class DigiComModelCart extends JModelItem
 		}
 
 		if($type == 'complete_order'){
-			DigiComSiteHelperLicense::updateLicenses($order_id, $orderTable->number_of_products, $items, $customer , $type);
+			DigiComSiteHelperLicense::updateLicenses($order_id, $orderTable->number_of_products, $items, $orderTable->userid , $type);
 		}
 
 		$comment = array();

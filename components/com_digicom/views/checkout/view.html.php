@@ -59,7 +59,7 @@ class DigiComViewCheckout extends JViewLegacy
 		//prepare the url
 		///processPayment
 		$url = JRoute::_(JURI::root()."index.php?option=com_digicom&task=cart.processPayment&processor={$pg_plugin}&order_id=".$params['order_id']."&sid=".$customer->_sid, true, false);
-		$vars->url = JRoute::_("index.php?option=com_digicom&view=cart");
+		$vars->url = JRoute::_(JURI::root()."index.php?option=com_digicom&view=cart");
 		//echo $url;die;
 		$vars->return = $vars->notify_url = $url;
 		$vars->currency_code = $configs->get('currency','USD');
