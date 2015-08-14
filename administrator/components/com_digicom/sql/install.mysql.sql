@@ -365,11 +365,12 @@ DROP TABLE IF EXISTS `#__digicom_session`;
 CREATE TABLE IF NOT EXISTS `#__digicom_session` (
   `sid` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) NOT NULL,
-  `create_time` int(11) NOT NULL DEFAULT '0',
+  `create_time` DATETIME NOT NULL,
   `cart_details` text NOT NULL,
   `transaction_details` text NOT NULL,
   `shipping_details` int(11) NOT NULL DEFAULT '0',
   `processor` varchar(250) NOT NULL,
+  `key` VARCHAR( 255 ) NOT NULL ,
   PRIMARY KEY (`sid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 

@@ -33,3 +33,7 @@ UPDATE  `#__content_types` SET content_history_options = '{"formFile":"administr
 ALTER TABLE  `#__digicom_promocodes` 
 CHANGE  `codestart`  `codestart` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
 CHANGE  `codeend`  `codeend` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00';
+
+ALTER TABLE  `#__digicom_session` 
+CHANGE `create_time` `create_time` DATETIME NOT NULL,
+ADD `key` VARCHAR( 255 ) NOT NULL ;
