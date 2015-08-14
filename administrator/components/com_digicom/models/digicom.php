@@ -35,68 +35,85 @@ class DigiComModelDigiCom extends JModelList
 		//purchase_date
 		$db = JFactory::getDBO();
 		$report = JRequest::getVar("report", "monthly");
-		$start_date = "";
-		$end_date = "";
-
-		
 		$return = $this->getStartEndDate($report);
-		$startdate_str = $return["0"];
-		$enddate_str = $return["1"];
+		// $start_date = "";
+		// $end_date = "";
 
-		if(trim($startdate_str) != ""){
-			$start_date = strtotime($startdate_str);
-		}
-
-		if(trim($enddate_str) != ""){
-			$end_date = strtotime($enddate_str);
-			if($end_date === FALSE){
-				$enddate_str = date("Y-M-d");
-				$end_date = strtotime($enddate_str);
-			}
-			$end_date = strtotime("+1 days", $end_date);
-		}
 		
-		$and = "";
-		$and_products = "";
-		if(trim($start_date) != ""){
-			$start_date = date("Y-m-d H:i:s", $start_date);
-			$and_products .= " and od.purchase_date >= '".$start_date."'";
-			$start_date = strtotime($start_date);
-			$and .= " and o.order_date >= ".$start_date;
-		}
-		if(trim($end_date) != ""){
-			$end_date = date("Y-m-d H:i:s", $end_date);
-			$and_products .= " and od.purchase_date < '".$end_date."'";
-			$end_date = strtotime($end_date);
-			$and .= " and o.order_date < ".$end_date;
-		}
+		// $return = $this->getStartEndDate($report);
+		// //print_r($return );die;
+		// $startdate_str = $return["0"];
+		// $enddate_str = $return["1"];
+
+		// if(trim($startdate_str) != ""){
+		// 	$start_date = strtotime($startdate_str);
+		// }
+
+		// if(trim($enddate_str) != ""){
+		// 	$end_date = strtotime($enddate_str);
+		// 	if($end_date === FALSE){
+		// 		$enddate_str = date("Y-M-d");
+		// 		$end_date = strtotime($enddate_str);
+		// 	}
+		// 	$end_date = strtotime("+1 days", $end_date);
+		// }
+		
+		// $and = "";
+		// $and_products = "";
+		// if(trim($start_date) != ""){
+		// 	$start_date = date("Y-m-d H:i:s", $start_date);
+		// 	$and_products .= " and od.purchase_date >= '".$start_date."'";
+		// 	$start_date = strtotime($start_date);
+		// 	$and .= " and o.order_date >= ".$start_date;
+		// }
+		// if(trim($end_date) != ""){
+		// 	$end_date = date("Y-m-d H:i:s", $end_date);
+		// 	$and_products .= " and od.purchase_date < '".$end_date."'";
+		// 	$end_date = strtotime($end_date);
+		// 	$and .= " and o.order_date < ".$end_date;
+		// }
+		/*
 		$sql = "SELECT SUM(CASE WHEN o.`amount_paid` = '-1' THEN o.`amount` ELSE o.`amount_paid` END) as total
 				FROM #__digicom_orders AS o
 				WHERE 1=1 ".$and;
+		
+		*/
+		$sql = "SELECT SUM(CASE WHEN `o`.`amount_paid` = '-1' THEN `o`.`amount` ELSE `o`.`amount_paid` END) as `total`
+				FROM `#__digicom_orders` AS `o`
+				WHERE `o`.`order_date` between '".$return[0] ."' AND curdate()" ;
 		$db->setQuery($sql);
 		$db->query();
 		$total = $db->loadResult();
-		
+		//print_r($total);die;
 		// Get chargebacks total
+		// $sql = "SELECT SUM(od.`cancelled_amount`) as total
+		// 		FROM #__digicom_orders_details AS od
+		// 		WHERE 1=1 AND od.cancelled=1 ".$and_products;
 		$sql = "SELECT SUM(od.`cancelled_amount`) as total
 				FROM #__digicom_orders_details AS od
-				WHERE 1=1 AND od.cancelled=1 ".$and_products;
+				WHERE 1=1 AND od.cancelled=1 AND `od`.`purchase_date` between '".$return[0] ."' AND curdate()";
 		$db->setQuery($sql);
 		$db->query();
 		$chargebacks = $db->loadResult();
 		
 		// Get chargebacks total
+		//$sql = "SELECT SUM(od.`cancelled_amount`) as total
+		//		FROM #__digicom_orders_details AS od
+		//		WHERE 1=1 AND od.cancelled=2 ".$and_products;
 		$sql = "SELECT SUM(od.`cancelled_amount`) as total
 				FROM #__digicom_orders_details AS od
-				WHERE 1=1 AND od.cancelled=2 ".$and_products;
+				WHERE 1=1 AND od.cancelled=2 AND `od`.`purchase_date` between '".$return[0] ."' AND curdate()";
 		$db->setQuery($sql);
 		$db->query();
 		$refunds = $db->loadResult();
 		
 		// Get deleted total
+		// $sql = "SELECT SUM(od.`cancelled_amount`) as total
+		// 		FROM #__digicom_orders_details AS od
+		// 		WHERE 1=1 AND od.cancelled=3 ".$and_products;
 		$sql = "SELECT SUM(od.`cancelled_amount`) as total
 				FROM #__digicom_orders_details AS od
-				WHERE 1=1 AND od.cancelled=3 ".$and_products;
+				WHERE 1=1 AND od.cancelled=3 AND `od`.`purchase_date` between '".$return[0] ."' AND curdate()";
 		$db->setQuery($sql);
 		$db->query();
 		$deleted = $db->loadResult();
@@ -107,7 +124,9 @@ class DigiComModelDigiCom extends JModelList
 	function getreportOrders(){
 		$db = JFactory::getDBO();
 		$report = JRequest::getVar("report", "monthly");
-		$start_date = "";
+		$return = $this->getStartEndDate($report);
+
+		/*$start_date = "";
 		$end_date = "";
 
 		$return = $this->getStartEndDate($report);
@@ -139,18 +158,24 @@ class DigiComModelDigiCom extends JModelList
 			$end_date = strtotime($end_date);
 
 			$and .= " and o.order_date < ".$end_date;
-		}
+		}*/
 
+		// $sql = "select count(*)
+		// 		from #__digicom_orders o
+		// 		where 1=1 ".$and;
 		$sql = "select count(*)
 				from #__digicom_orders o
-				where 1=1 ".$and;
+				where 1=1 AND `o`.`order_date` between '".$return[0] ."' AND curdate()";
 		$db->setQuery($sql);
 		$db->query();
 		$total = $db->loadResult();
 		
+		// $sql = "select count(*)
+		// 		from #__digicom_orders o
+		// 		where 1=1 and o.status='Pending' ".$and;
 		$sql = "select count(*)
-				from #__digicom_orders o
-				where 1=1 and o.status='Pending' ".$and;
+		 		from #__digicom_orders o
+		 		where 1=1 and o.status='Pending' AND `o`.`order_date` between '".$return[0] ."' AND curdate()";
 		$db->setQuery($sql);
 		$db->query();
 		$pending = $db->loadResult();
@@ -184,7 +209,7 @@ class DigiComModelDigiCom extends JModelList
 		return $total;
 	}
 
-	function getreportLicenses($type){
+	/*function getreportLicenses($type){
 		$db = JFactory::getDBO();
 		$report = JRequest::getVar("report", "daily");
 		$start_date = "";
@@ -283,7 +308,7 @@ class DigiComModelDigiCom extends JModelList
 		{
 			return $refunds;
 		}
-	}
+	}*/
 
 	public function getConfigs(){
 		$comInfo = JComponentHelper::getComponent('com_digicom');

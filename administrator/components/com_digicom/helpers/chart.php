@@ -95,9 +95,9 @@ class DigiComHelperChart {
 		}
 
 		$startdate = date("Y-m-".$day." 00:00:00");
-		$start_date_int = strtotime($startdate);
-		$enddate = date('Y-m-d 00:00:0', strtotime($startdate . ' + 1 day'));
-		$end_date_int = strtotime($enddate);
+		//$start_date_int = strtotime($startdate);
+		//$enddate = date('Y-m-d 00:00:0', strtotime($startdate . ' + 1 day'));
+		//$end_date_int = strtotime($enddate);
 
 		//$and = "";
 		//$and .= " and `order_date` >= '".$start_date_int."'";
@@ -112,9 +112,10 @@ class DigiComHelperChart {
 			$query->join('inner',$db->quoteName('#__digicom_orders_details','od') . ' ON ('.$db->quoteName('od.orderid').'='.$db->quoteName('o.id').')');
 		}
 
-		$query->where($db->quoteName('o.order_date')." >= ".$db->quote($start_date_int));
-		$query->where($db->quoteName('o.order_date')." < ".$db->quote($end_date_int));
-
+		// $query->where($db->quoteName('o.order_date')." >= ".$db->quote($start_date_int));
+		// $query->where($db->quoteName('o.order_date')." < ".$db->quote($end_date_int));
+		$query->where($db->quoteName('o.order_date')." BETWEEN '".$startdate."' AND curdate()");
+		
 		if($byproduct){
 			$query->where($db->quoteName('od.productid')." = " . $db->quote($productid));
 		}
