@@ -166,8 +166,9 @@ class DigiComHelperChart {
 			$query->join('inner',$db->quoteName('#__digicom_orders_details','od') . ' ON ('.$db->quoteName('od.orderid').'='.$db->quoteName('o.id').')');
 		}
 
-		$query->where($db->quoteName('o.order_date')." >= ".$db->quote($start_date_int));
-		$query->where($db->quoteName('o.order_date')." < ".$db->quote($end_date_int));
+		// $query->where($db->quoteName('o.order_date')." >= ".$db->quote($start_date_int));
+		// $query->where($db->quoteName('o.order_date')." < ".$db->quote($end_date_int));
+		$query->where($db->quoteName('o.order_date')." BETWEEN '".$startdate."' AND '".$enddate."'");
 
 		if($byproduct){
 			$query->where($db->quoteName('od.productid')." = " . $db->quote($productid));
@@ -225,8 +226,9 @@ class DigiComHelperChart {
 			$query->join('inner',$db->quoteName('#__digicom_orders_details','od') . ' ON ('.$db->quoteName('od.orderid').'='.$db->quoteName('o.id').')');
 		}
 
-		$query->where($db->quoteName('o.order_date')." >= ".$db->quote($start_date_int));
-		$query->where($db->quoteName('o.order_date')." < ".$db->quote($end_date_int));
+		// $query->where($db->quoteName('o.order_date')." >= ".$db->quote($start_date_int));
+		// $query->where($db->quoteName('o.order_date')." < ".$db->quote($end_date_int));
+		$query->where($db->quoteName('o.order_date')." BETWEEN ".$db->quote($startdate) ." AND ".$db->quote($enddate));
 
 		if($byproduct){
 			$query->where($db->quoteName('od.productid')." = " . $db->quote($productid));
