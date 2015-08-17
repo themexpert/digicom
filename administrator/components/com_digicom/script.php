@@ -254,12 +254,14 @@ class Com_DigiComInstallerScript
 	* update sql first for broken rc2 installation
 	*/
 	function updateBrokenRc2(){
-		//ALTER TABLE  `#__digicom_log` DROP PRIMARY KEY,
-		//ALTER TABLE `#__digicom_customers` firstname, lastname
+		
 		$db = JFactory::getDbo();
 		$db->setQuery("ALTER TABLE `#__digicom_log` CHANGE `id` `id` INT( 11 ) NOT NULL, DROP PRIMARY KEY");
 		$db->execute();
 
+		$db->setQuery("ALTER TABLE `#__digicom_customers` DROP `name`");
+		$db->execute();
+		
 		$db->setQuery("ALTER TABLE `#__digicom_customers` ADD `firstname` VARCHAR( 255 ) NOT NULL AFTER `id`");
 		$db->execute();
 
