@@ -18,6 +18,54 @@ defined('_JEXEC') or die;
  */
 class Com_DigiComInstallerScript
 {
+	/*
+	 * $parent is the class calling this method.
+	 * $type is the type of change (install, update or discover_install, not uninstall).
+	 * preflight runs before anything else and while the extracted files are in the uploaded temp folder.
+	 * If preflight returns false, Joomla will abort the update and undo everything already done.
+	 */
+	function preflight( $type, $parent ) {
+		$jversion = new JVersion();
+ 
+		// Installing component manifest file version
+		$this->release = $parent->get( "manifest" )->version;
+ 
+		// Manifest file minimum Joomla version
+		$this->minimum_joomla_release = $parent->get( "manifest" )->attributes()->version;   
+ 
+		// Show the essential information at the install/update back-end
+		echo '<p>Installing component manifest file version = ' . $this->release;
+		echo '<br />Current manifest cache commponent version = ' . $this->getParam('version');
+		echo '<br />Installing component manifest file minimum Joomla version = ' . $this->minimum_joomla_release;
+		echo '<br />Current Joomla version = ' . $jversion->getShortVersion();
+ 
+		// abort if the current Joomla release is older
+		if( version_compare( $jversion->getShortVersion(), $this->minimum_joomla_release, 'lt' ) ) {
+			Jerror::raiseWarning(null, 'Cannot install com_digicom in a Joomla release prior to '.$this->minimum_joomla_release);
+			return false;
+		}
+ 
+		// abort if the component being installed is not newer than the currently installed version
+		if ( $type == 'update' ) {
+			$oldRelease = $this->getParam('version');
+			$rel = $oldRelease . ' to ' . $this->release;
+			if ( version_compare( $this->release, $oldRelease, 'le' ) ) {
+				
+				if($this->release == '1.0.0-rc.2'){
+					$this->updateBrokenRc2();
+				}
+
+				//Jerror::raiseWarning(null, 'Incorrect version sequence. Cannot upgrade ' . $rel);
+				//return false;
+			}
+		}
+		else 
+		{ 
+			$rel = $this->release; 
+		}
+
+	}
+
 	/**
 	 * Function to perform changes during install
 	 *
@@ -199,5 +247,36 @@ class Com_DigiComInstallerScript
 		}
 
 		return true;
+	}
+
+
+	/*
+	* update sql first for broken rc2 installation
+	*/
+	function updateBrokenRc2(){
+		//ALTER TABLE  `#__digicom_log` DROP PRIMARY KEY,
+		//ALTER TABLE `#__digicom_customers` firstname, lastname
+		$db = JFactory::getDbo();
+		$db->setQuery("ALTER TABLE `#__digicom_log` CHANGE `id` `id` INT( 11 ) NOT NULL, DROP PRIMARY KEY");
+		$db->execute();
+
+		$db->setQuery("ALTER TABLE `#__digicom_customers` ADD `firstname` VARCHAR( 255 ) NOT NULL AFTER `id`");
+		$db->execute();
+
+		$db->setQuery("ALTER TABLE `#__digicom_customers` ADD `lastname` VARCHAR( 255 ) NOT NULL AFTER `firstname`");
+		$db->execute();
+
+		return true;
+
+	}
+
+	/*
+	 * get a variable from the manifest file (actually, from the manifest cache).
+	 */
+	function getParam( $name ) {
+		$db = JFactory::getDbo();
+		$db->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_digicom"');
+		$manifest = json_decode( $db->loadResult(), true );
+		return $manifest[ $name ];
 	}
 }
