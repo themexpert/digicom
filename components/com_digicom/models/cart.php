@@ -888,7 +888,7 @@ class DigiComModelCart extends JModelItem
 				'plugin' => $pg_plugin
 			);
 			//$callback, $callbackid, $status = 'Active', $type = 'payment'
-			$log = DigiComSiteHelperLog::getLog('cart proccessSuccess', $order_id, $sid, $status, $logtype);
+			$log = DigiComSiteHelperLog::getLog('cart proccessSuccess', $order_id, $status, $logtype);
 			//print_r($log);die;
 			if(
 					(empty($log->id) or $log->id == 0)
@@ -900,6 +900,10 @@ class DigiComModelCart extends JModelItem
 				DigiComSiteHelperLog::setLog($logtype, 'cart proccessSuccess', $order_id, 'Order id#'.$order_id.' updated & method is '.$pg_plugin, json_encode($info),$status);
 
 				$this->updateOrder($order_id,$result,$data,$pg_plugin,$status,$items,$customer);
+
+			}else{
+
+				DigiComSiteHelperLog::setLog($logtype, 'cart proccessSuccess', $order_id, 'Post recieved for Order id#'.$order_id.' from '.$pg_plugin, json_encode($info),$status);
 
 			}
 
