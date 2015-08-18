@@ -870,7 +870,7 @@ class DigiComModelCart extends JModelItem
 			if($data['status'] == 'C'){
 				$msg 		= JText::_("COM_DIGICOM_PAYMENT_SUCCESSFUL_THANK_YOU");
 				$status = "Active";
-				$logtype = "payment"
+				$logtype = "payment";
 				$app->enqueueMessage($msg,'message');
 			} elseif($data['status'] == 'P') {
 				$status = "Pending";
@@ -887,10 +887,21 @@ class DigiComModelCart extends JModelItem
 				'data' => $data,
 				'plugin' => $pg_plugin
 			);
-			
-			DigiComSiteHelperLog::setLog($logtype, 'cart proccessSuccess', $order_id, 'Order id#'.$order_id.' updated & method is '.$pg_plugin, json_encode($info),$status);
+			//$callback, $callbackid, $status = 'Active', $type = 'payment'
+			$log = DigiComSiteHelperLog::getLog('cart proccessSuccess', $order_id, $sid, $status, $logtype);
+			//print_r($log);die;
+			if(
+					(empty($log->id) or $log->id == 0)
+					or
+					$log->status != 'Active'
+			)
+			{
 
-			$this->updateOrder($order_id,$result,$data,$pg_plugin,$status,$items,$customer);
+				DigiComSiteHelperLog::setLog($logtype, 'cart proccessSuccess', $order_id, 'Order id#'.$order_id.' updated & method is '.$pg_plugin, json_encode($info),$status);
+
+				$this->updateOrder($order_id,$result,$data,$pg_plugin,$status,$items,$customer);
+
+			}
 
 		}
 
