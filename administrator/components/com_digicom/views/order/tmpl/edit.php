@@ -183,21 +183,47 @@ $input->set('layout', 'dgtabs');
 			<?php echo JHtml::_('bootstrap.endTab'); ?>
 
 			<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'log', JText::_('COM_DIGICOM_ORDER_DETAILS_LOG_TITLE', true)); ?>
-				<p class="alert"><?php echo JText::_('COM_DIGICOM_ORDER_DETAILS_LOG_COMING');?></p> 
+
 				<table class="adminlist table table-striped">
 					<thead>
 						<tr>
 							<th>
 								<?php echo JText::_( 'COM_DIGICOM_ID' ); ?>
 							</th>
+							<th>
+								<?php echo JText::_( 'COM_DIGICOM_PRODUCTS_TYPE' ); ?>
+							</th>
+							<th>
+								<?php echo JText::_( 'COM_DIGICOM_MESSAGE' ); ?>
+							</th>
+							<th>
+								<?php echo JText::_( 'COM_DIGICOM_STATUS' ); ?>
+							</th>
+							<th>
+								<?php echo JText::_( 'JDATE' ); ?>
+							</th>
 						</tr>
 					</thead>
 					<tbody>
+						<?php foreach($order->logs as $key=>$log): ?>
 						<tr>
 							<td>
-								1
+								<?php echo $log->id;?>
+							</td>
+							<td>
+								<?php echo $log->type;?>
+							</td>
+							<td>
+								<?php echo $log->message;?>
+							</td>
+							<td>
+								<?php echo $log->status;?>
+							</td>
+							<td>
+								<?php echo $log->created;?>
 							</td>
 						</tr>
+						<?php endforeach;?>
 					</tbody>
 
 				</table>
