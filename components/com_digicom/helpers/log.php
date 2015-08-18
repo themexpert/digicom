@@ -48,6 +48,29 @@ class DigiComSiteHelperLog {
     }
 
     /*
+    * method getLog
+    * check if any log for specific event with callback n callbackid match
+    */
+
+    public static function getLog($callback, $callbackid, $userid, $status = 'Active', $type = 'payment')
+    {
+
+      $logTable = JTable::getInstance('log','Table');
+      $logTable->load(
+        array(
+          'type'        => $type,
+          'callback'    => $callback,
+          'callbackid'  => $callbackid,
+          'userid'      => $userid,
+          'status'      => $status
+        )
+      );
+
+      return $logTable;
+
+    }
+
+    /*
    * get the ip
    */
     public static function get_ip() {
