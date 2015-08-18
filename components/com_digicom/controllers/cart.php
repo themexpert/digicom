@@ -555,15 +555,22 @@ class DigiComControllerCart extends JControllerLegacy
 	function processPayment()
 	{
 
-		$session = JFactory::getSession();
-	 	$app		= JFactory::getApplication();
+		$session 	= JFactory::getSession();
+	 	$app			= JFactory::getApplication();
 		$input 		= $app->input;
 
 		$processor 	= $session->get('processor','');
-		if(empty($processor)) $processor = $input->get('processor','');
+		if(empty($processor)){
+			$processor = $input->get('processor','');
+		}
 		$order_id 	= $input->get('order_id',0);
-		$sid 		= $input->get('sid','');
-		$post 		= $input->post->getArray();
+		$sid 				= $input->get('sid','');
+		
+		if(empty($sid)){
+			$sid = $input->get('user_id','');
+		}
+
+		$post 			= $input->post->getArray();
 
 		if($processor == ''){
 			$app->redirect(JRoute::_('index.php?option=com_digicom&view=orders'),JText::_('COM_DIGICOM_PAYMENT_NO_PROCESSOR_SELECTED'));
@@ -586,12 +593,9 @@ class DigiComControllerCart extends JControllerLegacy
 		$products = array();
 		if(isset($items) && count($items) > 0){
 			foreach($items as $key=>$product){
-				if($key >= 0)
-				{
 					if(trim($product->name) != ""){
 						$products[] = trim($product->name);
 					}
-				}
 			}
 		}
 
