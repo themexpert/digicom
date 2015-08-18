@@ -154,6 +154,7 @@ class DigiComModelOrder extends JModelAdmin
 		{
 
 			$item->products = $this->getProducts($item->id);
+			$item->logs 			= $this->getLogs($item->id);
 
 		}
 
@@ -168,6 +169,17 @@ class DigiComModelOrder extends JModelAdmin
 		$db->setQuery($sql);
 		return $db->loadObjectList();
 	}
+
+
+	public function getLogs($order)
+	{
+		$db = JFactory::getDBO();
+		$sql = "SELECT * FROM #__digicom_log WHERE callbackid='". $order ."'";
+		$db->setQuery($sql);
+		return $db->loadObjectList();
+	}
+
+
 
 	/**
 	 * Method to validate the form data.
