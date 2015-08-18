@@ -31,17 +31,31 @@ class DigiComSiteHelperEmail {
 		$my = JFactory::getUser($uid);
 
 		$database = JFactory::getDBO();
-		$configs = JModelLegacy::getInstance( "Config", "digicomModel" );
-		$configs = $configs->getConfigs();
+		$configs = JComponentHelper::getComponent('com_digicom')->params;
+		// Replace all variables in template
+		$uri = JURI::getInstance();
+
 		$order = JTable::getInstance( "Order" ,"Table");
 		$order->load( $orderid );
+
+		// site name n url
+		$sitename = (trim( $configs->get('store_name','DigiCom Store') ) != '') ? $configs->get('store_name','DigiCom Store') : $site_config->get( 'sitename' );
+		$siteurl = (trim( $configs->get('store_url','') ) != '') ? $configs->get('store_url','') : $uri->base();
 
 		//echo $type;die;
 		$email_settings = $configs->get('email_settings');
 		$email_header_image = $email_settings->email_header_image;//jform[email_settings][email_header_image]
 
 		if(!empty($email_header_image)){
-			$email_header_image = '<img src="'.JRoute::_(JURI::root().$email_header_image).'" />';
+			if(filter_var($email_header_image, FILTER_VALIDATE_URL)){
+			  $imgLink = $email_header_image;
+			}else{
+				$imgLink = JURI::root() . $email_header_image;
+			}
+
+			$email_header_image = '<img src="'.JRoute::_($imgLink).'" />';
+		}else{
+			$email_header_image = $sitename;
 		}
 		$phone = $configs->get('phone');
 		$address = $configs->get('address');
@@ -108,11 +122,6 @@ class DigiComSiteHelperEmail {
 		$message = $emailbody;
 		$subject = $Subject;
 
-		// Replace all variables in template
-		$uri = JURI::getInstance();
-		$sitename = (trim( $configs->get('store_name','DigiCom Store') ) != '') ? $configs->get('store_name','DigiCom Store') : $site_config->get( 'sitename' );
-		$siteurl = (trim( $configs->get('store_url','') ) != '') ? $configs->get('store_url','') : $uri->base();
-
 		$message = str_replace( "[SITENAME]", $sitename, $message );
 
 		$message = str_replace( "../%5BSITEURL%5D", $siteurl, $message );
@@ -133,7 +142,7 @@ class DigiComSiteHelperEmail {
 		$message = str_replace( "[CUSTOMER_NAME]", $my->name, $message );
 		$message = str_replace( "[CUSTOMER_EMAIL]", $my->email, $message );
 
-		$message = str_replace( "[ORDER_DATE]", date( $configs->get('time_format','d-m-Y'), $timestamp), $message );
+		$message = str_replace( "[ORDER_DATE]", date( $configs->get('time_format','d-m-Y'), strtotime($timestamp) ), $message );
 		$message = str_replace( "[ORDER_ID]", $orderid, $message );
 		$message = str_replace( "[ORDER_AMOUNT]", $amount, $message );
 		$message = str_replace( "[NUMBER_OF_PRODUCTS]", $number_of_products, $message );
@@ -167,6 +176,10 @@ class DigiComSiteHelperEmail {
 			$displayed[] = $item->name;
 		}
 		$message = str_replace( "[PRODUCTS]", $product_list, $message );
+		$message = str_replace( "{site_title}", $sitename, $message );
+		$message = str_replace( "{order_number}", $orderid, $message );
+		$message = str_replace( "{order_date}", date( $configs->get('time_format','d-m-Y'), strtotime($timestamp) ), $message );
+
 		$email = new stdClass();
 		$email->body = $message;
 
@@ -181,7 +194,7 @@ class DigiComSiteHelperEmail {
 		$subject = str_replace( "[CUSTOMER_NAME]", $my->name, $subject );
 		$subject = str_replace( "[CUSTOMER_EMAIL]", $my->email, $subject );
 
-		$subject = str_replace( "[ORDER_DATE]", date( $configs->get('time_format','d-m-Y'), $timestamp ), $subject );
+		$subject = str_replace( "[ORDER_DATE]", date( $configs->get('time_format','d-m-Y'), strtotime($timestamp) ), $subject );
 		$subject = str_replace( "[ORDER_ID]", $orderid, $subject );
 		$subject = str_replace( "[ORDER_AMOUNT]", $amount, $subject );
 		$subject = str_replace( "[NUMBER_OF_PRODUCTS]", $number_of_products, $subject );
@@ -190,13 +203,7 @@ class DigiComSiteHelperEmail {
 
 		$subject = str_replace( "{site_title}", $sitename, $subject );
 		$subject = str_replace( "{order_number}", $orderid, $subject );
-		$subject = str_replace( "{order_date}", date( $configs->get('time_format','d-m-Y'), $timestamp ), $subject );
-
-		$message = str_replace( "{site_title}", $sitename, $message );
-		$message = str_replace( "{order_number}", $orderid, $message );
-		$message = str_replace( "{order_date}", date( $configs->get('time_format','d-m-Y'), $timestamp ), $message );
-
-
+		$subject = str_replace( "{order_date}", date( $configs->get('time_format','d-m-Y'), strtotime($timestamp) ), $subject );
 
 		$displayed = array();
 		$product_list = '';
@@ -239,13 +246,13 @@ class DigiComSiteHelperEmail {
 		}
 
 		// now override the value with digicom config
-        if(!empty($email_settings->from_name)){
-            $adminName2 = $email_settings->from_name;
-        }
-        if(!empty($email_settings->from_email)){
-            $adminEmail2 = $email_settings->from_email;
-        }
-        
+    if(!empty($email_settings->from_name)){
+        $adminName2 = $email_settings->from_name;
+    }
+    if(!empty($email_settings->from_email)){
+        $adminEmail2 = $email_settings->from_email;
+    }
+
 		$mailSender = JFactory::getMailer();
 		$mailSender->isHTML( true );
 		$mailSender->Encoding = 'base64';
