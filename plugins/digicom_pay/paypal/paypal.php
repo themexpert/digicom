@@ -51,7 +51,7 @@ class  plgDigiCom_PayPaypal extends JPlugin
 
 	/*
 	* method : onSidebarMenuItem
-	* its been used to set a short edit menu link to digicom 
+	* its been used to set a short edit menu link to digicom
 	* right sidebar
 	* return links to edit
 	*/
@@ -69,18 +69,18 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	* @layout = ask for tmpl file name, default is default, but can be used others name
 	* return propur file to take htmls
 	*/
-	function buildLayoutPath($layout) 
+	function buildLayoutPath($layout)
 	{
 		if(empty($layout)) $layout = "default";
-		
+
 		$app = JFactory::getApplication();
 
 		// core path
 		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/' . $layout . '.php';
-		
+
 		// override path from site active template
 		$override	= JPATH_BASE .'/templates/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout . '.php';
-		
+
 		if(JFile::exists($override))
 		{
 			$file = $override;
@@ -133,7 +133,7 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	* on transection process this function is being used to get html from component
 	* @dependent : self::buildLayout()
 	* @return html for view
-	* @vars : passed from component, all info regarding payment n order  
+	* @vars : passed from component, all info regarding payment n order
 	*/
 	function onTP_GetHTML($vars)
 	{
@@ -145,7 +145,7 @@ class  plgDigiCom_PayPaypal extends JPlugin
 
 		//Take this receiver email address from plugin if component not provided it
 		if(empty($vars->business)) $vars->business = $this->params->get('business');
-		
+
 		$html = $this->buildLayout($vars);
 		return $html;
 
