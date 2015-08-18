@@ -20,7 +20,9 @@ class DigiComSiteHelperLog {
     /*
      * setLog method
      * use to trigger event to set log
-     * @type = download,email,purchase,status
+     * @type = download,email,purchase,status,payment
+     * type : status is any change event
+     * type : payment is payment status active
      * @callback = from where event triggered or who did it
      * @message = short message about the event
      * @status = quick status about log event, if its complted or not
