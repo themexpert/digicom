@@ -265,17 +265,17 @@ class DigiComModelProduct extends JModelAdmin
 	{
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState('com_digicom.edit.product.data', array());
-		
+
 		if (empty($data))
 		{
 			$data = $this->getItem();
-			
+
 			// Prime some default values.
 			if ($this->getState('product.id') == 0)
 			{
 				$app = JFactory::getApplication();
 				$data->set('catid', $app->input->get('catid', $app->getUserState('com_digicom.product.filter.category_id'), 'int'));
-				
+
 				$data->set('product_type', $app->input->get('product_type', 'reguler'));
 
 			}
@@ -289,7 +289,7 @@ class DigiComModelProduct extends JModelAdmin
 					$item->id = $product;
 					$item->name = $tmp->name;
 					$item->price = $tmp->price;
-					
+
 					$data['bundle_product'][$i] = $item;
 					$i++;
 				}
@@ -350,7 +350,7 @@ class DigiComModelProduct extends JModelAdmin
 			$registry = new Registry;
 			$registry->loadString($item->metadata);
 			$item->metadata = $registry->toArray();
-			
+
 			if (!empty($item->id))
 			{
 				$item->tags = new JHelperTags;
@@ -370,6 +370,25 @@ class DigiComModelProduct extends JModelAdmin
 
 		}
 
+		// Load associated content items
+		$app = JFactory::getApplication();
+		$assoc = JLanguageAssociations::isEnabled();
+
+		if ($assoc)
+		{
+			$item->associations = array();
+
+			if ($item->id != null)
+			{
+				$associations = JLanguageAssociations::getAssociations('com_digicom', '#__digicom_products', 'com_digicom.product', $item->id);
+
+				foreach ($associations as $tag => $association)
+				{
+					$item->associations[$tag] = $association->id;
+				}
+			}
+		}
+
 		return $item;
 	}
 
@@ -387,6 +406,20 @@ class DigiComModelProduct extends JModelAdmin
 		$date = JFactory::getDate();
 		$user = JFactory::getUser();
 
+		// Set the publish date to now
+		$db = $this->getDbo();
+
+		if ($table->state == 1 && (int) $table->publish_up == 0)
+		{
+			$table->publish_up = JFactory::getDate()->toSql();
+		}
+
+		if ($table->state == 1 && intval($table->publish_down) == 0)
+		{
+			$table->publish_down = $db->getNullDate();
+		}
+
+
 		$table->name = htmlspecialchars_decode($table->name, ENT_QUOTES);
 		$table->alias = JApplicationHelper::stringURLSafe($table->alias);
 
@@ -402,7 +435,6 @@ class DigiComModelProduct extends JModelAdmin
 			// Set ordering to the last item if not set
 			if (empty($table->ordering))
 			{
-				$db = $this->getDbo();
 				$query = $db->getQuery(true)
 					->select('MAX(ordering)')
 					->from($db->quoteName('#__digicom_products'));
@@ -420,8 +452,14 @@ class DigiComModelProduct extends JModelAdmin
 			}
 		}
 
+		// Reorder the articles within the category so the new article is first
+		if (empty($table->id))
+		{
+			$table->reorder('catid = ' . (int) $table->catid . ' AND published >= 0');
+		}
+
 		// Increment the product version number.
-		//$table->version++;
+		$table->version++;
 	}
 
 	/**
@@ -452,7 +490,7 @@ class DigiComModelProduct extends JModelAdmin
 	 */
 	public function save($data)
 	{
-		
+
 		$app = JFactory::getApplication();
 
 		// Alter the name for save as copy
@@ -480,7 +518,8 @@ class DigiComModelProduct extends JModelAdmin
 			$data['attribs'] = (string) $registry;
 		}
 
-		if(parent::save($data)){
+		if(parent::save($data))
+		{
 			//hook the files here
 			$recordId = $this->getState('product.id');
 
@@ -512,7 +551,7 @@ class DigiComModelProduct extends JModelAdmin
 	            $bundle_category = $data['bundle_category'];
 	            $bundleTable->bundle_type = 'category';
 
-	            foreach($bundle_category as $bundle){          
+	            foreach($bundle_category as $bundle){
 	                $bundleTable->id = '';
 	                $bundleTable->product_id = $recordId;
 	                $bundleTable->bundle_id = $bundle;
@@ -522,28 +561,94 @@ class DigiComModelProduct extends JModelAdmin
 
 	        if (isset($data['bundle_product']) && is_array($data['bundle_product']))
 	        {
-	            
+
 	            $bTable = $this->getTable('Bundle');
 	            $bTable->removeUnmatchBundle($data['bundle_product'],$recordId,'product');
 
 	            $bundleTable = $this->getTable('Bundle');
 	            $bundle_product = $data['bundle_product'];
 	            $bundleTable->bundle_type = 'product';
-	            foreach($bundle_product as $bundle){          
+	            foreach($bundle_product as $bundle){
 	                $bundleTable->id = '';
 	                $bundleTable->product_id = $recordId;
 	                $bundleTable->bundle_id = $bundle;
 	                $bundleTable->store();
 	            }
-		
-	        }			
+
+	        }
+
+					$assoc = JLanguageAssociations::isEnabled();
+					if ($assoc)
+					{
+						$id = (int) $this->getState($this->getName() . '.id');
+						$item = $this->getItem($id);
+
+						// Adding self to the association
+						$associations = $data['associations'];
+
+						foreach ($associations as $tag => $id)
+						{
+							if (empty($id))
+							{
+								unset($associations[$tag]);
+							}
+						}
+
+						// Detecting all item menus
+						$all_language = $item->language == '*';
+
+						if ($all_language && !empty($associations))
+						{
+							JError::raiseNotice(403, JText::_('COM_DIGICOM_ERROR_ALL_LANGUAGE_ASSOCIATED'));
+						}
+
+						$associations[$item->language] = $item->id;
+
+						// Deleting old association for these items
+						$db = JFactory::getDbo();
+						$query = $db->getQuery(true)
+							->delete('#__associations')
+							->where('context=' . $db->quote('com_digicom.product'))
+							->where('id IN (' . implode(',', $associations) . ')');
+						$db->setQuery($query);
+						$db->execute();
+
+						if ($error = $db->getErrorMsg())
+						{
+							$this->setError($error);
+
+							return false;
+						}
+
+						if (!$all_language && count($associations))
+						{
+							// Adding new association for these items
+							$key = md5(json_encode($associations));
+							$query->clear()
+								->insert('#__associations');
+
+							foreach ($associations as $id)
+							{
+								$query->values($id . ',' . $db->quote('com_digicom.product') . ',' . $db->quote($key));
+							}
+
+							$db->setQuery($query);
+							$db->execute();
+
+							if ($error = $db->getErrorMsg())
+							{
+								$this->setError($error);
+								return false;
+							}
+						}
+					}
 
 	        return true;
 
 		}
 
 		return false;
-	
+
 	}
 
 
@@ -585,7 +690,7 @@ class DigiComModelProduct extends JModelAdmin
 			$data['file'] = '';
 			$data['bundle_category'] = '';
 			$data['bundle_product'] = '';
-			
+
 			$this->save($data);
 		}
 
