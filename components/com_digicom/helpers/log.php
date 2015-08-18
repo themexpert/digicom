@@ -52,7 +52,7 @@ class DigiComSiteHelperLog {
     * check if any log for specific event with callback n callbackid match
     */
 
-    public static function getLog($callback, $callbackid, $userid, $status = 'Active', $type = 'payment')
+    public static function getLog($callback, $callbackid, $status = 'Active', $type = 'payment')
     {
 
       $logTable = JTable::getInstance('log','Table');
