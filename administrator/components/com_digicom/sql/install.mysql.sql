@@ -140,7 +140,7 @@ DROP TABLE IF EXISTS `#__digicom_log`;
 CREATE TABLE IF NOT EXISTS `#__digicom_log` (
   `id` INT( 11 ) NOT NULL AUTO_INCREMENT,
   `userid` int(11) NOT NULL,
-  `type` varchar(255) NOT NULL COMMENT 'download|email|purchase|status|payment';
+  `type` varchar(255) NOT NULL COMMENT 'download|email|purchase|status|payment',
   `callback` varchar(255) NOT NULL COMMENT 'who trigger the event',
   `callbackid` INT NULL DEFAULT NULL COMMENT  'orderid | fileid ; quickid to find items',
   `message` varchar(255) NOT NULL COMMENT 'small message',
