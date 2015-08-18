@@ -843,15 +843,15 @@ class DigiComModelCart extends JModelItem
 		return true;
 	}
 
-	function proccessSuccess($post, $pg_plugin, $order_id, $sid,$responce,$items)
+	function proccessSuccess($post, $pg_plugin, $order_id, $sid, $responce,$items)
 	{
 		$app 			= JFactory::getApplication();
 		$customer = $this->loadCustomer($sid);
-		//if(!$customer){
+		if(!$customer){
 			$order 	= $this->getOrder($order_id);
 			$sid 		= $customer = $order->userid;
 			//print_r($customer);
-		//}
+		}
 
 		$conf 		= $this->getInstance( "config", "digicomModel" );
 		$configs	= $conf->getConfigs();
