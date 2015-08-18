@@ -11,7 +11,7 @@ INSERT INTO `#__content_types` (`type_title`, `type_alias`, `table`, `rules`, `f
 -- Set primary settings for Extension
 --
 
-UPDATE `#__extensions` SET 
+UPDATE `#__extensions` SET
 `params`= '{"catalogue":"0","show_quantity":"0","show_validity":"1","time_format":"d-m-Y","hour24format":"0","ftp_source_path":"digicom","directfilelink":"0","askforbilling":"1","askforcompany":"1","topcountries":["Australia","Bangladesh","France","United-States"],"afteradditem":"2","default_payment":"offline","show_steps":"1","afterpurchase":"1","decimaldigits":"2","currency":"USD","currency_position":"1","usecimg":"0","thousands_group_symbol":",","store_name":"DigiCom Store","address":"","store_info":"","store_url":"DigiCom Store","phone":"","store_logo":"","template":"","category_cols":"3","image_thumb_enable":"1","image_thumb_width":"400","image_thumb_height":"250","image_thumb_method":"5","email_from_name":"DigiCom Store","email_from":"","email":{"new_order":{"subject":"[[SITENAME]] New customer order #[ORDER_ID] ","body":"<h2><strong>Congratulation! you just received an order. The order is as follows:<\\/strong><\\/h2>\\r\\n<p>Products<\\/p>\\r\\n<p><span style=\\"font-size: 12.1599998474121px; line-height: 15.8079996109009px;\\">----------------------------------<\\/span><\\/p>\\r\\n<p>[PRODUCTS]<\\/p>\\r\\n<p><span style=\\"font-size: 12.1599998474121px; line-height: 15.8079996109009px;\\">----------------------------------<\\/span><\\/p>\\r\\n<p><strong>Quantity<\\/strong> : [NUMBER_OF_PRODUCTS]<\\/p>\\r\\n<p><strong>Discount<\\/strong> : [DISCOUNT_AMOUNT]<\\/p>\\r\\n<p><strong>Total : [ORDER_AMOUNT]<\\/strong><\\/p>"},"process_order":{"subject":"Your [SITENAME] order receipt from [ORDER_DATE]","body":"<h1 style=\\"text-align: center;\\"><strong>Thank you for your order<\\/strong><\\/h1>\\r\\n<p style=\\"text-align: center;\\">Your order has been received and is now being processed. Your order details are shown below for your reference:<\\/p>\\r\\n<p><strong>Order Id<\\/strong> : [ORDER_ID]<\\/p>\\r\\n<p><strong>Products <\\/strong><\\/p>\\r\\n<p>----------------------------------<\\/p>\\r\\n<p>[PRODUCTS]<\\/p>\\r\\n<p>----------------------------------<\\/p>\\r\\n<p><strong>Quantity<\\/strong> : [NUMBER_OF_PRODUCTS]<\\/p>\\r\\n<p><strong>Order Status<\\/strong> : [ORDER_STATUS]<\\/p>\\r\\n<p><strong>Total : [ORDER_AMOUNT]<\\/strong><\\/p>"},"complete_order":{"subject":"Your [SITENAME] order from [ORDER_DATE] is complete","body":"<h1 style=\\"text-align: center;\\"><strong>Thank you for your order<\\/strong><\\/h1>\\r\\n<p style=\\"text-align: center;\\">Hi there. Your recent order on #[ORDER_ID] has been completed. Your order details are shown below for your reference:<\\/p>\\r\\n<p><strong>Order Id<\\/strong> : #[ORDER_ID]<\\/p>\\r\\n<p><strong>Products <\\/strong><\\/p>\\r\\n<p>----------------------------------<\\/p>\\r\\n<p>[PRODUCTS]<\\/p>\\r\\n<p>----------------------------------<\\/p>\\r\\n<p><strong>Quantity<\\/strong> : [NUMBER_OF_PRODUCTS]<\\/p>\\r\\n<p><strong>Total : [ORDER_AMOUNT]<\\/strong><\\/p>"},"cancel_order":{"subject":"[[SITENAME]] Cancel order #[ORDER_ID] ","body":"<h2><strong>Your Order has been cancelled!<\\/strong><\\/h2>"}}}'
 WHERE `name`= 'com_digicom' and `type` = 'component' and `element` = 'com_digicom';
 
@@ -140,7 +140,7 @@ DROP TABLE IF EXISTS `#__digicom_log`;
 CREATE TABLE IF NOT EXISTS `#__digicom_log` (
   `id` INT( 11 ) NOT NULL AUTO_INCREMENT,
   `userid` int(11) NOT NULL,
-  `type` varchar(255) NOT NULL COMMENT 'download|email|purchase|status',
+  `type` varchar(255) NOT NULL COMMENT 'download|email|purchase|status|payment';
   `callback` varchar(255) NOT NULL COMMENT 'who trigger the event',
   `callbackid` INT NULL DEFAULT NULL COMMENT  'orderid | fileid ; quickid to find items',
   `message` varchar(255) NOT NULL COMMENT 'small message',
@@ -1125,4 +1125,3 @@ INSERT INTO `#__digicom_states` (`id`, `state`, `country`, `eumember`, `ccode`, 
 (727, 'Fermanagh', 'UK-Northern Ireland', 1, 'UK', ''),
 (728, 'Londonderry', 'UK-Northern Ireland', 1, 'UK', ''),
 (729, 'Tyrone', 'UK-Northern Ireland', 1, 'UK', '');
-
