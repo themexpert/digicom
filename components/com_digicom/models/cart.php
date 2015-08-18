@@ -845,37 +845,40 @@ class DigiComModelCart extends JModelItem
 
 	function proccessSuccess($post, $pg_plugin, $order_id, $sid,$responce,$items)
 	{
-		$app = JFactory::getApplication();
+		$app 			= JFactory::getApplication();
 		$customer = $this->loadCustomer($sid);
-		if(!$customer){
-			$order = $this->getOrder($order_id);
-			$sid = $customer = $order->userid;
+		//if(!$customer){
+			$order 	= $this->getOrder($order_id);
+			$sid 		= $customer = $order->userid;
 			//print_r($customer);
-		}
-		$conf = $this->getInstance( "config", "digicomModel" );
-		$configs = $conf->getConfigs();
+		//}
 
-		$result = $post;
-		$data=$responce[0];
+		$conf 		= $this->getInstance( "config", "digicomModel" );
+		$configs	= $conf->getConfigs();
+
+		$result 	= $post;
+		$data 		= $responce[0];
 
 		$this->storelog($pg_plugin, $data);
 
+		$logtype = 'status';
 		//print_r($data);jexit();
 		if(isset($data['status']))
 		{
 			$_SESSION['in_trans'] = 1;
 
-			if($data['status']=='C'){
-				$msg = JText::_("COM_DIGICOM_PAYMENT_SUCCESSFUL_THANK_YOU");
+			if($data['status'] == 'C'){
+				$msg 		= JText::_("COM_DIGICOM_PAYMENT_SUCCESSFUL_THANK_YOU");
 				$status = "Active";
+				$logtype = "payment"
 				$app->enqueueMessage($msg,'message');
-			} elseif($data['status']=='P') {
+			} elseif($data['status'] == 'P') {
 				$status = "Pending";
-				$msg = JText::_("COM_DIGICOM_PAYMENT_PENDING_THANK_YOU");
+				$msg 		= JText::_("COM_DIGICOM_PAYMENT_PENDING_THANK_YOU");
 				$app->enqueueMessage($msg, 'notice');
 			}else{
 				$status = $data['status'];
-				$msg = JText::_("COM_DIGICOM_PAYMENT_WAITING_THANK_YOU");
+				$msg 		= JText::_("COM_DIGICOM_PAYMENT_WAITING_THANK_YOU");
 				$app->enqueueMessage($msg, 'notice');
 			}
 
@@ -884,8 +887,8 @@ class DigiComModelCart extends JModelItem
 				'data' => $data,
 				'plugin' => $pg_plugin
 			);
-
-			DigiComSiteHelperLog::setLog('status', 'cart proccessSuccess', $order_id, 'Order id#'.$order_id.' updated & method is '.$pg_plugin, json_encode($info),$status);
+			
+			DigiComSiteHelperLog::setLog($logtype, 'cart proccessSuccess', $order_id, 'Order id#'.$order_id.' updated & method is '.$pg_plugin, json_encode($info),$status);
 
 			$this->updateOrder($order_id,$result,$data,$pg_plugin,$status,$items,$customer);
 
