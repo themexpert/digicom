@@ -18,7 +18,7 @@ class DigiComSiteHelperPrice {
 	public static function format_price( $amount, $ccode, $add_sym = false, $configs )
 	{
 
-		$price = number_format( $amount, $configs->get('decimaldigits','2') , $configs->get('dec_group_symbol',',') , $configs->get('thousands_group_symbol',',') );
+		$price = number_format( $amount, $configs->get('decimaldigits','2') , $configs->get('dec_group_symbol','.') , $configs->get('thousands_group_symbol',',') );
 		if ( $add_sym ) {
 			if ( $configs->get('currency_position','1') ) {
 				$price = $price . " " . $ccode;
@@ -26,7 +26,7 @@ class DigiComSiteHelperPrice {
 				$price = $ccode . " " . $price;
 			}
 		}
-		
+
 		return $price;
 	}
 
