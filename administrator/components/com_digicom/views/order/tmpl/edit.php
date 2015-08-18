@@ -202,6 +202,9 @@ $input->set('layout', 'dgtabs');
 							<th>
 								<?php echo JText::_( 'JDATE' ); ?>
 							</th>
+							<th>
+								<?php echo JText::_( 'COM_DIGICOM_IP' ); ?>
+							</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -221,6 +224,9 @@ $input->set('layout', 'dgtabs');
 							</td>
 							<td>
 								<?php echo $log->created;?>
+							</td>
+							<td>
+								<?php echo $log->ip;?>
 							</td>
 						</tr>
 						<?php endforeach;?>
