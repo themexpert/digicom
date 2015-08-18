@@ -106,7 +106,7 @@ $params = json_decode($this->order->params);
 
 				<?php echo DigiComSiteHelperDigicom::getPaymentPlugins($configs); ?>
 
-				<button class="btn pull-right" type="submit">Pay Now</button>
+				<button class="btn pull-right" type="submit"><?php echo JText::_('COM_DIGICOM_ORDER_PAY_NOW'); ?></button>
  			</form>
  		</div>
 
