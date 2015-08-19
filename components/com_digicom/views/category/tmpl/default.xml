@@ -20,15 +20,17 @@
 		</fieldset>
 	</fields>
 	<fields name="params">
-		<fieldset name="basic" label="COM_DIGICOM_CATEGORIES_OPTIONS">		
-			
+		<fieldset name="basic" label="COM_DIGICOM_CATEGORIES_OPTIONS">
+
 			<field name="spacer1" type="spacer" class="text-info"
 					label="COM_DIGICOM_CATEGORY_OPTION"
 			/>
+
 			<field name="num_products" type="text"
 				description="COM_DIGICOM_NUM_PRODUCTS_DESC"
-				label="COM_DIGICOM_NUM_PRODUCTS_LABEL" 
+				label="COM_DIGICOM_NUM_PRODUCTS_LABEL"
 				default="9" />
+
 			<field
 				name="category_cols"
 				type="list"
@@ -41,7 +43,7 @@
 				<option value="4">4</option>
 				<option value="6">6</option>
 			</field>
-			
+
 			<field name="show_cat_title" type="radio"
 				description="COM_DIGICOM_SHOW_CAT_TITLE_DESC"
 				label="COM_DIGICOM_SHOW_CAT_TITLE_LABEL"
@@ -51,7 +53,7 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-			
+
 			<field name="show_cat_image" type="radio"
 				description="COM_DIGICOM_SHOW_CAT_IMAGE_DESC"
 				label="COM_DIGICOM_SHOW_CAT_IMAGE_LABEL"
@@ -61,7 +63,7 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-			
+
 			<field name="show_cat_intro" type="radio"
 				description="COM_DIGICOM_SHOW_CAT_INTRO_DESC"
 				label="COM_DIGICOM_SHOW_CAT_INTRO_LABEL"
@@ -82,7 +84,7 @@
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>
-			
+
 			<field name="show_only_bundle" type="radio"
 				description="COM_DIGICOM_SHOW_ONLY_BUNDLE_DESC"
 				label="COM_DIGICOM_SHOW_ONLY_BUNDLE_LABEL"
@@ -113,21 +115,18 @@
 				label="JGLOBAL_PRODUCT_ORDER_LABEL"
 			>
 				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="front">COM_DIGICOM_PRODUCTS_LIST_PRODUCT_ORDER_FEATURED</option>
 				<option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
 				<option value="date">JGLOBAL_OLDEST_FIRST</option>
 				<option value="alpha">JGLOBAL_TITLE_ALPHABETICAL</option>
 				<option value="ralpha">JGLOBAL_TITLE_REVERSE_ALPHABETICAL</option>
-				<option value="author">JGLOBAL_AUTHOR_ALPHABETICAL</option>
-				<option value="rauthor">JGLOBAL_AUTHOR_REVERSE_ALPHABETICAL</option>
 				<option value="hits">JGLOBAL_MOST_HITS</option>
 				<option value="rhits">JGLOBAL_LEAST_HITS</option>
-				<option value="order">JGLOBAL_ORDERING</option>
+				<option value="order">JGLOBAL_PRODUCT_ORDERING</option>
 			</field>
 
 			<field name="order_date" type="list"
-				description="JGLOBAL_ORDERING_DATE_DESC"
-				label="JGLOBAL_ORDERING_DATE_LABEL"
+				description="JGLOBAL_PRODUCT_ORDERING_DATE_DESC"
+				label="JGLOBAL_PRODUCT_ORDERING_DATE_LABEL"
 			>
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="created">JGLOBAL_CREATED</option>
@@ -135,39 +134,6 @@
 				<option value="published">JPUBLISHED</option>
 			</field>
 
-			<!--
-			<field name="spacer2" type="spacer" class="text-info"
-					label="COM_DIGICOM_PRODUCT_OPTION"
-			/>
-			
-			<field name="show_category" type="radio"
-				description="COM_DIGICOM_SHOW_CATEGORY_DESC"
-				label="COM_DIGICOM_SHOW_CATEGORY_LABEL"
-				class="btn-group"
-				default="1"
-			>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-			<field name="show_tag" type="radio"
-				description="COM_DIGICOM_SHOW_TAG_DESC"
-				label="COM_DIGICOM_SHOW_TAG_LABEL"
-				class="btn-group"
-				default="1"
-			>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-			<field name="show_intro" type="radio"
-				description="COM_DIGICOM_SHOW_INTRO_DESC"
-				label="COM_DIGICOM_SHOW_INTRO_LABEL"
-				class="btn-group"
-				default="1"
-			>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-		-->
 		</fieldset>
 	</fields>
 </metadata>

@@ -287,7 +287,7 @@ class DigiComModelProducts extends JModelList
 
 		// Filter by featured state
 		$featured = $this->getState('filter.featured');
-		
+
 		switch ($featured)
 		{
 			case '0':
@@ -397,7 +397,7 @@ class DigiComModelProducts extends JModelList
 			}
 		}
 
-		
+
 		if (!empty($authorWhere) && !empty($authorAliasWhere))
 		{
 			$query->where('(' . $authorWhere . ' OR ' . $authorAliasWhere . ')');

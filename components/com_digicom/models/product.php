@@ -227,7 +227,7 @@ class DigiComModelProduct extends JModelItem
 				}
 
 				if(!empty($data->bundle_source)){
-					
+
 					switch($data->bundle_source){
 						case 'category':
 							$BundleTable = JTable::getInstance('Bundle', 'Table');
@@ -247,7 +247,7 @@ class DigiComModelProduct extends JModelItem
 							}
 							break;
 						case 'product':
-							
+
 							$BundleTable = JTable::getInstance('Bundle', 'Table');
 							$BundleList = $BundleTable->getFieldValues('product_id',$data->id,$data->bundle_source);
 							$bundle_ids = $BundleList->bundle_id;
@@ -263,10 +263,10 @@ class DigiComModelProduct extends JModelItem
 								$db->setQuery($query);
 								$data->bundleitems = $db->loadObjectList();
 							}
-							
+
 							break;
 					}
-					
+
 				}
 				$this->_item[$pk] = $data;
 			}
