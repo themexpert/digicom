@@ -19,8 +19,9 @@ $html []= '<div class="form-horizontal">';
 foreach ($fieldSets as $name => $fieldSet) :
 	foreach ($form->getFieldset($name) as $field)
 	{
+		if($field->getAttribute('name') == 'category_layout') continue;
 		$html[] = $field->renderField();
-	} 
+	}
 endforeach;
 $html [] = '</div>';
 echo implode('', $html);

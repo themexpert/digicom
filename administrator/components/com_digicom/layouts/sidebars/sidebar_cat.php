@@ -17,7 +17,7 @@ $saveHistory = JComponentHelper::getParams($component)->get('save_history', 0);
 
 $fields0 = $displayData->get('fields') ?: array(
 	'sticky',
-	'note'	
+	'note'
 );
 
 $fields = $displayData->get('fields') ?: array(
@@ -41,7 +41,7 @@ $fields2 = $displayData->get('fields') ?: array(
 	'metadescription',
 	'metadata'
 );
-$fields3 = $displayData->get('fields') ?: array(	
+$fields3 = $displayData->get('fields') ?: array(
 	'hits',
 	'used',
 	'version_note'
@@ -64,10 +64,26 @@ $html[] = '<div id="basic_option" class="accordion-body collapse in">';
 $html[] = '<div class="accordion-inner">';
 
 foreach ($fields as $field)
-{	
+{
 	$field = is_array($field) ? $field : array($field);
 	foreach ($field as $f)
 	{
+
+		if($f == 'published'){
+
+			$fieldSets = $form->getFieldsets('params');
+			foreach ($fieldSets as $name => $fieldSet) :
+			 foreach ($form->getFieldset($name) as $field)
+			 {
+				 if($field->getAttribute('name') == 'category_layout'){
+					 $html[] = $field->renderField();
+				 	break;
+				 }
+
+			 }
+			endforeach;
+		}
+
 		if ($form->getField($f))
 		{
 			if (in_array($f, $hiddenFields))
@@ -78,6 +94,7 @@ foreach ($fields as $field)
 			$html[] = $form->renderField($f);
 			break;
 		}
+
 	}
 }
 $html[] = '</div></div>';
@@ -90,7 +107,7 @@ $html[] = '<div id="seo_option" class="accordion-body collapse">';
 $html[] = '<div class="accordion-inner">';
 
 foreach ($fields2 as $field)
-{	
+{
 	$field = is_array($field) ? $field : array($field);
 	foreach ($field as $f)
 	{
@@ -113,7 +130,7 @@ foreach ($fieldSets as $name => $fieldSet) :
 	foreach ($form->getFieldset($name) as $field)
 	{
 		$html[] = $field->renderField();
-	} 
+	}
 endforeach;
 
 $html[] = '</div></div>';
