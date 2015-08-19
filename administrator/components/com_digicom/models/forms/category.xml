@@ -215,11 +215,11 @@
 
 			<field
 				name="category_layout"
-				type="hidden"
+				type="themelayout"
 				label="JFIELD_ALT_LAYOUT_LABEL"
 				description="JFIELD_ALT_COMPONENT_LAYOUT_DESC"
 				view="category"
-				useglobal="true" 
+				useglobal="true"
 				default=""
 				/>
 
@@ -228,7 +228,7 @@
 				type="media"
 				label="COM_DIGICOM_CATEGORY_FIELD_IMAGE_LABEL"
 				description="COM_DIGICOM_CATEGORY_FIELD_IMAGE_LABEL_DESC" />
-			<field 
+			<field
 				name="image_alt"
 				type="hidden"
 				label="COM_DIGICOM_CATEGORY_FIELD_IMAGE_ALT_LABEL"
