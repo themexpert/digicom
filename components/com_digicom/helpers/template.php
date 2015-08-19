@@ -12,11 +12,11 @@ defined('_JEXEC') or die;
 // TODO : PHP visibility and proper naming convention
 
 class DigiComSiteHelperTemplate extends JViewLegacy {
-	
+
 	protected $view = null;
-	
+
 	function __construct($view){
-		
+
 		$this->view = $view;
 		$this->addScriptDeclaration('var digicom_site = "'. JUri::root() . '";');
 		$this->addScriptDeclaration('var DIGI_ATENTION = "'. JText::_("COM_DIGICOM_REGISTER_NOTICE_ATTENTION") . '";');
@@ -26,10 +26,10 @@ class DigiComSiteHelperTemplate extends JViewLegacy {
 		$this->addScriptDeclaration('var ACCEPT_TERMS_CONDITIONS = "'. JText::_("COM_DIGICOM_REGISTER_NOTICE_ACCEPT_TERMS_CONDITIONS") . '";');
 
 	}
-	public function rander($layout = 'products'){
-		
+	public function rander($layout = 'products', $template = null){
+
 		$this->view->setLayout($layout);
-		
+
 		$app = JFactory::getApplication();
 		$params = JComponentHelper::getParams('com_digicom');
 		// Look for template files in component folders
@@ -39,14 +39,20 @@ class DigiComSiteHelperTemplate extends JViewLegacy {
 		// Look for overrides in template folder (Joomla! template structure)
 		$this->view->_addPath('template', JPATH_SITE . '/templates/' . $app->getTemplate() . '/html/com_digicom/templates/default');
 		$this->view->_addPath('template', JPATH_SITE . '/templates/' . $app->getTemplate() . '/html/com_digicom/templates');
-		
+
 		// Look for specific DigiCom theme files
 		if ($params->get('template','default'))
 		{
 			$this->view->_addPath('template', JPATH_COMPONENT . '/templates/' . $params->get('template','default'));
 			$this->view->_addPath('template', JPATH_SITE . '/templates/' . $app->getTemplate() . '/html/com_digicom/templates/' . $params->get('template','default'));
 		}
-		
+
+		if($template){
+			$this->view->_addPath('template', JPATH_COMPONENT . '/templates/' . $template);
+			$this->view->_addPath('template', JPATH_SITE . '/templates/' . $app->getTemplate() . '/html/com_digicom/templates/' . $template);
+		}
+
+
 		// CUSTOM CSS
 		if (is_file( JPATH_SITE . '/templates/' . $app->getTemplate() . '/html/com_digicom/templates/' . $params->get('template','default') . '/css/style.css')) {
 			$this->addStyleSheet( JUri::root(true) . '/templates/' . $app->getTemplate() . '/html/com_digicom/templates/' . $params->get('template','default') . '/css/style.css');
@@ -64,7 +70,7 @@ class DigiComSiteHelperTemplate extends JViewLegacy {
 		}else{
 			$this->addScript(JURI::root()."media/digicom/assets/js/digicom.js");
 		}
-		
+
 	}
 
 	public function addScript($path){
