@@ -8,15 +8,45 @@
  */
 
 defined('_JEXEC') or die;
-?>
-<?php $fields = $this->form->getFieldset('attribs'); ?>
-<?php if (count($fields)) : ?>
-    <?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'params', JText::_('COM_DIGICOM_PRODUCT_BUNDLE_FILES_SELECTION', true)); ?>
+$app = JFactory::getApplication();
+$form = $this->form;
 
-    <?php echo $this->form->getControlGroup('attribs'); ?>
-    <?php foreach ($this->form->getGroup('attribs') as $field) : ?>
-        <?php echo $field->getControlGroup(); ?>
-    <?php endforeach; ?>
+$fieldSets = $form->getFieldsets('attribs');
+if (empty($fieldSets))
+{
+	return;
+}
 
-    <?php echo JHtml::_('bootstrap.endTab'); ?>
-<?php endif;?>
+//echo JHtml::_('bootstrap.addTab', 'digicomTab', 'params', JText::_('COM_DIGICOM_PRODUCT_ATTR_TITLE', true));
+
+foreach ($fieldSets as $name => $fieldSet)
+{
+
+  if (!empty($fieldSet->label))
+  {
+    $label = JText::_($fieldSet->label, true);
+  }
+  else
+  {
+    $label = strtoupper('JGLOBAL_FIELDSET_' . $name);
+    if (JText::_($label, true) == $label)
+    {
+      $label = strtoupper($app->input->get('option') . '_' . $name . '_FIELDSET_LABEL');
+    }
+    $label = JText::_($label, true);
+  }
+
+  echo JHtml::_('bootstrap.addTab', 'digicomTab', 'attrib-' . $name, $label);
+
+  if (isset($fieldSet->description) && trim($fieldSet->description))
+  {
+    echo '<p class="alert alert-info">' . $this->escape(JText::_($fieldSet->description)) . '</p>';
+  }
+
+  $this->fieldset = $name;
+  echo JLayoutHelper::render('joomla.edit.fieldset', $this);
+
+  echo JHtml::_('bootstrap.endTab');
+}
+
+//echo JHtml::_('bootstrap.endTab');
