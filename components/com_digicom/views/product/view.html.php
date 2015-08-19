@@ -18,6 +18,8 @@ class DigiComViewProduct extends JViewLegacy
 {
 	protected $item;
 
+	protected $category;
+
 	protected $params;
 
 	protected $print;
@@ -85,20 +87,11 @@ class DigiComViewProduct extends JViewLegacy
 			// If the current view is the active item and an product view for this product, then the menu item params take priority
 			if (strpos($currentLink, 'view=product') && (strpos($currentLink, '&id=' . (string) $item->id)))
 			{
-				// Load layout from active query (in case it is an alternative menu item)
-				if (isset($active->query['layout']))
-				{
-					$this->setLayout($active->query['layout']);
-				}
-				// Check for alternative layout of product
-				elseif ($layout = $item->params->get('product'))
-				{
-					$this->setLayout($layout);
-				}
 
 				// $item->params are the product params, $temp are the menu item params
 				// Merge so that the menu item params take priority
 				$item->params->merge($temp);
+
 			}
 			else
 			{
@@ -107,12 +100,6 @@ class DigiComViewProduct extends JViewLegacy
 				$temp->merge($item->params);
 				$item->params = $temp;
 
-				// Check for alternative layouts (since we are not in a single-product menu item)
-				// Single-product menu item layout takes priority over alt layout for an product
-				if ($layout = $item->params->get('product'))
-				{
-					$this->setLayout($layout);
-				}
 			}
 		}
 		else
@@ -121,12 +108,6 @@ class DigiComViewProduct extends JViewLegacy
 			$temp->merge($item->params);
 			$item->params = $temp;
 
-			// Check for alternative layouts (since we are not in a single-product menu item)
-			// Single-product menu item layout takes priority over alt layout for an product
-			if ($layout = $item->params->get('product'))
-			{
-				$this->setLayout($layout);
-			}
 		}
 
 		$offset = $this->state->get('list.offset');
@@ -181,9 +162,15 @@ class DigiComViewProduct extends JViewLegacy
 		$this->pageclass_sfx = htmlspecialchars($this->item->params->get('pageclass_sfx'));
 
 		$this->_prepareDocument();
-
+		$this->category->params = $this->category->getParams();
+		// Get the layout from the merged category params
+		if ($layout = $this->category->params->get('category_layout'))
+		{
+			$this->setLayout($layout);
+		}
+		
 		$template = new DigiComSiteHelperTemplate($this);
-		$template->rander('product');
+		$template->rander('product', $this->getLayout());
 
 
 		parent::display($tpl);
@@ -228,13 +215,15 @@ class DigiComViewProduct extends JViewLegacy
 			}
 
 			$path = array(array('title' => $this->item->name, 'link' => ''));
-			$category = JCategories::getInstance('Content')->get($this->item->catid);
+			$category = JCategories::getInstance('Digicom')->get($this->item->catid);
 
 			while ($category && ($menu->query['option'] != 'com_digicom' || $menu->query['view'] == 'product' || $id != $category->id) && $category->id > 1)
 			{
-				$path[] = array('title' => $category->title, 'link' => ContentHelperRoute::getCategoryRoute($category->id));
+				$path[] = array('title' => $category->title, 'link' => DigiComSiteHelperRoute::getCategoryRoute($category->id));
 				$category = $category->getParent();
 			}
+
+			$this->category = $category;
 
 			$path = array_reverse($path);
 
