@@ -118,54 +118,20 @@ class DigiComViewCategory extends JViewCategory
 
 			$results = $dispatcher->trigger('onContentAfterDisplay', array('com_digicom.category', &$item, &$item->params, 0));
 			$item->event->afterDisplayContent = trim(implode("\n", $results));
-		
-			$item->images = DigiComSiteHelperDigiCom::getThumbnail($item->images); 
+
+			$item->images = DigiComSiteHelperDigiCom::getThumbnail($item->images);
 		}
 
 		// Check for layout override only if this is not the active menu item
 		// If it is the active menu item, then the view and category id will match
 		$app = JFactory::getApplication();
-		$active	= $app->getMenu()->getActive();
 		$menus		= $app->getMenu();
-		$pathway	= $app->getPathway();
 		$title		= null;
 
-		if ((!$active) || ((strpos($active->link, 'view=category') === false) || (strpos($active->link, '&id=' . (string) $this->category->id) === false)))
+		// Get the layout from the merged category params
+		if ($layout = $this->category->params->get('category_layout'))
 		{
-			// Get the layout from the merged category params
-			if ($layout = $this->category->params->get('category_layout'))
-			{
-				$this->setLayout($layout);
-			}
-		}
-		// At this point, we are in a menu item, so we don't override the layout
-		elseif (isset($active->query['layout']))
-		{
-			// We need to set the layout from the query in case this is an alternative menu item (with an alternative layout)
-			$this->setLayout($active->query['layout']);
-		}
-
-		// For blog layouts, preprocess the breakdown of leading, intro and linked products.
-		foreach ($this->items as $i => $item)
-		{
-			if ($i < $numLeading)
-			{
-				$this->lead_items[] = $item;
-			}
-
-			elseif ($i >= $numLeading && $i < $numLeading + $numIntro)
-			{
-				$this->intro_items[] = $item;
-			}
-
-			elseif ($i < $numLeading + $numIntro + $numLinks)
-			{
-				$this->link_items[] = $item;
-			}
-			else
-			{
-				continue;
-			}
+			$this->setLayout($layout);
 		}
 
 		$this->columns = max(1, $params->def('num_columns', 1));
@@ -244,7 +210,7 @@ class DigiComViewCategory extends JViewCategory
 		{
 			$this->document->setMetaData('author', $this->category->get('author', ''));
 		}
-		
+
 		$mdata = $this->category->metadata->toArray();
 
 		foreach ($mdata as $k => $v)
@@ -256,7 +222,7 @@ class DigiComViewCategory extends JViewCategory
 		}
 
 		$template = new DigiComSiteHelperTemplate($this);
-		$template->rander('category');
+		$template->rander('category', $this->getLayout());
 
 		return parent::display($tpl);
 	}
@@ -356,23 +322,6 @@ class DigiComViewCategory extends JViewCategory
 		$this->parent     = &$parent;
 		$this->pagination = &$pagination;
 		$this->user       = &$user;
-
-		// Check for layout override only if this is not the active menu item
-		// If it is the active menu item, then the view and category id will match
-		$active = $app->getMenu()->getActive();
-
-		if ((!$active) || ((strpos($active->link, 'view=category') === false) || (strpos($active->link, '&id=' . (string) $this->category->id) === false)))
-		{
-			if ($layout = $category->params->get('category_layout'))
-			{
-				$this->setLayout($layout);
-			}
-		}
-		elseif (isset($active->query['layout']))
-		{
-			// We need to set the layout in case this is an alternative menu item (with an alternative layout)
-			$this->setLayout($active->query['layout']);
-		}
 
 		$this->category->tags = new JHelperTags;
 		$this->category->tags->getItemTags($this->extension . '.category', $this->category->id);
