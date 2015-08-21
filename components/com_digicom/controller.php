@@ -60,6 +60,18 @@ class DigiComController extends JControllerLegacy
 			return JError::raiseError(403, JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
 		}
 
+		if ($vName == 'register'){
+			// If the user is already logged in, redirect to the profile page.
+
+			if ($user->get('guest') != 1)
+			{
+				// Redirect to profile page.
+				$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=profile', false));
+
+				return;
+			}
+		}
+
 		return parent::display($cachable, $safeurlparams);
 	}
 
