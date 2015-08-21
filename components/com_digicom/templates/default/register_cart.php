@@ -25,7 +25,7 @@ $login_link = JRoute::_("index.php?option=com_digicom&view=register&task=profile
 
 		<tr>
 			<td>
-				<?php echo JText::_("COM_DIGICOM_FIRST_NAME"); ?>&nbsp;<span class="error">*</span>
+				<?php echo JText::_("COM_DIGICOM_NAME"); ?>&nbsp;<span class="error">*</span>
 			</td>
 
 			<td>
