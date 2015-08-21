@@ -5,6 +5,7 @@
 /nbproject
 /TODO
 config.codekit
+/npm-debug.log
 
 #Build files
 /build/temp
