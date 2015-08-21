@@ -127,4 +127,18 @@ class DigiComController extends JControllerLegacy
 		$app->close();
 
 	}
+	/*
+	* this function need to run through cron job
+	* url: index.php?option=com_digicom&task=cron
+	* the url for cron job
+	*/
+	public function getLanguage(){
+		$app		= JFactory::getApplication();
+		$input	= $app->input;
+
+		$txt = $input->get('txt','','string');
+		echo JText::sprintf($txt);
+		$app->close();
+
+	}
 }
