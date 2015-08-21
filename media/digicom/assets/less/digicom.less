@@ -13,7 +13,7 @@
 @import "../../../jui/less/modals.joomla.less";
 @import "../../../jui/less/responsive-767px-max.joomla.less";
 
-#digicom {	
+#digicom {
 
 	// Grid system and page structure
 	@import "../../../jui/less/grid.less";
@@ -37,8 +37,9 @@
 	@import "../../../jui/less/alerts.less"; // Note: alerts share common CSS with buttons and thus have styles in buttons.less
 
 	// Components: Nav
-	@import "../../../jui/less/navs.less";
-	@import "../../../jui/less/navbar.less";
+	//@import "../../../jui/less/navs.less";
+	//@import "../../../jui/less/navbar.less";
+
 	//@import "breadcrumbs.less";
 	@import "../../../jui/less/pagination.less";
 	@import "../../../jui/less/pager.less";
@@ -52,20 +53,34 @@
 	@import "../../../jui/less/thumbnails.less";
 	//@import "media.less";
 	@import "../../../jui/less/labels-badges.less";
-	@import "../../../jui/less/accordion.less";	
+	@import "../../../jui/less/accordion.less";
 
 }
 
 
-// Color Variables 
+// Color Variables
 @color-primary: #24AEED;
 
 
 #digicom {
 
-	.input-append input, .input-append select, .input-append .uneditable-input, 
+	.input-append input, .input-append select, .input-append .uneditable-input,
 	.input-prepend input, .input-prepend select, .input-prepend .uneditable-input {height: auto;}
 
+	.radio.btn-group input[type=radio] {
+	    display: none;
+	}
+	.radio.btn-group > label:first-of-type {
+	    -webkit-border-bottom-left-radius: 4px;
+	    border-bottom-left-radius: 4px;
+	    -webkit-border-top-left-radius: 4px;
+	    border-top-left-radius: 4px;
+	    -moz-border-radius-bottomleft: 4px;
+	    -moz-border-radius-topleft: 4px;
+	}
+	.radio.btn-group{
+	    padding-left: 0px;
+	}
 	.digi-page-title {
 		font-size: 30px;
 		line-height: 1.5;
@@ -119,7 +134,7 @@
 				.bundle-label {
 					position: absolute;
 					right: 5px;
-					top: 5px;					
+					top: 5px;
 				}
 				.caption {
 					padding: 20px;
@@ -131,7 +146,7 @@
 						a:hover {text-decoration: none;}
 					}
 				}
-				
+
 				.price {
 					font-weight: bold;
 					line-height: 30px;
@@ -143,7 +158,7 @@
 				&:hover {
 					.image img {
 						opacity: 0.7;
-						
+
 					}
 				}
 			}
@@ -153,7 +168,7 @@
 	/* Product Page Styling */
 	.digi-products {
 		.digi-page-title {
-			
+
 			.label {float: right;margin: 5px;}
 		}
 		.short-desc {
@@ -187,7 +202,7 @@
 				}
 			}
 		}
-		
+
 		.product-price {
 			font-size: 16px;
 			line-height: 24px;
@@ -208,7 +223,7 @@
 	.digi-cart {
 		.continue-shopping {
 			margin-top: 15px;
-			
+
 			.chzn-drop .chzn-results {margin-left: 0;}
 		}
 	}
@@ -218,10 +233,10 @@
 		.form-horizontal .control-label {padding-top: 0;}
 	}
 
-	
+
 	/* Order View Page Styling */
 	.digi-view-order {
-		.table th, 
+		.table th,
 		.table td {border-top: 0;}
 		hr {
 			border-top: 2px solid #666;
@@ -229,7 +244,7 @@
 		}
 	}
 
-	
+
 	/* Customer page Styling */
 	.customer-info {
 		padding: 15px;

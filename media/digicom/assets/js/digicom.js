@@ -254,37 +254,49 @@ function submitbutton(pressbutton) {
 }
 
 function validateInput(input){
-	value = document.getElementById(input).value;
+	var formname = 'jform_'+input;
+	value = document.getElementById(formname).value;
 	if(value != ""){
 
 		var myAjax = new Request(
 	   	{
 		    url:   'index.php?option=com_digicom&task=cart.validate_input&input='+input+'&value='+value,
 	        method: 'get',
-		    onSuccess: function(response)
+		    	onSuccess: function(response)
 	        {
 	            response = parseInt(response);
-	            console.log(response);
-				if(response == "1"){
-					if(input == "email"){
-						document.getElementById("email_span").className = "invalid";
-						document.getElementById("email_span_msg").style.display = "block";
-					}
-					else{
-						document.getElementById("username_span").className = "invalid";
-						document.getElementById("username_span_msg").style.display = "block";
-					}
-				}
-				else{
-					if(input == "email"){
-						document.getElementById("email_span").className = "valid";
-						document.getElementById("email_span_msg").style.display = "none";
-					}
-					else{
-						document.getElementById("username_span").className = "valid";
-						document.getElementById("username_span_msg").style.display = "none";
-					}
-				}
+	            //console.log(response);
+							if(response == "1"){
+								if(input == "email"){
+									var msg = 'COM_DIGICOM_REGISTRATION_EMAIL_ALREADY_USED';
+								}
+								else{
+									var msg = 'COM_DIGICOM_REGISTER_USERNAME_TAKEN';
+								}
+								var myAjax = new Request(
+									{
+										url:   'index.php?option=com_digicom&task=getLanguage&txt='+msg,
+											method: 'get',
+											onSuccess: function(response)
+											{
+												var warning = '<span id="'+formname+'-warning" class="label label-warning">'+response+'</span>';
+												jQuery('#'+formname).parent().append(warning);
+											}
+									});
+									myAjax.send();
+							}else{
+								jQuery('#'+formname+'-warning').remove();
+							}
+							// else{
+							// 	if(input == "email"){
+							// 		document.getElementById("email_span").className = "valid";
+							// 		document.getElementById("email_span_msg").style.display = "none";
+							// 	}
+							// 	else{
+							// 		document.getElementById("username_span").className = "valid";
+							// 		document.getElementById("username_span_msg").style.display = "none";
+							// 	}
+							// }
             }
 		});
 		myAjax.send();
