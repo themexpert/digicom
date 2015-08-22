@@ -222,7 +222,7 @@ class DigiComSiteHelperDigicom {
 			$table->bind($cust);
 			$table->store();
 		}
-		
+
 		if (
 		     strlen( trim( $table->country ) ) < 1
 		     || strlen( trim( $table->state ) ) < 1
