@@ -20,38 +20,81 @@ class TableCustomer extends JTable
 	{
 		parent::load( $id );
 	}
-	
-	function load( $id = NULL, $reset = true )
-	{
-		parent::load( $id );
-		$db = JFactory::getDBO();
-		$sql = "select username from #__users where id='" . $id . "'";
-		$db->setQuery( $sql );
-		$r = $db->loadObjectList();
-		if ( count( $r ) > 0 ) {
-			$this->username = $r[0]->username;
-		} else {
-			$this->username = null;
-		}
-	}
 
-	function store($updateNulls = false)
-	{
-		
-		$db = JFactory::getDBO();
-		$sql = "select count(*) from #__digicom_customers where id='" . $this->id . "'";
-		$db->setQuery( $sql );
-		$n = $db->loadResult();
+	function create(){
 
-		if ( $n < 1 & $this->id > 0 ) {
-			$sql = "insert into #__digicom_customers(`id`) values ('" . $this->id . "')";
-			$db->setQuery( $sql );
-			$db->query();
-		} else if ( $n < 1 & $this->id < 1 ) {
-			return false;
+		// Verify that the alias is unique
+		$db 		= JFactory::getDbo();
+		$table = JTable::getInstance('Customer', 'Table');
+
+		if ($table->load(array('email' => $this->email)) && ($table->id != $this->id))
+		{
+			$query 	= $db->getQuery(true);
+			// Fields to update.
+			$fields = array(
+			    $db->quoteName('id') . ' = ' . $this->id
+			);
+			// Conditions for which records should be updated.
+			$conditions = array(
+			    $db->quoteName('email') . ' = ' . $db->quote($this->email)
+			);
+			$query->update($db->quoteName('#__digicom_customers'))->set($fields)->where($conditions);
+			$db->setQuery($query);
+			$result = $db->execute();
+
+			return $this->store();
+
 		}
 
-		return parent::store($updateNulls = false);
+
+		// Create a new query object.
+		$query = $db->getQuery(true);
+
+		// Insert columns.
+		$columns = array(
+			'id',
+			'name',
+			'email',
+			'address',
+			'city',
+			'state',
+			'zipcode',
+			'country',
+			'phone',
+			'payment_type',
+			'company',
+			'person',
+			'taxnum',
+			'taxclass'
+		);
+
+		// Insert values.
+		$values = array(
+			$this->id,
+			$db->quote($this->name),
+			$db->quote($this->email),
+			$db->quote($this->address),
+			$db->quote($this->city),
+			$db->quote($this->state),
+			$db->quote($this->zipcode),
+			$db->quote($this->country),
+			$db->quote($this->phone),
+			$db->quote($this->payment_type),
+			$db->quote($this->company),
+			$db->quote($this->person),
+			$db->quote($this->taxnum),
+			$db->quote($this->taxclass)
+		);
+
+		// Prepare the insert query.
+		$query
+		    ->insert($db->quoteName('#__digicom_customers'))
+		    ->columns($db->quoteName($columns))
+		    ->values(implode(',', $values));
+
+		// Set the query using our newly populated query object and execute it.
+		$db->setQuery($query);
+		return $db->execute();
 	}
 
 }
