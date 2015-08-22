@@ -203,7 +203,7 @@ class DigicomModelRegister extends JModelForm
 
 		// Load the users plugin group.
 		JPluginHelper::importPlugin('user');
-
+		//print_r($data);die;
 		// Store the data.
 		if (!$user->save())
 		{

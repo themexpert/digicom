@@ -324,7 +324,7 @@ class DigiComControllerCart extends JControllerLegacy
 
 		// return -1 for not found core info, 2 for missing billing info, 1 for has core info
 		$res = DigiComSiteHelperDigiCom::checkProfileCompletion($customer, $askforbilling);
-
+		
 		//if username, name, email, id not found for user
 		if( $res < 1 ) {
 			$this->setRedirect('index.php?option=com_digicom&view=profile&layout=edit&return='.$return);
@@ -565,7 +565,7 @@ class DigiComControllerCart extends JControllerLegacy
 		}
 		$order_id 	= $input->get('order_id',0);
 		$sid 				= $input->get('sid','');
-		
+
 		if(empty($sid)){
 			$sid = $input->get('user_id','');
 		}

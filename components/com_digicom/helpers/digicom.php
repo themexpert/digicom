@@ -38,7 +38,7 @@ class DigiComSiteHelperDigicom {
 		return $html;
 	}
 
-	
+
 	function getPromoDisc( $totaldisc, $items ) {
 		$qty = 0;
 		foreach ( $items as $i => $item ) {
@@ -222,7 +222,7 @@ class DigiComSiteHelperDigicom {
 			$table->bind($cust);
 			$table->store();
 		}
-
+		
 		if (
 		     strlen( trim( $table->country ) ) < 1
 		     || strlen( trim( $table->state ) ) < 1
@@ -692,7 +692,7 @@ class DigiComSiteHelperDigicom {
 
 		#Top Countries#
 		$topcountries = $configs->get('topcountries', array());
-	    
+
 	    $options[] = JHTML::_('select.optgroup', JText::_('COM_DIGICOM_SELECT_FAVORITE_COUNTRY_TITLE'));
 
 		if ( count( $topcountries ) > 0 ) {
