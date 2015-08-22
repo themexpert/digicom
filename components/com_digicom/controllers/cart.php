@@ -301,9 +301,10 @@ class DigiComControllerCart extends JControllerLegacy
 		$session->set('processor',$processor);
 
 		// set default redirect url
-		$uri = JURI::getInstance();
+		//$uri = JURI::getInstance();
 		//echo $uri->toString();die;
-		$return = base64_encode($uri->toString());
+		//$return = base64_encode($uri->toString());
+		$return = base64_encode(JRoute::_("index.php?option=com_digicom&view=cart&layout=summary"));
 
 		// Check Login
 		if(!$user->id or $this->_customer->_user->id < 1){
@@ -324,7 +325,7 @@ class DigiComControllerCart extends JControllerLegacy
 
 		// return -1 for not found core info, 2 for missing billing info, 1 for has core info
 		$res = DigiComSiteHelperDigiCom::checkProfileCompletion($customer, $askforbilling);
-		
+
 		//if username, name, email, id not found for user
 		if( $res < 1 ) {
 			$this->setRedirect('index.php?option=com_digicom&view=profile&layout=edit&return='.$return);
@@ -527,11 +528,12 @@ class DigiComControllerCart extends JControllerLegacy
 	*/
 	function validateInput()
 	{
+		$user = JFactory::getUser();
 		$value = JRequest::getVar("value", "");
 		if(trim($value) != ""){
 			$input = JRequest::getVar("input", "");
 			$db = JFactory::getDBO();
-			$sql = "select count(*) from #__users where `".$input."` = '".$value."'";
+			$sql = "select count(*) from #__users where `".$input."` = '".$value."' and id !=".$user->id;
 			$db->setQuery($sql);
 			$db->query();
 			$response = $db->loadResult();
