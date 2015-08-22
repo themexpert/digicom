@@ -2,7 +2,7 @@
 <form>
 	<fieldset
 		name="captcha"
-		label="COM_DIGICOM_CAPTCHA_LABEL"
+		label=""
 		addfieldpath="/administrator/components/com_digicom/models/fields">
 
 		<field
