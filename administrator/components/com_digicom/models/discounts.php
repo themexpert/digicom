@@ -37,7 +37,7 @@ class DigiComModelDiscounts extends JModelList {
 		if($pagination->total%$pagination->limit>0){
 			$nr_pages=intval($pagination->total/$pagination->limit)+1;
 		}
-		else{ 
+		else{
 			$nr_pages=intval($pagination->total/$pagination->limit);
 		}
 		$pagination->set('pages.total',$nr_pages);
@@ -106,7 +106,7 @@ class DigiComModelDiscounts extends JModelList {
 		if (empty ($this->_valid_promos)) {
 
 			$sql = "select * from #__digicom_promocodes order by id desc";
-			$this->_db->setQuery( $sql ); 
+			$this->_db->setQuery( $sql );
 			$promos = $this->_db->loadObjectList();
 
 			$nullDate = 0;
@@ -195,49 +195,7 @@ class DigiComModelDiscounts extends JModelList {
 		}
 	}
 
-	function store_x()
-	{
-		$item = $this->getTable('Discount');
-		$data = JRequest::get('post');
-		$conf = $this->getInstance ("config", "DigiComAdminModel");
-		$configs = $conf->getConfigs();
-
-		//$data["codestart"] = DigiComAdminHelper::parseDate($configs->get('time_format','DD-MM-YYYY'), $data['codestart']);
-		//$data["codeend"] = DigiComAdminHelper::parseDate($configs->get('time_format','DD-MM-YYYY'), $data['codeend']);
-
-		if (!isset($data['validfornew'])) {
-			$data["validfornew"] = 0;
-		}
-		if (!isset($data['validforrenewal'])) {
-			$data["validforrenewal"] = 0;
-		}
-
-		$data["codestart"] = strtotime($data["codestart"]);
-		$data["codeend"] = strtotime($data["codeend"]);
-
-		if(!$item->bind($data)){
-			$this->setError($item->getErrorMsg());
-			return false;
-		}
-
-		if (!$item->check()) {
-			$this->setError($item->getErrorMsg());
-			return false;
-		}
-
-		if (!$item->store()) {
-			return false;
-		}
-
-		// Set products
-		$item->storeProducts($item->id);
-
-		// Set previous orders
-		$item->storeOrders($item->id);
-
-		return true;
-	}
-
+	
 	function delete () {
 		$cids = JRequest::getVar('cid', array(0), 'post', 'array');
 		$item = $this->getTable('Discount');
@@ -249,7 +207,7 @@ class DigiComModelDiscounts extends JModelList {
 		}
 		return true;
 	}
-	
+
 	function getConfigs() {
 		$comInfo = JComponentHelper::getComponent('com_digicom');
 		return $comInfo->params;
