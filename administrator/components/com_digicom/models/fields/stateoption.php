@@ -52,7 +52,7 @@ class JFormFieldStateOption extends JFormField {
 
 		// Get the field options.
 		$options = (array) $this->getItems();
-		$value = json_decode($this->value,true);
+		$value = $this->value;
 		// Create a read-only list (no name) with a hidden input to store the value.
 		if ((string) $this->readonly == '1' || (string) $this->readonly == 'true')
 		{
@@ -78,8 +78,6 @@ class JFormFieldStateOption extends JFormField {
 					->order('country ASC');
 		$db->setQuery($query);
 		$countries = $db->loadObjectList();
-
-		$default = '';
 
 		## Initialize array to store dropdown options ##
 		$options = array();
