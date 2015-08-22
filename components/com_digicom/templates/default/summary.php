@@ -46,18 +46,6 @@ if($configs->get('show_steps',1) == 1){
 		$cart_url = JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$Itemid);
 		?>
 
-
-		<?php if (!isset($customer->_user->id) || !$customer->_user->id ) { ?>
-
-		<p style="font-size: 18px">
-			<?php echo JText::_("COM_DIGICOM_SUMMARY_RETURN_CUSTMERS_CLICK")?>
-	 		<a href="<?php echo $login_link; ?>"><?php echo JText::_("COM_DIGICOM_SUMMARY_HERE");?></a>
-	 		<?php echo ' '; ?>
-	 		<?php echo JText::_("COM_DIGICOM_SUMMARY_TO_LOGIN");?>
-	 	</p>
-
-		<?php } ?>
-
 		<h1><?php echo JText::_("COM_DIGICOM_SUMMARY_YOUR_ORDER")?></h1>
 		<table width="100%" cellspacing="0" id="digi_table" class="table table-bordered">
 			<tr ><?php // class was cart_heading ?>
@@ -159,15 +147,21 @@ if($configs->get('show_steps',1) == 1){
 			<tr>
 				<td height="30" colspan="<?php echo ($discount ? '5' : '4'); ?>" width="100%">
 					<a href="<?php echo $cart_url;?>" class="digicom_cancel btn btn-warning"><?php echo JText::_("COM_DIGICOM_EDIT_ORDER")?></a>
-
-					<form class="form-inline" name="checkout" method="post" action="<?php echo JRoute::_('index.php?option=com_digicom&view=cart');?>" style="display:inline;">
-						<button type="submit" class="btn btn-success"><?php echo JText::_("COM_DIGICOM_PLACE_ORDER")?></button>
-						<input type="hidden" name="fromsum" value="1" />
-						<input type="hidden" name="processor" value="<?php echo $processor; ?>" />
-						<input type="hidden" name="task" value="cart.checkout" />
-						<input type="hidden" name="view" value="cart" />
-						<input type="hidden" name="option" value="com_digicom" />
-					</form>
+					<?php
+					if (
+							$customer->_user->id > 0
+							||
+							( isset($customer->_customer->id) && $customer->_customer->id > 0 ) 
+						) { ?>
+						<form class="form-inline" name="checkout" method="post" action="<?php echo JRoute::_('index.php?option=com_digicom&view=cart');?>" style="display:inline;">
+							<button type="submit" class="btn btn-success"><?php echo JText::_("COM_DIGICOM_PLACE_ORDER")?></button>
+							<input type="hidden" name="fromsum" value="1" />
+							<input type="hidden" name="processor" value="<?php echo $processor; ?>" />
+							<input type="hidden" name="task" value="cart.checkout" />
+							<input type="hidden" name="view" value="cart" />
+							<input type="hidden" name="option" value="com_digicom" />
+						</form>
+					<?php } ?>
 				</td>
 			</tr>
 	  	</table>
