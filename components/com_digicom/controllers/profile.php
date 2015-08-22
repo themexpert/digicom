@@ -14,16 +14,6 @@ defined('_JEXEC') or die;
 class DigiComControllerProfile extends JControllerLegacy
 {
 
-	var $model = null;
-
-	function __construct() {
-		parent::__construct();
-
-		$this->registerTask("saveCustomer", "save");
-		$this->_model = $this->getModel('Customer');
-	}
-
-
 	function logCustomerIn()
 	{
 		$app = JFactory::getApplication("site");
@@ -68,64 +58,82 @@ class DigiComControllerProfile extends JControllerLegacy
 	function save()
 	{
 
-		$session = JFactory::getSession();
-		$conf = $this->getModel( "Config" );
-		$configs = $conf->getConfigs();
-		//$return = base64_decode( JRequest::getVar("return", "") );
+		// Check for request forgeries.
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
 		$getreturn = JRequest::getVar("return", "");
-		$new_customer = JRequest::getVar("new_customer", false);
 		if($getreturn){
 			$return = base64_decode( $getreturn );
 		}else{
-			$return = JRoute::_('index.php?option=com_digicom&view=cart&layout=summary');
+			$return = JRoute::_('index.php?option=com_digicom&view=profile');
 		}
 
-		if($new_customer){
-			$msg =  JText::_('COM_DIGICOM_REGISTRATION_SUCCESSFULL');
-		}else {
-			$msg =  JText::_('COM_DIGICOM_PROFILE_UPDATED_SUCCESSFULL');
+		$app	= JFactory::getApplication();
+		$model	= $this->getModel('Profile', 'DigicomModel');
+
+		// Get the user data.
+		$requestData = $this->input->post->get('jform', array(), 'array');
+
+		// Validate the posted data.
+		$form	= $model->getForm();
+
+		if (!$form)
+		{
+			JError::raiseError(500, $model->getError());
+
+			return false;
 		}
 
+		$data	= $model->validate($form, $requestData);
 
-		$err = $this->_model->store($error);
+		// Check for validation errors.
+		if ($data === false)
+		{
+			// Get the validation messages.
+			$errors	= $model->getErrors();
 
-		if($err["err"] === FALSE){
-			$session->set('login_register_invalid','notok');
-
-			$msg = JText::_("COM_DIGICOM_REGISTRATION_INVALID");
-
-			$error = $err["error"];
-			if(strpos($error, 'email') !== FALSE){
-				$msg = JText::_("COM_DIGICOM_REGISTER_NOTICE_INVALID_EMAIL");
+			// Push up to three validation messages out to the user.
+			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
+			{
+				if ($errors[$i] instanceof Exception)
+				{
+					$app->enqueueMessage($errors[$i]->getMessage(), 'warning');
+				}
+				else
+				{
+					$app->enqueueMessage($errors[$i], 'warning');
+				}
 			}
-			elseif(strpos($error, 'ser name') !== FALSE){
-				$msg = JText::_("COM_DIGICOM_REGISTER_NOTICE_INVALID_USERNAME");
-			}
 
-			$name			= JRequest::getVar("name", "");
-			$company			= JRequest::getVar("company", "");
-			$email 				= JRequest::getVar("email", "");
-			$username 			= JRequest::getVar("username", "");
-			$password 			= JRequest::getVar("password", "");
-			$password_confirm 	= JRequest::getVar("password_confirm", "");
-			$address 			= JRequest::getVar("address", "");
-			$city 				= JRequest::getVar("city", "");
-			$zipcode 			= JRequest::getVar("zipcode", "");
-			$country			= JRequest::getVar("country", "");
-			$state 				= JRequest::getVar("state", "");
-			$array 				= array("name"=>$name, "company"=>$company, "email"=>$email, "username"=>$username, "password"=>$password, "password_confirm"=>$password_confirm, "address"=>$address, "city"=>$city, "zipcode"=>$zipcode, "country"=>$country, "state"=>$state);
+			// Save the data in the session.
+			$app->setUserState('com_digicom.profile.data', $requestData);
 
-			$session->set('new_customer', $array);
-			$uri = JURI::getInstance();
-			$return = $uri->toString();
-			//echo $return;die;
-			//$this->setRedirect($return, $msg, "notice");
-			JFactory::getApplication()->redirect($return, $msg, "notice");
-		}else{
-			//$this->setRedirect($return, JText::_('COM_DIGICOM_REGISTRATION_SUCCESSFULL'));
-			//TODO: set new_customer var and show message, else only success nor reg success
-			JFactory::getApplication()->redirect($return, $msg);
+			// Redirect back to the register screen.
+			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=profile', false));
+
+			return false;
 		}
+
+		// Attempt to save the data.
+		$result	= $model->save($data);
+		//print_r($return);die;
+		// Check for errors.
+		if ($result === false)
+		{
+			// Save the data in the session.
+			$app->setUserState('com_digicom.profile.data', $data);
+
+			// Redirect back to the edit screen.
+			$this->setMessage($model->getError(), 'warning');
+			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=profile', false));
+
+			return false;
+		}
+		// Flush the data from the session.
+		$app->setUserState('com_digicom.profile.data', null);
+		$this->setMessage(JText::_('COM_DIGICOM_PROFILE_UPDATED_SUCCESSFULL'));
+
+		$this->setRedirect($return, false);
 
 		return true;
 	}
