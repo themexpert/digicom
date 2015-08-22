@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 class DigiComModelConfig extends JModelLegacy
 {
-	
+
 	var $_configs = null;
 	var $_id = null;
 
@@ -21,7 +21,7 @@ class DigiComModelConfig extends JModelLegacy
 	}
 
 	function getConfigs() {
-	
+
 		$comInfo = JComponentHelper::getComponent('com_digicom');
 		$this->_configs = $comInfo->params;
 		return $this->_configs;
