@@ -168,7 +168,7 @@ class DigiComViewProduct extends JViewLegacy
 		{
 			$this->setLayout($layout);
 		}
-		
+
 		$template = new DigiComSiteHelperTemplate($this);
 		$template->rander('product', $this->getLayout());
 

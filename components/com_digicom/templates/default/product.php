@@ -70,7 +70,7 @@ if($this->configs->get('afteradditem',0) == "2"){
 
 					<h1 class="digi-page-title">
 					<?php echo $this->item->name; ?>
-						
+
 						<?php if($this->item->featured):?>
 						<span class="label label-important"><?php echo JText::_('JFEATURED');?></span>
 						<?php endif; ?>
@@ -85,8 +85,9 @@ if($this->configs->get('afteradditem',0) == "2"){
 						<?php echo $this->item->tagLayout->render($this->item->tags->itemTags); ?>
 					<?php endif; ?>
 
-					<p class="short-desc"><?php echo $this->item->introtext; ?></p>
-					<div class="description"><?php echo $this->item->fulltext; ?></div>
+					<div class="description">
+						<?php echo $this->item->text; ?>
+					</div>
 
 					<?php if(!empty($this->item->bundle_source)):?>
 					<div class="bundled-products">
