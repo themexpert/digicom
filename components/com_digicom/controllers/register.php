@@ -77,7 +77,7 @@ class DigicomControllerRegister extends JControllerLegacy
 
 		// Attempt to save the data.
 		$return	= $model->register($data);
-
+		//print_r($return);die;
 		// Check for errors.
 		if ($return === false)
 		{
@@ -111,14 +111,15 @@ class DigicomControllerRegister extends JControllerLegacy
 			}
 
 			$app->setUserState('users.login.form.data', array());
-			$app->redirect(JRoute::_('index.php?option=com_digicom&view=cart&layout=summary'), false));
+			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=cart&layout=summary', false));
+
 		}
 		else
 		{
 			// Login failed !
 			$data['remember'] = (int) $options['remember'];
 			$app->setUserState('com_digicom.register.login.data', $data);
-			$app->redirect(JRoute::_('index.php?option=com_digicom&view=register', false), false);
+			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=register', false));
 		}
 
 		return true;

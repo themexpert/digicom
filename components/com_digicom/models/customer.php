@@ -84,7 +84,7 @@ class DigiComModelCustomer extends JModelItem {
 		$reg               = JSession::getInstance( "none", array() );//new JSession();
 
 		//$userId = ( ! empty( $data['id'] ) ) ? $data['id'] : (int) $this->getState( 'user.id' );
-		
+
 		$query = "select `id` from `#__users` where `email`='" . $data['email']."'";
 		$db->setQuery( $query );
 		$userId = $db->loadResult();
@@ -115,7 +115,7 @@ class DigiComModelCustomer extends JModelItem {
 		$user->usertype = "Registered";
 
 		//print_r($user);die;
-		
+
 		if ( ! $user->save() ) {
 			$reg->set( "tmp_profile", $data );
 			$error        = $user->getError();
@@ -227,7 +227,7 @@ class DigiComModelCustomer extends JModelItem {
 			$promocode = '0';
 		}
 
-		
+
 
 		$app      = JFactory::getApplication();
 		$sitename = ( trim( $configs->get('store_name','DigiCom Store') ) != '' ) ? $configs->get('store_name','DigiCom Store') : $app->getCfg( 'sitename' );
@@ -333,4 +333,3 @@ class DigiComModelCustomer extends JModelItem {
 		}
 	}
 }
-

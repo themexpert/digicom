@@ -176,6 +176,7 @@ class DigicomModelRegister extends JModelForm
 	 */
 	public function register($temp)
 	{
+
 		$params = JComponentHelper::getParams('com_digicom');
 
 		// Initialise the table with JUser.
@@ -211,54 +212,27 @@ class DigicomModelRegister extends JModelForm
 			return false;
 		}
 
+		$data['id'] = $user->id;
+		$customer = $this->getTable( 'Customer' );
+		// Bind the data.
+		if (!$customer->bind($data))
+		{
+			$this->setError(JText::sprintf('COM_DIGICOM_CUSTOMER_BIND_FAILED', $customer->getError()));
+
+			return false;
+		}
+
+		// create user
+		if (!$customer->create())
+		{
+			$this->setError(JText::sprintf('COM_DIGICOM_CUSTOMER_SAVE_FAILED', $customer->getError()));
+
+			return false;
+		}
+
 		return $user->id;
 
-		/*
-		* dont handle email now
-		*/
-		// $config = JFactory::getConfig();
-		// $db = $this->getDbo();
-		// $query = $db->getQuery(true);
-		//
-		// // Compile the notification mail values.
-		// $data = $user->getProperties();
-		// $data['fromname'] = $config->get('fromname');
-		// $data['mailfrom'] = $config->get('mailfrom');
-		// $data['sitename'] = $config->get('sitename');
-		// $data['siteurl'] = JUri::root();
-
-		//
-		// $emailSubject = JText::sprintf(
-		// 	'COM_DIGICOM_EMAIL_ACCOUNT_DETAILS',
-		// 	$data['name'],
-		// 	$data['sitename']
-		// );
-		//
-		// if ($sendpassword)
-		// {
-		// 	$emailBody = JText::sprintf(
-		// 		'COM_DIGICOM_EMAIL_REGISTERED_BODY',
-		// 		$data['name'],
-		// 		$data['sitename'],
-		// 		$data['siteurl'],
-		// 		$data['username'],
-		// 		$data['password_clear']
-		// 	);
-		// }
-		// else
-		// {
-		// 	$emailBody = JText::sprintf(
-		// 		'COM_DIGICOM_EMAIL_REGISTERED_BODY_NOPW',
-		// 		$data['name'],
-		// 		$data['sitename'],
-		// 		$data['siteurl']
-		// 	);
-		// }
-		//
-		//
-		// // Send the register email.
-		// $return = JFactory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $data['email'], $emailSubject, $emailBody);
-
-
 	}
+
+
 }
