@@ -172,7 +172,7 @@ class DigiComViewProduct extends JViewLegacy
 
 		$template = new DigiComSiteHelperTemplate($this);
 		$template->rander('product', $this->getLayout());
-		
+
 		parent::display($tpl);
 	}
 
@@ -215,15 +215,15 @@ class DigiComViewProduct extends JViewLegacy
 			}
 
 			$path = array(array('title' => $this->item->name, 'link' => ''));
-			$category = JCategories::getInstance('Digicom')->get($this->item->catid);
+			$this->category = $category = JCategories::getInstance('Digicom')->get($this->item->catid);
 
 			while ($category && ($menu->query['option'] != 'com_digicom' || $menu->query['view'] == 'product' || $id != $category->id) && $category->id > 1)
 			{
 				$path[] = array('title' => $category->title, 'link' => DigiComSiteHelperRoute::getCategoryRoute($category->id));
 				$category = $category->getParent();
 			}
-
-			$this->category = $category;
+			// get the parent category
+			//$this->category = $category;
 
 			$path = array_reverse($path);
 
