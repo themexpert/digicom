@@ -172,7 +172,7 @@ class DigiComModelProduct extends JModelAdmin
 	 *
 	 * @param   object  $record  A record object.
 	 *
-	 * @return  boolean  True if allowed to change the state of the record. Defaults to the permission for the component.
+	 * @return  boolean  True if allowed to change the published of the record. Defaults to the permission for the component.
 	 *
 	 * @since   1.0.0
 	 */
@@ -239,14 +239,14 @@ class DigiComModelProduct extends JModelAdmin
 		{
 			// Disable fields for display.
 			$form->setFieldAttribute('ordering', 'disabled', 'true');
-			$form->setFieldAttribute('state', 'disabled', 'true');
+			$form->setFieldAttribute('published', 'disabled', 'true');
 			$form->setFieldAttribute('publish_up', 'disabled', 'true');
 			$form->setFieldAttribute('publish_down', 'disabled', 'true');
 
 			// Disable fields while saving.
 			// The controller has already verified this is a record you can edit.
 			$form->setFieldAttribute('ordering', 'filter', 'unset');
-			$form->setFieldAttribute('state', 'filter', 'unset');
+			$form->setFieldAttribute('published', 'filter', 'unset');
 			$form->setFieldAttribute('publish_up', 'filter', 'unset');
 			$form->setFieldAttribute('publish_down', 'filter', 'unset');
 		}
@@ -409,12 +409,12 @@ class DigiComModelProduct extends JModelAdmin
 		// Set the publish date to now
 		$db = $this->getDbo();
 
-		if ($table->state == 1 && (int) $table->publish_up == 0)
+		if ($table->published == 1 && (int) $table->publish_up == 0)
 		{
 			$table->publish_up = JFactory::getDate()->toSql();
 		}
 
-		if ($table->state == 1 && intval($table->publish_down) == 0)
+		if ($table->published == 1 && intval($table->publish_down) == 0)
 		{
 			$table->publish_down = $db->getNullDate();
 		}
@@ -499,7 +499,7 @@ class DigiComModelProduct extends JModelAdmin
 			list($name, $alias) = $this->generateNewTitle($data['catid'], $data['alias'], $data['name']);
 			$data['name']	= $name;
 			$data['alias']	= $alias;
-			$data['state']	= 0;
+			$data['published']	= 0;
 		}
 
 		/*
@@ -522,128 +522,128 @@ class DigiComModelProduct extends JModelAdmin
 		{
 			//hook the files here
 			$recordId = $this->getState('product.id');
-			echo $recordId;die;
+			
 			if (isset($data['file']) && is_array($data['file']))
-	        {
-	            $files = $data['file'];
-	            foreach($files as $key => $file){
-	                $filesTable = $this->getTable('Files');
-	                $filesTable->id = $file['id'];
-	                $filesTable->product_id = $recordId;
-	                $filesTable->name = ($file['name'] ? $file['name'] : JText::sprintf('COM_DIGICOM_PRODUCT_FILE_NAME',$key));
-	                $filesTable->url = $file['url'];
-	                $filesTable->ordering = $file['ordering'];
-	                $filesTable->store();
-	            }
-	            if (isset($data['files_remove_id']) && !empty($data['files_remove_id'])){
-	                $filesTable = JTable::getInstance('Files', 'Table');
-	                $filesTable->removeUnmatch($data['files_remove_id'],$recordId);
-	            }
-	        }
+      {
+          $files = $data['file'];
+          foreach($files as $key => $file){
+              $filesTable = $this->getTable('Files');
+              $filesTable->id = $file['id'];
+              $filesTable->product_id = $recordId;
+              $filesTable->name = ($file['name'] ? $file['name'] : JText::sprintf('COM_DIGICOM_PRODUCT_FILE_NAME',$key));
+              $filesTable->url = $file['url'];
+              $filesTable->ordering = $file['ordering'];
+              $filesTable->store();
+          }
+          if (isset($data['files_remove_id']) && !empty($data['files_remove_id'])){
+              $filesTable = JTable::getInstance('Files', 'Table');
+              $filesTable->removeUnmatch($data['files_remove_id'],$recordId);
+          }
+      }
 
-	        // hook bundle item
+      // hook bundle item
 			if (isset($data['bundle_category']) && is_array($data['bundle_category']))
-	        {
-	            $bTable = $this->getTable('Bundle');
-	            $bTable->removeUnmatchBundle($data['bundle_category'],$recordId);
+      {
+          $bTable = $this->getTable('Bundle');
+          $bTable->removeUnmatchBundle($data['bundle_category'],$recordId);
 
-	            $bundleTable = $this->getTable('Bundle');
-	            $bundle_category = $data['bundle_category'];
-	            $bundleTable->bundle_type = 'category';
+          $bundleTable = $this->getTable('Bundle');
+          $bundle_category = $data['bundle_category'];
+          $bundleTable->bundle_type = 'category';
 
-	            foreach($bundle_category as $bundle){
-	                $bundleTable->id = '';
-	                $bundleTable->product_id = $recordId;
-	                $bundleTable->bundle_id = $bundle;
-	                $bundleTable->store();
-	            }
-	        }
+          foreach($bundle_category as $bundle){
+              $bundleTable->id = '';
+              $bundleTable->product_id = $recordId;
+              $bundleTable->bundle_id = $bundle;
+              $bundleTable->store();
+          }
+      }
 
-	        if (isset($data['bundle_product']) && is_array($data['bundle_product']))
-	        {
+      if (isset($data['bundle_product']) && is_array($data['bundle_product']))
+      {
 
-	            $bTable = $this->getTable('Bundle');
-	            $bTable->removeUnmatchBundle($data['bundle_product'],$recordId,'product');
+          $bTable = $this->getTable('Bundle');
+          $bTable->removeUnmatchBundle($data['bundle_product'],$recordId,'product');
 
-	            $bundleTable = $this->getTable('Bundle');
-	            $bundle_product = $data['bundle_product'];
-	            $bundleTable->bundle_type = 'product';
-	            foreach($bundle_product as $bundle){
-	                $bundleTable->id = '';
-	                $bundleTable->product_id = $recordId;
-	                $bundleTable->bundle_id = $bundle;
-	                $bundleTable->store();
-	            }
+          $bundleTable = $this->getTable('Bundle');
+          $bundle_product = $data['bundle_product'];
+          $bundleTable->bundle_type = 'product';
+          foreach($bundle_product as $bundle){
+              $bundleTable->id = '';
+              $bundleTable->product_id = $recordId;
+              $bundleTable->bundle_id = $bundle;
+              $bundleTable->store();
+          }
 
-	        }
+      }
 
-					$assoc = JLanguageAssociations::isEnabled();
-					if ($assoc)
+			$assoc = JLanguageAssociations::isEnabled();
+			if ($assoc)
+			{
+				$id = (int) $this->getState($this->getName() . '.id');
+				$item = $this->getItem($id);
+
+				// Adding self to the association
+				$associations = $data['associations'];
+
+				foreach ($associations as $tag => $id)
+				{
+					if (empty($id))
 					{
-						$id = (int) $this->getState($this->getName() . '.id');
-						$item = $this->getItem($id);
+						unset($associations[$tag]);
+					}
+				}
 
-						// Adding self to the association
-						$associations = $data['associations'];
+				// Detecting all item menus
+				$all_language = $item->language == '*';
 
-						foreach ($associations as $tag => $id)
-						{
-							if (empty($id))
-							{
-								unset($associations[$tag]);
-							}
-						}
+				if ($all_language && !empty($associations))
+				{
+					JError::raiseNotice(403, JText::_('COM_DIGICOM_ERROR_ALL_LANGUAGE_ASSOCIATED'));
+				}
 
-						// Detecting all item menus
-						$all_language = $item->language == '*';
+				$associations[$item->language] = $item->id;
 
-						if ($all_language && !empty($associations))
-						{
-							JError::raiseNotice(403, JText::_('COM_DIGICOM_ERROR_ALL_LANGUAGE_ASSOCIATED'));
-						}
+				// Deleting old association for these items
+				$db = JFactory::getDbo();
+				$query = $db->getQuery(true)
+					->delete('#__associations')
+					->where('context=' . $db->quote('com_digicom.product'))
+					->where('id IN (' . implode(',', $associations) . ')');
+				$db->setQuery($query);
+				$db->execute();
 
-						$associations[$item->language] = $item->id;
+				if ($error = $db->getErrorMsg())
+				{
+					$this->setError($error);
 
-						// Deleting old association for these items
-						$db = JFactory::getDbo();
-						$query = $db->getQuery(true)
-							->delete('#__associations')
-							->where('context=' . $db->quote('com_digicom.product'))
-							->where('id IN (' . implode(',', $associations) . ')');
-						$db->setQuery($query);
-						$db->execute();
+					return false;
+				}
 
-						if ($error = $db->getErrorMsg())
-						{
-							$this->setError($error);
+				if (!$all_language && count($associations))
+				{
+					// Adding new association for these items
+					$key = md5(json_encode($associations));
+					$query->clear()
+						->insert('#__associations');
 
-							return false;
-						}
-
-						if (!$all_language && count($associations))
-						{
-							// Adding new association for these items
-							$key = md5(json_encode($associations));
-							$query->clear()
-								->insert('#__associations');
-
-							foreach ($associations as $id)
-							{
-								$query->values($id . ',' . $db->quote('com_digicom.product') . ',' . $db->quote($key));
-							}
-
-							$db->setQuery($query);
-							$db->execute();
-
-							if ($error = $db->getErrorMsg())
-							{
-								$this->setError($error);
-								return false;
-							}
-						}
+					foreach ($associations as $id)
+					{
+						$query->values($id . ',' . $db->quote('com_digicom.product') . ',' . $db->quote($key));
 					}
 
-	        return true;
+					$db->setQuery($query);
+					$db->execute();
+
+					if ($error = $db->getErrorMsg())
+					{
+						$this->setError($error);
+						return false;
+					}
+				}
+			}
+
+      return true;
 
 		}
 
@@ -673,25 +673,24 @@ class DigiComModelProduct extends JModelAdmin
 			throw new Exception(JText::_('JERROR_CORE_CREATE_NOT_PERMITTED'));
 		}
 
-		$table = $this->getTable();
 		foreach ($pks as $pk)
 		{
-			//$data = (array) $this->getItem($pk);
 			$data = (array) $this->getItem($pk);
 			list($name, $alias) = $this->generateNewTitle($data['catid'], $data['alias'], $data['name']);
 
 			$data['id']	= '';
 			$data['name']	= $name;
 			$data['alias']	= $alias;
-			$data['state']	= 0;
 			$data['published']	= 0;
-			$data['tags']	= $data['tags']->tags;
-			$data['metadata']['tags'] = $data['tags'];
+			$data['published']	= 0;
+			$data['tags']	= '';
 			$data['file'] = '';
 			$data['bundle_category'] = '';
 			$data['bundle_product'] = '';
 
-			$this->save($data);
+			if(!$this->save($data)){
+				return false;
+			}
 		}
 
 		// Clear modules cache

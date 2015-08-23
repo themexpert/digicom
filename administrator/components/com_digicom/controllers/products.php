@@ -57,8 +57,9 @@ class DigiComControllerProducts extends JControllerAdmin
 		// dulicate the selected the items.
 		if (!$model->duplicate($pks))
 		{
-			JError::raiseWarning(500, $model->getError());
-		}else{
+			$this->setMessage($model->getError());
+		}
+		else{
 			$this->setMessage(JText::plural('COM_DIGICOM_N_PRODUCTS_DUPLICATED', count($pks)));
 		}
 
