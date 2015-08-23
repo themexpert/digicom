@@ -237,8 +237,8 @@ class JFormFieldDGEditor extends JFormFieldTextarea
 
 		return $result;
 	}
-	
-	
+
+
 	/**
 	 * Method to get the field input markup for the editor area
 	 *
@@ -248,13 +248,14 @@ class JFormFieldDGEditor extends JFormFieldTextarea
 	 */
 	protected function getInput()
 	{
-		
+
 		$app = JFactory::getApplication();
 		$path = $this->getAttribute('path'); ///components/com_digicom/emails/
 		$filename = $this->getAttribute('filename'); //new-order.php
+		$noname = $this->getAttribute('noname'); //new-order.php
 		$overridepath = $this->getAttribute('overridepath'); //template || root
 		$override = $this->getAttribute('override'); // /html/com_digicom/emails/
-		
+
 		// override is always false for now
 		// when we will support edit file then it will be true
 		$override_action = false;
@@ -269,7 +270,7 @@ class JFormFieldDGEditor extends JFormFieldTextarea
 					{
 						$this->template  = $this->getTemplate();
 					}
-					
+
 					if ($this->template)
 					{
 						$client   = JApplicationHelper::getClientInfo($this->template->client_id);
@@ -285,18 +286,18 @@ class JFormFieldDGEditor extends JFormFieldTextarea
 							$override_action = false;
 							$overridemsg = $this->getAttribute('overridemsg'); ///html/com_digicom/emails/
 							$return .= JText::_($overridemsg).'<br/>';
-							
+
 							$filePath = JPath::clean($client->path . $path . '/'.$filename);
 							$this->value = file_get_contents($filePath);
 						}
-						
+
 					}
 					break;
 				case 'root':
 					break;
 			}
 		}
-		
+
 		if($override_action){
 			// Get an editor object.
 			$editor = $this->getEditor();
@@ -330,13 +331,17 @@ class JFormFieldDGEditor extends JFormFieldTextarea
 			// Initialize JavaScript field attributes.
 			$onchange = $this->onchange ? ' onchange="' . $this->onchange . '"' : '';
 			$onclick = $this->onclick ? ' onclick="' . $this->onclick . '"' : '';
-			
-			$return .= '<textarea name="' . $this->name . '" id="' . $this->id . '"' . $columns . $rows . $class
+			if($noname){
+				$name = '';
+			}else{
+				$name = ' name="' . $this->name . '"';
+			}
+			$return .= '<textarea' . $name . ' id="' . $this->id . '"' . $columns . $rows . $class
 				. $hint . $disabled . $readonly . $onchange . $onclick . $required . $autocomplete . $autofocus . $spellcheck . ' >'
 				. htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '</textarea>';
 		}
 		$return .='</div>';
-		return $return; 
+		return $return;
 	}
 
 	/**
