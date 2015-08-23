@@ -8,7 +8,7 @@
  */
 
 defined('_JEXEC') or die;
-
+use Joomla\Registry\Registry;
 /**
  * HTML product View class
  *
@@ -217,13 +217,36 @@ class DigiComViewProduct extends JViewLegacy
 			$path = array(array('title' => $this->item->name, 'link' => ''));
 			$this->category = $category = JCategories::getInstance('Digicom')->get($this->item->catid);
 
+			$categoryParams = new Registry;
+			$categoryParams->loadString($category->getParams());
+			if(!empty($categoryParams->get('category_layout',''))){
+				$currentTemplate = true;
+			}else{
+				$currentTemplate = false;
+			}
+			// $mergedParams = clone $categoryParams;
+
 			while ($category && ($menu->query['option'] != 'com_digicom' || $menu->query['view'] == 'product' || $id != $category->id) && $category->id > 1)
 			{
 				$path[] = array('title' => $category->title, 'link' => DigiComSiteHelperRoute::getCategoryRoute($category->id));
 				$category = $category->getParent();
+
+				if($currentTemplate) continue;
+
+				$catParams = new Registry;
+				$catParams->loadString($category->getParams());
+
+				if(!empty($catParams->get('category_layout',''))){
+					$currentTemplate = true;
+					$categoryParams->set('category_layout',$catParams->get('category_layout'));
+				}else{
+					$currentTemplate = false;
+				}
+
 			}
+
 			// get the parent category
-			//$this->category = $category;
+			$this->category->params = $categoryParams;
 
 			$path = array_reverse($path);
 
