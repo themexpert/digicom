@@ -53,22 +53,11 @@ if($this->item->price > 0){
 						<?php echo $this->item->text; ?>
 					</div>
 
-					<?php if(!empty($this->item->bundle_source)):?>
-					<div class="bundled-products">
-						<h3><?php echo JText::_('COM_DIGICOM_PRODUCT_BUNDLE_ITEMS_TITLE');?></h3>
-						<ul>
-								<?php
-								foreach($this->item->bundleitems as $key=>$bitem):
-							  	$link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($bitem->id,$bitem->catid, $bitem->language));
-								?>
-								<li>
-									<a href="<?php echo $link; ?>"><?php echo $bitem->name; ?></a>
-									<span class="label"><?php echo DigiComSiteHelperPrice::format_price($bitem->price, $conf->get('currency','USD'), true, $conf); ?></span>
-								</li>
-							<?php endforeach; ?>
-						</ul>
-					</div>
-					<?php endif; ?>
+					<?php
+					if(!empty($this->item->bundle_source)):
+						echo $this->loadTemplate('bundle');
+					endif;
+					?>
 
 					<?php if ($this->configs->get('catalogue',0) == '0' and !$this->item->hide_public) : ?>
 					<div class="well clearfix">

@@ -163,6 +163,7 @@ class DigiComViewProduct extends JViewLegacy
 
 		$this->_prepareDocument();
 		$this->category->params = $this->category->getParams();
+
 		// Get the layout from the merged category params
 		if ($layout = $this->category->params->get('category_layout'))
 		{
@@ -171,8 +172,7 @@ class DigiComViewProduct extends JViewLegacy
 
 		$template = new DigiComSiteHelperTemplate($this);
 		$template->rander('product', $this->getLayout());
-
-
+		
 		parent::display($tpl);
 	}
 
