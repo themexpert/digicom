@@ -9,11 +9,6 @@
 
 defined('_JEXEC') or die;
 $conf = $this->configs;
-// if($this->configs->get('afteradditem',0) == "2"){
-// 	JHTML::_('behavior.modal');
-// 	JFactory::getDocument()->addScript(JURI::base()."media/digicom/assets/js/createpopup.js");
-// }
-
 if($this->item->price > 0){
 	$price = '<span>'.JText::_('COM_DIGICOM_PRODUCT_PRICE').": ".DigiComSiteHelperPrice::format_price($this->item->price, $conf->get('currency','USD'), true, $conf).'</span>';
 }else{

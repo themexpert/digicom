@@ -9,138 +9,89 @@
 
 defined('_JEXEC') or die;
 
-// TODO : Remvoe JRequest and cleanup code, naming convention
-
 JHTML::_('behavior.modal');
-$app=JFactory::getApplication();
-$input = $app->input;
-$configs = $this->configs;
-$agreeterms = $input->get("agreeterms", "");
-$processor = $input->get("processor", "");
-$Itemid = $input->get("Itemid", 0);
-$items = $this->items;
-?>
-<div id="digicom" class="digicom-wrapper com_digicom cart">
-<?php
-$button_value = "COM_DIGICOM_CHECKOUT";
-$onclick = "document.getElementById('returnpage').value='checkout'; document.getElementById('type_button').value='checkout';";
-$url="index.php?option=com_digicom&controller=cart&task=gethtml&tmpl=component&format=raw&processor=";
-
-$total = 0;//$this->total;//0;
-$discount = $this->discount;//0;
-$cat_url = $this->cat_url;
-$totalfields = 0;
-$shippingexists = 0;
-$from = $input->get("from", "");
-$nr_columns = 4;
-$tax = $this->tax;
-$formlink = JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$Itemid);
+$configs 	= $this->configs;
+$items 		= $this->items;
+$total 		= 0; // sub total for all products
 $currency = $configs->get('currency','USD');
 ?>
+<div id="digicom" class="digicom-wrapper com_digicom cart">
 
-<form name="cart_form" method="post" action="<?php echo $formlink?>" onSubmit="return cartformsubmit();">
 	<table class="table table-hover table-striped">
 		<thead>
-		<tr valign="top">
-			<th width="30%">
-				<?php echo JText::_("COM_DIGICOM_IMAGE");?>
-			</th>
-			<th width="30%">
-				<?php echo JText::_("COM_DIGICOM_PRODUCT");?>
-			</th>
-			<th>
-				<?php echo JText::_("COM_DIGICOM_PRICE_PLAN");?>
-			</th>
+			<tr valign="top">
+				<th width="30%"><?php echo JText::_("COM_DIGICOM_IMAGE");?></th>
+				<th width="30%"><?php echo JText::_("COM_DIGICOM_PRODUCT");?></th>
+				<th><?php echo JText::_("COM_DIGICOM_PRICE_PLAN");?></th>
+				<th><?php echo JText::_("COM_DIGICOM_QUANTITY"); ?></th>
+				<th><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php foreach($items as $itemnum => $item): ?>
 
-			<th>
-				<?php echo JText::_("COM_DIGICOM_QUANTITY"); ?>
-			</th>
+			<tr>
+				<!-- Product image -->
+				<td width="70">
+					<?php if(!empty($item->images)): ?>
+						<img height="100" width="100" title="<?php echo $item->name; ?>"
+						src="<?php echo JRoute::_(DigiComSiteHelperDigiCom::getThumbnail($item->images)); ?>" alt="<?php echo $item->name; ?>"/>
+					<?php endif; ?>
+				</td>
+				<!-- /End Product image -->
 
-			<th><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></th>
+				<!-- Product name -->
+				<td style="text-align:left;" class="digicom_product_name">
+					<?php echo $item->name;?>
+					<?php if ($this->configs->get('show_validity',1) == 1) : ?>
+					<div class="muted">
+						<small><?php echo JText::_('COM_DIGICOM_PRODUCT_VALIDITY'); ?> : <?php echo DigiComSiteHelperPrice::getProductValidityPeriod($item); ?></small>
+					</div>
+					<?php endif; ?>
+				</td>
+				<!-- /End Product name -->
 
-		</tr>
-	</thead>
-	<tbody><?php
-	$k = 0;
-	foreach($items as $itemnum => $item){
-		if($itemnum < 0){
-			continue;
-		}
-	?>
-		<tr>
-			<!-- Product image -->
-			<td width="70">
-				<?php if(!empty($item->images)): ?>
-					<img height="100" width="100" title="<?php echo $item->name; ?>"
-					src="<?php echo JRoute::_(DigiComSiteHelperDigiCom::getThumbnail($item->images)); ?>" alt="<?php echo $item->name; ?>"/>
-				<?php endif; ?>
-			</td>
-			<!-- /End Product image -->
+				<!-- Price -->
+				<td align="center" style="vertical-align:top;">
+					<?php echo DigiComSiteHelperPrice::format_price($item->price, $item->currency, true, $configs); ?>
+				</td>
+				<!-- /End Price -->
 
-			<!-- Product name -->
-			<td style="text-align:left;" class="digicom_product_name">
-				<?php echo $item->name;?>
-				<?php if ($this->configs->get('show_validity',1) == 1) : ?>
-				<div class="muted">
-					<small><?php echo JText::_('COM_DIGICOM_PRODUCT_VALIDITY'); ?> : <?php echo DigiComSiteHelperPrice::getProductValidityPeriod($item); ?></small>
-				</div>
-				<?php endif; ?>
-			</td>
-			<!-- /End Product name -->
+				<td align="center" nowrap="nowrap">
+					<span class="digicom_details">
+						<strong> <?php echo $item->quantity; ?> </strong>
+					</span>
+				</td>
 
-			<!-- Price -->
-			<td align="center" style="vertical-align:top;">
-				<?php
-					echo DigiComSiteHelperPrice::format_price($item->price, $item->currency, true, $configs);
-					$currency = $item->currency;
-				?>
-			</td>
-			<!-- /End Price -->
-
-			<td align="center" nowrap="nowrap">
-				<span class="digicom_details">
-					<strong> <?php echo $item->quantity; ?> </strong>
-				</span>
-			</td>
-
-			<td nowrap>
-				<span id="cart_item_total<?php echo $item->cid; ?>" class="digi_cart_amount"><?php
-					echo DigiComSiteHelperPrice::format_price($item->subtotal-(isset($value_discount) ? $value_discount : 0), $item->currency, true, $configs); ?>
-				</span>
-			</td>
-		</tr>
-	<?php
-		$total += $item->subtotal;
-		$k++;
-	}
-	?>
+				<td nowrap>
+					<span id="cart_item_total<?php echo $item->cid; ?>" class="digi_cart_amount"><?php
+						echo DigiComSiteHelperPrice::format_price($item->subtotal-(isset($value_discount) ? $value_discount : 0), $item->currency, true, $configs); ?>
+					</span>
+				</td>
+			</tr>
+			<?php $total += $item->subtotal; ?>
+		<?php endforeach;?>
 		</tbody>
 		<tfoot>
-		<tr class="info">
-			<td></td>
-			<td colspan="2">
-				<b><?php
-					$text = "COM_DIGICOM_ITEM_IN_CART";
-					if($k > 1){
-						$text = "COM_DIGICOM_ITEMS_IN_CART";
-					}
-					echo $k." ".JText::_($text);
-				?></b>
-			</td>
-			<td><b><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></b></td>
-			<td>
-				<b><?php echo DigiComSiteHelperPrice::format_price($total, $currency, true, $configs); ?></b>
-			</td>
-		</tr>
+			<tr class="info">
+				<td></td>
+				<td colspan="2">
+					<strong>
+						<?php
+						$text = "COM_DIGICOM_ITEM_IN_CART";
+						if(count($items) > 1){
+							$text = "COM_DIGICOM_ITEMS_IN_CART";
+						}
+						echo count($items)." ".JText::_($text);
+						?>
+					</strong>
+				</td>
+				<td><strong><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></strong></td>
+				<td>
+					<strong><?php echo DigiComSiteHelperPrice::format_price($total, $currency, true, $configs); ?></strong>
+				</td>
+			</tr>
 		</tfoot>
 	</table>
-
-	<input name="controller" type="hidden" id="controller" value="Cart">
-	<input name="task" type="hidden" id="task" value="updateCart">
-	<input name="returnpage" type="hidden" id="returnpage" value="">
-	<input name="Itemid" type="hidden" value="<?php global $Itemid; echo $Itemid; ?>">
-	<input name="promocode" type="hidden" value="" />
-	<input type="hidden" name="processor" id="processor" value="paypaypal">
-</form>
 </div>
 <?php JFactory::getApplication()->close(); ?>
