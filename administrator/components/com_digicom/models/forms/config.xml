@@ -526,6 +526,7 @@
 					label="COM_DIGICOM_SETTINGS_EMAIL_SETTINGS_SPACER_NEW_ORDER_SHOW_HIDE_NOTICE"
 				/>
 				<field name="template_html" type="dgeditor"
+					noname="true"
 					editor="codemirror|none"
 					readonly="true"
 					buttons="no"
@@ -540,6 +541,7 @@
 				/>
 
 				<field name="template_raw" type="dgeditor"
+					noname="true"
 					editor="codemirror|none"
 					readonly="true"
 					buttons="no"
@@ -602,6 +604,7 @@
 					label="COM_DIGICOM_SETTINGS_EMAIL_SETTINGS_SPACER_PROCESS_ORDER_SHOW_HIDE_NOTICE"
 				/>
 				<field name="template_html" type="dgeditor"
+					noname="true"
 					editor="codemirror|none"
 					readonly="true"
 					buttons="no"
@@ -616,6 +619,7 @@
 				/>
 
 				<field name="template_raw" type="dgeditor"
+					noname="true"
 					editor="codemirror|none"
 					readonly="true"
 					buttons="no"
@@ -678,6 +682,7 @@
 					label="COM_DIGICOM_SETTINGS_EMAIL_SETTINGS_SPACER_COMPLETE_ORDER_SHOW_HIDE_NOTICE"
 				/>
 				<field name="template_html" type="dgeditor"
+					noname="true"
 					editor="codemirror|none"
 					readonly="true"
 					buttons="no"
@@ -692,6 +697,7 @@
 				/>
 
 				<field name="template_raw" type="dgeditor"
+					noname="true"
 					editor="codemirror|none"
 					readonly="true"
 					buttons="no"
@@ -754,6 +760,7 @@
 					label="COM_DIGICOM_SETTINGS_EMAIL_SETTINGS_SPACER_CANCEL_ORDER_SHOW_HIDE_NOTICE"
 				/>
 				<field name="template_html" type="dgeditor"
+					noname="true"
 					editor="codemirror|none"
 					readonly="true"
 					buttons="no"
@@ -768,6 +775,7 @@
 				/>
 
 				<field name="template_raw" type="dgeditor"
+					noname="true"
 					editor="codemirror|none"
 					readonly="true"
 					buttons="no"
