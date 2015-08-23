@@ -12,8 +12,6 @@ defined('_JEXEC') or die;
 // TODO : Remvoe JRequest and cleanup code, naming convention
 
 JHTML::_('behavior.modal');
-$user = JFactory::getUser();
-$document=JFactory::getDocument();
 $app=JFactory::getApplication();
 $input = $app->input;
 $configs = $this->configs;
@@ -26,13 +24,6 @@ $items = $this->items;
 <?php
 $button_value = "COM_DIGICOM_CHECKOUT";
 $onclick = "document.getElementById('returnpage').value='checkout'; document.getElementById('type_button').value='checkout';";
-
-if($user->id == 0 || $this->customer->_customer->country == "")
-{
-	$button_value = "DSSAVEPROFILE";
-	$onclick = "document.getElementById(\'returnpage\').value=\'login_register\'; document.getElementById(\'type_button\').value=\'checkout\';";
-}
-
 $url="index.php?option=com_digicom&controller=cart&task=gethtml&tmpl=component&format=raw&processor=";
 
 $total = 0;//$this->total;//0;
@@ -67,7 +58,6 @@ $currency = $configs->get('currency','USD');
 
 			<th><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></th>
 
-			<th><?php echo JText::_("COM_DIGICOM_CART_REMOVE_ITEM");?></th>
 		</tr>
 	</thead>
 	<tbody><?php
@@ -81,7 +71,7 @@ $currency = $configs->get('currency','USD');
 			<!-- Product image -->
 			<td width="70">
 				<?php if(!empty($item->images)): ?>
-					<img height="100" width="100" title="<?php echo $item->name; ?>" 
+					<img height="100" width="100" title="<?php echo $item->name; ?>"
 					src="<?php echo JRoute::_(DigiComSiteHelperDigiCom::getThumbnail($item->images)); ?>" alt="<?php echo $item->name; ?>"/>
 				<?php endif; ?>
 			</td>
@@ -118,12 +108,6 @@ $currency = $configs->get('currency','USD');
 					echo DigiComSiteHelperPrice::format_price($item->subtotal-(isset($value_discount) ? $value_discount : 0), $item->currency, true, $configs); ?>
 				</span>
 			</td>
-
-			<!-- Remove -->
-			<td align="center" style="vertical-align:top;width:80px;">
-				<a href="#" onclick="javascript:deleteFromCart(<?php echo $item->cid; ?>);"><i class="icon-remove"></i></a>
-			</td>
-			<!-- /End Remove -->
 		</tr>
 	<?php
 		$total += $item->subtotal;
@@ -134,7 +118,7 @@ $currency = $configs->get('currency','USD');
 		<tfoot>
 		<tr class="info">
 			<td></td>
-			<td colspan="3">
+			<td colspan="2">
 				<b><?php
 					$text = "COM_DIGICOM_ITEM_IN_CART";
 					if($k > 1){
