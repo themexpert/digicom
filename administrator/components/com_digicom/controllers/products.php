@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
  */
 class DigiComControllerProducts extends JControllerAdmin
 {
-	
+
 	/**
 	 * Constructor.
 	 *
@@ -41,26 +41,25 @@ class DigiComControllerProducts extends JControllerAdmin
 	 */
 	public function duplicate()
 	{
+		$model = $this->getModel();
+
 		// Check for request forgeries
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		$pks = $this->input->post->get('cid', array(), 'array');
 		JArrayHelper::toInteger($pks);
 
-		try
+		if (empty($pks))
 		{
-			if (empty($pks))
-			{
-				throw new Exception(JText::_('COM_DIGICOM_ERROR_NO_PRODUCTS_SELECTED'));
-			}
-
-			$model = $this->getModel();
-			$model->duplicate($pks);
-			$this->setMessage(JText::plural('COM_DIGICOM_N_PRODUCTS_DUPLICATED', count($pks)));
+			throw new Exception(JText::_('COM_DIGICOM_ERROR_NO_PRODUCTS_SELECTED'));
 		}
-		catch (Exception $e)
+
+		// dulicate the selected the items.
+		if (!$model->duplicate($pks))
 		{
-			JError::raiseWarning(500, $e->getMessage());
+			JError::raiseWarning(500, $model->getError());
+		}else{
+			$this->setMessage(JText::plural('COM_DIGICOM_N_PRODUCTS_DUPLICATED', count($pks)));
 		}
 
 		$this->setRedirect('index.php?option=com_digicom&view=products');

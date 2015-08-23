@@ -522,7 +522,7 @@ class DigiComModelProduct extends JModelAdmin
 		{
 			//hook the files here
 			$recordId = $this->getState('product.id');
-
+			echo $recordId;die;
 			if (isset($data['file']) && is_array($data['file']))
 	        {
 	            $files = $data['file'];
