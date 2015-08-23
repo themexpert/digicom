@@ -247,7 +247,18 @@ $input->set('layout', 'dgtabs');
 	<?php echo JHtml::_('form.token'); ?>
 </form>
 </div>
-
+<?php
+	echo JHtml::_(
+		'bootstrap.renderModal',
+		'videoTutorialModal',
+		array(
+			'url' => 'https://www.youtube-nocookie.com/embed/zAEU6-Wv5c4?list=PL5eH3TQ0wUTZXKs632GyKMzGVkxdfPB4f&amp;showinfo=0',//&amp;autoplay=1
+			'title' => JText::_('COM_DIGICOM_ORDERS_VIDEO_INTRO'),
+			'height' => '400px',
+			'width' => '1280'
+		)
+	);
+?>
 <div class="dg-footer">
 	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
 </div>

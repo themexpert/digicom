@@ -17,7 +17,7 @@ class DigiComViewOrder extends JViewLegacy
 	protected $item;
 
 	protected $form;
-	
+
 	protected $configs;
 
 	function display( $tpl = null )
@@ -42,17 +42,20 @@ class DigiComViewOrder extends JViewLegacy
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
-		
+
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
+
+		$layout = new JLayoutFile('toolbar.video');
+		$bar->appendButton('Custom', $layout->render(array()), 'video');
 		
 		JToolBarHelper::apply('order.apply');
 		JToolBarHelper::save('order.save');
 		JToolBarHelper::Cancel('order.cancel');
-		
+
 		DigiComHelperDigiCom::addSubmenu('orders');
 		$this->sidebar = JHtmlSidebar::render();
-		
+
 		parent::display( $tpl );
 	}
 
@@ -60,20 +63,20 @@ class DigiComViewOrder extends JViewLegacy
 	function prepereNewOrder( $tpl = null )
 	{
 
-		
+
 		$form = $this->get('Form');
 		$this->assign( "form", $form );
-		
+
 		// configs
 		$configs =  $this->_models['config']->getConfigs();
 		$this->assign( "configs", $configs );
-		
+
 		// promocode
 		$promocode =  $this->get('PromoCode');
 		$this->assign( "promocode", $promocode );
-		
-		
-		
+
+
+
 		JToolBarHelper::title( JText::_( 'COM_DIGICOM_ORDER_CREATE_NEW_ORDER_TOOLBAR_TITLE' ), 'generic.png' );
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout
@@ -85,13 +88,13 @@ class DigiComViewOrder extends JViewLegacy
 		$bar->appendButton('Custom', $layout->render($title), 'title');
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
-		
+
 		JToolBarHelper::save();
 		JToolBarHelper::cancel();
-		
+
 		DigiComHelperDigiCom::addSubmenu('orders');
 		$this->sidebar = JHtmlSidebar::render();
-		
+
 		parent::display( $tpl );
 	}
 
@@ -113,7 +116,7 @@ class DigiComViewOrder extends JViewLegacy
 		$db->setQuery($sql);
 		$db->query();
 		$count = $db->loadResult();
-		return $count; 
+		return $count;
 	}
 
 	function productitem( $tpl = null )
@@ -128,7 +131,7 @@ class DigiComViewOrder extends JViewLegacy
 		// Subcription type
 		$subscr_types_options[] = JHTML::_('select.option',  'new',  'New Subcription' );
 		$subscr_types_options[] = JHTML::_('select.option',  'renewal',  'Renewal' );
-		
+
 		$this->assign( "subscr_types", '' );
 
 		// License to renew
@@ -220,10 +223,10 @@ class DigiComViewOrder extends JViewLegacy
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
-		
+
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
-		
+
 //		JToolBarHelper::save();
 		if ( $isNew ) {
 			JToolBarHelper::cancel();
@@ -236,7 +239,7 @@ class DigiComViewOrder extends JViewLegacy
 
 		$configs =  $this->_models['config']->getConfigs();
 		$lists = array();
-		
+
 		$prods =  $this->_models['product']->getListProducts();
 		$opts = array();
 		$opts[] = JHTML::_( 'select.option', "", JText::_( "Select product" ) );
@@ -262,7 +265,7 @@ class DigiComViewOrder extends JViewLegacy
 		$this->assign( "promocode", $order->promocode );
 
 		// products
-		
+
 		$products = array();
 		if ( $order->products ) {
 
@@ -270,7 +273,7 @@ class DigiComViewOrder extends JViewLegacy
 
 			foreach( $products as $key => $product) {
 				//print_r($product);die;
-				
+
 				// get Plain
 				//orderDetails
 				/*
@@ -294,7 +297,7 @@ class DigiComViewOrder extends JViewLegacy
 				*/
 			}
 		}
-		
+
 		//dsdebug($products);die;
 
 		$this->assign( "products", $products );
@@ -326,14 +329,14 @@ class DigiComViewOrder extends JViewLegacy
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
-		
+
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
-		
+
 		JToolBarHelper::addNew('order.new');
 		JToolBarHelper::divider();
 		JToolBarHelper::deleteList('orders.remove');
 		JToolBarHelper::spacer();
 	}
-	
+
 }
