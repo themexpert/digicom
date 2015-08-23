@@ -15,7 +15,7 @@ class DigiComViewCustomers extends JViewLegacy {
 
 	function display ($tpl =  null )
 	{
-		
+
 		$layout = JRequest::getVar('layout','');
 		if($layout){
 			$this->setLayout($layout);
@@ -80,6 +80,8 @@ class DigiComViewCustomers extends JViewLegacy {
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
 
+		$layout = new JLayoutFile('toolbar.video');
+		$bar->appendButton('Custom', $layout->render(array()), 'video');
 
 	}
 

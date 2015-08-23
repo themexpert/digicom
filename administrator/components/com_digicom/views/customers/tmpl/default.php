@@ -132,7 +132,18 @@ $n = count ($this->custs);
 		<input type="hidden" name="view" value="customers" />
 	</form>
 </div>
-
+<?php
+	echo JHtml::_(
+		'bootstrap.renderModal',
+		'videoTutorialModal',
+		array(
+			'url' => 'https://www.youtube-nocookie.com/embed/oJ9MmXisEU8?list=PL5eH3TQ0wUTZXKs632GyKMzGVkxdfPB4f&amp;showinfo=0',//&amp;autoplay=1
+			'title' => JText::_('COM_DIGICOM_CUSTOMER_VIDEO_INTRO'),
+			'height' => '400px',
+			'width' => '1280'
+		)
+	);
+?>
 <div class="dg-footer">
 	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
 </div>

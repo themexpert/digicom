@@ -16,17 +16,17 @@ class DigiComViewDiscount extends JViewLegacy
 	protected $item;
 	protected $form;
 	protected $configs;
-	
+
 	function display( $tpl = null )
 	{
 
-		
+
 		$this->state	= $this->get('State');
 		$this->item		= $this->get('Item');
 		$this->form		= $this->get('Form');
 		$this->configs 	= $this->get('configs');
 
-		
+
 		JToolBarHelper::title( JText::_( 'COM_DIGICOM_DISCOUNTS_TOOLBAR_TITLE' ), 'generic.png' );
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout
@@ -45,12 +45,12 @@ class DigiComViewDiscount extends JViewLegacy
 		JToolBarHelper::apply('discount.apply');
 		JToolBarHelper::save('discount.save');
 		JToolBarHelper::cancel('discount.cancel');
-		
+
 		DigiComHelperDigiCom::addSubmenu('discounts');
 		$this->sidebar = JHtmlSidebar::render();
-		
+
 		parent::display( $tpl );
 	}
 
-	
+
 }

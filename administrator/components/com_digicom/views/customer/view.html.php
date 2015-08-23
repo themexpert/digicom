@@ -34,6 +34,9 @@ class DigiComViewCustomer extends JViewLegacy {
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
 
+		$layout = new JLayoutFile('toolbar.video');
+		$bar->appendButton('Custom', $layout->render(array()), 'video');
+		
 		JToolBarHelper::apply('customer.apply');
 		JToolBarHelper::save('customer.save');
 
