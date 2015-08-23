@@ -372,3 +372,19 @@ function RemoveFromCart(CARTID,e)
 		}
 	}).send();
 }
+
+function deleteFromCart(cartid)
+{
+	var myAjax = new Request(
+		{
+			url:   'index.php?option=com_digicom&view=cart&task=cart.deleteFromCart&from=ajax&cartid='+cartid,
+			method: 'get',
+			onSuccess: function(response)
+			{
+				refresCartModule();
+				document.getElementById("cart_body").innerHTML = responseHTML;
+			}
+	});
+	
+	myAjax.send();
+}
