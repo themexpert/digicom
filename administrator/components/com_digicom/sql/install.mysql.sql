@@ -38,48 +38,48 @@ CREATE TABLE IF NOT EXISTS `#__digicom_cart` (
 --
 -- Table structure for table `#__digicom_currencies`
 --
-
-DROP TABLE IF EXISTS `#__digicom_currencies`;
-CREATE TABLE IF NOT EXISTS `#__digicom_currencies` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `pluginid` varchar(30) NOT NULL DEFAULT '',
-  `currency_name` varchar(20) NOT NULL DEFAULT '',
-  `currency_full` varchar(50) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+--
+-- DROP TABLE IF EXISTS `#__digicom_currencies`;
+-- CREATE TABLE IF NOT EXISTS `#__digicom_currencies` (
+--   `id` int(11) NOT NULL AUTO_INCREMENT,
+--   `pluginid` varchar(30) NOT NULL DEFAULT '',
+--   `currency_name` varchar(20) NOT NULL DEFAULT '',
+--   `currency_full` varchar(50) NOT NULL DEFAULT '',
+--   PRIMARY KEY (`id`)
+-- ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
 -- Dumping data for table `#__digicom_currencies`
 --
-
-INSERT INTO `#__digicom_currencies` (`id`, `pluginid`, `currency_name`, `currency_full`) VALUES
-(1, '1', 'USD', 'U.S. Dollar'),
-(2, '1', 'AUD', 'Australian Dollar'),
-(3, '1', 'BDT', 'Taka'),
-(4, '1', 'CAD', 'Canadian Dollar'),
-(5, '1', 'CHF', 'Swiss Franc'),
-(6, '1', 'CZK', 'Czech Koruna'),
-(7, '1', 'DKK', 'Danish Krone'),
-(8, '1', 'EUR', 'Euro'),
-(9, '1', 'GBP', 'Pound Sterling'),
-(10, '1', 'HKD', 'Hong Kong Dollar'),
-(11, '1', 'HUF', 'Hungarian Forint'),
-(12, '1', 'JPY', 'Japanese Yen'),
-(13, '1', 'NOK', 'Norwegian Krone'),
-(14, '1', 'NZD', 'New Zealand Dollar'),
-(15, '1', 'PLN', 'Polish Zloty'),
-(16, '1', 'SEK', 'Swedish Krona'),
-(17, '1', 'SGD', 'Singapore Dollar'),
-(18, '1', 'ILS', 'Israeli New Shekel (ILS)'),
-(19, '1', 'MXN', 'Mexican Peso (MXN)'),
-(20, '1', 'BRL', 'Brazilian Real (BRL)'),
-(21, '1', 'MYR', 'Malaysian Ringgit (MYR)'),
-(22, '1', 'PHP', 'Philippine Peso (PHP)'),
-(23, '1', 'TWD', 'New Taiwan Dollar (TWD)'),
-(24, '1', 'THB', 'Thai Baht (THB)'),
-(25, '1', 'TRY', 'Turkish Lira (TRY)');
+--
+-- INSERT INTO `#__digicom_currencies` (`id`, `pluginid`, `currency_name`, `currency_full`) VALUES
+-- (1, '1', 'USD', 'U.S. Dollar'),
+-- (2, '1', 'AUD', 'Australian Dollar'),
+-- (3, '1', 'BDT', 'Taka'),
+-- (4, '1', 'CAD', 'Canadian Dollar'),
+-- (5, '1', 'CHF', 'Swiss Franc'),
+-- (6, '1', 'CZK', 'Czech Koruna'),
+-- (7, '1', 'DKK', 'Danish Krone'),
+-- (8, '1', 'EUR', 'Euro'),
+-- (9, '1', 'GBP', 'Pound Sterling'),
+-- (10, '1', 'HKD', 'Hong Kong Dollar'),
+-- (11, '1', 'HUF', 'Hungarian Forint'),
+-- (12, '1', 'JPY', 'Japanese Yen'),
+-- (13, '1', 'NOK', 'Norwegian Krone'),
+-- (14, '1', 'NZD', 'New Zealand Dollar'),
+-- (15, '1', 'PLN', 'Polish Zloty'),
+-- (16, '1', 'SEK', 'Swedish Krona'),
+-- (17, '1', 'SGD', 'Singapore Dollar'),
+-- (18, '1', 'ILS', 'Israeli New Shekel (ILS)'),
+-- (19, '1', 'MXN', 'Mexican Peso (MXN)'),
+-- (20, '1', 'BRL', 'Brazilian Real (BRL)'),
+-- (21, '1', 'MYR', 'Malaysian Ringgit (MYR)'),
+-- (22, '1', 'PHP', 'Philippine Peso (PHP)'),
+-- (23, '1', 'TWD', 'New Taiwan Dollar (TWD)'),
+-- (24, '1', 'THB', 'Thai Baht (THB)'),
+-- (25, '1', 'TRY', 'Turkish Lira (TRY)');
 
 -- --------------------------------------------------------
 

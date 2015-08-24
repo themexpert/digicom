@@ -240,6 +240,13 @@
 
 			<field
 				name="currency"
+				type="text"
+				label="COM_DIGICOM_CURRENCY"
+				default="$"
+				description="COM_DIGICOM_SETTINGS_CURRENCY_SELECTOR_DESC" />
+				
+			<!-- <field
+				name="currency"
 				type="sql"
 				query="select distinct currency_name, currency_full from #__digicom_currencies"
 				key_field="currency_name"
@@ -247,7 +254,7 @@
 				class="btn-group"
 				label="COM_DIGICOM_CURRENCY"
 				default="1"
-				description="COM_DIGICOM_SETTINGS_CURRENCY_SELECTOR_DESC" />
+				description="COM_DIGICOM_SETTINGS_CURRENCY_SELECTOR_DESC" /> -->
 
 			<field
 				name="currency_position"

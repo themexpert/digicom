@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS
 `#__digicom_products_files`,
 `#__digicom_products_rating`,
 `#__digicom_cart`,
-`#__digicom_currencies`,
+-- `#__digicom_currencies`,
 `#__digicom_customers`,
 `#__digicom_licenses`,
 `#__digicom_log`,
