@@ -216,10 +216,11 @@
 			<field
 				name="category_layout"
 				type="themelayout"
-				label="JFIELD_ALT_LAYOUT_LABEL"
+				label="COM_DIGICOM_CATEGORY_TEMPLATE_LABEL"
 				description="JFIELD_ALT_COMPONENT_LAYOUT_DESC"
 				view="category"
 				useglobal="true"
+				text="COM_DIGICOM_CATEGORY_TEMPLATE_DEFAULT"
 				default=""
 				/>
 

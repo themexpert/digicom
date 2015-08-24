@@ -39,41 +39,45 @@ class JFormFieldThemelayout extends JFormField
 	protected function getInput()
 	{
 		jimport('joomla.filesystem.folder');
-        $mainframe = JFactory::getApplication();
-        $fieldName = $this->name;
-        $componentPath = JPATH_SITE .'/components/com_digicom/templates';
-        $componentFolders = JFolder::folders($componentPath);
-		
-        $db = JFactory::getDBO();
+    $mainframe = JFactory::getApplication();
+    $fieldName = $this->name;
+    $text			 = isset( $this->element['text'] ) ? $this->element['text'] : '';
+		if(empty($text)){
+			$text = 'JDEFAULT';
+		}
+		$componentPath = JPATH_SITE .'/components/com_digicom/templates';
+    $componentFolders = JFolder::folders($componentPath);
+
+    $db = JFactory::getDBO();
 		$query = "SELECT template FROM #__template_styles WHERE client_id = 0 AND home = 1";
-        $db->setQuery($query);
-        $defaultemplate = $db->loadResult();    
-        $templatePath = JPATH_SITE . '/templates/' . $defaultemplate . '/html/com_digicom/templates';
+    $db->setQuery($query);
+    $defaultemplate = $db->loadResult();
+    $templatePath = JPATH_SITE . '/templates/' . $defaultemplate . '/html/com_digicom/templates';
 
-        if (JFolder::exists($templatePath))
+    if (JFolder::exists($templatePath))
+    {
+        $templateFolders = JFolder::folders($templatePath);
+        $folders = @array_merge($templateFolders, $componentFolders);
+        $folders = @array_unique($folders);
+    }
+    else
+    {
+        $folders = $componentFolders;
+    }
+
+    $exclude = 'default';
+    $options = array();
+    foreach ($folders as $folder)
+    {
+        if (preg_match(chr(1).$exclude.chr(1), $folder))
         {
-            $templateFolders = JFolder::folders($templatePath);
-            $folders = @array_merge($templateFolders, $componentFolders);
-            $folders = @array_unique($folders);
+            continue;
         }
-        else
-        {
-            $folders = $componentFolders;
-        }
+        $options[] = JHTML::_('select.option', $folder, ucfirst($folder));
+    }
 
-        $exclude = 'default';
-        $options = array();
-        foreach ($folders as $folder)
-        {
-            if (preg_match(chr(1).$exclude.chr(1), $folder))
-            {
-                continue;
-            }
-            $options[] = JHTML::_('select.option', $folder, ucfirst($folder));
-        }
+    array_unshift($options, JHTML::_('select.option', '', '-- '.JText::_($text).' --'));
 
-        array_unshift($options, JHTML::_('select.option', '', '-- '.JText::_('JDEFAULT').' --'));
-
-        return JHTML::_('select.genericlist', $options, $fieldName, 'class="inputbox"', 'value', 'text', $this->value);
+    return JHTML::_('select.genericlist', $options, $fieldName, 'class="inputbox"', 'value', 'text', $this->value);
 	}
 }
