@@ -925,6 +925,13 @@ body.layout-neworder .add-product .btn-group {
     overflow: hidden;
   }
 }
+body.com_digicom.view-configs .form-horizontal .control-label {
+  text-align: right;
+  width: 200px;
+}
+body.com_digicom.view-configs .form-horizontal .controls {
+  margin-left: 220px;
+}
 .dg-footer {
   text-align: right;
   margin-bottom: 40px;

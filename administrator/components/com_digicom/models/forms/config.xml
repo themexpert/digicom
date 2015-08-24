@@ -428,7 +428,7 @@
 					<option value="1">JYES</option>
 				</field>
 
-				<field name="email_settings_spacer_template_notice" type="spacer" class="label label-info"
+				<field name="email_settings_spacer_template_notice" type="spacer" class="alert alert-info"
 					label="COM_DIGICOM_SETTINGS_EMAIL_SETTINGS_SPACER_TEMPLATE_NOTICE"
 					/>
 				<field
@@ -481,7 +481,7 @@
 
 			<fields name="new_order">
 
-				<field name="email_settings_spacer_new_order_notice" type="spacer" class="label"
+				<field name="email_settings_spacer_new_order_notice" type="spacer" class="alert"
 				label="COM_DIGICOM_SETTINGS_EMAIL_SETTINGS_SPACER_NEW_ORDER_NOTICE"
 				/>
 
@@ -559,7 +559,7 @@
 			</fields>
 			<fields name="process_order">
 
-				<field name="email_settings_spacer_process_order_notice" type="spacer" class="label"
+				<field name="email_settings_spacer_process_order_notice" type="spacer" class="alert"
 				label="COM_DIGICOM_SETTINGS_EMAIL_SETTINGS_SPACER_PROCESS_ORDER_NOTICE"
 				/>
 
@@ -637,7 +637,7 @@
 			</fields>
 			<fields name="complete_order">complete_order
 
-				<field name="email_settings_spacer_complete_order_notice" type="spacer" class="label"
+				<field name="email_settings_spacer_complete_order_notice" type="spacer" class="alert"
 				label="COM_DIGICOM_SETTINGS_EMAIL_SETTINGS_SPACER_COMPLETE_ORDER_NOTICE"
 				/>
 
@@ -715,7 +715,7 @@
 			</fields>
 			<fields name="cancel_order">
 
-				<field name="email_settings_spacer_cancel_order_notice" type="spacer" class="label"
+				<field name="email_settings_spacer_cancel_order_notice" type="spacer" class="alert"
 				label="COM_DIGICOM_SETTINGS_EMAIL_SETTINGS_SPACER_CANCEL_ORDER_NOTICE"
 				/>
 

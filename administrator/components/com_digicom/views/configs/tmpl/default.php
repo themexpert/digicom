@@ -30,7 +30,8 @@ JHtml::_('formbehavior.chosen', 'select');
 		}
 	}
 </script>
-<form action="<?php echo JRoute::_('index.php?option=com_digicom&view=configs'); ?>" id="component-form" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
+
+<form action="<?php echo JRoute::_('index.php?option=com_digicom&view=configs'); ?>" id="component-form" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal digicom-config">
 	<?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container">
 		<?php echo $this->sidebar; ?>
@@ -51,57 +52,38 @@ JHtml::_('formbehavior.chosen', 'select');
 				</ul>
 				<div class="tab-content">
 					<?php $fieldSets = $this->form->getFieldsets(); ?>
-					<?php 
-					foreach ($fieldSets as $name => $fieldSet) : 
+					<?php
+					foreach ($fieldSets as $name => $fieldSet) :
 					?>
 						<div class="tab-pane<?php echo ($name == 'GENERAL' ? ' active' : '');?>" id="<?php echo $name; ?>">
 							<?php
 							if($name != 'email_settings'):
-							
+
 								if (isset($fieldSet->description) && !empty($fieldSet->description))
 								{
 									echo '<p class="tab-description">' . JText::_($fieldSet->description) . '</p>';
 								}
 								?>
-								<?php 
-								foreach ($this->form->getFieldset($name) as $field) : 
-								
+								<?php
+								foreach ($this->form->getFieldset($name) as $field) :
 								?>
-									<?php
-									/*
-									$fieldname = str_replace( ']', '', str_replace('jform[', '', $field->name) );
-									$class = '';
-									$rel = '';
-									if ($showon = $field->getAttribute('showon'))
-									{
-										JHtml::_('jquery.framework');
-										JHtml::_('script', 'jui/cms.js', false, true);
-										$id = $this->form->getFormControl();
-										$showon = explode(':', $showon, 2);
-										$class = ' showon_' . implode(' showon_', explode(',', $showon[1]));
-										$rel = ' rel="showon_' . $id . '[' . $showon[0] . ']"';
-									}
-									
-									
-									<?php echo $this->form->getControlGroup('images'); ?>
-									<?php foreach ($this->form->getGroup('images') as $field) : ?>
-										<?php echo $field->getControlGroup(); ?>
-									<?php endforeach; ?>
-									
-									
-									*/
-									?>
 									<div class="control-group">
-										<div class="control-label">
-											<?php echo $field->label; ?>
-										</div>
-										<div class="controls">
-											<?php echo $field->input; ?>
-										</div>
-									</div>										
+										<?php
+										if($field->getAttribute('type') == 'spacer') :?>
+											<?php echo '<h3>'.JText::_($field->getAttribute('label')).'</h3>'; ?>
+										<?php else: ?>
+											<div class="control-label">
+												<?php echo $field->label; ?>
+											</div>
+											<div class="controls">
+												<?php echo $field->input; ?>
+											</div>
+										<?php endif; ?>
+
+									</div>
 								<?php endforeach; ?>
 							<?php else: ?>
-							
+
 								<ul class="nav nav-tabs" id="emailTabs">
 									<li class="active"><a href="#COMMON" data-toggle="tab"><?php echo JText::_('COM_DIGICOM_CONFIG_EMAIL_TEMPLATES_COMMON');?></a></li>
 									<li><a href="#NEW_ORDER" data-toggle="tab"><?php echo JText::_('COM_DIGICOM_CONFIG_EMAIL_TEMPLATES_NEW_ORDER');?></a></li>
@@ -109,65 +91,124 @@ JHtml::_('formbehavior.chosen', 'select');
 									<li><a href="#PROCESS_ORDER" data-toggle="tab"><?php echo JText::_('COM_DIGICOM_CONFIG_EMAIL_TEMPLATES_PROCESS_ORDER');?></a></li>
 									<li><a href="#CANCEL_ORDER" data-toggle="tab"><?php echo JText::_('COM_DIGICOM_CONFIG_EMAIL_TEMPLATES_CANCEL_ORDER');?></a></li>
 								</ul>
-								
+
 								<div class="tab-content">
-								
+
 									<div class="tab-pane active" id="COMMON">
 										<?php foreach ($this->form->getGroup('email_settings') as $field) : ?>
-											<?php echo $field->getControlGroup(); ?>
+											<div class="control-group">
+												<?php if($field->getAttribute('type') == 'spacer'):?>
+													<?php echo '<p class="'.$field->getAttribute('class','alert').'">'.JText::_($field->getAttribute('label')).'</p>'; ?>
+												<?php else: ?>
+													<div class="control-label">
+														<?php echo $field->label; ?>
+													</div>
+													<div class="controls">
+														<?php echo $field->input; ?>
+													</div>
+												<?php endif; ?>
+											</div>
 										<?php endforeach; ?>
 									</div>
-									
+
 									<div class="tab-pane" id="NEW_ORDER">
-										<?php foreach ($this->form->getGroup('new_order') as $field) : 
+										<?php foreach ($this->form->getGroup('new_order') as $field) :
 											$name = $field->getAttribute('name');
 											if($name != 'template'):
-											?>
-											<?php echo $field->getControlGroup(); ?>
+												?>
+												<?php //echo $field->getControlGroup(); ?>
+												<div class="control-group">
+													<?php if($field->getAttribute('type') == 'spacer'):?>
+														<?php echo '<p class="'.$field->getAttribute('class','').'">'.JText::_($field->getAttribute('label')).'</p>'; ?>
+													<?php else: ?>
+														<div class="control-label">
+															<?php echo $field->label; ?>
+														</div>
+														<div class="controls">
+															<?php echo $field->input; ?>
+														</div>
+													<?php endif; ?>
+												</div>
 											<?php else: ?>
 											<?php echo $field->input; ?>
 											<?php endif; ?>
 										<?php endforeach; ?>
 									</div>
 									<div class="tab-pane" id="COMPLETE_ORDER">
-										<?php foreach ($this->form->getGroup('complete_order') as $field) : 
+										<?php foreach ($this->form->getGroup('complete_order') as $field) :
 											$name = $field->getAttribute('name');
 											if($name != 'template'):
 											?>
-											<?php echo $field->getControlGroup(); ?>
+												<?php //echo $field->getControlGroup(); ?>
+												<div class="control-group">
+													<?php if($field->getAttribute('type') == 'spacer'):?>
+														<?php echo '<p class="'.$field->getAttribute('class','').'">'.JText::_($field->getAttribute('label')).'</p>'; ?>
+													<?php else: ?>
+														<div class="control-label">
+															<?php echo $field->label; ?>
+														</div>
+														<div class="controls">
+															<?php echo $field->input; ?>
+														</div>
+													<?php endif; ?>
+												</div>
 											<?php else: ?>
 											<?php echo $field->input; ?>
 											<?php endif; ?>
 										<?php endforeach; ?>
 									</div>
 									<div class="tab-pane" id="PROCESS_ORDER">
-										<?php foreach ($this->form->getGroup('process_order') as $field) : 
+										<?php foreach ($this->form->getGroup('process_order') as $field) :
 											$name = $field->getAttribute('name');
 											if($name != 'template'):
 											?>
-											<?php echo $field->getControlGroup(); ?>
+												<?php //echo $field->getControlGroup(); ?>
+												<div class="control-group">
+													<?php if($field->getAttribute('type') == 'spacer'):?>
+														<?php echo '<p class="'.$field->getAttribute('class','').'">'.JText::_($field->getAttribute('label')).'</p>'; ?>
+													<?php else: ?>
+														<div class="control-label">
+															<?php echo $field->label; ?>
+														</div>
+														<div class="controls">
+															<?php echo $field->input; ?>
+														</div>
+													<?php endif; ?>
+												</div>
 											<?php else: ?>
 											<?php echo $field->input; ?>
 											<?php endif; ?>
 										<?php endforeach; ?>
 									</div>
 									<div class="tab-pane" id="CANCEL_ORDER">
-										<?php foreach ($this->form->getGroup('cancel_order') as $field) : 
+										<?php foreach ($this->form->getGroup('cancel_order') as $field) :
 											$name = $field->getAttribute('name');
 											if($name != 'template'):
 											?>
-											<?php echo $field->getControlGroup(); ?>
+												<?php //echo $field->getControlGroup(); ?>
+												<div class="control-group">
+													<?php if($field->getAttribute('type') == 'spacer'):?>
+														<?php echo '<p class="'.$field->getAttribute('class','').'">'.JText::_($field->getAttribute('label')).'</p>'; ?>
+													<?php else: ?>
+														<div class="control-label">
+															<?php echo $field->label; ?>
+														</div>
+														<div class="controls">
+															<?php echo $field->input; ?>
+														</div>
+													<?php endif; ?>
+												</div>
 											<?php else: ?>
 											<?php echo $field->input; ?>
 											<?php endif; ?>
 										<?php endforeach; ?>
 									</div>
-									
-									
+
+
 								</div>
-								
+
 							<?php endif; ?>
-						
+
 						</div>
 					<?php endforeach; ?>
 				</div>
