@@ -9,14 +9,17 @@
 
 defined('_JEXEC') or die;
 
-class DigiComViewConfigs extends JViewLegacy 
+class DigiComViewConfigs extends JViewLegacy
 {
 
 	function display($tpl = null)
 	{
-		//$comInfo = JComponentHelper::getComponent('com_digicom');
-		//print_r ( $comInfo->params );die;
-		
+		$layout = JFactory::getApplication()->input->set('layout', '');
+		if($layout == 'templatepreview'){
+			parent::display($tpl);
+		}
+
+
 		$form = null;
 		$component = null;
 
@@ -32,7 +35,7 @@ class DigiComViewConfigs extends JViewLegacy
 
 			return false;
 		}
-		
+
 		// Bind the form to the data.
 		if ($form && $component->params)
 		{
@@ -47,13 +50,13 @@ class DigiComViewConfigs extends JViewLegacy
 		$this->return = JFactory::getApplication()->input->get('return', '', 'base64');
 
 		JFactory::getApplication()->input->set('hidemainmenu', true);
-		
+
 		//set toolber
 		$this->addToolbar();
-		
+
 		DigiComHelperDigiCom::addSubmenu('configs');
 		$this->sidebar = JHtmlSidebar::render();
-		
+
 		parent::display($tpl);
 	}
 
@@ -61,7 +64,7 @@ class DigiComViewConfigs extends JViewLegacy
 	{
 		parent::display($tpl);
 	}
-	
+
 	/**
 	 * Add the page title and toolbar.
 		*
@@ -79,10 +82,10 @@ class DigiComViewConfigs extends JViewLegacy
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
-		
+
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
-		
+
 		JToolBarHelper::save('configs.save');
 		JToolBarHelper::apply('configs.apply');
 		JToolBarHelper::divider();
