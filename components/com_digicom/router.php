@@ -78,7 +78,7 @@ class DigiComRouter extends JComponentRouterBase
 		//lets check if its not in proper itemid
 		if (
 			($menuItem instanceof stdClass)
-			&& 
+			&&
 			$menuItem->query['view'] != $query['view']
 		){
 
@@ -587,7 +587,7 @@ class DigiComRouter extends JComponentRouterBase
 		}else{
 			$id = 0;
 		}
-		
+
 		$category = JCategories::getInstance('DigiCom')->get($id);
 
 		if (!$category)
