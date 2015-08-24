@@ -45,6 +45,10 @@ if($this->item->price > 0){
 						<?php echo $this->item->tagLayout->render($this->item->tags->itemTags); ?>
 					<?php endif; ?>
 
+					<p class="intro">
+						<?php echo $this->item->introtext; ?>
+					</p>
+					
 					<div class="description">
 						<?php echo $this->item->text; ?>
 					</div>
@@ -69,7 +73,7 @@ if($this->item->price > 0){
 
 						<div class="addtocart-bar<?php echo ($conf->get('show_quantity',0) == 1 ? " input-append" : ''); ?>">
 							<a
-								href="<?php echo JRoute::_('index.php?option=com_digicom&task=cart.add&from=ajax&pid='.$this->item->id);?>"
+								href="<?php echo JRoute::_('index.php?option=com_digicom&view=cart&task=cart.add&from=ajax&pid='.$this->item->id);?>"
 								role="button"
 								class="btn btn-small btn-primary"
 								data-toggle="modal"

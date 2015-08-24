@@ -119,19 +119,8 @@ class DigiComViewProduct extends JViewLegacy
 
 			return;
 		}
-
-		if ($item->params->get('show_intro', '1') == '1')
-		{
-			$item->text = $item->introtext . ' ' . $item->fulltext;
-		}
-		elseif ($item->fulltext)
-		{
-			$item->text = $item->fulltext;
-		}
-		else
-		{
-			$item->text = $item->introtext;
-		}
+		
+		$item->text = $item->fulltext;
 
 		$item->tags = new JHelperTags;
 		$item->tags->getItemTags('com_digicom.product', $this->item->id);
@@ -235,7 +224,7 @@ class DigiComViewProduct extends JViewLegacy
 
 				$catParams = new Registry;
 				$catParams->loadString($category->getParams());
-				
+
 				if(NULL == $catParams->get('category_layout','')){
 					$currentTemplate = true;
 					$categoryParams->set('category_layout',$catParams->get('category_layout'));
