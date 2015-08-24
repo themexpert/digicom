@@ -235,8 +235,8 @@ class DigiComViewProduct extends JViewLegacy
 
 				$catParams = new Registry;
 				$catParams->loadString($category->getParams());
-
-				if(!empty($catParams->get('category_layout',''))){
+				
+				if(NULL == $catParams->get('category_layout','')){
 					$currentTemplate = true;
 					$categoryParams->set('category_layout',$catParams->get('category_layout'));
 				}else{
@@ -254,6 +254,8 @@ class DigiComViewProduct extends JViewLegacy
 			{
 				$pathway->addItem($item['title'], $item['link']);
 			}
+		}else{
+			$this->category = $category = JCategories::getInstance('Digicom')->get($this->item->catid);
 		}
 
 		// Check for empty title and add site name if param is set
