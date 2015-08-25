@@ -291,6 +291,7 @@ class DigiComControllerCart extends JControllerLegacy
 	*/
 	function checkout()
 	{
+		$dispatcher = JDispatcher::getInstance();
 		$session 		= JFactory::getSession();
 		$app 				= JFactory::getApplication();
 		$processor	= JRequest::getVar("processor", '');
@@ -375,22 +376,25 @@ class DigiComControllerCart extends JControllerLegacy
 			$this->_customer = new DigiComSiteHelperSession();
 			$customer = $this->_customer;
 		}
+
 		$items 		= $cart->getCartItems($customer, $configs);
-		$tax 		= $cart->calc_price($items, $customer, $configs);
+		$tax 			= $cart->calc_price($items, $customer, $configs);
 		$total 		= $tax['taxed'];
 
+		// Add free product
 		if( (double)$total == 0 ) {
 			if(count($items) != "0"){
 
-				$orderid = $cart->addFreeProduct($items, $customer, $tax);
+				$orderid 	= $cart->addFreeProduct($items, $customer, $tax);
+				$dispatcher->trigger('onAfterPlaceOrder', array($orderid, $items, $tax, $customer, 'free'));
 
 				// Order complete, now redirect to the original page
 				if ( $configs->get('afterpurchase',1) == 1 ) {
-					$link = 'index.php?option=com_digicom&view=order&id='.$orderid;
+					$link 	= 'index.php?option=com_digicom&view=order&id='.$orderid;
 				} else {
 					$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=downloads', true);
 					$Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
-					$link = 'index.php?option=com_digicom&view=downloads'.$Itemid;
+					$link 	= 'index.php?option=com_digicom&view=downloads'.$Itemid;
 				}
 
 				$this->setRedirect(JRoute::_($link), JText::_("COM_DIGICOM_PAYMENT_FREE_PRUCHASE_COMPLETE_MESSAGE"));
@@ -398,6 +402,7 @@ class DigiComControllerCart extends JControllerLegacy
 		}
 		else
 		{
+			// add products not free
 			$db = JFactory::getDBO();
 			$sql = "update #__digicom_session set transaction_details='" . base64_encode(serialize($customer)) . "' where sid=" . $customer->_sid;
 			$db->setQuery($sql);
@@ -413,6 +418,7 @@ class DigiComControllerCart extends JControllerLegacy
 
 			//store order
 			$order_id = $cart->addOrderInfo($items, $customer, $tax, $status = 'Pending', $prosessor);
+			$dispatcher->trigger('onAfterPlaceOrder', array($order_id, $items, $tax, $customer));
 
 			$cart->getFinalize($this->_customer->_sid, $msg = '', $order_id, $type= 'new_order', $status);
 
