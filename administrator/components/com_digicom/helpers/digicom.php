@@ -101,24 +101,24 @@ class DigiComHelperDigiCom extends JHelperContent{
 
 	}
 
-	// TODO : change function name to camelCase
-	public static function format_price ($amount, $ccode, $add_sym = true, $configs) {
+	public static function format_price ($amount, $ccode, $add_sym = true, $configs)
+	{
 
-		$db = JFactory::getDBO();
-
-		$code = 0;
-
-		$price_format = '%'.$configs->get('totaldigits','5').'.'.$configs->get('decimaldigits','2').'f';
-		$res =  sprintf($price_format,$amount) ;//. " " . $tax['currency'] . '<br>';
-
-		if ($add_sym) {
-			if ($configs->get('currency_position','1'))
-				$res = $res . " " . $ccode;
-			else
-				$res = $ccode. " " . $res;
+		$currency_use = $configs->get('currency_use','symbol');
+		$currency_symbol = $configs->get('currency_symbol','$');
+		if($currency_use == 'symbol'){
+			$ccode = $currency_symbol;
+		}
+		$price = number_format( $amount, $configs->get('decimaldigits','2') , $configs->get('dec_group_symbol','.') , $configs->get('thousands_group_symbol',',') );
+		if ( $add_sym ) {
+			if ( $configs->get('currency_position','1') ) {
+				$price = $price . " " . $ccode;
+			} else {
+				$price = $ccode . " " . $price;
+			}
 		}
 
-		return $res;
+		return $price;
 	}
 
 
