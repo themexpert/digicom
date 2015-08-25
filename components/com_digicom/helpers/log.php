@@ -61,7 +61,7 @@ class DigiComSiteHelperLog {
           'type'        => $type,
           'callback'    => $callback,
           'callbackid'  => $callbackid,
-          'userid'      => $userid,
+          // 'userid'      => $userid,
           'status'      => $status
         )
       );
