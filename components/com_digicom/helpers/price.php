@@ -18,6 +18,11 @@ class DigiComSiteHelperPrice {
 	public static function format_price( $amount, $ccode, $add_sym = false, $configs )
 	{
 
+		$currency_use = $configs->get('currency_use','symbol');
+		$currency_symbol = $configs->get('currency_symbol','$');
+		if($currency_use == 'symbol'){
+			$ccode = $currency_symbol;
+		}
 		$price = number_format( $amount, $configs->get('decimaldigits','2') , $configs->get('dec_group_symbol','.') , $configs->get('thousands_group_symbol',',') );
 		if ( $add_sym ) {
 			if ( $configs->get('currency_position','1') ) {
