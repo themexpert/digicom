@@ -9,9 +9,6 @@
 
 defined('_JEXEC') or die;
 
-// TODO : Remove JReqeust and need a lot cleaup
-
-JHTML::_('behavior.modal');
 JHtml::_('formbehavior.chosen', 'select');
 $user = JFactory::getUser();
 $document=JFactory::getDocument();

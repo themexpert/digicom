@@ -48,7 +48,7 @@ if($this->item->price > 0){
 					<p class="intro">
 						<?php echo $this->item->introtext; ?>
 					</p>
-					
+
 					<div class="description">
 						<?php echo $this->item->text; ?>
 					</div>
@@ -71,7 +71,7 @@ if($this->item->price > 0){
 							<?php endif; ?>
 						</div>
 
-						<div class="addtocart-bar<?php echo ($conf->get('show_quantity',0) == 1 ? " input-append" : ''); ?>">
+						<div class="addtocart-bar">
 							<a
 								href="<?php echo JRoute::_('index.php?option=com_digicom&view=cart&task=cart.add&from=ajax&pid='.$this->item->id);?>"
 								role="button"
