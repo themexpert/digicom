@@ -951,8 +951,8 @@ class DigiComModelCart extends JModelItem
 			DigiComSiteHelperLicense::updateLicenses($order_id, $orderTable->number_of_products, $items, $orderTable->userid , $type);
 
 			$dispatcher = JDispatcher::getInstance();
-			$dispatcher->trigger('onAfterPaymentComplete', array($order_id, $result, $pay_plugin, $items, $sid));
-			
+			$dispatcher->trigger('onAfterPaymentComplete', array($order_id, $result, $pay_plugin, $items, $customer));
+
 		}
 
 		$comment = array();
