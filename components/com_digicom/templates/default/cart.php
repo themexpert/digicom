@@ -8,45 +8,20 @@
  */
 
 defined('_JEXEC') or die;
-
 JHtml::_('formbehavior.chosen', 'select');
-$user = JFactory::getUser();
-$document=JFactory::getDocument();
-$app=JFactory::getApplication();
-$input = $app->input;
-$configs = $this->configs;
-$agreeterms = JRequest::getVar("agreeterms", "");
-$processor = $this->session->get('processor');
-$Itemid = $input->get("Itemid", 0);
-$items = $this->items;
-$button_value = "COM_DIGICOM_CHECKOUT";
 
-if($user->id == 0 || $this->customer->_customer->country == "")
-{
-	$button_value = "COM_DIGICOM_CONTINUE";
-}
-
-$url="index.php?option=com_digicom&view=cart&task=cart.gethtml&tmpl=component&format=raw&processor=".$processor;
-
-$total = 0;//$this->total;//0;
-$discount = $this->discount;//0;
-$cat_url = $this->cat_url;
-$shippingexists = 0;
-$from = $input->get("from", "");
-$nr_columns = 4;
-$invisible = 'style="display:none;"';
-$formlink = JRoute::_("index.php?option=com_digicom&view=cart&Itemid=".$Itemid);
-$tax = $this->tax;
-// echo '<pre>';
-// print_r($tax);
-// echo '</pre>';
+$configs 			= $this->configs;
+$processor 		= $this->session->get('processor');
+$items 				= $this->items;
+$tax 					= $this->tax;
+$table_column = 4;
 ?>
 <div id="digicom">
 
 	<?php if(count($items) == 0): ?>
-	<div class="alert alert-warning">
-		<?php echo JText::_("COM_DIGICOM_CART_IS_EMPTY_NOTICE"); ?>
-	</div>
+		<div class="alert alert-warning">
+			<?php echo JText::_("COM_DIGICOM_CART_IS_EMPTY_NOTICE"); ?>
+		</div>
 	<?php else: ?>
 		<?php if($configs->get('show_steps',1) == 1){ ?>
 		<div class="pagination pagination-centered">
@@ -58,8 +33,11 @@ $tax = $this->tax;
 		</div>
 		<?php } ?>
 		<div class="digi-cart">
-			<form id="cart_form" name="cart_form" method="post" action="<?php echo $formlink?>" onSubmit="return cartformsubmit(<?php echo $user->id; ?>);">
-				<?php if($user->id != "0"){ ?>
+			<form id="cart_form" name="cart_form" method="post" action="<?php echo JRoute::_("index.php?option=com_digicom&view=cart"); ?>">
+				<?php
+				$user = JFactory::getUser();
+				if($user->id != "0"){
+				?>
 				<div class="row-fluid">
 					<div class="span12" style="text-align:right;vertical-align:bottom;">
 						<?php echo JText::sprintf("COM_DIGICOM_CART_LOGGED_IN_AS",$user->name); ?>
@@ -102,9 +80,9 @@ $tax = $this->tax;
 
 									<a href="<?php echo $item_link; ?>" target="blank"><?php echo $item->name; ?></a>
 									<?php if ($this->configs->get('show_validity',1) == 1) : ?>
-									<div class="muted">
-										<small><?php echo JText::_('COM_DIGICOM_PRODUCT_VALIDITY'); ?> : <?php echo DigiComSiteHelperPrice::getProductValidityPeriod($item); ?></small>
-									</div>
+										<div class="muted">
+											<small><?php echo JText::_('COM_DIGICOM_PRODUCT_VALIDITY'); ?> : <?php echo DigiComSiteHelperPrice::getProductValidityPeriod($item); ?></small>
+										</div>
 									<?php endif; ?>
 								</td>
 
@@ -139,15 +117,14 @@ $tax = $this->tax;
 										{
 											$value_discount = ($item->price * $item->percent_discount) / 100;
 										}
-										//echo (isset($item->percent_discount) && $item->percent_discount > 0) ? $item->percent_discount : DigiComSiteHelperPrice::format_price($item->discount, $item->currency, true, $configs);
 										echo DigiComSiteHelperPrice::format_price($value_discount, $item->currency, true, $configs);?>
 									</span>
 								</td>
 								<?php endif; ?>
 
 								<td nowrap>
-									<span id="cart_item_total<?php echo $item->cid; ?>" class="digi_cart_amount"><?php
-										echo DigiComSiteHelperPrice::format_price($item->subtotal-(isset($value_discount) ? $value_discount : 0), $item->currency, true, $configs); ?>
+									<span id="cart_item_total<?php echo $item->cid; ?>" class="digi_cart_amount">
+										<?php echo DigiComSiteHelperPrice::format_price($item->subtotal-(isset($value_discount) ? $value_discount : 0), $item->currency, true, $configs); ?>
 									</span>
 								</td>
 
@@ -156,7 +133,6 @@ $tax = $this->tax;
 								</td>
 							</tr>
 							<?php
-							$total += $item->subtotal;
 						endforeach;
 						?>
 					</tbody>
@@ -164,7 +140,7 @@ $tax = $this->tax;
 
 				<table id="digicomcartpromo" width="100%">
 					<tr valign="top">
-						<td class="general_text" colspan="<?php echo $nr_columns; ?>" valign="bottom">
+						<td class="general_text" colspan="<?php echo $table_column; ?>" valign="bottom">
 							<?php echo JText::_("COM_DIGICOM_CART_IF_PROMOCODE_LABEL"); ?>
 						</td>
 
@@ -195,7 +171,7 @@ $tax = $this->tax;
 					</tr>
 
 					<tr valign="top">
-						<td colspan="<?php echo $nr_columns - 1; ?>" >
+						<td colspan="<?php echo $table_column - 1; ?>" >
 							<div class="input-append">
 								<input type="text" id="promocode" name="promocode" size="15" value="<?php echo $this->promocode; ?>" />
 								<button type="submit" class="btn" onclick="document.getElementById('task').value='cart.updateCart'; document.getElementById('type_button').value='recalculate';"><i class="ico-gift"></i> <?php echo JText::_("COM_DIGICOM_CART_PROMOCODE_APPLY"); ?></button>
@@ -247,7 +223,6 @@ $tax = $this->tax;
 
 				<div id="digicomcartcontinue" class="row-fluid continue-shopping">
 					<div class="span8" style="margin-bottom:10px;">
-						<!--<a href="<?php echo $cat_url; ?>" class="btn"><i class="icon-cart"></i> <?php echo JText::_("DSCONTINUESHOPING")?></a>-->
 						<?php if($configs->get('askterms',0) == '1' && ($configs->get('termsid') > 0)):?>
 							<div class="accept-terms">
 								<input type="checkbox" name="agreeterms" id="agreeterms" style="margin-top: 0;"/><?php
@@ -269,15 +244,10 @@ $tax = $this->tax;
 					<div class="span4" style="margin-bottom: 10px;">
 						<p><strong><?php echo JText::_('COM_DIGICOM_PAYMENT_METHOD'); ?></strong></p>
 						<?php
-						$button_value = "COM_DIGICOM_CHECKOUT";
 						$onclick = "console.log(jQuery('#processor').val());";
 						$onclick .= "if(jQuery('#processor').val() === null){ ShowPaymentAlert(); return false; }";
 						$onclick.= "jQuery('#returnpage').val('checkout'); jQuery('#type_button').val('checkout');";
 
-						if($user->id == 0 || $this->customer->_customer->country == "")
-						{
-							$button_value = "COM_DIGICOM_CONTINUE";
-						}
 						if($configs->get('askterms',0) == '1')
 						{
 							$onclick.= "if(ShowTermsAlert()) {" . $onclick . " jQuery('#cart_form').submit(); }else{ return false; }";
@@ -292,7 +262,7 @@ $tax = $this->tax;
 						<?php echo DigiComSiteHelperDigicom::getPaymentPlugins($configs); ?>
 
 						<div id="html-container"></div>
-						<button type="button" class="btn btn-warning" style="float:right;margin-top:10px;" onclick="<?php echo $onclick; ?> "><?php echo JText::_($button_value);?> <i class="ico-ok-sign"></i></button>
+						<button type="button" class="btn btn-warning" style="float:right;margin-top:10px;" onclick="<?php echo $onclick; ?> "><?php echo JText::_('COM_DIGICOM_CHECKOUT');?> <i class="ico-ok-sign"></i></button>
 					</div>
 				</div>
 
@@ -301,91 +271,9 @@ $tax = $this->tax;
 				<input name="task" type="hidden" id="task" value="cart.checkout">
 				<input name="returnpage" type="hidden" id="returnpage" value="">
 				<input name="type_button" type="hidden" id="type_button" value="">
-				<input name="Itemid" type="hidden" value="<?php echo $Itemid; ?>">
 
 			</form>
 		</div>
-
-		<?php if(isset($tax) && $tax['promo_error'] != ''):?>
-			<div id="digicart_login" style="width:350px;left:50%;top:30%;position:fixed;z-index:1000;background:#eee;margin-left:-175px;">
-				<div id="cart_header" style="background-color: rgb(204, 204, 204);">
-					<table width="100%" style="font-size:12px;">
-						<tbody>
-						<tr>
-							<td width="80%" align="left">
-								&nbsp;<?php echo JText::_("Login");?>
-							</td>
-							<td align="right">
-								<a onclick="javascript:closePopupLogin('digicart_login'); return false;" class="close_btn" href="#">&nbsp;</a>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</div>
-				<div id="cart_body">
-					<?php if(!empty($tax['promo_error'])): ?>
-						<div class="digi_error alert alert-warning"><?php echo $tax['promo_error']; ?></div>
-					<?php endif; ?>
-					<form id="dslogin" name="dslogin" method="post" action="index.php">
-						<table width="100%" id="digilistitems" style="font-size:12px;">
-							<tbody>
-							<tr style="padding-bottom:3px;">
-								<td style="padding-left:5px;">
-									<?php echo JText::_("Username");?>
-								</td>
-								<td style="padding-left:5px; width:150px; text-align:left;" class="digicom_product_name">
-									<input type="text" id="dsusername" name="username" style="width:150px;" />
-								</td>
-							</tr>
-							 <tr style="padding-bottom:3px;">
-								<td style="padding-left:5px;">
-									<?php echo JText::_("Password");?>
-								</td>
-								<td style="padding-left:5px; width:150px; text-align:left;" class="digicom_product_name">
-									<input type="password" id="dspassword" name="password" style="width:150px;" />
-								</td>
-							</tr>
-							<tr>
-								<td></td>
-								<td>
-									<a href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>">
-										<?php echo JText::_('LOGIN_FORGOT_YOUR_PASSWORD'); ?></a>
-									<br />
-									<a href="<?php echo JRoute::_('index.php?option=com_users&view=remind'); ?>">
-										<?php echo JText::_('LOGIN_FORGOT_YOUR_USERNAME'); ?></a>
-								</td>
-							</tr>
-							</tbody>
-						</table>
-
-						<input type="hidden" name="option" value="com_users"/>
-						<input type="hidden" name="Itemid" value="<?php echo $input->get('Itemid', 0);?>"/>
-						<input type="hidden" name="task" value="user.login"/>
-						<input type="hidden" name="return"
-							   value="<?php echo base64_encode('index.php?option=com_digicom&view=cart&task=cart.showCart&Itemid=' . $input->get('Itemid', 0)); ?>"/>
-						<?php echo JHTML::_('form.token'); ?>
-					</form>
-				</div>
-				<div id="cart_futter" style="background-color: rgb(204, 204, 204);">
-					<table width="100%">
-						<tbody>
-						<tr>
-							<td width="100%">
-								<table width="100%">
-									<tbody>
-									<tr>
-										<td width="60%" align="left"><input type="button" class="btn" onclick="javascript:closePopupLogin('digicart_login'); return false;" value=" Cancel " name="Submit1" style="padding:0px !important;"></td>
-										<td width="40%" align="right"><input type="button" class="btn btn-warning" onclick="document.dslogin.submit();" value="Login" name="Submit"></td>
-									</tr>
-									</tbody>
-								</table>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		<?php endif;?>
 
 		<?php
 			echo JHtml::_(
@@ -435,6 +323,7 @@ $tax = $this->tax;
 			});
 
 			<?php
+			$agreeterms = JFactory::getApplication()->input->get("agreeterms", "");
 			if ($agreeterms != '')
 			{
 				echo 'jQuery("#agreeterms").attr("checked","checked");';
