@@ -30,7 +30,6 @@ class plgDigiCom_PayOffline extends JPlugin
 	function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
-	
 		//Define Payment Status codes in Authorise  And Respective Alias in Framework
 		//1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review
 		$this->responseStatus= array(
@@ -45,18 +44,18 @@ class plgDigiCom_PayOffline extends JPlugin
 	* @layout = ask for tmpl file name, default is default, but can be used others name
 	* return propur file to take htmls
 	*/
-	function buildLayoutPath($layout) 
+	function buildLayoutPath($layout)
 	{
 		if(empty($layout)) $layout = "default";
-		
+
 		$app = JFactory::getApplication();
 
 		// core path
 		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/' . $layout . '.php';
-		
+
 		// override path from site active template
 		$override	= JPATH_BASE .'/templates/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout . '.php';
-		
+
 		if(JFile::exists($override))
 		{
 			$file = $override;
@@ -69,7 +68,7 @@ class plgDigiCom_PayOffline extends JPlugin
 		return $file;
 
 	}
-	
+
 	/*
 	* method buildLayout
 	* @vars = object with product, order, user info
@@ -95,7 +94,7 @@ class plgDigiCom_PayOffline extends JPlugin
 	* on transection process this function is being used to get html from component
 	* @dependent : self::buildLayout()
 	* @return html for view
-	* @vars : passed from component, all info regarding payment n order  
+	* @vars : passed from component, all info regarding payment n order
 	*/
 	function onTP_GetHTML($vars)
 	{
@@ -129,6 +128,8 @@ class plgDigiCom_PayOffline extends JPlugin
 	*/
 	function onTP_Processpayment($data)
 	{
+		$processor = JFactory::getApplication()->input->get('processor','');
+		if($processor != 'offline') return false;
 
 		$payment_status = $this->translateResponse('Pending');
 		$data['payment_status'] = $payment_status;
