@@ -31,14 +31,20 @@ class plgSystemDigiCom extends JPlugin{
 	*/
 	protected $configs = null;
 
+	function __construct( &$subject, $params ) {
+		parent::__construct( $subject, $params );
+
+		JPluginHelper::importPlugin('digicom');
+		JPluginHelper::importPlugin('digicom_pay');
+	}
+
 	/**
 	 * Plugin method with the same name as the event will be called automatically.
 	 */
 
-	public function onAfterSidebarMenu($params = array()) {
+	public function onAfterSidebarMenu($params = array())
+	{
 
-		JPluginHelper::importPlugin('digicom');
-		JPluginHelper::importPlugin('digicom_pay');
 		$dispatcher = JDispatcher::getInstance();
 
 		$db = JFactory::getDBO();
@@ -79,9 +85,9 @@ class plgSystemDigiCom extends JPlugin{
 	 * Plugin method with the same name as the event will be called automatically.
 	 */
 
-	public function onAfterMainMenu($params = array()) {
+	public function onAfterMainMenu($params = array())
+	{
 
-		JPluginHelper::importPlugin('digicom');
 		$dispatcher = JDispatcher::getInstance();
 
 		$db = JFactory::getDBO();
