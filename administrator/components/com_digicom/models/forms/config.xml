@@ -207,7 +207,15 @@
 			</field>
 		</fieldset>
 
-		<fieldset name="CURRENCY" addfieldpath="/administrator/components/com_digicom/models/fields">
+		<fieldset
+			name="CURRENCY"
+			addfieldpath="/administrator/components/com_digicom/models/fields">
+			<field
+				name="currency_spacer"
+				type="spacer"
+				label="COM_DIGICOM_CURRENCY_SETTINGS"
+				/>
+
 			<field
 				name="decimaldigits"
 				type="list"
@@ -241,10 +249,28 @@
 			<field
 				name="currency"
 				type="text"
-				label="COM_DIGICOM_CURRENCY"
-				default="$"
+				label="COM_DIGICOM_CURRENCY_CODE"
+				default="USD"
 				description="COM_DIGICOM_SETTINGS_CURRENCY_SELECTOR_DESC" />
-				
+
+			<field
+				name="currency_symbol"
+				type="text"
+				label="COM_DIGICOM_CURRENCY_SYMBOL"
+				default="$"
+				description="COM_DIGICOM_CURRENCY_SYMBOL_DESC" />
+
+				<field
+					name="currency_use"
+					type="list"
+					class="btn-group"
+					label="COM_DIGICOM_CURRENCY_USE_SITE_LABEL"
+					default="symbol"
+					description="COM_DIGICOM_CURRENCY_USE_SITE_DESC">
+						<option value="code">COM_DIGICOM_CURRENCY_CODE</option>
+						<option value="symbol">COM_DIGICOM_CURRENCY_SYMBOL</option>
+				</field>
+
 			<!-- <field
 				name="currency"
 				type="sql"
