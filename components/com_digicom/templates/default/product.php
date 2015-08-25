@@ -75,7 +75,7 @@ if($this->item->price > 0){
 							<a
 								href="<?php echo JRoute::_('index.php?option=com_digicom&view=cart&task=cart.add&from=ajax&pid='.$this->item->id);?>"
 								role="button"
-								class="btn btn-small btn-primary"
+								class="btn btn-default"
 								data-toggle="modal"
 								data-target="#cartPopup">
 									<i class="icon-cart"></i>
