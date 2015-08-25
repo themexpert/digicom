@@ -843,14 +843,13 @@ class DigiComModelCart extends JModelItem
 		return true;
 	}
 
-	function proccessSuccess($post, $pg_plugin, $order_id, $sid, $responce,$items)
+	function proccessSuccess($post, $pay_plugin, $order_id, $sid, $responce,$items)
 	{
 		$app 			= JFactory::getApplication();
 		$customer = $this->loadCustomer($sid);
 		if(!$customer){
 			$order 	= $this->getOrder($order_id);
 			$sid 		= $customer = $order->userid;
-			//print_r($customer);
 		}
 
 		$conf 		= $this->getInstance( "config", "digicomModel" );
@@ -859,7 +858,7 @@ class DigiComModelCart extends JModelItem
 		$result 	= $post;
 		$data 		= $responce[0];
 
-		$this->storelog($pg_plugin, $data);
+		$this->storelog($pay_plugin, $data);
 
 		$logtype = 'status';
 		//print_r($data);jexit();
@@ -885,7 +884,7 @@ class DigiComModelCart extends JModelItem
 			$info = array(
 				'orderid' => $order_id,
 				'data' => $data,
-				'plugin' => $pg_plugin
+				'plugin' => $pay_plugin
 			);
 			//$callback, $callbackid, $status = 'Active', $type = 'payment'
 			$log = DigiComSiteHelperLog::getLog('cart proccessSuccess', $order_id, $status, $logtype);
@@ -896,14 +895,13 @@ class DigiComModelCart extends JModelItem
 					$log->status != 'Active'
 			)
 			{
+				DigiComSiteHelperLog::setLog($logtype, 'cart proccessSuccess', $order_id, 'Order id#'.$order_id.' updated & method is '.$pay_plugin, json_encode($info),$status);
 
-				DigiComSiteHelperLog::setLog($logtype, 'cart proccessSuccess', $order_id, 'Order id#'.$order_id.' updated & method is '.$pg_plugin, json_encode($info),$status);
-
-				$this->updateOrder($order_id,$result,$data,$pg_plugin,$status,$items,$customer);
+				$this->updateOrder($order_id,$result,$data,$pay_plugin,$status,$items,$customer);
 
 			}else{
 
-				DigiComSiteHelperLog::setLog($logtype, 'cart proccessSuccess', $order_id, 'Post recieved for Order id#'.$order_id.' from '.$pg_plugin, json_encode($info),$status);
+				DigiComSiteHelperLog::setLog($logtype, 'cart proccessSuccess', $order_id, 'Post recieved for Order id#'.$order_id.' from '.$pay_plugin, json_encode($info),$status);
 
 			}
 
@@ -923,7 +921,7 @@ class DigiComModelCart extends JModelItem
 		return true;
 	}
 
-	function updateOrder($order_id,$result,$data,$pg_plugin,$status,$items,$customer){
+	function updateOrder($order_id,$result,$data,$pay_plugin,$status,$items,$customer){
 
 		$orderTable = $this->getTable('Order');
 		$orderTable->load($order_id);
@@ -951,6 +949,10 @@ class DigiComModelCart extends JModelItem
 
 		if($type == 'complete_order'){
 			DigiComSiteHelperLicense::updateLicenses($order_id, $orderTable->number_of_products, $items, $orderTable->userid , $type);
+
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('onAfterPaymentComplete', array($order_id, $result, $pay_plugin, $items, $sid));
+			
 		}
 
 		$comment = array();
@@ -961,7 +963,7 @@ class DigiComModelCart extends JModelItem
 
 		$orderparams = json_decode($orderTable->params);
 		$orderparams->paymentinfo 	= array();
-		$orderparams->paymentinfo[] = $pg_plugin;
+		$orderparams->paymentinfo[] = $pay_plugin;
 		$orderparams->paymentinfo[] = $result;
 		$orderparams->paymentinfo[] = $data;
 		$orderparams->warning 	= $warning;
