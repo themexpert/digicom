@@ -8,15 +8,9 @@
  */
 
 defined('_JEXEC') or die;
-
-
 JHtml::_('behavior.framework');
 JHtml::_('behavior.formvalidation');
-$app=JFactory::getApplication();
-$input = $app->input;
-$Itemid = $input->get("Itemid", 0);
 ?>
-
 
 <div id="digicom">
 
@@ -32,27 +26,6 @@ $Itemid = $input->get("Itemid", 0);
 
 	<h1 class="digi-page-title"><?php echo JText::_("COM_DIGICOM_LOGIN_REGISTER");?></h1>
 
-	<?php
-	$checked = "";
-	$display = "none";
-	$display1 = "block";
-	$login_register_invalid = isset($_SESSION["login_register_invalid"])?$_SESSION["login_register_invalid"]:'';
-	if(trim($login_register_invalid) == "notok"){
-		$checked = ' checked="checked" ';
-		$display = "block";
-		$display1 = "none";
-	}
-	?>
-
-	<?php
-	if(count(JFactory::getApplication()->getMessageQueue())):
-		$message = JFactory::getApplication()->getMessageQueue();
-		?>
-		<div class="alert">
-			<?php echo $message[0]['message']; ?>
-		</div>
-	<?php endif; ?>
-
 	<div class="accordion" id="accordion2">
 		<div class="accordion-group">
 			<div class="accordion-heading">
@@ -63,37 +36,7 @@ $Itemid = $input->get("Itemid", 0);
 			<div id="collapseOne" class="accordion-body collapse in">
 				<div class="accordion-inner">
 					<div id="log_form">
-						<form name="login" id="login" method="post" action="<?php echo JRoute::_('index.php?option=com_digicom&view=profile'); ?>">
-							<table width="100%" style="border-collapse:separate !important;">
-								<tr>
-									<td class="field-login"><?php echo JText::_("COM_DIGICOM_USERNAME");?>:
-										<input type="text" size="30" class="digi_textbox" id="user_name" name="username"  />
-									</td>
-								</tr>
-								<tr>
-									<td class="field-login"><?php echo JText::_("COM_DIGICOM_PASSWORD");?>:
-										<?php $link = JRoute::_("index.php?option=com_users&view=reset"); ?>
-										<input type="password" size="30" class="digi_textbox" id="passwd" name="passwd" /> (<a href="<?php echo $link;?>"><?php echo JText::_("COM_DIGICOM_REGISTER_LOGIN_FORGET_PASSWORD");?></a>)
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<input type="checkbox" value="1" name="rememeber"> <span class="general_text_larger"><?php echo JText::_("COM_DIGICOM_REMEMBER_ME");?></span>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="2">
-										<button type="submit" name="submit" class="btn btn-primary" style="margin-top: 10px;">Login <i class="ico-chevron-right ico-white"></i></button>
-									</td>
-								</tr>
-							</table>
-
-							<input type="hidden" name="Itemid" value="<?php echo $Itemid;?>" />
-							<input type="hidden" name="option" value="com_digicom" />
-							<input type="hidden" name="task" value="profile.logCustomerIn" />
-							<input type="hidden" name="processor" value="<?php echo $input->get("processor", ""); ?>" />
-							<input type="hidden" name="return" value="<?php echo $input->get("return", ""); ?>" />
-						</form>
+						<?php echo $this->loadTemplate('login');	?>
 					</div>
 				</div>
 			</div>
@@ -109,7 +52,7 @@ $Itemid = $input->get("Itemid", 0);
 			<div id="collapseTwo" class="accordion-body collapse">
 				<div class="accordion-inner">
 					<div id="reg_form">
-						<?php include('register_cart.php');	?>
+						<?php echo $this->loadTemplate('form');	?>
 					</div>
 				</div>
 			</div>

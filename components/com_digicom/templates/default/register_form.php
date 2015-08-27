@@ -17,7 +17,6 @@ JHtml::_('behavior.formvalidation');
 	method="post"
 	class="form-validate form-horizontal"
 	enctype="multipart/form-data"
-	onsubmit="return validateForm('register');" 
 >
 
 <?php foreach ($this->form->getFieldsets() as $fieldset): // Iterate through the form fieldsets and display each one.?>
@@ -47,7 +46,6 @@ JHtml::_('behavior.formvalidation');
 <div class="control-group">
 	<div class="controls">
 		<button type="submit" class="btn btn-primary validate"><?php echo JText::_('JREGISTER');?></button>
-		<a class="btn" href="<?php echo JRoute::_('');?>" title="<?php echo JText::_('JCANCEL');?>"><?php echo JText::_('JCANCEL');?></a>
 		<input type="hidden" name="option" value="com_digicom" />
 		<input type="hidden" name="task" value="register.register" />
 	</div>

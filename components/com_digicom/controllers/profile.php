@@ -19,13 +19,10 @@ class DigiComControllerProfile extends JControllerLegacy
 		$app = JFactory::getApplication("site");
 		$Itemid = JRequest::getInt('Itemid', 0);
 
-		// $returnpage = JRequest::getVar("returnpage", "");
-		// if($return = JRequest::getVar('return', '', 'request', 'base64'))
-		// {
-		// 	$return = base64_decode($return);
-		// }
-
-		$return = JRoute::_('index.php?option=com_digicom&view=cart&layout=summary');
+		if($returnpage = JRequest::getVar('return', '', 'request', 'base64'))
+		{
+		 	$return = base64_decode($returnpage);
+		}
 
 		$options = array();
 		$options['remember'] = JRequest::getBool('remember', false);
@@ -38,21 +35,34 @@ class DigiComControllerProfile extends JControllerLegacy
 		$credentials['username'] = $username; //JRequest::getVar('username', '', 'method', 'username');
 		$credentials['password'] = $password; //JRequest::getString('passwd', '', 'post', JREQUEST_ALLOWRAW);
 
-		$err = $app->login($credentials, $options);
-
-		// if($return){
-			$this->setRedirect($return);
-			return true;
-		// }
-
-		// $link = $this->getLink();
-		// if($returnpage != 'checkout'){
-		// 	$this->setRedirect($link);
+		// $err = $app->login($credentials, $options);
+		// var_dump($err);jexit;
+		// if($err === false){
+		// 	$this->setRedirect($returnpage);
+		// 	return true;
+		// }else{
+		// 	$this->setRedirect($return);
 		// 	return true;
 		// }
+		//
+		// Perform the log in.
+		if (true === $app->login($credentials, $options))
+		{
+			// Success
+			if ($options['remember'] == true)
+			{
+				$app->setUserState('rememberLogin', true);
+			}
 
-		//$this->checkNextAction($err);
-
+			$app->setUserState('users.login.form.data', array());
+			$app->redirect($return, false);
+		}
+		else
+		{
+			// Login failed !
+			$data['remember'] = (int) $options['remember'];
+			$app->redirect(JRoute::_('index.php?option=com_digicom&view=register&return='.$returnpage), false);
+		}
 	}
 
 	function save()

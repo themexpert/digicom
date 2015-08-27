@@ -9,15 +9,6 @@
 
 defined('_JEXEC') or die;
 
-// Load Jquery
-//
-// We'll only load this js if show cart in popup option is set from admin setting
-if($this->configs->get('afteradditem',0) == "2"){
-	JHTML::_('behavior.modal');
-	JFactory::getDocument()->addScript(JURI::base()."media/digicom/assets/js/createpopup.js");
-}
-$cart_itemid = DigiComSiteHelperDigicom::getCartItemid();
-
 $bsGrid = array(1 => 'span12', 2 => 'span6', 3 => 'span4', 4 => 'span3', 6 => 'span2');
 $column = $this->category->params->get('category_cols',3);
 ?>
