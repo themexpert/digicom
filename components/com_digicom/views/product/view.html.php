@@ -208,7 +208,8 @@ class DigiComViewProduct extends JViewLegacy
 
 			$categoryParams = new Registry;
 			$categoryParams->loadString($category->getParams());
-			if(!empty($categoryParams->get('category_layout',''))){
+			$category_layout = $categoryParams->get('category_layout','');
+			if(!empty($category_layout)){
 				$currentTemplate = true;
 			}else{
 				$currentTemplate = false;
