@@ -7,70 +7,8 @@
  */
 var request_processed = 0;
 
-function ajaxRequest(Url,DivId){
-	 var AJAX;
-	 try
-	 {
-	  AJAX = new XMLHttpRequest();
-	 }
-	 catch(e)
-	 {
-	  try
-	  {
-	   AJAX = new ActiveXObject("Msxml2.XMLHTTP");
-	  }
-	  catch(e)
-	  {
-	   try
-	   {
-		AJAX = new ActiveXObject("Microsoft.XMLHTTP");
-	   }
-	   catch(e)
-	   {
-		alert("Your browser does not support AJAX.");
-		return false;
-	   }
-	  }
-	 }
-	 AJAX.onreadystatechange = function()
-	 {
-	  if(AJAX.readyState == 4)
-	  {
-	   if(AJAX.status == 200)
-	   {
-		// debug info
-		//console.log(AJAX.responseText);
-		//document.getElementById(DivId).innerHTML = AJAX.responseText;
-		var myObject = eval("(" + AJAX.responseText + ")");
-		var cid = myObject.cid;
-		var cart_item_price = eval('myObject.cart_item_price'+cid);
-		var cart_item_total = eval('myObject.cart_item_total'+cid);
-		var cart_item_discount = eval('myObject.cart_item_discount'+cid);
-
-		document.getElementById('cart_item_price'+cid).innerHTML = cart_item_price;
-		document.getElementById('cart_item_total'+cid).innerHTML = cart_item_total;
-		if (document.getElementById('cart_item_discount'+cid)) {
-			 document.getElementById('cart_item_discount'+cid).innerHTML = cart_item_discount;
-		}
-		document.getElementById('cart_total').innerHTML = myObject.cart_total;
-		var cd = document.getElementById('digicom_cart_discount');
-		if(cd) cd.innerHTML = myObject.cart_discount;
-		// document.getElementById('digicom_cart_discount').innerHTML = myObject.cart_discount;
-		var ct = document.getElementById('digicom_cart_tax');
-		if(ct)ct.innerHTML = myObject.cart_tax;
-		refresCartModule();
-	   }
-	   else
-	   {
-		alert("Error: "+ AJAX.statusText +" "+ AJAX.status);
-	   }
-	  }
-	 }
-	 AJAX.open("get", Url, true);
-	 AJAX.send(null);
-}
-
-function update_cart(item_id) {
+function update_cart(item_id)
+{
 	var url = digicom_site + "index.php?option=com_digicom&view=cart&task=cart.getCartItem&cid="+item_id;
 	var promocode = document.getElementById('promocode');
 	var promocode_query = '&promocode='+promocode.value;
@@ -84,88 +22,36 @@ function update_cart(item_id) {
 	//console.log(url);
 	ajaxRequest(url, 'debugid');
 }
-
-function refresCartModule(){
+function addtoCart(pid, to_cart)
+{
+	if(document.getElementById("quantity_"+pid)){
+		var qty = document.getElementById("quantity_"+pid).value;
+	}else{
+		var qty = 1;
+	}
+	var url = 'index.php?option=com_digicom&view=cart&task=cart.add&from=ajax&pid='+pid+'&qty='+qty;
+	jQuery('#cartPopup').modal({
+		remote: url,
+		show: true
+	});
+	refresCartModule();
+}
+function refresCartModule()
+{
 	if(document.getElementById('mod_digicom_cart_wrap')){
 		var url = digicom_site + 'index.php?option=com_digicom&view=cart&task=cart.get_cart_content';
-		var req = new Request.HTML({
-			method: 'get',
-			url: url,
-			data: { 'do' : '1' },
-			onComplete: function(responseTree, responseElements, responseHTML, responseJavaScript){
-				document.getElementById('mod_digicom_cart_wrap').innerHTML = responseHTML;
-			}
-		}).send();
+		jQuery.ajax({
+	      url: url,
+	      data: { 'do' : '1' },
+				method: 'get',
+	      success: function (data, textStatus, xhr) {
+					jQuery('#mod_digicom_cart_wrap').html(data);
+	      }
+	  });
 	}
 }
-
-function cartformsubmit(user_id){
-
-	if(user_id == '0'){
-
-		type_button_value = document.cart_form.type_button.value;
-		if(type_button_value == "checkout"){
-			if(jQuery("#name").length > 0)
-			{
-				if(document.cart_form.name.value==""
-				|| document.cart_form.email.value==""
-				|| document.cart_form.address.value==""
-				|| document.cart_form.city.value==""
-				|| document.cart_form.zipcode.value==""
-				|| document.cart_form.country.value==""
-				|| document.cart_form.username.value==""
-				|| document.cart_form.password.value==""
-				){
-					//alert('<?php echo JText::_("DSALL_REQUIRED_FIELDS"); ?>');
-					jQuery("#myModalLabel").html(DIGI_ATENTION);
-					jQuery("#myModalBody").html("<p>" + DSALL_REQUIRED_FIELDS + "</p>");
-					jQuery('#myModal').modal('show');
-					return false;
-				}
-
-				if(document.cart_form.password.value != document.cart_form.password_confirm.value) {
-					//alert("<?php echo JText::_("DSCONFIRM_PASSWORD_MSG"); ?>");
-					jQuery("#myModalLabel").html(DIGI_ATENTION);
-					jQuery("#myModalBody").html("<p>" + DSCONFIRM_PASSWORD_MSG + "</p>");
-					jQuery('#myModal').modal('show');
-					return false;
-				}
-				if (!isEmail(document.cart_form.email.value)){
-					//alert('<?php echo JText::_("DSINVALID_EMAIL"); ?>');
-					jQuery("#myModalLabel").html(DIGI_ATENTION);
-					jQuery("#myModalBody").html("<p>" + DSINVALID_EMAIL + "</p>");
-					jQuery('#myModal').modal('show');
-					return false;
-				}
-				if (!validateUSZip(document.cart_form.zipcode.value,document.adminForm.country.value)){
-					//alert("Invalid zipcode");
-					//return false;
-				}
-			}
-
-		}
-	}
-
-
-	return true;
-}
-
-function isEmail(string) {
-	var str = string;
-	return (str.search(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/) != -1);
-}
-
-function validateUSZip( strValue , country) {
-
-	if(country == 'United-States'){
-		var objRegExp  = /(^[A-Za-z0-9 ]{1,7}$)/;
-		return objRegExp.test(strValue);
-	}
-
-	return true;
-}
-
-function validateForm(register){
+function validateForm(register)
+{
 		//console.log(register);
 		if ((document.adminForm.name && document.adminForm.name.value=="")
 			|| (document.adminForm.email && document.adminForm.email.value=="")
@@ -248,12 +134,23 @@ function validateForm(register){
 		document.adminForm.name.value = document.adminForm.name.value;
 		return true;
 }
-
-function submitbutton(pressbutton) {
-   submitform( pressbutton );
+function isEmail(string)
+{
+	var str = string;
+	return (str.search(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/) != -1);
 }
+function validateUSZip( strValue , country)
+{
 
-function validateInput(input){
+	if(country == 'United-States'){
+		var objRegExp  = /(^[A-Za-z0-9 ]{1,7}$)/;
+		return objRegExp.test(strValue);
+	}
+
+	return true;
+}
+function validateInput(input)
+{
 	var formname = 'jform_'+input;
 	value = document.getElementById(formname).value;
 	if(value != ""){
@@ -265,7 +162,6 @@ function validateInput(input){
 		    	onSuccess: function(response)
 	        {
 	            response = parseInt(response);
-	            //console.log(response);
 							if(response == "1"){
 								if(input == "email"){
 									var msg = 'COM_DIGICOM_REGISTRATION_EMAIL_ALREADY_USED';
@@ -287,104 +183,82 @@ function validateInput(input){
 							}else{
 								jQuery('#'+formname+'-warning').remove();
 							}
-							// else{
-							// 	if(input == "email"){
-							// 		document.getElementById("email_span").className = "valid";
-							// 		document.getElementById("email_span_msg").style.display = "none";
-							// 	}
-							// 	else{
-							// 		document.getElementById("username_span").className = "valid";
-							// 		document.getElementById("username_span_msg").style.display = "none";
-							// 	}
-							// }
             }
 		});
 		myAjax.send();
 	}
 }
-
-function populateShipping () {
-   var names = Array ('address','zipcode', 'city');
-   var i;
-   for (i = 0; i < names.length; i++) {
-	   val = document.getElementById(names[i]).value;
-	   document.getElementById('ship' + names[i]).value = val;
-   }
-   idx = document.getElementById('country').selectedIndex;
-   document.getElementById('shipcountry').selectedIndex = idx;
-   changeProvince_ship();
-   request_processed = 1;
-}
-
-function changeProvince_cb(province_option) {
-	document.getElementById("province").innerHTML = province_option;
-}
-
-function changeProvince() {
-	// get the folder name
-	var country;
-	country = document.getElementById('country').value;
-
-	var euc = Array();
-
-	var flag = 0;
-	for (i = 0; i< euc.length; i++)
-		if (country == euc[i]) flag = 1;
-
-	x_phpchangeProvince(country, 'main', changeProvince_cb);
-}
-
-function ChangeLogOption(value){
-	if(value == 0){
-		document.getElementById("log_form").style.display = "block";
-		document.getElementById("reg_form").style.display = "none";
-		document.getElementById("continue_button").style.display = "none";
-	}
-	else if(value == 1){
-		document.getElementById("log_form").style.display = "none";
-		document.getElementById("reg_form").style.display = "block";
-		document.getElementById("continue_button").style.display = "block";
-	}
-}
-
-function closePopupLogin(div) {
-	if(document.getElementById(div)){
-		for_delete = document.getElementById(div);
-		for_delete.parentNode.removeChild(for_delete);
-	}
-}
-
-function RemoveFromCart(CARTID,e)
-{
-	e.preventDefault();
-	var url 		= digicom_site + "index.php?option=com_digicom&task=getSefUrl";
-	var sefUrl	= "index.php?option=com_digicom&view=cart&task=cart.deleteFromCart&cartid="+CARTID+"&processor="+jQuery("#processor").val();
-
-	var myObject = new Object();
-	myObject.sefUrl = sefUrl;
-
-	var req 		= new Request.HTML({
-		method: 'get',
-		url: url,
-		data: { 'sefUrl' : myObject},
-		onComplete: function(responseTree, responseElements, responseHTML, responseJavaScript){
-			window.location = responseHTML;
-		}
-	}).send();
-}
-
 function deleteFromCart(cartid)
 {
-	var myAjax = new Request(
-		{
-			url:   'index.php?option=com_digicom&view=cart&task=cart.deleteFromCart&from=ajax&cartid='+cartid,
+	jQuery.ajax({
+      url: 'index.php?option=com_digicom&view=cart&task=cart.deleteFromCart&from=ajax&cartid='+cartid,
 			method: 'get',
-			onSuccess: function(response)
-			{
-				refresCartModule();
-				document.getElementById("cart_body").innerHTML = responseHTML;
-			}
-	});
-	
-	myAjax.send();
+      success: function (data, textStatus, xhr) {
+				location.reload();
+      }
+  });
+}
+
+function ajaxRequest(Url,DivId)
+{
+	 var AJAX;
+	 try
+	 {
+	  AJAX = new XMLHttpRequest();
+	 }
+	 catch(e)
+	 {
+	  try
+	  {
+	   AJAX = new ActiveXObject("Msxml2.XMLHTTP");
+	  }
+	  catch(e)
+	  {
+	   try
+	   {
+		AJAX = new ActiveXObject("Microsoft.XMLHTTP");
+	   }
+	   catch(e)
+	   {
+		alert("Your browser does not support AJAX.");
+		return false;
+	   }
+	  }
+	 }
+	 AJAX.onreadystatechange = function()
+	 {
+	  if(AJAX.readyState == 4)
+	  {
+	   if(AJAX.status == 200)
+	   {
+		// debug info
+		//console.log(AJAX.responseText);
+		//document.getElementById(DivId).innerHTML = AJAX.responseText;
+		var myObject = eval("(" + AJAX.responseText + ")");
+		var cid = myObject.cid;
+		var cart_item_price = eval('myObject.cart_item_price'+cid);
+		var cart_item_total = eval('myObject.cart_item_total'+cid);
+		var cart_item_discount = eval('myObject.cart_item_discount'+cid);
+
+		document.getElementById('cart_item_price'+cid).innerHTML = cart_item_price;
+		document.getElementById('cart_item_total'+cid).innerHTML = cart_item_total;
+		if (document.getElementById('cart_item_discount'+cid)) {
+			 document.getElementById('cart_item_discount'+cid).innerHTML = cart_item_discount;
+		}
+		document.getElementById('cart_total').innerHTML = myObject.cart_total;
+		var cd = document.getElementById('digicom_cart_discount');
+		if(cd) cd.innerHTML = myObject.cart_discount;
+		// document.getElementById('digicom_cart_discount').innerHTML = myObject.cart_discount;
+		var ct = document.getElementById('digicom_cart_tax');
+		if(ct)ct.innerHTML = myObject.cart_tax;
+		refresCartModule();
+	   }
+	   else
+	   {
+		alert("Error: "+ AJAX.statusText +" "+ AJAX.status);
+	   }
+	  }
+	 }
+	 AJAX.open("get", Url, true);
+	 AJAX.send(null);
 }
