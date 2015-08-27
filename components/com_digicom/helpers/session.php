@@ -46,13 +46,13 @@ class DigiComSiteHelperSession
 		$digicomid 	= 'digicomid';
 		$sid 		= $reg->get($digicomid, 0);
 		//SELECT GROUP_CONCAT(sid) as sid from `fs62c_digicom_session` where `create_time` < NOW() - INTERVAL 1 DAY
-		
+
 		// first we will remove all session n cart info from db that passed 24 hours
 		$sql = "SELECT GROUP_CONCAT(sid) as sid from #__digicom_session where create_time< now() - INTERVAL 7 DAY";
 		$db->setQuery($sql);
 		$oldsids = $db->loadObject();
 		//echo $oldsids->sid;die;
-		
+
 		if(!empty($oldsids->sid)){
 			$sql = "delete from #__digicom_cart where `sid` in (".$oldsids->sid.")";
 			$db->setQuery($sql);
@@ -62,12 +62,12 @@ class DigiComSiteHelperSession
 			$db->setQuery($sql);
 			$db->execute();
 		}
-		
+
 		//as we already removed all 24h old sessions, we need to check if we have current one or not
 		if (!$sid) {
 			// so we dont have any digicomid, we need to create one
 			// but before that lets checck in session table if we have with user id
-			
+
 			if(!$my->id){
 				// we dont have session id, userid
 				$sql = "INSERT INTO #__digicom_session (`uid`,`create_time`, `cart_details`, `transaction_details`, `shipping_details`)
@@ -79,7 +79,7 @@ class DigiComSiteHelperSession
 				$db->execute();
 				$sid = $db->insertId();
 				$reg->set($digicomid, $sid);
-				
+
 			}
 			else{
 				//we dont have session id but have userid
@@ -87,7 +87,7 @@ class DigiComSiteHelperSession
 				$db->setQuery($sql);
 				$digisession = $db->loadObject();
 
-				if($digisession->uid != 0){
+				if(isset($digisession->uid) &&  $digisession->uid != 0){
 					// user have previous session id
 					$sid = $digisession->sid;
 					$reg->set($digicomid, $sid);
@@ -114,7 +114,7 @@ class DigiComSiteHelperSession
 
 			}
 
-		
+
 		} elseif($my->id != 0) {
 			// we have sessionid  $sid
 			// check if has userid
