@@ -174,16 +174,9 @@ $table_column = 4;
 						<td colspan="<?php echo $table_column - 1; ?>" >
 							<div class="input-append">
 								<input type="text" id="promocode" name="promocode" size="15" value="<?php echo $this->promocode; ?>" />
-								<button type="submit" class="btn" onclick="document.getElementById('task').value='cart.updateCart'; document.getElementById('type_button').value='recalculate';"><i class="ico-gift"></i> <?php echo JText::_("COM_DIGICOM_CART_PROMOCODE_APPLY"); ?></button>
+								<button type="submit" class="btn" onclick="document.getElementById('task').value='cart.updateCart';"><i class="ico-gift"></i> <?php echo JText::_("COM_DIGICOM_CART_PROMOCODE_APPLY"); ?></button>
 							</div>
-							<?php if(!empty($this->promoerror) or ($tax['promo'] <= 0 && $this->promocode != '')): ?>
-								<div class="digi_error alert alert-warning">
-									<?php echo $this->promoerror; ?>
-									<?php if($tax['promo'] <= 0 && $this->promocode != ''):?>
-										<?php echo JText::_('COM_DIGICOM_PROMO_NOT_APPLICABLE');?>
-									<?php endif;?>
-								</div>
-							<?php endif;?>
+
 						</td>
 						<td nowrap="nowrap" style="text-align: center;">
 							<ul style="margin: 0; padding: 0;list-style-type: none;">
@@ -246,7 +239,7 @@ $table_column = 4;
 						<?php
 						$onclick = "console.log(jQuery('#processor').val());";
 						$onclick .= "if(jQuery('#processor').val() === null){ ShowPaymentAlert(); return false; }";
-						$onclick.= "jQuery('#returnpage').val('checkout'); jQuery('#type_button').val('checkout');";
+						$onclick.= "jQuery('#returnpage').val('checkout');";
 
 						if($configs->get('askterms',0) == '1')
 						{
@@ -269,8 +262,7 @@ $table_column = 4;
 
 				<input name="view" type="hidden" id="view" value="cart">
 				<input name="task" type="hidden" id="task" value="cart.checkout">
-				<input name="returnpage" type="hidden" id="returnpage" value="">
-				<input name="type_button" type="hidden" id="type_button" value="">
+				<input name="returnpage" type="hidden" value="">
 
 			</form>
 		</div>

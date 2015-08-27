@@ -29,7 +29,7 @@ class DigiComControllerProfile extends JControllerLegacy
 
 		$options = array();
 		$options['remember'] = JRequest::getBool('remember', false);
-		$options['return'] = $returnpage;
+		$options['return'] = $return;
 
 		$username = JRequest::getVar("username", "", 'request','username');
 		$password = JRequest::getVar("passwd", "", 'post',JREQUEST_ALLOWRAW);

@@ -479,7 +479,6 @@ class DigiComModelCart extends JModelItem
 		else
 			$promocode = '';
 
-
 		if ( strlen( $promocode ) > 0 ) {//valid promocode was provided
 			$sql = "select *
 					from #__digicom_promocodes
@@ -562,7 +561,7 @@ class DigiComModelCart extends JModelItem
 
 	function updateCart( $customer, $configs )
 	{
-		$jAp = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$db = JFactory::getDbo();
 		$sid = $customer->_sid;
 		$uid = $customer->_user->id;
@@ -628,49 +627,51 @@ class DigiComModelCart extends JModelItem
 				{
 					//add this code to user's cart
 					$sql = "update #__digicom_session set cart_details='promocode=" . $promo . "' where sid='" . $sid . "'";
-					//$jAp->enqueueMessage(JText::sprintf('COM_DIGICOM_CART_PROMOCODE_APPLIED',$promo),'success');
+					$app->enqueueMessage(JText::sprintf('COM_DIGICOM_CART_PROMOCODE_APPLIED',$promo),'success');
 				}
 				else if ($published == "0")
 				{
+					$app->enqueueMessage(JText::_('COM_DIGICOM_DISCOUNT_CODE_UNP'),'warning');
 					$sql = "update #__digicom_session set cart_details='promoerror=" . (JText::_( "COM_DIGICOM_DISCOUNT_CODE_UNP" )) . "' where sid='" . intval($sid) . "'";
 				}
 				else if ($limit > 0  && $used  >= $limit)
 				{
+					$app->enqueueMessage(JText::_('COM_DIGICOM_DISCOUNT_CODE_EXPIRED_AMOUNT'),'warning');
 					$sql = "update #__digicom_session set cart_details='promoerror=" . (JText::_( "COM_DIGICOM_DISCOUNT_CODE_EXPIRED_AMOUNT" )) . "' where sid='" . intval($sid) . "'";
 				}
 				else if ($timeend < $tomorrow && $timeend != $nullDate)
 				{
+					$app->enqueueMessage(JText::_('COM_DIGICOM_DISCOUNT_CODE_EXPIRED_DATE'),'warning');
 					$sql = "update #__digicom_session set cart_details='promoerror=" . (JText::_( "COM_DIGICOM_DISCOUNT_CODE_EXPIRED_DATE" )) . "' where sid='" . intval($sid) . "'";
 				}
 				else
 				{
+					$app->enqueueMessage(JText::_('COM_DIGICOM_DISCOUNT_CODE_ENA'),'warning');
 					$sql = "update #__digicom_session set cart_details='promoerror=" . (JText::_( "COM_DIGICOM_DISCOUNT_CODE_ENA" )) . "' where sid='" . intval($sid) . "'";
 				}
 
 				//adding status entry to user's session
 				$db->setQuery( $sql );
 				$db->execute();
-				//$jAp->enqueueMessage(nl2br($db->getErrorMsg()),'error');
+				//$app->enqueueMessage(nl2br($db->getErrorMsg()),'error');
 			} else {
 				$sql = "update #__digicom_session set cart_details='promoerror=" . (JText::_( "COM_DIGICOM_DISCOUNT_CODE_WRONG" )) . "' where sid='" . intval($sid) . "'";
 				$db->setQuery( $sql );
 				$db->execute();
-				//$jAp->enqueueMessage(nl2br($db->getErrorMsg()),'error');
+				$app->enqueueMessage(JText::_('COM_DIGICOM_DISCOUNT_CODE_WRONG'),'warning');
 			}
 
 
 		} else {//cleaning up promocode entry
 			$sql = "update #__digicom_session set cart_details='' where sid='" . intval($sid) . "'";
 			$db->setQuery( $sql );
-			$db->query();
-			//$jAp->enqueueMessage(nl2br($db->getErrorMsg()),'error');
+			$db->execute();
 		}
 
 
 		$sql = "update #__digicom_session set shipping_details='0' where sid='" . intval($sid) . "'";
 		$db->setQuery( $sql );
-		$db->query();
-		//$jAp->enqueueMessage(nl2br($db->getErrorMsg()),'error');
+		$db->execute();
 		return true;
 	}
 
