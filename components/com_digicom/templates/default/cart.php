@@ -129,7 +129,7 @@ $table_column = 4;
 								</td>
 
 								<td nowrap="nowrap">
-									<a href="#" class="btn btn-small btn-danger" onclick="RemoveFromCart(<?php echo $item->cid;?>, event);"><i class="icon-trash icon-white"></i></a>
+									<a href="#" class="btn btn-small btn-danger" onclick="deleteFromCart(<?php echo $item->cid;?>);"><i class="icon-trash icon-white"></i></a>
 								</td>
 							</tr>
 							<?php

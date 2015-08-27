@@ -71,16 +71,24 @@ if($this->item->price > 0){
 							<?php endif; ?>
 						</div>
 
-						<div class="addtocart-bar">
-							<a
-								href="<?php echo JRoute::_('index.php?option=com_digicom&view=cart&task=cart.add&from=ajax&pid='.$this->item->id);?>"
-								role="button"
-								class="btn btn-default"
-								data-toggle="modal"
-								data-target="#cartPopup">
-									<i class="icon-cart"></i>
-									<?php echo JText::_('COM_DIGICOM_ADD_TO_CART'); ?>
-							</a>
+						<div class="addtocart-bar<?php echo ($conf->get('show_quantity',0) == 1 ? " input-append input-prepend" : ''); ?>">
+							<form name="prod" id="product-form" action="<?php echo JRoute::_('index.php?option=com_digicom&view=cart');?>" method="post" style="width:100%;">
+
+								<?php if($conf->get('show_quantity',0) == "1") {	?>
+									<input id="quantity_<?php echo $this->item->id; ?>" type="number" name="qty" min="1" class="input-small" value="1" size="2" placeholder="<?php echo JText::_('COM_DIGICOM_QUANTITY'); ?>">
+								<?php } ?>
+
+								<?php if($conf->get('afteradditem',0) == "2") {	?>
+									<button type="button" class="btn btn-warning" onclick="javascript:addtoCart(<?php echo $this->item->id; ?>,'<?php echo JRoute::_("index.php?option=com_digicom&view=cart"); ?>');"><i class="icon-cart"></i> <?php echo JText::_("COM_DIGICOM_ADD_TO_CART");?></button>
+								<?php }else { ?>
+									<button type="submit" class="btn btn-warning"><i class="icon-cart"></i> <?php echo JText::_('COM_DIGICOM_ADD_TO_CART'); ?></button>
+								<?php } ?>
+
+								<input type="hidden" name="option" value="com_digicom"/>
+								<input type="hidden" name="view" value="cart"/>
+								<input type="hidden" name="task" value="cart.add"/>
+								<input type="hidden" name="pid" value="<?php echo $this->item->id; ?>"/>
+							</form>
 						</div>
 					</div>
 					<?php endif; ?>
@@ -95,8 +103,9 @@ if($this->item->price > 0){
 		'bootstrap.renderModal',
 		'cartPopup',
 		array(
+//			'url' 		=> JRoute::_('index.php?option=com_digicom&view=cart&layout=cart_popup&tmpl=component'),
 			'title' 	=> JText::_('COM_DIGICOM_CART_ITEMS'),
-			'height' 	=> '400px',
+			'height' 	=> '400',
 			'width'	 	=> '1280',
 			'footer'	=> '<button type="button" class="btn btn-default" data-dismiss="modal">'.JText::_('COM_DIGICOM_CONTINUE').'</button> <a href="'.JRoute::_("index.php?option=com_digicom&view=cart").'" class="btn btn-warning"><i class="ico-ok-sign"></i> '.JText::_("COM_DIGICOM_CHECKOUT").'</a>'
 		)
