@@ -9,14 +9,6 @@
 			type="hidden"
 		/>
 
-		<field
-			name="captcha"
-			type="captcha"
-			label="COM_DIGICOM_CAPTCHA_LABEL"
-			description="COM_DIGICOM_CAPTCHA_DESC"
-			validate="captcha"
-		/>
-
 
 	</fieldset>
 </form>
