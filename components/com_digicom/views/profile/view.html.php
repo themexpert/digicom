@@ -59,7 +59,59 @@ class DigiComViewProfile extends JViewLegacy {
 		$template = new DigiComSiteHelperTemplate($this);
 		$template->rander('profile');
 
+		$this->prepareDocument();
+
 		return parent::display($tpl);
 	}
+
+	/**
+	 * Prepares the document
+	 *
+	 * @return  void
+	 *
+	 * @since   1.6
+	 */
+	protected function prepareDocument()
+	{
+		$app   = JFactory::getApplication();
+		$menus = $app->getMenu();
+		$user  = JFactory::getUser();
+		$title = null;
+
+		// Because the application sets a default page title,
+		// we need to get it from the menu item itself
+		$menu = $menus->getActive();
+		$title = $menu->params->get('page_title');
+		if (empty($title))
+		{
+			$title = $app->get('sitename');
+		}
+		elseif ($app->get('sitename_pagetitles', 0) == 1)
+		{
+			$title = JText::sprintf('JPAGETITLE', $app->get('sitename'), $title);
+		}
+		elseif ($app->get('sitename_pagetitles', 0) == 2)
+		{
+			$title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
+		}
+
+		$this->document->setTitle($title);
+
+		if ($menu->params->get('menu-meta_description'))
+		{
+			$this->document->setDescription($menu->params->get('menu-meta_description'));
+		}
+
+		if ($menu->params->get('menu-meta_keywords'))
+		{
+			$this->document->setMetadata('keywords', $menu->params->get('menu-meta_keywords'));
+		}
+
+		if ($menu->params->get('robots'))
+		{
+			$this->document->setMetadata('robots', $menu->params->get('robots'));
+		}
+	}
+
 
 }
