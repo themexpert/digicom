@@ -135,8 +135,9 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	* @return html for view
 	* @vars : passed from component, all info regarding payment n order
 	*/
-	function onTP_GetHTML($vars)
+	function onTP_GetHTML($vars,$pg_plugin)
 	{
+		if($pg_plugin != $this->_name) return;
 		$params 		= $this->params;
 		$secure_post 	= $params->get('secure_post');
 		$sandbox 		= $params->get('sandbox');

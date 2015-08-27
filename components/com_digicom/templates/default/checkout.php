@@ -32,11 +32,11 @@ $data = $this->data;
 	<div class="container-fluid center">
 		<h1 class="digi-page-title"><?php echo JText::sprintf("COM_DIGICOM_PAYMENT_WITH_PROGRESS_NOTICE",$pg_plugin); ?></h1>
 		<div class="progress progress-striped active" style="width: 50%; margin: 20px auto 40px auto;">
-			<div  id="progressBar" class="bar" style="border-radius: 3px; margin: 0; width: 100%;"></div>			
+			<div  id="progressBar" class="bar" style="border-radius: 3px; margin: 0; width: 100%;"></div>
 		</div>
-		
+
 		<?php echo $data[0]; ?>
-		
+
 	</div>
 <?php } else { ?>
 	<h1 class="digi-page-title"><?php echo JText::sprintf("COM_DIGICOM_CHECKOUT_PAYMENT_DETAILS_PAGE_TITLE", $pg_plugin); ?></h1>

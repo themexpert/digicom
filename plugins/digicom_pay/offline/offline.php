@@ -96,8 +96,9 @@ class plgDigiCom_PayOffline extends JPlugin
 	* @return html for view
 	* @vars : passed from component, all info regarding payment n order
 	*/
-	function onTP_GetHTML($vars)
+	function onTP_GetHTML($vars,$pg_plugin)
 	{
+		if($pg_plugin != $this->_name) return;
 		$vars->custom_name= $this->params->get( 'plugin_name' );
 		$vars->custom_email=$this->params->get( 'plugin_mail' );
 		$html = $this->buildLayout($vars);
