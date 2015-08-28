@@ -49,31 +49,57 @@ class DigiComHelperChart {
 	 * */
 	public static function getMonthLabelPrice($monthlyDay, $byproduct = false){
 		$date = new DateTime('now');
-		$date->modify('first day of this month');
-		$startdate = $date->format('Y-m-d') . ' 00:00:00';
+		$date->modify("first day of this month");
+		$start_date = $date->format('Y-m-d 00:00:0');
 
-		$date->modify('first day of next month');
-		$enddate = $date->format('Y-m-d') . ' 00:00:00';
-
-		$days = explode(', ', $monthlyDay);
+		$date = new DateTime('now');
+		//$date->modify("last day of this month");
+		$end_date = $date->format('Y-m-d 00:00:0');
+		//echo $end_date;die;
+		$daterange = DigiComHelperChart::createDateRangeArray($start_date, $end_date);
+		//print_r($daterange);die;
 		$price = '';
 		$prefix = '';
-		foreach($days as $day){
-			$day = str_replace('"','',$day);
-			//$day = str_replace(' Aug','',$day);
-			//$day = substr($day,0,-2);
-			$day = substr($day,0,-6);
-			//echo $day;jexit();
-			//"1st Aug"
+		foreach ($daterange as $key => $value) {
+			$date = new DateTime($value);
+			//$days = $days . $prefix . '"' . DigiComHelperChart::addOrdinalNumberSuffix($date->format('d')) . ' '.$date->format('M').'"';
+			//$prefix = ', ';
 
-
-			$dayPrice = ceil(DigiComHelperChart::getAmountDaily($day,$byproduct));
+			$dayPrice = ceil(DigiComHelperChart::getAmountByDate($date->format('Y-m-d'),$byproduct));
 			$price = $price . $prefix . $dayPrice;
 			$prefix = ', ';
+
 		}
 
 		return $price;
 	}
+	// public static function getMonthLabelPrice($monthlyDay, $byproduct = false){
+	// 	$date = new DateTime('now');
+	// 	$date->modify('first day of this month');
+	// 	$startdate = $date->format('Y-m-d') . ' 00:00:00';
+	//
+	// 	$date->modify('first day of next month');
+	// 	$enddate = $date->format('Y-m-d') . ' 00:00:00';
+	//
+	// 	$days = explode(', ', $monthlyDay);
+	// 	$price = '';
+	// 	$prefix = '';
+	// 	foreach($days as $day){
+	// 		$day = str_replace('"','',$day);
+	// 		//$day = str_replace(' Aug','',$day);
+	// 		//$day = substr($day,0,-2);
+	// 		$day = substr($day,0,-6);
+	// 		//echo $day;jexit();
+	// 		//"1st Aug"
+	//
+	//
+	// 		$dayPrice = ceil(DigiComHelperChart::getAmountDaily($day,$byproduct));
+	// 		$price = $price . $prefix . $dayPrice;
+	// 		$prefix = ', ';
+	// 	}
+	//
+	// 	return $price;
+	// }
 
 	/*
 	 * method to get daily amount for current month
