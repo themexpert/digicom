@@ -27,7 +27,7 @@ $pageURL = $uri->toString();
 
 	<?php
 	$dispatcher = JDispatcher::getInstance();
-	$results = $dispatcher->trigger( 'onAfterSidebarMenu', array());
+	$results = $dispatcher->trigger( 'onDigicomAfterSidebarMenu', array());
 	?>
 
 </div>
