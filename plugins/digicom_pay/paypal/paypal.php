@@ -50,12 +50,12 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	}
 
 	/*
-	* method : onSidebarMenuItem
+	* method : onDigicomSidebarMenuItem
 	* its been used to set a short edit menu link to digicom
 	* right sidebar
 	* return links to edit
 	*/
-	public function onSidebarMenuItem()
+	public function onDigicomSidebarMenuItem()
 	{
 		$pluginid = $this->getPluginId('paypal','digicom_pay','plugin');
 		$params 		= $this->params;
@@ -162,6 +162,9 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	*/
 	function onTP_Processpayment($data)
 	{
+		$processor = JFactory::getApplication()->input->get('processor','');
+		if($processor != $this->_name) return;
+
 		$verify 		= plgDigiCom_PayPaypalHelper::validateIPN($data);
 
 		if (!$verify) { return false; }
