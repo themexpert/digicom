@@ -130,7 +130,7 @@ class plgDigiCom_PayOffline extends JPlugin
 	function onTP_Processpayment($data)
 	{
 		$processor = JFactory::getApplication()->input->get('processor','');
-		if($processor != 'offline') return false;
+		if($processor != $this->_name) return;
 
 		$payment_status = $this->translateResponse('Pending');
 		$data['payment_status'] = $payment_status;
