@@ -42,7 +42,7 @@ class plgSystemDigiCom extends JPlugin{
 	 * Plugin method with the same name as the event will be called automatically.
 	 */
 
-	public function onAfterSidebarMenu($params = array())
+	public function onDigicomAfterSidebarMenu($params = array())
 	{
 
 		$dispatcher = JDispatcher::getInstance();
@@ -61,10 +61,10 @@ class plgSystemDigiCom extends JPlugin{
 			$config = json_decode($value->params, true);
 
 			$className = 'plg'.$value->folder.$value->element;
-			if(method_exists($className,'onSidebarMenuItem')){
+			if(method_exists($className,'onDigicomSidebarMenuItem')){
 				JFactory::getLanguage()->load('plg_'.$value->folder.'_'.$value->element, JPATH_ADMINISTRATOR);
 				$class = new $className($dispatcher, $config);
-				$results []= '<i class="digi-micro-btn icon-'.($value->enabled ? 'publish' : 'unpublish').'"></i> '. $class->onSidebarMenuItem(array());
+				$results []= '<i class="digi-micro-btn icon-'.($value->enabled ? 'publish' : 'unpublish').'"></i> '. $class->onDigicomSidebarMenuItem(array());
 			}
 		}
 
@@ -85,7 +85,7 @@ class plgSystemDigiCom extends JPlugin{
 	 * Plugin method with the same name as the event will be called automatically.
 	 */
 
-	public function onAfterMainMenu($params = array())
+	public function onDigicomAfterMainMenu($params = array())
 	{
 
 		$dispatcher = JDispatcher::getInstance();
