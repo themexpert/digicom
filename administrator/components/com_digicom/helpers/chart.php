@@ -292,7 +292,7 @@ class DigiComHelperChart {
 				break;
 			case "month":
 				//current month
-				return DigiComHelperChart::getMonthLabelDay();
+				$days = DigiComHelperChart::getMonthLabelDay();
 
 				break;
 			case "7day":
@@ -371,8 +371,27 @@ class DigiComHelperChart {
 
 				break;
 			case "month":
-				return DigiComHelperChart::getMonthLabelPrice($rangeDays,$byproduct);
+				//return DigiComHelperChart::getMonthLabelPrice($rangeDays,$byproduct);
+				$date = new DateTime('now');
+				$date->modify("first day of this month");
+				$start_date = $date->format('Y-m-d 00:00:0');
 
+				$date = new DateTime('now');
+				//$date->modify("last day of this month");
+				$end_date = $date->format('Y-m-d 00:00:0');
+				//echo $end_date;die;
+				$daterange = DigiComHelperChart::createDateRangeArray($start_date, $end_date);
+				//print_r($daterange);die;
+				foreach ($daterange as $key => $value) {
+					$date = new DateTime($value);
+					//$days = $days . $prefix . '"' . DigiComHelperChart::addOrdinalNumberSuffix($date->format('d')) . ' '.$date->format('M').'"';
+					//$prefix = ', ';
+
+					$dayPrice = ceil(DigiComHelperChart::getAmountByDate($date->format('Y-m-d'),$byproduct));
+					$price = $price . $prefix . $dayPrice;
+					$prefix = ', ';
+
+				}
 				break;
 			case "7day":
 			default:
