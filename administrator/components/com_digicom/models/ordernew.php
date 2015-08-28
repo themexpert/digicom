@@ -152,16 +152,24 @@ class DigiComModelOrderNew extends JModelAdmin
 			return false;
 		}
 
-		$config = JFactory::getConfig();
-		$tzoffset = $config->get('offset');
-		if(isset($data['order_date'])&& $data['order_date']){
+		// $config = JFactory::getConfig();
+		// $tzoffset = $config->get('offset');
+		// if(isset($data['order_date'])&& $data['order_date']){
+		// 	$date = JFactory::getDate($data['order_date']);
+		// 	$purchase_date = $date->toSql();
+		// 	$order_date = $date->toUNIX();
+		// } else{
+		// 	$purchase_date = date('Y-m-d H:i:s', time() + $tzoffset);
+		// 	$date = JFactory::getDate();
+		// 	$order_date = $date->toUNIX();
+		// }
+
+		if(isset($data['order_date']) && $data['order_date']){
 			$date = JFactory::getDate($data['order_date']);
-			$purchase_date = $date->toSql();
-			$order_date = $date->toUNIX();
+			$order_date = $date->format('Y-m-d 00:00:0');
 		} else{
-			$purchase_date = date('Y-m-d H:i:s', time() + $tzoffset);
-			$date = JFactory::getDate();
-			$order_date = $date->toUNIX();
+			$date = JFactory::getDate('now');
+			$order_date = $date->format('Y-m-d 00:00:0');
 		}
 
 		$data['order_date'] = $order_date;
@@ -207,7 +215,7 @@ class DigiComModelOrderNew extends JModelAdmin
 		$data['promocodeid'] = $this->getPromocodeByCode($data['promocode']);
 
 		//DigiComSiteHelperLicense::addLicenceSubscription($data['product_id'], $data['userid'], 1, $data['status']);
-
+		//print_r($data);die;
 		if(parent::save($data)){
 
 			//hook the files here
