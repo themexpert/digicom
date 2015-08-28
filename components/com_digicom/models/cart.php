@@ -8,7 +8,7 @@
  */
 
 defined('_JEXEC') or die;
-
+use Joomla\Registry\Registry;
 /**
  * DigiCom Cart model
  *
@@ -862,7 +862,7 @@ class DigiComModelCart extends JModelItem
 		$this->storelog($pay_plugin, $data);
 
 		$logtype = 'status';
-		//print_r($data);jexit();
+
 		if(isset($data['status']))
 		{
 			$_SESSION['in_trans'] = 1;
@@ -889,7 +889,7 @@ class DigiComModelCart extends JModelItem
 			);
 			//$callback, $callbackid, $status = 'Active', $type = 'payment'
 			$log = DigiComSiteHelperLog::getLog('cart proccessSuccess', $order_id, $status, $logtype);
-			//print_r($log);die;
+
 			if(
 					(empty($log->id) or $log->id == 0)
 					or
@@ -901,7 +901,6 @@ class DigiComModelCart extends JModelItem
 				$this->updateOrder($order_id,$result,$data,$pay_plugin,$status,$items,$customer);
 
 			}else{
-
 				DigiComSiteHelperLog::setLog($logtype, 'cart proccessSuccess', $order_id, 'Post recieved for Order id#'.$order_id.' from '.$pay_plugin, json_encode($info),$status);
 
 			}
@@ -922,7 +921,8 @@ class DigiComModelCart extends JModelItem
 		return true;
 	}
 
-	function updateOrder($order_id,$result,$data,$pay_plugin,$status,$items,$customer){
+	function updateOrder($order_id,$result,$data,$pay_plugin,$status,$items,$customer)
+	{
 
 		$orderTable = $this->getTable('Order');
 		$orderTable->load($order_id);
@@ -952,7 +952,7 @@ class DigiComModelCart extends JModelItem
 			DigiComSiteHelperLicense::updateLicenses($order_id, $orderTable->number_of_products, $items, $orderTable->userid , $type);
 
 			$dispatcher = JDispatcher::getInstance();
-			$dispatcher->trigger('onAfterPaymentComplete', array($order_id, $result, $pay_plugin, $items, $customer));
+			$dispatcher->trigger('onDigicomAfterPaymentComplete', array($order_id, $result, $pay_plugin, $items, $customer));
 
 		}
 
@@ -962,14 +962,19 @@ class DigiComModelCart extends JModelItem
 
 		$orderTable->comment = implode("\n", $comment);
 
-		$orderparams = json_decode($orderTable->params);
+		$registry = new Registry;
+		$registry->loadString($orderTable->params);
+
+		$orderparams = new stdClass();
 		$orderparams->paymentinfo 	= array();
 		$orderparams->paymentinfo[] = $pay_plugin;
 		$orderparams->paymentinfo[] = $result;
 		$orderparams->paymentinfo[] = $data;
 		$orderparams->warning 	= $warning;
 
-		$orderTable->params = json_encode($orderparams);
+		$registry->loadObject($orderparams);
+		$orderTable->params = (string) $registry;
+
 		$orderTable->store();
 
 		//triggere email
@@ -985,7 +990,12 @@ class DigiComModelCart extends JModelItem
 
 		$table = $this->getTable('Order');
 		$table->load(array('id'=>$order_id,'userid'=>$user_id));
-		$table->params = json_encode($params);
+
+		$registry = new Registry;
+		$registry->loadString($table->params);
+		$registry->loadObject($params);
+
+		$table->params = (string) $registry;
 		$table->store();
 		return true;
 	}
@@ -1130,7 +1140,6 @@ class DigiComModelCart extends JModelItem
 
 		// Items
 		$data['cart']['items'] = serialize( $items );
-
 		$data['sid'] = $sid;
 		$data['userid'] = $my->id;
 		$data['option'] = 'com_digicom';
@@ -1204,30 +1213,35 @@ class DigiComModelCart extends JModelItem
 			$transectionid = $tax['number_of_products'].$paymethod.$now;
 			$transectionid = substr($transectionid,0,15);
 		}else{
-			$transectionid = '';
+			$transectionid = null;
 		}
-		//--------------------------------------------------------
-		// Create a new query object.
-		$query = $db->getQuery(true);
-		// Insert columns.
-		$columns = array( 'userid', 'transaction_number', 'order_date', 'price', 'amount', 'discount', 'amount_paid', 'currency', 'processor', 'number_of_products', 'status', 'promocodeid', 'promocode', 'published' );
-		// Insert values.
-		$values = array( $uid, $db->quote($transectionid),$db->quote($now), $db->quote($tax['price']), $db->quote($tax['payable_amount']), $tax['promo'], 0, $db->quote($tax['currency']), $db->quote($paymethod), $tax['number_of_products'], $db->quote($status), $promoid, $db->quote($promocode), 1 );
 
-		// Prepare the insert query.
-		$query
-		    ->insert($db->quoteName('#__digicom_orders'))
-		    ->columns($db->quoteName($columns))
-		    ->values(implode(',', $values));
-		// Set the query using our newly populated query object and execute it.
-		$db->setQuery($query);
-		//echo $query->__toString();die;
-		$db->execute();
+		// trigger dispatcher
+		$table = $this->getTable('order');
+		$table->userid								= $uid;
+		$table->transaction_number		= $transectionid;
+		$table->order_date						= $now;
+		$table->price									= $tax['price'];
+		$table->amount								= $tax['payable_amount'];
+		$table->amount_paid						= $tax['promo'];
+		$table->currency							= $tax['currency'];
+		$table->processor							= $paymethod;
+		$table->number_of_products		= $tax['number_of_products'];
+		$table->status								= $status;
+		$table->promocodeid						= $promoid;
+		$table->promocode							= $promocode;
+		$table->published							= 1;
 
-		$orderid = $db->insertid();
-		$this->storeTransactionData( $items, $orderid, $tax, $sid );
+		// Trigger the event
+		$dispatcher=JDispatcher::getInstance();
+		$dispatcher->trigger('onDigicomBeforePlaceOrder',array($table));
+		if($table->store()){
+			$orderid = $table->id;
+			$this->storeTransactionData( $items, $orderid, $tax, $sid );
+			return $orderid;
+		}
 
-		return $orderid;
+		return false;
 
 	}
 
