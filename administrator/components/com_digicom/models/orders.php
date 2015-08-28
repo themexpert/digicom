@@ -367,10 +367,17 @@ class DigiComModelOrders extends JModelList{
 		$configs = $c->getConfigs();
 
 		$startdate = JRequest::getVar("startdate", "", "request");
-		$startdate = strtotime($startdate);
+		if($startdate){
+			$date = new DateTime($startdate);
+			$startdate = $date->format('Y-m-d 00:00:0');
+		}
 
 		$enddate = JRequest::getVar("enddate", "", "request");
-		$enddate = strtotime($enddate);
+
+		if($enddate){
+			$date = new DateTime($enddate);
+			$enddate = $date->format('Y-m-d 00:00:0');
+		}
 
 		$keyword = JRequest::getVar( "keyword", "");
 		//echo $keyword ;die;
@@ -385,10 +392,10 @@ class DigiComModelOrders extends JModelList{
 
 		$where = array();
 		if($startdate > 0){
-			$where[]=" o.order_date > " . $startdate . " ";
+			$where[]=" o.order_date > '" . $startdate . "' ";
 		}
 		if($enddate > 0){
-			$where[]=" o.order_date < " . $enddate . " ";
+			$where[]=" o.order_date < '" . $enddate . "' ";
 		}
 		if(strlen( trim( $keyword ) ) > 0){
 			$where[]=$keyword_where;
