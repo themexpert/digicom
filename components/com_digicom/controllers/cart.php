@@ -386,7 +386,7 @@ class DigiComControllerCart extends JControllerLegacy
 			if(count($items) != "0"){
 
 				$orderid 	= $cart->addFreeProduct($items, $customer, $tax);
-				$dispatcher->trigger('onAfterPlaceOrder', array($orderid, $items, $tax, $customer, 'free'));
+				$dispatcher->trigger('onDigicomAfterPlaceOrder', array($orderid, $items, $tax, $customer, 'free'));
 
 				// Order complete, now redirect to the original page
 				if ( $configs->get('afterpurchase',1) == 1 ) {
@@ -418,7 +418,7 @@ class DigiComControllerCart extends JControllerLegacy
 
 			//store order
 			$order_id = $cart->addOrderInfo($items, $customer, $tax, $status = 'Pending', $prosessor);
-			$dispatcher->trigger('onAfterPlaceOrder', array($order_id, $items, $tax, $customer));
+			$dispatcher->trigger('onDigicomAfterPlaceOrder', array($order_id, $items, $tax, $customer));
 
 			$cart->getFinalize($this->_customer->_sid, $msg = '', $order_id, $type= 'new_order', $status);
 
@@ -608,8 +608,8 @@ class DigiComControllerCart extends JControllerLegacy
 		}
 
 		// after recieved payment request, get the status info
+		//JPluginHelper::importPlugin('digicom_pay', $processor);
 		$dispatcher = JDispatcher::getInstance();
-		JPluginHelper::importPlugin('digicom_pay', $processor);
 		$data = $dispatcher->trigger('onTP_Processpayment', array($post));
 
 		//after recieved payment, trigger any additional events
