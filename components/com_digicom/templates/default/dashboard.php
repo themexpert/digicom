@@ -61,7 +61,13 @@ $configs 	= $this->configs;
 				foreach($this->items as $key=>$licence){
 					?>
 					<tr>
-						<td><?php echo $licence->name; ?></td>
+						<td>
+							<span><?php echo $licence->name;?></span>
+							<?php
+								$dispatcher=JDispatcher::getInstance();
+								$dispatcher->trigger('onDigicomDashboardAfterProductName',array($licence));
+							?>
+						</td>
 						<td>
 							<?php
 								$date = new DateTime($licence->purchase);
