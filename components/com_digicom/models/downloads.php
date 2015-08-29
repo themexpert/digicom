@@ -9,13 +9,18 @@
 
 defined('_JEXEC') or die;
 
+$com_path = JPATH_SITE . '/components/com_digicom/';
+require_once $com_path . 'helpers/route.php';
+
+JModelLegacy::addIncludePath($com_path . '/models', 'DigicomModel');
+
 jimport('joomla.filesystem.file');
 use Joomla\Registry\Registry;
 // TODO : Remove JRequest to JInput and php visibility
 
 class DigiComModelDownloads extends JModelList
 {
-	
+
 	/**
 	 * Model context string.
 	 *
@@ -50,7 +55,7 @@ class DigiComModelDownloads extends JModelList
 		$this->setState('list.limit', $params->get('maximum', 200));
 
 		$this->setState('filter.published', 1);
-		
+
 		// Optional filter text
 		$itemid = $app->input->getInt('Itemid', 0);
 		$filterSearch = $app->getUserStateFromRequest('com_digicom.downloads.list.' . $itemid . '.filter_search', 'filter-search', '', 'string');
@@ -96,7 +101,7 @@ class DigiComModelDownloads extends JModelList
 							$BundleList = $BundleTable->getFieldValues('product_id',$product->productid,$product->bundle_source);
 							$bundle_ids = $BundleList->bundle_id;
 							if($bundle_ids){
-								
+
 								$query = $db->getQuery(true)
 									->select(array('id as productid','name','catid'))
 									->from($db->quoteName('#__digicom_products'))
@@ -108,7 +113,7 @@ class DigiComModelDownloads extends JModelList
 							}
 
 							unset($items[$key]);
-							
+
 							break;
 						case 'product':
 						default:
@@ -126,10 +131,10 @@ class DigiComModelDownloads extends JModelList
 									->where($db->quoteName('id').' in ('.$bundle_ids.')');
 								$db->setQuery($query);
 								$bundleItems[] = $db->loadObjectList();
-							}					
+							}
 							//we should show only items
 							unset($items[$key]);
-							
+
 							break;
 					}
 				}
@@ -144,11 +149,11 @@ class DigiComModelDownloads extends JModelList
 					}
 				}
 			}
-			
+
 			//print_r($items);die;
 			$productAdded = array();
 			foreach($items as $key=>$product){
-				
+
 				$query = $db->getQuery(true);
 				$query->select($db->quoteName(array('id', 'name', 'url', 'hits')));
 				$query->from($db->quoteName('#__digicom_products_files'));
@@ -157,7 +162,7 @@ class DigiComModelDownloads extends JModelList
 				// Reset the query using our newly populated query object.
 				$db->setQuery($query);
 				$files = $db->loadObjectList();
-				
+
 				if(count($files) >0){
 					foreach($files as $key2=>$item){
 						$downloadid = array(
@@ -165,7 +170,7 @@ class DigiComModelDownloads extends JModelList
 						);
 						$downloadcode = json_encode($downloadid);
 						$item->downloadid = base64_encode($downloadcode);
-						
+
 						$parsed = parse_url($item->url);
 						if (empty($parsed['scheme'])) {
 							$fileLink = JPATH_BASE.DIRECTORY_SEPARATOR.$item->url;
@@ -180,19 +185,40 @@ class DigiComModelDownloads extends JModelList
 							$item->filesize = JText::_('COM_DIGICOM_FILE_DOESNT_EXIST');
 							$item->filemtime = JText::_('COM_DIGICOM_FILE_DOESNT_EXIST');
 						}
-						
+
 					}
 				}
-				
+
 				$product->files = $files;
 				if(isset($productAdded[$product->productid])) unset($items[$key]);
 				$productAdded[$product->productid] = true;
 			}
 
 		}
+		$itemsArray = array();
+		$catkey = array();
 
+		//print_r($items);die;
 
-		return $items;
+		foreach($items as $key=>$item){
+			if(in_array($item->catid, $catkey)){
+				$itemsArray[$item->catid]['items'][] = $item;
+			}else{
+				$catkey[] = $item->catid;
+				$itemsArray[$item->catid] = array();
+
+				$options    = array();
+				$categories = JCategories::getInstance('Digicom', $options);
+				$category   = $categories->get($item->catid);
+
+				$itemsArray[$item->catid]['title'] = $category->title;
+				$itemsArray[$item->catid]['catid'] = $item->catid;
+				$itemsArray[$item->catid]['items'] = array();
+				$itemsArray[$item->catid]['items'][] = $item;
+			}
+		}
+
+		return $itemsArray;
 	}
 
 
@@ -232,7 +258,7 @@ class DigiComModelDownloads extends JModelList
 		// Select required fields from the downloads.
 		//$query->select('DISTINCT(p.id) as productid')
 		$query->select('DISTINCT p.id as productid')
-			  ->select(array('p.name,p.catid,p.bundle_source,p.product_type as type'))
+			  ->select(array('p.name,p.catid,p.catid,p.bundle_source,p.product_type as type'))
 			  ->from($db->quoteName('#__digicom_licenses') . ' AS l')
 			  ->join('inner', '#__digicom_products AS p ON l.productid = p.id');
 
@@ -259,7 +285,7 @@ class DigiComModelDownloads extends JModelList
 				.
 				' or '
 				.
-				$db->quoteName('l.licenseid') . ' = '	 . $db->quote( $this->state->get('list.filter') ) 
+				$db->quoteName('l.licenseid') . ' = '	 . $db->quote( $this->state->get('list.filter') )
 			);
 		}
 
@@ -272,7 +298,7 @@ class DigiComModelDownloads extends JModelList
 
 		return $query;
 	}
-	
+
 	function getlistDownloads_x(){
 		$user = new DigiComSiteHelperSession();
 		//dsdebug($user->_customer->id);die;
@@ -296,7 +322,7 @@ class DigiComModelDownloads extends JModelList
 
 			// Reset the query using our newly populated query object.
 			$db->setQuery($query);
- 
+
 			$products = $db->loadObjectList();
 
 			$bundleItems = array();
@@ -307,7 +333,7 @@ class DigiComModelDownloads extends JModelList
 							//echo 'product type category, solve it man';die;
 							//as its a category type product, remove this key;
 							// add products to this $products object
-							
+
 							$BundleTable = JTable::getInstance('Bundle', 'Table');
 							$BundleList = $BundleTable->getFieldValues('product_id',$product->productid,$product->bundle_source);
 							$bundle_ids = $BundleList->bundle_id;
@@ -324,7 +350,7 @@ class DigiComModelDownloads extends JModelList
 							}
 
 							unset($products[$key]);
-							
+
 							break;
 						case 'product':
 						default:
@@ -340,10 +366,10 @@ class DigiComModelDownloads extends JModelList
 									->where($db->quoteName('id').' in ('.$bundle_ids.')');
 								$db->setQuery($query);
 								$bundleItems[] = $db->loadObjectList();
-							}					
+							}
 							//we should show only items
 							unset($products[$key]);
-							
+
 							break;
 					}
 				}
@@ -358,11 +384,11 @@ class DigiComModelDownloads extends JModelList
 					}
 				}
 			}
-			
+
 			//print_r($products);die;
 			$productAdded = array();
 			foreach($products as $key=>$product){
-				
+
 				$query = $db->getQuery(true);
 				$query->select($db->quoteName(array('id', 'name', 'url', 'hits')));
 				$query->from($db->quoteName('#__digicom_products_files'));
@@ -371,7 +397,7 @@ class DigiComModelDownloads extends JModelList
 				// Reset the query using our newly populated query object.
 				$db->setQuery($query);
 				$files = $db->loadObjectList();
-				
+
 				if(count($files) >0){
 					foreach($files as $key2=>$item){
 						$downloadid = array(
@@ -379,7 +405,7 @@ class DigiComModelDownloads extends JModelList
 						);
 						$downloadcode = json_encode($downloadid);
 						$item->downloadid = base64_encode($downloadcode);
-						
+
 						$parsed = parse_url($item->url);
 						if (empty($parsed['scheme'])) {
 							$fileLink = JPATH_BASE.DIRECTORY_SEPARATOR.$item->url;
@@ -394,15 +420,15 @@ class DigiComModelDownloads extends JModelList
 							$item->filesize = JText::_('COM_DIGICOM_FILE_DOESNT_EXIST');
 							$item->filemtime = JText::_('COM_DIGICOM_FILE_DOESNT_EXIST');
 						}
-						
+
 					}
 				}
-				
+
 				$product->files = $files;
 				if(isset($productAdded[$product->productid])) unset($products[$key]);
 				$productAdded[$product->productid] = true;
 			}
-			
+
 			$this->_products = $products ;
 		}
 
@@ -410,7 +436,7 @@ class DigiComModelDownloads extends JModelList
 	}
 
 	function getfileinfo(){
-		
+
 		$jinput = JFactory::getApplication()->input;
 		$fileid = $jinput->get('downloadid', '0');
 		//echo $fileid;die;
@@ -428,8 +454,8 @@ class DigiComModelDownloads extends JModelList
 		$query->order('id DESC');
 		// Reset the query using our newly populated query object.
 		$db->setQuery($query);
-		return $db->loadObject();		
-		
+		return $db->loadObject();
+
 	}
 
 }

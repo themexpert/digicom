@@ -18,16 +18,6 @@ class DigiComSiteHelperDigicom {
 		return $Itemid;
 	}
 
-	public static function getProductItemid() {
-		$db  = JFactory::getDBO();
-		$sql = "SELECT id FROM #__menu WHERE `alias`='products' AND `menutype` = 'DigiCom-Menu'";
-		$db->setQuery( $sql );
-		$db->query();
-		$result = $db->loadResult();
-
-		return intval( $result );
-	}
-
 	public static function powered_by() {
 		$html = '<div style="margin: 0 auto; width: 250px; text-align: center;" class="small">';
 		$html .= '<span>Powered by ';
