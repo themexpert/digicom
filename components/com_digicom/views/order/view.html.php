@@ -13,21 +13,20 @@ class DigiComViewOrder extends JViewLegacy {
 
 	function display($tpl = null)
 	{
-		
+
 		$customer = new DigiComSiteHelperSession();
 		$app = JFactory::getApplication();
 		$input = $app->input;
-		
+
 		$item = $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=orders', true);
 		$Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
 
-		$return = base64_encode( JURI::getInstance()->toString() );
-
-		if($customer->_customer->id < 1)
-		{
-			$app->Redirect(JRoute::_('index.php?option=com_users&view=login&return='.$return.$Itemid, false));
-			return true;
-		}
+		// $return = base64_encode( JURI::getInstance()->toString() );
+		// if($customer->_customer->id < 1)
+		// {
+		// 	$app->Redirect(JRoute::_('index.php?option=com_users&view=login&return='.$return.$Itemid, false));
+		// 	return true;
+		// }
 
 		$order = $this->_models['order']->getOrder();
 
@@ -45,7 +44,7 @@ class DigiComViewOrder extends JViewLegacy {
 		$this->assign("Itemid", $Itemid);
 
 		//print_r(json_decode($order->params));die;
-		
+
 		$layout = $input->get('layout','order');
 		$template = new DigiComSiteHelperTemplate($this);
 		$template->rander($layout);

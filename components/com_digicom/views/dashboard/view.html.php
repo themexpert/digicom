@@ -21,13 +21,13 @@ class DigiComViewDashboard extends JViewLegacy
 		$app = JFactory::getApplication();
 		$input = $app->input;
 		$Itemid = $input->get("Itemid", 0);
-		$return = base64_encode( JURI::getInstance()->toString() );
 		$this->customer = new DigiComSiteHelperSession();
-		if($this->customer->_user->id < 1)
-		{
-			$app->Redirect(JRoute::_('index.php?option=com_users&view=login&return='.$return.'&Itemid='.$Itemid, false));
-			return true;
-		}
+		// $return = base64_encode( JURI::getInstance()->toString() );
+		// if($this->customer->_user->id < 1)
+		// {
+		// 	$app->Redirect(JRoute::_('index.php?option=com_users&view=login&return='.$return.'&Itemid='.$Itemid, false));
+		// 	return true;
+		// }
 		$this->items = $this->get('items');
 		$this->configs = JComponentHelper::getComponent('com_digicom')->params;
 		//print_r($items);die;
@@ -37,7 +37,6 @@ class DigiComViewDashboard extends JViewLegacy
 
 		parent::display($tpl);
 	}
-	
+
 
 }
-

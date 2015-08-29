@@ -17,13 +17,13 @@ class DigiComViewOrders extends JViewLegacy {
 		$app = JFactory::getApplication();
 		$input = $app->input;
 		$Itemid = $input->get("Itemid", 0);
-		$return = base64_encode( JURI::getInstance()->toString() );
-		if($customer->_user->id < 1)
-		{
-			$app->Redirect(JRoute::_('index.php?option=com_users&view=login&return='.$return.'&Itemid='.$Itemid, false));
-			return true;
-		}
-		
+		// $return = base64_encode( JURI::getInstance()->toString() );
+		// if($customer->_user->id < 1)
+		// {
+		// 	$app->Redirect(JRoute::_('index.php?option=com_users&view=login&return='.$return.'&Itemid='.$Itemid, false));
+		// 	return true;
+		// }
+
 		$orders = $this->get('listOrders');
 		$configs = JComponentHelper::getComponent('com_digicom')->params;
 		$database = JFactory::getDBO();
@@ -48,9 +48,9 @@ class DigiComViewOrders extends JViewLegacy {
 
 		/* Get Cart items */
 		$cart = JModelLegacy::getInstance( 'Cart', 'DigiComModel' );
-		
+
 		$cartitems = $cart->getCartItems($customer, $configs);
-	   
+
 		if ( $categ_digicom != '' )
 		{
 			$sql = "select id from #__digicom_categories where title like '".$categ_digicom."' or name like '".$categ_digicom."'";
