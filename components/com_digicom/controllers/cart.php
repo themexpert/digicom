@@ -351,7 +351,7 @@ class DigiComControllerCart extends JControllerLegacy
 
 		if( $res == 1 ) {
 
-			$fromsum = JRequest::getVar('fromsum', '0');
+			$fromsum = 1;//JRequest::getVar('fromsum', '1');
 			if(!$fromsum) {
 				$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&layout=summary"));
 				return true;
