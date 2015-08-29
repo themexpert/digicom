@@ -38,7 +38,7 @@ $limistart = $this->pagination->limitstart;
 				</td>
 				<td nowrap="nowrap" width="70%" align="right">
 					<?php echo $this->csel; ?>
-				
+
 					<select name="state_filter" onchange="document.adminForm.submit();" class="span3">
 						<option value="-1" <?php if($state_filter == "-1"){echo 'selected="selected"'; } ?>><?php echo JText::_("DIGI_SELECT_STATE"); ?></option>
 						<option value="1" <?php if($state_filter == "1"){echo 'selected="selected"'; } ?>><?php echo JText::_("HELPERPUBLISHED"); ?></option>
@@ -122,7 +122,7 @@ $limistart = $this->pagination->limitstart;
 				$checked = JHTML::_('grid.id', $i, $id);
 				$link = JRoute::_("index.php?option=com_digicom&controller=products&task=edit&cid[]=".$id.$cselected);
 				$published = JHTML::_('grid.published', $prod->published, $i);
-				DigiComAdminHelper::publishAndExpiryHelper($img, $alt, $times, $status, $prod->publish_up, $prod->publish_down, $prod->published, $this->configs);
+				//DigiComAdminHelper::publishAndExpiryHelper($img, $alt, $times, $status, $prod->publish_up, $prod->publish_down, $prod->published, $this->configs);
 				?>
 				<tr class="row<?php echo (string)$k; ?>">
 					<td><?php echo $checked; ?></td>

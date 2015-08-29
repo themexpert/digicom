@@ -306,7 +306,8 @@ class DigiComHelperDigiCom extends JHelperContent{
 		return $customers;
 	}
 
-	public static function publishAndExpiryHelper(&$img, &$alt, &$times, &$status, $timestart, $timeend, $published, $configs, $limit = 0, $used = 0) {
+	public static function publishAndExpiryHelper($promo, $configs)
+	{
 
 
 		$today = date('Y-m-d 00:00:00');
@@ -314,77 +315,30 @@ class DigiComHelperDigiCom extends JHelperContent{
 
 		$now = strtotime($today);
 		$tomorrow = strtotime($tomorrow);
-		$timestart = strtotime($timestart);
-		$timeend = strtotime($timeend);
+		$timestart = strtotime($promo->codestart);
+		$timeend = strtotime($promo->codeend);
 		$nullDate = strtotime('0000-00-00 00:00:00');
 
-		/*if($tomorrow < $now){
-			echo 'stop';
-		}else{
-			echo 'move';
-		}
-		die;*/
-		/*
-		// echo $now . '<br/>' ;
-		// echo $timestart . '<br/>' ;
-		// echo $timeend . '<br/>' ;
-		// echo $nullDate;die;
-
-		if ( $now <= $timestart && $published == "1" ) {
-					$img = "tick.png";
-					$alt = JText::_('HELPERPUBLISHED');
-		} else if ($limit > 0 && $used >= $limit) {
-				$img = "publish_r.png";
-				$alt = JText::_('HELPERUSEAGEEXPIRED');
-		} else if ( ( $now <= $timeend || $timeend == $nullDate ) && $published == "1" ) {
-				$img = "tick.png";
-				$alt = JText::_('HELPERPUBLISHED');
-		} else if ( $now > $timeend && $published == "1" && $timeend != $nullDate) {
-				$img = "publish_r.png";
-				$alt = JText::_('HELPEREXPIRED');
-		} elseif ( $published == "0" ) {
-				$img = "publish_x.png";
-				$alt = JText::_('HELPERUNPUBLICHED');
-		}
-		$times = '';
-
-		if (isset( $timestart)) {
-			if ( $timestart == $nullDate) {
-					$times .= "<tr><td>".(JText::_("HELPERALWAWSPUB"))."</td></tr>";
-				} else {
-					$times .= "<tr><td>".(JText::_("HELPERSTARTAT"))." ".date($configs->get('time_format','DD-MM-YYYY'), $timestart)."</td></tr>";
-				}
-		}
-
-		if ( isset( $timeend ) ) {
-			if ( $timeend == $nullDate) {
-				$times .= "<tr><td>".(JText::_("HELPERNEVEREXP"))."</td></tr>";
-			} else {
-				$times .= "<tr><td>".(JText::_("HELPEXPAT"))." ".date($configs->get('time_format','DD-MM-YYYY'), $timeend)."</td></tr>";
-			}
-		}
-		*/
-
 		$status = '';
-		$promo = new stdClass();
-		if (!isset ($promo->codelimit)) {
-			$promo->codelimit = 0;
-		}
-		if (!isset ($promo->used)) {
-			$promo->used = 0;
-		}
-
 		$remain = $promo->codelimit - $promo->used;
 
-		if ( ($timestart >= $now) && ($timeend >= $now || $timeend == $nullDate ) && ($limit == 0 || $used < $limit) && $published == "1")
+		if(
+				($timestart <= $now)
+					&&
+				($timeend >= $now || $timeend == $nullDate )
+					&&
+				($promo->codelimit == 0 || $promo->used < $promo->codelimit)
+					&&
+				$promo->published == "1"
+				)
 		{
 			$status = JText::_("COM_DIGICOM_ACTIVE");
 		}
-		else if ($published == "0")
+		else if ($promo->published == "0")
 		{
 			$status = "<span style='color:red'>".(JText::_("COM_DIGICOM_UNPUBLISHED"))." </span>";
 		}
-		else if ($limit > 0  && $used  >= $limit)
+		else if ($promo->codelimit > 0  && $promo->used  >= $promo->codelimit)
 		{
 			$status = "<span style='color:red'>".(JText::_("COM_DIGICOM_EXPIRED")).": (".(JText::_("Amount")).")</span>";
 		}

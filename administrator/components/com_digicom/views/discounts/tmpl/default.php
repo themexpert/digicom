@@ -133,7 +133,7 @@ $document = JFactory::getDocument();
 						$canCheckin = $user->authorise('core.manage',     'com_checkin') || $promo->checked_out == $user->id || $promo->checked_out == 0;
 						$canChange  = $user->authorise('core.edit.state', 'com_digicom') && $canCheckin;
 						$status = '';
-						$status = DigiComHelperDigiCom::publishAndExpiryHelper($img, $alt, $times, $status, $promo->codestart, $promo->codeend, $promo->published, $configs, $promo->codelimit, $promo->used);
+						$status = DigiComHelperDigiCom::publishAndExpiryHelper($promo, $configs);
 
 				?>
 					<tr class="row<?php echo $k;?>">
@@ -224,7 +224,7 @@ $document = JFactory::getDocument();
 	</div>
 </form>
 
-<?php 
+<?php
 	echo JHtml::_(
 		'bootstrap.renderModal',
 		'videoTutorialModal',
@@ -234,7 +234,7 @@ $document = JFactory::getDocument();
 			'height' => '400px',
 			'width' => '1280'
 		)
-	); 
+	);
 ?>
 <div class="dg-footer">
 	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
