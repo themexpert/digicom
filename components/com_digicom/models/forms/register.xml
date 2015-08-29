@@ -13,6 +13,7 @@
 			label="COM_DIGICOM_NAME"
 			required="true"
 			size="30"
+			class="input-name"
 		/>
 
 		<field
@@ -28,12 +29,13 @@
 			unique="true"
 			validate="email"
 			onchange="javascript:validateInput('email')"
+			class="input-email"
 		/>
 
 		<field
 			name="username"
 			type="text"
-			class="validate-username"
+			class="input-username validate-username"
 			filter="username"
 			label="COM_DIGICOM_USERNAME"
 			message="COM_DIGICOM_REGISTER_USERNAME_MESSAGE"
@@ -47,7 +49,7 @@
 			name="password1"
 			type="password"
 			autocomplete="off"
-			class="validate-password"
+			class="input-password validate-password"
 			description=""
 			field="password1"
 			filter="raw"
@@ -61,7 +63,7 @@
 			name="password2"
 			type="password"
 			autocomplete="off"
-			class="validate-password"
+			class="input-password validate-password"
 			description=""
 			field="password1"
 			filter="raw"
