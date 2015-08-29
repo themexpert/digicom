@@ -18,7 +18,7 @@ $input = $app->input;
 	<form name="adminForm" id="adminForm"
 		action="<?php echo JRoute::_('index.php?option=com_digicom&task=profile.save'); ?>"
 		method="post"
-		class="form-validate form-horizontal"
+		class="form-horizontal"
 		enctype="multipart/form-data"
 	>
 
