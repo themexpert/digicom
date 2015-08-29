@@ -299,13 +299,15 @@ class DigiComControllerCart extends JControllerLegacy
 		$cart 			= $this->_model;
 
 		$plugins_enabled = $cart->getPluginList();
-		$session->set('processor',$processor);
+		if(!isset($processor) or !$processor){
+			$processor = $session->get('processor','offline');
+		}else{
+			$session->set('processor',$processor);
+		}
 
 		// set default redirect url
-		//$uri = JURI::getInstance();
-		//echo $uri->toString();die;
-		//$return = base64_encode($uri->toString());
-		$return = base64_encode(JRoute::_("index.php?option=com_digicom&view=cart&layout=summary"));
+		//$return = base64_encode(JRoute::_("index.php?option=com_digicom&view=cart&layout=summary"));
+		$return = base64_encode(JRoute::_("index.php?option=com_digicom&view=cart&task=cart.checkout"));
 
 		// Check Login
 		if(!$user->id or $this->_customer->_user->id < 1){

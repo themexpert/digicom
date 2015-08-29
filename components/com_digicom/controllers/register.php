@@ -96,7 +96,8 @@ class DigicomControllerRegister extends JControllerLegacy
 
 		$options                 = array();
 		$options['remember']     = true;
-		$options['return']       = JRoute::_('index.php?option=com_digicom&view=cart&layout=summary');
+		//$options['return']       = JRoute::_('index.php?option=com_digicom&view=cart&layout=summary');
+		$options['return']       = JRoute::_('index.php?option=com_digicom&view=cart&task=cart.checkout');
 		$credentials             = array();
 		$credentials['username'] = $data['username'];
 		$credentials['password'] = $data['password2'];
@@ -111,7 +112,8 @@ class DigicomControllerRegister extends JControllerLegacy
 			}
 
 			$app->setUserState('users.login.form.data', array());
-			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=cart&layout=summary', false));
+			//$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=cart&layout=summary', false));
+			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=cart&task=cart.checkout', false));
 
 		}
 		else
