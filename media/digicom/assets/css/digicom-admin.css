@@ -397,6 +397,10 @@ body.com_digicom.layout-dgform #j-sidebar-container #sidebar .sidebar-nav .nav-l
   height: 28px;
   width: 30px;
 }
+body.com_digicom.sidebar-collapse #j-toggle-sidebar-wrapper,
+body.com_digicom.layout-dgform #j-toggle-sidebar-wrapper {
+  opacity: 0.3;
+}
 body.com_digicom.sidebar-collapse #j-main-container,
 body.com_digicom.layout-dgform #j-main-container {
   margin-left: 38px;
