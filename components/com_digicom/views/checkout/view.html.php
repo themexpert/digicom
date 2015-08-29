@@ -43,32 +43,36 @@ class DigiComViewCheckout extends JViewLegacy
 
 		$configs 	= JComponentHelper::getComponent('com_digicom')->params;
 		$order 		= $this->get('Order');//print_r($order);die;
-		$params 	= json_decode($order->params,true);//print_r($params);die;
-		$items 		= $params['products'];//print_r($items);die;
+		$params 	= json_decode($order->params);//print_r($params);die;
+		$items 		= $params->products;//print_r($items);die;
 
 		$vars 				= new stdClass();
 		$vars->items 		= $items;
-		$vars->order_id 	= $params['order_id'];
+		$vars->order_id 	= $params->order_id;
 		$vars->user_id 		= JFactory::getUser()->id;
 		$vars->customer		= $customer->_customer;
 		$vars->item_name 	= '';
 
-		for($i=0; $i<count($items); $i++)
-		{
-			$vars->item_name.= $items[$i]['name'] . ', ';
+		// for($i=0; $i<count($items); $i++)
+		// {
+		// 	$vars->item_name.= $items[$i]['name'] . ', ';
+		// }
+		foreach ($items as $key => $value) {
+			$vars->item_name.= $value->name . ', ';
 		}
+
 		$vars->item_name = substr($vars->item_name, 0, strlen($vars->item_name)-2);
 
 		$vars->cancel_return = JRoute::_(JURI::root()."index.php?option=com_digicom&task=cart.cancel&processor={$pg_plugin}", true, 0);
 
 		//prepare the url
 		///processPayment
-		$url = JRoute::_(JURI::root()."index.php?option=com_digicom&task=cart.processPayment&processor={$pg_plugin}&order_id=".$params['order_id']."&sid=".$customer->_customer->id, true, false);
+		$url = JRoute::_(JURI::root()."index.php?option=com_digicom&task=cart.processPayment&processor={$pg_plugin}&order_id=".$params->order_id."&sid=".$customer->_customer->id, true, false);
 		//echo $url;die;
 
 		$vars->return = $vars->notify_url = $vars->url = $url;
 		$vars->currency_code = $configs->get('currency','USD');
-		$vars->amount = $params['order_amount'];
+		$vars->amount = $params->order_amount;
 
 		// Triggre plugin event
 		JPluginHelper::importPlugin('digicom_pay', $pg_plugin);
@@ -93,6 +97,7 @@ class DigiComViewCheckout extends JViewLegacy
 		$this->assign("data", $html);
 		$this->assign("order", $order);
 		$this->assign("items", $items);
+		
 		$this->assign("customer", $customer);
 
 		$template = new DigiComSiteHelperTemplate($this);
