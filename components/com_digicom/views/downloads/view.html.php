@@ -14,17 +14,17 @@ class DigiComViewDownloads extends JViewLegacy {
 
 	function display($tpl = null)
 	{
-		
+
 		$customer = new DigiComSiteHelperSession();
 		$app = JFactory::getApplication();
 		$input = $app->input;
 		$Itemid = $input->get("Itemid", 0);
-		$return = base64_encode( JURI::getInstance()->toString() );
-		if($customer->_user->id < 1)
-		{
-			$app->Redirect(JRoute::_('index.php?option=com_users&view=login&return='.$return.'&Itemid='.$Itemid, false));
-			return true;
-		}
+		// $return = base64_encode( JURI::getInstance()->toString() );
+		// if($customer->_user->id < 1)
+		// {
+		// 	$app->Redirect(JRoute::_('index.php?option=com_users&view=login&return='.$return.'&Itemid='.$Itemid, false));
+		// 	return true;
+		// }
 
 		$mainframe=JFactory::getApplication();
 		$Itemid = JRequest::getInt("Itemid", 0);
@@ -34,9 +34,9 @@ class DigiComViewDownloads extends JViewLegacy {
 
 		$template = new DigiComSiteHelperTemplate($this);
 		$template->rander('downloads');
-		
+
 		parent::display($tpl);
 	}
 
-	
+
 }
