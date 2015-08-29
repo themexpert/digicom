@@ -11,19 +11,24 @@ defined('_JEXEC') or die;
 
 class DigiComViewCheckout extends JViewLegacy
 {
+	public $customer;
+	public $pg_plugin;
+	public $items;
+	public $order;
+	public $data;
+	public $configs;
 
 	function display($tpl = null)
 	{
 
-		$app 		= JFactory::getApplication();
+		$app 			= JFactory::getApplication();
 		$input 		= $app->input;
-		$Itemid 	= $input->get("Itemid", 0);
 		$return 	= base64_encode( JURI::getInstance()->toString() );
 		$customer	= new DigiComSiteHelperSession();
 
 		if($customer->_user->id < 1)
 		{
-			$app->Redirect(JRoute::_('index.php?option=com_users&view=login&return='.$return.'&Itemid='.$Itemid, false));
+			$app->Redirect(JRoute::_('index.php?option=com_users&view=login&return='.$return, false));
 			return true;
 		}
 
@@ -35,7 +40,6 @@ class DigiComViewCheckout extends JViewLegacy
 		}else{
 			$pg_plugin 	= $processor;
 		}
-		$Itemid 		= JRequest::getInt("Itemid", "0");
 
 		$configs 	= JComponentHelper::getComponent('com_digicom')->params;
 		$order 		= $this->get('Order');//print_r($order);die;
@@ -55,7 +59,7 @@ class DigiComViewCheckout extends JViewLegacy
 		}
 		$vars->item_name = substr($vars->item_name, 0, strlen($vars->item_name)-2);
 
-		$vars->cancel_return = JRoute::_(JURI::root()."index.php?option=com_digicom&Itemid=".$Itemid."&task=cart.cancel&processor={$pg_plugin}", true, 0);
+		$vars->cancel_return = JRoute::_(JURI::root()."index.php?option=com_digicom&task=cart.cancel&processor={$pg_plugin}", true, 0);
 
 		//prepare the url
 		///processPayment
@@ -87,6 +91,9 @@ class DigiComViewCheckout extends JViewLegacy
 		$this->assign("pg_plugin", $pg_plugin);
 		$this->assign("configs", $configs);
 		$this->assign("data", $html);
+		$this->assign("order", $order);
+		$this->assign("items", $items);
+		$this->assign("customer", $customer);
 
 		$template = new DigiComSiteHelperTemplate($this);
 		$template->rander('checkout');
