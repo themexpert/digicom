@@ -3256,6 +3256,10 @@ div.modal.fade.in {
 #digicom .active-products ul li + li {
   border-top: 1px solid #ddd;
 }
+#digicom ul,
+#digicom ol {
+  margin: 0 0 10px 0px;
+}
 #digicom .modal-body {
   overflow-y: auto;
 }
