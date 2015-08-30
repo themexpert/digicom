@@ -174,45 +174,9 @@ class DigiComControllerCart extends JControllerLegacy
 	{
 
 		$session = JFactory::getSession();
-		$res = $this->_model->updateCart($this->_customer, $this->_config);
+		$this->_model->updateCart($this->_customer, $this->_config);
+		$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart", false));
 
-		$from = JRequest::getVar("from", "");
-		if($from == "ajax")
-		{
-			$url = JRoute::_("index.php?option=com_digicom&view=cart&from=ajax&tmpl=component", false);
-			$this->setRedirect($url);
-		}
-		else
-		{
-			$rp = JRequest::getVar('returnpage', '', 'request');
-			$Itemid = JRequest::getInt('Itemid', 0);
-
-			$name = JRequest::getVar("name", "");
-			$company = JRequest::getVar("company", "");
-			$email = JRequest::getVar("email", "");
-			$username = JRequest::getVar("username", "");
-			$password = JRequest::getVar("password", "");
-			$password_confirm = JRequest::getVar("password_confirm", "");
-			$address = JRequest::getVar("address", "");
-			$city = JRequest::getVar("city", "");
-			$zipcode = JRequest::getVar("zipcode", "");
-			$country = JRequest::getVar("country", "");
-			$state = JRequest::getVar("state", "");
-			$array = array("name"=>$name, "company"=>$company, "email"=>$email, "username"=>$username, "password"=>$password, "password_confirm"=>$password_confirm, "address"=>$address, "city"=>$city, "zipcode"=>$zipcode, "country"=>$country, "state"=>$state);
-			$processor = JRequest::getVar("processor", "");
-			$session->set('new_customer', $array);
-			$session->set('processor', $processor);
-
-			if(strlen($rp) < 1)
-			{
-				$cart_itemid = DigiComSiteHelperDigiCom::getCartItemid();
-				$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart", false));
-			}
-			else
-			{
-				$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&task=cart.checkout", false, ($processor=='authorizenet' ? true : false)));
-			}
-		}
 	}
 
 	/**
