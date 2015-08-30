@@ -81,6 +81,15 @@ class DigiComViewProfile extends JViewLegacy {
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
 		$menu = $menus->getActive();
+		if(!isset($menu)){
+			$newmenu = JMenu::getInstance('site');
+			$menu = $newmenu->getItems('link', 'index.php?option=com_digicom&view=profile', true);
+
+			if(!count($menu)){
+				$menu = $newmenu->getDefault();
+			}
+		}
+
 		$title = $menu->params->get('page_title');
 		if (empty($title))
 		{
