@@ -48,7 +48,7 @@ $input = $app->input;
 	<?php endforeach;?>
 	<div class="control-group">
 		<div class="controls">
-			<button type="submit" class="btn btn-primary validate"><?php echo JText::_('JREGISTER');?></button>
+			<button type="submit" class="btn btn-primary validate"><?php echo JText::_('COM_DIGICOM_PROFILE_UPDATE');?></button>
 			<a class="btn" href="<?php echo JRoute::_('');?>" title="<?php echo JText::_('JCANCEL');?>"><?php echo JText::_('JCANCEL');?></a>
 			<input type="hidden" name="option" value="com_digicom" />
 			<input type="hidden" name="task" value="profile.save" />
