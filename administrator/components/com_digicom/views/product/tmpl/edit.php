@@ -26,6 +26,7 @@ $input->set('layout', 'dgform');
 
 	Joomla.submitbutton = function(task)
 	{
+		setFormSubmitting();
 		if(task== 'product.save' || task == 'product.save2new' || task== 'product.apply'){
 			var product_type = jQuery("input[name='jform[product_type]']").val();
 			if(product_type == 'bundle'){
@@ -56,6 +57,23 @@ $input->set('layout', 'dgform');
 			Joomla.submitform(task, document.getElementById('item-form'));
 		}
 	}
+
+var formSubmitting = false;
+var setFormSubmitting = function() { formSubmitting = true; };
+
+window.onload = function() {
+    window.addEventListener("beforeunload", function (e) {
+        var confirmationMessage = 'It looks like you have been editing something. ';
+        confirmationMessage += 'If you leave before saving, your changes will be lost.';
+
+        if (formSubmitting) {
+            return undefined;
+        }
+
+        (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+        return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+    });
+};
 </script>
 
 <form action="<?php echo JRoute::_('index.php?option=com_digicom&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
