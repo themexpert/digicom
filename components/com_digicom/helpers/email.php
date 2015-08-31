@@ -176,9 +176,9 @@ class DigiComSiteHelperEmail {
 			$displayed[] = $item->name;
 		}
 		$message = str_replace( "[PRODUCTS]", $product_list, $message );
-		$message = str_replace( "{site_title}", $sitename, $message );
-		$message = str_replace( "{order_number}", $orderid, $message );
-		$message = str_replace( "{order_date}", date( $configs->get('time_format','d-m-Y'), strtotime($timestamp) ), $message );
+		$message = str_replace( "[site_title]", $sitename, $message );
+		$message = str_replace( "[order_number]", $orderid, $message );
+		$message = str_replace( "[order_date]", date( $configs->get('time_format','d-m-Y'), strtotime($timestamp) ), $message );
 
 		$email = new stdClass();
 		$email->body = $message;
@@ -201,9 +201,9 @@ class DigiComSiteHelperEmail {
 		$subject = str_replace( "[DISCOUNT_AMOUNT]", $order->discount, $subject );
 		$subject = str_replace( "[ORDER_STATUS]", $status, $subject );
 
-		$subject = str_replace( "{site_title}", $sitename, $subject );
-		$subject = str_replace( "{order_number}", $orderid, $subject );
-		$subject = str_replace( "{order_date}", date( $configs->get('time_format','d-m-Y'), strtotime($timestamp) ), $subject );
+		$subject = str_replace( "[site_title]", $sitename, $subject );
+		$subject = str_replace( "[order_number]", $orderid, $subject );
+		$subject = str_replace( "[order_date]", date( $configs->get('time_format','d-m-Y'), strtotime($timestamp) ), $subject );
 
 		$displayed = array();
 		$product_list = '';
@@ -281,6 +281,7 @@ class DigiComSiteHelperEmail {
 		}
 
 		if ( $email_settings->sendmailtoadmin) {
+			
 			$message = 'Order email to Admin : '.$type.' email for order#'.$orderid.', status: '.$status;
 
 			$recipients =  $adminEmail2 . (!empty($recipients) ? ', '.$recipients : '');
