@@ -201,6 +201,12 @@ class DigiComSiteHelperDigicom {
 		// }
 		//
 
+		if (isset( $customer->_customer ) ) {
+			$customer = $customer->_customer;
+		}else{
+			$customer = $customer;
+		}
+
 		$userid = $customer->id;
 		$table = JTable::getInstance('Customer', 'Table');
 		$table->loadCustommer($userid);
@@ -213,7 +219,7 @@ class DigiComSiteHelperDigicom {
 			$table->bind($cust);
 			$table->store();
 		}
-
+		
 		if (
 		     strlen( trim( $table->country ) ) < 1
 		     || strlen( trim( $table->state ) ) < 1
