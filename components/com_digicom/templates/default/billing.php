@@ -16,7 +16,7 @@ $input = $app->input;
 ?>
 <div class="digicom">
 	<form name="adminForm" id="adminForm"
-		action="<?php echo JRoute::_('index.php?option=com_digicom&task=profile.save'); ?>"
+		action="<?php echo JRoute::_('index.php?option=com_digicom&view=billing'); ?>"
 		method="post"
 		class="form-horizontal"
 		enctype="multipart/form-data"
@@ -51,8 +51,9 @@ $input = $app->input;
 			<button type="submit" class="btn btn-primary validate"><?php echo JText::_('COM_DIGICOM_PROFILE_UPDATE');?></button>
 			<a class="btn" href="<?php echo JRoute::_('');?>" title="<?php echo JText::_('JCANCEL');?>"><?php echo JText::_('JCANCEL');?></a>
 			<input type="hidden" name="option" value="com_digicom" />
-			<input type="hidden" name="task" value="profile.save" />
-			<input type="hidden" name="return" value="<?php echo $input->get("return", ""); ?>" />
+			<input type="hidden" name="view" value="billing" />
+			<input type="hidden" name="task" value="profile.billing" />
+			<input type="hidden" name="return" value="<?php echo $input->get("return", base64_encode(JRoute::_('index.php?option=com_digicom&view=cart')) ); ?>" />
 		</div>
 	</div>
 	<?php echo JHtml::_('form.token');?>

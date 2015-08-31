@@ -196,28 +196,13 @@ class DigicomModelBilling extends JModelForm
 			return false;
 		}
 
-		// Check for username compliance and parameter set
-		$isUsernameCompliant = true;
-
-		if ($this->loadFormData()->username)
-		{
-			$username = $this->loadFormData()->username;
-			$isUsernameCompliant  = !(preg_match('#[<>"\'%;()&\\\\]|\\.\\./#', $username) || strlen(utf8_decode($username)) < 2
-				|| trim($username) != $username);
-		}
-
-		$this->setState('user.username.compliant', $isUsernameCompliant);
-
-		if (!JComponentHelper::getParams('com_users')->get('change_login_name') && $isUsernameCompliant)
-		{
-			$form->setFieldAttribute('username', 'class', '');
-			$form->setFieldAttribute('username', 'filter', '');
-			$form->setFieldAttribute('username', 'description', 'COM_DIGICOM_PROFILE_NOCHANGE_USERNAME_DESC');
-			$form->setFieldAttribute('username', 'validate', '');
-			$form->setFieldAttribute('username', 'message', '');
-			$form->setFieldAttribute('username', 'readonly', 'true');
-			$form->setFieldAttribute('username', 'required', 'false');
-		}
+		$form->setFieldAttribute('company', 'required', 'true');
+		$form->setFieldAttribute('taxnum', 'required', 'true');
+		$form->setFieldAttribute('country', 'required', 'true');
+		$form->setFieldAttribute('state', 'required', 'true');
+		$form->setFieldAttribute('city', 'required', 'true');
+		$form->setFieldAttribute('zipcode', 'required', 'true');
+		$form->setFieldAttribute('address', 'required', 'true');
 
 		return $form;
 	}
@@ -277,105 +262,8 @@ class DigicomModelBilling extends JModelForm
 	{
 		$userId = (!empty($data['id'])) ? $data['id'] : (int) $this->getState('user.id');
 
-		$user = new JUser($userId);
-
-		// Prepare the data for the user object.
-		$data['email']		= JStringPunycode::emailToPunycode($data['email']);
-		$data['password']	= $data['password1'];
-
-		// Unset the username if it should not be overwritten
-		$username = $data['username'];
-		$isUsernameCompliant = $this->getState('user.username.compliant');
-
-		if (!JComponentHelper::getParams('com_users')->get('change_login_name') && $isUsernameCompliant)
-		{
-			unset($data['username']);
-		}
-		// Unset the block so it does not get overwritten
-		unset($data['block']);
-		// Unset the sendEmail so it does not get overwritten
-		unset($data['sendEmail']);
-
-		// Handle the two factor authentication setup
-		if (array_key_exists('twofactor', $data))
-		{
-			$model = new UsersModelUser;
-
-			$twoFactorMethod = $data['twofactor']['method'];
-
-			// Get the current One Time Password (two factor auth) configuration
-			$otpConfig = $model->getOtpConfig($userId);
-
-			if ($twoFactorMethod != 'none')
-			{
-				// Run the plugins
-				FOFPlatform::getInstance()->importPlugin('twofactorauth');
-				$otpConfigReplies = FOFPlatform::getInstance()->runPlugins('onUserTwofactorApplyConfiguration', array($twoFactorMethod));
-
-				// Look for a valid reply
-				foreach ($otpConfigReplies as $reply)
-				{
-					if (!is_object($reply) || empty($reply->method) || ($reply->method != $twoFactorMethod))
-					{
-						continue;
-					}
-
-					$otpConfig->method = $reply->method;
-					$otpConfig->config = $reply->config;
-
-					break;
-				}
-
-				// Save OTP configuration.
-				$model->setOtpConfig($userId, $otpConfig);
-
-				// Generate one time emergency passwords if required (depleted or not set)
-				if (empty($otpConfig->otep))
-				{
-					$oteps = $model->generateOteps($userId);
-				}
-			}
-			else
-			{
-				$otpConfig->method = 'none';
-				$otpConfig->config = array();
-				$model->setOtpConfig($userId, $otpConfig);
-			}
-
-			// Unset the raw data
-			unset($data['twofactor']);
-
-			// Reload the user record with the updated OTP configuration
-			$user->load($userId);
-		}
-
-		// Bind the data.
-		if (!$user->bind($data))
-		{
-			$this->setError(JText::sprintf('COM_DIGICOM_PROFILE_BIND_FAILED', $user->getError()));
-
-			return false;
-		}
-
-		// Load the users plugin group.
-		JPluginHelper::importPlugin('user');
-
-		// Null the user groups so they don't get overwritten
-		$user->groups = null;
-
-		// Store the data.
-		if (!$user->save())
-		{
-			$this->setError($user->getError());
-
-			return false;
-		}
-
-		$user->tags = new JHelperTags;
-		$user->tags->getTagIds($user->id, 'com_digicom.billing');
-
 		$customer = $this->getTable( 'Customer' );
-		$customer->load($user->id);
+		$customer->load($userId);
 
 		if(empty($customer->id)){
 			// Bind the data.

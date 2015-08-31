@@ -148,5 +148,89 @@ class DigiComControllerProfile extends JControllerLegacy
 		return true;
 	}
 
+	function billing()
+	{
+
+		// Check for request forgeries.
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		$getreturn = JRequest::getVar("return", "");
+		if($getreturn){
+			$return = base64_decode( $getreturn );
+		}else{
+			$return = JRoute::_('index.php?option=com_digicom&view=cart');
+		}
+
+		$app	= JFactory::getApplication();
+		$model	= $this->getModel('Billing', 'DigicomModel');
+
+		// Get the user data.
+		$requestData = $this->input->post->get('jform', array(), 'array');
+
+		// Validate the posted data.
+		$form	= $model->getForm();
+
+		if (!$form)
+		{
+			JError::raiseError(500, $model->getError());
+
+			return false;
+		}
+
+		$data	= $model->validate($form, $requestData);
+
+		// Check for validation errors.
+		if ($data === false)
+		{
+			// Get the validation messages.
+			$errors	= $model->getErrors();
+
+			// Push up to three validation messages out to the user.
+			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
+			{
+				if ($errors[$i] instanceof Exception)
+				{
+					$app->enqueueMessage($errors[$i]->getMessage(), 'warning');
+				}
+				else
+				{
+					$app->enqueueMessage($errors[$i], 'warning');
+				}
+			}
+
+			// Save the data in the session.
+			$app->setUserState('com_digicom.billing.data', $requestData);
+
+			// Redirect back to the register screen.
+
+			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=billing', false));
+
+			return false;
+		}
+
+		// Attempt to save the data.
+		$result	= $model->save($data);
+		//print_r($return);die;
+		// Check for errors.
+		if ($result === false)
+		{
+			// Save the data in the session.
+			$app->setUserState('com_digicom.billing.data', $data);
+
+			// Redirect back to the edit screen.
+			$this->setMessage($model->getError(), 'warning');
+			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=billing', false));
+
+			return false;
+		}
+		// Flush the data from the session.
+		$app->setUserState('com_digicom.billing.data', null);
+		$this->setMessage(JText::_('COM_DIGICOM_BILLING_UPDATED_SUCCESSFULL'));
+
+		$this->setRedirect($return, false);
+
+		return true;
+	}
+
 
 }
