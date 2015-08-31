@@ -26,7 +26,7 @@
 			>
 			<option value="">JOPTION_SELECT_CATEGORY</option>
 		</field>
-		
+
 		<field
 			name="access"
 			type="accesslevel"
@@ -47,7 +47,7 @@
 			<option value="reguler">COM_DIGICOM_PRODUCTS_TYPE_SINGLE</option>
 			<option value="bundle">COM_DIGICOM_PRODUCTS_TYPE_BUNDLE</option>
 		</field>
-		<!-- 
+		<!--
 		<field
 			name="level"
 			type="integer"
