@@ -454,6 +454,7 @@ class DigiComRouter extends JComponentRouterBase
 			case "dashboard":
 			case "downloads":
 			case "checkout":
+			case "register":
 				$vars['view'] = $item->query['view'];
 
 				return $vars;
