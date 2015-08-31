@@ -27,7 +27,7 @@ class Com_DigiComInstallerScript
 	 *
 	 * @since   3.4
 	 */
-	public function postflight($parent)
+	public function postflight( $type, $parent )
 	{
 		// Initialize a new category
 		/** @type  JTableCategory  $category  */
@@ -67,14 +67,15 @@ class Com_DigiComInstallerScript
 			$category->rebuildPath($category->id);
 		}
 
-		self::enablePlugins();
-		self::createDigiComMenu();
-		self::createUploadDirectory();
-		self::removeTemplateScript();
-
+		if ( $type == 'install' ) {
+			self::enablePlugins();
+			self::createDigiComMenu();
+			self::createUploadDirectory();
+			self::removeTemplateScript();
+		}
 		return;
 	}
-	
+
 	/**
 	* enable necessary plugins to avoid bad experience
 	*/
@@ -97,7 +98,7 @@ class Com_DigiComInstallerScript
 	        	$db->setQuery($query);
 	        	$db->execute();
 			}
-			
+
 		}
 
 		return true;
@@ -144,7 +145,7 @@ class Com_DigiComInstallerScript
 
 		return true;
 	}
-	
+
 	/*
 	* create digicom folder at root filemanager folder
 	*/
@@ -168,7 +169,7 @@ class Com_DigiComInstallerScript
 				return;
 			}
 		}
-		
+
 		// Add an index.html if neither an index.html nor an index.php exist
 		if (!(file_exists($defaultPath . '/index.html') || file_exists($defaultPath . '/index.php')))
 		{
@@ -177,7 +178,7 @@ class Com_DigiComInstallerScript
 
 		return true;
 	}
-	
+
 	/*
 	* remove old script.js file from component template js default
 	*/
@@ -187,7 +188,7 @@ class Com_DigiComInstallerScript
 		jimport('joomla.filesystem.file');
 
 		$defaultPath = JPATH_ROOT . '/components/com_digicom/templates/default/js/script.js';
-		
+
 		// delete file if exist
 		try{
 			JFile::delete($defaultPath);
