@@ -259,7 +259,7 @@ class DigicomModelBilling extends JModelForm
 	public function save($data)
 	{
 		$userId = (!empty($data['id'])) ? $data['id'] : (int) $this->getState('user.id');
-		
+
 		$customer = $this->getTable( 'Customer' );
 		$customer->load($userId);
 

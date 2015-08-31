@@ -8,6 +8,7 @@
  */
 
 defined('_JEXEC') or die;
+JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_digicom/tables', 'Table');
 
 /**
  * Digicom Component Session Helper
@@ -140,43 +141,34 @@ class DigiComSiteHelperSession
 
 		// set the customer info
 		if ($this->_user->id > 0) {
-			$sql ="select * from #__digicom_customers where email='".$this->_user->email."'";
-			$db->setQuery($sql);
-			$tmp = $db->loadObject();
+			$table = JTable::getInstance('Customer','Table');
+			$table->load(array('email'=>$this->_user->email));
 
 			// update customer info if re-registered as customer
-			if(isset($tmp) and $tmp->id != $this->_user->id){
+			if($table->id != $this->_user->id){
 				$query = "UPDATE `#__digicom_customers` SET `id`=".$this->_user->id." WHERE `email`='" . $this->_user->email."'";
 				$db->setQuery( $query );
 				$db->execute();
+				$table = JTable::getInstance('Customer','Table');
+				$table->load(array('email'=>$this->_user->email));
 			}
 
-			if ( isset($tmp) ) {
-				// as we have userlogedin, make use we fill info for customer table
-				$this->_customer = $tmp;
 
-				if (empty( $this->_customer->name )&& $my->id ) $this->_customer->name 	= $my->name;
-				if (empty( $this->_customer->email )&& $my->id ) $this->_customer->email = $my->email;
+			// as we have userlogedin, make use we fill info for customer table
+			$this->_customer = $table;
 
-			} else {
-				//user but not customer
-				$this->_customer = new stdClass();
+			if($my->id && (empty($this->_customer->name) or empty($this->_customer->email))){
+				$table->name = $my->name;
+				$table->email = $my->email;
+				$table->store();
 			}
 
 		} else {
 			// guest access
-			$this->_customer = new stdClass();
+			$this->_customer = JTable::getInstance('Customer','Table');
 		}
-
-		// dont allow empty value, so define blank
-		if (!isset($this->_customer->name)) $this->_customer->name = '';
-		if (!isset($this->_customer->company)) $this->_customer->company = '';
-		if (!isset($this->_customer->email)) $this->_customer->email = '';
-		if (!isset($this->_customer->country)) $this->_customer->country = '';
-		if (!isset($this->_customer->state)) $this->_customer->state = '';
-		if (!isset($this->_customer->address)) $this->_customer->address = '';
-		if (!isset($this->_customer->city)) $this->_customer->city = '';
-		if (!isset($this->_customer->zipcode)) $this->_customer->zipcode = '';
+		//
+		// // dont allow empty value, so define blank
 		if (!isset($this->_customer->registerDate)) $this->_customer->registerDate = $my->registerDate;
 		if (!isset($this->_customer->id) && $my->id ) $this->_customer->id = $my->id;
 
