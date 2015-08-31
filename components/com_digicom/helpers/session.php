@@ -123,7 +123,7 @@ class DigiComSiteHelperSession
 			$db->setQuery($sql);
 			$digisession = $db->loadObject();
 
-			if($digisession->uid == 0){
+			if(isset($digisession) && !$digisession->uid){
 				//no userid
 				$sql = "UPDATE #__digicom_session SET `uid`='".$my->id."' WHERE sid='".$sid."'";
 				$db->setQuery($sql);

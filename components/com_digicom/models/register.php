@@ -105,7 +105,6 @@ class DigicomModelRegister extends JModelForm
 		$params = JComponentHelper::getParams('com_digicom');
 		$askforbilling = $params->get('askforbilling',0);
 		if($askforbilling){
-			$form->setFieldAttribute('taxnum', 'required', 'true');
 			$form->setFieldAttribute('country', 'required', 'true');
 			$form->setFieldAttribute('state', 'required', 'true');
 			$form->setFieldAttribute('city', 'required', 'true');
