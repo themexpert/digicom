@@ -275,7 +275,7 @@ class DigiComControllerCart extends JControllerLegacy
 
 		// Check Login
 		if(!$user->id or $this->_customer->_user->id < 1){
- 			$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=register&layout=register&return=".$return));
+ 			$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=register&return=".$return));
 			return true;
 		}
 
@@ -293,12 +293,12 @@ class DigiComControllerCart extends JControllerLegacy
 		// return -1 for not found core info, 2 for missing billing info, 1 for has core info
 		$res = DigiComSiteHelperDigiCom::checkProfileCompletion($customer, $askforbilling);
 
-		//if username, name, email, id not found for user
-		if( $res < 1 ) {
-			$this->setRedirect('index.php?option=com_digicom&view=profile&layout=edit&return='.$return);
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_DIGICOM_PROFILE_MUST_COMPLETE'));
-			return true;
-		}
+		// //if username, name, email, id not found for user
+		// if( $res < 1 ) {
+		// 	$this->setRedirect('index.php?option=com_digicom&view=profile&layout=edit&return='.$return);
+		// 	JFactory::getApplication()->enqueueMessage(JText::_('COM_DIGICOM_PROFILE_MUST_COMPLETE'));
+		// 	return true;
+		// }
 
 		$plugin 			= JPluginHelper::getPlugin('digicom_pay',$processor);
 		$pluginParams = json_decode($plugin->params);
@@ -309,7 +309,7 @@ class DigiComControllerCart extends JControllerLegacy
 				(isset($pluginParams->askforbilling) && $pluginParams->askforbilling && $res == 2)
 			)
 		{
-			$this->setRedirect('index.php?option=com_digicom&view=profile&layout=edit&return='.$return);
+			$this->setRedirect('index.php?option=com_digicom&view=billing&return='.$return);
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_DIGICOM_BILLING_INFO_REQUIRED'));
 
 			return true;

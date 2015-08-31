@@ -173,41 +173,42 @@ class DigiComSiteHelperDigicom {
 	}
 
 	// check if this user has filled in profile information
-	public static function checkProfileCompletion( $customer , $askforbilling = 0) {
-		$tcustomer = "";
+	public static function checkProfileCompletion( $customer , $askforbilling = 0)
+	{
+		// $tcustomer = "";
+		// if ( ! empty( $customer ) ) {
+		// 	if ( isset( $customer->_customer ) ) {
+		// 		$tcustomer = &$customer->_customer;
+		// 	} else {
+		// 		$tcustomer = $customer;
+		// 	}
+		// } else {
+		// 	return - 1;
+		// }
+		//
+		// $user_email = "";
+		// if ( isset( $tcustomer->id ) && ( $tcustomer->id > 0 ) ) {
+		// 	$user       = JFactory::getUser( $tcustomer->id );
+		// 	$user_email = $user->email;
+		// }
+		//
+		// if ( ! isset( $tcustomer->id )
+		//      || ( (int) $tcustomer->id <= 0 )
+		//      || strlen( trim( $tcustomer->name ) ) < 1
+		//      || strlen( trim( $user_email ) ) < 1
+		// ) {
+		// 	return - 1;
+		// }
+		//
 
-		if ( ! empty( $customer ) ) {
-			if ( isset( $customer->_customer ) ) {
-				$tcustomer = &$customer->_customer;
-			} else {
-				$tcustomer = $customer;
-			}
-		} else {
-			return - 1;
-		}
-
-		$user_email = "";
-		if ( isset( $tcustomer->id ) && ( $tcustomer->id > 0 ) ) {
-			$user       = JFactory::getUser( $tcustomer->id );
-			$user_email = $user->email;
-		}
-
-		if ( ! isset( $tcustomer->id )
-		     || ( (int) $tcustomer->id <= 0 )
-		     || strlen( trim( $tcustomer->name ) ) < 1
-		     || strlen( trim( $user_email ) ) < 1
-		) {
-			return - 1;
-		}
-
-		$userid = $tcustomer->id;
+		$userid = $customer->id;
 		$table = JTable::getInstance('Customer', 'Table');
 		$table->loadCustommer($userid);
 
 		if(empty($table->id) or $table->id < 0){
 			$cust = new stdClass();
 			$cust->id = $user->id;
-			$cust->name = $tcustomer->name;
+			$cust->name = $customer->name;
 			$cust->email =  $user->email;
 			$table->bind($cust);
 			$table->store();
