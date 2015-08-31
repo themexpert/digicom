@@ -61,6 +61,14 @@ class PlgFinderDigicom extends FinderIndexerAdapter
 	protected $table = '#__digicom_products';
 
 	/**
+	 * The state field.
+	 *
+	 * @var    string
+	 * @since  2.5
+	 */
+	protected $state_field = 'published';
+
+	/**
 	 * Load the language file on instantiation.
 	 *
 	 * @var    boolean
