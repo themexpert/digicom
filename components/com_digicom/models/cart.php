@@ -175,6 +175,7 @@ class DigiComModelCart extends JModelItem
 				//$sql = "update #__digicom_cart set quantity =quantity+".$qty." where sid='".intval($sid)."' AND item_id='".intval($pid)."'";
 				$db->setQuery($query);
 				$db->execute();
+
 			}
 		}
 
@@ -198,7 +199,11 @@ class DigiComModelCart extends JModelItem
 			//$sql = "insert into #__digicom_cart (quantity, item_id, sid, userid)"
 			//	. " values ('".$qty."', '".intval($pid)."', '".intval($sid)."', '".intval($uid)."')";
 			$db->setQuery($query);
-			$db->execute();
+
+			if($db->execute()){
+				DigiComSiteHelperLog::setLog('add2cart', 'cart addToCart', $pid, $productname . ' Has been added to cart', null,1);
+			}
+
 			$cid = $db->insertid(); //cart id of the item inserted
 		}
 
