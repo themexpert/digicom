@@ -10,11 +10,12 @@
 defined('_JEXEC') or die;
 JHtml::_('behavior.framework');
 JHtml::_('behavior.formvalidation');
+$return = JFactory::getApplication()->input->get('return','');
 ?>
 
 <div id="digicom">
 
-	<?php if($this->configs->get('show_steps',0)){ ?>
+	<?php if(!empty($return) && $this->configs->get('show_steps',0)){ ?>
 		<div class="pagination pagination-centered">
 			<ul>
 				<li><span><?php echo JText::_("COM_DIGICOM_BUYING_PROCESS_STEP_ONE"); ?></span></li>

@@ -102,6 +102,17 @@ class DigicomModelRegister extends JModelForm
 			return false;
 		}
 
+		$params = JComponentHelper::getParams('com_digicom');
+		$askforbilling = $params->get('askforbilling',0);
+		if($askforbilling){
+			$form->setFieldAttribute('taxnum', 'required', 'true');
+			$form->setFieldAttribute('country', 'required', 'true');
+			$form->setFieldAttribute('state', 'required', 'true');
+			$form->setFieldAttribute('city', 'required', 'true');
+			$form->setFieldAttribute('zipcode', 'required', 'true');
+			$form->setFieldAttribute('address', 'required', 'true');
+		}
+
 		return $form;
 	}
 

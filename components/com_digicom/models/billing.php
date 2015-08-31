@@ -196,7 +196,6 @@ class DigicomModelBilling extends JModelForm
 			return false;
 		}
 
-		$form->setFieldAttribute('company', 'required', 'true');
 		$form->setFieldAttribute('taxnum', 'required', 'true');
 		$form->setFieldAttribute('country', 'required', 'true');
 		$form->setFieldAttribute('state', 'required', 'true');
