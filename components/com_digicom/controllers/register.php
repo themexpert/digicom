@@ -35,6 +35,12 @@ class DigicomControllerRegister extends JControllerLegacy
 		// Get the user data.
 		$requestData = $this->input->post->get('jform', array(), 'array');
 
+		if($returnpage =  $this->input->get('return', '', 'request', 'base64'))
+		{
+		 	$return = base64_decode($returnpage);
+		}else{
+			$return = JRoute::_('index.php?option=com_digicom&view=dashboard');
+		}
 		// Validate the posted data.
 		$form	= $model->getForm();
 
@@ -121,7 +127,7 @@ class DigicomControllerRegister extends JControllerLegacy
 			// Login failed !
 			$data['remember'] = (int) $options['remember'];
 			$app->setUserState('com_digicom.register.login.data', $data);
-			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=register', false));
+			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=register&layout=register_login', false));
 		}
 
 		return true;
