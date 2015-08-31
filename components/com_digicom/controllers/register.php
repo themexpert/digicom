@@ -70,7 +70,7 @@ class DigicomControllerRegister extends JControllerLegacy
 			$app->setUserState('com_digicom.register.data', $requestData);
 
 			// Redirect back to the register screen.
-			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=register&layout=register_cart', false));
+			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=register&layout=register_form', false));
 
 			return false;
 		}
@@ -86,7 +86,7 @@ class DigicomControllerRegister extends JControllerLegacy
 
 			// Redirect back to the edit screen.
 			$this->setMessage($model->getError(), 'warning');
-			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=register&layout=register_cart', false));
+			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=register&layout=register_form', false));
 
 			return false;
 		}
