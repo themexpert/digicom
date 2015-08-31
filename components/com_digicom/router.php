@@ -160,7 +160,7 @@ class DigiComRouter extends JComponentRouterBase
 
 		}
 
-		if ($view == 'dashboard' or $view == 'downloads' or $view == 'profile' or $view == 'login' or $view == 'register')
+		if ($view == 'dashboard' or $view == 'downloads' or $view == 'profile' or $view == 'login' or $view == 'register'or $view == 'billing')
 		{
 			if (!$menuItemGiven)
 			{
@@ -455,6 +455,7 @@ class DigiComRouter extends JComponentRouterBase
 			case "downloads":
 			case "checkout":
 			case "register":
+			case "billing":
 				$vars['view'] = $item->query['view'];
 
 				return $vars;
