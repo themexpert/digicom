@@ -66,7 +66,7 @@ class DigiComController extends JControllerLegacy
 			// Redirect to profile page.
 			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=profile', false));
 			return;
-		}elseif($guest && ($vName == 'downloads' or $vName == 'profile' or $vName == 'dashboard' or $vName == 'orders' or $vName == 'order') ){
+		}elseif($guest && ($vName == 'downloads' or $vName == 'billing' or $vName == 'profile' or $vName == 'dashboard' or $vName == 'orders' or $vName == 'order') ){
 			// If the user is not logedin, redirect to the register page.
 			$return = base64_encode( JURI::getInstance()->toString() );
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_DIGICOM_AUTHORIZED_AREA'),'warning');
