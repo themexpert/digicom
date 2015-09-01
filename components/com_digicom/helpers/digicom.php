@@ -19,6 +19,10 @@ class DigiComSiteHelperDigicom {
 	}
 
 	public static function powered_by() {
+		//digicom_credit
+		$config = JComponentHelper::getComponent('com_digicom')->params;
+		$digicom_credit = $config->get('digicom_credit',1);
+		if(!$digicom_credit) return;
 		$html = '<div style="margin: 0 auto; width: 250px; text-align: center;" class="small">';
 		$html .= '<span>Powered by ';
 		$html .= '<a target="_blank" title="Joomla Digital Download eCommerce" href="http://www.themexpert.com">';
@@ -219,7 +223,7 @@ class DigiComSiteHelperDigicom {
 			$table->bind($cust);
 			$table->store();
 		}
-		
+
 		if (
 		     strlen( trim( $table->country ) ) < 1
 		     || strlen( trim( $table->state ) ) < 1

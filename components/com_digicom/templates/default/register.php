@@ -61,3 +61,4 @@ $return = JFactory::getApplication()->input->get('return','');
 	</div>
 
 </div>
+<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>

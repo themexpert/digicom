@@ -350,5 +350,5 @@ $table_column = 4;
 			}
 		</script>
 <?php endif; ?>
-
+	<?php echo DigiComSiteHelperDigicom::powered_by(); ?>
 </div>
