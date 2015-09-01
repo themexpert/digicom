@@ -510,10 +510,19 @@ class DigiComModelOrders extends JModelList{
 			}
 		}
 
-		// delete licenses
+		// delete order details
 		$db->setQuery('delete from #__digicom_orders_details where orderid in ('.implode(',', $cids).')');
+		if (!$db->execute())
+		{
+			$this->setError($db->getErrorMsg());
+			return false;
+		}
 
-		if (!$db->query())
+
+		// delete License
+		$db->clear();
+		$db->setQuery('delete from #__digicom_licenses where orderid in ('.implode(',', $cids).')');
+		if (!$db->execute())
 		{
 			$this->setError($db->getErrorMsg());
 			return false;
