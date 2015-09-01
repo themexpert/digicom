@@ -119,7 +119,7 @@ class DigicomControllerRegister extends JControllerLegacy
 
 			$app->setUserState('users.login.form.data', array());
 			//$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=cart&layout=summary', false));
-			$this->setRedirect($returnurl, false));
+			$this->setRedirect($returnurl, false);
 
 		}
 		else

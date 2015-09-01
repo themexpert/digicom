@@ -232,6 +232,8 @@ class DigicomModelRegister extends JModelForm
 			return false;
 		}
 
+		//print_r($customer);die;
+
 		// create user
 		if (!$customer->create())
 		{
