@@ -385,10 +385,7 @@ class DigiComModelOrders extends JModelList{
 							or c.name like '%" . $keyword . "%'
 							or o.id like '%" . $keyword . "%')";
 
-		$sql = "SELECT o.*, c.name, c.email
-				FROM #__digicom_orders o
-					LEFT JOIN
-					#__digicom_customers c ON o.userid=c.id ";
+		$sql = "SELECT o.*, c.name, c.email FROM #__digicom_orders o LEFT JOIN #__digicom_customers c ON o.userid=c.id ";
 
 		$where = array();
 		if($startdate > 0){
