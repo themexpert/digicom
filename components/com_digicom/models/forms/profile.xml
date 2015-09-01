@@ -34,13 +34,6 @@
 			onchange="javascript:validateInput('email')"
 		/>
 
-	</fieldset>
-
-	<fieldset
-		name="login"
-		label="COM_DIGICOM_REGISTER_LOGIN_INFORMATION"
-		addfieldpath="/administrator/components/com_digicom/models/fields">
-
 		<field
 			name="username"
 			type="text"
