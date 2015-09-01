@@ -16,6 +16,7 @@ defined('_JEXEC') or die;
  */
 class DigiComModelProducts extends JModelList
 {
+	protected $_context = 'com_digicom.product';
 	/**
 	 * Constructor.
 	 *
@@ -114,6 +115,10 @@ class DigiComModelProducts extends JModelList
 			$this->setState('filter.language', $forcedLanguage);
 			$this->setState('filter.forcedLanguage', $forcedLanguage);
 		}
+
+		$this->setState('list.start', $app->getUserStateFromRequest($this->_context . '.list.start', 'limitstart', 0, 'int'));
+		$this->setState('list.limit', $app->getUserStateFromRequest($this->_context . '.list.limit', 'limit', $app->getCfg('list_limit', 25) , 'int'));
+
 	}
 
 	/**
