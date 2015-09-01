@@ -21,7 +21,6 @@ WHERE `name`= 'com_digicom' and `type` = 'component' and `element` = 'com_digico
 -- Table structure for table `#__digicom_cart`
 --
 
-DROP TABLE IF EXISTS `#__digicom_cart`;
 CREATE TABLE IF NOT EXISTS `#__digicom_cart` (
   `cid` int(11) NOT NULL AUTO_INCREMENT,
   `item_id` int(11) NOT NULL DEFAULT '0',
@@ -87,7 +86,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_cart` (
 -- Table structure for table `#__digicom_customers`
 --
 
-DROP TABLE IF EXISTS `#__digicom_customers`;
 CREATE TABLE IF NOT EXISTS `#__digicom_customers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL DEFAULT '',
@@ -113,7 +111,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_customers` (
 -- Table structure for table `#__digicom_licenses`
 --
 
-DROP TABLE IF EXISTS `#__digicom_licenses`;
 CREATE TABLE IF NOT EXISTS `#__digicom_licenses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `licenseid` int(11) NOT NULL,
@@ -136,7 +133,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_licenses` (
 -- Table structure for table `#__digicom_log`
 --
 
-DROP TABLE IF EXISTS `#__digicom_log`;
 CREATE TABLE IF NOT EXISTS `#__digicom_log` (
   `id` INT( 11 ) NOT NULL AUTO_INCREMENT,
   `userid` int(11) NOT NULL,
@@ -157,7 +153,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_log` (
 -- Table structure for table `#__digicom_orders`
 --
 
-DROP TABLE IF EXISTS `#__digicom_orders`;
 CREATE TABLE IF NOT EXISTS `#__digicom_orders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userid` int(11) NOT NULL DEFAULT '0',
@@ -187,7 +182,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_orders` (
 -- Table structure for table `#__digicom_orders_details`
 --
 
-DROP TABLE IF EXISTS `#__digicom_orders_details`;
 CREATE TABLE IF NOT EXISTS `#__digicom_orders_details` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userid` int(11) NOT NULL DEFAULT '0',
@@ -212,7 +206,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_orders_details` (
 -- Table structure for table `#__digicom_products`
 --
 
-DROP TABLE IF EXISTS `#__digicom_products`;
 CREATE TABLE IF NOT EXISTS `#__digicom_products` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `asset_id` int(11) NOT NULL COMMENT 'FK to the #__assets table.',
@@ -269,7 +262,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_products` (
 -- Table structure for table `#__digicom_products_bundle`
 --
 
-DROP TABLE IF EXISTS `#__digicom_products_bundle`;
 CREATE TABLE IF NOT EXISTS `#__digicom_products_bundle` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` int(11) NOT NULL,
@@ -285,7 +277,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_products_bundle` (
 -- Table structure for table `#__digicom_products_files`
 --
 
-DROP TABLE IF EXISTS `#__digicom_products_files`;
 CREATE TABLE IF NOT EXISTS `#__digicom_products_files` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` int(11) NOT NULL,
@@ -303,7 +294,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_products_files` (
 -- Table structure for table `#__digicom_products_rating`
 --
 
-DROP TABLE IF EXISTS `#__digicom_products_rating`;
 CREATE TABLE IF NOT EXISTS `#__digicom_products_rating` (
   `content_id` int(11) NOT NULL DEFAULT '0',
   `rating_sum` int(10) unsigned NOT NULL DEFAULT '0',
@@ -318,7 +308,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_products_rating` (
 -- Table structure for table `#__digicom_promocodes`
 --
 
-DROP TABLE IF EXISTS `#__digicom_promocodes`;
 CREATE TABLE IF NOT EXISTS `#__digicom_promocodes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(200) NOT NULL DEFAULT '',
@@ -348,7 +337,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_promocodes` (
 -- Table structure for table `#__digicom_promocodes_products`
 --
 
-DROP TABLE IF EXISTS `#__digicom_promocodes_products`;
 CREATE TABLE IF NOT EXISTS `#__digicom_promocodes_products` (
   `productid` int(11) NOT NULL,
   `promoid` int(11) NOT NULL,
@@ -361,7 +349,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_promocodes_products` (
 -- Table structure for table `#__digicom_session`
 --
 
-DROP TABLE IF EXISTS `#__digicom_session`;
 CREATE TABLE IF NOT EXISTS `#__digicom_session` (
   `sid` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) NOT NULL,
@@ -380,7 +367,6 @@ CREATE TABLE IF NOT EXISTS `#__digicom_session` (
 -- Table structure for table `#__digicom_states`
 --
 
-DROP TABLE IF EXISTS `#__digicom_states`;
 CREATE TABLE IF NOT EXISTS `#__digicom_states` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `state` varchar(200) NOT NULL DEFAULT '',
