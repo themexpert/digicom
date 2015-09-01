@@ -465,6 +465,23 @@ class DigiComHelperDigiCom extends JHelperContent{
 		return $db->loadObjectList();
 	}
 
+	/**
+	* get products name by order id
+	* return span wrap items name
+	*/
+	public static function getProductsNamebyOrder($id){
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName(array('p.id','p.name', 'p.catid')))
+				->from($db->quoteName('#__digicom_products','p'))
+				->from($db->quoteName('#__digicom_orders_details','od'))
+				->where($db->quoteName('p.id').'='.$db->quoteName('od.productid'))
+				->where($db->quoteName('od.orderid').'='.$db->quote($id));
+		$db->setQuery($query);
+		return $db->loadObjectList();
+
+	}
+
 	public static function addAdminStyles(){
 
 		// load core script

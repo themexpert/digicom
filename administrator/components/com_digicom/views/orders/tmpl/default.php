@@ -172,7 +172,14 @@ Joomla.submitbutton = function (pressbutton) {
 							<?php echo $order->order_date; ?>
 						</td>
 						<td>
-							<?php echo $order->number_of_products; ?></a>
+							<?php
+                //echo $order->number_of_products;
+                $orderitems = DigiComHelperDigiCom::getProductsNamebyOrder($id);
+            		foreach ($orderitems as $orderkey => $orderitem) {
+              ?>
+            			<a class="label label-warning" href="<?php echo JRoute::_('index.php?option=com_digicom&view=product&task=product.edit&id=' . $orderitem->id); ?>"><?php echo $orderitem->name; ?></a>
+            	<?php } ?>
+            </a>
 						</td>
 						<td align="center">
 							<?php
