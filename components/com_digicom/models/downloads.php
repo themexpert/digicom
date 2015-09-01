@@ -106,7 +106,8 @@ class DigiComModelDownloads extends JModelList
 									->select(array('id as productid','name','catid'))
 									->from($db->quoteName('#__digicom_products'))
 									->where($db->quoteName('bundle_source').' IS NULL')
-									->where($db->quoteName('catid').' in ('.$bundle_ids.')');
+									->where($db->quoteName('catid').' in ('.$bundle_ids.')')
+									->order($db->quoteName('id').' DESC');
 								$db->setQuery($query);
 								$bundleItems[] = $db->loadObjectList();
 								//we should show only items
@@ -128,7 +129,8 @@ class DigiComModelDownloads extends JModelList
 									->select(array('id as productid','name','catid'))
 									->from($db->quoteName('#__digicom_products'))
 									->where($db->quoteName('bundle_source').' IS NULL')
-									->where($db->quoteName('id').' in ('.$bundle_ids.')');
+									->where($db->quoteName('id').' in ('.$bundle_ids.')')
+									->order($db->quoteName('id').' DESC');
 								$db->setQuery($query);
 								$bundleItems[] = $db->loadObjectList();
 							}
