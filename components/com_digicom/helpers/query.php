@@ -114,6 +114,65 @@ class DigiComSiteHelperQuery
 	}
 
 	/**
+	 * Translate an order code to a field for secondary category ordering.
+	 *
+	 * @param   string  $orderby    The ordering code.
+	 * @param   string  $orderDate  The ordering code for the date.
+	 *
+	 * @return  string  The SQL field(s) to order by.
+	 *
+	 * @since   1.5
+	 */
+	public static function orderbyDownload($orderby, $orderDate = 'created', $select='p', $name='name')
+	{
+		$queryDate = self::getQueryDate($orderDate);
+
+		switch ($orderby)
+		{
+			case 'date' :
+				$orderby = $queryDate;
+				break;
+
+			case 'rdate' :
+				$orderby = $queryDate . ' DESC ';
+				break;
+
+			case 'alpha' :
+				$orderby = $select.'.'.$name.' ASC';
+				break;
+
+			case 'ralpha' :
+				$orderby = $select.'.'.$name.' DESC';
+				break;
+
+			case 'hits' :
+				$orderby = $select.'.hits DESC';
+				break;
+
+			case 'rhits' :
+				$orderby = $select.'.hits';
+				break;
+
+			case 'order' :
+				$orderby = $select.'.ordering DESC';
+				break;
+
+			case 'author' :
+				$orderby = 'author';
+				break;
+
+			case 'rauthor' :
+				$orderby = 'author DESC';
+				break;
+
+			default :
+				$orderby = $select.'.ordering';
+				break;
+		}
+
+		return $orderby;
+	}
+	/**
 	 * Translate an order code to a field for primary category ordering.
 	 *
 	 * @param   string  $orderDate  The ordering code.
@@ -152,7 +211,7 @@ class DigiComSiteHelperQuery
 	 * @param   \Joomla\Registry\Registry  $params  An options object for the Product.
 	 *
 	 * @return  array  A named array with "select" and "join" keys.
-	 * 
+	 *
 	 * @since   1.5
 	 */
 	public static function buildVotingQuery($params = null)

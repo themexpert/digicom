@@ -49,17 +49,66 @@ class DigiComModelDownloads extends JModelList
 		$this->setState('list.offset', $offset);
 		$app = JFactory::getApplication();
 
-		$params = $app->getParams();
+		// Load the parameters. Merge Global and Menu Item params into new object
+		$appparams = $app->getParams();
+		$menuParams = new Registry;
+
+		if ($menu = $app->getMenu()->getActive())
+		{
+			$menuParams->loadString($menu->params);
+		}
+
+		$params = clone $menuParams;
+		$params->merge($appparams);
+
 		$this->setState('params', $params);
 
 		$this->setState('list.limit', $params->get('maximum', 200));
 
 		$this->setState('filter.published', 1);
 
-		// Optional filter text
-		$itemid = $app->input->getInt('Itemid', 0);
-		$filterSearch = $app->getUserStateFromRequest('com_digicom.downloads.list.' . $itemid . '.filter_search', 'filter-search', '', 'string');
-		$this->setState('list.filter', $filterSearch);
+		$this->setState('list.ordering', $this->_buildCategoryOrderBy());
+		$this->setState('list.itemsordering', $this->_buildItemOrderBy());
+
+	}
+
+	/**
+	 * Build the orderby for the query
+	 *
+	 * @return  string	$orderby portion of query
+	 *
+	 * @since   1.5
+	 */
+	protected function _buildCategoryOrderBy()
+	{
+		$app		= JFactory::getApplication('site');
+		$db			= $this->getDbo();
+		$params		= $this->state->params;
+
+		$productOrderby		= $params->get('orderby', 'rdate');
+		$productOrderDate	= $params->get('order_date','');
+		$orderquery				= DigiComSiteHelperQuery::orderbyDownload($productOrderby, $productOrderDate, 'c','title');
+		//echo $orderquery;die;
+		return $orderquery;
+	}
+	/**
+	 * Build the orderby for the query
+	 *
+	 * @return  string	$orderby portion of query
+	 *
+	 * @since   1.5
+	 */
+	protected function _buildItemOrderBy()
+	{
+		$app		= JFactory::getApplication('site');
+		$db			= $this->getDbo();
+		$params		= $this->state->params;
+
+		$productOrderby		= $params->get('iorderby', 'order');
+		$productOrderDate	= $params->get('order_date','');
+		$orderquery				= DigiComSiteHelperQuery::orderbyDownload($productOrderby, $productOrderDate);
+
+		return $orderquery;
 	}
 
 	/**
@@ -74,6 +123,10 @@ class DigiComModelDownloads extends JModelList
 		$db = $this->getDbo();
 		// Invoke the parent getItems method to get the main list
 		$items = parent::getItems();
+		//$ordering =  $this->state->get('list.ordering', 'c.title ASC');
+		$ordering =  'c.title ASC';
+		$itemsOrdering =  $this->state->get('list.itemsordering', 'p.ordering DESC');
+		//echo $itemsOrdering;die;
 
 		if (!count($items))
 		{
@@ -103,16 +156,20 @@ class DigiComModelDownloads extends JModelList
 							if($bundle_ids){
 
 								$query = $db->getQuery(true)
-									->select(array('id as productid','name','catid'))
-									->from($db->quoteName('#__digicom_products'))
-									->where($db->quoteName('bundle_source').' IS NULL')
-									->where($db->quoteName('catid').' in ('.$bundle_ids.')')
-									->order($db->quoteName('id').' DESC');
+									->select(array('p.id as productid','p.name','p.catid','c.title'))
+									->from($db->quoteName('#__digicom_products','p'))
+									->from($db->quoteName('#__categories','c'))
+									->where($db->quoteName('p.bundle_source').' IS NULL')
+									->where($db->quoteName('p.catid').' in ('.$bundle_ids.')')
+									->where($db->quoteName('c.id').' in ('.$bundle_ids.')')
+									//->order($db->quoteName('id').' DESC');
+									->order($itemsOrdering . ', ' . $ordering);
+									//echo $query->__toString();die;
 								$db->setQuery($query);
 								$bundleItems[] = $db->loadObjectList();
 								//we should show only items
 							}
-
+							//print_r($bundleItems);die;
 							unset($items[$key]);
 
 							break;
@@ -126,11 +183,12 @@ class DigiComModelDownloads extends JModelList
 							if($bundle_ids){
 								$db = $this->getDbo();
 								$query = $db->getQuery(true)
-									->select(array('id as productid','name','catid'))
-									->from($db->quoteName('#__digicom_products'))
-									->where($db->quoteName('bundle_source').' IS NULL')
-									->where($db->quoteName('id').' in ('.$bundle_ids.')')
-									->order($db->quoteName('id').' DESC');
+									->select(array('p.id as productid','p.name','p.catid'))
+									->from($db->quoteName('#__digicom_products','p'))
+									->where($db->quoteName('p.bundle_source').' IS NULL')
+									->where($db->quoteName('p.id').' in ('.$bundle_ids.')')
+									//->order($db->quoteName('id').' DESC');
+									->order($itemsOrdering);
 								$db->setQuery($query);
 								$bundleItems[] = $db->loadObjectList();
 							}
@@ -141,11 +199,13 @@ class DigiComModelDownloads extends JModelList
 					}
 				}
 			}
+			//print_r($items);die;
 			//print_r($bundleItems);die;
 			//we got all our items
 			// now add bundle item to the items array
 			if(count($bundleItems) >0){
-				foreach($bundleItems as $item2){
+				foreach($bundleItems as $keybundle2=>$item2){
+					
 					foreach($item2 as $item3){
 						$items[] = $item3;
 					}
@@ -235,28 +295,20 @@ class DigiComModelDownloads extends JModelList
 	{
 		$app = JFactory::getApplication('site');
 		$user = new DigiComSiteHelperSession();
-		$orderby = $this->state->params->get('orderby', 'name');
 		$published = $this->state->params->get('published', 1);
-		$orderDirection = $this->state->params->get('direction', 'ASC');
 
 		//$user	= JFactory::getUser();
+		// $orderby = $this->state->params->get('orderby', 'name');
+		//$orderDirection = $this->state->params->get('direction', 'ASC');
+		//print_r($this->state);die;
+		$ordering =  $this->state->get('list.ordering', 'p.ordering ASC');
+		$itemsOrdering =  $this->state->get('list.itemsordering', 'p.ordering DESC');
 		$db = JFactory::getDBO();
 
 		$search = JRequest::getVar('search', '');
 		$search = trim($search);
 
 		$query = $db->getQuery(true);
-		/*
-		$query->select('DISTINCT('.$db->quoteName('od.productid').')');
-		$query->select($db->quoteName(array('p.name', 'p.catid', 'p.bundle_source')));
-		$query->select($db->quoteName('od.package_type').' type');
-		$query->from($db->quoteName('#__digicom_products').' p');
-		$query->from($db->quoteName('#__digicom_orders_details').' od');
-		$query->where($db->quoteName('od.userid') . ' = '. $db->quote($user->_customer->id));
-		$query->where($db->quoteName('od.productid') . ' = '. $db->quoteName('p.id'));
-		$query->where($db->quoteName('od.published') . ' = '. $db->quote('1'));
-		$query->order('ordering ASC');
-		*/
 		// Select required fields from the downloads.
 		//$query->select('DISTINCT(p.id) as productid')
 		$query->select('DISTINCT p.id as productid')
@@ -295,9 +347,11 @@ class DigiComModelDownloads extends JModelList
 		$query->where($db->quoteName('l.userid') . ' = ' . $user->_customer->id);
 		$query->where(' ( DATEDIFF(`expires`, now()) > -1 or DATEDIFF(`expires`, now()) IS NULL )' );
 
-		$query->order($db->quoteName($orderby) . ' ' . $orderDirection . ', p.name ASC');
+		//$query->order($db->quoteName($orderby) . ' ' . $orderDirection . ', p.name ASC');
+		// Add the list ordering clause.
+		$query->order($itemsOrdering);
+		//echo $ordering;die;
 		//echo $query->__tostring();die;
-
 		return $query;
 	}
 
