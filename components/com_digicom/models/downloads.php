@@ -205,7 +205,7 @@ class DigiComModelDownloads extends JModelList
 			// now add bundle item to the items array
 			if(count($bundleItems) >0){
 				foreach($bundleItems as $keybundle2=>$item2){
-					
+
 					foreach($item2 as $item3){
 						$items[] = $item3;
 					}
@@ -249,11 +249,16 @@ class DigiComModelDownloads extends JModelList
 						}
 
 					}
+
+					$product->files = $files;
+					if(isset($productAdded[$product->productid])) unset($items[$key]);
+					$productAdded[$product->productid] = true;
+
+				}else{
+					unset($items[$key]);
 				}
 
-				$product->files = $files;
-				if(isset($productAdded[$product->productid])) unset($items[$key]);
-				$productAdded[$product->productid] = true;
+
 			}
 
 		}
