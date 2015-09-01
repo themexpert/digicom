@@ -237,14 +237,6 @@ class DigiComSiteHelperEmail {
 		$mosConfig_mailfrom = $app->getCfg("mailfrom");
 		$mosConfig_fromname = $app->getCfg("fromname");
 
-		if ( $configs->get('usestoremail',1) == '1' && strlen( trim( $configs->get('store_name','DigiCom Store') ) ) > 0 && strlen( trim( $configs->get('store_email','') ) ) > 0 ) {
-			$adminName2 = $configs->get('store_name','DigiCom Store');
-			$adminEmail2 = $configs->get('store_email','');
-		} else{
-			$adminName2 = $mosConfig_fromname;
-			$adminEmail2 = $mosConfig_mailfrom;
-		}
-
 		// now override the value with digicom config
     if(!empty($email_settings->from_name)){
         $adminName2 = $email_settings->from_name;
@@ -281,7 +273,11 @@ class DigiComSiteHelperEmail {
 		}
 
 		if ( $email_settings->sendmailtoadmin) {
-			
+
+			// admin email info
+			$adminName2 = $mosConfig_fromname;
+			$adminEmail2 = $mosConfig_mailfrom;
+
 			$message = 'Order email to Admin : '.$type.' email for order#'.$orderid.', status: '.$status;
 
 			$recipients =  $adminEmail2 . (!empty($recipients) ? ', '.$recipients : '');
