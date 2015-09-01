@@ -156,14 +156,15 @@ class DigiComModelDownloads extends JModelList
 							if($bundle_ids){
 
 								$query = $db->getQuery(true)
-									->select(array('p.id as productid','p.name','p.catid','c.title'))
+									->select(array('p.id as productid','p.name','p.catid'))
 									->from($db->quoteName('#__digicom_products','p'))
-									->from($db->quoteName('#__categories','c'))
+									//->from($db->quoteName('#__categories','c'))
 									->where($db->quoteName('p.bundle_source').' IS NULL')
 									->where($db->quoteName('p.catid').' in ('.$bundle_ids.')')
-									->where($db->quoteName('c.id').' in ('.$bundle_ids.')')
+									// ->where($db->quoteName('c.id').' in ('.$bundle_ids.')')
 									//->order($db->quoteName('id').' DESC');
-									->order($itemsOrdering . ', ' . $ordering);
+									//->order($itemsOrdering . ', ' . $ordering);
+									->order($itemsOrdering);
 									//echo $query->__toString();die;
 								$db->setQuery($query);
 								$bundleItems[] = $db->loadObjectList();
@@ -220,7 +221,7 @@ class DigiComModelDownloads extends JModelList
 				$query->select($db->quoteName(array('id', 'name', 'url', 'hits')));
 				$query->from($db->quoteName('#__digicom_products_files'));
 				$query->where($db->quoteName('product_id') . ' = '. $db->quote($product->productid));
-				$query->order('id DESC');
+				$query->order('ordering ASC');
 				// Reset the query using our newly populated query object.
 				$db->setQuery($query);
 				$files = $db->loadObjectList();
