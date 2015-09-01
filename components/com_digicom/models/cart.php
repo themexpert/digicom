@@ -258,9 +258,9 @@ class DigiComModelCart extends JModelItem
 		//return $this->_items = $items;
 		$this->_items = $items;
 
-		// if(count($items) > 0){
-		// 	$this->calc_price($items, $customer, $configs);
-		// }
+		if(count($items) > 0){
+			$this->calc_price($items, $customer, $configs);
+		}
 
 		return $this->_items;
 
@@ -270,6 +270,7 @@ class DigiComModelCart extends JModelItem
 	{
 		$db = JFactory::getDbo();
 		$user = JFactory::getUser();
+		$session = JFactory::getSession();
 		// if (is_object($cust_info))	$sid = $cust_info->_sid;
 		// if (is_array($cust_info))	$sid = $cust_info['sid'];
 		// $customer = $cust_info;
@@ -411,9 +412,19 @@ class DigiComModelCart extends JModelItem
 		}
 
 		if($promo_applied && ($promovalue > 0)){
-			JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_DIGICOM_CART_PROMOCODE_APPLIED',$promocode),'success');
+			$name = 'promocode'.$cust_info->_sid;
+			$justapplied = $session->get($name,false);
+
+			//echo $justapplied;die;
+			if($justapplied){
+				$session->clear($name);
+				JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_DIGICOM_CART_PROMOCODE_APPLIED',$promocode),'success');
+			}
 		}elseif($promo_applied){
-			JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_DIGICOM_CART_PROMOCODE_NOT_APPLIED',$promocode),'warning');
+			if($justapplied){
+				$session->clear($name);
+				JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_DIGICOM_CART_PROMOCODE_NOT_APPLIED',$promocode),'warning');
+			}
 		}else{
 			$db->clear();
 			$sql = "update #__digicom_session set cart_details='promocode=" . $promocode . "' where sid='" . $cust_info->_sid . "'";
@@ -484,25 +495,25 @@ class DigiComModelCart extends JModelItem
 		//
 		// if ( !$sid ) return null; //$sid = get_sid();
 
-		// $db = JFactory::getDbo();
-		// $sql = "select cart_details from #__digicom_session where sid='" . intval($sid) . "'";
-		// $db->setQuery( $sql );
-		// $promodata = $db->loadResult();
-		//
-		// $promodata = explode( "=", $promodata );
-		// if ( $promodata[0] == 'promocode' ){
-		// 	$promocode = $promodata[1];
-		// }else{
-		// 	$promocode = '';
-		// }
+		$db = JFactory::getDbo();
+		$sql = "select cart_details from #__digicom_session where sid='" . intval($sid) . "'";
+		$db->setQuery( $sql );
+		$promodata = $db->loadResult();
+		//print_r($promodata);die;
+		$promodata = explode( "=", $promodata );
+		if ( $promodata[0] == 'promocode' ){
+			$promocode = $promodata[1];
+		}else{
+			$promocode = '';
+		}
 
 		//$promocode = JRequest::getVar('promocode','');
-		$promocode = $app->input->get('promocode','');
-		if(empty($promocode)){
-			$promocode = $session->get('promocode','');
-		}else{
-			$session->set('promocode',$promocode);
-		}
+	//	$promocode = $app->input->get('promocode','');
+		// if(empty($promocode)){
+		// 	$promocode = $session->get('promocode','');
+		// }else{
+		// 	$session->set('promocode',$promocode);
+		// }
 		//echo $promocode;die;
 
 		if ( strlen( $promocode ) > 0 ) {//valid promocode was provided
@@ -525,7 +536,7 @@ class DigiComModelCart extends JModelItem
 		// 	$promo->error = $promodata[1];
 		// }
 		//
-
+		//print_r($promo_data);die;
 		//code exists and we're about to validate it
 		if ( $promo_data->id > 0 && $checkvalid == 1 )
 		{
@@ -548,7 +559,12 @@ class DigiComModelCart extends JModelItem
 			{
 				//add this code to user's cart
 				$promoerror = '';
-				$sql = "update #__digicom_session set cart_details='promocode=" . $promocode . "' where sid='" . $sid . "'";
+				$name = 'promocode'.$customer->_sid;
+				$promomesg = $session->get($name, false);
+				if(!$promomesg){
+					$session->clear($name);
+				}
+				//$sql = "update #__digicom_session set cart_details='promocode=" . $promocode . "' where sid='" . $sid . "'";
 				// $app->enqueueMessage(JText::sprintf('COM_DIGICOM_CART_PROMOCODE_APPLIED',$promo),'success');
 			}
 			else if ($published == "0")
@@ -584,7 +600,7 @@ class DigiComModelCart extends JModelItem
 			if ( !empty($promoerror) ) {
 				//promo code is invalid
 				JFactory::getApplication()->enqueueMessage(JText::_($promoerror),'warning');
-				$session->set('promocode','');
+				//$session->set('promocode','');
 			}
 
 		}else{
@@ -610,22 +626,24 @@ class DigiComModelCart extends JModelItem
 
 		$promocode = JRequest::getVar( 'promocode', '' );
 		if($promocode){
-			$processor = $session->set('promocode',$promocode);
-		}else{
-			$processor = $session->set('promocode','');
+			$name = 'promocode'.$customer->_sid;
+			$session->set($name, true);
 		}
 
 		$sql = "update #__digicom_session set processor='" . $processor . "' where sid='" . intval($sid) . "'";
 		$db->setQuery( $sql );
 		$db->execute();
 
-		$sql = "update #__digicom_session set shipping_details='' where sid='" . intval($sid) . "'";
+		$sql = "update #__digicom_session set shipping_details='0' where sid='" . intval($sid) . "'";
 	 	$db->setQuery( $sql );
 	 	$db->execute();
 
-		$this->getCartItems($customer, $configs);
-		//$this->calc_price($items, $customer, $configs);
+		$sql = "update #__digicom_session set cart_details='promocode=" . $promocode . "' where sid='" . $sid . "'";
+	 	$db->setQuery( $sql );
+	 	$db->execute();
 
+		//$this->getCartItems($customer, $configs);
+		//$this->calc_price($items, $customer, $configs);
 		return true;
 
 		// if ( empty( $this->_items ) ) {
