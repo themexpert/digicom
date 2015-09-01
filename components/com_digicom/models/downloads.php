@@ -95,7 +95,7 @@ class DigiComModelDownloads extends JModelList
 			$bundleItems = array();
 			foreach($items as $key=>$product){
 				if($product->type != 'reguler'){
-					switch($product->type){
+					switch($product->bundle_source){
 						case 'category':
 							$BundleTable = JTable::getInstance('Bundle', 'Table');
 							$BundleList = $BundleTable->getFieldValues('product_id',$product->productid,$product->bundle_source);
