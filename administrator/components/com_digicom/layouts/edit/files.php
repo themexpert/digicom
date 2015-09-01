@@ -39,21 +39,21 @@ $document->addScript(JURI::root(true).'/media/digicom/assets/js/repeatable-field
 						<span class="move"><i class="icon-move"></i></span>
 						<input type="hidden" name="jform[file][{{row-count-placeholder}}][id]" id="digicom_files_id" value="" />
 					</td>
-					
+
 					<td width="10%">
 						<input type="text" name="jform[file][{{row-count-placeholder}}][name]" id="files_row_count_placeholder_id_name" placeholder="File Name"/>
 					</td>
-					
+
 					<td width="70%">
 						<div class="input-prepend input-append" style="display: block;">
 							<input type="text" name="jform[file][{{row-count-placeholder}}][url]" id="files_row_count_placeholder_id_url" placeholder="Upload or enter the file URL" class="span8"/>
-							<a class="files_uploader_modal btn modal" title="Select" 
+							<a class="files_uploader_modal btn modal" title="Select"
 							href="javascript:;" onclick="openModal(this);"
 							>
 							Select</a>
 						</div>
 					</td>
-					
+
 					<td width="10%">
 						<span class="remove"><i class="icon-remove"></i></span>
 						<input type="hidden" name="jform[file][{{row-count-placeholder}}][ordering]" value="" id="files_row_count_placeholder_id_ordering"/>
@@ -65,7 +65,7 @@ $document->addScript(JURI::root(true).'/media/digicom/assets/js/repeatable-field
 					$form_data = $form->getData();
 					$files = $form_data->get('file');
 					if((isset($item->file) && count($item->file) >=1 && is_array($item->file)) or is_array($files) ):
-					
+
 					foreach($files as $key => $value){
 						if(is_array($value)) $value = (object) $value;
 					?>
@@ -74,29 +74,29 @@ $document->addScript(JURI::root(true).'/media/digicom/assets/js/repeatable-field
 							<span class="move"><i class="icon-move"></i></span>
 							<input type="hidden" name="jform[file][<?php echo $key; ?>][id]" id="digicom_files_id" value="<?php echo (isset($value->id) ? $value->id : ''); ?>" />
 						</td>
-						
+
 						<td width="10%">
 							<input type="text" id="files_<?php echo $key; ?>_name"
 							name="jform[file][<?php echo $key; ?>][name]" placeholder="File Name" value="<?php echo (isset($value->name) ? $value->name : ''); ?>"/>
 						</td>
-						
+
 						<td width="70%">
 							<div class="input-prepend input-append" style="display: block;">
 								<input type="text" name="jform[file][<?php echo $key; ?>][url]" id="files_<?php echo $key; ?>_url" placeholder="Upload or enter the file URL" class="span8"
 								value="<?php echo (isset($value->url) ? $value->url : ''); ?>"
 								/>
-								<a class="files_uploader_modal btn modal" title="Select" 
+								<a class="files_uploader_modal btn modal" title="Select"
 								href="javascript:;" onclick="openModal(this);"
 								>
 								Select</a>
 							</div>
 						</td>
-						
+
 						<td width="10%">
 							<input type="hidden" name="jform[file][<?php echo $key; ?>][ordering]" id="files_ordering_<?php echo $key; ?>"
 								value="<?php echo (isset($value->ordering) ? $value->ordering : ''); ?>"
 								/>
-							<span class="remove"><i class="icon-remove"></i></span>                        
+							<span class="remove"><i class="icon-remove"></i></span>
 						</td>
 					</tr>
 					<?php
@@ -114,4 +114,7 @@ $document->addScript(JURI::root(true).'/media/digicom/assets/js/repeatable-field
 			</tfoot>
 		</table>
 	</div>
+
+	
+
 </fieldset>

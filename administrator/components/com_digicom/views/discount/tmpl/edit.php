@@ -10,7 +10,6 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.html.pane');
-
 JHtml::_('jquery.framework');
 JHtml::_('jquery.ui');
 JHtml::_('behavior.formvalidation');
@@ -18,6 +17,7 @@ JHtml::_('behavior.tooltip');
 JHTML::_("behavior.calendar");
 JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen');
+JHtml::_('behavior.modal');
 
 $document = JFactory::getDocument();
 $app = JFactory::getApplication();
@@ -25,11 +25,7 @@ $input = $app->input;
 $input->set('layout', 'dgform');
 $configs = $this->configs;
 $nullDate = 0;
-$f = $configs->get('time_format','DD-MM-YYYY');
-$f = str_replace ("-", "-%", $f);
-$f = "%".$f;
 $link = 'index.php?option=com_digicom&amp;view=products&amp;layout=modal&amp;tmpl=component&amp;' . JSession::getFormToken() . '=1';
-JHtml::_('behavior.modal');
 
 $ajax = <<<EOD
 jQuery(document).ready(function() {
@@ -73,12 +69,12 @@ Joomla.submitbutton = function(task)
 {
 	if (task == 'discount.cancel' || document.formvalidator.isValid(document.id('adminForm')))
 	{
-		Joomla.submitform(task, document.getElementById('item-form'));
+		Joomla.submitform(task, document.getElementById('adminForm'));
 	}
 }
 </script>
+<form action="<?php echo JRoute::_('index.php?option=com_digicom&view=discount&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 
-<form action="index.php?option=com_digicom&view=discount" method="post" name="adminForm" id="adminForm" class="form-horizontal">
 	<?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="">
 		<?php echo $this->sidebar; ?>
@@ -132,7 +128,7 @@ Joomla.submitbutton = function(task)
 
 
 					</div>
-					
+
 			</div>
 
 			<div class="span4 well">
@@ -142,9 +138,9 @@ Joomla.submitbutton = function(task)
 					</label>
 					<?php echo $this->form->getInput('discount_enable_range'); ?>
 				</div>
-				
+
 				<div id="discount_enable_range_product"<?php echo (($this->item->discount_enable_range == '1' || $this->item->discount_enable_range === null) ? " class='hide'":"");?>>
-				
+
 					<!--<h3><?php echo JText::_( 'COM_DIGICOM_DISCOUNT_CODE_PRODUCT_RESTRICTION_TITLE' ); ?></h3>-->
 					<br/>
 					<table id="productincludes" class="table table-striped table-hover" id="productList">
@@ -154,7 +150,7 @@ Joomla.submitbutton = function(task)
 							foreach ($this->item->products as $product): ?>
 								<tr id="productincludes_item_<?php echo $product->id; ?>">
 									<td>
-										<input type="hidden" id="product_include_id<?php echo $product->id; ?>" name="jform[products][]" value="<?php echo $product->id; ?>"> 
+										<input type="hidden" id="product_include_id<?php echo $product->id; ?>" name="jform[products][]" value="<?php echo $product->id; ?>">
 										<a href="index.php?option=com_digicom&view=product&id=<?php echo $product->id; ?>"><?php echo $product->name; ?></a>
 									</td>
 									<td>
@@ -169,12 +165,12 @@ Joomla.submitbutton = function(task)
 							?>
 						</tbody>
 					</table>
-					
+
 
 					<div>
-						<a class="btn btn-small btn-primary modal" title="Products" href="<?php echo $link; ?>" 
+						<a class="btn btn-small btn-primary modal" title="Products" href="<?php echo $link; ?>"
 						rel="{handler: 'iframe', size: {x: 800, y: 500}}">
-							<i class="icon-file-add"></i> 
+							<i class="icon-file-add"></i>
 							<?php echo JText::_('COM_DIGICOM_ADD_PRODUCT'); ?>
 						</a>
 
@@ -182,15 +178,15 @@ Joomla.submitbutton = function(task)
 
 				</div>
 
-				
+
 			</div>
 
 		</div>
-		
+
 		<?php
 		echo JHtml::_('bootstrap.endTab');
-		
-		
+
+
 		echo JHtml::_('bootstrap.endTabSet');
 		?>
 	</div>
@@ -198,15 +194,15 @@ Joomla.submitbutton = function(task)
 		<?php echo $this->form->getInput('validfornew'); ?>
 		<?php echo $this->form->getInput('validforrenewal'); ?>
 	</div>
-	<input type="hidden" name="option" value="com_digicom" />
-	<input type="hidden" name="view" value="discount" />
-	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
+	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="view" value="discount" />
+	<input type="hidden" name="option" value="com_digicom" />
 
 	<?php echo JHtml::_('form.token'); ?>
 </form>
 
-<?php 
+<?php
 	echo JHtml::_(
 		'bootstrap.renderModal',
 		'videoTutorialModal',
@@ -216,7 +212,7 @@ Joomla.submitbutton = function(task)
 			'height' => '400px',
 			'width' => '1280'
 		)
-	); 
+	);
 ?>
 <div class="dg-footer">
 	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
