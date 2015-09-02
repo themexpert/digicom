@@ -31,31 +31,33 @@ class DigiComControllerDownloads extends JControllerLegacy
 		$this->log_link = JRoute::_("index.php?option=com_digicom&view=profile&layout=login&returnpage=downloads&Itemid=".$Itemid, false);
 		$this->_customer = new DigiComSiteHelperSession();;
 	}
-	
+
 	function makeDownload()
 	{
-		
+
 		if($this->_customer->_user->id < 1)
 		{
 			$this->setRedirect(JRoute::_($this->log_link, false));
 			return;
 		}
-		
+
 		$fileInfo = $this->_model->getfileinfo();
 		//print_r($fileInfo);die;
 		DigiComSiteHelperDigiCom::checkUserAccessToFile($fileInfo,$this->_customer->_user->id);
-		
+
 		if(empty($fileInfo->url)){
 			$itemid = JFactory::getApplication()->input->get('itemid',0);
 			$msg = JText::sprintf('COM_DIGICOM_DOWNLOADS_FILE_DONT_EXIST_DETAILS',$fileInfo->name);
 			JFactory::getApplication()->redirect('index.php?option=com_digicom&view=downloads&Itemid='.$itemid,$msg);
 		}
-		
+
 		$parsed = parse_url($fileInfo->url);
+		$fileLink = $fileInfo->url;
+		
 		if (empty($parsed['scheme'])) {
-			$fileLink = JPATH_BASE . '/' . $fileInfo->url;
+			$basefileLink = JPATH_BASE . $fileInfo->url;
 		}else{
-			$fileLink = $fileInfo->url;
+			$basefileLink = $fileInfo->url;
 		}
 
 		//update hits
@@ -63,14 +65,14 @@ class DigiComControllerDownloads extends JControllerLegacy
 		$files->load($fileInfo->id);
 		$files->hits = $files->hits+1;
 		$files->store();
-		
-		$downloadfile = new DigiComSiteHelperDownloadFile($fileLink);
+
+		$downloadfile = new DigiComSiteHelperDownloadFile($fileLink,$basefileLink);
 
 		$info = array(
 			'fileinfo' => $fileInfo
 		);
 
-		if (!$downloadfile->df_download()){
+		if (!$downloadfile->download()){
 
 			DigiComSiteHelperLog::setLog('download', 'downloads makeDownload', $fileInfo->id, 'Download product : '.$fileInfo->product_name . ', file : '. $fileInfo->name, json_encode($info),'failed');
 
@@ -82,5 +84,5 @@ class DigiComControllerDownloads extends JControllerLegacy
 		DigiComSiteHelperLog::setLog('download', 'downloads makeDownload', $fileInfo->id, 'Download product : '.$fileInfo->product_name . ', file : '. $fileInfo->name, json_encode($info));
 
 	}
-	
+
 }
