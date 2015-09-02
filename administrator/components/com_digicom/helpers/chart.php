@@ -61,11 +61,11 @@ class DigiComHelperChart {
 		$price = '';
 		$prefix = '';
 		foreach ($daterange as $key => $value) {
-			$date = new DateTime($value);
+			//$date = new DateTime($value);
 			//$days = $days . $prefix . '"' . DigiComHelperChart::addOrdinalNumberSuffix($date->format('d')) . ' '.$date->format('M').'"';
 			//$prefix = ', ';
 
-			$dayPrice = ceil(DigiComHelperChart::getAmountByDate($date->format('Y-m-d'),$byproduct));
+			$dayPrice = ceil(DigiComHelperChart::getAmountByDate($value,$byproduct));
 			$price = $price . $prefix . $dayPrice;
 			$prefix = ', ';
 
@@ -116,7 +116,8 @@ class DigiComHelperChart {
 			    $productid = $session->get( 'productid', '' );
 			  }
 
-			if(empty($productid)) return DigiComHelperDigiCom::format_price(0, $config->get('currency','USD'), true, $config);
+			if(empty($productid)) return 0;
+			//if(empty($productid)) return DigiComHelperDigiCom::format_price(0, $config->get('currency','USD'), true, $config);
 
 		}
 
@@ -152,9 +153,10 @@ class DigiComHelperChart {
 		// //$sql = "SELECT SUM(CASE WHEN `amount_paid` = '1' THEN `amount` ELSE `amount_paid` END) as total from #__digicom_orders where 1=1 ".$and;
 		// $db->setQuery($sql);
 		// $db->query();
-		$price = $db->loadResult();
-		$result = DigiComHelperDigiCom::format_price($price, $config->get('currency','USD'), true, $config);
-		return $result;
+		return $db->loadResult();
+		// $price = $db->loadResult();
+		// $result = DigiComHelperDigiCom::format_price($price, $config->get('currency','USD'), true, $config);
+		// return $result;
 	}
 
 	/*
@@ -174,15 +176,16 @@ class DigiComHelperChart {
 			    $productid = $session->get( 'productid', '' );
 			  }
 
-			if(empty($productid)) return DigiComHelperDigiCom::format_price(0, $config->get('currency','USD'), true, $config);
+			if(empty($productid)) return 0;
+			//if(empty($productid)) return DigiComHelperDigiCom::format_price(0, $config->get('currency','USD'), true, $config);
 
 		}
 
 
 		$startdate = date($day." 00:00:00");
-		$start_date_int = strtotime($startdate);
+		//$start_date_int = strtotime($startdate);
 		$enddate = date('Y-m-d 00:00:0', strtotime($startdate . ' + 1 day'));
-		$end_date_int = strtotime($enddate);
+		//$end_date_int = strtotime($enddate);
 
 		$query = $db->getQuery(true);
 		$query->select('SUM('.$db->quoteName('o.amount_paid').') as '.$db->quoteName('total'))
@@ -192,8 +195,6 @@ class DigiComHelperChart {
 			$query->join('inner',$db->quoteName('#__digicom_orders_details','od') . ' ON ('.$db->quoteName('od.orderid').'='.$db->quoteName('o.id').')');
 		}
 
-		// $query->where($db->quoteName('o.order_date')." >= ".$db->quote($start_date_int));
-		// $query->where($db->quoteName('o.order_date')." < ".$db->quote($end_date_int));
 		$query->where($db->quoteName('o.order_date')." BETWEEN '".$startdate."' AND '".$enddate."'");
 
 		if($byproduct){
@@ -204,9 +205,12 @@ class DigiComHelperChart {
 		$db->setQuery($query);
 		//echo $query->__toString($query);jexit();
 		//$db->execute();
-		$price = $db->loadResult();
-		$result = DigiComHelperDigiCom::format_price($price, $config->get('currency','USD'), true, $config);
-		return $result;
+		return $db->loadResult();
+		// $price = $db->loadResult();
+		//
+		// $result = DigiComHelperDigiCom::format_price($price, $config->get('currency','USD'), true, $config);
+		// echo $result;die;
+		// return $result;
 	}
 
 
@@ -227,7 +231,8 @@ class DigiComHelperChart {
 			    $productid = $session->get( 'productid', '' );
 			  }
 
-			if(empty($productid)) return DigiComHelperDigiCom::format_price(0, $config->get('currency','USD'), true, $config);
+			if(empty($productid)) return 0;
+			//if(empty($productid)) return DigiComHelperDigiCom::format_price(0, $config->get('currency','USD'), true, $config);
 
 		}
 
@@ -264,9 +269,10 @@ class DigiComHelperChart {
 
 		// $db->setQuery($sql);
 		// $db->query();
-		$price = $db->loadResult();
-		$result = DigiComHelperDigiCom::format_price($price, $config->get('currency','USD'), true, $config);
-		return $result;
+		return $db->loadResult();
+		// $price = $db->loadResult();
+		// $result = DigiComHelperDigiCom::format_price($price, $config->get('currency','USD'), true, $config);
+		// return $result;
 	}
 
 
