@@ -29,7 +29,7 @@ function addtoCart(pid, to_cart)
 	}else{
 		var qty = 1;
 	}
-	var url = 'index.php?option=com_digicom&view=cart&task=cart.add&from=ajax&pid='+pid+'&qty='+qty;
+	var url = digicom_site + 'index.php?option=com_digicom&view=cart&task=cart.add&from=ajax&pid='+pid+'&qty='+qty;
 	jQuery('#cartPopup').modal({
 		remote: url,
 		show: true
@@ -50,106 +50,6 @@ function refresCartModule()
 	  });
 	}
 }
-//
-// function validateForm(register)
-// {
-// 		console.log(register);
-// 		if ((document.adminForm.name && document.adminForm.name.value=="")
-// 			|| (document.adminForm.email && document.adminForm.email.value=="")
-// 			|| (document.adminForm.address && document.adminForm.address.value=="")
-// 			|| (document.adminForm.city && document.adminForm.city.value=="")
-// 			|| (document.adminForm.zipcode && document.adminForm.zipcode.value=="")
-// 			|| (document.adminForm.country && document.adminForm.country.value=="")
-// 			|| (document.adminForm.username && document.adminForm.username.value=="")
-//
-// 		){
-// 				if(register){
-// 					var field_required = new Array("name", "email", "address", "city", "zipcode", "country", "username", "password", "password_confirm");
-// 				}else{
-// 					var field_required = new Array("name", "email", "address", "city", "zipcode", "country", "username2");
-// 				}
-//
-// 				var found = false;
-// 				for(i=0; i<field_required.length; i++){
-// 					if(document.getElementById(field_required[i])){
-// 						if(document.getElementById(field_required[i]).value == ""){
-// 							found = true;
-// 							document.getElementById(field_required[i]).style.borderColor = "red";
-// 						}else{
-// 							document.getElementById(field_required[i]).style.borderColor = "";
-// 						}
-// 					}
-// 				}
-//
-// 				if(found){
-// 					alert(DSALL_REQUIRED_FIELDS);
-// 				}else if(register){
-// 					alert(DSALL_REQUIRED_FIELDS);
-// 				}
-//
-// 				return false;
-// 		}
-//
-// 		if (document.adminForm.password.value != document.adminForm.password_confirm.value) {
-// 			var field_required = new Array("name", "email", "address", "city", "zipcode", "country", "username");
-// 			for(i=0; i<field_required.length; i++){
-// 				if(document.getElementById(field_required[i])){
-// 					document.getElementById(field_required[i]).style.borderColor = "";
-// 				}
-// 			}
-//
-// 			document.getElementById("password").style.borderColor = "red";
-// 			document.getElementById("password_confirm").style.borderColor = "red";
-//
-// 			alert(DSCONFIRM_PASSWORD_MSG);
-// 			return false;
-// 		}
-//
-// 		if (!isEmail(document.adminForm.email.value)){
-// 			var field_required = new Array("name", "address", "city", "zipcode", "country", "username", "password", "password_confirm");
-// 			for(i=0; i<field_required.length; i++){
-// 				if(document.getElementById(field_required[i])){
-// 					document.getElementById(field_required[i]).style.borderColor = "";
-// 				}
-// 			}
-//
-// 		   document.getElementById("email").style.borderColor = "red";
-//
-// 		   alert(DSINVALID_EMAIL);
-// 		   return false;
-// 		}
-//
-// 		if ((document.adminForm.zipcode) && !validateUSZip(document.adminForm.zipcode.value,document.adminForm.country.value)){
-// 		   	var field_required = new Array("name", "email", "address", "city", "country", "username", "password", "password_confirm");
-// 			for(i=0; i<field_required.length; i++){
-// 				if(document.getElementById(field_required[i])){
-// 					document.getElementById(field_required[i]).style.borderColor = "";
-// 				}
-// 			}
-//
-// 		   document.getElementById("zipcode").style.borderColor = "red";
-// 		   alert("Invalid zipcode");
-// 		   return false;
-// 		}
-//
-// 		document.adminForm.name.value = document.adminForm.name.value;
-// 		return true;
-// }
-// function isEmail(string)
-// {
-// 	var str = string;
-// 	return (str.search(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/) != -1);
-// }
-// function validateUSZip( strValue , country)
-// {
-//
-// 	if(country == 'United-States'){
-// 		var objRegExp  = /(^[A-Za-z0-9 ]{1,7}$)/;
-// 		return objRegExp.test(strValue);
-// 	}
-//
-// 	return true;
-// }
 
 function validateInput(input)
 {
@@ -159,7 +59,7 @@ function validateInput(input)
 
 		var myAjax = new Request(
 	   	{
-		    url:   'index.php?option=com_digicom&task=cart.validate_input&input='+input+'&value='+value,
+		    url:   digicom_site + 'index.php?option=com_digicom&task=cart.validate_input&input='+input+'&value='+value,
 	        method: 'get',
 		    	onSuccess: function(response)
 	        {
@@ -173,7 +73,7 @@ function validateInput(input)
 								}
 								var myAjax = new Request(
 									{
-										url:   'index.php?option=com_digicom&task=getLanguage&txt='+msg,
+										url:   digicom_site + 'index.php?option=com_digicom&task=getLanguage&txt='+msg,
 											method: 'get',
 											onSuccess: function(response)
 											{
@@ -193,7 +93,7 @@ function validateInput(input)
 function deleteFromCart(cartid)
 {
 	jQuery.ajax({
-      url: 'index.php?option=com_digicom&view=cart&task=cart.deleteFromCart&from=ajax&cartid='+cartid,
+      url: digicom_site + 'index.php?option=com_digicom&view=cart&task=cart.deleteFromCart&from=ajax&cartid='+cartid,
 			method: 'get',
       success: function (data, textStatus, xhr) {
 				location.reload();

@@ -19,6 +19,7 @@ class DigiComControllerProfile extends JControllerLegacy
 		$app = JFactory::getApplication("site");
 		$Itemid = JRequest::getInt('Itemid', 0);
 
+		$return = JRoute::_('index.php?option=com_digicom&view=cart&task=cart.checkout');
 		if($returnpage = JRequest::getVar('return', '', 'request', 'base64'))
 		{
 		 	$return = base64_decode($returnpage);
@@ -35,16 +36,6 @@ class DigiComControllerProfile extends JControllerLegacy
 		$credentials['username'] = $username; //JRequest::getVar('username', '', 'method', 'username');
 		$credentials['password'] = $password; //JRequest::getString('passwd', '', 'post', JREQUEST_ALLOWRAW);
 
-		// $err = $app->login($credentials, $options);
-		// var_dump($err);jexit;
-		// if($err === false){
-		// 	$this->setRedirect($returnpage);
-		// 	return true;
-		// }else{
-		// 	$this->setRedirect($return);
-		// 	return true;
-		// }
-		//
 		// Perform the log in.
 		if (true === $app->login($credentials, $options))
 		{
@@ -55,13 +46,13 @@ class DigiComControllerProfile extends JControllerLegacy
 			}
 
 			$app->setUserState('users.login.form.data', array());
-			$app->redirect($return, false);
+			$app->redirect($return);
 		}
 		else
 		{
 			// Login failed !
 			$data['remember'] = (int) $options['remember'];
-			$app->redirect(JRoute::_('index.php?option=com_digicom&view=register&return='.$returnpage), false);
+			$app->redirect(JRoute::_('index.php?option=com_digicom&view=register&return='.$returnpage));
 		}
 	}
 
@@ -119,7 +110,7 @@ class DigiComControllerProfile extends JControllerLegacy
 			$app->setUserState('com_digicom.profile.data', $requestData);
 
 			// Redirect back to the register screen.
-			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=profile', false));
+			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=profile'));
 
 			return false;
 		}
@@ -135,7 +126,7 @@ class DigiComControllerProfile extends JControllerLegacy
 
 			// Redirect back to the edit screen.
 			$this->setMessage($model->getError(), 'warning');
-			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=profile', false));
+			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=profile'));
 
 			return false;
 		}
@@ -203,7 +194,7 @@ class DigiComControllerProfile extends JControllerLegacy
 
 			// Redirect back to the register screen.
 
-			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=billing', false));
+			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=billing'));
 
 			return false;
 		}
@@ -219,7 +210,7 @@ class DigiComControllerProfile extends JControllerLegacy
 
 			// Redirect back to the edit screen.
 			$this->setMessage($model->getError(), 'warning');
-			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=billing', false));
+			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=billing'));
 
 			return false;
 		}
