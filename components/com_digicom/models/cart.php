@@ -1312,6 +1312,7 @@ class DigiComModelCart extends JModelItem
 		// Trigger the event
 		$dispatcher=JDispatcher::getInstance();
 		$dispatcher->trigger('onDigicomBeforePlaceOrder',array($table));
+		//print_r($table);die;
 		if($table->store()){
 			$orderid = $table->id;
 			$this->storeTransactionData( $items, $orderid, $tax, $sid );
