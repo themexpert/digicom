@@ -35,7 +35,7 @@ $currency = $configs->get('currency','USD');
 				<td width="70">
 					<?php if(!empty($item->images)): ?>
 						<img height="100" width="100" title="<?php echo $item->name; ?>"
-						src="<?php echo JRoute::_(DigiComSiteHelperDigiCom::getThumbnail($item->images)); ?>" alt="<?php echo $item->name; ?>"/>
+						src="<?php echo  JURI::root() . JRoute::_(DigiComSiteHelperDigiCom::getThumbnail($item->images)); ?>" alt="<?php echo $item->name; ?>"/>
 					<?php endif; ?>
 				</td>
 				<!-- /End Product image -->

@@ -19,7 +19,7 @@ $doc->addStyleSheet( JUri::root(true). '/modules/mod_digicom_cart/assets/css/mod
 
 			<li class="clearfix">
 				<a href="<?php echo JRoute::_(DigiComSiteHelperRoute::getProductRoute($item->id, $item->catid)) ?>">
-					<?php if($item->images): ?><img src="<?php echo DigiComSiteHelperDigiCom::getThumbnail($item->images); ?>" alt="<?php echo $item->name; ?>"/><?php endif; ?>
+					<?php if($item->images): ?><img src="<?php echo JURI::root() . DigiComSiteHelperDigiCom::getThumbnail($item->images); ?>" alt="<?php echo $item->name; ?>"/><?php endif; ?>
 					<?php echo $item->name; ?>
 				</a>
 				<span class="dg-quantity">
