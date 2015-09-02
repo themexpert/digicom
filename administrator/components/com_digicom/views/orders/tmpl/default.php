@@ -136,6 +136,9 @@ Joomla.submitbutton = function (pressbutton) {
 					<th>
 						<?php echo JText::_( 'COM_DIGICOM_CUSTOMER_PAYMENT_METHOD' ); ?>
 					</th>
+					<th>
+						<?php echo JText::_( 'COM_DIGICOM_ACTION' ); ?>
+					</th>
 				</tr>
 			</thead>
 
@@ -177,7 +180,7 @@ Joomla.submitbutton = function (pressbutton) {
                 $orderitems = DigiComHelperDigiCom::getProductsNamebyOrder($id);
             		foreach ($orderitems as $orderkey => $orderitem) {
               ?>
-            			<a class="label label-warning" href="<?php echo JRoute::_('index.php?option=com_digicom&view=product&task=product.edit&id=' . $orderitem->id); ?>"><?php echo $orderitem->name; ?></a>
+            			<a class="label" href="<?php echo JRoute::_('index.php?option=com_digicom&view=product&task=product.edit&id=' . $orderitem->id); ?>"><?php echo $orderitem->name; ?></a>
             	<?php } ?>
             </a>
 						</td>
@@ -205,6 +208,20 @@ Joomla.submitbutton = function (pressbutton) {
 						</td>
 						<td align="center" width="1%">
 
+ 							<?php
+                $class = 'badge badge-success';
+								if($order->status == "Pending"){
+									$class = 'badge badge-warning';
+								} ?>
+                <span class="<?php echo $class; ?>">
+                  <?php echo (trim( $order->status ) != "in_progres" ? $order->status : "Active"); ?>
+                </span>
+            </td>
+						<td align="center">
+							<?php echo $order->processor; ?>
+						</td>
+            <td align="center" width="1%">
+
  							<?php if ($canDo->get('core.edit.state')) : ?>
                  <?php echo DigiComHelperDigiCom::getOrderSratusList($order->status, $i, $order); ?>
 						  <?php else: ?>
@@ -218,10 +235,6 @@ Joomla.submitbutton = function (pressbutton) {
                 </span>
               <?php endif; ?>
             </td>
-						<td align="center">
-							<?php echo $order->processor; ?>
-						</td>
-
 					</tr>
 					<?php
 					$k = 1 - $k;

@@ -350,6 +350,9 @@ class DigiComHelperDigiCom extends JHelperContent{
 		{
 			$status = "<span style='color:red'>".(JText::_("COM_DIGICOM_EXPIRED")).": (".(JText::_("Date")).")</span>";
 		}
+		elseif($timestart > $now){
+			$status = "<span style='color:blue'>".(JText::_("COM_DIGICOM_DISCOUNT_CODE_UPCOMING"))."</span>";
+		}
 		else
 		{
 			$status = "<span style='color:red'>".(JText::_("COM_DIGICOM_DISCOUNT_CODE_ERROR"))."</span>";
