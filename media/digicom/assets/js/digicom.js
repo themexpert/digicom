@@ -92,13 +92,14 @@ function validateInput(input)
 }
 function deleteFromCart(cartid)
 {
-	jQuery.ajax({
+	location.href = digicom_site+'index.php?option=com_digicom&view=cart&task=cart.deleteFromCart&cartid='+cartid;
+	/*jQuery.ajax({
       url: digicom_site + 'index.php?option=com_digicom&view=cart&task=cart.deleteFromCart&from=ajax&cartid='+cartid,
 			method: 'get',
       success: function (data, textStatus, xhr) {
 				location.reload();
       }
-  });
+  });*/
 }
 
 function ajaxRequest(Url,DivId)
