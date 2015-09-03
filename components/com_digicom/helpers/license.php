@@ -35,7 +35,7 @@ class DigiComSiteHelperLicense {
 
 		$db 	= JFactory::getDbo();
 		$query 	= $db->getQuery(true);
-		
+
 		if($type == 'complete_order'){
 			$fields = array(
 			    $db->quoteName('active') . ' = 1'
@@ -46,7 +46,7 @@ class DigiComSiteHelperLicense {
 			);
 		}
 		$conditions = array(
-		    $db->quoteName('orderid') . ' = '.$order_id, 
+		    $db->quoteName('orderid') . ' = '.$order_id,
 		    $db->quoteName('userid') . ' = ' . $customer
 		);
 		$query->update($db->quoteName('#__digicom_licenses'))->set($fields)->where($conditions);
@@ -142,4 +142,29 @@ class DigiComSiteHelperLicense {
 
 		return $db->loadObject();
 	}
+
+	public static function getItemsbyUser($userid, $current = true){
+		// Create a new query object.
+		$db		= JFactory::getDbo();
+		$query	= $db->getQuery(true);
+		// Select required fields from the dashboard.
+		$query->select('DISTINCT l.productid as productid')
+					->select(array('p.name,p.catid,p.catid,p.bundle_source,p.product_type as type'))
+					->select(array('l.*','DATEDIFF(expires, now()) as dayleft'))
+			  	->from($db->quoteName('#__digicom_products') . ' AS p');
+		$query->join('inner', '#__digicom_licenses AS l ON l.productid = p.id');
+
+		if($current){
+			$query->where($db->quoteName('l.active') . ' = ' . 1);
+		}
+		$query->where($db->quoteName('l.userid') . ' = ' . $userid);
+
+		$query->order($db->quoteName('p.name') . ' ASC');
+
+		$db->setQuery($query);
+
+		return $db->loadObjectList();
+		
+	}
+
 }

@@ -39,7 +39,7 @@ class DigiComSiteHelperSession
 	 */
 	public function __construct ()
 	{
-
+		
 		$db 		= JFactory::getDBO();
 		$my 		= JFactory::getUser();
 		$reg 		= JFactory::getSession();

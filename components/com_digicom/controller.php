@@ -95,6 +95,9 @@ class DigiComController extends JControllerLegacy
 			$db->setQuery($query);
 			$db->execute();
 
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('onDigicomOnCronJobOperation',array());
+
 			echo JText::_('COM_DIGICOM_LICENSE_CHECK_SUCCESSFUL');
 		}
 		catch (Exception $e)
