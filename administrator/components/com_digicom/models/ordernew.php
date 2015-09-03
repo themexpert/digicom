@@ -201,9 +201,11 @@ class DigiComModelOrderNew extends JModelAdmin
 			$cust = new stdClass();
 			$cust->id = $user->id;
 			$cust->name = $user->name;
+			$cust->email = $user->email;
 			$table->bind($cust);
-			$table->store();
+			$table->create();
 		}
+		//print_r($table);die;
 		// prepare the data
 		$status = $data['status'];
 		if($status == 'Paid'){
@@ -243,6 +245,14 @@ class DigiComModelOrderNew extends JModelAdmin
 			DigiComSiteHelperLicense::addLicenceSubscription($data['product_id'], $data['userid'], $recordId, $type);
 
 			DigiComHelperEmail::sendApprovedEmail($recordId, $type, $data['status'], $data['amount_paid']);
+			
+			$items = $this->getOrderItems($recordId);
+			if($data['status'] == 'Active'){
+
+				$dispatcher = JDispatcher::getInstance();
+				$dispatcher->trigger('onDigicomAfterPaymentComplete', array($recordId, $info, $data['processor'], $items, $data['userid']));
+
+			}
 
 			return true;
 
@@ -307,6 +317,29 @@ class DigiComModelOrderNew extends JModelAdmin
 		// end foreach
 
 		return true;
+	}
+
+	public function getOrderItems( $order_id ){
+
+		$configs = $this->getConfigs();
+		$db 	= JFactory::getDbo();
+		$sql 	= 'SELECT `p`.*, `od`.quantity FROM `#__digicom_products` AS `p` INNER JOIN `#__digicom_orders_details` AS `od` ON (`od`.`productid` = `p`.`id`) WHERE `orderid` ='.$order_id;
+
+		$db->setQuery($sql);
+		$items = $db->loadObjectList();
+
+		//change the price of items if needed
+		for ( $i = 0; $i < count( $items ); $i++ )
+		{
+			$item = &$items[$i];
+			$item->discount = 0;
+			$item->currency = $configs->get('currency','USD');
+			$item->price = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
+			$item->subtotal = $item->price * $item->quantity;
+		}
+
+		return $items ;
+
 	}
 
 	/*

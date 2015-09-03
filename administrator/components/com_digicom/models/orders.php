@@ -581,9 +581,18 @@ class DigiComModelOrders extends JModelList{
 
 		// based on order status changes, we need to update license too :)
 		$this->updateLicensesStatus($id, $type);
-
 		// sent email as order status has changed
 		DigiComHelperEmail::sendApprovedEmail($id, $type, $status);
+
+		if($status == "Active" or $status == "Paid"){
+
+			$orders = $this->getInstance( "Orders", "DigiComModel" );
+			$orders->getOrderItems($id);
+
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('onDigicomAfterPaymentComplete', array($id, $info = array(), $table->processor, $items, $table->userid));
+
+		}
 
 		return true;
 	}

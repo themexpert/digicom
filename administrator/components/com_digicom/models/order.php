@@ -227,6 +227,7 @@ class DigiComModelOrder extends JModelAdmin
 		if(empty($table->transaction_number)){
 			$data['transaction_number'] = DigiComSiteHelperDigicom::getUniqueTransactionId($table->id);
 		}
+
 		$logtype = 'status';
 		if(parent::save($data)){
 
@@ -256,16 +257,56 @@ class DigiComModelOrder extends JModelAdmin
 
 			DigiComSiteHelperLog::setLog($logtype, 'Admin order save', $table->id, 'Admin changed order#'.$table->id.', status: '.$status.', paid: '.$data['amount_paid'], json_encode($info),$status);
 
-			$orders = $this->getInstance( "Orders", "DigiComModel" );
-			$orders->updateLicensesStatus($data['id'], $type);
+			if($table->status != $data['status']){
 
-			if($status == "Active" or $status == "Paid"){
+				$orders = $this->getInstance( "Orders", "DigiComModel" );
+				$orders->updateLicensesStatus($data['id'], $type);
+
 				DigiComHelperEmail::sendApprovedEmail($data['id'], $type, $status, $data['amount_paid']);
+				
+				if($status == "Active" or $status == "Paid")
+				{
+
+					$items = $this->getOrderItems($table->id);
+					$dispatcher = JDispatcher::getInstance();
+					$dispatcher->trigger('onDigicomAfterPaymentComplete', array($table->id, $info, $table->processor, $items, $table->userid));
+
+				}
+
 			}
+
 
 		}
 
 		return true;
+
+	}
+
+	public function getOrderItems( $order_id ){
+
+		$configs = $this->getConfigs();
+		$customer = new DigiComSiteHelperSession();
+		$db 	= JFactory::getDbo();
+		$sql 	= 'SELECT `p`.*, `od`.quantity FROM
+					`#__digicom_products` AS `p`
+						INNER JOIN
+					`#__digicom_orders_details` AS `od` ON (`od`.`productid` = `p`.`id`)
+				WHERE `orderid` ='.$order_id;
+
+		$db->setQuery($sql);
+		$items = $db->loadObjectList();
+
+		//change the price of items if needed
+		for ( $i = 0; $i < count( $items ); $i++ )
+		{
+			$item = &$items[$i];
+			$item->discount = 0;
+			$item->currency = $configs->get('currency','USD');
+			$item->price = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
+			$item->subtotal = $item->price * $item->quantity;
+		}
+
+		return $items ;
 
 	}
 
