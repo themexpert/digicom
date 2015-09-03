@@ -26,6 +26,7 @@ class DigiComHelperEmail {
 
         $cust_info = JTable::getInstance( 'Customer','table' );
         $cust_info->load( $order->userid );
+        $cust_info->username = JFactory::getUser($order->userid)->username;
 
         $my = $cust_info;
         //print_r($my);jexit();
@@ -242,7 +243,7 @@ class DigiComHelperEmail {
         if(!empty($email_settings->from_email)){
             $adminEmail2 = $email_settings->from_email;
         }
-        
+
 
         $mailSender = JFactory::getMailer();
         $mailSender->IsHTML( true );

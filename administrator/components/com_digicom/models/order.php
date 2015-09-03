@@ -257,21 +257,25 @@ class DigiComModelOrder extends JModelAdmin
 
 			DigiComSiteHelperLog::setLog($logtype, 'Admin order save', $table->id, 'Admin changed order#'.$table->id.', status: '.$status.', paid: '.$data['amount_paid'], json_encode($info),$status);
 
+			$table = $this->getTable();
+			$table->load($data['id']);
+
 			if($table->status != $data['status']){
 
 				$orders = $this->getInstance( "Orders", "DigiComModel" );
 				$orders->updateLicensesStatus($data['id'], $type);
 
 				DigiComHelperEmail::sendApprovedEmail($data['id'], $type, $status, $data['amount_paid']);
-				
+
+				$dispatcher = JDispatcher::getInstance();
+
 				if($status == "Active" or $status == "Paid")
 				{
-
 					$items = $this->getOrderItems($table->id);
-					$dispatcher = JDispatcher::getInstance();
 					$dispatcher->trigger('onDigicomAfterPaymentComplete', array($table->id, $info, $table->processor, $items, $table->userid));
-
 				}
+
+				$dispatcher->trigger('onDigicomAdminAfterOrderStatusChange', array($table));
 
 			}
 

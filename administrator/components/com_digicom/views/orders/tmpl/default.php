@@ -210,7 +210,7 @@ Joomla.submitbutton = function (pressbutton) {
 
  							<?php
                 $class = 'badge badge-success';
-								if($order->status == "Pending"){
+								if($order->status != "Active"){
 									$class = 'badge badge-warning';
 								} ?>
                 <span class="<?php echo $class; ?>">

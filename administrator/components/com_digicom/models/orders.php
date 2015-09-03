@@ -583,16 +583,18 @@ class DigiComModelOrders extends JModelList{
 		$this->updateLicensesStatus($id, $type);
 		// sent email as order status has changed
 		DigiComHelperEmail::sendApprovedEmail($id, $type, $status);
-
+		$dispatcher = JDispatcher::getInstance();
 		if($status == "Active" or $status == "Paid"){
 
-			$orders = $this->getInstance( "Orders", "DigiComModel" );
+			$orders = $this->getInstance( "Order", "DigiComModel" );
 			$orders->getOrderItems($id);
 
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onDigicomAfterPaymentComplete', array($id, $info = array(), $table->processor, $items, $table->userid));
 
 		}
+
+		$dispatcher->trigger('onDigicomAdminAfterOrderStatusChange', array($table));
 
 		return true;
 	}
