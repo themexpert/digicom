@@ -39,7 +39,7 @@ class DigiComModelDigiCom extends JModelList
 		// $start_date = "";
 		// $end_date = "";
 
-		
+
 		// $return = $this->getStartEndDate($report);
 		// //print_r($return );die;
 		// $startdate_str = $return["0"];
@@ -57,7 +57,7 @@ class DigiComModelDigiCom extends JModelList
 		// 	}
 		// 	$end_date = strtotime("+1 days", $end_date);
 		// }
-		
+
 		// $and = "";
 		// $and_products = "";
 		// if(trim($start_date) != ""){
@@ -76,7 +76,7 @@ class DigiComModelDigiCom extends JModelList
 		$sql = "SELECT SUM(CASE WHEN o.`amount_paid` = '-1' THEN o.`amount` ELSE o.`amount_paid` END) as total
 				FROM #__digicom_orders AS o
 				WHERE 1=1 ".$and;
-		
+
 		*/
 		$sql = "SELECT SUM(CASE WHEN `o`.`amount_paid` = '-1' THEN `o`.`amount` ELSE `o`.`amount_paid` END) as `total`
 				FROM `#__digicom_orders` AS `o`
@@ -95,7 +95,7 @@ class DigiComModelDigiCom extends JModelList
 		$db->setQuery($sql);
 		$db->query();
 		$chargebacks = $db->loadResult();
-		
+
 		// Get chargebacks total
 		//$sql = "SELECT SUM(od.`cancelled_amount`) as total
 		//		FROM #__digicom_orders_details AS od
@@ -106,7 +106,7 @@ class DigiComModelDigiCom extends JModelList
 		$db->setQuery($sql);
 		$db->query();
 		$refunds = $db->loadResult();
-		
+
 		// Get deleted total
 		// $sql = "SELECT SUM(od.`cancelled_amount`) as total
 		// 		FROM #__digicom_orders_details AS od
@@ -117,7 +117,7 @@ class DigiComModelDigiCom extends JModelList
 		$db->setQuery($sql);
 		$db->query();
 		$deleted = $db->loadResult();
-		
+
 		return $total - $chargebacks - $refunds - $deleted;
 	}
 
@@ -145,7 +145,7 @@ class DigiComModelDigiCom extends JModelList
 			}
 			$end_date = strtotime("+1 days", $end_date);
 		}
-		
+
 		$and = "";
 		if(trim($start_date) != ""){
 			$start_date = date("Y-m-d H:i:s", $start_date);
@@ -169,7 +169,7 @@ class DigiComModelDigiCom extends JModelList
 		$db->setQuery($sql);
 		$db->query();
 		$total = $db->loadResult();
-		
+
 		// $sql = "select count(*)
 		// 		from #__digicom_orders o
 		// 		where 1=1 and o.status='Pending' ".$and;
@@ -322,7 +322,7 @@ class DigiComModelDigiCom extends JModelList
 			$return = $this->getStartEndDate($report);
 			$startdate = $return[0];
 			$enddate = $return[1];
-			
+
 			$start_date_int = strtotime($startdate);
 			$end_date_int = strtotime($enddate);
 			$dayChart = array();
