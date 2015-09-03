@@ -260,6 +260,11 @@ class DigiComModelCart extends JModelItem
 
 		if(count($items) > 0){
 			$this->calc_price($items, $customer, $configs);
+		}else{
+			$db->clear();
+			$sql = "update #__digicom_session set cart_details='' where sid='" . $customer->_sid . "'";
+			$db->setQuery($sql);
+			$db->execute();
 		}
 
 		return $this->_items;
