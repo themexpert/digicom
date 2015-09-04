@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 class DigiComViewCheckout extends JViewLegacy
 {
 	public $customer;
-	public $pg_plugin;
+	public $pay_plugin;
 	public $items;
 	public $order;
 	public $data;
@@ -22,9 +22,12 @@ class DigiComViewCheckout extends JViewLegacy
 	{
 
 		$app 			= JFactory::getApplication();
+		$configs 	= JComponentHelper::getComponent('com_digicom')->params;
+		$session 	= JFactory::getSession();
+		$customer	= new DigiComSiteHelperSession();
+
 		$input 		= $app->input;
 		$return 	= base64_encode( JURI::getInstance()->toString() );
-		$customer	= new DigiComSiteHelperSession();
 
 		if($customer->_user->id < 1)
 		{
@@ -32,42 +35,43 @@ class DigiComViewCheckout extends JViewLegacy
 			return true;
 		}
 
-		$session 	= JFactory::getSession();
-		$processor	= JRequest::getVar("processor", "");
+		$processor	= $input->get("processor", "");
 
 		if(empty($processor)){
-			$pg_plugin 	= $session->get('processor');
+			$pay_plugin 	= $session->get('processor');
 		}else{
-			$pg_plugin 	= $processor;
+			$pay_plugin 	= $processor;
+		}
+		if(empty($pay_plugin)){
+			$pay_plugin 	= $configs->get('default_payment','offline');
 		}
 
-		$configs 	= JComponentHelper::getComponent('com_digicom')->params;
 		$order 		= $this->get('Order');//print_r($order);die;
+		if(!isset($order->id) or $order->id <= 0){
+			$app->redirect(JRoute::_('index.php?option=com_digicom&view=cart'));
+		}
+
 		$params 	= json_decode($order->params);//print_r($params);die;
 		$items 		= $params->products;//print_r($items);die;
 
-		$vars 				= new stdClass();
-		$vars->items 		= $items;
+		$vars 						= new stdClass();
+		$vars->items 			= $items;
 		$vars->order_id 	= $params->order_id;
 		$vars->user_id 		= JFactory::getUser()->id;
 		$vars->customer		= $customer->_customer;
 		$vars->item_name 	= '';
 
-		// for($i=0; $i<count($items); $i++)
-		// {
-		// 	$vars->item_name.= $items[$i]['name'] . ', ';
-		// }
 		foreach ($items as $key => $value) {
 			$vars->item_name.= $value->name . ', ';
 		}
 
 		$vars->item_name = substr($vars->item_name, 0, strlen($vars->item_name)-2);
 
-		$vars->cancel_return = JRoute::_(JURI::root()."index.php?option=com_digicom&task=cart.cancel&processor={$pg_plugin}", true, 0);
+		$vars->cancel_return = JRoute::_(JURI::root()."index.php?option=com_digicom&task=cart.cancel&processor={$pay_plugin}", true, 0);
 
 		//prepare the url
 		///processPayment
-		$url = JRoute::_(JURI::root()."index.php?option=com_digicom&task=cart.processPayment&processor={$pg_plugin}&order_id=".$params->order_id."&sid=".$customer->_customer->id, true, false);
+		$url = JRoute::_(JURI::root()."index.php?option=com_digicom&task=cart.processPayment&processor={$pay_plugin}&order_id=".$params->order_id."&sid=".$customer->_customer->id, true, false);
 		//echo $url;die;
 
 		$vars->return = $vars->notify_url = $vars->url = $url;
@@ -75,16 +79,16 @@ class DigiComViewCheckout extends JViewLegacy
 		$vars->amount = $params->order_amount;
 
 		// Triggre plugin event
-		JPluginHelper::importPlugin('digicom_pay', $pg_plugin);
+		JPluginHelper::importPlugin('digicom_pay', $pay_plugin);
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onSendPayment', array(& $params));
-		$html = $dispatcher->trigger('onTP_GetHTML', array($vars,$pg_plugin));
+		$html = $dispatcher->trigger('onTP_GetHTML', array($vars,$pay_plugin));
 
 		if (!isset($html[0])) {
 			$html[0] = '';
 		}
 
-		if ($pg_plugin == 'paypal')
+		if ($pay_plugin == 'paypal')
 		{
 			$html[0] = $html[0] . '<script type="text/javascript">';
 			$html[0] = $html[0] . 'jQuery(".digicom-payment-form").hide();';
@@ -92,12 +96,12 @@ class DigiComViewCheckout extends JViewLegacy
 			$html[0] = $html[0] . '</script>';
 		}
 
-		$this->assign("pg_plugin", $pg_plugin);
+		$this->assign("pg_plugin", $pay_plugin);
 		$this->assign("configs", $configs);
 		$this->assign("data", $html);
 		$this->assign("order", $order);
 		$this->assign("items", $items);
-		
+
 		$this->assign("customer", $customer);
 
 		$template = new DigiComSiteHelperTemplate($this);
