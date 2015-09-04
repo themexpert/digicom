@@ -50,11 +50,11 @@ class DigiComHelperChart {
 	public static function getMonthLabelPrice($monthlyDay, $byproduct = false){
 		$date = new DateTime('now');
 		$date->modify("first day of this month");
-		$start_date = $date->format('Y-m-d 00:00:0');
+		$start_date = $date->format('Y-m-d 00:00:00');
 
 		$date = new DateTime('now');
 		//$date->modify("last day of this month");
-		$end_date = $date->format('Y-m-d 00:00:0');
+		$end_date = $date->format('Y-m-d 23:59:59');
 		//echo $end_date;die;
 		$daterange = DigiComHelperChart::createDateRangeArray($start_date, $end_date);
 		//print_r($daterange);die;
@@ -122,13 +122,9 @@ class DigiComHelperChart {
 		}
 
 		$startdate = date("Y-m-".$day." 00:00:00");
-		//$start_date_int = strtotime($startdate);
-		//$enddate = date('Y-m-d 00:00:0', strtotime($startdate . ' + 1 day'));
-		//$end_date_int = strtotime($enddate);
 
-		//$and = "";
-		//$and .= " and `order_date` >= '".$start_date_int."'";
-		//$and .= " and `order_date` < '".$end_date_int . "'";
+		$date = new DateTime('now');
+		$end_date = $date->format('Y-m-d 23:59:59');
 
 		// set query
 		$query = $db->getQuery(true);
@@ -141,7 +137,7 @@ class DigiComHelperChart {
 
 		// $query->where($db->quoteName('o.order_date')." >= ".$db->quote($start_date_int));
 		// $query->where($db->quoteName('o.order_date')." < ".$db->quote($end_date_int));
-		$query->where($db->quoteName('o.order_date')." BETWEEN '".$startdate."' AND curdate()");
+		$query->where($db->quoteName('o.order_date')." BETWEEN '".$startdate."' AND '".$end_date."'");
 
 		if($byproduct){
 			$query->where($db->quoteName('od.productid')." = " . $db->quote($productid));
@@ -184,7 +180,7 @@ class DigiComHelperChart {
 
 		$startdate = date($day." 00:00:00");
 		//$start_date_int = strtotime($startdate);
-		$enddate = date('Y-m-d 00:00:0', strtotime($startdate . ' + 1 day'));
+		$enddate = date('Y-m-d 23:59:59', strtotime($startdate . ' + 1 day'));
 		//$end_date_int = strtotime($enddate);
 
 		$query = $db->getQuery(true);
@@ -238,7 +234,7 @@ class DigiComHelperChart {
 
 		$startdate = date($month."-1 00:00:00");
 		$start_date_int = strtotime($startdate);
-		$enddate = date('Y-m-d 00:00:0', strtotime($startdate . ' + 1 month'));
+		$enddate = date('Y-m-d 23:59:59', strtotime($startdate . ' + 1 month'));
 		//echo $enddate;die;
 		$end_date_int = strtotime($enddate);
 
@@ -406,11 +402,11 @@ class DigiComHelperChart {
 				//return DigiComHelperChart::getMonthLabelPrice($rangeDays,$byproduct);
 				$date = new DateTime('now');
 				$date->modify("first day of this month");
-				$start_date = $date->format('Y-m-d 00:00:0');
+				$start_date = $date->format('Y-m-d 00:00:00');
 
 				$date = new DateTime('now');
 				//$date->modify("last day of this month");
-				$end_date = $date->format('Y-m-d 00:00:0');
+				$end_date = $date->format('Y-m-d 23:59:59');
 				//echo $end_date;die;
 				$daterange = DigiComHelperChart::createDateRangeArray($start_date, $end_date);
 				//print_r($daterange);die;

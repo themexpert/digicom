@@ -35,7 +35,16 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 			<div class="span3">
 				<div class="panel-box">
 					<span class="icon-cart"></span>
-					<p><strong><?php echo $this->reportOrders['total']; ?></strong><br><?php echo JText::_('COM_DIGICOM_REPORTS_TOTAL_ORDERS'); ?></p>
+					<p>
+						<strong><?php echo $this->reportOrders['total']; ?></strong>
+						<?php echo JText::_('COM_DIGICOM_REPORTS_TOTAL_ORDERS'); ?>
+						<br>
+						<?php echo $this->reportOrders['free']; ?>
+						<?php echo JText::_('COM_DIGICOM_FREE'); ?>
+						/
+						<?php echo $this->reportOrders['paid']; ?>
+						<?php echo JText::_('COM_DIGICOM_PAID'); ?>
+					</p>
 				</div>
 			</div>
 

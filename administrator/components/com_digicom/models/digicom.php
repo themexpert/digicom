@@ -126,43 +126,6 @@ class DigiComModelDigiCom extends JModelList
 		$report = JRequest::getVar("report", "monthly");
 		$return = $this->getStartEndDate($report);
 
-		/*$start_date = "";
-		$end_date = "";
-
-		$return = $this->getStartEndDate($report);
-		$startdate_str = $return["0"];
-		$enddate_str = $return["1"];
-
-		if(trim($startdate_str) != ""){
-			$start_date = strtotime($startdate_str);
-		}
-
-		if(trim($enddate_str) != ""){
-			$end_date = strtotime($enddate_str);
-			if($end_date === FALSE){
-				$enddate_str = date("Y-M-d");
-				$end_date = strtotime($enddate_str);
-			}
-			$end_date = strtotime("+1 days", $end_date);
-		}
-
-		$and = "";
-		if(trim($start_date) != ""){
-			$start_date = date("Y-m-d H:i:s", $start_date);
-			$start_date = strtotime($start_date);
-
-			$and .= " and o.order_date >= ".$start_date;
-		}
-		if(trim($end_date) != ""){
-			$end_date = date("Y-m-d H:i:s", $end_date);
-			$end_date = strtotime($end_date);
-
-			$and .= " and o.order_date < ".$end_date;
-		}*/
-
-		// $sql = "select count(*)
-		// 		from #__digicom_orders o
-		// 		where 1=1 ".$and;
 		$sql = "select count(*)
 				from #__digicom_orders o
 				where 1=1 AND `o`.`order_date` between '".$return[0] ."' AND curdate()";
@@ -180,7 +143,24 @@ class DigiComModelDigiCom extends JModelList
 		$db->query();
 		$pending = $db->loadResult();
 
-		return array('total'=>$total,'pending'=>$pending);
+
+		$sql = "select count(*)
+				from #__digicom_orders o
+				where 1=1 AND `o`.`amount` = '0.000' AND `o`.`order_date` between '".$return[0] ."' AND curdate()";
+		$db->setQuery($sql);
+		$db->query();
+		$free = $db->loadResult();
+
+		$sql = "select count(*)
+				from #__digicom_orders o
+				where 1=1 AND `o`.`amount` != '0.000' AND `o`.`status` ='Active' AND`o`.`order_date` between '".$return[0] ."' AND curdate()";
+		$db->setQuery($sql);
+		$db->query();
+		$paid = $db->loadResult();
+
+
+
+		return array('total'=>$total,'pending'=>$pending, 'free'=> $free, 'paid'=>$paid);
 	}
 
 	function getreportCustomer(){
