@@ -39,50 +39,9 @@ class DigiComModelDigiCom extends JModelList
 		// $start_date = "";
 		// $end_date = "";
 
-
-		// $return = $this->getStartEndDate($report);
-		// //print_r($return );die;
-		// $startdate_str = $return["0"];
-		// $enddate_str = $return["1"];
-
-		// if(trim($startdate_str) != ""){
-		// 	$start_date = strtotime($startdate_str);
-		// }
-
-		// if(trim($enddate_str) != ""){
-		// 	$end_date = strtotime($enddate_str);
-		// 	if($end_date === FALSE){
-		// 		$enddate_str = date("Y-M-d");
-		// 		$end_date = strtotime($enddate_str);
-		// 	}
-		// 	$end_date = strtotime("+1 days", $end_date);
-		// }
-
-		// $and = "";
-		// $and_products = "";
-		// if(trim($start_date) != ""){
-		// 	$start_date = date("Y-m-d H:i:s", $start_date);
-		// 	$and_products .= " and od.purchase_date >= '".$start_date."'";
-		// 	$start_date = strtotime($start_date);
-		// 	$and .= " and o.order_date >= ".$start_date;
-		// }
-		// if(trim($end_date) != ""){
-		// 	$end_date = date("Y-m-d H:i:s", $end_date);
-		// 	$and_products .= " and od.purchase_date < '".$end_date."'";
-		// 	$end_date = strtotime($end_date);
-		// 	$and .= " and o.order_date < ".$end_date;
-		// }
-		/*
-		$sql = "SELECT SUM(CASE WHEN o.`amount_paid` = '-1' THEN o.`amount` ELSE o.`amount_paid` END) as total
-				FROM #__digicom_orders AS o
-				WHERE 1=1 ".$and;
-
-		*/
 		$sql = "SELECT SUM(`o`.`amount_paid`) as `total`
 				FROM `#__digicom_orders` AS `o`
-				WHERE `o`.`order_date` between '".$return[0] ."' AND '".$return[1]."'
-				AND `o`.`status` = 'Active'"
-				;
+				WHERE `o`.`order_date` between '".$return[0] ."' AND '".$return[1]."'";
 		$db->setQuery($sql);
 		$db->query();
 		$total = $db->loadResult();

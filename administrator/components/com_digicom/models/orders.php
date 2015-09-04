@@ -528,6 +528,9 @@ class DigiComModelOrders extends JModelList{
 			return false;
 		}
 
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('onDigicomAdminAfterOrderDelete', array($cids));
+
 		return true;
 	}
 
