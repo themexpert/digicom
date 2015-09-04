@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 class DigiComModelOrders extends JModelList{
 
-	protected $_context = 'com_digicom.order';
+	// protected $_context = 'com_digicom.order';
 	protected $_orders;
 	protected $_order;
 	protected $_id = null;
@@ -19,17 +19,82 @@ class DigiComModelOrders extends JModelList{
 	protected $_pagination = null;
 	protected $_statusList = array("Active", "Pending", "Cancel");
 
-	public function __construct(){
-		parent::__construct();
-		$cids = JRequest::getVar( 'cid', 0, '', 'array' );
+	public function __construct($config = array()){
 
+		if (empty($config['filter_fields']))
+		{
+			$config['filter_fields'] = array(
+				'id', 'a.id',
+				'userid', 'a.userid',
+				'transaction_number', 'a.transaction_number',
+				'order_date', 'a.order_date',
+				'price', 'a.price',
+				'amount', 'a.amount',
+				'discount', 'a.discount',
+				'amount_paid', 'a.amount_paid',
+				'number_of_products', 'a.number_of_products',
+				'currency', 'a.currency',
+				'status', 'a.status',
+				'promocodeid', 'a.promocodeid',
+				'promocode', 'a.promocode',
+				'processor', 'a.processor',
+				'published', 'a.published',
+				'chargeback', 'a.chargeback',
+				'update_date', 'a.update_date',
+				'startdate','enddate'
+			);
+		}
+
+		parent::__construct($config);
+
+		// old use, check it
+		$cids = JRequest::getVar( 'cid', 0, '', 'array' );
 		$this->setId( (int) $cids[0] );
+	}
+
+	/**
+	 * Method to get a store id based on model configuration state.
+	 *
+	 * This is necessary because the model is used by the component and
+	 * different modules that might need different sets of data or different
+	 * ordering requirements.
+	 *
+	 * @param   string  $id  A prefix for the store id.
+	 *
+	 * @return  string  A store id.
+	 *
+	 * @since   1.6
+	 */
+	protected function getStoreId($id = '')
+	{
+		// Compile the store id.
+		$id .= ':' . $this->getState('filter.search');
+		$id .= ':' . $this->getState('filter.startdate');
+		$id .= ':' . $this->getState('filter.enddate');
+		$id .= ':' . $this->getState('filter.status');
+
+		return parent::getStoreId($id);
 	}
 
 	function populateState($ordering = NULL, $direction = NULL){
 		$app = JFactory::getApplication('administrator');
-		$this->setState('list.start', $app->getUserStateFromRequest($this->_context . '.list.start', 'limitstart', 0, 'int'));
-		$this->setState('list.limit', $app->getUserStateFromRequest($this->_context . '.list.limit', 'limit', $app->getCfg('list_limit', 25) , 'int'));
+
+		$this->setState('list.start', $app->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int'));
+		$this->setState('list.limit', $app->getUserStateFromRequest($this->context . '.list.limit', 'limit', $app->getCfg('list_limit', 25) , 'int'));
+
+		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$startdate = $this->getUserStateFromRequest($this->context . 'filter.startdate', 'filter_startdate', '', 'string');
+		$this->setState('filter.startdate', $startdate);
+
+		$enddate = $this->getUserStateFromRequest($this->context . '.filter.enddate', 'filter_enddate', '', 'string');
+		$this->setState('filter.enddate', $enddate);
+
+
+
+		//print_r( $search );die;
+
 		$this->setState('selected', JRequest::getVar('cid', array()));
 	}
 
@@ -94,133 +159,135 @@ class DigiComModelOrders extends JModelList{
 		return $expires_date;
 	}
 
-	function saveorder(){
-		$post = JRequest::get('post');
-		//print_r($post);die;
-		$userid = $post['userid'];
-		$table = $this->getTable('Customer');
-		$table->loadCustommer($userid);
+	// function saveorder()
+	// {
+	// 	$post = JRequest::get('post');
+	// 	//print_r($post);die;
+	// 	$userid = $post['userid'];
+	// 	$table = $this->getTable('Customer');
+	// 	$table->loadCustommer($userid);
+	//
+	// 	if(empty($table->id) or $table->id < 0){
+	// 		$user = JFactory::getUser($userid);
+	//
+	// 		$cust = new stdClass();
+	// 		$cust->id = $user->id;
+	// 		$cust->name = $user->name;
+	// 		$table->bind($cust);
+	// 		$table->store();
+	// 	}
+	//
+	// 	//print_r($post);die;
+	// 	$config = JFactory::getConfig();
+	// 	$tzoffset = $config->get('offset');
+	//
+	// 	if(isset($post['order_date'])&& $post['order_date']){
+	// 		$date = JFactory::getDate($post['order_date']);
+	// 		$purchase_date = $date->toSql();
+	// 		$order_date = $date->toUNIX();
+	// 	} else{
+	// 		$purchase_date = date('Y-m-d H:i:s', time() + $tzoffset);
+	// 		$date = JFactory::getDate();
+	// 		$order_date = $date->toUNIX();
+	// 	}
+	//
+	// 	$order = array();
+	// 	$order['userid'] = $post['userid'];
+	// 	$order['order_date'] = $order_date;
+	// 	$order['processor'] = $post['processor'];
+	// 	$order['promocode'] = $post['promocode'];
+	// 	$order['discount'] = $post['discount'];
+	// 	$order['promocodeid'] = $this->getPromocodeByCode( $order['promocode'] );
+	// 	$order['number_of_products'] = count( $post['product_id'] );
+	// 	$order['currency'] = $post['currency'];
+	// 	$order['status'] = $post['status'];
+	// 	$order['discount'] = $post['discount'];
+	// 	$order['amount'] = $post['amount'];
+	// 	$order['amount_paid'] = trim($post['amount_paid']) != "" ? trim($post['amount_paid']) : '0';
+	// 	$order['published'] = '1';
+	// 	$order_table = $this->getTable( 'Order' );
+	//
+	// 	if(!$order_table->bind($order)){
+	// 		return false;
+	// 	}
+	//
+	// 	if(!$order_table->check()){
+	// 		return false;
+	// 	}
+	//
+	// 	if(!$order_table->store()){
+	// 		return false;
+	// 	}
+	// 	$now = time();
+	// 	//we have to add orderdetails now;
+	// 	$this->addOrderDetails($post['product_id'], $order_table->id, $now, $post['userid'], $post['status']);
+	// 	/*
+	// 	TODO:: email submit
+	// 	require_once(JPATH_SITE.DS."components".DS."com_digicom".DS."helpers".DS."cronjobs.php");
+	// 	submitEmailFromBackend($order, $license);
+	// 	*/
+	//
+	// 	return true;
+	// }
+	//
+	// function addOrderDetails($items, $orderid, $now, $customer, $status = "Active")
+	// {
+	// 	$license = array();
+	// 	if($status != "Pending")
+	// 		$published = 1;
+	// 	else
+	// 		$published = 0;
+	//
+	// 	$database = JFactory::getDBO();
+	// 	$license_index = 0;
+	// 	$jconfig = JFactory::getConfig();
+	//
+	// 	$user_id = $customer;
+	//
+	// 	if($user_id == 0){
+	// 		return false;
+	// 	}
+	//
+	// 	//print_r($items);die;
+	// 	$table = $this->getTable('Product');
+	// 	// start foreach
+	// 	foreach($items as $key=>$item)
+	// 	{
+	// 		if($key >= 0)
+	// 		{
+	//
+	// 			$product = $table->load($item);
+	// 			$price = $product->price;
+	// 			$date = JFactory::getDate();
+	// 			$purchase_date = $date->toSql();
+	// 			$package_type = (!empty($product->bundle_source) ? $product->bundle_source : 'reguler');
+	// 			$sql = "insert into #__digicom_orders_details(userid, productid,quantity,price, orderid, amount_paid, published, package_type, purchase_date) "
+	// 					. "values ('{$user_id}', '{$item}', '1','{$price}','".$orderid."', '0', ".$published.", '".$package_type."', '".$purchase_date."')";
+	// 			$database->setQuery($sql);
+	// 			$database->query();
+	//
+	// 			$site_config = JFactory::getConfig();
+	// 			$tzoffset = $site_config->get('offset');
+	// 			$buy_date = date('Y-m-d H:i:s', time() + $tzoffset);
+	// 			$sql = "insert into #__digicom_logs (`userid`, `productid`, `buy_date`, `buy_type`)
+	// 					values (".$user_id.", ". $item .", '".$buy_date."', 'new')";
+	// 			$database->setQuery($sql);
+	// 			$database->query();
+	//
+	//
+	// 			$sql = "update #__digicom_products set used=used+1 where id = '" . $item . "'";
+	// 			$database->setQuery( $sql );
+	// 			$database->query();
+	//
+	// 		}
+	// 	}
+	// 	// end foreach
+	//
+	// 	return true;
+	// }
 
-		if(empty($table->id) or $table->id < 0){
-			$user = JFactory::getUser($userid);
-
-			$cust = new stdClass();
-			$cust->id = $user->id;
-			$cust->name = $user->name;
-			$table->bind($cust);
-			$table->store();
-		}
-
-		//print_r($post);die;
-		$config = JFactory::getConfig();
-		$tzoffset = $config->get('offset');
-
-		if(isset($post['order_date'])&& $post['order_date']){
-			$date = JFactory::getDate($post['order_date']);
-			$purchase_date = $date->toSql();
-			$order_date = $date->toUNIX();
-		} else{
-			$purchase_date = date('Y-m-d H:i:s', time() + $tzoffset);
-			$date = JFactory::getDate();
-			$order_date = $date->toUNIX();
-		}
-
-		$order = array();
-		$order['userid'] = $post['userid'];
-		$order['order_date'] = $order_date;
-		$order['processor'] = $post['processor'];
-		$order['promocode'] = $post['promocode'];
-		$order['discount'] = $post['discount'];
-		$order['promocodeid'] = $this->getPromocodeByCode( $order['promocode'] );
-		$order['number_of_products'] = count( $post['product_id'] );
-		$order['currency'] = $post['currency'];
-		$order['status'] = $post['status'];
-		$order['discount'] = $post['discount'];
-		$order['amount'] = $post['amount'];
-		$order['amount_paid'] = trim($post['amount_paid']) != "" ? trim($post['amount_paid']) : '0';
-		$order['published'] = '1';
-		$order_table = $this->getTable( 'Order' );
-
-		if(!$order_table->bind($order)){
-			return false;
-		}
-
-		if(!$order_table->check()){
-			return false;
-		}
-
-		if(!$order_table->store()){
-			return false;
-		}
-		$now = time();
-		//we have to add orderdetails now;
-		$this->addOrderDetails($post['product_id'], $order_table->id, $now, $post['userid'], $post['status']);
-		/*
-		TODO:: email submit
-		require_once(JPATH_SITE.DS."components".DS."com_digicom".DS."helpers".DS."cronjobs.php");
-		submitEmailFromBackend($order, $license);
-		*/
-
-		return true;
-	}
-
-	function addOrderDetails($items, $orderid, $now, $customer, $status = "Active")
+	function calcPrice($req)
 	{
-		$license = array();
-		if($status != "Pending")
-			$published = 1;
-		else
-			$published = 0;
-
-		$database = JFactory::getDBO();
-		$license_index = 0;
-		$jconfig = JFactory::getConfig();
-
-		$user_id = $customer;
-
-		if($user_id == 0){
-			return false;
-		}
-
-		//print_r($items);die;
-		$table = $this->getTable('Product');
-		// start foreach
-		foreach($items as $key=>$item)
-		{
-			if($key >= 0)
-			{
-
-				$product = $table->load($item);
-				$price = $product->price;
-				$date = JFactory::getDate();
-				$purchase_date = $date->toSql();
-				$package_type = (!empty($product->bundle_source) ? $product->bundle_source : 'reguler');
-				$sql = "insert into #__digicom_orders_details(userid, productid,quantity,price, orderid, amount_paid, published, package_type, purchase_date) "
-						. "values ('{$user_id}', '{$item}', '1','{$price}','".$orderid."', '0', ".$published.", '".$package_type."', '".$purchase_date."')";
-				$database->setQuery($sql);
-				$database->query();
-
-				$site_config = JFactory::getConfig();
-				$tzoffset = $site_config->get('offset');
-				$buy_date = date('Y-m-d H:i:s', time() + $tzoffset);
-				$sql = "insert into #__digicom_logs (`userid`, `productid`, `buy_date`, `buy_type`)
-						values (".$user_id.", ". $item .", '".$buy_date."', 'new')";
-				$database->setQuery($sql);
-				$database->query();
-
-
-				$sql = "update #__digicom_products set used=used+1 where id = '" . $item . "'";
-				$database->setQuery( $sql );
-				$database->query();
-
-			}
-		}
-		// end foreach
-
-		return true;
-	}
-
-	function calcPrice($req){
 		$configs = JComponentHelper::getComponent('com_digicom')->params;
 
 		$result = array();

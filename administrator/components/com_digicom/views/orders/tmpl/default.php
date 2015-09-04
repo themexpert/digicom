@@ -20,9 +20,16 @@ $invisible = 'style="display:none;"';
 $k = 0;
 $n = count( $this->orders );
 $configs = JComponentHelper::getComponent('com_digicom')->params;
+
+// prepare calender time format
 $f = $configs->get('time_format','DD-MM-YYYY');
 $f = str_replace( "-", "-%", $f );
 $f = "%" . $f;
+
+$search = $this->state->get('filter.search','');
+$startdate = $this->state->get('filter.startdate','');
+$enddate = $this->state->get('filter.enddate','');
+//echo $search;die;
 ?>
 <script language="javascript" type="text/javascript">
 function OrderlistItemTask(id) {
@@ -70,10 +77,17 @@ Joomla.submitbutton = function (pressbutton) {
 		<span class="icon-support"></span><?php echo JText::_("COM_DIGICOM_ORDERS_HEADER_NOTICE"); ?>
 	</div>
 	<form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&view=orders'); ?>" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
-		<div class="js-stools">
+
+    <?php
+		// Search tools bar
+		echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+		?>
+
+
+    <div class="js-stools">
 			<div class="clearfix">
 				<div class="btn-wrapper input-append">
-					<input type="text" id="filter_search" name="keyword" placeholder="<?php echo JText::_('DSKEYWORD'); ?>" value="<?php echo (strlen( trim( $this->keyword ) ) > 0 ? $this->keyword : ""); ?>" class="input-medium" />
+					<input type="text" id="filter_search" name="filter[search]" placeholder="<?php echo JText::_('DSKEYWORD'); ?>" value="<?php echo $search; ?>" class="input-medium" />
 					<button type="submit" class="btn hasTooltip" title="" data-original-title="Search">
 						<i class="icon-search"></i>
 					</button>
@@ -83,13 +97,13 @@ Joomla.submitbutton = function (pressbutton) {
 				</div>
 				<div class="btn-wrapper input-append input-prepend pull-right">
 					<label class="add-on"><?php echo JText::_( "DSFROM" ); ?>:</label>
-					<?php echo JHTML::_( "calendar", $this->startdate > 0 ? date( $configs->get('time_format','DD-MM-YYYY'), $this->startdate ) : "", 'startdate', 'startdate', $f, array('class'=>'input-medium'), array('class'=>'span2'), array('class'=>'span2')); ?>&nbsp;
+					<?php echo JHTML::_( "calendar", $startdate, 'filter[startdate]', 'filter_startdate', $f, array('class'=>'input-medium'), array('class'=>'span2'), array('class'=>'span2')); ?>&nbsp;
 
 					<label class="add-on"><?php echo JText::_( "DSTO" ); ?>:</label>
-					<?php echo JHTML::_( "calendar", $this->enddate > 0 ? date( $configs->get('time_format','DD-MM-YYYY'), $this->enddate ) : "", 'enddate', 'enddate', $f , array('class'=>'input-medium')); ?>
+					<?php echo JHTML::_( "calendar", $enddate, 'filter[enddate]', 'filter_enddate', $f , array('class'=>'input-medium')); ?>
 
 					<input type="submit" name="go" value="<?php echo JText::_( "DSGO" ); ?>" class="btn" />
-					<button type="button" class="btn hasTooltip js-stools-btn-clear" onclick="document.id('startdate').value='';document.id('enddate').value='';this.form.submit();">
+					<button type="button" class="btn hasTooltip js-stools-btn-clear" onclick="document.id('filter_startdate').value='';document.id('filter_enddate').value='';this.form.submit();">
 						<i class="icon-remove"></i>
 					</button>
 				</div>

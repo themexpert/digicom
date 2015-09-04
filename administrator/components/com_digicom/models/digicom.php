@@ -128,6 +128,7 @@ class DigiComModelDigiCom extends JModelList
 	function getreportCustomer()
 	{
 		$db = JFactory::getDBO();
+		$report = JRequest::getVar("report", "monthly");
 		$return = $this->getStartEndDate($report);
 
 		$sql = "select count(*)

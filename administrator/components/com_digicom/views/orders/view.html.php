@@ -11,28 +11,30 @@ defined('_JEXEC') or die;
 
 class DigiComViewOrders extends JViewLegacy
 {
+	public $app;
+	public $state;
 
 	function display( $tpl = null )
 	{
+		$this->app = JFactory::getApplication();
 		$document = JFactory::getDocument();
 
-		$orders = $this->get('Items');
-		$pagination = $this->get('Pagination');
-
-		$this->orders = $orders;
+		$this->orders 	= $this->get('Items');
+		$this->state 		= $this->get('State');
+		$this->filterForm    = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
+		
+		$pagination 		= $this->get('Pagination');
 		$this->pagination = $pagination;
 
-		$startdate = JRequest::getVar( "startdate", "", "request" );
-		$startdate = strtotime($startdate);
-		//$startdate = DigiComHelperDigiCom::parseDate( $configs->get('time_format','DD-MM-YYYY'), $startdate );
-		$this->assign( "startdate", $startdate );
-		$enddate = JRequest::getVar( "enddate", "", "request" );
-		$enddate = strtotime($enddate);
-		//$enddate = DigiComHelperDigiCom::parseDate( $configs->get('time_format','DD-MM-YYYY'), $enddate );
-		$this->assign( "enddate", $enddate );
-
-		$keyword = JRequest::getVar( "keyword", "", "request" );
-		$this->assign( "keyword", $keyword );
+		// $startdate = JRequest::getVar( "startdate", "", "request" );
+		// $startdate = strtotime($startdate);
+		// //$startdate = DigiComHelperDigiCom::parseDate( $configs->get('time_format','DD-MM-YYYY'), $startdate );
+		// $this->assign( "startdate", $startdate );
+		// $enddate = JRequest::getVar( "enddate", "", "request" );
+		// $enddate = strtotime($enddate);
+		// //$enddate = DigiComHelperDigiCom::parseDate( $configs->get('time_format','DD-MM-YYYY'), $enddate );
+		// $this->assign( "enddate", $enddate );
 
 		//set toolber
 		$this->addToolbar();
