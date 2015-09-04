@@ -149,7 +149,7 @@ class DigiComSiteHelperLicense {
 		$query	= $db->getQuery(true);
 		// Select required fields from the dashboard.
 		$query->select('DISTINCT l.productid as productid')
-					->select(array('p.name,p.catid,p.catid,p.bundle_source,p.product_type as type'))
+					->select(array('p.name,p.catid,p.bundle_source,p.product_type as type'))
 					->select(array('l.*','DATEDIFF(expires, now()) as dayleft'))
 			  	->from($db->quoteName('#__digicom_products') . ' AS p');
 		$query->join('inner', '#__digicom_licenses AS l ON l.productid = p.id');
@@ -164,7 +164,7 @@ class DigiComSiteHelperLicense {
 		$db->setQuery($query);
 
 		return $db->loadObjectList();
-		
+
 	}
 
 }
