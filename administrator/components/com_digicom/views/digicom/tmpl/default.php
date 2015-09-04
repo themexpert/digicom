@@ -39,11 +39,11 @@ $document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
 						<strong><?php echo $this->reportOrders['total']; ?></strong>
 						<?php echo JText::_('COM_DIGICOM_REPORTS_TOTAL_ORDERS'); ?>
 						<br>
-						<?php echo $this->reportOrders['free']; ?>
-						<?php echo JText::_('COM_DIGICOM_FREE'); ?>
-						/
 						<?php echo $this->reportOrders['paid']; ?>
 						<?php echo JText::_('COM_DIGICOM_PAID'); ?>
+						/
+						<?php echo $this->reportOrders['free']; ?>
+						<?php echo JText::_('COM_DIGICOM_FREE'); ?>
 					</p>
 				</div>
 			</div>

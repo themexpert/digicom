@@ -78,9 +78,11 @@ class DigiComModelDigiCom extends JModelList
 				WHERE 1=1 ".$and;
 
 		*/
-		$sql = "SELECT SUM(CASE WHEN `o`.`amount_paid` = '-1' THEN `o`.`amount` ELSE `o`.`amount_paid` END) as `total`
+		$sql = "SELECT SUM(`o`.`amount_paid`) as `total`
 				FROM `#__digicom_orders` AS `o`
-				WHERE `o`.`order_date` between '".$return[0] ."' AND curdate()" ;
+				WHERE `o`.`order_date` between '".$return[0] ."' AND '".$return[1]."'
+				AND `o`.`status` = 'Active'"
+				;
 		$db->setQuery($sql);
 		$db->query();
 		$total = $db->loadResult();
@@ -89,9 +91,9 @@ class DigiComModelDigiCom extends JModelList
 		// $sql = "SELECT SUM(od.`cancelled_amount`) as total
 		// 		FROM #__digicom_orders_details AS od
 		// 		WHERE 1=1 AND od.cancelled=1 ".$and_products;
-		$sql = "SELECT SUM(od.`cancelled_amount`) as total
+		$sql = "SELECT SUM(`od`.`cancelled_amount`) as total
 				FROM #__digicom_orders_details AS od
-				WHERE 1=1 AND od.cancelled=1 AND `od`.`purchase_date` between '".$return[0] ."' AND curdate()";
+				WHERE 1=1 AND od.cancelled=1 AND `od`.`purchase_date` between '".$return[0] ."' AND '".$return[1]."'";
 		$db->setQuery($sql);
 		$db->query();
 		$chargebacks = $db->loadResult();
@@ -102,7 +104,7 @@ class DigiComModelDigiCom extends JModelList
 		//		WHERE 1=1 AND od.cancelled=2 ".$and_products;
 		$sql = "SELECT SUM(od.`cancelled_amount`) as total
 				FROM #__digicom_orders_details AS od
-				WHERE 1=1 AND od.cancelled=2 AND `od`.`purchase_date` between '".$return[0] ."' AND curdate()";
+				WHERE 1=1 AND od.cancelled=2 AND `od`.`purchase_date` between '".$return[0] ."' AND '".$return[1]."'";
 		$db->setQuery($sql);
 		$db->query();
 		$refunds = $db->loadResult();
@@ -113,7 +115,7 @@ class DigiComModelDigiCom extends JModelList
 		// 		WHERE 1=1 AND od.cancelled=3 ".$and_products;
 		$sql = "SELECT SUM(od.`cancelled_amount`) as total
 				FROM #__digicom_orders_details AS od
-				WHERE 1=1 AND od.cancelled=3 AND `od`.`purchase_date` between '".$return[0] ."' AND curdate()";
+				WHERE 1=1 AND od.cancelled=3 AND `od`.`purchase_date` between '".$return[0] ."' AND '".$return[1]."'";
 		$db->setQuery($sql);
 		$db->query();
 		$deleted = $db->loadResult();
@@ -128,7 +130,7 @@ class DigiComModelDigiCom extends JModelList
 
 		$sql = "select count(*)
 				from #__digicom_orders o
-				where 1=1 AND `o`.`order_date` between '".$return[0] ."' AND curdate()";
+				where 1=1 AND `o`.`order_date` AND `status`='Active' between '".$return[0] ."' AND '" . $return[1]."'";
 		$db->setQuery($sql);
 		$db->query();
 		$total = $db->loadResult();
@@ -138,7 +140,7 @@ class DigiComModelDigiCom extends JModelList
 		// 		where 1=1 and o.status='Pending' ".$and;
 		$sql = "select count(*)
 		 		from #__digicom_orders o
-		 		where 1=1 and o.status='Pending' AND `o`.`order_date` between '".$return[0] ."' AND curdate()";
+		 		where 1=1 and o.status='Pending' AND `o`.`order_date` between '".$return[0] ."' AND '".$return[1]."'";
 		$db->setQuery($sql);
 		$db->query();
 		$pending = $db->loadResult();
@@ -146,14 +148,14 @@ class DigiComModelDigiCom extends JModelList
 
 		$sql = "select count(*)
 				from #__digicom_orders o
-				where 1=1 AND `o`.`amount` = '0.000' AND `o`.`order_date` between '".$return[0] ."' AND curdate()";
+				where 1=1 AND `o`.`amount` = '0.000' AND `o`.`order_date` between '".$return[0] ."' AND '".$return[1]."'";
 		$db->setQuery($sql);
 		$db->query();
 		$free = $db->loadResult();
 
 		$sql = "select count(*)
 				from #__digicom_orders o
-				where 1=1 AND `o`.`amount` != '0.000' AND `o`.`status` ='Active' AND`o`.`order_date` between '".$return[0] ."' AND curdate()";
+				where 1=1 AND `o`.`amount` != '0.000' AND `o`.`status` ='Active' AND`o`.`order_date` between '".$return[0] ."' AND '".$return[1]."'";
 		$db->setQuery($sql);
 		$db->query();
 		$paid = $db->loadResult();
@@ -163,7 +165,8 @@ class DigiComModelDigiCom extends JModelList
 		return array('total'=>$total,'pending'=>$pending, 'free'=> $free, 'paid'=>$paid);
 	}
 
-	function getreportCustomer(){
+	function getreportCustomer()
+	{
 		$db = JFactory::getDBO();
 		$report = JRequest::getVar("report", "monthly");
 		$return = $this->getStartEndDate($report);

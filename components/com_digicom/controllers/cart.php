@@ -578,7 +578,7 @@ class DigiComControllerCart extends JControllerLegacy
 		//JPluginHelper::importPlugin('digicom_pay', $processor);
 		$dispatcher = JDispatcher::getInstance();
 		$data = $dispatcher->trigger('onTP_Processpayment', array($post));
-
+		
 		//after recieved payment, trigger any additional events
 		$param["cart_products"] = implode(" - ", $products);
 		$param["transaction"] = $data;
