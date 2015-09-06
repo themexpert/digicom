@@ -112,9 +112,9 @@ class DigiComHelperDigiCom extends JHelperContent{
 		$price = number_format( $amount, $configs->get('decimaldigits','2') , $configs->get('dec_group_symbol','.') , $configs->get('thousands_group_symbol',',') );
 		if ( $add_sym ) {
 			if ( $configs->get('currency_position','1') ) {
-				$price = $price . " " . $ccode;
+				$price = $price . $ccode;
 			} else {
-				$price = $ccode . " " . $price;
+				$price = $ccode . $price;
 			}
 		}
 
