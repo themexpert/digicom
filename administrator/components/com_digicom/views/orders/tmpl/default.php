@@ -26,9 +26,9 @@ $f = $configs->get('time_format','DD-MM-YYYY');
 $f = str_replace( "-", "-%", $f );
 $f = "%" . $f;
 
-$search = $this->state->get('filter.search','');
-$startdate = $this->state->get('filter.startdate','');
-$enddate = $this->state->get('filter.enddate','');
+// $search = $this->state->get('filter.search','');
+// $startdate = $this->state->get('filter.startdate','');
+// $enddate = $this->state->get('filter.enddate','');
 //echo $search;die;
 ?>
 <script language="javascript" type="text/javascript">
@@ -80,10 +80,9 @@ Joomla.submitbutton = function (pressbutton) {
 
     <?php
 		// Search tools bar
-		echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+		echo JLayoutHelper::render('searchtools.orders', array('view' => $this));
 		?>
-
-
+    <!--
     <div class="js-stools">
 			<div class="clearfix">
 				<div class="btn-wrapper input-append">
@@ -97,10 +96,10 @@ Joomla.submitbutton = function (pressbutton) {
 				</div>
 				<div class="btn-wrapper input-append input-prepend pull-right">
 					<label class="add-on"><?php echo JText::_( "DSFROM" ); ?>:</label>
-					<?php echo JHTML::_( "calendar", $startdate, 'filter[startdate]', 'filter_startdate', $f, array('class'=>'input-medium'), array('class'=>'span2'), array('class'=>'span2')); ?>&nbsp;
+					<?php // echo JHTML::_( "calendar", $startdate, 'filter[startdate]', 'filter_startdate', $f, array('class'=>'input-medium'), array('class'=>'span2'), array('class'=>'span2')); ?>&nbsp;
 
 					<label class="add-on"><?php echo JText::_( "DSTO" ); ?>:</label>
-					<?php echo JHTML::_( "calendar", $enddate, 'filter[enddate]', 'filter_enddate', $f , array('class'=>'input-medium')); ?>
+					<?php // echo JHTML::_( "calendar", $enddate, 'filter[enddate]', 'filter_enddate', $f , array('class'=>'input-medium')); ?>
 
 					<input type="submit" name="go" value="<?php echo JText::_( "DSGO" ); ?>" class="btn" />
 					<button type="button" class="btn hasTooltip js-stools-btn-clear" onclick="document.id('filter_startdate').value='';document.id('filter_enddate').value='';this.form.submit();">
@@ -111,7 +110,7 @@ Joomla.submitbutton = function (pressbutton) {
 			</div>
 		</div>
 		<br>
-
+  -->
 
 
 		<table class="adminlist table table-striped">

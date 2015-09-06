@@ -32,7 +32,7 @@ JHtmlBehavior::core();
 				foreach ($displayData->list as $item) :
 					if($i==$total){
 						$dispatcher = JDispatcher::getInstance();
-						$dispatcher->trigger( 'onDigicomAfterMainMenu', array());						
+						$dispatcher->trigger( 'onDigicomAfterMainMenu', array());
 					}
 
 				if (isset ($item[2]) && $item[2] == 1) : ?>

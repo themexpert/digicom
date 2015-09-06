@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 class DigiComModelOrders extends JModelList{
 
 	// protected $_context = 'com_digicom.order';
-	protected $_orders;
+	// protected $_orders;
 	protected $_order;
 	protected $_id = null;
 	protected $_total = 0;
@@ -76,7 +76,8 @@ class DigiComModelOrders extends JModelList{
 		return parent::getStoreId($id);
 	}
 
-	function populateState($ordering = NULL, $direction = NULL){
+	protected function populateState($ordering = null, $direction = null)
+	{
 		$app = JFactory::getApplication('administrator');
 
 		$this->setState('list.start', $app->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int'));
@@ -112,52 +113,54 @@ class DigiComModelOrders extends JModelList{
 		return $pagination;
 	}
 
-	function getPromocodeByCode($code){
-		$sql = "SELECT id FROM #__digicom_promocodes WHERE code = '" . $code . "'";
-		$this->_db->setQuery( $sql );
-		$promocode_id = $this->_db->loadResult();
+	// function getPromocodeByCode($code)
+	// {
+	// 	$sql = "SELECT id FROM #__digicom_promocodes WHERE code = '" . $code . "'";
+	// 	$this->_db->setQuery( $sql );
+	// 	$promocode_id = $this->_db->loadResult();
+	//
+	// 	if ( $promocode_id ) {
+	// 		return $promocode_id;
+	// 	} else {
+	// 		return "0";
+	// 	}
+	//
+	// }
 
-		if ( $promocode_id ) {
-			return $promocode_id;
-		} else {
-			return "0";
-		}
-
-	}
-
-	function getExpireDate($plan_id, $purchase_date_int){
-		$sql = "select `duration_count`, `duration_type` from #__digicom_plans where id=".intval($plan_id);
-		$this->_db->setQuery($sql);
-		$this->_db->query();
-		$plan_values = $this->_db->loadAssocList();
-
-		$time = "";
-		$expires_date = "";
-		switch($plan_values["0"]["duration_type"]){
-			case "1" :
-					$time = "hour";
-					break;
-			case "2" :
-					$time = "day";
-					break;
-			case "3" :
-					$time = "month";
-					break;
-			case "4" :
-					$time = "year";
-					break;
-		}
-
-		if($plan_values["0"]["duration_count"] != "-1"){
-			$expires_date_int = strtotime("+".$plan_values["0"]["duration_count"]." ".$time, $purchase_date_int);
-			$expires_date_string = date("Y-m-d H:i:s", $expires_date_int);
-			$expires_date = $expires_date_string;
-		}
-		else{
-			$expires_date = "0000-00-00 00:00:00";
-		}
-		return $expires_date;
-	}
+	// function getExpireDate($plan_id, $purchase_date_int)
+	// {
+	// 	$sql = "select `duration_count`, `duration_type` from #__digicom_plans where id=".intval($plan_id);
+	// 	$this->_db->setQuery($sql);
+	// 	$this->_db->query();
+	// 	$plan_values = $this->_db->loadAssocList();
+	//
+	// 	$time = "";
+	// 	$expires_date = "";
+	// 	switch($plan_values["0"]["duration_type"]){
+	// 		case "1" :
+	// 				$time = "hour";
+	// 				break;
+	// 		case "2" :
+	// 				$time = "day";
+	// 				break;
+	// 		case "3" :
+	// 				$time = "month";
+	// 				break;
+	// 		case "4" :
+	// 				$time = "year";
+	// 				break;
+	// 	}
+	//
+	// 	if($plan_values["0"]["duration_count"] != "-1"){
+	// 		$expires_date_int = strtotime("+".$plan_values["0"]["duration_count"]." ".$time, $purchase_date_int);
+	// 		$expires_date_string = date("Y-m-d H:i:s", $expires_date_int);
+	// 		$expires_date = $expires_date_string;
+	// 	}
+	// 	else{
+	// 		$expires_date = "0000-00-00 00:00:00";
+	// 	}
+	// 	return $expires_date;
+	// }
 
 	// function saveorder()
 	// {
