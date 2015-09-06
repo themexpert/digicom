@@ -214,4 +214,153 @@ class DigiComModelOrders extends JModelList
 		return $query;
 	}
 
+
+	/**
+	* method delete orders
+	* delete license,
+	* delete order details
+	* event call after delete items
+	*/
+	function delete()
+	{
+		$db = JFactory::getDBO();
+		$cids = JRequest::getVar( 'cid', array(0), 'post', 'array' );
+		$item = $this->getTable( 'Order' );
+
+		foreach ($cids as $cid)
+		{
+			if (!$item->delete($cid))
+			{
+				$this->setError($item->getErrorMsg());
+				return false;
+			}
+		}
+
+		// delete order details
+		$db->setQuery('delete from #__digicom_orders_details where orderid in ('.implode(',', $cids).')');
+		if (!$db->execute())
+		{
+			$this->setError($db->getErrorMsg());
+			return false;
+		}
+
+
+		// delete License
+		$db->clear();
+		$db->setQuery('delete from #__digicom_licenses where orderid in ('.implode(',', $cids).')');
+		if (!$db->execute())
+		{
+			$this->setError($db->getErrorMsg());
+			return false;
+		}
+
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('onDigicomAdminAfterOrderDelete', array($cids));
+
+		return true;
+	}
+
+	/**
+	* method to cycleStatus
+	* quick action to change order status
+	*/
+	function cycleStatus(){
+
+		$db = JFactory::getDBO();
+		$input = JFactory::getApplication()->input;
+		//orderstatus
+		//print_r($_POST);die;
+		$orderids = $input->get('cid', null, null);
+		$statuses = $input->post->get('orderstatus',null,null);
+		$status = $statuses['0'];
+		$id = $orderids['0'];
+
+		$table = $this->getTable('order');
+		$table->load($id);
+		$table->status = $status;
+
+		if(empty($table->transaction_number)){
+			$table->transaction_number = DigiComSiteHelperDigicom::getUniqueTransactionId($table->id);
+		}
+
+		if($status == 'Paid'){
+			$table->amount_paid = $table->amount;
+			$table->status = 'Active';
+		}
+		//print_r($status);die;
+		//print_r($table);die;
+		if(!$table->store()){
+			return JFactory::getApplication()->enqueueMessage(JText::_('COM_DIGICOM_ORDER_STATUS_CHANGED_FAILED',$table->getErrorMsg()),'error');
+		}
+
+		if($status == "Pending"){
+			$sql = "update #__digicom_orders_details set published=0 where orderid in ('".$id."')";
+			$type = 'process_order';
+		}
+		elseif($status == "Active" or $status == "Paid"){
+			$sql = "update #__digicom_orders_details set published=1 where orderid in ('" . $id  . "')";
+			$type = 'complete_order';
+		}
+		elseif($status == "Cancel"){
+			$sql = "update #__digicom_orders_details set published='-1' where orderid in ('" . $id  . "')";
+			$type = 'cancel_order';
+		}
+
+		$db->setQuery($sql);
+		if(!$db->query()){
+			$res = false;
+		}
+
+		// based on order status changes, we need to update license too :)
+		$this->updateLicensesStatus($id, $type);
+
+		// sent email as order status has changed
+		DigiComHelperEmail::sendApprovedEmail($id, $type, $status);
+
+		$dispatcher = JDispatcher::getInstance();
+		if($status == "Active" or $status == "Paid"){
+
+			$orders = $this->getInstance( "Order", "DigiComModel" );
+			$orders->getOrderItems($id);
+
+			$dispatcher->trigger('onDigicomAfterPaymentComplete', array($id, $info = array(), $table->processor, $items, $table->userid));
+		}else{
+			$dispatcher->trigger('onDigicomAdminAfterOrderStatusChange', array($table));
+		}
+
+
+		return true;
+	}
+
+	/*
+	* create license as we are changng the status
+	* $orderid = id of order
+	* $type = order status; like:  complete_order;
+	*/
+	public function updateLicensesStatus($orderid, $type){
+		$order = $this->getOrder($orderid);
+		$items = $order->products;
+		$customer_id = $order->userid;
+		$number_of_products = count($items);
+		DigiComSiteHelperLicense::updateLicenses($orderid, $number_of_products, $items, $customer_id, $type);
+	}
+
+	function getOrder($id = 0){
+
+			$db = JFactory::getDBO();
+			$sql = "SELECT o.*"
+					." FROM #__digicom_orders o"
+					." WHERE o.id='".intval($id)."' AND o.published='1'"
+			;
+			$db->setQuery($sql);
+			$order = $db->loadObject();
+
+			$sql = "SELECT p.id, p.name, p.price,p.catid, od.package_type,od.quantity, od.amount_paid FROM #__digicom_products as p, #__digicom_orders_details as od WHERE p.id=od.productid AND od.orderid='". $order->id ."'";
+			$db->setQuery($sql);
+			$prods = $db->loadObjectList();
+
+			$order->products = $prods;
+
+		return $order;
+	}
 }

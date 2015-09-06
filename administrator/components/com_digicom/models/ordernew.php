@@ -245,7 +245,7 @@ class DigiComModelOrderNew extends JModelAdmin
 			DigiComSiteHelperLicense::addLicenceSubscription($data['product_id'], $data['userid'], $recordId, $type);
 
 			DigiComHelperEmail::sendApprovedEmail($recordId, $type, $data['status'], $data['amount_paid']);
-			
+
 			$items = $this->getOrderItems($recordId);
 			if($data['status'] == 'Active'){
 
@@ -340,6 +340,142 @@ class DigiComModelOrderNew extends JModelAdmin
 
 		return $items ;
 
+	}
+
+	function calcPrice($req)
+	{
+		$configs = JComponentHelper::getComponent('com_digicom')->params;
+
+		$result = array();
+		$amount_subtotal = 0;
+		$amount = 0;
+		$taxvalue = 0;
+
+		//--------------------------------------------------------
+		// Promo code
+		//--------------------------------------------------------
+
+		$promovalue = 0;
+		$addPromo = false;
+		$ontotal = false;
+		$onProduct = false;
+		if($req->promocode !='none'){
+
+			$q = "select * from #__digicom_promocodes where code = '".trim($req->promocode)."'";
+			$this->_db->setQuery($q);
+			$promo = $this->_db->loadObject();
+			//print_r($promo->discount_enable_range);die;
+			if($promo->id > 0){
+				//we got real promocode
+				$promoid = $promo->id;
+				$promocode = $promo->code;
+
+				//validate promocode
+				if(!($promo->codelimit <= $promo->used && $promo->codelimit > 0)){
+					$addPromo = true;
+					//we can use it, it has limit
+					if($promo->discount_enable_range==1){
+						// for entire cart
+						$ontotal = true;
+					}else{
+						$onProduct = true;
+					}
+				}
+			}
+		}
+
+		//echo $ontotal;die;
+
+		//$cust_id = $req->customer_id;
+		if(isset($req)){
+			foreach($req->pids as $item ) {
+				if (!empty($item[0])) {
+					$sql = "SELECT price FROM #__digicom_products WHERE id = '" . $item[0] . "'";
+					$this->_db->setQuery( $sql );
+					$plan = $this->_db->loadObject();
+					$price = $plan->price;
+					$amount_subtotal += $price;
+					$amount += $price;
+					//$taxvalue += $this->getTax( $product_id, $cust_id, $price );
+					$taxvalue += 0;
+
+					//check promocode on product apply
+					if($addPromo && $onProduct){
+						// Get product restrictions
+						$sql = "SELECT p.`productid` FROM `#__digicom_promocodes_products` AS p WHERE p.`promoid`=" . $promo->id ." and p.`productid`=".$item[0];
+						$this->_db->setQuery( $sql );
+						$promo->product = $this->_db->loadObject();
+
+						if (count($promo->product) && $promo->aftertax == '0')
+						{
+							//promo discount should be applied before taxation
+							//we get product to calculate discount
+
+							if ($promo->promotype == '0')
+							{
+								// Use absolute values
+								$promovalue += $promo->amount;
+							}
+							else
+							{
+								// Use percentage
+								$promovalue += $price * $promo->amount / 100;
+							}
+
+							$sql = "update #__digicom_promocodes set used=used+1 where id = '" . $promo->id . "'";
+							$this->_db->setQuery( $sql );
+							$this->_db->query();
+
+						}
+					} // end if for: product promo check
+				} //end if for empty if check
+			} //end foreach for products
+		}
+
+		//add tax to total
+		$amount = $amount + $taxvalue;
+
+		if($addPromo && $onProduct){
+			$amount -= $promovalue;
+		}
+
+		//--------------------------------------------------------
+		// Promo code on cart
+		//--------------------------------------------------------
+		if($addPromo && $ontotal){
+			//echo 'apply promo on cart';die;
+			//now lets apply promo discounts if there are any
+			if($promo->promotype == '0'){//use absolute values
+				$amount -= $promo->amount;
+				$promovalue = $promo->amount;
+			}
+			else{ //use percentage
+				$promovalue = $amount * $promo->amount / 100;
+				$amount *= 1 - $promo->amount / 100;
+			}
+
+			$sql = "update #__digicom_promocodes set used=used+1 where id = '" . $promo->id . "'";
+			$this->_db->setQuery( $sql );
+			$this->_db->query();
+		}
+
+		//echo $promovalue;die;
+		//--------------------------------------------------------
+		$amount_subtotal = $amount_subtotal < 0 ? "0.00" : $amount_subtotal;
+		$amount = $amount < 0 ? "0.00" : $amount;
+
+		$result['amount'] = trim( DigiComHelperDigiCom::format_price( $amount_subtotal, $configs->get('currency','USD'), true, $configs ) );
+		$result['amount_value'] = trim( DigiComHelperDigiCom::format_price( $amount_subtotal, $configs->get('currency','USD'), false, $configs ) );
+		$result['tax_value'] = trim( DigiComHelperDigiCom::format_price( $taxvalue, $configs->get('currency','USD'), false, $configs ) );
+		$result['tax'] = trim( DigiComHelperDigiCom::format_price( $taxvalue, $configs->get('currency','USD'), true, $configs ) );;
+		$result['discount_sign'] = trim( DigiComHelperDigiCom::format_price( $promovalue, $configs->get('currency','USD'), true, $configs ) );
+		$result['discount'] = trim( DigiComHelperDigiCom::format_price( $promovalue, $configs->get('currency','USD'), false, $configs ) );
+		$result['total'] = trim( DigiComHelperDigiCom::format_price( $amount, $configs->get('currency','USD'), true, $configs ) );
+		$result['total_value'] = trim( DigiComHelperDigiCom::format_price( $amount, $configs->get('currency','USD'), false, $configs ) );
+		$result['currency'] = $configs->get('currency','USD');
+		$result['shipping'] = 0;
+
+		return $result;
 	}
 
 	/*

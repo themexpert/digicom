@@ -67,4 +67,41 @@ class DigiComControllerOrderNew extends JControllerForm
 		}
 	}
 
+
+	/**
+	* Function Calc to surve json return for new order price calc value on the fly
+	*/
+	function calc()
+	{
+		$this->_model = $this->getModel( "OrderNew" );
+		//decode incoming JSON string
+		$jsonRequest = JRequest::getVar("jsonString", "", "get");
+		$jsonRequest = json_decode($jsonRequest);
+		$calc_result = $this->_model->calcPrice($jsonRequest);
+
+		$data = new stdclass();
+		$data->amount = $calc_result['amount'];
+		$data->amount_value = $calc_result['amount_value'];
+		$data->tax = $calc_result['tax'];
+		$data->tax_value = $calc_result['tax_value'];
+		$data->discount_sign = $calc_result['discount_sign'];
+		$data->discount = $calc_result['discount'];
+		$data->total = $calc_result['total'];
+		$data->total_value = $calc_result['total_value'];
+		$data->currency = $calc_result['currency'];
+
+		// Get the document object.
+		$document = JFactory::getDocument();
+
+		// Set the MIME type for JSON output.
+		$document->setMimeEncoding('application/json');
+
+		// Change the suggested filename.
+		JResponse::setHeader('Content-Disposition','attachment;filename="orders.json"');
+		// Output the JSON data.
+		echo json_encode($data);
+		JFactory::getApplication()->close();
+
+	}
+
 }

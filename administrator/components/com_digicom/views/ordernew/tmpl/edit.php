@@ -39,11 +39,7 @@ function changePlain() {
 	var tamount_paid = $('amount_paid').value;
 
 	var jsonString = JSON.encode({pids: product_ids, processor: tprocessor, promocode: tpromocode, amount_paid: tamount_paid});
-	//var url = \"index.php?option=com_digicom&controller=orders&task=calc&no_html=1&jsonString=\"+jsonString;
-	var url = \"index.php?option=com_digicom&task=orders.calc&tmpl=component&jsonString=\"+jsonString;
-	//console.log(url);
-	//index.php?option=com_digicom&controller=orders&task=calc&no_html=1&
-	//jsonString={\"pids\":[],\"processor\":\"offline\",\"promocode\":\"\",\"amount_paid\":\"\"}
+	var url = \"index.php?option=com_digicom&task=ordernew.calc&tmpl=component&jsonString=\"+jsonString;
 	var req = new Request.HTML({
 		method: 'get',
 		url: url,
