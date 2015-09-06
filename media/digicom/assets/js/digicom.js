@@ -165,3 +165,20 @@ function ajaxRequest(Url,DivId)
 	 AJAX.open("get", Url, true);
 	 AJAX.send(null);
 }
+function checkPersonStatus(){
+	var persion = jQuery("input:radio[name='jform[person]']:checked").val();
+	
+	if(persion == '1'){
+		jQuery(".group-input-company, .group-input-tax").hide();
+	}
+}
+jQuery(document).ready(function() {
+	checkPersonStatus();
+	jQuery(document).on("click", "input:radio[id^='jform_person1']", function (event) {
+		jQuery(".group-input-company, .group-input-tax").show();
+	});
+	jQuery(document).on("click", "input:radio[id^='jform_person0']", function (event) {
+		jQuery(".group-input-company, .group-input-tax").hide();
+	});
+
+});

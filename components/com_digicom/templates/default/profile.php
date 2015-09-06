@@ -33,7 +33,7 @@ $input = $app->input;
 				<?php if ($field->hidden):// If the field is hidden, just display the input.?>
 					<?php echo $field->input;?>
 				<?php else: ?>
-					<div class="control-group">
+					<div class="control-group group-<?php echo $field->class;?>">
 						<div class="control-label">
 							<?php echo $field->label; ?>
 						</div>
