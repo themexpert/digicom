@@ -61,9 +61,6 @@ class DigiComHelperChart {
 		$price = '';
 		$prefix = '';
 		foreach ($daterange as $key => $value) {
-			//$date = new DateTime($value);
-			//$days = $days . $prefix . '"' . DigiComHelperChart::addOrdinalNumberSuffix($date->format('d')) . ' '.$date->format('M').'"';
-			//$prefix = ', ';
 
 			$dayPrice = ceil(DigiComHelperChart::getAmountByDate($value,$byproduct));
 			//echo $dayPrice . '::from line 69';die;
@@ -119,14 +116,8 @@ class DigiComHelperChart {
 
 		$db->setQuery($query);
 
-		// $sql = "SELECT SUM(`amount_paid`) as total from #__digicom_orders where 1=1 ".$and;
-		// //$sql = "SELECT SUM(CASE WHEN `amount_paid` = '1' THEN `amount` ELSE `amount_paid` END) as total from #__digicom_orders where 1=1 ".$and;
-		// $db->setQuery($sql);
-		// $db->query();
 		return $db->loadResult();
-		// $price = $db->loadResult();
-		// $result = DigiComHelperDigiCom::format_price($price, $config->get('currency','USD'), true, $config);
-		// return $result;
+
 	}
 
 	/*
@@ -147,15 +138,11 @@ class DigiComHelperChart {
 			  }
 
 			if(empty($productid)) return 0;
-			//if(empty($productid)) return DigiComHelperDigiCom::format_price(0, $config->get('currency','USD'), true, $config);
 
 		}
 
-
-		$startdate = date($day." 00:00:00");
-		$enddate = date('Y-m-d 00:00:00', strtotime($startdate . ' + 1 day'));
-		//echo $enddate;die;
-		//$end_date_int = strtotime($enddate);
+		$startdate 	= date($day." 00:00:00");
+		$enddate 		= date($day.' 23:59:59');
 
 		$query = $db->getQuery(true);
 		$query->select('SUM('.$db->quoteName('o.amount_paid').') as '.$db->quoteName('total'))
@@ -171,16 +158,9 @@ class DigiComHelperChart {
 			$query->where($db->quoteName('od.productid')." = " . $db->quote($productid));
 		}
 
-		//$sql = "SELECT SUM(`amount_paid`) as total from #__digicom_orders where 1=1 ".$and;
 		$db->setQuery($query);
-		//echo $query->__toString($query);jexit();
-		//$db->execute();
 		return $db->loadResult();
-		// $price = $db->loadResult();
-		//
-		// $result = DigiComHelperDigiCom::format_price($price, $config->get('currency','USD'), true, $config);
-		// echo $result;die;
-		// return $result;
+
 	}
 
 
@@ -227,14 +207,7 @@ class DigiComHelperChart {
 		}
 
 		$db->setQuery($query);
-
-
-		// $db->setQuery($sql);
-		// $db->query();
 		return $db->loadResult();
-		// $price = $db->loadResult();
-		// $result = DigiComHelperDigiCom::format_price($price, $config->get('currency','USD'), true, $config);
-		// return $result;
 	}
 
 
@@ -275,10 +248,10 @@ class DigiComHelperChart {
 				$lastday = new DateTime('last day of last month');
 				$lastdate = $lastday->format('j');
 				for($i=0;$i<$lastdate;$i++){
-					//$date = new DateTime($i.' days ago');
+
 					$month = new DateTime('first day of last month');
 					$date = $month->modify("+$i days");
-					//echo $date->format('Y-m-j');die;
+
 					$days = $days . $prefix . '"' . DigiComHelperChart::addOrdinalNumberSuffix($date->format('d')) . ' '.$date->format('M').'"';
 					$prefix = ', ';
 				}
@@ -320,11 +293,9 @@ class DigiComHelperChart {
 				$end_date = $input->get('end_date','');
 
 				$daterange = DigiComHelperChart::createDateRangeArray($start_date, $end_date);
-				//print_r($daterange);die;
+
 				foreach ($daterange as $key => $value) {
 					$date = new DateTime($value);
-					//$days = $days . $prefix . '"' . DigiComHelperChart::addOrdinalNumberSuffix($date->format('d')) . ' '.$date->format('M').'"';
-					//$prefix = ', ';
 
 					$dayPrice = ceil(DigiComHelperChart::getAmountByDate($date->format('Y-m-d'),$byproduct));
 					$price = $price . $prefix . $dayPrice;
@@ -353,10 +324,6 @@ class DigiComHelperChart {
 					//$date = new DateTime($i.' days ago');
 					$month = new DateTime('first day of last month');
 					$date = $month->modify("+$i days");
-					//echo $date->format('Y-m-j');die;
-					// $days = $days . $prefix . '"' . DigiComHelperChart::addOrdinalNumberSuffix($date->format('d')) . ' '.$date->format('M').'"';
-					// $price = $price . $prefix . $dayPrice;
-					// $prefix = ', ';
 
 					$dayPrice = ceil(DigiComHelperChart::getAmountByDate($date->format('Y-m-d'),$byproduct));
 					$price = $price . $prefix . $dayPrice;
@@ -365,21 +332,15 @@ class DigiComHelperChart {
 
 				break;
 			case "month":
-				//return DigiComHelperChart::getMonthLabelPrice($rangeDays,$byproduct);
 				$date = new DateTime('now');
 				$date->modify("first day of this month");
 				$start_date = $date->format('Y-m-d 00:00:00');
 
 				$date = new DateTime('now');
-				//$date->modify("last day of this month");
 				$end_date = $date->format('Y-m-d 23:59:59');
-				//echo $end_date;die;
 				$daterange = DigiComHelperChart::createDateRangeArray($start_date, $end_date);
-				//print_r($daterange);die;
 				foreach ($daterange as $key => $value) {
 					$date = new DateTime($value);
-					//$days = $days . $prefix . '"' . DigiComHelperChart::addOrdinalNumberSuffix($date->format('d')) . ' '.$date->format('M').'"';
-					//$prefix = ', ';
 
 					$dayPrice = ceil(DigiComHelperChart::getAmountByDate($date->format('Y-m-d'),$byproduct));
 					$price = $price . $prefix . $dayPrice;
@@ -393,9 +354,6 @@ class DigiComHelperChart {
 
 				for($i=6;$i>=0;$i--){
 					$date = new DateTime($i.' days ago');
-
-					//$price = $price . $prefix . '"' . DigiComHelperChart::addOrdinalNumberSuffix($date->format('d')) . ' '.$date->format('M').'"';
-					//$prefix = ', ';
 
 					$dayPrice = ceil(DigiComHelperChart::getAmountByDate($date->format('Y-m-d'),$byproduct));
 					$price = $price . $prefix . $dayPrice;
