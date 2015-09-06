@@ -17,6 +17,8 @@ JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_digicom/tables', '
  */
 class DigiComSiteHelperSession
 {
+	protected $oldsids;
+	protected $digisession;
 	/*
 	* session id, int
 	*/
@@ -39,27 +41,29 @@ class DigiComSiteHelperSession
 	 */
 	public function __construct ()
 	{
-		
-		$db 		= JFactory::getDBO();
-		$my 		= JFactory::getUser();
-		$reg 		= JFactory::getSession();
-		$time 		= time();
+
+		if(!empty($this->_customer)) return true;
+
+		$db 				= JFactory::getDBO();
+		$my 				= JFactory::getUser();
+		$reg 				= JFactory::getSession();
 		$digicomid 	= 'digicomid';
-		$sid 		= $reg->get($digicomid, 0);
-		//SELECT GROUP_CONCAT(sid) as sid from `fs62c_digicom_session` where `create_time` < NOW() - INTERVAL 1 DAY
+		$sid 				= $reg->get($digicomid, 0);
 
-		// first we will remove all session n cart info from db that passed 24 hours
-		$sql = "SELECT GROUP_CONCAT(sid) as sid from #__digicom_session where create_time< now() - INTERVAL 7 DAY";
-		$db->setQuery($sql);
-		$oldsids = $db->loadObject();
-		//echo $oldsids->sid;die;
+		if(empty($this->oldsids)){
+			// first we will remove all session n cart info from db that passed 24 hours
+			$sql = "SELECT GROUP_CONCAT(sid) as sid from #__digicom_session where create_time< now() - INTERVAL 7 DAY";
+			$db->setQuery($sql);
 
-		if(!empty($oldsids->sid)){
-			$sql = "delete from #__digicom_cart where `sid` in (".$oldsids->sid.")";
+			$this->oldsids = $db->loadObject();
+		}
+
+		if(!empty($this->oldsids->sid)){
+			$sql = "delete from #__digicom_cart where `sid` in (".$this->oldsids->sid.")";
 			$db->setQuery($sql);
 			$db->execute();
 
-			$sql = "delete from #__digicom_session where `sid` in (".$oldsids->sid.")";
+			$sql = "delete from #__digicom_session where `sid` in (".$this->oldsids->sid.")";
 			$db->setQuery($sql);
 			$db->execute();
 		}
@@ -83,14 +87,17 @@ class DigiComSiteHelperSession
 
 			}
 			else{
-				//we dont have session id but have userid
-				$sql = "select * from #__digicom_session where uid='".$my->id."'";
-				$db->setQuery($sql);
-				$digisession = $db->loadObject();
 
-				if(isset($digisession->uid) &&  $digisession->uid != 0){
+				if(empty($this->digisession)){
+					//we dont have session id but have userid
+					$sql = "select * from #__digicom_session where uid='".$my->id."'";
+					$db->setQuery($sql);
+					$this->digisession = $db->loadObject();
+				}
+
+				if(isset($this->digisession->uid) &&  $this->digisession->uid != 0){
 					// user have previous session id
-					$sid = $digisession->sid;
+					$sid = $this->digisession->sid;
 					$reg->set($digicomid, $sid);
 
 					// we have session id, so update the time
@@ -122,14 +129,14 @@ class DigiComSiteHelperSession
 			//i'm loged in with session id
 			$sql = "select * from #__digicom_session where sid='".$sid."'";
 			$db->setQuery($sql);
-			$digisession = $db->loadObject();
+			$this->digisession = $db->loadObject();
 
-			if(isset($digisession) && !$digisession->uid){
+			if(isset($this->digisession) && !$this->digisession->uid){
 				//no userid
 				$sql = "UPDATE #__digicom_session SET `uid`='".$my->id."' WHERE sid='".$sid."'";
 				$db->setQuery($sql);
 				$db->execute();
-				$digisession->uid = $my->id;
+				$this->digisession->uid = $my->id;
 			}
 
 		}
@@ -141,32 +148,34 @@ class DigiComSiteHelperSession
 
 		// set the customer info
 		if ($this->_user->id > 0) {
-			$table = JTable::getInstance('Customer','Table');
-			$table->load(array('email'=>$this->_user->email));
 
-			// update customer info if re-registered as customer
-			if($table->id != $this->_user->id){
-				$query = "UPDATE `#__digicom_customers` SET `id`=".$this->_user->id." WHERE `email`='" . $this->_user->email."'";
-				$db->setQuery( $query );
-				$db->execute();
 				$table = JTable::getInstance('Customer','Table');
 				$table->load(array('email'=>$this->_user->email));
-			}
+
+				// update customer info if re-registered as customer
+				if($table->id != $this->_user->id){
+					$query = "UPDATE `#__digicom_customers` SET `id`=".$this->_user->id." WHERE `email`='" . $this->_user->email."'";
+					$db->setQuery( $query );
+					$db->execute();
+					$table = JTable::getInstance('Customer','Table');
+					$table->load(array('email'=>$this->_user->email));
+				}
 
 
-			// as we have userlogedin, make use we fill info for customer table
-			$this->_customer = $table;
 
-			if($my->id && (empty($this->_customer->name) or empty($this->_customer->email))){
-				$table->name = $my->name;
-				$table->email = $my->email;
-				$table->store();
-			}
+				if($my->id && (empty($this->_customer->name) or empty($this->_customer->email))){
+					$table->name = $my->name;
+					$table->email = $my->email;
+					$table->store();
+				}
 
+				// as we have userlogedin, make use we fill info for customer table
+				$this->_customer = $table;
 		} else {
 			// guest access
 			$this->_customer = JTable::getInstance('Customer','Table');
 		}
+
 		//
 		// // dont allow empty value, so define blank
 		if (!isset($this->_customer->registerDate)) $this->_customer->registerDate = $my->registerDate;

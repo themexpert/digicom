@@ -13,11 +13,11 @@ JLoader::discover('DigiComSiteHelper', JPATH_SITE . '/components/com_digicom/hel
 JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_digicom/models', 'DigiComModel');
 
 // Lets cache some variable
-$app	   = JFactory :: getApplication();
+$app	     = JFactory::getApplication();
 $input	   = $app->input;
 
 $customer  = new DigiComSiteHelperSession();
-$cart	   = JModelLegacy::getInstance('Cart', 'DigiComModel', array('ignore_request' => true));
+$cart	     = JModelLegacy::getInstance('Cart', 'DigiComModel', array('ignore_request' => true));
 $configs   = JComponentHelper::getComponent('com_digicom')->params;
 $list      = $cart->getCartItems ($customer, $configs);
 $tax       = $cart->calc_price($list, $customer, $configs);
