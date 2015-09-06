@@ -10,28 +10,24 @@
 defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.'/helpers/html/');
-
 JHtml::_('behavior.multiselect');
 JHtml::_('behavior.formvalidation');
-//JHtml::_('formbehavior.chosen', 'select');
+JHtml::_('formbehavior.chosen', 'select');
 $canDo = JHelperContent::getActions('com_digicom', 'component');
-$invisible = 'style="display:none;"';
-
-$k = 0;
-$n = count( $this->orders );
 $configs = JComponentHelper::getComponent('com_digicom')->params;
-
-// prepare calender time format
-$f = $configs->get('time_format','DD-MM-YYYY');
-$f = str_replace( "-", "-%", $f );
-$f = "%" . $f;
-
-// $search = $this->state->get('filter.search','');
-// $startdate = $this->state->get('filter.startdate','');
-// $enddate = $this->state->get('filter.enddate','');
-//echo $search;die;
 ?>
 <script language="javascript" type="text/javascript">
+jQuery(document).ready(function() {
+  jQuery('button.js-stools-btn-clear').click(function(){
+    jQuery('#filter_startdate').val('');
+    jQuery('#filter_enddate').val('');
+
+    this.form.submit();
+
+  });
+});
+
+
 function OrderlistItemTask(id) {
     var f = document.adminForm, i, cbx,
     cb = f[id];
@@ -48,11 +44,9 @@ function OrderlistItemTask(id) {
     }
     return false;
 }
-
-
 Joomla.submitbutton = function (pressbutton) {
 	var form = document.adminForm;
-	if (pressbutton == 'remove')
+  if (pressbutton == 'remove')
 	{
 		if (confirm("<?php echo JText::_("CONFIRM_ORDER_DELETE");?>"))
 		{
@@ -76,42 +70,13 @@ Joomla.submitbutton = function (pressbutton) {
 	<div class="dg-alert dg-alert-with-icon">
 		<span class="icon-support"></span><?php echo JText::_("COM_DIGICOM_ORDERS_HEADER_NOTICE"); ?>
 	</div>
+
 	<form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&view=orders'); ?>" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
 
     <?php
 		// Search tools bar
 		echo JLayoutHelper::render('searchtools.orders', array('view' => $this));
 		?>
-    <!--
-    <div class="js-stools">
-			<div class="clearfix">
-				<div class="btn-wrapper input-append">
-					<input type="text" id="filter_search" name="filter[search]" placeholder="<?php echo JText::_('DSKEYWORD'); ?>" value="<?php echo $search; ?>" class="input-medium" />
-					<button type="submit" class="btn hasTooltip" title="" data-original-title="Search">
-						<i class="icon-search"></i>
-					</button>
-					<button type="button" class="btn hasTooltip js-stools-btn-clear" onclick="document.id('filter_search').value='';this.form.submit();">
-						<i class="icon-remove"></i>
-					</button>
-				</div>
-				<div class="btn-wrapper input-append input-prepend pull-right">
-					<label class="add-on"><?php echo JText::_( "DSFROM" ); ?>:</label>
-					<?php // echo JHTML::_( "calendar", $startdate, 'filter[startdate]', 'filter_startdate', $f, array('class'=>'input-medium'), array('class'=>'span2'), array('class'=>'span2')); ?>&nbsp;
-
-					<label class="add-on"><?php echo JText::_( "DSTO" ); ?>:</label>
-					<?php // echo JHTML::_( "calendar", $enddate, 'filter[enddate]', 'filter_enddate', $f , array('class'=>'input-medium')); ?>
-
-					<input type="submit" name="go" value="<?php echo JText::_( "DSGO" ); ?>" class="btn" />
-					<button type="button" class="btn hasTooltip js-stools-btn-clear" onclick="document.id('filter_startdate').value='';document.id('filter_enddate').value='';this.form.submit();">
-						<i class="icon-remove"></i>
-					</button>
-				</div>
-
-			</div>
-		</div>
-		<br>
-  -->
-
 
 		<table class="adminlist table table-striped">
 			<thead>
@@ -156,13 +121,9 @@ Joomla.submitbutton = function (pressbutton) {
 			</thead>
 
 			<tbody>
-				<?php if($n > 0):  ?>
+  				<?php if(!empty($this->orders)):  ?>
 				<?php
-				$z = 0;
-				for ( $i = 0; $i < $n; $i++ ):
-					++$z;
-					$order =  $this->orders[$i];
-					//print_r($order);die;
+				foreach($this->orders as $i=>$order):
 					$id = $order->id;
 					$checked = JHTML::_( 'grid.id', $i, $id );
 					$olink = JRoute::_( "index.php?option=com_digicom&view=order&task=order.edit&id=" . $id );
@@ -173,7 +134,7 @@ Joomla.submitbutton = function (pressbutton) {
 					$userlink = "index.php?option=com_users&view=users&filter_search=".$order->email;
 
 				?>
-					<tr class="row<?php echo $k; ?>">
+					<tr class="row<?php echo $i; ?>">
 						<td align="center">
 							<?php echo $checked; ?>
 						</td>
@@ -249,10 +210,7 @@ Joomla.submitbutton = function (pressbutton) {
               <?php endif; ?>
             </td>
 					</tr>
-					<?php
-					$k = 1 - $k;
-				endfor;
-					?>
+          <?php endforeach; ?>
 				<?php else: ?>
 					<tr>
 						<td colspan="9">
@@ -261,6 +219,7 @@ Joomla.submitbutton = function (pressbutton) {
 					</tr>
 				<?php endif; ?>
 			</tbody>
+
 			<tfoot>
 				<tr>
 					<td colspan="9">
@@ -284,8 +243,8 @@ Joomla.submitbutton = function (pressbutton) {
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="view" value="orders" />
-		<input type="hidden" id="order_id" name="order_id" value="" />
 		<?php echo JHtml::_('form.token'); ?>
+
 	</form>
 </div>
 <?php

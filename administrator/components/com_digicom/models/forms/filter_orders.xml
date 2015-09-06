@@ -8,7 +8,7 @@
 			hint="JSEARCH_FILTER"
 		/>
 		<field
-			name="published"
+			name="status"
 			type="list"
 			label="COM_CONTENT_FILTER_PUBLISHED"
 			description="COM_CONTENT_FILTER_PUBLISHED_DESC"
@@ -31,15 +31,12 @@
 			<option value="purchase">COM_DIGICOM_ORDER_TYPE_PURCHASED</option>
 		</field>
 
-	</fields>
-
-	<fields name="filter">
 		<field
 			name="startdate"
 			type="calendar"
 			label="DSFROM"
 			description=""
-			format="%d-%m-%Y"
+			format="%Y-%m-%d"
 			/>
 
 		<field
@@ -47,7 +44,7 @@
 			type="calendar"
 			label="DSTO"
 			description=""
-			format="%d-%m-%Y"
+			format="%Y-%m-%d"
 			/>
 
 	</fields>
@@ -62,8 +59,8 @@
 			default="a.id DESC"
 			>
 			<option value="">JGLOBAL_SORT_BY</option>
-			<option value="a.state ASC">JSTATUS_ASC</option>
-			<option value="a.state DESC">JSTATUS_DESC</option>
+			<option value="a.status ASC">JSTATUS_ASC</option>
+			<option value="a.status DESC">JSTATUS_DESC</option>
 			<option value="a.created ASC">JDATE_ASC</option>
 			<option value="a.created DESC">JDATE_DESC</option>
 			<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
