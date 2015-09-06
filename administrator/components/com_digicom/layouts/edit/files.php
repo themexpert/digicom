@@ -21,21 +21,21 @@ $document->addScript(JURI::root(true).'/media/digicom/assets/js/repeatable-field
 		<table class="table table-striped wrapper" id="itemList">
 			<thead>
 				<tr class="row">
-					<th width="1%">
+					<th width="10%">
 						<i class="icon-menu-2"></i>
 					</th>
-					<th style="width: 20%">
+					<th width="10%">
 						File Name
 					</th>
-					<th>
+					<th width="70%">
 						File URL
 					</th>
-					<th style="width: 2%"></th>
+					<th style="width: 10%"></th>
 				</tr>
 			</thead>
 			<tbody class="container">
 				<tr class="template row">
-					<td width="1%">
+					<td width="10%">
 						<span class="move"><i class="icon-move"></i></span>
 						<input type="hidden" name="jform[file][{{row-count-placeholder}}][id]" id="digicom_files_id" value="" />
 					</td>
@@ -70,7 +70,7 @@ $document->addScript(JURI::root(true).'/media/digicom/assets/js/repeatable-field
 						if(is_array($value)) $value = (object) $value;
 					?>
 					<tr class="row">
-						<td width="1%">
+						<td width="10%">
 							<span class="move"><i class="icon-move"></i></span>
 							<input type="hidden" name="jform[file][<?php echo $key; ?>][id]" id="digicom_files_id" value="<?php echo (isset($value->id) ? $value->id : ''); ?>" />
 						</td>
@@ -115,6 +115,6 @@ $document->addScript(JURI::root(true).'/media/digicom/assets/js/repeatable-field
 		</table>
 	</div>
 
-	
+
 
 </fieldset>
