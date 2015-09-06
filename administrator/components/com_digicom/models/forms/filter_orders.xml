@@ -31,13 +31,15 @@
 			<option value="purchase">COM_DIGICOM_ORDER_TYPE_PURCHASED</option>
 		</field>
 
+	</fields>
 
+	<fields name="filter">
 		<field
 			name="startdate"
 			type="calendar"
 			label="DSFROM"
 			description=""
-			onchange="this.form.submit();"
+			format="%d-%m-%Y"
 			/>
 
 		<field
@@ -45,12 +47,11 @@
 			type="calendar"
 			label="DSTO"
 			description=""
-			onchange="this.form.submit();"
+			format="%d-%m-%Y"
 			/>
 
-
-
 	</fields>
+
 	<fields name="list">
 		<field
 			name="fullordering"
