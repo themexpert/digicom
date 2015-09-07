@@ -42,13 +42,16 @@ class DigiComSiteHelperSession
 	public function __construct ()
 	{
 
-		if(!empty($this->_customer)) return true;
-
+		$app 				= JFactory::getApplication();
 		$db 				= JFactory::getDBO();
 		$my 				= JFactory::getUser();
 		$reg 				= JFactory::getSession();
 		$digicomid 	= 'digicomid';
 		$sid 				= $reg->get($digicomid, 0);
+		$debug 			= $app->input->get('debug');
+		if($debug){
+			new DigiComSiteHelperTest();
+		}
 
 		if(empty($this->oldsids)){
 			// first we will remove all session n cart info from db that passed 24 hours
