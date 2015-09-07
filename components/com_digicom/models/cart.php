@@ -415,10 +415,11 @@ class DigiComModelCart extends JModelItem
 
 			$payprocess['discount_calculated'] = 1;
 		}
+		
+		$name = 'promocode'.$cust_info->_sid;
+		$justapplied = $session->get($name,false);
 
 		if($promo_applied && ($promovalue > 0)){
-			$name = 'promocode'.$cust_info->_sid;
-			$justapplied = $session->get($name,false);
 
 			//echo $justapplied;die;
 			if($justapplied){

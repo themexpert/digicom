@@ -69,6 +69,7 @@ class DigiComSiteHelperTemplate extends JViewLegacy {
 			$this->addScript(JUri::root(true) . '/components/com_digicom/templates/' . $params->get('template','default') . '/js/script.js');
 		}else{
 			$this->addScript(JURI::root()."media/digicom/assets/js/digicom.js");
+			$this->addScript(JURI::root()."media/digicom/assets/js/digicom.plugin.js?site=".JURI::root());
 		}
 
 	}

@@ -167,7 +167,7 @@ function ajaxRequest(Url,DivId)
 }
 function checkPersonStatus(){
 	var persion = jQuery("input:radio[name='jform[person]']:checked").val();
-	
+
 	if(persion == '1'){
 		jQuery(".group-input-company, .group-input-tax").hide();
 	}

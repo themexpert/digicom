@@ -87,7 +87,7 @@ $table_column = 4;
 								</td>
 
 								<td nowrap="nowrap">
-									<span id="cart_item_price<?php echo $item->cid; ?>">
+									<span data-digicom-id="price<?php echo $item->cid; ?>">
 										<?php echo DigiComSiteHelperPrice::format_price($item->price, $item->currency, true, $configs); ?>
 									</span>
 								</td>
@@ -96,7 +96,7 @@ $table_column = 4;
 									<span class="digicom_details">
 										<strong>
 											<?php if($configs->get('show_quantity',0) == "1") { ?>
-												<input id="quantity<?php echo $item->cid; ?>" type="number" onchange="update_cart(<?php echo $item->cid; ?>);" name="quantity[<?php echo $item->cid; ?>]" min="1" class="input-small" value="<?php echo $item->quantity; ?>" size="2" placeholder="<?php echo JText::_('COM_DIGICOM_QUANTITY'); ?>">
+												<input data-digicom-id="quantity<?php echo $item->cid; ?>" type="number" onchange="Digicom.updateCart(<?php echo $item->cid; ?>);" name="quantity[<?php echo $item->cid; ?>]" min="1" class="input-small" value="<?php echo $item->quantity; ?>" size="2" placeholder="<?php echo JText::_('COM_DIGICOM_QUANTITY'); ?>">
 											<?php } else {
 												echo $item->quantity;
 											} ?>
@@ -106,7 +106,7 @@ $table_column = 4;
 
 								<?php if($tax['item_discount']) : ?>
 								<td style="text-align:center;" nowrap="nowrap">
-									<span id="cart_item_discount<?php echo $item->cid; ?>" class="digi_cart_amount">
+									<span data-digicom-id="discount<?php echo $item->cid; ?>" class="digi_cart_amount">
 										<?php
 										$value_discount = 0;
 										if ( $item->discount > 0)
@@ -123,7 +123,7 @@ $table_column = 4;
 								<?php endif; ?>
 
 								<td nowrap>
-									<span id="cart_item_total<?php echo $item->cid; ?>" class="digi_cart_amount">
+									<span data-digicom-id="total<?php echo $item->cid; ?>" class="digi_cart_amount">
 										<?php echo DigiComSiteHelperPrice::format_price($item->subtotal-(isset($value_discount) ? $value_discount : 0), $item->currency, true, $configs); ?>
 									</span>
 								</td>
@@ -173,7 +173,7 @@ $table_column = 4;
 					<tr valign="top">
 						<td colspan="<?php echo $table_column - 1; ?>" >
 							<div class="input-append">
-								<input type="text" id="promocode" name="promocode" size="15" value="<?php echo $this->promocode; ?>" />
+								<input type="text" data-digicom-id="promocode" name="promocode" size="15" value="<?php echo $this->promocode; ?>" />
 								<button type="submit" class="btn" onclick="document.getElementById('task').value='cart.updateCart';"><i class="ico-gift"></i> <?php echo JText::_("COM_DIGICOM_CART_PROMOCODE_APPLY"); ?></button>
 							</div>
 
@@ -197,15 +197,15 @@ $table_column = 4;
 						<td nowrap="nowrap" style="text-align: center;">
 							<ul style="margin: 0; padding: 0;list-style-type: none;">
 								<?php if ($tax['discount_calculated']): ?>
-								<li class="digi_cart_subtotal_price" id="cart_total" style="font-size: 15px;text-align:right;">
+								<li class="digi_cart_subtotal_price" data-digicom-id="cart_subtotal" style="font-size: 15px;text-align:right;">
 									<?php echo DigiComSiteHelperPrice::format_price($tax['price'], $tax['currency'], true, $configs); ?>
 								</li>
-								<li class="digi_cart_discount_price" id="cart_total" style="font-size: 15px;text-align:right;">
+								<li class="digi_cart_discount_price" data-digicom-id="cart_discount" style="font-size: 15px;text-align:right;">
 									<?php echo DigiComSiteHelperPrice::format_price($tax['promo'], $tax['currency'], true, $configs); ?>
 								</li>
 								<?php endif; ?>
 
-								<li class="digi_cart_total_price" id="cart_total" style="font-weight: bold;font-size: 18px;text-align:right;">
+								<li class="digi_cart_total_price" data-digicom-id="cart_total" style="font-weight: bold;font-size: 18px;text-align:right;">
 									<?php echo DigiComSiteHelperPrice::format_price($tax['taxed'], $tax['currency'], true, $configs); ?>
 								</li>
 							</ul>
