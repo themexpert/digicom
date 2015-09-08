@@ -32,7 +32,7 @@ class DigiComSiteHelperTest
       return;
       // // do some job man!
       // $dispatcher = JDispatcher::getInstance();
-      // $data = $dispatcher->trigger('getDomainListByUser',array(JFactory::getUser()->id));
+      // $data = $dispatcher->trigger('onDigicomDomainControlShowDomainList',array(JFactory::getUser()->id));
       // print_r($data);die;
   }
 }
