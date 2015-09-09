@@ -23,7 +23,7 @@ class DigiComViewOrders extends JViewLegacy
 		$this->state 		= $this->get('State');
 		$this->filterForm    = $this->get('FilterForm');
 		$this->activeFilters = $this->get('ActiveFilters');
-		
+
 		$pagination 		= $this->get('Pagination');
 		$this->pagination = $pagination;
 

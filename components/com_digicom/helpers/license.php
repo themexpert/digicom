@@ -143,7 +143,7 @@ class DigiComSiteHelperLicense {
 		return $db->loadObject();
 	}
 
-	public static function getItemsbyUser($userid, $current = true){
+	public static function getProductsByUser($userid, $paid = true ,$current = true){
 		// Create a new query object.
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
@@ -157,14 +157,36 @@ class DigiComSiteHelperLicense {
 		if($current){
 			$query->where($db->quoteName('l.active') . ' = ' . 1);
 		}
+
+		if($paid){
+			$freeproduct = DigiComSiteHelperLicense::getFreeProduct();
+			if(!empty($freeproduct)){
+				$query->where($db->quoteName('l.productid') . ' NOT IN (' . $freeproduct.')');
+			}
+		}
+
 		$query->where($db->quoteName('l.userid') . ' = ' . $userid);
-
 		$query->order($db->quoteName('p.name') . ' ASC');
-
 		$db->setQuery($query);
-
 		return $db->loadObjectList();
 
+	}
+
+	public static function getFreeProduct()
+	{
+	    $db = JFactory::getDBO();
+	    $query = $db->getQuery(true);
+	    $query
+	        ->select('GROUP_CONCAT('.$db->quoteName('id').')')
+	        ->from($db->quoteName('#__digicom_products'))
+	        ->where($db->quoteName('price').' = '.$db->quote('0.00'))
+	        ->group($db->quoteName('price'));
+	    $db->setQuery($query);
+	    $db->execute();
+	    if($db->getNumRows()){
+					return $db->loadResult();
+	    }
+	    return false;
 	}
 
 }
