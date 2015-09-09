@@ -766,8 +766,9 @@ class DigiComSiteHelperDigicom {
 
 	}
 
-	public static function getPaymentPlugins($configs){
+	public static function getPaymentPlugins($configs, $processor){
 
+		$lang = JFactory::getLanguage();
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true)
 					->select('extension_id as id , name, element,enabled as published, params')
@@ -777,7 +778,11 @@ class DigiComSiteHelperDigicom {
 		$db->setQuery($query);
 		$gatewayplugin = $db->loadobjectList();
 
-		$lang = JFactory::getLanguage();
+		$default = $processor;
+		if(empty($default)){
+				$default = $configs->get('default_payment','offline');
+		}
+
 		$options = array();
 		foreach($gatewayplugin as $gateway)
 		{
@@ -785,7 +790,7 @@ class DigiComSiteHelperDigicom {
 			$options[] = JHTML::_('select.option',$gateway->element, $params->plugin_name);
 		}
 
-		return JHTML::_('select.genericlist', $options, 'processor', 'class="inputbox required"', 'value', 'text', $configs->get('default_payment','offline'), 'processor' );
+		return JHTML::_('select.genericlist', $options, 'processor', 'class="inputbox required" data-digicom-id="processor"', 'value', 'text', $default, 'processor' );
 
 	}
 
