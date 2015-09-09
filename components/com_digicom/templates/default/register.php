@@ -15,14 +15,12 @@ $return = JFactory::getApplication()->input->get('return','');
 
 <div id="digicom">
 
-	<?php if(!empty($return) && $this->configs->get('show_steps',0)){ ?>
-		<div class="pagination pagination-centered">
-			<ul>
-				<li><span><?php echo JText::_("COM_DIGICOM_BUYING_PROCESS_STEP_ONE"); ?></span></li>
-				<li class="active"><span><?php echo JText::_("COM_DIGICOM_BUYING_PROCESS_STEP_TWO"); ?></span></li>
-				<li><span><?php echo JText::_("COM_DIGICOM_BUYING_PROCESS_STEP_THREE"); ?></span></li>
-			</ul>
-		</div>
+	<?php if(!empty($return)){ ?>
+		<?php
+		$this->setLayout('cart');
+		echo $this->loadTemplate('steps');
+		$this->setLayout('register');
+		?>
 	<?php } ?>
 
 	<h1 class="digi-page-title"><?php echo JText::_("COM_DIGICOM_LOGIN_REGISTER");?></h1>

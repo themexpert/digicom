@@ -18,15 +18,10 @@ $data = $this->data;
 ?>
 <div id="digicom">
 
-	<?php if($configs->get('show_steps',1) == 1){ ?>
-	<div class="pagination pagination-centered">
-		<ul>
-			<li class="disabled"><span><?php echo JText::_("COM_DIGICOM_BUYING_PROCESS_STEP_ONE"); ?></span></li>
-			<li class="disabled"><span><?php echo JText::_("COM_DIGICOM_BUYING_PROCESS_STEP_TWO"); ?></span></li>
-			<li class="active"><span><?php echo JText::_("COM_DIGICOM_BUYING_PROCESS_STEP_THREE"); ?></span></li>
-		</ul>
-	</div>
-	<?php } ?>
+	<?php
+	$this->setLayout('cart');
+	echo $this->loadTemplate('steps');
+	?>
 
 	<?php if ($pg_plugin == "paypal" ){ ?>
 	<div class="container-fluid center">
