@@ -170,9 +170,10 @@ class plgDigiCom_PayOffline extends JPlugin
 	* @data : the necessary info recieved from form about payment
 	* @return null
 	*/
-	function onTP_Storelog($data)
+	function onTP_Storelog($name, $data)
 	{
-		$log = plgDigiCom_PayOfflineHelper::Storelog($this->_name,$data);
+		if($name != $this->_name) return;
+		plgDigiCom_PayOfflineHelper::Storelog($this->_name,$data);
 	}
 
 	/*

@@ -13,31 +13,16 @@ JHtml::_('jquery.framework');
 JHTML::_('behavior.formvalidation');
 $configs = JComponentHelper::getComponent('com_digicom')->params;
 
-$document = JFactory::getDocument();	 
+$document = JFactory::getDocument();
 if($vars->custom_email=="")
 	$email = JText::_('PLG_DIGICOM_PAY_OFFLINE_AFTER_PAYMENT_CONTACT_NO_ADDRS');
 else
 	$email = $vars->custom_email;
 
 ?>
-<script type="text/javascript">
-function myValidate(f)
-{
-	if (document.formvalidator.isValid(f)) {
-		f.check.value='<?php echo JSession::getFormToken(); ?>'; 
-		return true; 
-	}
-	else {
-		var msg = '<?php echo JText::_('PLG_DIGICOM_PAY_OFFLINE_ERROR');?> '
-		alert(msg);
-	}
-	return false;
-}
-
-</script> 
 
 <div class="digicom-payment-form">
-	<form action="<?php echo $vars->url; ?>" name="adminForm" id="adminForm" onSubmit="return myValidate(this);" class="form-validate form-horizontal"  method="post">
+	<form action="<?php echo $vars->url; ?>" name="adminForm" id="adminForm" class="form-validate form-horizontal"  method="post">
 		<div>
 			<div class="control-group">
 				<label for="cardfname" class="control-label"><?php  echo JText::_( 'PLG_DIGICOM_PAY_OFFLINE_ORDER_INFORMATION_LABEL' );?></label>
@@ -75,5 +60,6 @@ function myValidate(f)
 				<input type='submit' name='btn_check' id='btn_check' class="btn btn-success btn-large"  value="<?php echo JText::_('PLG_DIGICOM_PAY_OFFLINE_SUBMIT'); ?>">
 			</div>
 		</div>
+		<?php echo JHtml::_('form.token');?>
 	</form>
 </div>

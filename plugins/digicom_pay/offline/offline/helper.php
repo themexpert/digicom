@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 
 class plgDigiCom_PayOfflineHelper
-{ 
+{
 	/*
 	* get the payment submit url
 	* usefull for thurdparty
@@ -32,24 +32,24 @@ class plgDigiCom_PayOfflineHelper
 	* @data : the necessary info recieved from form about payment
 	* @return null
 	*/
-	public static function Storelog($name,$logdata)
+	public static function Storelog($name,$data)
 	{
-
+		$my = JFactory::getUser();
 		jimport('joomla.log.log');
-
-		$my 	= JFactory::getUser();
 		JLog::addLogger(
-			array(
-				'user' => $my->name.'('.$my->id.')',
-				'desc' => json_encode($logdata['raw_data']),
-				// Sets file name
-				'text_file' => 'com_digicom.pay.paypal.php',
-				'text_entry_format' => '{DATE} {TIME} {USER} {DESC}'
-			),
-			// Sets messages of all log levels to be sent to the file
-			JLog::ALL,
-			array('com_digicom')
-		);
+			 array(
+						// Sets file name
+						'text_file' => 'com_digicom.offline.errors.php'
+			 ),
+			 // Sets messages of all log levels to be sent to the file
+			 JLog::ALL,
+			 // The log category/categories which should be recorded in this file
+			 // In this case, it's just the one category from our extension, still
+			 // we need to put it inside an array
+			 array('com_digicom.offline')
+		 );
+		 $msg = 'StoreLog >>  user:'.$my->name.'('.$my->id.'), desc: ' . json_encode($data['raw_data']);
+		 JLog::add($msg, JLog::WARNING, 'com_digicom.offline');
 
 	}
 

@@ -202,8 +202,9 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	* @data : the necessary info recieved from form about payment
 	* @return null
 	*/
-	function onTP_Storelog($data)
+	function onTP_Storelog($name, $data)
 	{
+		if($name != $this->_name) return;
 		plgDigiCom_PayPaypalHelper::Storelog($this->_name,$data);
 	}
 
