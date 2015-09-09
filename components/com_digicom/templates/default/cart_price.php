@@ -8,6 +8,8 @@
  */
 
 defined('_JEXEC') or die;
+$table_column = 4;
+$processor 		= $this->session->get('processor','1');
 ?>
 <table id="digicomcartpromo" width="100%">
   <tr valign="top">
@@ -20,7 +22,7 @@ defined('_JEXEC') or die;
     <td colspan="<?php echo $table_column - 1; ?>" >
       <div class="input-append">
         <input type="text" data-digicom-id="promocode" name="promocode" size="15" value="<?php echo $this->promocode; ?>" />
-        <button type="submit" class="btn" onclick="document.getElementById('task').value='cart.updateCart';"><i class="ico-gift"></i> <?php echo JText::_("COM_DIGICOM_CART_PROMOCODE_APPLY"); ?></button>
+        <button type="submit" class="btn" onclick="Digicom.refreshCart();"><i class="ico-gift"></i> <?php echo JText::_("COM_DIGICOM_CART_PROMOCODE_APPLY"); ?></button>
       </div>
 
     </td>
@@ -63,33 +65,26 @@ defined('_JEXEC') or die;
   <div class="span8" style="margin-bottom:10px;">
     <?php if($this->configs->get('askterms',0) == '1' && ($this->configs->get('termsid') > 0)):?>
       <div class="accept-terms">
-        <input type="checkbox" name="agreeterms" id="agreeterms" style="margin-top: 0;"/>
+        <?php $agreeterms = JFactory::getApplication()->input->get("agreeterms", ""); ?>
+        <input type="checkbox" name="agreeterms" data-digicom-id="agreeterms"<?php echo ($agreeterms? ' checked="checked"' : ''); ?> style="margin-top: 0;"/>
 
-        <a href="javascript:;" onclick="jQuery('#termsShowModal').modal('show');"><?php echo JText::_("COM_DIGICOM_CART_AGREE_TERMS"); ?></a>
+        <a href="#" data-digicom-id="showterms"><?php echo JText::_("COM_DIGICOM_CART_AGREE_TERMS"); ?></a>
       </div>
     <?php endif;?>
   </div>
   <div class="span4" style="margin-bottom: 10px;">
     <p><strong><?php echo JText::_('COM_DIGICOM_PAYMENT_METHOD'); ?></strong></p>
-    <?php
-    $onclick = "console.log(jQuery('#processor').val());";
-    $onclick .= "if(jQuery('#processor').val() === null){ ShowPaymentAlert(); return false; }";
-    $onclick.= "jQuery('#returnpage').val('checkout');";
 
-    if($this->configs->get('askterms',0) == '1')
-    {
-      $onclick.= "if(ShowTermsAlert()) {" . $onclick . " jQuery('#cart_form').submit(); }else{ return false; }";
-    }
-    else
-    {
-      $onclick.= "jQuery('#cart_form').submit();";
-    }
-
-    ?>
-
-    <?php echo DigiComSiteHelperDigicom::getPaymentPlugins($this->configs); ?>
+    <?php echo DigiComSiteHelperDigicom::getPaymentPlugins($this->configs, $processor); ?>
 
     <div id="html-container"></div>
-    <button type="button" class="btn btn-warning" style="float:right;margin-top:10px;" onclick="<?php echo $onclick; ?> "><?php echo JText::_('COM_DIGICOM_CHECKOUT');?> <i class="ico-ok-sign"></i></button>
+    <button
+      type="button"
+      class="btn btn-warning"
+      style="float:right;margin-top:10px;"
+      onclick="Digicom.goCheckout();">
+        <?php echo JText::_('COM_DIGICOM_CHECKOUT');?>
+        <i class="ico-ok-sign"></i>
+    </button>
   </div>
 </div>

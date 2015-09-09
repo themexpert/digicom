@@ -9,9 +9,6 @@
 
 defined('_JEXEC') or die;
 JHtml::_('formbehavior.chosen', 'select');
-
-$processor 		= $this->session->get('processor');
-$table_column = 4;
 ?>
 <div id="digicom">
 
@@ -35,14 +32,14 @@ $table_column = 4;
 			<?php } ?>
 
 
-			<form id="cart_form" name="cart_form" method="post" action="<?php echo JRoute::_("index.php?option=com_digicom&view=cart"); ?>">
+			<form data-digicom-id="cart_form" name="cart_form" method="post" action="<?php echo JRoute::_("index.php?option=com_digicom&view=cart"); ?>">
 
 				<?php echo $this->loadTemplate('items');?>
 
 				<?php echo $this->loadTemplate('price');?>
 
-				<input name="view" type="hidden" id="view" value="cart">
-				<input name="task" type="hidden" id="task" value="cart.checkout">
+				<input name="view" type="hidden" value="cart">
+				<input name="task" type="hidden" data-digicom-id="task" value="cart.checkout">
 				<input name="returnpage" type="hidden" value="">
 
 			</form>
@@ -50,46 +47,6 @@ $table_column = 4;
 
 		<?php echo $this->loadTemplate('modals');?>
 
-		<script>
-			jQuery('.action-agree').click(function() {
-			    jQuery('input[name="agreeterms"]').attr('checked', 'checked');
-			});
-
-			<?php
-			$agreeterms = JFactory::getApplication()->input->get("agreeterms", "");
-			if ($agreeterms != '')
-			{
-				echo 'jQuery("#agreeterms").attr("checked","checked");';
-			}
-
-			if ($processor != '')
-			{
-				echo 'jQuery("#processor").val("' . $processor . '");';
-			}
-			?>
-			function ShowTermsAlert()
-			{
-				if (document.cart_form.agreeterms.checked != true)
-				{
-					jQuery('#termsAlertModal').modal('show');
-				}
-				else
-				{
-					return true;
-				}
-			}
-
-			function ShowPaymentAlert()
-			{
-
-				jQuery('#paymentAlertModal').modal('show');
-			}
-
-			if(jQuery(window).width() > jQuery("#digicomcarttable").width() && jQuery(window).width() < 550)
-			{
-				jQuery(".digicom table select").css("width", (jQuery("#digicomcarttable").width()-30)+"px");
-			}
-		</script>
 <?php endif; ?>
 
 	<?php echo DigiComSiteHelperDigicom::powered_by(); ?>

@@ -55,7 +55,7 @@ $terms_content = $result["0"]["introtext"];
         'title' => $terms_title,
         'height' => 'auto',
         'width' => '1280',
-        'footer' => '<button class="action-agree btn btn-success" data-dismiss="modal" aria-hidden="true">' . JText::_("COM_DIGICOM_CART_AGREE_TERMS_BUTTON") . '</button> <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>'
+        'footer' => '<button data-digicom-id="action-agree" class="action-agree btn btn-success" data-dismiss="modal" aria-hidden="true">' . JText::_("COM_DIGICOM_CART_AGREE_TERMS_BUTTON") . '</button> <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>'
 
       ),
       $terms_content
