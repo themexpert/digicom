@@ -24,6 +24,18 @@
 			// Set the site root path
 			this.digicom_site = Digicom.getUrlParams('digicom.plugin.js', 'site');
 
+			// on click agree, make the agreeterms accepet
+			Digicom.dataSet('action-agree').click(function() {
+			    $('input[name="agreeterms"]').attr('checked', 'checked');
+			});
+
+			// on click show terms, show
+			Digicom.dataSet('showterms').click(function() {
+			    event.preventDefault();
+					$('#termsShowModal').modal('show');
+			});
+
+
 		},
 		dataSet: function(name){
 			return $('[data-digicom-id="'+name+'"]');
@@ -35,21 +47,21 @@
 		updateCart: function (pid)
 		{
 			var url = this.digicom_site + "index.php?option=com_digicom&view=cart&task=cart.getCartItem&cid="+pid;
-			if ( Digicom.dataSet('promocode').length ) {
-				url += '&promocode=' + Digicom.dataSet('promocode').val();
-			}
 
 			if ( Digicom.dataSet('quantity'+pid).length ) {
 				url += '&quantity'+pid+'=' + Digicom.dataSet('quantity'+pid).val();
 			}
-			// console.log(url);
+
+			// if ( Digicom.dataSet('promocode').length ) {
+			// 	url += '&promocode=' + Digicom.dataSet('promocode').val();
+			// }
 
 			$.ajax({
 		      url: url,
 					method: 'get',
 		      success: function (data, textStatus, xhr) { // data= returnval, textStatus=success, xhr = responseobject
-						console.log(data);
 						var responce = $.parseJSON(data);
+						// console.log(responce);
 						var cart_item_price = eval('responce.cart_item_price'+pid);
 						var cart_item_total = eval('responce.cart_item_total'+pid);
 						var cart_item_discount = eval('responce.cart_item_discount'+pid);
@@ -59,37 +71,77 @@
 
 						Digicom.dataSet('discount'+pid).html(cart_item_discount);
 
-						Digicom.dataSet('cart_subtotal').html(responce.cart_total);
+						Digicom.dataSet('cart_subtotal').html(responce.cart_subtotal);
 						Digicom.dataSet('cart_discount').html(responce.cart_discount);
-						Digicom.dataSet('cart_total').html(responce.cart_tax);
-
-						// $('#cart_item_price'+pid).html(cart_item_price);
-						// $('#cart_item_total'+pid).html(cart_item_total);
-
-						// if ( $('#cart_item_discount'+pid).length ) {
-						// 	 $('#cart_item_discount'+pid).html(cart_item_discount);
-						// }
-
-						// $('#cart_total').html(responce.cart_total);
-
-						// if( $('#digicom_cart_discount').length ){
-						// 	$('#digicom_cart_discount').html(responce.cart_discount);
-						// }
-
-						// if( $('#digicom_cart_tax').length ){
-						// 	$('#digicom_cart_tax').html(responce.cart_tax);
-						// }
+						Digicom.dataSet('cart_total').html(responce.cart_total);
 
 						Digicom.refresCartModule();
 		      }
 		  });
 		},
+
+		/**
+		* Update Cart Method
+		*/
+		refreshCart: function ()
+		{
+			// event.preventDefault();
+			Digicom.dataSet('task').val('cart.updateCart');
+			Digicom.dataSet('cart_form').submit();
+		},
+		/**
+		/**
+		* Update Cart Method
+		*/
+		deleteFromCart: function (cartid)
+		{
+			event.preventDefault();
+			location.href = this.digicom_site+'index.php?option=com_digicom&view=cart&task=cart.deleteFromCart&cartid='+cartid;
+		},
 		/**
 		* ajax refresh digicom cart module
 		*/
 		refresCartModule: function(){
-
 			//
+			if(Digicom.dataSet('mod_digicom_cart_wrap').length){
+				var url = this.digicom_site + 'index.php?option=com_digicom&view=cart&task=cart.get_cart_content';
+				$.ajax({
+			      url: url,
+						method: 'get',
+			      success: function (data, textStatus, xhr) { // data= returnval, textStatus=success, xhr = responseobject
+							Digicom.dataSet('mod_digicom_cart_wrap').html(data);
+						}
+			  });
+			}
+
+		},
+		/**
+		* ajax refresh digicom cart module
+		*/
+		goCheckout: function(){
+			// data-digicom-id
+			var agreeterms = true;
+			var processor = '';
+			// check agree terms
+			if ( Digicom.dataSet('agreeterms').length ) {
+				agreeterms = Digicom.dataSet('agreeterms').prop( "checked" );
+			}
+			if(!agreeterms){
+				$('#termsAlertModal').modal('show');
+				return false;
+			}
+
+			// check processor
+			if ( Digicom.dataSet('processor').length ) {
+				processor = Digicom.dataSet('processor').val();
+			}
+			if ( !processor.length ) {
+				$('#paymentAlertModal').modal('show');
+				return false;
+			}
+
+			// all checked passed, submit the form
+			Digicom.dataSet('cart_form').submit();
 
 		},
 
@@ -121,7 +173,7 @@
 	};
 
 	$(function() {
-		// Added to populate data on iframe load
+
 		Digicom.initialize();
 
 	});
