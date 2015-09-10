@@ -60,7 +60,7 @@ config.codekit
 /logs/*
 /log/*
 /media/*
-!/media/digicom/
+!/media/com_digicom/
 /modules/*
 !/modules/mod_digicom_cart/
 !/modules/mod_digicom_categories/
