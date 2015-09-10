@@ -15,17 +15,19 @@ class DigiComSiteHelperTemplate extends JViewLegacy {
 
 	protected $view = null;
 
-	function __construct($view){
+	function __construct($view)
+	{
+		// load jquery n core joomla js for language string as we require it
+		JHtml::_('jquery.framework');
+		JHtmlBehavior::core();
+		$this->addScript(JURI::root()."media/digicom/assets/js/digicom.plugin.js?site=".JURI::root());
+
+		JText::script('COM_DIGICOM_REGISTRATION_EMAIL_ALREADY_USED');
+		JText::script('COM_DIGICOM_REGISTER_USERNAME_TAKEN');
 
 		$this->view = $view;
-		$this->addScriptDeclaration('var digicom_site = "'. JUri::root() . '";');
-		$this->addScriptDeclaration('var DIGI_ATENTION = "'. JText::_("COM_DIGICOM_REGISTER_NOTICE_ATTENTION") . '";');
-		$this->addScriptDeclaration('var DSALL_REQUIRED_FIELDS = "'. JText::_("COM_DIGICOM_REGISTER_NOTICE_ALL_REQUIRED_FIELDS") . '";');
-		$this->addScriptDeclaration('var DSCONFIRM_PASSWORD_MSG = "'. JText::_("COM_DIGICOM_REGISTER_NOTICE_CONFIRM_PASSWORD_UNMATCHED") . '";');
-		$this->addScriptDeclaration('var DSINVALID_EMAIL = "'. JText::_("COM_DIGICOM_REGISTER_NOTICE_INVALID_EMAIL") . '";');
-		$this->addScriptDeclaration('var ACCEPT_TERMS_CONDITIONS = "'. JText::_("COM_DIGICOM_REGISTER_NOTICE_ACCEPT_TERMS_CONDITIONS") . '";');
-
 	}
+
 	public function rander($layout = 'products', $template = null){
 
 		$this->view->setLayout($layout);
@@ -67,9 +69,6 @@ class DigiComSiteHelperTemplate extends JViewLegacy {
 			$this->addScript(JUri::root(true) . '/templates/' . $app->getTemplate() . '/html/com_digicom/templates/' . $params->get('template','default') . '/js/script.js');
 		}elseif( is_file( JPATH_COMPONENT . '/templates/' . $params->get('template','default') . '/js/script.js')) {
 			$this->addScript(JUri::root(true) . '/components/com_digicom/templates/' . $params->get('template','default') . '/js/script.js');
-		}else{
-			$this->addScript(JURI::root()."media/digicom/assets/js/digicom.js");
-			$this->addScript(JURI::root()."media/digicom/assets/js/digicom.plugin.js?site=".JURI::root());
 		}
 
 	}
