@@ -7,11 +7,11 @@
  * @since 		1.0.0
  */
 
-defined('_JEXEC') or die; 
+defined('_JEXEC') or die;
 ?>
-<div class="digicom-payment-form">
-	
-	<form action="<?php echo $vars->action_url ?>" class="form-horizontal autoSubmit" method="post">
+<div class="digicom-payment-form" data-digicom-task="hide">
+
+	<form data-digicom-task="formSubmit" action="<?php echo $vars->action_url ?>" class="form-horizontal autoSubmit" method="post">
 
 		<input type="hidden" name="business" value="<?php echo $vars->business ?>" />
 		<input type="hidden" name="custom" value="<?php echo $vars->order_id ?>" />
@@ -27,9 +27,9 @@ defined('_JEXEC') or die;
 
 		<!--//_cart when manual calc and multiple items-->
 		<input type="hidden" name="cmd" value="_xclick" />
-		
+
 		<div class="form-actions">
-			<input type="image" name="submit" border="0" 
+			<input type="image" name="submit" border="0"
 			src="https://www.paypal.com/en_US/i/btn/x-click-but02.gif" border="0"  value="<?php echo JText::_('SUBMIT'); ?>" alt="Make payments with PayPal - it's fast, free and secure!" />
 		</div>
 
