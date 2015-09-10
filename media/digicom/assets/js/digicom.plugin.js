@@ -20,9 +20,10 @@
 		 *
 		 * @return  void
 		 */
-		initialize: function() {
-			// Set the site root path
-			this.digicom_site = Digicom.getUrlParams('digicom.plugin.js', 'site');
+		initialize: function()
+		{
+			Digicom.root(); // get site root url first
+			Digicom.checkPersonStatus(); // check if need to toggle the field
 
 			// on click agree, make the agreeterms accepet
 			Digicom.dataSet('action-agree').click(function() {
@@ -35,26 +36,82 @@
 					$('#termsShowModal').modal('show');
 			});
 
+			$(document).on("click", "input:radio[id^='jform_person']", function (event) {
+				Digicom.checkPersonStatus();
+			});
+
+
 
 		},
-		dataSet: function(name){
+
+		/**
+		* get digicom dataset
+		*/
+		dataSet: function(name)
+		{
 			return $('[data-digicom-id="'+name+'"]');
 		},
 
+		/**
+		* root method to get root url
+		*/
+		root: function()
+		{
+			// Set the site root path
+			this.root = Digicom.getUrlParams('digicom.plugin.js', 'site');
+			return this.root;
+		},
+
+		/**
+		* checkPersonStatus for registration info
+		*/
+		checkPersonStatus: function()
+		{
+			var persion = $("input:radio[name='jform[person]']:checked").val();
+			if(persion == '1'){
+				$(".group-input-company, .group-input-tax").hide();
+			}else{
+				$(".group-input-company, .group-input-tax").show();
+			}
+		},
+
+		/**
+		* addtoCart
+		*/
+		addtoCart: function(pid, to_cart)
+		{
+			if( Digicom.dataSet("quantity_" + pid).length ){
+				var qty = Digicom.dataSet("quantity_"+pid).val();
+			}else{
+				var qty = 1;
+			}
+
+			var url = this.root + 'index.php?option=com_digicom&view=cart&task=cart.add&from=ajax&pid='+pid+'&qty='+qty;
+
+			$('#digicomCartPopup .modal-body').html('<div class="digicom-loader"></div>');
+
+			$.ajax({
+		      url: url,
+					method: 'get',
+		      success: function (data, textStatus, xhr) { // data= returnval, textStatus=success, xhr = responseobject
+						$('#digicomCartPopup .modal-body').html(data);
+					}
+			});
+
+			$('#digicomCartPopup').modal('show');
+
+			Digicom.refresCartModule();
+		},
 		/**
 		* Update Cart Method
 		*/
 		updateCart: function (pid)
 		{
-			var url = this.digicom_site + "index.php?option=com_digicom&view=cart&task=cart.getCartItem&cid="+pid;
+			var url = this.root + "index.php?option=com_digicom&view=cart&task=cart.getCartItem&cid="+pid;
 
 			if ( Digicom.dataSet('quantity'+pid).length ) {
 				url += '&quantity'+pid+'=' + Digicom.dataSet('quantity'+pid).val();
 			}
-
-			// if ( Digicom.dataSet('promocode').length ) {
-			// 	url += '&promocode=' + Digicom.dataSet('promocode').val();
-			// }
 
 			$.ajax({
 		      url: url,
@@ -89,22 +146,24 @@
 			Digicom.dataSet('task').val('cart.updateCart');
 			Digicom.dataSet('cart_form').submit();
 		},
-		/**
+
 		/**
 		* Update Cart Method
 		*/
 		deleteFromCart: function (cartid)
 		{
 			event.preventDefault();
-			location.href = this.digicom_site+'index.php?option=com_digicom&view=cart&task=cart.deleteFromCart&cartid='+cartid;
+			location.href = this.root+'index.php?option=com_digicom&view=cart&task=cart.deleteFromCart&cartid='+cartid;
 		},
+
 		/**
 		* ajax refresh digicom cart module
 		*/
-		refresCartModule: function(){
+		refresCartModule: function()
+		{
 			//
 			if(Digicom.dataSet('mod_digicom_cart_wrap').length){
-				var url = this.digicom_site + 'index.php?option=com_digicom&view=cart&task=cart.get_cart_content';
+				var url = this.root + 'index.php?option=com_digicom&view=cart&task=cart.get_cart_content';
 				$.ajax({
 			      url: url,
 						method: 'get',
@@ -115,10 +174,12 @@
 			}
 
 		},
+
 		/**
 		* ajax refresh digicom cart module
 		*/
-		goCheckout: function(){
+		goCheckout: function()
+		{
 			// data-digicom-id
 			var agreeterms = true;
 			var processor = '';
@@ -146,6 +207,48 @@
 		},
 
 		/**
+		 * Generic function to validateInput by name
+		 * @targetScript   string
+		 * @varName   string  from event hook like: username, email
+		 * @return  string
+		 */
+		validateInput: function(input)
+		{
+			var formname 	= 'jform_' + input;
+			var value 		= $('#'+formname).val();
+			var url				= this.root + 'index.php?option=com_digicom&task=cart.validate_input&input='+input+'&value='+value;
+
+			if(value != ""){
+
+				$.ajax({
+			      url: url,
+						method: 'get',
+			      success: function (data, textStatus, xhr) { // data= returnval, textStatus=success, xhr = responseobject
+							data = parseInt(data);
+
+							if(data == "1")
+							{
+								if(input == "email"){
+									var msg = Joomla.JText._('COM_DIGICOM_REGISTRATION_EMAIL_ALREADY_USED');
+								}
+								else{
+									var msg = Joomla.JText._('COM_DIGICOM_REGISTER_USERNAME_TAKEN');
+								}
+
+								if ( !$('#'+formname+'-warning').length ) {
+									var warning = '<span id="'+formname+'-warning" class="label label-warning">'+msg+'</span>';
+									$('#'+formname).parent().append(warning);
+								}
+
+							}else{
+								$('#'+formname+'-warning').remove();
+							}
+						}
+			  });
+			}
+		},
+
+		/**
 		 * Generic function to get URL params passed in .js script include
 		 *
 		 * @targetScript   string  script file of plugin
@@ -154,7 +257,8 @@
 		 * @return  string
 		 */
 
-		getUrlParams: function(targetScript, varName) {
+		getUrlParams: function(targetScript, varName)
+		{
 			var scripts = document.getElementsByTagName('script');
 			var scriptCount = scripts.length;
 			for (var a = 0; a < scriptCount; a++) {
