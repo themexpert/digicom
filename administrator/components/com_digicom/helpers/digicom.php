@@ -489,8 +489,8 @@ class DigiComHelperDigiCom extends JHelperContent{
 
 		// load core script
 		$document = JFactory::getDocument();
-		$document->addScript(JURI::root(true).'/media/digicom/assets/js/digicom-admin.js?v=1.0.0&amp;sitepath='.JURI::root(true).'/');
-		$document->addStyleSheet(JURI::root(true).'/media/digicom/assets/css/digicom-admin.css');
+		$document->addScript(JURI::root(true).'/media/com_digicom/js/digicom-admin.js?v=1.0.0&amp;sitepath='.JURI::root(true).'/');
+		$document->addStyleSheet(JURI::root(true).'/media/com_digicom/css/digicom-admin.css');
 	}
 
 }

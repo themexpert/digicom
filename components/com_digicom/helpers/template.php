@@ -28,18 +28,18 @@ class DigiComSiteHelperTemplate extends JViewLegacy {
 		$this->view = $view;
 
 		// load core digicom js plugin
-		$this->addScript(JURI::root()."media/digicom/assets/js/digicom.plugin.js?site=".JURI::root());
+		$this->addScript(JURI::root()."media/com_digicom/js/digicom.plugin.js?site=".JURI::root());
 
 		// load core css file
 		$core_css = $this->params->get('load_core_css',true);
 		if($core_css){
-			$this->addStyleSheet(JURI::root()."media/digicom/assets/css/digicom.css");
+			$this->addStyleSheet(JURI::root()."media/com_digicom/css/digicom.css");
 		}
 
 		// load bootstrap3
 		$load_bootstrap3 = $this->params->get('load_bootstrap3',true);
 		if($load_bootstrap3){
-			$this->addStyleSheet(JURI::root()."media/digicom/assets/css/digicom.css");
+			$this->addStyleSheet(JURI::root()."media/com_digicom/css/digicom.css");
 		}
 
 	}

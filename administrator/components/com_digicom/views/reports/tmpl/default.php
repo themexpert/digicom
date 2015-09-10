@@ -12,7 +12,7 @@ $app		= JFactory::getApplication();
 $input	= $app->input;
 $tab		= $input->get('tab','sales');
 $input->set('layout', 'dgtabs');
-JFactory::getDocument()->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
+JFactory::getDocument()->addScript( JURI::root(true)."/media/com_digicom/js/chart.min.js");
 
 ?>
 <div id="digicom_reports" class="digicom">

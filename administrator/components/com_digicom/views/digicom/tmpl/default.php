@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 $configs = $this->configs;
 $document = JFactory::getDocument();
-$document->addScript( JURI::root(true)."/media/digicom/assets/js/chart.min.js");
+$document->addScript( JURI::root(true)."/media/com_digicom/js/chart.min.js");
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_digicom'); ?>" class="clearfix" method="post" name="adminForm" id="adminForm">
 <?php if (!empty( $this->sidebar)) : ?>
