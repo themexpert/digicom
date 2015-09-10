@@ -766,7 +766,7 @@ class DigiComSiteHelperDigicom {
 
 	}
 
-	public static function getPaymentPlugins($configs, $processor){
+	public static function getPaymentPlugins($configs, $processor = 'offline'){
 
 		$lang = JFactory::getLanguage();
 		$db = JFactory::getDBO();
