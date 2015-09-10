@@ -25,22 +25,28 @@
 			Digicom.root(); // get site root url first
 			Digicom.checkPersonStatus(); // check if need to toggle the field
 
-			// on click agree, make the agreeterms accepet
-			Digicom.dataSet('action-agree').click(function() {
-			    $('input[name="agreeterms"]').attr('checked', 'checked');
-			});
-
 			// on click show terms, show
 			Digicom.dataSet('showterms').click(function() {
 			    event.preventDefault();
 					$('#termsShowModal').modal('show');
+			});
+			// on click agree, make the agreeterms accepet
+			Digicom.dataSet('action-agree').click(function() {
+			    $('input[name="agreeterms"]').attr('checked', 'checked');
 			});
 
 			$(document).on("click", "input:radio[id^='jform_person']", function (event) {
 				Digicom.checkPersonStatus();
 			});
 
+			// lets handle some data-digicom-task
+			if( Digicom.taskSet('hide').length ){
+				Digicom.taskSet('hide').hide();
+			}
 
+			if( Digicom.taskSet('formSubmit').length ){
+				Digicom.taskSet('formSubmit').submit();
+			}
 
 		},
 
@@ -50,6 +56,13 @@
 		dataSet: function(name)
 		{
 			return $('[data-digicom-id="'+name+'"]');
+		},
+		/**
+		* get digicom taskset
+		*/
+		taskSet: function(name)
+		{
+			return $('[data-digicom-task="'+name+'"]');
 		},
 
 		/**
