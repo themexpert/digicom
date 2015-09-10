@@ -60,7 +60,6 @@ class DigiComControllerCart extends JControllerLegacy
 	function __construct()
 	{
 		parent::__construct();
-		$this->registerTask("summary", "showSummary");
 		$this->registerTask("validate_input", "validateInput");
 		$this->registerTask("cancel", "cancel");
 		$this->registerTask("payment", "payment");
@@ -324,11 +323,11 @@ class DigiComControllerCart extends JControllerLegacy
 
 		if( $res == 1 ) {
 
-			$fromsum = 1;//JRequest::getVar('fromsum', '1');
-			if(!$fromsum) {
-				$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&layout=summary"));
-				return true;
-			}
+			// $fromsum = 1;//JRequest::getVar('fromsum', '1');
+			// if(!$fromsum) {
+			// 	$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&layout=summary"));
+			// 	return true;
+			// }
 
 			$name = $this->_customer->_user->name;
 			$db = JFactory::getDBO();

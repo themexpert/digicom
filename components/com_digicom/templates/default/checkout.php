@@ -26,7 +26,7 @@ $data = $this->data;
 	<h1 class="digi-page-title"><?php echo JText::sprintf("COM_DIGICOM_CHECKOUT_PAYMENT_DETAILS_PAGE_TITLE", $pg_plugin); ?></h1>
 
 	<div class="cart-items-wrap">
-		<h4 class="align-center">Order Summary</h4>
+		<h4 class="align-center"><?php echo JText::_("COM_DIGICOM_SUMMARY_YOUR_ORDER");?></h4>
 
 		<table id="digicomcarttable" class="table table-striped table-bordered" width="100%">
 		  <thead>
