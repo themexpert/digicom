@@ -3263,3 +3263,9 @@ div.modal.fade.in {
 #digicom .modal-body {
   overflow-y: auto;
 }
+#digicom .digicom-loader {
+  background: url(../images/spinner.gif) no-repeat 50% 42%;
+  height: 100px;
+  width: 100%;
+  background-size: auto 50px;
+}
