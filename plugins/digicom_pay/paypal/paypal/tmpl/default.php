@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 <div class="digicom-payment-form">
 
 	<div class="container-fluid center">
+		<h3><?php echo JText::_('PLG_DIGICOM_PAY_PAYPAL_WAIT'); ?></h3>
 		<div class="progress progress-striped active" style="width: 50%; margin: 20px auto 40px auto;">
 			<div  id="progressBar" class="bar" style="border-radius: 3px; margin: 0; width: 100%;"></div>
 		</div>
