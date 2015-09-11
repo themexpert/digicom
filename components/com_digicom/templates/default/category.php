@@ -13,6 +13,13 @@ $bsGrid = array(1 => 'span12', 2 => 'span6', 3 => 'span4', 4 => 'span3', 6 => 's
 $column = $this->category->params->get('category_cols',3);
 ?>
 <div id="digicom">
+
+	<?php if ($this->params->get('show_page_heading')) : ?>
+		<div class="page-header">
+			<h1> <?php echo $this->escape($this->params->get('page_heading')); ?> </h1>
+		</div>
+	<?php endif; ?>
+
 	<div class="digi-categories">
 
 		<?php if($this->category->params->get('show_cat_title',1) or $this->category->params->get('show_cat_image',1) or $this->category->params->get('show_cat_intro',1)): ?>
@@ -21,6 +28,11 @@ $column = $this->category->params->get('category_cols',3);
 			<!-- Category Name -->
 			<?php if($this->category->params->get('show_cat_title',1) && !empty($this->category->title)): ?>
 			<h1 class="digi-page-title"><?php echo $this->category->title; ?></h1>
+			<?php endif; ?>
+
+			<?php if ($this->params->get('show_cat_tags', 1) && !empty($this->category->tags->itemTags)) : ?>
+				<?php $this->category->tagLayout = new JLayoutFile('joomla.content.tags'); ?>
+				<?php echo $this->category->tagLayout->render($this->category->tags->itemTags); ?>
 			<?php endif; ?>
 
 			<?php if($this->category->params->get('show_cat_image',1) AND ($this->category->params->get('image') !== NULL ) ): ?>
