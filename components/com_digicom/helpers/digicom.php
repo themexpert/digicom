@@ -671,7 +671,7 @@ class DigiComSiteHelperDigicom {
 		}
 	}
 
-	public static function get_country_options( $profile, $ship = false, $configs ) {
+	public static function get_country_options( $profile, $ship = false, $configs , $onchange=true) {
 
 		$db 	= JFactory::getDBO();
 		$query = $db->getQuery(true)
@@ -720,9 +720,14 @@ class DigiComSiteHelperDigicom {
 			$options[] = JHTML::_('select.option', $value->country, $value->country);
 		endforeach;
 
+		if($onchange){
+			$onChange = ' onChange="changeProvince();"';
+		}else{
+			$onChange= '';
+		}
 
 		## Create <select name="country" class="inputbox"></select> ##
-		return JHTML::_('select.genericlist', $options, 'country', 'id="country" class="inputbox" onChange="changeProvince();"', 'value', 'text', $default);
+		return JHTML::_('select.genericlist', $options, 'country', 'id="country" class="inputbox"'.$onChange, 'value', 'text', $default);
 
 	}
 
