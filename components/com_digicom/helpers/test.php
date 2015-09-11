@@ -26,9 +26,6 @@ class DigiComSiteHelperTest
 	 */
 	public function __construct ()
 	{
-      // Please always return; only comment when you test;
-      // from url, pass the value ?debug=1
-      // it will trigger this helper
       return;
       // // do some job man!
       // $dispatcher = JDispatcher::getInstance();
