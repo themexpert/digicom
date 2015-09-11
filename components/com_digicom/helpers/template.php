@@ -44,7 +44,8 @@ class DigiComSiteHelperTemplate extends JViewLegacy {
 
 	}
 
-	public function rander($layout = 'products', $template = null){
+	public function rander($layout = 'products', $template = null)
+	{
 
 		$this->view->setLayout($layout);
 
@@ -86,16 +87,20 @@ class DigiComSiteHelperTemplate extends JViewLegacy {
 
 	}
 
-	public function addScript($path){
+	public function addScript($path)
+	{
 		// Load specific css component
 		JFactory::getDocument()->addScript($path);
 	}
 
-	public function addStyleSheet($path){
+	public function addStyleSheet($path)
+	{
 		// Load specific css component
 		JFactory::getDocument()->addStyleSheet($path);
 	}
-	public function addScriptDeclaration($script){
+
+	public function addScriptDeclaration($script)
+	{
 		// Load specific css component
 		JFactory::getDocument()->addScriptDeclaration($script);
 	}

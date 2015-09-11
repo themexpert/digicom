@@ -226,7 +226,7 @@ class DigiComViewProduct extends JViewLegacy
 				$catParams = new Registry;
 				$catParams->loadString($category->getParams());
 
-				$category_layout = $categoryParams->get('category_layout','');
+				$category_layout = $catParams->get('category_layout','');
 				if(!empty($category_layout)){
 					$currentTemplate = true;
 					$categoryParams->set('category_layout',$catParams->get('category_layout'));

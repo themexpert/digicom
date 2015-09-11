@@ -302,10 +302,45 @@ class DigiComViewCategory extends JViewCategory
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
 
-		// Setup the category parameters.
-		$cparams          = $category->getParams();
+		// // Setup the category parameters.
+		// $cparams          = $category->getParams();
+
+		// Lets get template layout
+		$categoryParams = new Registry;
+		$categoryParams->loadString($category->getParams());
+		$category_layout = $categoryParams->get('category_layout','');
+		if(!empty($category_layout)){
+			$currentTemplate = true;
+		}else{
+			$currentTemplate = false;
+		}
+
+		if(!$currentTemplate){
+			while ($category && ($menu->query['option'] != 'com_digicom' || $menu->query['view'] == 'category' || $id != $category->id) && $category->id > 1)
+			{
+				$category = $category->getParent();
+
+				if($currentTemplate) continue;
+
+				$catParams = new Registry;
+				$catParams->loadString($category->getParams());
+
+				$category_layout = $catParams->get('category_layout','');
+				if(!empty($category_layout)){
+					$currentTemplate = true;
+					$categoryParams->set('category_layout',$catParams->get('category_layout'));
+				}else{
+					$currentTemplate = false;
+				}
+
+			}
+
+		}
+
+		// lets marge
+		$category->params = $categoryParams;
 		$category->params = clone $params;
-		$category->params->merge($cparams);
+		$category->params->merge($categoryParams);
 
 		$children = array($category->id => $children);
 
