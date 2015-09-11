@@ -129,7 +129,7 @@ class DigiComViewCategories extends JViewLegacy
 		JHtml::_('stylesheet', $component . '/administrator/categories.css', array(), true);
 
 		// Prepare the toolbar.
-		JToolbarHelper::title($ptitle, 'folder categories ' . substr($component, 4) . ($section ? "-$section" : '') . '-categories');
+		JToolbarHelper::title(JText::_('COM_DIGICOM_CATEGORIES_TOOLBAR_TITLE_PAGE'), 'folder categories ' . substr($component, 4) . ($section ? "-$section" : '') . '-categories');
 
 		if ($canDo->get('core.create') || (count($user->getAuthorisedCategories($component, 'core.create'))) > 0)
 		{

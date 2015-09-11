@@ -27,12 +27,12 @@ class DigiComViewDiscount extends JViewLegacy
 		$this->configs 	= $this->get('configs');
 
 
-		JToolBarHelper::title( JText::_( 'COM_DIGICOM_DISCOUNTS_TOOLBAR_TITLE' ), 'generic.png' );
+		JToolBarHelper::title( JText::_( 'COM_DIGICOM_DISCOUNTS_TOOLBAR_TITLE_SITE' ), 'generic.png' );
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout
 		$layout = new JLayoutFile('toolbar.title');
 		$title=array(
-			'title' => JText::_( 'COM_DIGICOM_DISCOUNTS_TOOLBAR_TITLE' ),
+			'title' => ( $this->item->id ? JText::_( 'COM_DIGICOM_DISCOUNT_EDIT_TOOLBAR_TITLE' ) : JText::_( 'COM_DIGICOM_DISCOUNT_NEW_TOOLBAR_TITLE' ) ),
 			'class' => 'title'
 		);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
@@ -41,7 +41,7 @@ class DigiComViewDiscount extends JViewLegacy
 
 		$layout = new JLayoutFile('toolbar.video');
 		$bar->appendButton('Custom', $layout->render(array()), 'video');
-		
+
 		JToolBarHelper::apply('discount.apply');
 		JToolBarHelper::save('discount.save');
 		JToolBarHelper::cancel('discount.cancel');

@@ -72,7 +72,7 @@ class DigiComViewConfigs extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		JToolBarHelper::title(JText::_('COM_DIGICOM_SETTINGS_TOOLBAR_TITLE'));
+		JToolBarHelper::title(JText::_('COM_DIGICOM_SETTINGS_TOOLBAR_TITLE_SITE'));
 
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout

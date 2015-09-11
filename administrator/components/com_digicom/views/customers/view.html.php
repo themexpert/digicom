@@ -43,22 +43,6 @@ class DigiComViewCustomers extends JViewLegacy {
 
 	}
 
-	function settypeform($tpl = null){
-		$id = JRequest::getVar("id", "0");
-		if($id == "0"){
-			JToolBarHelper::title(JText::_('VIEWLICCUSTOMER').":<small>[".trim(JText::_("DIGI_NEW"))."]</small>");
-		}
-		else{
-			JToolBarHelper::title(JText::_('VIEWLICCUSTOMER').":<small>[".trim(JText::_("DIGI_EDIT"))."]</small>");
-		}
-
-		JToolBarHelper::custom('next','forward.png','forward_f2.png','Next',false);
-		JToolBarHelper::cancel();
-		parent::display($tpl);
-	}
-
-
-
 	/**
 	 * Add the page title and toolbar.
 		*
@@ -66,7 +50,7 @@ class DigiComViewCustomers extends JViewLegacy {
 	 */
 	protected function addToolbar()
 	{
-		JToolBarHelper::title(JText::_('COM_DIGICOM_CUSTOMERS_TOOLBAR_TITLE'), 'generic.png');
+		JToolBarHelper::title(JText::_('COM_DIGICOM_CUSTOMERS_TOOLBAR_TITLE_SITE'), 'generic.png');
 
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout

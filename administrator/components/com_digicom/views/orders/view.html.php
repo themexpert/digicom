@@ -27,15 +27,6 @@ class DigiComViewOrders extends JViewLegacy
 		$pagination 		= $this->get('Pagination');
 		$this->pagination = $pagination;
 
-		// $startdate = JRequest::getVar( "startdate", "", "request" );
-		// $startdate = strtotime($startdate);
-		// //$startdate = DigiComHelperDigiCom::parseDate( $configs->get('time_format','DD-MM-YYYY'), $startdate );
-		// $this->assign( "startdate", $startdate );
-		// $enddate = JRequest::getVar( "enddate", "", "request" );
-		// $enddate = strtotime($enddate);
-		// //$enddate = DigiComHelperDigiCom::parseDate( $configs->get('time_format','DD-MM-YYYY'), $enddate );
-		// $this->assign( "enddate", $enddate );
-
 		//set toolber
 		$this->addToolbar();
 
@@ -53,7 +44,7 @@ class DigiComViewOrders extends JViewLegacy
 	protected function addToolbar()
 	{
 		$canDo = JHelperContent::getActions('com_digicom', 'component');
-		JToolBarHelper::title( JText::_( 'COM_DIGICOM_ORDERS_TOOLBAR_TITLE' ), 'generic.png' );
+		JToolBarHelper::title( JText::_( 'COM_DIGICOM_ORDERS_TOOLBAR_TITLE_SITE' ), 'generic.png' );
 
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout

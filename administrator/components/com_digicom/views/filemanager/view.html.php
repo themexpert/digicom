@@ -14,7 +14,7 @@ jimport ("joomla.application.component.view");
 class DigiComViewFileManager extends JViewLegacy {
 
 	function display($tpl =  null){
-		JToolBarHelper::title(JText::_('COM_DIGICOM_FILE_MANAGER_TOOLBAR_TITLE'), 'generic.png');
+		JToolBarHelper::title(JText::_('COM_DIGICOM_FILE_MANAGER_TOOLBAR_TITLE_SITE'), 'generic.png');
 
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout
