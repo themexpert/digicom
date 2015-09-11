@@ -137,7 +137,7 @@ class DigiComSiteHelperEmail {
 			}
 			$displayed[] = $item->name;
 		}
-
+		$order_date = date( $configs->get('time_format','d-m-Y'), strtotime($timestamp) );
 		//-----------------------------------------------------------------------
 
 		$message = $emailbody;
@@ -158,7 +158,7 @@ class DigiComSiteHelperEmail {
 		$message = str_replace( "[CUSTOMER_NAME]", $my->name, $message );
 		$message = str_replace( "[CUSTOMER_EMAIL]", $my->email, $message );
 
-		$message = str_replace( "[ORDER_DATE]", date( $configs->get('time_format','d-m-Y'), strtotime($timestamp) ), $message );
+		$message = str_replace( "[ORDER_DATE]", $order_date, $message );
 		$message = str_replace( "[ORDER_ID]", $orderid, $message );
 		$message = str_replace( "[ORDER_AMOUNT]", $amount, $message );
 		$message = str_replace( "[NUMBER_OF_PRODUCTS]", $number_of_products, $message );
@@ -170,9 +170,8 @@ class DigiComSiteHelperEmail {
 		$message = str_replace( "[FOOTER_TEXT]", $email_footer, $message );
 
 		$message = str_replace( "[PRODUCTS]", $product_list, $message );
-		$message = str_replace( "[site_title]", $sitename, $message );
-		$message = str_replace( "[order_number]", $orderid, $message );
-		$message = str_replace( "[order_date]", date( $configs->get('time_format','d-m-Y'), strtotime($timestamp) ), $message );
+		$message = str_replace( "[SITE_TITLE]", $sitename, $message );
+		$message = str_replace( "[ORDER_NUMBER]", $orderid, $message );
 
 		$message 			= str_replace( "[BASE_COLOR]", $basecolor, $message );
 		$message 			= str_replace( "[BASE_BG_COLOR]", $basebgcolor, $message );
@@ -180,6 +179,7 @@ class DigiComSiteHelperEmail {
 		$message 			= str_replace( "[TMPL_BG_COLOR]", $tmplbgcolor, $message );
 
 		//subject
+		$message = str_replace("[EMAIL_TYPE]", $emailType, $message);
 		$subject = str_replace( "[SITENAME]", $sitename, $subject );
 		$subject = str_replace("[CUSTOMER_COMPANY_NAME]", $company, $subject);
 		$subject = str_replace( "../%5BSITEURL%5D", $siteurl, $subject );
@@ -190,16 +190,15 @@ class DigiComSiteHelperEmail {
 		$subject = str_replace( "[CUSTOMER_NAME]", $my->name, $subject );
 		$subject = str_replace( "[CUSTOMER_EMAIL]", $my->email, $subject );
 
-		$subject = str_replace( "[ORDER_DATE]", date( $configs->get('time_format','d-m-Y'), strtotime($timestamp) ), $subject );
+		$subject = str_replace( "[ORDER_DATE]", $order_date, $subject );
 		$subject = str_replace( "[ORDER_ID]", $orderid, $subject );
 		$subject = str_replace( "[ORDER_AMOUNT]", $amount, $subject );
 		$subject = str_replace( "[NUMBER_OF_PRODUCTS]", $number_of_products, $subject );
 		$subject = str_replace( "[DISCOUNT_AMOUNT]", $order->discount, $subject );
 		$subject = str_replace( "[ORDER_STATUS]", $status, $subject );
 
-		$subject = str_replace( "[site_title]", $sitename, $subject );
-		$subject = str_replace( "[order_number]", $orderid, $subject );
-		$subject = str_replace( "[order_date]", date( $configs->get('time_format','d-m-Y'), strtotime($timestamp) ), $subject );
+		$subject = str_replace( "[SITE_TITLE]", $sitename, $subject );
+		$subject = str_replace( "[ORDER_NUMBER]", $orderid, $subject );
 		$subject = str_replace( "[PRODUCTS]", $product_list, $subject );
 
 		// final email subject & message
@@ -239,20 +238,41 @@ class DigiComSiteHelperEmail {
 		);
 
 		$message = $type.' email for order#'.$orderid.', status: '.$status;
-		////$type, $hook, $message, $info, $status = 'complete'
+
 		if ( $mailSender->Send() !== true ) {
 			DigiComSiteHelperLog::setLog('email', 'cart dispatch email', $orderid, $message, json_encode($info),'failed');
 		}else{
 			DigiComSiteHelperLog::setLog('email', 'cart dispatch email', $orderid, $message, json_encode($info),'success');
 		}
 
-		if ( $email_settings->sendmailtoadmin) {
+		// Send email to admin if its enabled on email common settings
+		if ( $email_settings->sendmailtoadmin)
+		{
+			$admin_name = 'Master';
+			$payment_method = $order->processor;
+			$emailbody = self::getAdminEmailBody();
+			$emailbody = str_replace( "[EMAIL_HEADER]", $emailType, $emailbody );
+			$emailbody = str_replace( "[ADMIN_NAME]", $admin_name, $emailbody );
+			$emailbody = str_replace( "[ORDER_ID]", $orderid, $emailbody );
+			$emailbody = str_replace( "[SITENAME]", $sitename, $emailbody );
+			$emailbody = str_replace( "[PRODUCTS]", $product_list, $emailbody );
+			$emailbody = str_replace( "[ORDER_DATE]", $order_date, $emailbody );
+			$emailbody = str_replace( "[ORDER_AMOUNT]", $amount, $emailbody );
+			$emailbody = str_replace( "[ORDER_STATUS]", $status, $emailbody );
+			$emailbody = str_replace( "[PAYMENT_METHOD]", $payment_method, $emailbody );
+			$emailbody = str_replace( "[CUSTOMER_NAME]", $my->name, $emailbody );
+			$emailbody = str_replace( "[CUSTOMER_USER_NAME]", $my->username, $emailbody );
+			$emailbody = str_replace( "[CUSTOMER_EMAIL]", $my->email, $emailbody );
+			$emailbody = str_replace( "[FOOTER_TEXT]", $email_footer, $emailbody );
+
+			// final email subject & message
+			$message = html_entity_decode( $emailbody, ENT_QUOTES );
+			// print_r($message);die;
 
 			// admin email info
 			$adminName2 = $jfromname;
 			$adminEmail2 = $jmailfrom;
 
-			$message = 'Order email to Admin : '.$type.' email for order#'.$orderid.', status: '.$status;
 
 			$recipients =  $adminEmail2 . (!empty($recipients) ? ', '.$recipients : '');
 			$mailSender = JFactory::getMailer();
@@ -272,6 +292,32 @@ class DigiComSiteHelperEmail {
 		}
 
 		return true;
+	}
+
+	/*
+	* getAdminEmailBody
+	* get the email content for admin
+	*/
+	public static function getAdminEmailBody()
+	{
+		$filename =	'admin-order.php';
+		$path = '/components/com_digicom/emails/';
+		$override = '/html/com_digicom/emails/';
+		$template = DigiComSiteHelperEmail::getTemplate();
+		$client   = JApplicationHelper::getClientInfo($template->client_id);
+		$filePath = JPath::clean($client->path . '/templates/' . $template->template . $override.'/'.$filename);
+
+		if (file_exists($filePath))
+		{
+			$emailbody = file_get_contents($filePath);
+		}
+		else
+		{
+			$filePath  = JPath::clean($client->path . $path . '/'.$filename);
+			$emailbody = file_get_contents($filePath);
+		}
+
+		return $emailbody;
 	}
 
 	/*
