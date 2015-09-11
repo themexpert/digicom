@@ -242,11 +242,13 @@ class DigiComViewCategory extends JViewCategory
 		{
 			$path = array(array('title' => $this->category->title, 'link' => ''));
 			$category = $this->category->getParent();
+			if(!empty($category)){
+				while (($menu->query['option'] != 'com_digicom' || $menu->query['view'] == 'product' || $id != $category->id) && $category->id > 1)
+				{
+					$path[] = array('title' => $category->title, 'link' => DigiComSiteHelperRoute::getCategoryRoute($category->id));
+					$category = $category->getParent();
+				}
 
-			while (($menu->query['option'] != 'com_digicom' || $menu->query['view'] == 'product' || $id != $category->id) && $category->id > 1)
-			{
-				$path[] = array('title' => $category->title, 'link' => DigiComSiteHelperRoute::getCategoryRoute($category->id));
-				$category = $category->getParent();
 			}
 
 			$path = array_reverse($path);
@@ -270,6 +272,7 @@ class DigiComViewCategory extends JViewCategory
 	public function commonCategoryDisplay()
 	{
 		$app    = JFactory::getApplication();
+		$menus		= $app->getMenu();
 		$user   = JFactory::getUser();
 		$params = $app->getParams();
 
@@ -302,9 +305,6 @@ class DigiComViewCategory extends JViewCategory
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
 
-		// // Setup the category parameters.
-		// $cparams          = $category->getParams();
-
 		// Lets get template layout
 		$categoryParams = new Registry;
 		$categoryParams->loadString($category->getParams());
@@ -316,7 +316,7 @@ class DigiComViewCategory extends JViewCategory
 		}
 
 		if(!$currentTemplate){
-			while ($category && ($menu->query['option'] != 'com_digicom' || $menu->query['view'] == 'category' || $id != $category->id) && $category->id > 1)
+			while ($category && $category->id > 1)
 			{
 				$category = $category->getParent();
 
