@@ -488,6 +488,8 @@ class DigiComHelperDigiCom extends JHelperContent{
 	public static function addAdminStyles(){
 
 		// load core script
+		JHtml::_('jquery.framework');
+		JHtml::_('bootstrap.framework');
 		$document = JFactory::getDocument();
 		$document->addScript(JURI::root(true).'/media/com_digicom/js/digicom-admin.js?v=1.0.0&amp;sitepath='.JURI::root(true).'/');
 		$document->addStyleSheet(JURI::root(true).'/media/com_digicom/css/digicom-admin.css');
