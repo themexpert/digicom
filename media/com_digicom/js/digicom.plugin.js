@@ -30,6 +30,14 @@
 			    event.preventDefault();
 					$('#termsShowModal').modal('show');
 			});
+
+			// on click show terms, show
+			Digicom.taskSet('loading').click(function() {
+					$(this).append('<div class="digicom-loader small"></div>');
+					$(this).addClass('disabled');
+			    // event.preventDefault();
+			});
+
 			// on click agree, make the agreeterms accepet
 			Digicom.dataSet('action-agree').click(function() {
 			    $('input[name="agreeterms"]').attr('checked', 'checked');
