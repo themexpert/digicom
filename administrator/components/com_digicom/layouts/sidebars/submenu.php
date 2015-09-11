@@ -35,23 +35,23 @@ JHtmlBehavior::core();
 						$dispatcher->trigger( 'onDigicomAfterMainMenu', array());
 					}
 
-				if (isset ($item[2]) && $item[2] == 1) : ?>
-					<li class="active" title="<?php echo $item[0]; ?>">
-				<?php else : ?>
-					<li title="<?php echo $item[0]; ?>" data-placement="right">
-				<?php endif;
-				if ($displayData->hide) : ?>
-					<a class="nolink"><?php echo $item[0]; ?></a>
-				<?php else :
-					if (strlen($item[1])) : ?>
-						<a href="<?php echo JFilterOutput::ampReplace($item[1]); ?>"><?php echo $item[0]; ?></a>
+					if (isset ($item[2]) && $item[2] == 1) : ?>
+						<li class="active hasTooltip" data-original-title="<?php echo $item[0]; ?>" data-placement="right">
 					<?php else : ?>
-						<?php echo $item[0]; ?>
+						<li class="hasTooltip" title="<?php echo $item[0]; ?>" data-placement="right">
 					<?php endif;
-				endif; ?>
-				</li>
-				<?php
-				$i++;
+					if ($displayData->hide) : ?>
+						<a class="nolink"><?php echo $item[0]; ?></a>
+					<?php else :
+						if (strlen($item[1])) : ?>
+							<a href="<?php echo JFilterOutput::ampReplace($item[1]); ?>"><?php echo $item[0]; ?></a>
+						<?php else : ?>
+							<?php echo $item[0]; ?>
+						<?php endif;
+					endif; ?>
+					</li>
+					<?php
+					$i++;
 				endforeach;
 				?>
 
