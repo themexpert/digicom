@@ -5,8 +5,7 @@
  * @copyright 	Copyright (c) 2006 - 2014 ThemeXpert Ltd. All rights reserved.
  * @license 	GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
-
- .panel-box {
+.panel-box {
   background: #fff;
   padding: 15px;
 }
@@ -398,12 +397,20 @@ body.com_digicom.sidebar-collapse #j-sidebar-container,
 body.com_digicom.layout-dgform #j-sidebar-container {
   width: 38px;
 }
-body.com_digicom.sidebar-collapse #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a.dglogo,
-body.com_digicom.layout-dgform #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a.dglogo {
+body.com_digicom.sidebar-collapse #j-sidebar-container #sidebar .sidebar-nav #submenu.nav-list > li,
+body.com_digicom.layout-dgform #j-sidebar-container #sidebar .sidebar-nav #submenu.nav-list > li {
+  width: 38px;
+}
+body.com_digicom.sidebar-collapse #j-sidebar-container #sidebar .sidebar-nav #submenu.nav-list > li > a.dglogo,
+body.com_digicom.layout-dgform #j-sidebar-container #sidebar .sidebar-nav #submenu.nav-list > li > a.dglogo {
   background: url(../images/dglogo-white-36x36.png) no-repeat 6px 0px;
   background-size: 50%;
   height: 28px;
   width: 30px;
+}
+body.com_digicom.sidebar-collapse #j-sidebar-container #sidebar .sidebar-nav #submenu.nav-list > li > a > span + span,
+body.com_digicom.layout-dgform #j-sidebar-container #sidebar .sidebar-nav #submenu.nav-list > li > a > span + span {
+  display: none;
 }
 body.com_digicom.sidebar-collapse #j-main-container,
 body.com_digicom.layout-dgform #j-main-container {

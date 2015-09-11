@@ -18,6 +18,7 @@
 @sidebar-active-background: @primary-blue;
 @sidebar-text-color: #c9d1dd;
 @sidebar-active-text-color: #fefefe;
+@sidebar-collapse-width: 38px;
 
 
 // Button override
@@ -387,18 +388,29 @@ body.com_digicom {
 	&.sidebar-collapse,
 	&.layout-dgform {
 		#j-sidebar-container{
-			width: 38px;
+			width: @sidebar-collapse-width;
 			#sidebar {
-				.sidebar-nav .nav-list > li > a.dglogo {
-					background: url(../images/dglogo-white-36x36.png) no-repeat 6px 0px;
-					background-size: 50%;
-					height: 28px;
-					width: 30px;
+				.sidebar-nav{
+					#submenu.nav-list {
+						> li {
+							width: @sidebar-collapse-width;
+							> a.dglogo {
+								 background: url(../images/dglogo-white-36x36.png) no-repeat 6px 0px;
+								 background-size: 50%;
+								 height: 28px;
+								 width: 30px;
+						 	}
+							> a > span + span {
+								display: none;
+							}
+						}
+					}
 				}
 			}
+
 		}
 
-		#j-main-container { margin-left: 38px; }
+		#j-main-container { margin-left: @sidebar-collapse-width; }
 		div#system-debug,
 		div#system-message-container {margin-left: 53px;}
 
