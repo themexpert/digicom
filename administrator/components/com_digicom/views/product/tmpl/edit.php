@@ -87,32 +87,21 @@ window.onload = function() {
 	<?php endif;?>
 
 
-	<div class="form-horizontal">
+	<div class="">
 		<div class="row-fluid">
 			<div class="span9">
 			<?php echo JHtml::_('bootstrap.startTabSet', 'digicomTab', array('active' => 'general')); ?>
 
 				<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'general', JText::_('COM_DIGICOM_PRODUCT_GENERAL_SETTINGS', true)); ?>
 
-				<div class="row-fluid">
-					<div class="span4">
-						<div class="form-inline form-inline-header product-image">
-							<?php echo $this->form->getControlGroup('images'); ?>
-						</div>
-					</div>
-					<div class="span8">
-						<?php echo JLayoutHelper::render('edit.title_alias_price', $this); ?>
+				<?php echo JLayoutHelper::render('edit.title_alias_price', $this); ?>
 
-						<div class="product-short-desc">
-							<?php echo $this->form->getLabel('introtext'); ?>
-							<?php echo $this->form->getInput('introtext'); ?>
-						</div>
-					</div>
-
+				<div class="product-short-desc control-group">
+					<?php echo $this->form->getLabel('introtext'); ?>
+					<?php echo $this->form->getInput('introtext'); ?>
 				</div>
 
-
-				<div class="control-group ">
+				<div class="product-full-desc control-group ">
 					<?php echo $this->form->getLabel('fulltext'); ?>
 					<?php echo $this->form->getInput('fulltext'); ?>
 				</div>
@@ -143,7 +132,23 @@ window.onload = function() {
 
 			<?php echo JHtml::_('bootstrap.endTabSet'); ?>
 			</div>
+
 			<div class="span3">
+				<?php echo JHtml::_('bootstrap.startTabSet', 'digicomTabImages', array('active' => 'thumb_image')); ?>
+
+					<?php echo JHtml::_('bootstrap.addTab', 'digicomTabImages', 'thumb_image', JText::_('Thumbnail', true)); ?>
+						<div class="product-image">
+								<?php echo $this->form->getControlGroup('images'); ?>
+						</div>
+					<?php echo JHtml::_('bootstrap.endTab'); ?>
+
+					<?php echo JHtml::_('bootstrap.addTab', 'digicomTabImages', 'full_image', JText::_('Full Image', true)); ?>
+						<div class="product-image">
+								<?php echo $this->form->getControlGroup('images'); ?>
+						</div>
+					<?php echo JHtml::_('bootstrap.endTab'); ?>
+				<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+
 				<?php echo JLayoutHelper::render('sidebars.sidebar', $this); ?>
 			</div>
 		</div>

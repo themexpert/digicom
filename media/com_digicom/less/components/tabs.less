@@ -1,0 +1,25 @@
+.nav-tabs {
+	border-bottom: 1px solid #e5e5e5;
+	background: transparent;
+	> li {
+		> a {
+			border: 0; border-radius: 0;
+			padding: 15px 20px;
+			color: @tabs-color; text-transform: uppercase;
+      letter-spacing: 1px;
+      .transition(color .05s linear);
+
+			&:hover,&:focus {color: @tabs-active-color;background: none;}
+		}
+	}
+	.active a,
+	.active a:hover,
+	.active a:focus {
+    border-width: 0 0 1px 0;
+    border-color: @tabs-active-color;
+    border-style: solid;
+		color: @tabs-active-color;
+    background: transparent;
+	}
+}
+.tab-content {padding: 0;}

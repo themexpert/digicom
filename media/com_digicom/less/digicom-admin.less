@@ -6,20 +6,33 @@
  * @license 	GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
+// Import JUI mixins and variable
+@import "../../jui/less/variables.less";
+@import "../../jui/less/mixins.less";
+
  // Color Variables
-@primary-blue : #1562AD;
-@secondary-blue : #1F82E0;
+@primary-blue : rgb(25,118,210);
+@secondary-blue : #489be0;
 @dark-blue : #1E4973;
 
-@gray : #f5f5f5 ;
+@gray : #f9f9fb ;
 
 @body-background: @gray;
-@sidebar-background: #343f51;
+@sidebar-background: #253238;
 @sidebar-active-background: @primary-blue;
 @sidebar-text-color: #c9d1dd;
 @sidebar-active-text-color: #fefefe;
 @sidebar-collapse-width: 38px;
 
+// Tabs
+@tabs-color : #666;
+@tabs-active-color : @secondary-blue;
+
+// Forms
+@form-background : #fff;
+@form-color : @tabs-color;
+@form-border : #e5e5e5;
+@form-label-color : @tabs-color;
 
 // Button override
 @btn: @sidebar-active-text-color;
@@ -29,10 +42,7 @@
 @btn-danger: #d32f2f;
 
 // Utility Classes
-.panel-box {
-	background: #fff;
-	padding: 15px;
-}
+.panel-box { background: #fff; padding: 15px; }
 
 /* Joomla 2.5 FIX */
 .pull-left {
@@ -150,33 +160,13 @@ ul.usergroups li {
 // Search tools
 .js-stools{ margin-bottom: 10px; }
 
-// Alert
-.dg-alert{
-  background: #fff;
-  border: 1px solid #ddd;
-  padding: 15px;
-  margin-bottom: 10px;
-  position : relative;
-
-  > [class^="icon-"],
-  [class*=" icon-"]{
-	float: left;
-	margin-top: 3px;
-	margin-left: -28px;
-	font-size: 18px;
-  }
-}
-.dg-alert-with-icon{ padding-left: 40px;}
-.dg-alert-danger{ border-left: 3px solid @btn-danger; color: @btn-danger;  }
+@import "components/alert.less";
 
 /* Layout Styling */
 body.com_digicom {
 	overflow-x: hidden;
 	background: @body-background;
-	-webkit-transition: all 0.3s ease-in-out;
-	-moz-transition: all 0.3s ease-in-out;
-	-o-transition: all 0.3s ease-in-out;
-	transition: all 0.3s ease-in-out;
+	.transition(all 0.3s ease-in-out);
 
 	/* Button classes */
 	.btn {
@@ -213,15 +203,13 @@ body.com_digicom {
 
   	// Toolbar
   	#toolbar-publish,
-	#toolbar-unpublish,
-	#toolbar-trash,
-	#toolbar-delete,
-	#toolbar-edit{
+		#toolbar-unpublish,
+		#toolbar-trash,
+		#toolbar-delete,
+		#toolbar-edit{
 	  display: none;
 	  opacity: 0;
-	  -webkit-transition: all .15s linear;
-	  -moz-transition : all .15s linear;
-	  transition : all .15s linear;
+	  .transition(all .15s linear);
 
 	  &.in{
 		display: inline-block;
@@ -230,131 +218,14 @@ body.com_digicom {
 	  }
 	}
 
-	header.header {display: none;}
-	.subhead-collapse {z-index: 11;position: relative;height:40px !important;}
-	.subhead {
-		margin-bottom: 0;
-		background: @primary-blue;
-	  	border-top: 3px solid @secondary-blue;
-		box-shadow: 0 2px 0 @dark-blue inset;
-		padding: 10px 0;
-		border-bottom: 0;
-		min-height: inherit;
-		height: auto;
+	@import "components/header.less";
+	@import "components/sidebar.less";
+	@import "components/form.less";
+	@import "components/tabs.less";
 
-		.btn-toolbar {
-			text-align: right;
-			margin: 0;
-			.btn-wrapper {margin: 0 0 0 5px;}
-			#toolbar-settings {float: right;}
-			#toolbar-title {
-				float: left;
-				margin-left: 0;
-				h3 {
-					margin: 0;
-					line-height: 26px;
-				  	color: #fff;
-				  	text-shadow: none;
-					[class^="icon-"],
-					[class*=" icon-"] {margin-right: 15px;}
-				}
-			}
-		  	.btn{
-			  background: transparent;
-			  color: #fff;
-			  text-shadow: none;
-			  border-radius: 4px;
-			  padding: 4px 10px;
-			}
-			.btn-mini .caret,
-			.btn-small .caret {margin-top: 7px;}
+	.container-main { padding: 0; }
 
-		  	.icon-publish:before, .icon-save:before, .icon-ok:before, .icon-save-new:before, .icon-save-copy:before, .icon-copy:before,
-			.icon-unpublish:before, .icon-not-ok:before, .icon-eye-close:before, .icon-ban-circle:before, .icon-minus-sign:before, .icon-cancel:before,
-			.icon-edit:before{ color: inherit}
-		}
-	  #toolbar .btn-success{ width: auto; }
-	}
 
-	.container-main {
-		padding: 0;
-	}
-
-	#j-sidebar-container {
-		background: @sidebar-background;
-		margin-left: 0;
-		width: 200px;
-		color: @sidebar-text-color;
-		position: fixed;
-		top: 76px;
-		bottom: 28px;
-		left: 0;
-		overflow: hidden;
-		border: 0;
-		-webkit-backface-visibility: hidden;
-		-moz-backface-visibility: hidden;
-		backface-visibility: hidden;
-
-		#sidebar {
-			padding: 15px 0;
-
-			#submenu {
-				width: 200px;
-				box-sizing: border-box;
-			}
-			.sidebar-nav .nav-list {
-				> li > a {
-					padding: 5px 12px;
-					color: @sidebar-text-color;
-					font-size: 14px;
-					line-height: 24px;
-					text-shadow: none;
-					> span + span {display: inline-block;}
-
-					&.dglogo {
-						background: url(../images/dglogo-white-176x48.png) no-repeat 16px 0;
-						background-size: 80%;
-						font-size: 0;
-						text-indent: -9999px;
-						height: 43px;
-						border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-						box-shadow: 0 2px 1px rgba(0, 0, 0, 0.15);
-						margin-bottom: 5px;
-					}
-
-					&:hover,&:focus {
-						background-color: inherit;
-						color: @sidebar-active-text-color;
-						[class^="icon-"], [class*=" icon-"] {color: @sidebar-active-text-color;}
-					}
-				}
-				[class^="icon-"], [class*=" icon-"] {
-					color: @sidebar-text-color;
-					margin-right: 15px;
-					width: auto;
-					height: auto;
-				}
-				> li.active > a {
-					background: @secondary-blue;
-					color: @sidebar-active-text-color;
-					position: relative;
-					> [class^="icon-"],
-					> [class*=" icon-"] {color: @sidebar-active-text-color;}
-
-					&:after {
-						content: "";
-						display: block;
-						position: absolute;
-						right: 0px;
-						top: 7px;
-						border-style: solid;
-						border-width: 10px;
-						border-color: transparent #f5f5f5 transparent transparent;
-					}
-				}
-			}
-		}
-	}
 	.j-toggle-button-wrapper,
 	.j-toggle-sidebar-header {display: none;}
 
@@ -368,10 +239,7 @@ body.com_digicom {
 
 	#j-sidebar-container,
 	#j-main-container{
-		-webkit-transition: all 0.3s ease-in-out;
-	    -moz-transition: all 0.3s ease-in-out;
-	    -o-transition: all 0.3s ease-in-out;
-	    transition: all 0.3s ease-in-out;
+		.transition(all 0.3s ease-in-out);
 	}
 
 	#system-message-container.j-toggle-main,
@@ -385,36 +253,7 @@ body.com_digicom {
 		> div {margin: 20px 0 0;}
 	}
 
-	&.sidebar-collapse,
-	&.layout-dgform {
-		#j-sidebar-container{
-			width: @sidebar-collapse-width;
-			#sidebar {
-				.sidebar-nav{
-					#submenu.nav-list {
-						> li {
-							width: @sidebar-collapse-width;
-							> a.dglogo {
-								 background: url(../images/dglogo-white-36x36.png) no-repeat 6px 0px;
-								 background-size: 50%;
-								 height: 28px;
-								 width: 30px;
-						 	}
-							> a > span + span {
-								display: none;
-							}
-						}
-					}
-				}
-			}
 
-		}
-
-		#j-main-container { margin-left: @sidebar-collapse-width; }
-		div#system-debug,
-		div#system-message-container {margin-left: 53px;}
-
-	}
 	&.layout-dgform {
 		#j-toggle-sidebar-wrapper
 		{
@@ -443,33 +282,7 @@ body.com_digicom {
 		}
 	}
 
-	#status {
-		box-shadow: none;
-	}
-
-
-	/* Form elements Styling */
-	textarea, input[type="text"], input[type="number"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"],
-	input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
-		background: #edf0f6;
-		padding: 6px;
-		color: #646b7e;
-		border-radius: 2px;  border: 0;
-	  	font-weight: bold;
-
-		&:focus,&:active {
-			background: #fff;
-			box-shadow: 0 0 3px #bbb inset;
-		}
-	}
-  	input[type="number"]{ padding: 10px; }
-	.input-append, .input-prepend {
-		textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"],
-		input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
-			padding: 4px 5px;
-			border: 1px solid #ddd;
-		}
-	}
+	#status { box-shadow: none;}
 
 }
 
@@ -482,37 +295,10 @@ body.layout-dgform {
 		.form-inline .controls {
 			margin-left: 0;
 		}
-
-		.nav-tabs {
-			margin-bottom: 0;
-			border: 0;
-			background: @sidebar-background;
-			> li {
-				> a {
-					border: 0;
-					border-radius: 0;
-					padding: 15px;
-					color: @sidebar-text-color;
-
-					&:hover,&:focus {color: @sidebar-active-text-color;background: none;}
-				}
-			}
-			.active a,
-			.active a:hover,
-			.active a:focus {
-				border-top: 4px solid @secondary-blue;
-				color: #444;
-				background: #fff;
-			}
-		}
-		.tab-content {
-			padding: 15px;
-			background: #fff;
-		}
-
 	}
-
 }
+
+
 
 /* Sidebar right styling */
 #toggle_settings_wrap {
@@ -525,11 +311,8 @@ body.layout-dgform {
 	right: -200px;
 	z-index: 9999;
 	width: 200px;
-	box-sizing: border-box;
-	-webkit-transition: all 0.3s ease-in-out;
-	-moz-transition: all 0.3s ease-in-out;
-	-o-transition: all 0.3s ease-in-out;
-	transition: all 0.3s ease-in-out;
+	.box-sizing(border-box);
+	.transition(all 0.3s ease-in-out);
 
 	h3 {
 		color: #fbfbfb;
@@ -549,10 +332,7 @@ body.layout-dgform {
 			color: @gray;
 			line-height: 30px;
 			font-size: 14px;
-			-webkit-transition: all 0.3s ease-in-out;
-			-moz-transition: all 0.3s ease-in-out;
-			-o-transition: all 0.3s ease-in-out;
-			transition: all 0.3s ease-in-out;
+			.transition(all 0.3s ease-in-out);
 
 			&:hover {
 				color: #333;
@@ -566,10 +346,7 @@ body.layout-dgform {
 
 
 body.sidebar-right-collapse {
-	-o-transform: translateX(-200px);
-	-moz-transform: translateX(-200px);
-	-webkit-transform: translateX(-200px);
-	transform: translateX(-200px);
+	.translate(-200px,0);
 }
 
 /* elFinder File manager style */
@@ -675,49 +452,67 @@ body.sidebar-right-collapse {
 /* Product page Styling */
 .product-image {
 	.fileinput-new {
-		background: #eee;
-		border: 3px dashed #bbb;
-		font-size: 16px;
+	// position: relative;
+	}
+	#jform_images_preview_empty a{
+		background: @gray;
+		border: 2px dashed @form-border;
+		font-size: 15px;
 		color: #999;
 		text-align: center;
-		line-height: 50px;
-		height: 230px;
-		width: 200px;
-		padding: 20px;
-		position: relative;
-		overflow: hidden;
+		min-height: 100px;
+		min-width: 70px;
+		padding: 40px 0 30px;
+		display: block;
+		.box-sizing(border-box);
+
+		.icon-image{ color: #999; font-size: 40px; width: 40px; margin: 0 auto; }
 	}
+
 	.control-label label {display: none;}
 	.thumbnail {
 		box-shadow: none;
 		border: 0;
 	}
-	#jform_images_preview_img img{
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
+	#jform_images_preview_img{
+		width: 100%; max-height: 220px; overflow: hidden;
+		position: relative;
 
+		.btn{
+			position: absolute; top: 10px; right: 10px; z-index: 99;
+	    border: 0; border-radius: 4px;
+	    padding: 10px;
+	    text-align: center;
+	    font-size: 18px; color: #bbb;
+	    display: none;
+		}
+		.overlay-bg{ opacity: 0; }
+
+		&:hover{
+			.overlay-bg{
+				background: rgba(255,255,255,.4);
+				position: absolute; top: 0; bottom: 0; left: 0; right: 0;
+				padding: 20px; opacity: .7;
+			}
+			.btn{ display: block; }
+		}
 	}
+
 	.media-control {
 		position: absolute;
-		top: 105px;
-		left: 45px;
+		top: 50%;left: 50%;
+		margin: -25px 0 0 -75px;
 	}
 }
 
 .form-title-alias .digicom-product-title {
-	.control-group {
-		.control-label {float: none;}
-		.controls {
-			margin-left: 0;
-			input[type="text"] {width: 100%; height: 100%; box-sizing: border-box; padding: 10px;}
-		}
-	}
+	input[type="text"] {width: 100%; height: 100%; box-sizing: border-box; padding: 10px;}
 }
+
 .product-short-desc {
-	textarea {width: 100%;box-sizing: border-box;}
+	textarea {
+		width: 100%; .box-sizing(border-box);
+	}
 }
 
 .accordion {
@@ -902,10 +697,11 @@ body.com_digicom.view-configs{
 	}
 }
 .dg-footer{ text-align: right; margin-bottom: 40px; margin-right: 25px; }
+
 body.com_digicom .digicom-product-title{
-	.control-group{
-		margin-bottom: 2px;
-	}
+	.control-group{margin-bottom: 2px;}
+	.form-inline{ margin-bottom: 15px; }
+
 	#jform_alias{
 	  padding: 2px 6px;
 	  font-size: 12px;
