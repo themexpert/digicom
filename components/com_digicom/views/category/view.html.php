@@ -132,6 +132,9 @@ class DigiComViewCategory extends JViewCategory
 		if ($layout = $this->category->params->get('category_layout'))
 		{
 			$this->setLayout($layout);
+		}else{
+			$layout = $this->configs->get('template','default');
+			$this->setLayout($layout);
 		}
 
 		$this->columns = max(1, $params->def('num_columns', 1));
