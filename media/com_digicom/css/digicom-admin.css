@@ -184,6 +184,48 @@ body.com_digicom {
   /* Form elements Styling */
   /* Table Styles */
 }
+body.com_digicom .chzn-container-single .chzn-single {
+  padding: 0 0 0 0.875rem;
+  height: 1.8rem;
+  line-height: 1.8rem;
+  border: 1px solid #dfdfdf;
+  border-radius: 3px;
+  background: #ffffff;
+  box-shadow: none;
+}
+body.com_digicom .chzn-container-active .chzn-single {
+  border: 1px solid #1976d2;
+  -webkit-box-shadow: 0 0 2px rgba(4, 164, 153, 0.4);
+  -moz-box-shadow: 0 0 2px rgba(4, 164, 153, 0.4);
+  box-shadow: 0 0 2px rgba(4, 164, 153, 0.4);
+}
+body.com_digicom .chzn-container-single .chzn-single div b {
+  background-position: 0 5px;
+}
+body.com_digicom .chzn-container .chzn-drop {
+  border-color: #1976d2;
+  margin-top: -2px;
+}
+body.com_digicom .chzn-container .chzn-results {
+  margin: 0;
+  padding: 0;
+}
+body.com_digicom .chzn-container .chzn-results li.highlighted {
+  background: #1976d2;
+  color: #fff;
+}
+body.com_digicom .chzn-color.chzn-single[rel="value_1"],
+body.com_digicom .chzn-color-reverse.chzn-single[rel="value_0"],
+body.com_digicom .chzn-color-state.chzn-single[rel="value_1"] {
+  background: #4caf50;
+}
+body.com_digicom .chzn-color.chzn-single[rel="value_0"],
+body.com_digicom .chzn-color-reverse.chzn-single[rel="value_1"],
+body.com_digicom .chzn-color-state.chzn-single[rel="value_0"],
+body.com_digicom .chzn-color-state.chzn-single[rel="value_-1"],
+body.com_digicom .chzn-color-state.chzn-single[rel="value_-2"] {
+  background: #d32f2f;
+}
 body.com_digicom .btn {
   background: #fefefe;
   border-color: #ddd;
@@ -486,7 +528,8 @@ body.com_digicom input[type="search"]:active,
 body.com_digicom input[type="tel"]:active,
 body.com_digicom input[type="color"]:active,
 body.com_digicom .uneditable-input:active {
-  box-shadow: 0 0 2px #1976d2;
+  border: 1px solid #1976d2;
+  box-shadow: 0 0 1px #489be0;
 }
 body.com_digicom input[type="number"] {
   padding: 10px;
@@ -533,7 +576,7 @@ body.com_digicom .nav-tabs {
 body.com_digicom .nav-tabs > li > a {
   border: 0;
   border-radius: 0;
-  padding: 15px 20px;
+  padding: 15px 18px;
   color: #666666;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -849,7 +892,7 @@ body.sidebar-right-collapse {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  padding: 10px;
+  padding: 6px;
 }
 .product-short-desc textarea {
   width: 100%;
@@ -1015,12 +1058,21 @@ body.layout-neworder .add-product .btn-group {
     overflow: hidden;
   }
 }
-body.com_digicom.view-configs .form-horizontal .control-label {
-  text-align: right;
-  width: 200px;
+body.view-configs .tab-content h3 {
+  font-weight: normal;
+  color: #666666;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 10px;
 }
-body.com_digicom.view-configs .form-horizontal .controls {
-  margin-left: 220px;
+body.view-configs .control-label,
+body.view-configs label {
+  text-transform: capitalize;
+}
+body.view-configs .form-horizontal .control-label {
+  width: 300px;
+}
+body.view-configs .form-horizontal .controls {
+  margin-left: 0;
 }
 .dg-footer {
   text-align: right;
