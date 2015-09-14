@@ -9,14 +9,15 @@
 
 defined('_JEXEC') or die;
 ?>
+<?php
 if($this->item->price > 0){
-$price = DigiComSiteHelperPrice::format_price($this->item->price, $this->configs->get('currency','USD'), true, $this->configs);
+	$price = DigiComSiteHelperPrice::format_price($this->item->price, $this->configs->get('currency','USD'), true, $this->configs);
 }else{
-$price = '<span class="label label-success">'.JText::_('COM_DIGICOM_PRODUCT_PRICE_FREE').'</span>';
+	$price = '<span class="label label-success">'.JText::_('COM_DIGICOM_PRODUCT_PRICE_FREE').'</span>';
 }
 $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this->item->catid, $this->item->language));
 ?>
-<li class="<?php echo $bsGrid[$column]?>">
+<li class="<?php echo $this->bsGrid[$this->column]?>">
 	<div class="thumbnail">
 		<!-- Product Image -->
 		<?php if(!empty($this->item->images)): ?>

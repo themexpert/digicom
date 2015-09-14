@@ -9,8 +9,8 @@
 
 defined('_JEXEC') or die;
 
-$bsGrid = array(1 => 'span12', 2 => 'span6', 3 => 'span4', 4 => 'span3', 6 => 'span2');
-$column = $this->category->params->get('category_cols',3);
+$this->bsGrid = array(1 => 'span12', 2 => 'span6', 3 => 'span4', 4 => 'span3', 6 => 'span2');
+$this->column = $this->category->params->get('category_cols',3);
 ?>
 <div id="digicom">
 
@@ -55,7 +55,7 @@ $column = $this->category->params->get('category_cols',3);
         	<?php
 				  $i=0;
 				  foreach($this->items as $key=>$item):
-					 	if(! ($i % $column) )  echo '</ul></div><div class="row-fluid"><ul class="thumbnails">';
+					 	if(! ($i % $this->column) && $i != '0' )  echo '</ul></div><div class="row-fluid"><ul class="thumbnails">';
 					 	?>
 					 	<?php
 					 	$this->item = & $item;
