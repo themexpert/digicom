@@ -24,10 +24,6 @@ if($this->item->price > 0){
 				<!-- Details & Cart -->
 				<div class="span12">
 
-					<?php if(!empty($this->item->images)): ?>
-						<img src="<?php echo $this->item->images; ?>" class="img-responsive"/>
-					<?php endif; ?>
-
 					<h1 class="digi-page-title">
 					<?php echo $this->item->name; ?>
 
@@ -39,6 +35,11 @@ if($this->item->price > 0){
 							<span class="label"><?php echo JText::sprintf('COM_DIGICOM_PRODUCT_TYPE_BUNDLE');?></span>
 						<?php endif; ?>
 					</h1>
+					
+					<?php if(!empty($this->item->images)): ?>
+						<img src="<?php echo $this->item->images; ?>" class="img-responsive"/>
+					<?php endif; ?>
+
 
 					<?php if (!empty($this->item->tags->itemTags)) : ?>
 						<?php $this->item->tagLayout = new JLayoutFile('joomla.content.tags'); ?>
