@@ -91,8 +91,10 @@
 			var persion = $("input:radio[name='jform[person]']:checked").val();
 			if(persion == '1'){
 				$(".group-input-company, .group-input-tax").hide();
+				$("label[for='jform_person0']").addClass('active');
 			}else{
 				$(".group-input-company, .group-input-tax").show();
+				$("label[for='jform_person1']").addClass('active');
 			}
 		},
 
