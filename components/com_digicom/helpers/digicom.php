@@ -616,51 +616,6 @@ class DigiComSiteHelperDigicom {
 		JFactory::getApplication()->close();
 	}
 
-	/*
-	* get thumbnail
-	* images (string): image path like : /images/digicom.png
-	*/
-	public static function getThumbnail($image){
-		jimport( 'joomla.filesystem.folder' );
-		jimport( 'joomla.filesystem.file' );
-
-		$params = JComponentHelper::getComponent('com_digicom')->params;
-
-		if(empty($image)) return '';
-
-		if(!JFile::exists($image)) return $image;
-
-		if($params->get('image_thumb_enable')){
-
-			$image_thumb_width = $params->get('image_thumb_width');
-			$image_thumb_height = $params->get('image_thumb_height');
-			$image_thumb_method = $params->get('image_thumb_method',6);
-
-			$imageunique = md5($image.$image_thumb_width.$image_thumb_height);
-			$path = JPATH_ROOT . '/images/digicom/products';
-			JFolder::create($path);
-
-			// Generate thumb name
-			$jimage = new JImage($image);
-
-			$filename       = pathinfo($jimage->getPath(), PATHINFO_FILENAME);
-			$fileExtension  = pathinfo($jimage->getPath(), PATHINFO_EXTENSION);
-			$thumbFileName  = $filename . '_' . $image_thumb_width . 'x' . $image_thumb_height . '.' . $fileExtension;
-
-			$thumbpath = JPATH_ROOT.'/images/digicom/products/'.$thumbFileName;
-			$thumburl = JURI::root().'images/digicom/products/'.$thumbFileName;
-			if(JFile::exists($thumbpath)) return $thumburl;
-
-			$image = $jimage->createThumbs(array($image_thumb_width.'x'.$image_thumb_height), $image_thumb_method,$path);
-			$thumburl = str_replace(JPATH_SITE.'/', '', $image[0]->getPath());
-			return $thumburl;
-
-		}else{
-			return $image;
-		}
-
-	}
-
 	public static function loadModules($position, $style = 'raw')
 	{
 		jimport('joomla.application.module.helper');
