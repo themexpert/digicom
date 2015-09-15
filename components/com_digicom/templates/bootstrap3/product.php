@@ -19,37 +19,46 @@ if($this->item->price > 0){
 }else{
 	$price = '<span>'.JText::_('COM_DIGICOM_PRODUCT_PRICE_FREE').'</span>';
 }
+$link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this->item->catid, $this->item->language));
 ?>
 <div id="digicom">
+	<div class="product-page<?php echo $this->pageclass_sfx; ?>" itemscope itemtype="http://schema.org/Product">
+		<meta itemprop="inLanguage" content="<?php echo ($this->item->language === '*') ? JFactory::getConfig()->get('language') : $this->item->language; ?>" />
+		<meta itemprop="url" content="<?php echo $link; ?>" />
 
-	<div class="digi-products">
+		<?php if ($this->params->get('show_page_heading')) : ?>
+		<div class="page-header">
+			<h1> <?php echo $this->escape($this->params->get('page_heading')); ?> </h1>
+		</div>
+		<?php endif;?>
+		<header>
+			<h2 class="product-title">
+				<span itemprop="name">
+					<?php echo $this->item->name; ?>
+				</span>
+			</h2>
 
-			<h1 class="digi-page-title">
-			<?php echo $this->item->name; ?>
+			<?php if($this->item->featured):?>
+				<span class="label label-info"><?php echo JText::_('JFEATURED');?></span>
+			<?php endif; ?>
 
-				<?php if($this->item->featured):?>
-					<span class="label label-important"><?php echo JText::_('JFEATURED');?></span>
-				<?php endif; ?>
-
-				<?php if(!empty($this->item->bundle_source)):?>
-					<span class="label"><?php echo JText::sprintf('COM_DIGICOM_PRODUCT_TYPE_BUNDLE');?></span>
-				<?php endif; ?>
-			</h1>
+			<?php if(!empty($this->item->bundle_source)):?>
+				<span class="label label-warning"><?php echo JText::sprintf('COM_DIGICOM_PRODUCT_TYPE_BUNDLE');?></span>
+			<?php endif; ?>
 
 			<?php if (!empty($this->item->tags->itemTags)) : ?>
 				<?php $this->item->tagLayout = new JLayoutFile('joomla.content.tags'); ?>
 				<?php echo $this->item->tagLayout->render($this->item->tags->itemTags); ?>
 			<?php endif; ?>
-
-			<p class="intro">
-				<?php echo $this->item->introtext; ?>
-			</p>
-
+		</header>
+		<div class="product-details clearfix">
 			<?php if(!empty($images->full_image)): ?>
-				<img src="<?php echo $images->full_image; ?>" class="img-responsive"/>
+				<div class="text-center">
+					<img itemprop="image" src="<?php echo $images->full_image; ?>" alt="<?php echo $this->item->name; ?>" class="img-responsive img-thumbnail"/>
+				</div>
 			<?php endif; ?>
 
-			<div class="description">
+			<div class="description" itemprop="description">
 				<?php echo $this->item->text; ?>
 			</div>
 
@@ -60,9 +69,11 @@ if($this->item->price > 0){
 			?>
 
 			<?php if ($this->configs->get('catalogue',0) == '0' and !$this->item->hide_public) : ?>
-			<div class="well clearfix">
+			<div class="well clearfix" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+				<meta itemprop="priceCurrency" content="<?php $conf->get('currency','USD');?>" />
+
 				<div class="product-price pull-left">
-					<?php echo $price; ?>
+					<span itemprop="price" content="<?php echo $this->item->price; ?>"><?php echo $price; ?></span>
 					<br/>
 					<?php if ($this->configs->get('show_validity',1) == 1) : ?>
 					<span>
@@ -98,8 +109,12 @@ if($this->item->price > 0){
 			</div>
 			<?php endif; ?>
 
-		<?php echo DigiComSiteHelperDigicom::powered_by(); ?>
+		</div>
+
+
+
 	</div>
+	<?php echo DigiComSiteHelperDigicom::powered_by(); ?>
 	<?php
 		$layoutData = array(
 			'selector' => 'digicomCartPopup',

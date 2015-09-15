@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 $this->bsGrid = array(1 => 'col-md-12', 2 => 'col-md-6', 3 => 'col-md-4', 4 => 'col-md-3', 6 => 'col-md-2');
 $this->column = $this->category->params->get('category_cols',3);
 ?>
-<div id="digicom">
+<div id="digicom" class="digicom-product-list<?php echo $this->pageclass_sfx; ?>">
 
 	<?php if ($this->params->get('show_page_heading')) : ?>
 		<div class="page-header">
@@ -49,24 +49,40 @@ $this->column = $this->category->params->get('category_cols',3);
 		</div>
 		<?php endif; ?>
 
-		<div class="products-list clearfix">
-        <div class="row">
-        	<?php
-				  $i=0;
-				  foreach($this->items as $key=>$item):
-					 	if(! ($i % $this->column)  && $i != '0' )  echo '</div><div class="row">';
-					 	?>
-					 	<?php
-					 	$this->item = & $item;
-					 	echo $this->loadTemplate('item');
-					 	?>
-				  	<?php
-				  	$i++;
-				  endforeach;
-				  ?>
-        </div>
-		</div>
-		<div class="pagination"><?php echo $this->pagination->getPagesLinks(); ?></div>
+		<?php
+		$itemscount = (count($this->items));
+		$counter = 0;
+		?>
+		<?php if (!empty($this->items)) : ?>
+			<div class="products-list clearfix">
+			<?php foreach ($this->items as $key => &$item) : ?>
+				<?php $rowcount = ((int) $key % (int) $this->column) + 1; ?>
+				<?php if ($rowcount == 1) : ?>
+					<?php $row = $counter / $this->column; ?>
+					<div class="products-row row clearfix">
+				<?php endif; ?>
+				<div class="<?php echo $this->bsGrid[$this->column]?>">
+					<div class="product column-<?php echo $rowcount; ?><?php echo $item->published == 0 ? ' system-unpublished' : null; ?>"
+						itemscope itemtype="http://schema.org/Product">
+						<?php
+						$this->item = & $item;
+						echo $this->loadTemplate('item');
+						?>
+					</div>
+					<!-- end item -->
+					<?php $counter++; ?>
+				</div><!-- end column class -->
+				<?php if (($rowcount == $this->column) or ($counter == $itemscount)) : ?>
+					</div><!-- end row -->
+				<?php endif; ?>
+			<?php endforeach; ?>
+
+			</div>
+
+			<div class="pagination"><?php echo $this->pagination->getPagesLinks(); ?></div>
+
+		<?php endif; ?>
+
 	</div>
 
 </div>
