@@ -372,7 +372,32 @@ class DigiComModelProducts extends JModelList
 			if (!empty($categoryId))
 			{
 				$type = $this->getState('filter.category_id.include', true) ? 'IN' : 'NOT IN';
-				$query->where('a.catid ' . $type . ' (' . $categoryId . ')');
+				$categoryEquals = 'a.catid ' . $type . ' (' . $categoryId . ')';
+
+				// Add subcategory check
+				$includeSubcategories = $this->getState('filter.subcategories', false);
+				if ($includeSubcategories)
+				{
+					$levels = (int) $this->getState('filter.max_category_levels', '1');
+
+					// Create a subquery for the subcategory list
+					$subQuery = $db->getQuery(true)
+						->select('sub.id')
+						->from('#__categories as sub')
+						->join('INNER', '#__categories as this ON sub.lft > this.lft AND sub.rgt < this.rgt')
+						->where('this.id ' . $type . ' (' . $categoryId . ')' );
+
+					if ($levels >= 0)
+					{
+						$subQuery->where('sub.level <= this.level + ' . $levels);
+					}
+
+					// Add the subquery to the main query
+					$query->where('(' . $categoryEquals . ' OR a.catid IN (' . $subQuery->__toString() . '))');
+				}else{
+					$query->where($categoryEquals);
+				}
+
 			}
 		}
 
