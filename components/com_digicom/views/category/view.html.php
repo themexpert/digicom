@@ -119,20 +119,20 @@ class DigiComViewCategory extends JViewCategory
 			$results = $dispatcher->trigger('onContentAfterDisplay', array('com_digicom.category', &$item, &$item->params, 0));
 			$item->event->afterDisplayContent = trim(implode("\n", $results));
 
-			$item->images = DigiComSiteHelperDigiCom::getThumbnail($item->images);
 		}
 
 		// Check for layout override only if this is not the active menu item
 		// If it is the active menu item, then the view and category id will match
-		$app = JFactory::getApplication();
-		$menus		= $app->getMenu();
-		$title		= null;
+		$app 		= JFactory::getApplication();
+		$menus	= $app->getMenu();
+		$title	= null;
 
 		// Get the layout from the merged category params
 		if ($layout = $this->category->params->get('category_layout'))
 		{
 			$this->setLayout($layout);
-		}else{
+		}
+		else{
 			$layout = $this->configs->get('template','default');
 			$this->setLayout($layout);
 		}
@@ -228,6 +228,7 @@ class DigiComViewCategory extends JViewCategory
 		$template->rander('category', $this->getLayout());
 
 		return parent::display($tpl);
+
 	}
 
 	/**
