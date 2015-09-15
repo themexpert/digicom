@@ -301,7 +301,7 @@ class PlgFinderDigicom extends FinderIndexerAdapter
 		$item->state = $this->translateState($item->state, $item->cat_state);
 
 		// Add the type taxonomy data.
-		$item->addTaxonomy('Type', 'Article');
+		$item->addTaxonomy('Type', 'Product');
 
 		// Add the author taxonomy data.
 		if (!empty($item->author))
