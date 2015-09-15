@@ -56,7 +56,7 @@ class digicomViewdigicom extends JViewLegacy {
 	 */
 	protected function addToolbar()
 	{
-		JToolBarHelper::title(JText::_('COM_DIGICOM_DASHBOARD_TOOLBAR_TITLE'), 'generic.png');
+		JToolBarHelper::title(JText::_('COM_DIGICOM_DASHBOARD_TOOLBAR_TITLE_PAGE'), 'generic.png');
 		$canDo = JHelperContent::getActions('com_digicom', 'component');
 
 		$bar = JToolBar::getInstance('toolbar');
@@ -70,7 +70,7 @@ class digicomViewdigicom extends JViewLegacy {
 
 		if ($canDo->get('core.create')){
 			$layout = new JLayoutFile('toolbar.products');
-			$bar->appendButton('Custom', $layout->render(array()), 'products');			
+			$bar->appendButton('Custom', $layout->render(array()), 'products');
 		}
 
 		$layout = new JLayoutFile('toolbar.settings');

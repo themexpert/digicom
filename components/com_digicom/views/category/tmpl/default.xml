@@ -44,6 +44,22 @@
 				<option value="6">6</option>
 			</field>
 
+			<field
+				name="show_subcategory_content"
+				type="list"
+				description="COM_DIGICOM_SHOW_SUBCATEGORY_CONTENT_DESC"
+				label="COM_DIGICOM_SHOW_SUBCATEGORY_CONTENT_LABEL"
+				default="0"
+			>
+				<option value="0">JNONE</option>
+				<option value="-1">JALL</option>
+				<option value="1">J1</option>
+				<option value="2">J2</option>
+				<option value="3">J3</option>
+				<option value="4">J4</option>
+				<option value="5">J5</option>
+			</field>
+
 			<field name="show_cat_title" type="radio"
 				description="COM_DIGICOM_SHOW_CAT_TITLE_DESC"
 				label="COM_DIGICOM_SHOW_CAT_TITLE_LABEL"

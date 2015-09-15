@@ -84,16 +84,8 @@ class DigiComViewCheckout extends JViewLegacy
 		$dispatcher->trigger('onSendPayment', array(& $params));
 		$html = $dispatcher->trigger('onTP_GetHTML', array($vars,$pay_plugin));
 
-		if (!isset($html[0])) {
+		if (!isset($html[0])){
 			$html[0] = '';
-		}
-
-		if ($pay_plugin == 'paypal')
-		{
-			$html[0] = $html[0] . '<script type="text/javascript">';
-			$html[0] = $html[0] . 'jQuery(".digicom-payment-form").hide();';
-			$html[0] = $html[0] . 'jQuery(window).load(function() {jQuery(".digicom-payment-form form.autoSubmit").submit();});';
-			$html[0] = $html[0] . '</script>';
 		}
 
 		$this->assign("pg_plugin", $pay_plugin);

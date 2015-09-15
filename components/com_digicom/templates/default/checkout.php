@@ -18,30 +18,55 @@ $data = $this->data;
 ?>
 <div id="digicom">
 
-	<?php if($configs->get('show_steps',1) == 1){ ?>
-	<div class="pagination pagination-centered">
-		<ul>
-			<li class="disabled"><span><?php echo JText::_("COM_DIGICOM_BUYING_PROCESS_STEP_ONE"); ?></span></li>
-			<li class="disabled"><span><?php echo JText::_("COM_DIGICOM_BUYING_PROCESS_STEP_TWO"); ?></span></li>
-			<li class="active"><span><?php echo JText::_("COM_DIGICOM_BUYING_PROCESS_STEP_THREE"); ?></span></li>
-		</ul>
-	</div>
-	<?php } ?>
+	<?php
+	$this->setLayout('cart');
+	echo $this->loadTemplate('steps');
+	?>
 
-	<?php if ($pg_plugin == "paypal" ){ ?>
-	<div class="container-fluid center">
-		<h1 class="digi-page-title"><?php echo JText::sprintf("COM_DIGICOM_PAYMENT_WITH_PROGRESS_NOTICE",$pg_plugin); ?></h1>
-		<div class="progress progress-striped active" style="width: 50%; margin: 20px auto 40px auto;">
-			<div  id="progressBar" class="bar" style="border-radius: 3px; margin: 0; width: 100%;"></div>
-		</div>
-
-		<?php echo $data[0]; ?>
-
-	</div>
-<?php } else { ?>
 	<h1 class="digi-page-title"><?php echo JText::sprintf("COM_DIGICOM_CHECKOUT_PAYMENT_DETAILS_PAGE_TITLE", $pg_plugin); ?></h1>
-	<?php echo $data[0]; ?>
-<?php } ?>
 
-<?php
-echo DigiComSiteHelperDigiCom::powered_by();
+	<div class="cart-items-wrap">
+		<h4 class="align-center"><?php echo JText::_("COM_DIGICOM_SUMMARY_YOUR_ORDER");?></h4>
+
+		<table id="digicomcarttable" class="table table-striped table-bordered" width="100%">
+		  <thead>
+		    <tr>
+		      <th><?php echo JText::_("COM_DIGICOM_PRODUCT");?></th>
+		      <th><?php echo JText::_("COM_DIGICOM_PRICE_PLAN");?></th>
+		      <th><?php echo JText::_("COM_DIGICOM_QUANTITY"); ?></th>
+		      <th><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <?php foreach($this->items as $itemnum => $item ): ?>
+		      <tr>
+		        <td>
+							<?php echo $item->name; ?>
+		          <?php if ($this->configs->get('show_validity',1) == 1) : ?>
+		            <div class="muted">
+		              <small><?php echo JText::_('COM_DIGICOM_PRODUCT_VALIDITY'); ?> : <?php echo DigiComSiteHelperPrice::getProductValidityPeriod($item); ?></small>
+		            </div>
+		          <?php endif; ?>
+		        </td>
+		        <td><?php echo DigiComSiteHelperPrice::format_price($item->price, $item->currency, true, $this->configs); ?></td>
+		        <td><?php echo $item->quantity; ?></td>
+		        <td><?php echo DigiComSiteHelperPrice::format_price($item->subtotal-(isset($value_discount) ? $value_discount : 0), $item->currency, true, $this->configs); ?></td>
+		      </tr>
+		      <?php
+		    endforeach;
+		    ?>
+		  </tbody>
+		  <tfoot>
+				<tr>
+					<td colspan="4" style="text-align:right;">
+						Total : <strong><?php echo  DigiComSiteHelperPrice::format_price($this->order->amount, $configs->get('currency','USD'), true, $configs);?></strong>
+					</td>
+				</tr>
+		  </tfoot>
+
+		</table>
+	</div>
+
+	<?php echo $data[0]; ?>
+
+<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>

@@ -24,10 +24,6 @@ if($this->item->price > 0){
 				<!-- Details & Cart -->
 				<div class="span12">
 
-					<?php if(!empty($this->item->images)): ?>
-						<img src="<?php echo $this->item->images; ?>" class="img-responsive"/>
-					<?php endif; ?>
-
 					<h1 class="digi-page-title">
 					<?php echo $this->item->name; ?>
 
@@ -39,6 +35,11 @@ if($this->item->price > 0){
 							<span class="label"><?php echo JText::sprintf('COM_DIGICOM_PRODUCT_TYPE_BUNDLE');?></span>
 						<?php endif; ?>
 					</h1>
+					
+					<?php if(!empty($this->item->images)): ?>
+						<img src="<?php echo $this->item->images; ?>" class="img-responsive"/>
+					<?php endif; ?>
+
 
 					<?php if (!empty($this->item->tags->itemTags)) : ?>
 						<?php $this->item->tagLayout = new JLayoutFile('joomla.content.tags'); ?>
@@ -75,11 +76,11 @@ if($this->item->price > 0){
 							<form name="prod" id="product-form" action="<?php echo JRoute::_('index.php?option=com_digicom&view=cart');?>" method="post" style="width:100%;">
 
 								<?php if($conf->get('show_quantity',0) == "1") {	?>
-									<input id="quantity_<?php echo $this->item->id; ?>" type="number" name="qty" min="1" class="input-small" value="1" size="2" placeholder="<?php echo JText::_('COM_DIGICOM_QUANTITY'); ?>">
+									<input data-digicom-id="quantity_<?php echo $this->item->id; ?>" type="number" name="qty" min="1" class="input-small" value="1" size="2" placeholder="<?php echo JText::_('COM_DIGICOM_QUANTITY'); ?>">
 								<?php } ?>
 
 								<?php if($conf->get('afteradditem',0) == "2") {	?>
-									<button type="button" class="btn btn-warning" onclick="javascript:addtoCart(<?php echo $this->item->id; ?>,'<?php echo JRoute::_("index.php?option=com_digicom&view=cart"); ?>');"><i class="icon-cart"></i> <?php echo JText::_("COM_DIGICOM_ADD_TO_CART");?></button>
+									<button type="button" class="btn btn-warning" onclick="Digicom.addtoCart(<?php echo $this->item->id; ?>,'<?php echo JRoute::_("index.php?option=com_digicom&view=cart"); ?>');"><i class="icon-cart"></i> <?php echo JText::_("COM_DIGICOM_ADD_TO_CART");?></button>
 								<?php }else { ?>
 									<button type="submit" class="btn btn-warning"><i class="icon-cart"></i> <?php echo JText::_('COM_DIGICOM_ADD_TO_CART'); ?></button>
 								<?php } ?>
@@ -101,7 +102,7 @@ if($this->item->price > 0){
 	<?php
 	echo JHtml::_(
 		'bootstrap.renderModal',
-		'cartPopup',
+		'digicomCartPopup',
 		array(
 //			'url' 		=> JRoute::_('index.php?option=com_digicom&view=cart&layout=cart_popup&tmpl=component'),
 			'title' 	=> JText::_('COM_DIGICOM_CART_ITEMS'),

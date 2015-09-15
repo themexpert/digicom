@@ -192,11 +192,11 @@ class DigiComModelCategory extends JModelList
 		$this->setState('list.start', $app->input->get('limitstart', 0, 'uint'));
 
 		// Set limit for query. If list, use parameter. If blog, add blog parameters for limit.
-		
+
 		//$limit = $params->get('num_leading_products') + $params->get('num_intro_products') + $params->get('num_links');
 		$limit = $params->get('num_products');
 		$this->setState('list.links', $params->get('num_links'));
-	
+
 
 		$this->setState('list.limit', $limit);
 
@@ -215,7 +215,7 @@ class DigiComModelCategory extends JModelList
 
 		// Set the featured products state
 		$this->setState('filter.featured', $params->get('show_only_featured'));
-		
+
 		$this->setState('filter.bundle', $params->get('show_only_bundle'));
 	}
 

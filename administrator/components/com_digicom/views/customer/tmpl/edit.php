@@ -10,7 +10,6 @@
 defined('_JEXEC') or die;
 
 JHtml::_('formbehavior.chosen', 'select');
-require_once( JPATH_COMPONENT_SITE . '/helpers/sajax.php' );
 
 $cust = $this->cust;
 $user = $this->user;
@@ -20,49 +19,7 @@ $input = $app->input;
 
 $document = JFactory::getDocument();
 $input->set('layout', 'dgform');
-
 ?>
-<script language="javascript" type="text/javascript">
-	<?php sajax_show_javascript(); ?>
-	<!--
-	var request_processed = 0;
-	function submitbutton(pressbutton) {
-		submitform( pressbutton );
-	}
-
-	function populateShipping () {
-		var names = Array ('address','zipcode', 'city');
-		var i;
-		for (i = 0; i < names.length; i++) {
-			val = document.getElementById(names[i]).value;
-			document.getElementById('ship' + names[i]).value = val;
-		}
-		idx = document.getElementById('country').selectedIndex;
-		document.getElementById('shipcountry').selectedIndex = idx;
-
-		changeProvince_ship();
-		request_processed = 1;
-	}
-
-	function changeProvince() {
-		// get the folder name
-		var country;
-		country = document.getElementById('country').value;
-		var euc = Array();
-
-		var flag = 0;
-		for (i = 0; i< euc.length; i++)
-			if (country == euc[i]) flag = 1;
-
-		x_phpchangeProvince(country, 'main', changeProvince_cb);
-	}
-
-	function changeProvince_cb(province_option) {
-		document.getElementById("province").innerHTML = province_option;
-	}
-
-	 -->
-</script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <?php if (!empty( $this->sidebar)) : ?>
@@ -148,6 +105,12 @@ $input->set('layout', 'dgform');
 										<input name="company" type="text" id="company" size="30" value="<?php echo $cust->company; ?>">
 									</div>
 								</div>
+								<div class="control-group">
+									<label class="control-label"><?php echo JText::_( "COM_DIGICOM_CUSTOMER_TAX_NUMBER" ); ?></label>
+									<div class="controls">
+										<input name="taxnum" type="text" id="taxnum" size="30" value="<?php echo $cust->taxnum; ?>">
+									</div>
+								</div>
 
 								<div class="control-group">
 									<label for="" class="control-label"><?php echo Jtext::_( "COM_DIGICOM_CUSTOMER_ADDRESS" ); ?><span class="error">*</span></label>
@@ -160,7 +123,7 @@ $input->set('layout', 'dgform');
 									<label for="" class="control-label"><?php echo JText::_( "COM_DIGICOM_CUSTOMER_COUNTRY" ); ?></label>
 									<div class="controls">
 										<?php
-											$country_option = DigiComSiteHelperDigiCom::get_country_options($cust, false, $configs);
+											$country_option = DigiComSiteHelperDigiCom::get_country_options($cust, false, $configs, false);
 											echo $country_option;
 										?>
 									</div>
@@ -169,9 +132,8 @@ $input->set('layout', 'dgform');
 								<div class="control-group">
 									<label for="" class="control-label"><?php echo JText::_( "COM_DIGICOM_CUSTOMER_STATE" ); ?></label>
 									<div class="controls">
-										<?php
-											echo DigiComSiteHelperDigiCom::get_store_province($cust, false);
-										?>
+										<input name="state" type="text" id="state" size="30" value="<?php echo $cust->state; ?>">
+										<?php // echo DigiComSiteHelperDigiCom::get_store_province($cust, false); ?>
 									</div>
 								</div>
 
@@ -179,13 +141,6 @@ $input->set('layout', 'dgform');
 									<label for="" class="control-label"><?php echo JText::_( "COM_DIGICOM_CUSTOMER_CITY" ); ?></label>
 									<div class="controls">
 										<input name="city" type="text" id="city" size="30" value="<?php echo $cust->city; ?>">
-									</div>
-								</div>
-
-								<div class="control-group">
-									<label for="" class="control-label"><?php echo JText::_( "COM_DIGICOM_CUSTOMER_TAX_NUMBER" ); ?></label>
-									<div class="controls">
-										<input name="taxnum" type="text" id="taxnum" size="30" value="<?php echo $cust->taxnum; ?>">
 									</div>
 								</div>
 

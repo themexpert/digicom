@@ -100,11 +100,11 @@ $params = json_decode($this->order->params);
 		<div class="alert alert-warning">
   			<p><?php echo JText::sprintf('COM_DIGICOM_ORDER_COMPLETE_NOTICE'); ?></p>
 			<form method="post" class="well well-small form-inline" action="<?php echo JRoute::_('index.php?option=com_digicom&view=checkout'); ?>">
-  				<input type="hidden" name="option" value="com_digicom">
-  				<input type="hidden" name="task" value="cart.payOrder">
+				<input type="hidden" name="option" value="com_digicom">
+				<input type="hidden" name="task" value="cart.payOrder">
 				<input type="hidden" name="id" value="<?php echo $order->id; ?>">
 
-				<?php echo DigiComSiteHelperDigicom::getPaymentPlugins($configs); ?>
+				<?php echo DigiComSiteHelperDigicom::getPaymentPlugins($configs,$configs->get('default_payment','offline')); ?>
 
 				<button class="btn pull-right" type="submit"><?php echo JText::_('COM_DIGICOM_ORDER_PAY_NOW'); ?></button>
  			</form>

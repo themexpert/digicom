@@ -12,7 +12,7 @@ $doc 				= JFactory::getDocument();
 // Load style file
 $doc->addStyleSheet( JUri::root(true). '/modules/mod_digicom_cart/assets/css/mod_digicom_cart.css');
 ?>
-<div id="mod_digicom_cart_wrap" class="dg-cart <?php echo $moduleclass_sfx; ?>">
+<div data-digicom-id="mod_digicom_cart_wrap" class="dg-cart <?php echo $moduleclass_sfx; ?>">
 	<?php if(count($list) > 0) :?>
 	<ul class="dg-cart-list">
 		<?php foreach($list as $index => $item): ?>
@@ -29,15 +29,15 @@ $doc->addStyleSheet( JUri::root(true). '/modules/mod_digicom_cart/assets/css/mod
 		<?php endforeach; ?>
 	</ul>
 	<div class="dg-total">
-		<?php if($tax['promo'] > 0): ?>
+		<!-- <?php if($tax['promo'] > 0): ?>
 		<p class="dg-amount-discount">
 			<strong><?php echo JText::_('MOD_DIGICOM_CART_PROMO_DISCOUNT')?>:</strong>
 			<?php echo DigiComSiteHelperPrice::format_price($tax["promo"], $tax["currency"], true, $configs); ?>
 		</p>
-		<?php endif; ?>
+		<?php endif; ?> -->
 
 		<p class="dg-amount">
-			<strong><?php echo JText::_('MOD_DIGICOM_CART_PRICE_SUBTOTAL')?>:</strong>
+			<strong><?php echo JText::_('MOD_DIGICOM_CART_PRICE_TOTAL')?>:</strong>
 			<?php echo DigiComSiteHelperPrice::format_price($tax["payable_amount"], $tax["currency"], true, $configs); ?>
 		</p>
 

@@ -157,6 +157,9 @@ class DigiComViewProduct extends JViewLegacy
 		if ($layout = $this->category->params->get('category_layout'))
 		{
 			$this->setLayout($layout);
+		}else{
+			$layout = $this->configs->get('template','default');
+			$this->setLayout($layout);
 		}
 
 		$template = new DigiComSiteHelperTemplate($this);
@@ -226,7 +229,7 @@ class DigiComViewProduct extends JViewLegacy
 				$catParams = new Registry;
 				$catParams->loadString($category->getParams());
 
-				$category_layout = $categoryParams->get('category_layout','');
+				$category_layout = $catParams->get('category_layout','');
 				if(!empty($category_layout)){
 					$currentTemplate = true;
 					$categoryParams->set('category_layout',$catParams->get('category_layout'));

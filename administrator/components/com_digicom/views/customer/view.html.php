@@ -13,22 +13,21 @@ class DigiComViewCustomer extends JViewLegacy {
 
 	function display ($tpl =  null )
 	{
-		//require_once( JPATH_COMPONENT.DS.'helpers'.DS.'sajax.php' );
 		$db = JFactory::getDBO();
 		$customer = $this->get('customer');
 		//print_r($customer);die;
 		$user = $this->get('User');
 		$isNew = ($customer->id < 1);
-		$text = $isNew?JText::_('COM_DIGICOM_NEW'):JText::_('COM_DIGICOM_EDIT')." : ".$customer->name;
+		$text = $isNew ? JText::_('COM_DIGICOM_CUSTOMER_NEW') : JText::_('COM_DIGICOM_CUSTOMER_EDIT');
 
-		JToolBarHelper::title(JText::_('COM_DIGICOM_CUSTOMER').":<small>[".$text."]</small>");
+		JToolBarHelper::title($text);
 
 		$bar = JToolBar::getInstance('toolbar');
 		$layout = new JLayoutFile('toolbar.title');
-		$title=array(
-			'title' => JText::_('COM_DIGICOM_CUSTOMER').":<small>[".$text."]</small>",
-			'class' => 'title'
-		);
+		$title 	= array(
+								'title' => $text . " <small>[ " . $customer->name . " ]</small>",
+								'class' => 'title'
+							);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
 
 		$layout = new JLayoutFile('toolbar.settings');
@@ -36,7 +35,7 @@ class DigiComViewCustomer extends JViewLegacy {
 
 		$layout = new JLayoutFile('toolbar.video');
 		$bar->appendButton('Custom', $layout->render(array()), 'video');
-		
+
 		JToolBarHelper::apply('customer.apply');
 		JToolBarHelper::save('customer.save');
 

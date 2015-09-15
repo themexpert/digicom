@@ -9,7 +9,7 @@
 			name="person"
 			type="radio"
 			class="btn-group"
-			default="2"
+			default="1"
 			label="COM_DIGICOM_PERSON_OR_COMPANY"
 		>
 			<option value="1">COM_DIGICOM_PERSON</option>

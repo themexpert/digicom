@@ -60,7 +60,6 @@ class DigiComControllerCart extends JControllerLegacy
 	function __construct()
 	{
 		parent::__construct();
-		$this->registerTask("summary", "showSummary");
 		$this->registerTask("validate_input", "validateInput");
 		$this->registerTask("cancel", "cancel");
 		$this->registerTask("payment", "payment");
@@ -174,6 +173,13 @@ class DigiComControllerCart extends JControllerLegacy
 	{
 
 		$session = JFactory::getSession();
+		$processor	= JRequest::getVar("processor", '');
+		if(!isset($processor) or !$processor){
+			$processor = $session->get('processor','offline');
+		}else{
+			$session->set('processor',$processor);
+		}
+
 		$this->_model->updateCart($this->_customer, $this->_config);
 		$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart", false));
 
@@ -317,11 +323,11 @@ class DigiComControllerCart extends JControllerLegacy
 
 		if( $res == 1 ) {
 
-			$fromsum = 1;//JRequest::getVar('fromsum', '1');
-			if(!$fromsum) {
-				$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&layout=summary"));
-				return true;
-			}
+			// $fromsum = 1;//JRequest::getVar('fromsum', '1');
+			// if(!$fromsum) {
+			// 	$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&layout=summary"));
+			// 	return true;
+			// }
 
 			$name = $this->_customer->_user->name;
 			$db = JFactory::getDBO();
@@ -443,29 +449,33 @@ class DigiComControllerCart extends JControllerLegacy
 
 		$cid 	= JRequest::getVar('cid', -1);
 		$qty 	= JRequest::getVar('quantity'.$cid, 1);
+		$promocode 	= JRequest::getVar('promocode');
 		$db 	= JFactory::getDBO();
+
+		$cart 			= $this->_model;
+		$customer 	= $this->_customer;
+		$configs 		= $this->_config;
+		$sid 				= $this->_customer->_sid;
+
 		if ($cid > 0) {
 
-			$cart 		= $this->_model;
-			$customer 	= $this->_customer;
-			$configs 	= $this->_config;
-
-			$sid = $this->_customer->_sid;
 			$sql = "UPDATE #__digicom_cart SET quantity = ".$qty." where cid=" . $cid; // sid = " . $sid . " and
 			$db->setQuery( $sql );
 			$db->query();
 
-			// get product id
-			$sql = "select item_id from #__digicom_cart where cid = " . $cid . " and sid = " . $sid;
-			$db->setQuery( $sql );
-			$pid = (int)$db->loadResult();
+		}
 
-			$items 	= $cart->getCartItems($customer, $configs);
-			$tax 	= $cart->calc_price($items, $customer, $configs);
-			$result = array();
+		if($promocode){
+			$items 	= $cart->updateCart($customer, $configs);
+		}
 
-			foreach($items as $key=>$item) {
-				if ($key < 0)	continue;
+		$items 	= $cart->getCartItems($customer, $configs);
+		$tax 	= $cart->calc_price($items, $customer, $configs);
+		$result = array();
+
+		if ($cid > 0) {
+			foreach($items as $key=> $item) {
+
 				if ($item->cid == $cid)
 				{
 					$result['cid'] = $cid;
@@ -475,22 +485,21 @@ class DigiComControllerCart extends JControllerLegacy
 					$result['cart_item_total'.$cid] = DigiComSiteHelperPrice::format_price($item->subtotal-$item->discount, $item->currency, true, $configs);
 				}
 			}
-			//print_r($items);die;
-			$total = DigiComSiteHelperPrice::format_price($tax['taxed'], $tax['currency'], true, $configs);
-			$result['cart_total'] = $total;//"{$tax['taxed']}";
-
-			//$cart = $this->_model;
-			//$tax = $cart->calc_price($items, $customer, $configs);
-			$result['cart_discount'] = DigiComSiteHelperPrice::format_price($tax["promo"], $tax['currency'], true, $configs);
-			$result['cart_tax'] = DigiComSiteHelperPrice::format_price($tax["value"], $tax['currency'], true, $configs);
-			echo json_encode($result);
-
-		} else {
-
-			echo json_encode(array());
 		}
 
-		exit;
+		$price = DigiComSiteHelperPrice::format_price($tax['price'], $tax['currency'], true, $configs);
+		$total = DigiComSiteHelperPrice::format_price($tax['taxed'], $tax['currency'], true, $configs);
+		$result['cart_subtotal'] = $price;//"{$tax['taxed']}";
+		$result['cart_total'] = $total;//"{$tax['taxed']}";
+
+		//$cart = $this->_model;
+		//$tax = $cart->calc_price($items, $customer, $configs);
+		$result['cart_discount'] = DigiComSiteHelperPrice::format_price($tax["promo"], $tax['currency'], true, $configs);
+		$result['cart_tax'] = DigiComSiteHelperPrice::format_price($tax["value"], $tax['currency'], true, $configs);
+
+		echo json_encode($result);
+
+		JFactory::getApplication()->close();
 	}
 
 	/**
@@ -578,7 +587,7 @@ class DigiComControllerCart extends JControllerLegacy
 		//JPluginHelper::importPlugin('digicom_pay', $processor);
 		$dispatcher = JDispatcher::getInstance();
 		$data = $dispatcher->trigger('onTP_Processpayment', array($post));
-		
+
 		//after recieved payment, trigger any additional events
 		$param["cart_products"] = implode(" - ", $products);
 		$param["transaction"] = $data;

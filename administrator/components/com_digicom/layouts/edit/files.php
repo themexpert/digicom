@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 
 $document = JFactory::getDocument();
 $document->addScriptDeclaration('var DIGICOM_ALERT_REMOVE_FILES = "'. JText::_("COM_DIGICOM_PRODUCTS_FILES_REMOVE_WARNING") . '";');
-$document->addScript(JURI::root(true).'/media/digicom/assets/js/repeatable-fields.js?v=1.0.0');
+$document->addScript(JURI::root(true).'/media/com_digicom/js/repeatable-fields.js?v=1.0.0');
 ?>
 
 <fieldset class="adminform">

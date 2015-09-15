@@ -671,7 +671,7 @@ class DigiComSiteHelperDigicom {
 		}
 	}
 
-	public static function get_country_options( $profile, $ship = false, $configs ) {
+	public static function get_country_options( $profile, $ship = false, $configs , $onchange=true) {
 
 		$db 	= JFactory::getDBO();
 		$query = $db->getQuery(true)
@@ -720,9 +720,14 @@ class DigiComSiteHelperDigicom {
 			$options[] = JHTML::_('select.option', $value->country, $value->country);
 		endforeach;
 
+		if($onchange){
+			$onChange = ' onChange="changeProvince();"';
+		}else{
+			$onChange= '';
+		}
 
 		## Create <select name="country" class="inputbox"></select> ##
-		return JHTML::_('select.genericlist', $options, 'country', 'id="country" class="inputbox" onChange="changeProvince();"', 'value', 'text', $default);
+		return JHTML::_('select.genericlist', $options, 'country', 'id="country" class="inputbox"'.$onChange, 'value', 'text', $default);
 
 	}
 
@@ -766,8 +771,9 @@ class DigiComSiteHelperDigicom {
 
 	}
 
-	public static function getPaymentPlugins($configs){
+	public static function getPaymentPlugins($configs, $processor = 'offline'){
 
+		$lang = JFactory::getLanguage();
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true)
 					->select('extension_id as id , name, element,enabled as published, params')
@@ -777,7 +783,11 @@ class DigiComSiteHelperDigicom {
 		$db->setQuery($query);
 		$gatewayplugin = $db->loadobjectList();
 
-		$lang = JFactory::getLanguage();
+		$default = $processor;
+		if(empty($default)){
+				$default = $configs->get('default_payment','offline');
+		}
+
 		$options = array();
 		foreach($gatewayplugin as $gateway)
 		{
@@ -785,7 +795,7 @@ class DigiComSiteHelperDigicom {
 			$options[] = JHTML::_('select.option',$gateway->element, $params->plugin_name);
 		}
 
-		return JHTML::_('select.genericlist', $options, 'processor', 'class="inputbox required"', 'value', 'text', $configs->get('default_payment','offline'), 'processor' );
+		return JHTML::_('select.genericlist', $options, 'processor', 'class="inputbox required" data-digicom-id="processor"', 'value', 'text', $default, 'processor' );
 
 	}
 

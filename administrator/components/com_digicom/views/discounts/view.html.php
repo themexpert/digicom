@@ -43,7 +43,7 @@ class DigiComViewDiscounts extends JViewLegacy
 	*/
 	protected function addToolbar()
 	{
-		JToolBarHelper::title(JText::_('COM_DIGICOM_DISCOUNTS_TOOLBAR_TITLE'), 'generic.png');
+		JToolBarHelper::title(JText::_('COM_DIGICOM_DISCOUNTS_TOOLBAR_TITLE_SITE'), 'generic.png');
 		$canDo = JHelperContent::getActions('com_digicom', 'component');
 
 		$bar = JToolBar::getInstance('toolbar');
@@ -76,6 +76,6 @@ class DigiComViewDiscounts extends JViewLegacy
 			JToolBarHelper::deleteList(JText::_('COM_DIGICOM_DISCOUNTS_DELETE_CONFIRMATION'),'discounts.delete');
 			JToolBarHelper::divider();
 		}
-		
+
 	}
 }

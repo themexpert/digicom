@@ -14,24 +14,42 @@ defined('_JEXEC') or die;
 class DigiComSiteHelperTemplate extends JViewLegacy {
 
 	protected $view = null;
+	protected $params = null;
 
-	function __construct($view){
+	function __construct($view)
+	{
+		// load jquery n core joomla js for language string as we require it
+		JHtml::_('jquery.framework');
+		JHtmlBehavior::core();
+		JText::script('COM_DIGICOM_REGISTRATION_EMAIL_ALREADY_USED');
+		JText::script('COM_DIGICOM_REGISTER_USERNAME_TAKEN');
 
+		$this->params = JComponentHelper::getParams('com_digicom');
 		$this->view = $view;
-		$this->addScriptDeclaration('var digicom_site = "'. JUri::root() . '";');
-		$this->addScriptDeclaration('var DIGI_ATENTION = "'. JText::_("COM_DIGICOM_REGISTER_NOTICE_ATTENTION") . '";');
-		$this->addScriptDeclaration('var DSALL_REQUIRED_FIELDS = "'. JText::_("COM_DIGICOM_REGISTER_NOTICE_ALL_REQUIRED_FIELDS") . '";');
-		$this->addScriptDeclaration('var DSCONFIRM_PASSWORD_MSG = "'. JText::_("COM_DIGICOM_REGISTER_NOTICE_CONFIRM_PASSWORD_UNMATCHED") . '";');
-		$this->addScriptDeclaration('var DSINVALID_EMAIL = "'. JText::_("COM_DIGICOM_REGISTER_NOTICE_INVALID_EMAIL") . '";');
-		$this->addScriptDeclaration('var ACCEPT_TERMS_CONDITIONS = "'. JText::_("COM_DIGICOM_REGISTER_NOTICE_ACCEPT_TERMS_CONDITIONS") . '";');
+
+		// load core digicom js plugin
+		$this->addScript(JURI::root()."media/com_digicom/js/digicom.plugin.js?site=".JURI::root());
+
+		// load core css file
+		$core_css = $this->params->get('load_core_css',1);
+		if($core_css){
+			$this->addStyleSheet(JURI::root()."media/com_digicom/css/digicom.css");
+		}
+
+		// load bootstrap3
+		$load_bootstrap3 = $this->params->get('load_bootstrap3',0);
+		if($load_bootstrap3){
+			$this->addStyleSheet(JURI::root()."media/com_digicom/css/bootstrap.min.css");
+		}
 
 	}
-	public function rander($layout = 'products', $template = null){
+
+	public function rander($layout = 'products', $template = null)
+	{
 
 		$this->view->setLayout($layout);
 
 		$app = JFactory::getApplication();
-		$params = JComponentHelper::getParams('com_digicom');
 		// Look for template files in component folders
 		$this->view->_addPath('template', JPATH_COMPONENT . '/templates');
 		$this->view->_addPath('template', JPATH_COMPONENT . '/templates/default');
@@ -41,10 +59,10 @@ class DigiComSiteHelperTemplate extends JViewLegacy {
 		$this->view->_addPath('template', JPATH_SITE . '/templates/' . $app->getTemplate() . '/html/com_digicom/templates');
 
 		// Look for specific DigiCom theme files
-		if ($params->get('template','default'))
+		if ($this->params->get('template','default'))
 		{
-			$this->view->_addPath('template', JPATH_COMPONENT . '/templates/' . $params->get('template','default'));
-			$this->view->_addPath('template', JPATH_SITE . '/templates/' . $app->getTemplate() . '/html/com_digicom/templates/' . $params->get('template','default'));
+			$this->view->_addPath('template', JPATH_COMPONENT . '/templates/' . $this->params->get('template','default'));
+			$this->view->_addPath('template', JPATH_SITE . '/templates/' . $app->getTemplate() . '/html/com_digicom/templates/' . $this->params->get('template','default'));
 		}
 
 		if($template){
@@ -54,35 +72,35 @@ class DigiComSiteHelperTemplate extends JViewLegacy {
 
 
 		// CUSTOM CSS
-		if (is_file( JPATH_SITE . '/templates/' . $app->getTemplate() . '/html/com_digicom/templates/' . $params->get('template','default') . '/css/style.css')) {
-			$this->addStyleSheet( JUri::root(true) . '/templates/' . $app->getTemplate() . '/html/com_digicom/templates/' . $params->get('template','default') . '/css/style.css');
-		}elseif( is_file(JPATH_COMPONENT . '/templates/' . $params->get('template','default') . '/css/style.css') ) {
-			$this->addStyleSheet( JUri::root(true) . '/components/com_digicom/templates/' . $params->get('template','default') . '/css/style.css');
-		}else{
-			$this->addStyleSheet(JURI::root()."media/digicom/assets/css/digicom.css");
+		if (is_file( JPATH_SITE . '/templates/' . $app->getTemplate() . '/html/com_digicom/templates/' . $this->params->get('template','default') . '/css/style.css')) {
+			$this->addStyleSheet( JUri::root(true) . '/templates/' . $app->getTemplate() . '/html/com_digicom/templates/' . $this->params->get('template','default') . '/css/style.css');
+		}elseif( is_file(JPATH_COMPONENT . '/templates/' . $this->params->get('template','default') . '/css/style.css') ) {
+			$this->addStyleSheet( JUri::root(true) . '/components/com_digicom/templates/' . $this->params->get('template','default') . '/css/style.css');
 		}
 
 		// CUSTOM JS
-		if (is_file(JPATH_SITE .'/templates/' . $app->getTemplate() . '/html/com_digicom/templates/' . $params->get('template','default') . '/js/script.js')) {
-			$this->addScript(JUri::root(true) . '/templates/' . $app->getTemplate() . '/html/com_digicom/templates/' . $params->get('template','default') . '/js/script.js');
-		}elseif( is_file( JPATH_COMPONENT . '/templates/' . $params->get('template','default') . '/js/script.js')) {
-			$this->addScript(JUri::root(true) . '/components/com_digicom/templates/' . $params->get('template','default') . '/js/script.js');
-		}else{
-			$this->addScript(JURI::root()."media/digicom/assets/js/digicom.js");
+		if (is_file(JPATH_SITE .'/templates/' . $app->getTemplate() . '/html/com_digicom/templates/' . $this->params->get('template','default') . '/js/script.js')) {
+			$this->addScript(JUri::root(true) . '/templates/' . $app->getTemplate() . '/html/com_digicom/templates/' . $this->params->get('template','default') . '/js/script.js');
+		}elseif( is_file( JPATH_COMPONENT . '/templates/' . $this->params->get('template','default') . '/js/script.js')) {
+			$this->addScript(JUri::root(true) . '/components/com_digicom/templates/' . $this->params->get('template','default') . '/js/script.js');
 		}
 
 	}
 
-	public function addScript($path){
+	public function addScript($path)
+	{
 		// Load specific css component
 		JFactory::getDocument()->addScript($path);
 	}
 
-	public function addStyleSheet($path){
+	public function addStyleSheet($path)
+	{
 		// Load specific css component
 		JFactory::getDocument()->addStyleSheet($path);
 	}
-	public function addScriptDeclaration($script){
+
+	public function addScriptDeclaration($script)
+	{
 		// Load specific css component
 		JFactory::getDocument()->addScriptDeclaration($script);
 	}

@@ -14,7 +14,7 @@ jimport ("joomla.application.component.view");
 class DigiComViewFileManager extends JViewLegacy {
 
 	function display($tpl =  null){
-		JToolBarHelper::title(JText::_('COM_DIGICOM_FILE_MANAGER_TOOLBAR_TITLE'), 'generic.png');
+		JToolBarHelper::title(JText::_('COM_DIGICOM_FILE_MANAGER_TOOLBAR_TITLE_SITE'), 'generic.png');
 
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout
@@ -31,14 +31,14 @@ class DigiComViewFileManager extends JViewLegacy {
 		$mainframe = JFactory::getApplication();
     $user = JFactory::getUser();
     $document = JFactory::getDocument();
-    $document->addStyleSheet(JURI::root(true).'/media/digicom/assets/css/smoothness/jquery-ui.css?v=1.8.0');
-    $document->addStyleSheet(JURI::root(true).'/media/digicom/assets/css/theme.css?v=2.7.0');
-    $document->addStyleSheet(JURI::root(true).'/media/digicom/assets/css/elfinder.min.css?v=2.7.0');
+    $document->addStyleSheet(JURI::root(true).'/media/com_digicom/css/smoothness/jquery-ui.css?v=1.8.0');
+    $document->addStyleSheet(JURI::root(true).'/media/com_digicom/css/theme.css?v=2.7.0');
+    $document->addStyleSheet(JURI::root(true).'/media/com_digicom/css/elfinder.min.css?v=2.7.0');
 
 		if ($document->getType() == 'html')
 		{
-      $document->addScript(JURI::root(true).'/media/digicom/assets/js/jquery-ui-1.8.24.custom.min.js');
-      $document->addScript(JURI::root(true).'/media/digicom/assets/js/elfinder.js?v=1.0.0');
+      $document->addScript(JURI::root(true).'/media/com_digicom/js/jquery-ui-1.8.24.custom.min.js');
+      $document->addScript(JURI::root(true).'/media/com_digicom/js/elfinder.js?v=1.0.0');
   	}
 
     $type = JRequest::getCmd('type');

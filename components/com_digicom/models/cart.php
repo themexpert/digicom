@@ -416,9 +416,10 @@ class DigiComModelCart extends JModelItem
 			$payprocess['discount_calculated'] = 1;
 		}
 
+		$name = 'promocode'.$cust_info->_sid;
+		$justapplied = $session->get($name,false);
+
 		if($promo_applied && ($promovalue > 0)){
-			$name = 'promocode'.$cust_info->_sid;
-			$justapplied = $session->get($name,false);
 
 			//echo $justapplied;die;
 			if($justapplied){
@@ -919,9 +920,10 @@ class DigiComModelCart extends JModelItem
 		$data1=array();
 		$data1['raw_data']=isset($data['raw_data'])?$data['raw_data']:array();
 		$data1['JT_CLIENT']="com_digicom";
+
 		$dispatcher=JDispatcher::getInstance();
-		JPluginHelper::importPlugin('digicom_pay',$name);
-		$dispatcher->trigger('onTP_Storelog',array($data1));
+		// JPluginHelper::importPlugin('digicom_pay',$name);
+		$dispatcher->trigger('onTP_Storelog',array($name,$data1));
 
 		return true;
 	}

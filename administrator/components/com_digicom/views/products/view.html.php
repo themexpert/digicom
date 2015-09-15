@@ -86,7 +86,7 @@ class DigiComViewProducts extends JViewLegacy
 
 		// Get the toolbar object instance
 		$bar = JToolBar::getInstance('toolbar');
-		JToolbarHelper::title(JText::_('COM_DIGICOM_PRODUCTS_TOOLBAR_TITLE'), 'stack product');
+		JToolbarHelper::title(JText::_('COM_DIGICOM_PRODUCTS_TOOLBAR_TITLE_SITE'), 'stack product');
 
 		if ($canDo->get('core.create') || (count($user->getAuthorisedCategories('com_digicom', 'core.create'))) > 0 )
 		{

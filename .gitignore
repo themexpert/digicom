@@ -4,6 +4,7 @@
 /.settings
 /nbproject
 /TODO
+/t3-assets
 config.codekit
 /npm-debug.log
 
@@ -57,10 +58,16 @@ config.codekit
 !/language/en-GB/en-GB.mod_digicom_categories.ini
 /layouts/*
 /libraries/*
+
 /logs/*
 /log/*
+
 /media/*
-!/media/digicom/
+!/media/com_digicom/
+#Ignore node_modules and bower componens
+/media/com_digicom/node_modules
+/media/com_digicom/bower_components
+
 /modules/*
 !/modules/mod_digicom_cart/
 !/modules/mod_digicom_categories/
