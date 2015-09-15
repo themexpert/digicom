@@ -67,7 +67,8 @@ class DigiComModelProduct extends JModelAdmin
 	}
 
 
-	function checkOrderExist($pid){
+	function checkOrderExist($pid)
+	{
 		$app = JFactory::getApplication();
 
 		$db = $this->getDbo();
@@ -346,6 +347,13 @@ class DigiComModelProduct extends JModelAdmin
 			$registry->loadString($item->attribs);
 			$item->attribs = $registry->toArray();
 
+			// Convert the images field to an array.
+			$registry = new Registry;
+			$registry->loadString($item->images);
+			$item->images = $registry->toArray();
+			$item->thumb_image	=	$item->images['thumb_image'];
+			$item->full_image		=	$item->images['full_image'];
+
 			// Convert the metadata field to an array.
 			$registry = new Registry;
 			$registry->loadString($item->metadata);
@@ -502,14 +510,14 @@ class DigiComModelProduct extends JModelAdmin
 			$data['published']	= 0;
 		}
 
-		/*
-		if (isset($data['images']) && is_array($data['images']))
-		{
-			$registry = new Registry;
-			$registry->loadArray($data['images']);
-			$data['images'] = (string) $registry;
-		}
-		*/
+		$images = array(
+			'thumb_image'	=> $data['thumb_image'],
+			'full_image'	=> $data['full_image']
+		);
+
+		$registry = new Registry;
+		$registry->loadArray($images);
+		$data['images'] = (string) $registry;
 
 		if (isset($data['attribs']) && is_array($data['attribs']))
 		{
@@ -522,7 +530,7 @@ class DigiComModelProduct extends JModelAdmin
 		{
 			//hook the files here
 			$recordId = $this->getState('product.id');
-			
+
 			if (isset($data['file']) && is_array($data['file']))
       {
           $files = $data['file'];
