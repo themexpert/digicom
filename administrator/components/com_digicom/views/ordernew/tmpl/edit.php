@@ -181,39 +181,32 @@ JHTML::_('behavior.tooltip');
 					</tbody>
 				</table>
 
-
-				<div style="margin:15px;padding:10px;">
-					<a class="btn btn-small btn-primary modal" title="Products" href="<?php echo $link; ?>"
+				<div>
+					<a class="btn btn-success modal" title="Products" href="<?php echo $link; ?>"
 					rel="{handler: 'iframe', size: {x: 800, y: 500}}">
 						<i class="icon-file-add"></i>
 						<?php echo JText::_('COM_DIGICOM_ADD_PRODUCT'); ?>
 					</a>
-
 				</div>
 
 				<div class="promo-subtotal clearfix">
-
 					<div class="promos">
-
 					    <?php echo $this->form->renderField('promocode'); ?>
+			  	</div>
 
-				  	</div>
-
-				  	<div class="subtotal">
-					   <div class="control-group">
-							<div class="control-label">
-								<label id="jform_discount-lbl" for="jform_discount" class="hasTooltip" title="<?php echo JText::_( 'COM_DIGICOM_ORDER_SUBTOTAL_TIP' ); ?>">
-									<?php echo JText::_( 'COM_DIGICOM_SUBTOTAL' ); ?>
-								</label>
-							</div>
-							<div class="controls">
-								<span id="amount">00.00 <?php echo $configs->get('currency','USD'); ?></span>
-							</div>
+			  	<div class="subtotal">
+				   <div class="control-group">
+						<div class="control-label">
+							<label id="jform_discount-lbl" for="jform_discount" class="hasTooltip" title="<?php echo JText::_( 'COM_DIGICOM_ORDER_SUBTOTAL_TIP' ); ?>">
+								<?php echo JText::_( 'COM_DIGICOM_SUBTOTAL' ); ?>
+							</label>
 						</div>
-				  	</div>
-
+						<div class="controls">
+							<span id="amount">00.00 <?php echo $configs->get('currency','USD'); ?></span>
+						</div>
+					</div>
+			  	</div>
 				</div>
-
 
 			</div>
 

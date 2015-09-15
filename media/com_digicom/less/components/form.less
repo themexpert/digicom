@@ -2,9 +2,14 @@
 /* Form elements Styling */
 .control-label,
 label{
-  color: @form-label-color;
-  font-size: 12px;
-  text-transform: uppercase; letter-spacing: 0.5px;
+  color: @form-label-color; font-size: 14px;
+}
+.form-horizontal .control-label{ width: 300px; }
+
+form:not(.form-horizontal)
+{
+  .control-label,
+  label{ font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
 }
 
 textarea, input[type="text"],

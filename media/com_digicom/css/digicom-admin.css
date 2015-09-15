@@ -293,24 +293,23 @@ body.com_digicom header.header {
   display: none;
 }
 body.com_digicom .subhead-collapse {
-  z-index: 11;
   position: relative;
+  z-index: 11;
   height: 40px !important;
+  margin: 0;
 }
 body.com_digicom .subhead {
   margin-bottom: 0;
   background: #1976d2;
-  padding: 10px 0;
   border-bottom: 0;
   min-height: inherit;
-  height: auto;
 }
 body.com_digicom .subhead .btn-toolbar {
   text-align: right;
   margin: 0;
 }
 body.com_digicom .subhead .btn-toolbar .btn-wrapper {
-  margin: 0 0 0 5px;
+  margin: 0;
 }
 body.com_digicom .subhead .btn-toolbar #toolbar-settings {
   float: right;
@@ -321,7 +320,7 @@ body.com_digicom .subhead .btn-toolbar #toolbar-title {
 }
 body.com_digicom .subhead .btn-toolbar #toolbar-title h3 {
   margin: 0;
-  line-height: 26px;
+  line-height: 40px;
   color: #fff;
   text-shadow: none;
 }
@@ -333,12 +332,24 @@ body.com_digicom .subhead .btn-toolbar .btn {
   background: transparent;
   color: #fff;
   text-shadow: none;
-  border-radius: 4px;
-  padding: 4px 10px;
+  border: 0;
+  border-radius: 0;
+  padding: 0 15px;
+  line-height: 40px;
+}
+body.com_digicom .subhead .btn-toolbar .btn:hover,
+body.com_digicom .subhead .btn-toolbar .btn:focus {
+  background: rgba(0, 0, 0, 0.2);
+  outline: none;
+}
+body.com_digicom .subhead .btn-toolbar [class^="icon-"],
+body.com_digicom .subhead .btn-toolbar [class*=" icon-"] {
+  vertical-align: middle;
+  margin-right: 0;
 }
 body.com_digicom .subhead .btn-toolbar .btn-mini .caret,
 body.com_digicom .subhead .btn-toolbar .btn-small .caret {
-  margin-top: 7px;
+  margin-top: 19px;
 }
 body.com_digicom .subhead .btn-toolbar .icon-publish:before,
 body.com_digicom .subhead .btn-toolbar .icon-save:before,
@@ -355,6 +366,20 @@ body.com_digicom .subhead .btn-toolbar .icon-cancel:before,
 body.com_digicom .subhead .btn-toolbar .icon-edit:before {
   color: inherit;
 }
+body.com_digicom .subhead .btn-toolbar .dropdown-menu {
+  border-radius: 0;
+  margin: 0;
+  border-color: #e5e5e5;
+}
+body.com_digicom .subhead .btn-toolbar .dropdown-menu > li > a {
+  text-shadow: none;
+}
+body.com_digicom .subhead .btn-toolbar .dropdown-menu > li > a:hover,
+body.com_digicom .subhead .btn-toolbar .dropdown-menu > li > a:focus,
+body.com_digicom .subhead .btn-toolbar .dropdown-menu.dropdown-submenu:hover > a,
+body.com_digicom .subhead .btn-toolbar .dropdown-menu.dropdown-submenu:focus > a {
+  background: #1976d2;
+}
 body.com_digicom .subhead #toolbar .btn-success {
   width: auto;
 }
@@ -364,7 +389,7 @@ body.com_digicom #j-sidebar-container {
   width: 200px;
   color: #c9d1dd;
   position: fixed;
-  top: 76px;
+  top: 68px;
   bottom: 28px;
   left: 0;
   overflow: hidden;
@@ -419,7 +444,7 @@ body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list [class*=" 
   height: auto;
 }
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li.active > a {
-  background: #489be0;
+  background: #1976d2;
   color: #fefefe;
   position: relative;
 }
@@ -472,6 +497,13 @@ body.com_digicom .control-group {
 body.com_digicom .control-label,
 body.com_digicom label {
   color: #666666;
+  font-size: 14px;
+}
+body.com_digicom .form-horizontal .control-label {
+  width: 300px;
+}
+body.com_digicom form:not(.form-horizontal) .control-label,
+body.com_digicom form:not(.form-horizontal) label {
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -611,6 +643,21 @@ body.com_digicom .nav-tabs .active a:focus {
 }
 body.com_digicom .tab-content {
   padding: 0;
+}
+body.com_digicom .tabs-left .nav-tabs {
+  margin-right: 40px;
+  border: 0;
+  width: 250px;
+}
+body.com_digicom .tabs-left .nav-tabs > li > a {
+  padding: 12px 16px;
+  margin: 0;
+  text-transform: capitalize;
+}
+body.com_digicom .tabs-left .nav-tabs > li.active a,
+body.com_digicom .tabs-left .nav-tabs > li:hover a {
+  background: #eee;
+  border: 0;
 }
 body.com_digicom .container-main {
   padding: 0;
@@ -916,32 +963,12 @@ body.sidebar-right-collapse {
 .accordion .accordion-body.in {
   background: #f8f8f8;
 }
-/* Order page styling */
-body.layout-neworder .adminform {
-  margin: -15px -5px 10px;
-}
-body.layout-neworder .add-product .product-name {
-  text-transform: capitalize;
-  font-size: 14px;
-  line-height: 26px;
-}
-body.layout-neworder .add-product .btn-group {
-  margin-left: 20px;
-}
-.order-details,
-.product-details {
-  background: #fff;
-  padding: 10px;
-}
 .order-details > h3,
 .product-details > h3 {
-  margin: -10px -10px 10px;
-  padding: 10px;
-  background: #253238;
-  color: #ffffff;
-  text-transform: uppercase;
   font-weight: normal;
-  line-height: 26px;
+  line-height: 1;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 10px;
 }
 .product-details {
   margin-top: 15px;
@@ -972,7 +999,6 @@ body.layout-neworder .add-product .btn-group {
   text-align: right;
 }
 .grand-total {
-  margin: 15px 10px 0;
   text-align: right;
 }
 .grand-total .control-group .control-label {
@@ -1073,13 +1099,6 @@ body.view-configs .tab-content h3 {
   color: #666666;
   border-bottom: 1px solid #e5e5e5;
   padding-bottom: 10px;
-}
-body.view-configs .control-label,
-body.view-configs label {
-  text-transform: capitalize;
-}
-body.view-configs .form-horizontal .control-label {
-  width: 300px;
 }
 body.view-configs .form-horizontal .controls {
   margin-left: 0;

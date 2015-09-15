@@ -11,7 +11,7 @@
 @import "../../jui/less/mixins.less";
 
  // Color Variables
-@primary-blue : rgb(25,118,210);
+@primary-blue : #1976d2;
 @secondary-blue : #489be0;
 @dark-blue : #1E4973;
 
@@ -523,34 +523,12 @@ body.sidebar-right-collapse {
 	.accordion-body.in {background: #f8f8f8;}
 }
 
-/* Order page styling */
-body.layout-neworder {
-	.adminform {
-		margin: -15px -5px 10px;
-	}
-
-	.add-product {
-		.product-name {
-			text-transform: capitalize;
-			font-size: 14px;
-			line-height: 26px;
-		}
-		.btn-group {margin-left: 20px;}
-	}
-}
-
 .order-details,
 .product-details {
-	background: #fff;
-	padding: 10px;
 	> h3 {
-		margin: -10px -10px 10px;
-		padding: 10px;
-		background: @sidebar-background;
-		color: lighten(@sidebar-text-color, 20%);
-		text-transform: uppercase;
-		font-weight: normal;
-		line-height: 26px;
+		font-weight: normal; line-height: 1;
+		border-bottom: 1px solid @tabs-border-color;
+		padding-bottom: 10px;
 	}
 }
 
@@ -587,19 +565,10 @@ body.layout-neworder {
 	}
 }
 .grand-total {
-	margin: 15px 10px 0;
 	text-align: right;
-
 	.control-group {
-
-		.control-label {
-			float: none;
-			display: inline-block;
-		}
-		.controls {
-			margin-left: 20px;
-			display: inline-block;
-		}
+		.control-label { float: none; display: inline-block; }
+		.controls { margin-left: 20px; display: inline-block; }
 	}
 }
 
@@ -699,9 +668,6 @@ body.view-configs{
 			padding-bottom: 10px;
 		}
 	}
-	.control-label,
-	label{ text-transform: capitalize; }
-	.form-horizontal .control-label{ width: 300px; }
 	.form-horizontal .controls{margin-left: 0; }
 }
 .dg-footer{ text-align: right; margin-bottom: 40px; margin-right: 25px; }
