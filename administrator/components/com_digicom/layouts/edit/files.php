@@ -21,30 +21,30 @@ $document->addScript(JURI::root(true).'/media/com_digicom/js/repeatable-fields.j
 		<table class="table table-striped wrapper" id="itemList">
 			<thead>
 				<tr class="row">
-					<th width="10%">
+					<th>
 						<i class="icon-menu-2"></i>
 					</th>
-					<th width="10%">
+					<th>
 						File Name
 					</th>
-					<th width="70%">
+					<th>
 						File URL
 					</th>
-					<th style="width: 10%"></th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody class="container">
 				<tr class="template row">
-					<td width="10%">
+					<td>
 						<span class="move"><i class="icon-move"></i></span>
 						<input type="hidden" name="jform[file][{{row-count-placeholder}}][id]" id="digicom_files_id" value="" />
 					</td>
 
-					<td width="10%">
+					<td>
 						<input type="text" name="jform[file][{{row-count-placeholder}}][name]" id="files_row_count_placeholder_id_name" placeholder="File Name"/>
 					</td>
 
-					<td width="70%">
+					<td>
 						<div class="input-prepend input-append" style="display: block;">
 							<input type="text" name="jform[file][{{row-count-placeholder}}][url]" id="files_row_count_placeholder_id_url" placeholder="Upload or enter the file URL" class="span8"/>
 							<a class="files_uploader_modal btn modal" title="Select"
@@ -54,7 +54,7 @@ $document->addScript(JURI::root(true).'/media/com_digicom/js/repeatable-fields.j
 						</div>
 					</td>
 
-					<td width="10%">
+					<td>
 						<span class="remove"><i class="icon-remove"></i></span>
 						<input type="hidden" name="jform[file][{{row-count-placeholder}}][ordering]" value="" id="files_row_count_placeholder_id_ordering"/>
 					</td>
@@ -70,17 +70,17 @@ $document->addScript(JURI::root(true).'/media/com_digicom/js/repeatable-fields.j
 						if(is_array($value)) $value = (object) $value;
 					?>
 					<tr class="row">
-						<td width="10%">
+						<td>
 							<span class="move"><i class="icon-move"></i></span>
 							<input type="hidden" name="jform[file][<?php echo $key; ?>][id]" id="digicom_files_id" value="<?php echo (isset($value->id) ? $value->id : ''); ?>" />
 						</td>
 
-						<td width="10%">
+						<td>
 							<input type="text" id="files_<?php echo $key; ?>_name"
 							name="jform[file][<?php echo $key; ?>][name]" placeholder="File Name" value="<?php echo (isset($value->name) ? $value->name : ''); ?>"/>
 						</td>
 
-						<td width="70%">
+						<td>
 							<div class="input-prepend input-append" style="display: block;">
 								<input type="text" name="jform[file][<?php echo $key; ?>][url]" id="files_<?php echo $key; ?>_url" placeholder="Upload or enter the file URL" class="span8"
 								value="<?php echo (isset($value->url) ? $value->url : ''); ?>"
@@ -92,7 +92,7 @@ $document->addScript(JURI::root(true).'/media/com_digicom/js/repeatable-fields.j
 							</div>
 						</td>
 
-						<td width="10%">
+						<td>
 							<input type="hidden" name="jform[file][<?php echo $key; ?>][ordering]" id="files_ordering_<?php echo $key; ?>"
 								value="<?php echo (isset($value->ordering) ? $value->ordering : ''); ?>"
 								/>
@@ -106,7 +106,7 @@ $document->addScript(JURI::root(true).'/media/com_digicom/js/repeatable-fields.j
 			</tbody>
 			<tfoot>
 				<tr class="row">
-					<td width="10%" colspan="4">
+					<td colspan="4">
 						<span class="add btn btn-mini">Add</span>
 						<input type="hidden" name="jform[files_remove_id]" value="" id="jform_files_remove_id"/>
 					</td>

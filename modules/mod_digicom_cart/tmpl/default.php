@@ -15,11 +15,18 @@ $doc->addStyleSheet( JUri::root(true). '/modules/mod_digicom_cart/assets/css/mod
 <div data-digicom-id="mod_digicom_cart_wrap" class="dg-cart <?php echo $moduleclass_sfx; ?>">
 	<?php if(count($list) > 0) :?>
 	<ul class="dg-cart-list">
-		<?php foreach($list as $index => $item): ?>
+		<?php
+			foreach($list as $index => $item):
+				$images = json_decode($item->images);
+				if(!isset($images->thumb_image)){
+					$images = new stdClass();
+					$images->thumb_image = $item->images;
+				}
+			?>
 
 			<li class="clearfix">
 				<a href="<?php echo JRoute::_(DigiComSiteHelperRoute::getProductRoute($item->id, $item->catid)) ?>">
-					<?php if($item->images): ?><img src="<?php echo JURI::root() . DigiComSiteHelperDigiCom::getThumbnail($item->images); ?>" alt="<?php echo $item->name; ?>"/><?php endif; ?>
+					<?php if($item->images): ?><img src="<?php echo JURI::root() . $images->thumb_image; ?>" alt="<?php echo $item->name; ?>"/><?php endif; ?>
 					<?php echo $item->name; ?>
 				</a>
 				<span class="dg-quantity">

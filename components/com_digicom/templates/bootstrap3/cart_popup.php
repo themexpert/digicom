@@ -28,14 +28,21 @@ $currency = $configs->get('currency','USD');
 				</tr>
 			</thead>
 			<tbody>
-			<?php foreach($items as $itemnum => $item): ?>
+			<?php
+				foreach($items as $itemnum => $item):
+					$images = json_decode($item->images);
+					if(!isset($images->thumb_image)){
+						$images = new stdClass();
+						$images->thumb_image = $item->images;
+					}
+				?>
 
 				<tr>
 					<!-- Product image -->
 					<td width="70">
-						<?php if(!empty($item->images)): ?>
+						<?php if(!empty($images->thumb_image)): ?>
 							<img height="100" width="100" title="<?php echo $item->name; ?>"
-							src="<?php echo  JURI::root() . JRoute::_(DigiComSiteHelperDigiCom::getThumbnail($item->images)); ?>" alt="<?php echo $item->name; ?>"/>
+							src="<?php echo  JURI::root() . JRoute::_($images->thumb_image); ?>" alt="<?php echo $item->name; ?>"/>
 						<?php endif; ?>
 					</td>
 					<!-- /End Product image -->

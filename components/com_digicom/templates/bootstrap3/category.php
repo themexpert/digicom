@@ -50,12 +50,11 @@ $this->column = $this->category->params->get('category_cols',3);
 		<?php endif; ?>
 
 		<div class="products-list clearfix">
-			<div class="container-fluid">
-        <ul class="row list-unstyled">
+        <div class="row">
         	<?php
 				  $i=0;
 				  foreach($this->items as $key=>$item):
-					 	if(! ($i % $this->column)  && $i != '0' )  echo '</ul><ul class="row list-unstyled">';
+					 	if(! ($i % $this->column)  && $i != '0' )  echo '</div><div class="row">';
 					 	?>
 					 	<?php
 					 	$this->item = & $item;
@@ -65,8 +64,7 @@ $this->column = $this->category->params->get('category_cols',3);
 				  	$i++;
 				  endforeach;
 				  ?>
-        </ul>
-      </div>
+        </div>
 		</div>
 		<div class="pagination"><?php echo $this->pagination->getPagesLinks(); ?></div>
 	</div>

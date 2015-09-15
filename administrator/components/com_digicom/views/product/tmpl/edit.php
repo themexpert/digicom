@@ -90,7 +90,7 @@ window.onload = function() {
 	<div class="">
 		<div class="row-fluid">
 			<div class="span9">
-			<?php echo JHtml::_('bootstrap.startTabSet', 'digicomTab', array('active' => 'general')); ?>
+				<?php echo JHtml::_('bootstrap.startTabSet', 'digicomTab', array('active' => 'general')); ?>
 
 				<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'general', JText::_('COM_DIGICOM_PRODUCT_GENERAL_SETTINGS', true)); ?>
 
@@ -130,26 +130,30 @@ window.onload = function() {
 
 				<?php echo $this->loadTemplate('params'); ?>
 
-			<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+				<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+
 			</div>
 
 			<div class="span3">
+
 				<?php echo JHtml::_('bootstrap.startTabSet', 'digicomTabImages', array('active' => 'thumb_image')); ?>
 
-					<?php echo JHtml::_('bootstrap.addTab', 'digicomTabImages', 'thumb_image', JText::_('Thumbnail', true)); ?>
-						<div class="product-image">
-								<?php echo $this->form->getControlGroup('images'); ?>
-						</div>
-					<?php echo JHtml::_('bootstrap.endTab'); ?>
+				<?php echo JHtml::_('bootstrap.addTab', 'digicomTabImages', 'thumb_image', JText::_('Thumbnail', true)); ?>
+					<div class="product-image">
+							<?php echo $this->form->getControlGroup('thumb_image'); ?>
+					</div>
+				<?php echo JHtml::_('bootstrap.endTab'); ?>
 
-					<?php echo JHtml::_('bootstrap.addTab', 'digicomTabImages', 'full_image', JText::_('Full Image', true)); ?>
-						<div class="product-image">
-								<?php echo $this->form->getControlGroup('images'); ?>
-						</div>
-					<?php echo JHtml::_('bootstrap.endTab'); ?>
+				<?php echo JHtml::_('bootstrap.addTab', 'digicomTabImages', 'full_image', JText::_('Full Image', true)); ?>
+					<div class="product-image">
+							<?php echo $this->form->getControlGroup('full_image'); ?>
+					</div>
+				<?php echo JHtml::_('bootstrap.endTab'); ?>
+
 				<?php echo JHtml::_('bootstrap.endTabSet'); ?>
 
 				<?php echo JLayoutHelper::render('sidebars.sidebar', $this); ?>
+
 			</div>
 		</div>
 
