@@ -214,6 +214,16 @@ body.com_digicom .chzn-container .chzn-results li.highlighted {
   background: #1976d2;
   color: #fff;
 }
+body.com_digicom .chzn-container-multi .chzn-choices {
+  background: #fff;
+  border-color: #dfdfdf;
+}
+body.com_digicom .chzn-container-multi .chzn-choices li.search-choice {
+  background: #fff;
+}
+body.com_digicom .chzn-container-active .chzn-choices {
+  border: 1px solid #1976d2;
+}
 body.com_digicom .chzn-color.chzn-single[rel="value_1"],
 body.com_digicom .chzn-color-reverse.chzn-single[rel="value_0"],
 body.com_digicom .chzn-color-state.chzn-single[rel="value_1"] {
