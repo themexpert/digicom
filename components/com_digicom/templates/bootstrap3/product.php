@@ -9,6 +9,11 @@
 
 defined('_JEXEC') or die;
 $conf = $this->configs;
+$images  = json_decode($this->item->images);
+if(!isset($images->full_image)){
+	$images = new stdClass();
+	$images->full_image = $this->item->images;
+}
 if($this->item->price > 0){
 	$price = '<span>'.JText::_('COM_DIGICOM_PRODUCT_PRICE').": ".DigiComSiteHelperPrice::format_price($this->item->price, $conf->get('currency','USD'), true, $conf).'</span>';
 }else{
@@ -40,8 +45,8 @@ if($this->item->price > 0){
 				<?php echo $this->item->introtext; ?>
 			</p>
 
-			<?php if(!empty($this->item->images)): ?>
-				<img src="<?php echo $this->item->images; ?>" class="img-responsive"/>
+			<?php if(!empty($images->full_image)): ?>
+				<img src="<?php echo $images->full_image; ?>" class="img-responsive"/>
 			<?php endif; ?>
 
 			<div class="description">
