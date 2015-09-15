@@ -12,11 +12,10 @@ defined('_JEXEC') or die;
 <div class="digicom-payment-form">
 
 	<div class="container-fluid center">
-		<h3><?php echo JText::_('PLG_DIGICOM_PAY_PAYPAL_WAIT'); ?></h3>	
-			<div class="progress">
-      	<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
-    	</div>
-		</div>
+		<h3><?php echo JText::_('PLG_DIGICOM_PAY_PAYPAL_WAIT'); ?></h3>
+		<div class="progress">
+    	<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+  	</div>
 	</div>
 
 	<div data-digicom-task="hide">
