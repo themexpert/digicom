@@ -380,6 +380,10 @@ body.com_digicom .subhead .btn-toolbar .dropdown-menu.dropdown-submenu:hover > a
 body.com_digicom .subhead .btn-toolbar .dropdown-menu.dropdown-submenu:focus > a {
   background: #1976d2;
 }
+body.com_digicom .subhead .btn-toolbar #toolbar-video {
+  float: left;
+  margin-left: 10px;
+}
 body.com_digicom .subhead #toolbar .btn-success {
   width: auto;
 }

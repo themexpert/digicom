@@ -72,6 +72,13 @@ class DigiComViewProduct extends JViewLegacy
 
 		JToolbarHelper::title(JText::_('COM_DIGICOM_MANAGER_PRODUCT_TITLE_SITE'), 'link products');
 
+		$bar = JToolBar::getInstance('toolbar');
+		$layout = new JLayoutFile('toolbar.title');
+		$title=array(
+				'title' => $text,
+				'class' => 'product'
+			);
+		$bar->appendButton('Custom', $layout->render($title), 'title');
 
 		// If not checked out, can save the item.
 		if (!$checkedOut && ($canDo->get('core.edit')||(count($user->getAuthorisedCategories('com_digicom', 'core.create')))))
@@ -107,17 +114,8 @@ class DigiComViewProduct extends JViewLegacy
 
 		JToolbarHelper::divider();
 
-		$bar = JToolBar::getInstance('toolbar');
-
 		$layout = new JLayoutFile('toolbar.video');
 		$bar->appendButton('Custom', $layout->render(array()), 'video');
-
-		$layout = new JLayoutFile('toolbar.title');
-		$title=array(
-				'title' => $text,
-				'class' => 'product'
-			);
-		$bar->appendButton('Custom', $layout->render($title), 'title');
 
 	}
 }
