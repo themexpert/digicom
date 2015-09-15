@@ -299,6 +299,22 @@ class JFormFieldDiGiMedia extends JFormField
 				break;
 		}
 
+		if ($this->value && file_exists(JPATH_ROOT . '/' . $this->value))
+		{
+			$folder = explode('/', $this->value);
+			$folder = array_diff_assoc($folder, explode('/', JComponentHelper::getParams('com_media')->get('image_path', 'images')));
+			array_pop($folder);
+			$folder = implode('/', $folder);
+		}
+		elseif (file_exists(JPATH_ROOT . '/' . JComponentHelper::getParams('com_media')->get('image_path', 'images') . '/' . $this->directory))
+		{
+			$folder = $this->directory;
+		}
+		else
+		{
+			$folder = '';
+		}
+
 		if ($showPreview)
 		{
 			if ($this->value && file_exists(JPATH_ROOT . '/' . $this->value))
@@ -322,58 +338,36 @@ class JFormFieldDiGiMedia extends JFormField
 				'style' => $style,
 			);
 
+			// The button.
+			if ($this->disabled != true)
+			{
+				$image_select = '<a class="modal" title="' . JText::_('JLIB_FORM_BUTTON_SELECT') . '" href="'
+					. ($this->readonly ? ''
+					: ($this->link ? $this->link
+						: 'index.php?option=com_media&amp;view=images&amp;tmpl=component&amp;asset=' . $asset . '&amp;author='
+						. $this->form->getValue($this->authorField)) . '&amp;fieldid=' . $this->id . '&amp;folder=' . $folder) . '"'
+					. ' rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
+				$image_select .= '<i class="icon-image"></i><p>' . JText::_('JLIB_FORM_MEDIA_PREVIEW_EMPTY') . '</p></a>';
+
+				$remove_icon = '<a class="btn" href="#" onclick="jInsertFieldValue(\'\', \'' . $this->id . '\'); return false;"><i class="icon-trash"></i></a>';
+			}
+
 			$img = JHtml::image($src, JText::_('JLIB_FORM_MEDIA_PREVIEW_ALT'), $imgattr);
-			$previewImg = '<div id="' . $this->id . '_preview_img"' . ($src ? '' : ' style="display:none"') . '>' . $img . '</div>';
+			$previewImg = '<div id="' . $this->id . '_preview_img"' . ($src ? '' : ' style="display:none"') . '>' . $img . '<div class="overlay-bg"></div>' . $remove_icon . '</div>';
+
 			$previewImgEmpty = '<div id="' . $this->id . '_preview_empty"' . ($src ? ' style="display:none"' : '') . '>'
-				. JText::_('JLIB_FORM_MEDIA_PREVIEW_EMPTY') . '</div>';
-				
-			
+				. $image_select . '</div>';
+
+
 			$html[] = '<div class="media-preview add-on thumbnail">';
 			$html[] = ' ' . $previewImgEmpty;
 			$html[] = ' ' . $previewImg;
 			$html[] = '</div>';
-			
+
 		}
 		if(is_array($this->value)) $this->value = '';
-		$html[] = '<div class="media-control btn-group">';
 		$html[] = '	<input type="hidden" name="' . $this->name . '" id="' . $this->id . '" value="'
 			. htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '" readonly="readonly"' . $attr . ' />';
-
-		if ($this->value && file_exists(JPATH_ROOT . '/' . $this->value))
-		{
-			$folder = explode('/', $this->value);
-			$folder = array_diff_assoc($folder, explode('/', JComponentHelper::getParams('com_media')->get('image_path', 'images')));
-			array_pop($folder);
-			$folder = implode('/', $folder);
-		}
-		elseif (file_exists(JPATH_ROOT . '/' . JComponentHelper::getParams('com_media')->get('image_path', 'images') . '/' . $this->directory))
-		{
-			$folder = $this->directory;
-		}
-		else
-		{
-			$folder = '';
-		}
-
-		// The button.
-		if ($this->disabled != true)
-		{
-			JHtml::_('bootstrap.tooltip');
-
-			$html[] = '<a class="modal btn" title="' . JText::_('JLIB_FORM_BUTTON_SELECT') . '" href="'
-				. ($this->readonly ? ''
-				: ($this->link ? $this->link
-					: 'index.php?option=com_media&amp;view=images&amp;tmpl=component&amp;asset=' . $asset . '&amp;author='
-					. $this->form->getValue($this->authorField)) . '&amp;fieldid=' . $this->id . '&amp;folder=' . $folder) . '"'
-				. ' rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
-			$html[] = JText::_('JLIB_FORM_BUTTON_SELECT') . '</a> <a class="btn btn-danger hasTooltip" title="' . JText::_('JLIB_FORM_BUTTON_CLEAR') . '" href="#" onclick="';
-			$html[] = 'jInsertFieldValue(\'\', \'' . $this->id . '\');';
-			$html[] = 'return false;';
-			$html[] = '">';
-			$html[] = '<i class="icon-remove"></i></a>';
-		}
-
-		$html[] = '</div>';
 		$html[] = '</div>';
 		return implode("\n", $html);
 	}

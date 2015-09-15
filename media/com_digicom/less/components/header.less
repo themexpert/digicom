@@ -1,0 +1,43 @@
+header.header {display: none;}
+.subhead-collapse {z-index: 11;position: relative;height:40px !important;}
+.subhead {
+  margin-bottom: 0;
+  background: @primary-blue;
+  padding: 10px 0;
+  border-bottom: 0;
+  min-height: inherit;
+  height: auto;
+
+  .btn-toolbar {
+    text-align: right;
+    margin: 0;
+    .btn-wrapper {margin: 0 0 0 5px;}
+    #toolbar-settings {float: right;}
+    #toolbar-title {
+      float: left;
+      margin-left: 0;
+      h3 {
+        margin: 0;
+        line-height: 26px;
+          color: #fff;
+          text-shadow: none;
+        [class^="icon-"],
+        [class*=" icon-"] {margin-right: 15px;}
+      }
+    }
+      .btn{
+      background: transparent;
+      color: #fff;
+      text-shadow: none;
+      border-radius: 4px;
+      padding: 4px 10px;
+    }
+    .btn-mini .caret,
+    .btn-small .caret {margin-top: 7px;}
+
+      .icon-publish:before, .icon-save:before, .icon-ok:before, .icon-save-new:before, .icon-save-copy:before, .icon-copy:before,
+    .icon-unpublish:before, .icon-not-ok:before, .icon-eye-close:before, .icon-ban-circle:before, .icon-minus-sign:before, .icon-cancel:before,
+    .icon-edit:before{ color: inherit}
+  }
+  #toolbar .btn-success{ width: auto; }
+}
