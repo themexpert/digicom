@@ -21,15 +21,9 @@ $document->addScript(JURI::root(true).'/media/com_digicom/js/repeatable-fields.j
 		<table class="table table-striped wrapper" id="itemList">
 			<thead>
 				<tr class="row">
-					<th>
-						<i class="icon-menu-2"></i>
-					</th>
-					<th>
-						File Name
-					</th>
-					<th>
-						File URL
-					</th>
+					<th><i class="icon-menu-2"></i></th>
+					<th>File Name</th>
+					<th>File URL</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -106,8 +100,8 @@ $document->addScript(JURI::root(true).'/media/com_digicom/js/repeatable-fields.j
 			</tbody>
 			<tfoot>
 				<tr class="row">
-					<td colspan="4">
-						<span class="add btn btn-mini">Add</span>
+					<td colspan="7">
+						<span class="add btn btn-success">Add File +</span>
 						<input type="hidden" name="jform[files_remove_id]" value="" id="jform_files_remove_id"/>
 					</td>
 				</tr>
