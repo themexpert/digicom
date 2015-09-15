@@ -11,6 +11,11 @@ defined('_JEXEC') or die;
 ?>
 
 <?php
+$images = json_decode($this->item->images);
+if(!isset($images->thumb_image)){
+	$images = new stdClass();
+	$images->thumb_image = $this->item->images;
+}
 if($this->item->price > 0){
 	$price = DigiComSiteHelperPrice::format_price($this->item->price, $this->configs->get('currency','USD'), true, $this->configs);
 }else{
@@ -21,8 +26,8 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 <li class="<?php echo $this->bsGrid[$this->column]?>">
 	<div class="thumbnail">
 		<!-- Product Image -->
-		<?php if(!empty($this->item->images)): ?>
-		<a href="<?php echo $link;?>" class="image"><img alt="Product Image" src="<?php echo $this->item->images; ?>"></a>
+		<?php if(!empty($images->thumb_image)): ?>
+		<a href="<?php echo $link;?>" class="image"><img alt="Product Image" src="<?php echo $images->thumb_image; ?>"></a>
 		<?php endif; ?>
 
 		<?php if($this->item->featured): ?>
