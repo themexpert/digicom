@@ -23,15 +23,13 @@ if($this->item->price > 0){
 }
 $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this->item->catid, $this->item->language));
 ?>
-<li class="<?php echo $this->bsGrid[$this->column]?>">
+<div class="<?php echo $this->bsGrid[$this->column]?>">
 	<div class="thumbnail">
 		<!-- Product Image -->
 		<?php if(!empty($images->thumb_image)): ?>
-		<a href="<?php echo $link;?>" class="image"><img alt="Product Image" src="<?php echo $images->thumb_image; ?>"></a>
-		<?php endif; ?>
-
-		<?php if($this->item->featured): ?>
-		<span class="featured">Featured</span>
+			<a href="<?php echo $link;?>" class="image" title="<?php echo $this->item->name; ?>">
+				<img alt="<?php echo $this->item->name; ?> Image" src="<?php echo $images->thumb_image; ?>">
+			</a>
 		<?php endif; ?>
 
 		<?php if(!empty($this->item->bundle_source)):?>
@@ -40,7 +38,13 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 
 	<!-- Product Name & Intro text -->
 		<div class="caption">
-			<h3><a href="<?php echo $link;?>"><?php echo $this->item->name; ?></a></h3>
+			<h3>
+				<a href="<?php echo $link;?>"><?php echo $this->item->name; ?></a>
+
+				<?php if($this->item->featured): ?>
+					<small class="featured label label-info">Featured</small>
+				<?php endif; ?>
+			</h3>
 			<p class="description"><?php echo $this->item->introtext; ?></p>
 
 		<!-- Price & Readmore Button -->
@@ -50,4 +54,4 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 			</div>
 		</div>
 	</div>
-</li>
+</div>
