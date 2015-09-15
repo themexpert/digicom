@@ -22,8 +22,8 @@ $document->addScript(JURI::root(true).'/media/com_digicom/js/repeatable-fields.j
 			<thead>
 				<tr class="row">
 					<th><i class="icon-menu-2"></i></th>
-					<th>File Name</th>
-					<th>File URL</th>
+					<th><?php echo JText::_('COM_DIGICOM_PRODUCT_FILE_NAME_LABEL');?></th>
+					<th><?php echo JText::_('COM_DIGICOM_PRODUCT_FILE_NAME_LABEL');?></th><th>File URL</th>
 					<th></th>
 				</tr>
 			</thead>
