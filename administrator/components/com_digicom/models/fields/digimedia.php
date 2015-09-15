@@ -349,17 +349,17 @@ class JFormFieldDiGiMedia extends JFormField
 					. ' rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
 				$image_select .= '<i class="icon-image"></i><p>' . JText::_('JLIB_FORM_MEDIA_PREVIEW_EMPTY') . '</p></a>';
 
-				$remove_icon = '<a class="btn" href="#" onclick="jInsertFieldValue(\'\', \'' . $this->id . '\'); return false;"><i class="icon-trash"></i></a>';
+				$remove_icon = '<button class="btn" href="#" onclick="jInsertFieldValue(\'\', \'' . $this->id . '\'); return false;"><i class="icon-trash"></i></button>';
 			}
 
 			$img = JHtml::image($src, JText::_('JLIB_FORM_MEDIA_PREVIEW_ALT'), $imgattr);
-			$previewImg = '<div id="' . $this->id . '_preview_img"' . ($src ? '' : ' style="display:none"') . '>' . $img . '<div class="overlay-bg"></div>' . $remove_icon . '</div>';
+			$previewImg = '<div class="img-preview" id="' . $this->id . '_preview_img"' . ($src ? '' : ' style="display:none"') . '>' . $img . '<div class="overlay-bg"></div>' . $remove_icon . '</div>';
 
 			$previewImgEmpty = '<div id="' . $this->id . '_preview_empty"' . ($src ? ' style="display:none"' : '') . '>'
 				. $image_select . '</div>';
 
 
-			$html[] = '<div class="media-preview add-on thumbnail">';
+			$html[] = '<div class="media-preview add-on">';
 			$html[] = ' ' . $previewImgEmpty;
 			$html[] = ' ' . $previewImg;
 			$html[] = '</div>';

@@ -881,7 +881,11 @@ body.sidebar-right-collapse {
   color: #fff;
 }
 /* Product page Styling */
-.product-image #jform_images_preview_empty a {
+#thumb-image .control-label,
+#full-image .control-label {
+  display: none;
+}
+.media-preview a {
   background: #f9f9fb;
   border: 2px dashed #e5e5e5;
   font-size: 15px;
@@ -895,26 +899,19 @@ body.sidebar-right-collapse {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-.product-image #jform_images_preview_empty a .icon-image {
-  color: #999;
+.media-preview .icon-image {
+  color: #999 !important;
   font-size: 40px;
   width: 40px;
   margin: 0 auto;
 }
-.product-image .control-label label {
-  display: none;
-}
-.product-image .thumbnail {
-  box-shadow: none;
-  border: 0;
-}
-.product-image #jform_images_preview_img {
+.media-preview .img-preview {
   width: 100%;
   max-height: 220px;
   overflow: hidden;
   position: relative;
 }
-.product-image #jform_images_preview_img .btn {
+.media-preview .img-preview .btn {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -927,10 +924,10 @@ body.sidebar-right-collapse {
   color: #bbb;
   display: none;
 }
-.product-image #jform_images_preview_img .overlay-bg {
+.media-preview .img-preview .overlay-bg {
   opacity: 0;
 }
-.product-image #jform_images_preview_img:hover .overlay-bg {
+.media-preview .img-preview:hover .overlay-bg {
   background: rgba(255, 255, 255, 0.4);
   position: absolute;
   top: 0;
@@ -940,14 +937,8 @@ body.sidebar-right-collapse {
   padding: 20px;
   opacity: .7;
 }
-.product-image #jform_images_preview_img:hover .btn {
+.media-preview .img-preview:hover .btn {
   display: block;
-}
-.product-image .media-control {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: -25px 0 0 -75px;
 }
 .form-title-alias .digicom-product-title input[type="text"] {
   width: 100%;

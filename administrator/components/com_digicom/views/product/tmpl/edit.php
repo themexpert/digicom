@@ -136,15 +136,15 @@ window.onload = function() {
 
 			<div class="span3">
 
-				<?php echo JHtml::_('bootstrap.startTabSet', 'digicomTabImages', array('active' => 'thumb_image')); ?>
+				<?php echo JHtml::_('bootstrap.startTabSet', 'digicomTabImages', array('active' => 'thumb-image')); ?>
 
-				<?php echo JHtml::_('bootstrap.addTab', 'digicomTabImages', 'thumb_image', JText::_('Thumbnail', true)); ?>
+				<?php echo JHtml::_('bootstrap.addTab', 'digicomTabImages', 'thumb-image', JText::_('Thumbnail', true)); ?>
 					<div class="product-image">
 							<?php echo $this->form->getControlGroup('thumb_image'); ?>
 					</div>
 				<?php echo JHtml::_('bootstrap.endTab'); ?>
 
-				<?php echo JHtml::_('bootstrap.addTab', 'digicomTabImages', 'full_image', JText::_('Full Image', true)); ?>
+				<?php echo JHtml::_('bootstrap.addTab', 'digicomTabImages', 'full-image', JText::_('Full Image', true)); ?>
 					<div class="product-image">
 							<?php echo $this->form->getControlGroup('full_image'); ?>
 					</div>
