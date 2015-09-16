@@ -13,6 +13,8 @@ JHtml::_('behavior.formvalidation');
 $return = JFactory::getApplication()->input->get('return','');
 ?>
 
+
+
 <div id="digicom">
 
 	<?php if(!empty($return)){ ?>
@@ -25,38 +27,33 @@ $return = JFactory::getApplication()->input->get('return','');
 
 	<h1 class="digi-page-title"><?php echo JText::_("COM_DIGICOM_LOGIN_REGISTER");?></h1>
 
-	<div class="accordion" id="accordion2">
-		<div class="accordion-group">
-			<div class="accordion-heading">
-				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+	<div id="login-register-wrapper">
+    <ul id="login-registerTab" class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active">
+				<a href="#digicom-login" id="digicom-login-tab" role="tab" data-toggle="tab" aria-controls="digicom-login" aria-expanded="true">
 					<?php echo JText::_("COM_DIGICOM_REGISTER_LOGIN_BELOW"); ?>
 				</a>
-			</div>
-			<div id="collapseOne" class="accordion-body collapse in">
-				<div class="accordion-inner">
-					<div id="log_form">
-						<?php echo $this->loadTemplate('login');	?>
-					</div>
-				</div>
-			</div>
-		</div>
+			</li>
 
-		<div class="accordion-group">
-			<div class="accordion-heading">
-				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+      <li role="presentation">
+				<a href="#digicom-register" id="digicom-register-tab" role="tab" data-toggle="tab" aria-controls="digicom-register" aria-expanded="true">
 					<?php echo JText::_("COM_DIGICOM_REGISTER_REGISTER_BELOW"); ?>
 				</a>
-			</div>
+			</li>
+    </ul>
 
-			<div id="collapseTwo" class="accordion-body collapse">
-				<div class="accordion-inner">
-					<div id="reg_form">
-						<?php echo $this->loadTemplate('form');	?>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div id="login-registerContent" class="tab-content">
+      <div role="tabpanel" class="tab-pane fade active in" id="digicom-login" aria-labelledby="digicom-login-tab">
+				<h3><?php echo JText::_("COM_DIGICOM_LOGIN"); ?></h3>
+        <?php echo $this->loadTemplate('login');	?>
+      </div>
+      <div role="tabpanel" class="tab-pane fade" id="digicom-register" aria-labelledby="digicom-register-tab">
+				<h3><?php echo JText::_("COM_DIGICOM_REGISTER"); ?></h3>
+				<?php echo $this->loadTemplate('form');	?>
+      </div>
+    </div>
+  </div>
+
 
 </div>
 <?php echo DigiComSiteHelperDigiCom::powered_by(); ?>

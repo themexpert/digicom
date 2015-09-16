@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 $n = count ($this->order->products);
 $configs = $this->configs;
 $order = $this->order;
+
 $date = $order->order_date;
 if ($this->order->id < 1){
 	echo JText::_('DSEMPTYORDER');
@@ -27,6 +28,7 @@ $params = json_decode($this->order->params);
 
 	<table class="table table-striped table-hover table-bordered">
 		<thead>
+
 			<tr>
 				<th><?php echo JText::_('JGRID_HEADING_ID'); ?></th>
 				<th><?php echo $order->id; ?></th>
@@ -95,17 +97,16 @@ $params = json_decode($this->order->params);
 	$item = JFactory::getApplication()->getMenu()->getItems('link', 'index.php?option=com_digicom&view=checkout', true);
 	$Itemid = isset($item->id) ? $item->id : '';
 	?>
-		<div class="well">
-			<p class="alert alert-info"><?php echo JText::sprintf('COM_DIGICOM_ORDER_COMPLETE_NOTICE'); ?></p>
-
-			<form method="post" class="form-inline" action="<?php echo JRoute::_('index.php?option=com_digicom&view=checkout'); ?>">
-
-				<?php echo DigiComSiteHelperDigicom::getPaymentPlugins($configs,$configs->get('default_payment','offline')); ?>
-				<button class="btn pull-right" type="submit"><?php echo JText::_('COM_DIGICOM_ORDER_PAY_NOW'); ?></button>
-
+		<div class="alert alert-warning">
+  			<p><?php echo JText::sprintf('COM_DIGICOM_ORDER_COMPLETE_NOTICE'); ?></p>
+			<form method="post" class="well well-small form-inline" action="<?php echo JRoute::_('index.php?option=com_digicom&view=checkout'); ?>">
 				<input type="hidden" name="option" value="com_digicom">
 				<input type="hidden" name="task" value="cart.payOrder">
 				<input type="hidden" name="id" value="<?php echo $order->id; ?>">
+
+				<?php echo DigiComSiteHelperDigicom::getPaymentPlugins($configs,$configs->get('default_payment','offline')); ?>
+
+				<button class="btn pull-right" type="submit"><?php echo JText::_('COM_DIGICOM_ORDER_PAY_NOW'); ?></button>
  			</form>
  		</div>
 
@@ -126,16 +127,11 @@ $params = json_decode($this->order->params);
 			<?php
 			foreach($order->products as $key=>$product):
 			$productlink = JRoute::_(DigiComSiteHelperRoute::getProductRoute($product->id, $product->catid, $product->language));
-			$images = json_decode($product->images);
-			if(!isset($images->image_intro)){
-				$images = new stdClass();
-				$images->image_intro = $product->images;
-			}
 			?>
 			<tr>
 				<td>
-					<?php if(!empty($images->image_intro)): ?>
-						<img width="64" height="64" src="<?php echo JUri::root().$images->image_intro; ?>" alt="<?php echo $product->name; ?>" />
+					<?php if(!empty($product->images)): ?>
+						<img width="64" height="64" src="<?php echo JUri::root().$product->images; ?>" alt="<?php echo $product->name; ?>" />
 					<?php endif; ?>
 				</td>
 				<td>
@@ -158,11 +154,11 @@ $params = json_decode($this->order->params);
 
 
 	<a href="<?php echo JRoute::_("index.php?option=com_digicom&view=downloads"); ?>" class="btn btn-success">
-		<i class="glyphicon glyphicon-out"></i><?php echo JText::_('COM_DIGICOM_GO_DOWNLOAD'); ?>
+		<i class="icon-out"></i><?php echo JText::_('COM_DIGICOM_GO_DOWNLOAD'); ?>
 	</a>
 
 	<a class="btn btn-info" target="_blank" href="<?php echo JRoute::_("index.php?option=com_digicom&view=order&layout=invoice&id=".$order->id."&tmpl=component"); ?>">
-		<i class="glyphicon glyphicon-printer"></i> <?php echo JText::_('COM_DIGICOM_ORDER_PRINT'); ?>
+		<i class="icon-printer"></i> <?php echo JText::_('COM_DIGICOM_ORDER_PRINT'); ?>
 	</a>
 
 	<?php DigiComSiteHelperDigicom::loadModules('digicom_footer','xhtml'); ?>

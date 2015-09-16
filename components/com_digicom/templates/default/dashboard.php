@@ -25,11 +25,11 @@ $configs 	= $this->configs;
 		<?php echo JText::_("COM_DIGICOM_DASHBOARD_PAGE_TITLE"); ?>
 	</h2>
 
-	<div class="row-fluid">
-		<div class="span7">
+	<div class="row">
+		<div class="col-md-7">
 			<p><?php echo JText::_('COM_DIGICOM_DASHBOARD_HEADER_INTRO'); ?></p>
 		</div>
-		<div class="span5">
+		<div class="col-md-5">
 			<div class="customer-info">
 				<h4><?php echo $customer->name; ?> </h4>
 				<p>
@@ -59,10 +59,15 @@ $configs 	= $this->configs;
 			<?php
 			$i = 0;
 				foreach($this->items as $key=>$licence){
+					$link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($licence->productid, $licence->catid, $licence->language));
 					?>
 					<tr>
 						<td>
-							<span><?php echo $licence->name;?></span>
+							<span>
+								<a target="_blank" title="<?php echo $licence->name; ?>" href="<?php echo $link;?>">
+									<?php echo $licence->name; ?>
+								</a>
+							</span>
 							<?php
 								$dispatcher=JDispatcher::getInstance();
 								$dispatcher->trigger('onDigicomDashboardAfterProductName',array($licence));
@@ -88,7 +93,7 @@ $configs 	= $this->configs;
 							<a target="_blank" class="hasTooltip"
 							   title="<?php echo JText::_('COM_DIGICOM_ADD_TO_CALENDAR');?>"
 							   href="<?php echo DigiComSiteHelperDigicom::prepareGCalendarUrl($licence);?>">
-								<i class="icon-calendar"></i>
+								<i class="glyphicon glyphicon-calendar"></i>
 							</a>
 							<?php endif; ?>
 						</td>

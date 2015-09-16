@@ -53,7 +53,7 @@ defined('_JEXEC') or die;
 	<div class="control-group">
 		<button type="submit" class="btn btn-primary" style="margin-top: 10px;">
 			Login
-			<i class="glyphicon glyphicon-chevron-right glyphicon-white"></i>
+			<i class="icon-chevron-right icon-white"></i>
 		</button>
 	</div>
 

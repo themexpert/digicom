@@ -21,12 +21,17 @@ $n = count ($this->orders);
 
 	<h1 class="digi-page-title"><?php echo JText::_("COM_DIGICOM_ORDERS_PAGE_TITLE"); ?></h1>
 
-	<form action="<?php echo JRoute::_('index.php?options=com_digicom&view=orders'); ?>" name="adminForm" method="post">
+	<form class="form-inline form-group" action="<?php echo JRoute::_('index.php?options=com_digicom&view=orders'); ?>" name="adminForm" method="post">
 
-		<div class="input-append">
-			<input type="text" id="dssearch" name="search" class="digi-textbox"  value="<?php echo trim($input->get('search', '')); ?>" size="30" />
-			<button type="submit" class="btn"><?php echo JText::_("COM_DIGICOM_SEARCH"); ?></button>
+		<div class="input-group">
+			<input type="text" id="dssearch" name="search" class="input-group-addon"  value="<?php echo trim($input->get('search', '')); ?>" size="30" />
+			<div class="input-group-btn">
+				<button type="submit" class="btn btn-default"><?php echo JText::_("COM_DIGICOM_SEARCH"); ?></button>
+			</div>
 		</div>
+		<input type="hidden" name="option" value="com_digicom" />
+		<input type="hidden" name="view" value="orders" />
+	</form>
 
 		<table class="table table-bordered table-striped">
 			<thead>
@@ -99,14 +104,8 @@ $n = count ($this->orders);
 			</tbody>
 		</table>
 
-	</form>
-
 	<?php DigiComSiteHelperDigicom::loadModules('digicom_footer','xhtml'); ?>
 
-	<input type="hidden" name="option" value="com_digicom" />
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="view" value="orders" />
 </div>
 
 <?php echo DigiComSiteHelperDigiCom::powered_by(); ?>

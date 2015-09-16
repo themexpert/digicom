@@ -11,14 +11,14 @@ defined('_JEXEC') or die;
 ?>
 <div class="bundled-products">
 	<h3><?php echo JText::_('COM_DIGICOM_PRODUCT_BUNDLE_ITEMS_TITLE');?></h3>
-	<ul class="list-group">
+	<ul>
 			<?php
 			foreach($this->item->bundleitems as $key=>$bitem):
 		  	$link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($bitem->id,$bitem->catid, $bitem->language));
 			?>
-			<li class="list-group-item">
+			<li>
 				<a href="<?php echo $link; ?>"><?php echo $bitem->name; ?></a>
-				<span class="badge"><?php echo DigiComSiteHelperPrice::format_price($bitem->price, $this->configs->get('currency','USD'), true, $this->configs); ?></span>
+				<span class="label"><?php echo DigiComSiteHelperPrice::format_price($bitem->price, $this->configs->get('currency','USD'), true, $this->configs); ?></span>
 			</li>
 		<?php endforeach; ?>
 	</ul>

@@ -13,11 +13,11 @@ $view = $input->get('view','cart');
 ?>
 <?php if($this->configs->get('show_steps',1) == 1){ ?>
 
-<div class="pagination pagination-centered">
-	<ul>
+<nav class="text-center clearfix">
+	<ul class="pagination">
 		<li<?php echo ($view == 'cart' ? ' class="active"' : ''); ?>><span><?php echo JText::_("COM_DIGICOM_BUYING_PROCESS_STEP_ONE"); ?></span></li>
 		<li<?php echo ($view == 'register' ? ' class="active"' : ''); ?>><span><?php echo JText::_("COM_DIGICOM_BUYING_PROCESS_STEP_TWO"); ?></span></li>
 		<li<?php echo ($view == 'checkout' ? ' class="active"' : ''); ?>><span><?php echo JText::_("COM_DIGICOM_BUYING_PROCESS_STEP_THREE"); ?></span></li>
 	</ul>
-</div>
+</nav>
 <?php } ?>

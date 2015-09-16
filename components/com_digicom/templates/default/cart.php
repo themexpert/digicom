@@ -13,21 +13,20 @@ JHtml::_('formbehavior.chosen', 'select');
 <div id="digicom">
 
 	<?php if(count($this->items) == 0): ?>
-		<div class="alert alert-warning">
+		<p class="alert alert-warning">
 			<?php echo JText::_("COM_DIGICOM_CART_IS_EMPTY_NOTICE"); ?>
-		</div>
+		</p>
 	<?php else: ?>
-			<?php echo $this->loadTemplate('steps');?>
+
+		<?php echo $this->loadTemplate('steps');?>
 
 		<div class="digi-cart">
 			<?php
 			$user = JFactory::getUser();
 			if($user->id != "0"){
 			?>
-			<div class="row-fluid">
-				<div class="span12" style="text-align:right;vertical-align:bottom;">
-					<?php echo JText::sprintf("COM_DIGICOM_CART_LOGGED_IN_AS",$user->name); ?>
-				</div>
+			<div class="well well-sm" style="text-align:right;vertical-align:bottom;">
+				<?php echo JText::sprintf("COM_DIGICOM_CART_LOGGED_IN_AS",$user->name); ?>
 			</div>
 			<?php } ?>
 

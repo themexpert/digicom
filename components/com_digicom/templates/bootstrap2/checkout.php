@@ -68,5 +68,5 @@ $data = $this->data;
 	</div>
 
 	<?php echo $data[0]; ?>
-</div>
+
 <?php echo DigiComSiteHelperDigiCom::powered_by(); ?>

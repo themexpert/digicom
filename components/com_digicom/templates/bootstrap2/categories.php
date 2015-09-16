@@ -15,11 +15,11 @@ $class = 'first ';
 JHtml::_('bootstrap.tooltip');
 $lang	= JFactory::getLanguage();
 $bsGrid = array(
-	1 => 'col-md-12',
-	2 => 'col-md-6',
-	3 => 'col-md-4',
-	4 => 'col-md-3',
-	6 => 'col-md-2'
+	1 => 'span12',
+	2 => 'span6',
+	3 => 'span4',
+	4 => 'span3',
+	6 => 'span2'
 );
 
 ?>
@@ -48,16 +48,16 @@ $bsGrid = array(
 		<?php endif; ?>
 	<?php endif; ?>
 
-	<div class="container-fluid">
-		<ul class="row list-unstyled">
-    	<?php
+	<div class="row-fluid">
+        <ul class="thumbnails">
+        	<?php
 			if (count($this->items[$this->parent->id]) > 0 && $this->maxLevelcat != 0) :
 				$i=0;
-				foreach($this->items[$this->parent->id] as $id => $item) :
-					if($i !=0 && !($i % $this->configs->get('category_cols')) )  echo '</ul><ul class="row list-unstyled">';
+				foreach($this->items[$this->parent->id] as $id => $item) : 
+					if($i !=0 && !($i % $this->configs->get('category_cols')) )  echo '</ul></div><div class="row-fluid"><ul class="thumbnails">';
 					?>
-
-					<?php
+						
+						<?php
 					if ($this->params->get('show_empty_categories_cat') || $item->numitems) :
 						if (!isset($this->items[$this->parent->id][$id + 1]))
 						{
@@ -67,7 +67,7 @@ $bsGrid = array(
 					<li class="<?php echo $class; ?><?php echo $bsGrid[$this->configs->get('category_cols','3')]?>">
 						<div class="thumbnail text-center">
 							<?php $class = ''; ?>
-
+							
 							<?php if($item->getParams()->get('image')) : ?>
 								<img src="<?php echo $item->getParams()->get('image'); ?>" alt="<?php echo htmlspecialchars($item->getParams()->get('image_alt')); ?>" />
 							<?php endif; ?>
@@ -79,7 +79,7 @@ $bsGrid = array(
 										<?php echo $item->numitems; ?>
 									</span>
 								<?php endif; ?>
-
+								
 							</h3>
 							<?php if (($this->params->get('show_cat_num_products_cat') == 1) && $item->description ) : ?>
 								<div class="category-desc">
@@ -92,6 +92,7 @@ $bsGrid = array(
 				<?php endif; ?>
 			<?php  $i++;endforeach; ?>
 			<?php endif; ?>
+
 		</ul>
 	</div>
 </div>
