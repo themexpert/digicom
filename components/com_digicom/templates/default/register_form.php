@@ -15,7 +15,7 @@ JHtml::_('behavior.formvalidation');
 <form name="adminForm" id="adminForm"
 	action="<?php echo JRoute::_('index.php?option=com_digicom&task=register.register'); ?>"
 	method="post"
-	class="form-validate form-horizontal"
+	class="form-validate"
 	enctype="multipart/form-data"
 >
 
