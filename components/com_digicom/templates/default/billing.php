@@ -14,7 +14,7 @@ JHtml::_('behavior.formvalidation');
 $app=JFactory::getApplication();
 $input = $app->input;
 ?>
-<div class="digicom">
+<div id="digicom">
 	<form name="adminForm" id="adminForm"
 		action="<?php echo JRoute::_('index.php?option=com_digicom&view=billing'); ?>"
 		method="post"
