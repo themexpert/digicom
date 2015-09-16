@@ -92,8 +92,10 @@
 			if(persion == '1'){
 				$(".group-input-company, .group-input-tax").hide();
 				$("label[for='jform_person0']").addClass('active');
+				$("label[for='jform_person1']").removeClass('active');
 			}else{
 				$(".group-input-company, .group-input-tax").show();
+				$("label[for='jform_person0']").removeClass('active');
 				$("label[for='jform_person1']").addClass('active');
 			}
 		},
