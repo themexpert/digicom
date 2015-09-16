@@ -1,16 +1,22 @@
 /**
- * @copyright	Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * Digicom Plugin for script
+ * copyright	Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-/**
- * Digicom Plugin for script
- *
- * @package		Joomla.Extensions
- * @subpackage  Digicom
- * @since		1.0.0
- */
-;(function( $, scope ) {
+if (typeof jQuery === 'undefined') {
+   throw new Error('Digicom\'s JavaScript requires jQuery')
+}
+
++function ($) {
+   'use strict';
+   var version = $.fn.jquery.split(' ')[0].split('.')
+   if ((version[0] < 2 && version[1] < 9) || (version[0] == 1 && version[1] == 9 && version[2] < 1) || (version[0] > 2)) {
+     throw new Error('Digicom\'s JavaScript requires jQuery version 1.9.1 or higher, but lower than version 3')
+   }
+}(jQuery);
+
++(function( $, scope ) {
 	"use strict";
 
 	var Digicom = scope.Digicom = {
@@ -28,7 +34,7 @@
 			// on click show terms, show
 			Digicom.dataSet('showterms').click(function() {
 			    event.preventDefault();
-					$('#termsShowModal').modal('show');
+					$('#termsShowModal').digicomodal('show');
 			});
 
 			// on click show terms, show
@@ -123,7 +129,7 @@
 					}
 			});
 
-			$('#digicomCartPopup').modal('show');
+			$('#digicomCartPopup').digicomodal('show');
 
 			Digicom.refresCartModule();
 		},
@@ -213,7 +219,7 @@
 				agreeterms = Digicom.dataSet('agreeterms').prop( "checked" );
 			}
 			if(!agreeterms){
-				$('#termsAlertModal').modal('show');
+				$('#termsAlertModal').digicomodal('show');
 				return false;
 			}
 
@@ -222,7 +228,7 @@
 				processor = Digicom.dataSet('processor').val();
 			}
 			if ( !processor.length ) {
-				$('#paymentAlertModal').modal('show');
+				$('#paymentAlertModal').digicomodal('show');
 				return false;
 			}
 
