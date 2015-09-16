@@ -13,7 +13,7 @@ class DigiComControllerFileManager extends JControllerAdmin
 {
 	function connector()
 	{
-        $mainframe = JFactory::getApplication();
+    $mainframe = JFactory::getApplication();
 		$params = JComponentHelper::getParams('com_digicom');
 		$root = $params->get('ftp_source_path', 'digicom');
 
@@ -36,7 +36,7 @@ class DigiComControllerFileManager extends JControllerAdmin
 
 		$url = JURI::root(true).'/'.$folder;
 		$path = JPATH_SITE . '/' . JPath::clean($folder);
-        JPath::check($path);
+    JPath::check($path);
 		include_once JPATH_COMPONENT_ADMINISTRATOR . '/libs/elfinder/elFinderConnector.class.php';
 		include_once JPATH_COMPONENT_ADMINISTRATOR . '/libs/elfinder/elFinder.class.php';
 		include_once JPATH_COMPONENT_ADMINISTRATOR . '/libs/elfinder/elFinderVolumeDriver.class.php';
@@ -104,6 +104,6 @@ class DigiComControllerFileManager extends JControllerAdmin
 
 		$connector = new elFinderConnector(new elFinder($options));
 		$connector->run();
-
+		JFactory::getApplication()->close();
 	}
 }
