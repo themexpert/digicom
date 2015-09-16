@@ -32,7 +32,7 @@ $processor 		= $this->session->get('processor','1');
     <tr valign="top">
       <td colspan="<?php echo $table_column - 1; ?>" >
         <div class="input-group">
-          <input type="text" data-digicom-id="promocode" name="promocode" class="input-group-addon" value="<?php echo $this->promocode; ?>" />
+          <input type="text" data-digicom-id="promocode" name="promocode" class="form-control" value="<?php echo $this->promocode; ?>" />
           <div class="input-group-btn">
             <button class="btn" type="submit" onclick="Digicom.refreshCart();">
               <i class="ico-gift"></i> <?php echo JText::_("COM_DIGICOM_CART_PROMOCODE_APPLY"); ?>
