@@ -39,7 +39,7 @@ abstract class JHtmlAddons
 			case 'component':
 				if($element == 'com_digicom'){
 					if($raw){
-						return JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_CORE_COMPONENT');
+						return JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_CORE_COMPONENT') . ' ('.$version.')';
 					}
 
 					return '<span class="badge badge-info">' . JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_CORE_COMPONENT') . ' ('.$version.')</span>';
@@ -48,13 +48,13 @@ abstract class JHtmlAddons
 			case 'module':
 				if($client_id == 1){
 					if($raw){
-						return JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_ADMIN_EXTENSION');
+						return JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_ADMIN_EXTENSION') . ' ('.$version.')';
 					}
 
 					return '<span class="badge">' . JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_ADMIN_EXTENSION') . ' ('.$version.')</span>';
 				}else{
 					if($raw){
-						return JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_FRONTEND_EXTENSION');
+						return JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_FRONTEND_EXTENSION') . ' ('.$version.')';
 					}
 
 					return '<span class="badge badge-warning">' . JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_FRONTEND_EXTENSION') . ' ('.$version.')</span>';
