@@ -1,6 +1,6 @@
 {
-    "name"       : "shamsbd71/digicom",
-    "description": "Digital ECommerce for Joomla",
+    "name"       : "themexpert/digicom",
+    "description": "DigiCom is next generation ecommerce extension for selling digital product with Joomla!",
     "license"    : "GPL-2.0+",
     "require"    : {
         "php": ">=5.3.10"
