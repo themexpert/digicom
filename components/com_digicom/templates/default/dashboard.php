@@ -16,12 +16,11 @@ $user			= $this->customer->_user;
 $configs 	= $this->configs;
 ?>
 
-
-<div id="digicom">
+<div id="digicom" class="dc dc-dashboard">
 
 	<?php DigiComSiteHelperDigicom::loadModules('digicom_toolber'); ?>
 
-	<h2 class="digi-page-title">
+	<h2 class="page-title">
 		<?php echo JText::_("COM_DIGICOM_DASHBOARD_PAGE_TITLE"); ?>
 	</h2>
 
@@ -112,7 +111,6 @@ $configs 	= $this->configs;
 
 	<?php DigiComSiteHelperDigicom::loadModules('digicom_footer','xhtml'); ?>
 
+	<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>
+
 </div>
-
-
-<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>
