@@ -48,7 +48,7 @@ JHtml::_('behavior.formvalidation');
 		<button type="submit" class="btn btn-primary validate"><?php echo JText::_('JREGISTER');?></button>
 		<input type="hidden" name="option" value="com_digicom" />
 		<input type="hidden" name="task" value="register.register" />
-		<input type="hidden" name="return" value="<?php echo JFactory::getApplication()->input->get("return", ""); ?>" />
+		<input type="hidden" name="return" value="<?php echo JFactory::getApplication()->input->get("return", "","base64"); ?>" />
 	</div>
 </div>
 <?php echo JHtml::_('form.token');?>
