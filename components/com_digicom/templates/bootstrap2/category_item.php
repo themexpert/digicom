@@ -22,7 +22,7 @@ if($this->item->price > 0){
 }
 $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this->item->catid, $this->item->language));
 ?>
-<li class="<?php echo $this->bsGrid[$this->column]?><?php echo $item->published == 0 ? ' system-unpublished' : null; ?>"
+<li class="<?php echo $this->bsGrid[$this->column]?><?php echo $this->item->published == 0 ? ' system-unpublished' : null; ?>"
 	itemscope itemtype="http://schema.org/Product">
 	<div class="thumbnail">
 		<!-- Product Image -->
