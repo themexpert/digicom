@@ -9,8 +9,10 @@
 
 defined('_JEXEC') or die;
 ?>
-<div class="bundled-products">
+<div class="dc-bundle-products">
+
 	<h3><?php echo JText::_('COM_DIGICOM_PRODUCT_BUNDLE_ITEMS_TITLE');?></h3>
+
 	<ul class="list-group">
 			<?php
 			foreach($this->item->bundleitems as $key=>$bitem):
@@ -22,4 +24,5 @@ defined('_JEXEC') or die;
 			</li>
 		<?php endforeach; ?>
 	</ul>
+
 </div>
