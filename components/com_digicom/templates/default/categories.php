@@ -8,23 +8,14 @@
  */
 
 defined('_JEXEC') or die;
-
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 JHtml::_('behavior.caption');
-$class = 'first ';
 JHtml::_('bootstrap.tooltip');
-$lang	= JFactory::getLanguage();
-$bsGrid = array(
-	1 => 'col-md-12',
-	2 => 'col-md-6',
-	3 => 'col-md-4',
-	4 => 'col-md-3',
-	6 => 'col-md-2'
-);
-
+$class = 'first ';
+$bsGrid = array( 1 => 'col-md-12', 2 => 'col-md-6', 3 => 'col-md-4', 4 => 'col-md-3', 6 => 'col-md-2' );
 ?>
+<div id="digicom" class="dc dc-categories-list">
 
-<div id="digicom" class="categories-list<?php echo $this->pageclass_sfx;?>">
 	<?php if ($this->params->get('show_page_heading')) : ?>
 	<h1>
 		<?php echo $this->escape($this->params->get('page_heading')); ?>
@@ -73,14 +64,15 @@ $bsGrid = array(
 							<?php endif; ?>
 							<h3 class="item-title">
 								<a href="<?php echo JRoute::_(DigiComSiteHelperRoute::getCategoryRoute($item->id));?>">
-								<?php echo $this->escape($item->title); ?></a>
+									<?php echo $this->escape($item->title); ?>
+								</a>
 								<?php if ($this->params->get('show_cat_num_products_cat') == 1) :?>
 									<span class="badge badge-info tip hasTooltip" title="<?php echo JHtml::tooltipText('COM_DIGICOM_NUM_ITEMS'); ?>">
 										<?php echo $item->numitems; ?>
 									</span>
 								<?php endif; ?>
-
 							</h3>
+
 							<?php if (($this->params->get('show_cat_num_products_cat') == 1) && $item->description ) : ?>
 								<div class="category-desc">
 									<?php echo JHtml::_('content.prepare', $item->description, '', 'com_content.categories'); ?>
@@ -94,7 +86,7 @@ $bsGrid = array(
 			<?php endif; ?>
 		</ul>
 	</div>
-</div>
 
-<?php
-echo DigiComSiteHelperDigiCom::powered_by();
+	<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>
+
+</div>
