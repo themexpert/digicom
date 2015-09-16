@@ -1,0 +1,14 @@
+{
+    "name"       : "shamsbd71/digicom",
+    "description": "Digital ECommerce for Joomla",
+    "license"    : "GPL-2.0+",
+    "require"    : {
+        "php": ">=5.3.10"
+    },
+    "require-dev": {
+        "codeception/codeception": "2.0.13",
+        "joomla-projects/joomla-browser": "dev-develop",
+        "codegyre/robo": "~0.5",
+        "joomla-projects/robo": "dev-master"
+    }
+}
