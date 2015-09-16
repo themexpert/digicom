@@ -12,9 +12,9 @@ defined('_JEXEC') or die;
 
 <?php
 $images = json_decode($this->item->images);
-if(!isset($images->thumb_image)){
+if(!isset($images->image_intro)){
 	$images = new stdClass();
-	$images->thumb_image = $this->item->images;
+	$images->image_intro = $this->item->images;
 }
 if($this->item->price > 0){
 	$price = DigiComSiteHelperPrice::format_price($this->item->price, $this->configs->get('currency','USD'), true, $this->configs);
@@ -26,8 +26,8 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 
 <div class="thumbnail">
 	<!-- Product Image -->
-	<?php if(!empty($images->thumb_image)): ?>
-		<img itemprop="image" src="<?php echo $images->thumb_image; ?>" alt="<?php echo $this->item->name; ?> Image" >
+	<?php if(!empty($images->image_intro)): ?>
+		<img itemprop="image" src="<?php echo $images->image_intro; ?>" alt="<?php echo $this->item->name; ?> Image" >
 	<?php endif; ?>
 
 	<?php if(!empty($this->item->bundle_source)):?>

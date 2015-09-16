@@ -5,7 +5,7 @@
 		<field name="product_type" type="hidden" default="reguler"/>
 
 		<field name="images" type="hidden" default=""/>
-		
+
 		<!--//product_type will be from now product_type-->
 
 		<field name="id"  type="text" class="readonly" label="JGLOBAL_FIELD_ID_LABEL" description ="JGLOBAL_FIELD_ID_DESC" size="10" default="0" readonly="true" />
@@ -38,12 +38,12 @@
 		<!-- <field name="images" type="digimedia" label="COM_DIGICOM_PRODUCT_FIELD_IMAGE" description="COM_DIGICOM_PRODUCT_FIELD_IMAGE_DESC" default=""/> -->
 
 		<field
-			name="thumb_image"
+			name="image_intro"
 			type="digimedia"
 			label="COM_DIGICOM_PRODUCT_FIELD_INTRO_LABEL"
 			description="COM_DIGICOM_PRODUCT_FIELD_INTRO_DESC" />
 		<field
-			name="full_image"
+			name="image_full"
 			type="digimedia"
 			label="COM_DIGICOM_PRODUCT_FIELD_FULL_LABEL"
 			description="COM_DIGICOM_PRODUCT_FIELD_FULL_DESC"/>

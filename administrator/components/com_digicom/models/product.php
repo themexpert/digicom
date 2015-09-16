@@ -351,9 +351,9 @@ class DigiComModelProduct extends JModelAdmin
 			$registry = new Registry;
 			$registry->loadString($item->images);
 			$item->images = $registry->toArray();
-			if(isset($item->images['thumb_image'])){
-				$item->thumb_image	=	$item->images['thumb_image'];
-				$item->full_image		=	$item->images['full_image'];
+			if(isset($item->images['image_intro'])){
+				$item->image_intro	=	$item->images['image_intro'];
+				$item->image_full		=	$item->images['image_full'];
 			}
 
 			// Convert the metadata field to an array.
@@ -513,8 +513,8 @@ class DigiComModelProduct extends JModelAdmin
 		}
 
 		$images = array(
-			'thumb_image'	=> $data['thumb_image'],
-			'full_image'	=> $data['full_image']
+			'image_intro'	=> $data['image_intro'],
+			'image_full'	=> $data['image_full']
 		);
 
 		$registry = new Registry;

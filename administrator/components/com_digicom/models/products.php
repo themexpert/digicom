@@ -380,11 +380,11 @@ class DigiComModelProducts extends JModelList
 					$registry = new Registry;
 					$registry->loadString($item->images);
 					$item->images = $registry->toArray();
-					if(isset($item->images['thumb_image'])){
-						$item->thumb_image	=	$item->images['thumb_image'];
-						$item->full_image		=	$item->images['full_image'];
+					if(isset($item->images['image_intro'])){
+						$item->image_intro	=	$item->images['image_intro'];
+						$item->image_full		=	$item->images['image_full'];
 					}else{
-						$item->thumb_image	=	$item->images;
+						$item->image_intro	=	$item->images;
 					}
 			}
 		}

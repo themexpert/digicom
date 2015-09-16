@@ -10,9 +10,9 @@
 defined('_JEXEC') or die;
 $conf = $this->configs;
 $images  = json_decode($this->item->images);
-if(!isset($images->full_image)){
+if(!isset($images->image_full)){
 	$images = new stdClass();
-	$images->full_image = $this->item->images;
+	$images->image_full = $this->item->images;
 }
 if($this->item->price > 0){
 	$price = '<span>'.JText::_('COM_DIGICOM_PRODUCT_PRICE').": ".DigiComSiteHelperPrice::format_price($this->item->price, $conf->get('currency','USD'), true, $conf).'</span>';
@@ -52,9 +52,9 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 			<?php endif; ?>
 		</header>
 		<div class="product-details clearfix">
-			<?php if(!empty($images->full_image)): ?>
+			<?php if(!empty($images->image_full)): ?>
 				<div class="text-center">
-					<img itemprop="image" src="<?php echo $images->full_image; ?>" alt="<?php echo $this->item->name; ?>" class="img-responsive img-thumbnail"/>
+					<img itemprop="image" src="<?php echo $images->image_full; ?>" alt="<?php echo $this->item->name; ?>" class="img-responsive img-thumbnail"/>
 				</div>
 			<?php endif; ?>
 

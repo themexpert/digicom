@@ -127,15 +127,15 @@ $params = json_decode($this->order->params);
 			foreach($order->products as $key=>$product):
 			$productlink = JRoute::_(DigiComSiteHelperRoute::getProductRoute($product->id, $product->catid, $product->language));
 			$images = json_decode($product->images);
-			if(!isset($images->thumb_image)){
+			if(!isset($images->image_intro)){
 				$images = new stdClass();
-				$images->thumb_image = $product->images;
+				$images->image_intro = $product->images;
 			}
 			?>
 			<tr>
 				<td>
-					<?php if(!empty($images->thumb_image)): ?>
-						<img width="64" height="64" src="<?php echo JUri::root().$images->thumb_image; ?>" alt="<?php echo $product->name; ?>" />
+					<?php if(!empty($images->image_intro)): ?>
+						<img width="64" height="64" src="<?php echo JUri::root().$images->image_intro; ?>" alt="<?php echo $product->name; ?>" />
 					<?php endif; ?>
 				</td>
 				<td>
