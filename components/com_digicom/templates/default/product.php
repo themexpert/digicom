@@ -21,8 +21,11 @@ if($this->item->price > 0){
 }
 $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this->item->catid, $this->item->language));
 ?>
-<div id="digicom">
+
+<div id="digicom" class="dc dc-product">
+
 	<div class="product-page<?php echo $this->pageclass_sfx; ?>" itemscope itemtype="http://schema.org/Product">
+
 		<meta itemprop="inLanguage" content="<?php echo ($this->item->language === '*') ? JFactory::getConfig()->get('language') : $this->item->language; ?>" />
 		<meta itemprop="url" content="<?php echo $link; ?>" />
 
@@ -111,21 +114,24 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 
 		</div>
 
-
-
 	</div>
-	<?php echo DigiComSiteHelperDigicom::powered_by(); ?>
+
 	<?php
-		$layoutData = array(
-			'selector' => 'digicomCartPopup',
-			'params'   => array(
-											'title' 	=> JText::_('COM_DIGICOM_CART_ITEMS'),
-											'height' 	=> '400',
-											'width'	 	=> '1280',
-											'footer'	=> '<button type="button" class="btn btn-default" data-dismiss="modal">'.JText::_('COM_DIGICOM_CONTINUE').'</button> <a href="'.JRoute::_("index.php?option=com_digicom&view=cart").'" class="btn btn-warning"><i class="ico-ok-sign"></i> '.JText::_("COM_DIGICOM_CHECKOUT").'</a>'
-										),
-			'body'     => ''
-		);
-		echo JLayoutHelper::render('bt3.modal.main', $layoutData);
+		if($conf->get('afteradditem',0) == "2"):
+			$layoutData = array(
+				'selector' => 'digicomCartPopup',
+				'params'   => array(
+												'title' 	=> JText::_('COM_DIGICOM_CART_ITEMS'),
+												'height' 	=> '400',
+												'width'	 	=> '1280',
+												'footer'	=> '<button type="button" class="btn btn-default" data-dismiss="modal">'.JText::_('COM_DIGICOM_CONTINUE').'</button> <a href="'.JRoute::_("index.php?option=com_digicom&view=cart").'" class="btn btn-warning"><i class="ico-ok-sign"></i> '.JText::_("COM_DIGICOM_CHECKOUT").'</a>'
+											),
+				'body'     => ''
+			);
+			echo JLayoutHelper::render('bt3.modal.main', $layoutData);
+		endif;
 	?>
+
+	<?php echo DigiComSiteHelperDigicom::powered_by(); ?>
+
 </div>
