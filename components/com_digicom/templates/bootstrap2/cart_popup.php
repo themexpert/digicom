@@ -28,14 +28,20 @@ $currency = $configs->get('currency','USD');
 			</tr>
 		</thead>
 		<tbody>
-		<?php foreach($items as $itemnum => $item): ?>
+		<?php foreach($items as $itemnum => $item):
+			$images = json_decode($item->images);
+			if(!isset($images->image_intro)){
+				$images = new stdClass();
+				$images->image_intro = $item->images;
+			}
+			?>
 
 			<tr>
 				<!-- Product image -->
 				<td width="70">
-					<?php if(!empty($item->images)): ?>
+					<?php if(!empty($images->image_intro)): ?>
 						<img height="100" width="100" title="<?php echo $item->name; ?>"
-						src="<?php echo  JURI::root() . JRoute::_($item->image_intro); ?>" alt="<?php echo $item->name; ?>"/>
+						src="<?php echo  JURI::root() . JRoute::_($images->image_intro); ?>" alt="<?php echo $item->name; ?>"/>
 					<?php endif; ?>
 				</td>
 				<!-- /End Product image -->
