@@ -9,18 +9,19 @@
 
 defined('_JEXEC') or die;
 JHtml::_('jquery.framework');
-//print_r($this->items);jexit();
+
 $allitems = $this->items;
 $firstkey = reset($allitems);
 $active = 'cat-'.$firstkey['catid'];
 ?>
-<div id="digicom">
+<div id="digicom" class="dc dc-downloads">
 
 	<?php DigiComSiteHelperDigicom::loadModules('digicom_toolber'); ?>
 
-	<h2 class="digi-page-title"><?php echo JText::_("COM_DIGICOM_DOWNLOADS_PAGE_TITLE"); ?></h2>
+	<h2 class="page-title"><?php echo JText::_("COM_DIGICOM_DOWNLOADS_PAGE_TITLE"); ?></h2>
 
 	<?php echo JHtml::_('bootstrap.startTabSet', 'digicomTab', array('active' => $active)); ?>
+
 	<?php
 	$i = 0;
 	foreach($this->items as $key=>$items):	?>
@@ -70,15 +71,16 @@ $active = 'cat-'.$firstkey['catid'];
 		</div>
 
 		<?php echo JHtml::_('bootstrap.endTab'); ?>
+
 	<?php
 	$i++;
 	endforeach;
 	?>
+
 	<?php echo JHtml::_('bootstrap.endTabSet'); ?>
-
-
 
 	<?php DigiComSiteHelperDigicom::loadModules('digicom_footer','xhtml'); ?>
 
-</div>
 	<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>
+
+</div>
