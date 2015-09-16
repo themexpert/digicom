@@ -12,20 +12,17 @@ JHtml::_('behavior.framework');
 JHtml::_('behavior.formvalidation');
 $return = JFactory::getApplication()->input->get('return','');
 ?>
+<div id="digicom" class="dc dc-register">
 
-
-
-<div id="digicom">
-
-	<?php if(!empty($return)){ ?>
-		<?php
+	<?php
+	if(!empty($return)):
 		$this->setLayout('cart');
 		echo $this->loadTemplate('steps');
 		$this->setLayout('register');
-		?>
-	<?php } ?>
+	endif;
+	?>
 
-	<h1 class="digi-page-title"><?php echo JText::_("COM_DIGICOM_LOGIN_REGISTER");?></h1>
+	<h1 class="page-title"><?php echo JText::_("COM_DIGICOM_LOGIN_REGISTER");?></h1>
 
 	<div id="login-register-wrapper">
     <ul id="login-registerTab" class="nav nav-tabs" role="tablist">
@@ -54,6 +51,6 @@ $return = JFactory::getApplication()->input->get('return','');
     </div>
   </div>
 
+	<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>
 
 </div>
-<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>
