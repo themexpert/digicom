@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module"
-		   version="3.4"
-		   client="site"
-		   method="upgrade">
+<extension type="module" version="3.4" client="site" method="upgrade">
 	<name>DigiCom Shopping Cart</name>
 	<author>ThemeXpert</author>
 	<creationDate>2015-08-07</creationDate>
@@ -22,11 +19,11 @@
 	<languages folder="language">
 			<language tag="en-GB">en-GB/en-GB.mod_digicom_cart.ini</language>
 	</languages>
-	
+
 	<config>
 		<fields name="params">
 			<fieldset name="basic" label="">
-				
+
 			</fieldset>
 		</fields>
 	</config>
