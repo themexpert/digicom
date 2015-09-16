@@ -10,9 +10,9 @@
 defined('_JEXEC') or die;
 
 $this->bsGrid = array(1 => 'col-md-12', 2 => 'col-md-6', 3 => 'col-md-4', 4 => 'col-md-3', 6 => 'col-md-2');
-$this->column = $this->category->params->get('category_cols',3);
+$this->column = $this->category->params->get('category_cols', 3);
 ?>
-<div id="digicom" class="digicom-product-list<?php echo $this->pageclass_sfx; ?>">
+<div id="digicom" class="dc dc-category">
 
 	<?php if ($this->params->get('show_page_heading')) : ?>
 		<div class="page-header">
@@ -20,14 +20,14 @@ $this->column = $this->category->params->get('category_cols',3);
 		</div>
 	<?php endif; ?>
 
-	<div class="digi-categories">
+	<div class="dc-category-item">
 
 		<?php if($this->category->params->get('show_cat_title',1) or $this->category->params->get('show_cat_image',1) or $this->category->params->get('show_cat_intro',1)): ?>
 		<!-- Category Info -->
 		<div class="category-info clearfix">
 			<!-- Category Name -->
 			<?php if($this->category->params->get('show_cat_title',1) && !empty($this->category->title)): ?>
-			<h1 class="digi-page-title"><?php echo $this->category->title; ?></h1>
+			<h1 class="page-title"><?php echo $this->category->title; ?></h1>
 			<?php endif; ?>
 
 			<?php if ($this->params->get('show_cat_tags', 1) && !empty($this->category->tags->itemTags)) : ?>
@@ -54,15 +54,15 @@ $this->column = $this->category->params->get('category_cols',3);
 		$counter = 0;
 		?>
 		<?php if (!empty($this->items)) : ?>
-			<div class="products-list clearfix">
+			<div class="dc-products-list clearfix">
 			<?php foreach ($this->items as $key => &$item) : ?>
 				<?php $rowcount = ((int) $key % (int) $this->column) + 1; ?>
 				<?php if ($rowcount == 1) : ?>
 					<?php $row = $counter / $this->column; ?>
-					<div class="products-row row clearfix">
+					<div class="dc-products-row row clearfix">
 				<?php endif; ?>
 				<div class="<?php echo $this->bsGrid[$this->column]?>">
-					<div class="product column-<?php echo $rowcount; ?><?php echo $item->published == 0 ? ' system-unpublished' : null; ?>"
+					<div class="dc-product column-<?php echo $rowcount; ?><?php echo $item->published == 0 ? ' system-unpublished' : null; ?>"
 						itemscope itemtype="http://schema.org/Product">
 						<?php
 						$this->item = & $item;
@@ -79,12 +79,12 @@ $this->column = $this->category->params->get('category_cols',3);
 
 			</div>
 
-			<div class="pagination"><?php echo $this->pagination->getPagesLinks(); ?></div>
+			<div class="dc-pagination pagination"><?php echo $this->pagination->getPagesLinks(); ?></div>
 
 		<?php endif; ?>
 
 	</div>
 
+	<?php echo DigiComSiteHelperDigicom::powered_by(); ?>
+
 </div>
-<?php
-echo DigiComSiteHelperDigicom::powered_by();
