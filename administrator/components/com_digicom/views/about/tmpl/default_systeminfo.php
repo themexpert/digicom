@@ -32,7 +32,7 @@ foreach ($this->plugins as $key => $plugin) :
 if($plugin->type == 'package') continue;
 ?>
 <?php echo ($cont == $plugin->type ? '' : $plugin->type ."\n"); ?>
-	<?php echo JHtml::_('addons.label', $plugin->name, $plugin->type, $plugin->folder, $input->get('format','html') === 'attachment' ? true : false); ?> : <?php echo JHtml::_('addons.info', $plugin->name,$plugin->type,$plugin->folder,$plugin->element,$plugin->client_id,($input->get('format') === 'attachment' ? 'true' : false)); ?>
+	<?php echo JHtml::_('addons.label', $plugin->name, $plugin->type, $plugin->folder, $input->get('format','html') === 'attachment' ? true : false); ?> : <?php echo JHtml::_('addons.info', $plugin->name,$plugin->type,$plugin->folder,$plugin->element,$plugin->client_id,($input->get('format') === 'attachment' ? 'true' : false), $plugin->manifest_cache); ?>
 
 <?php echo "\n"; ?>
 <?php

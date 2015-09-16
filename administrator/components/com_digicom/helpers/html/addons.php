@@ -23,11 +23,17 @@ abstract class JHtmlAddons
 	 *
 	 * @return  string	html code
 	 */
-	public static function info($name,$type,$folder, $element,$client_id, $raw = false)
+	public static function info($name,$type,$folder, $element,$client_id, $raw = false, $manifest_cache = '{}')
 	{
 		//name = item name
 		//folder = plugin
 		//type = module/plugin/component
+		$manifest_cache = json_decode($manifest_cache);
+		if(isset($manifest_cache->version) and !empty($manifest_cache->version)){
+			$version = $manifest_cache->version;
+		}else{
+			$version = '';
+		}
 
 		switch ($type) {
 			case 'component':
@@ -36,7 +42,7 @@ abstract class JHtmlAddons
 						return JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_CORE_COMPONENT');
 					}
 
-					return '<span class="badge badge-info">' . JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_CORE_COMPONENT') . '</span>';
+					return '<span class="badge badge-info">' . JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_CORE_COMPONENT') . ' ('.$version.')</span>';
 				}
 				break;
 			case 'module':
@@ -45,13 +51,13 @@ abstract class JHtmlAddons
 						return JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_ADMIN_EXTENSION');
 					}
 
-					return '<span class="badge">' . JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_ADMIN_EXTENSION') . '</span>';
+					return '<span class="badge">' . JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_ADMIN_EXTENSION') . ' ('.$version.')</span>';
 				}else{
 					if($raw){
 						return JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_FRONTEND_EXTENSION');
 					}
 
-					return '<span class="badge badge-warning">' . JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_FRONTEND_EXTENSION') . '</span>';
+					return '<span class="badge badge-warning">' . JText::_('COM_DIGICOM_ABOUT_SYSTEMINFO_FRONTEND_EXTENSION') . ' ('.$version.')</span>';
 				}
 				break;
 
@@ -61,8 +67,8 @@ abstract class JHtmlAddons
 						return '(' . $folder . ')';
 					}
 
-					return '<span class="badge badge-success">' . $folder . '</span>';
-					
+					return '<span class="badge badge-success">' . $folder . ' ('.$version.')</span>';
+
 				break;
 		}
 
