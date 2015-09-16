@@ -9,21 +9,17 @@
 
 defined('_JEXEC') or die;
 
-$n = count ($this->order->products);
-$configs = $this->configs;
-$order = $this->order;
-$date = $order->order_date;
-if ($this->order->id < 1){
-	echo JText::_('DSEMPTYORDER');
-}
-$params = json_decode($this->order->params);
+$configs 		= $this->configs;
+$order 			= $this->order;
+$date 			= $order->order_date;
+$params 		= json_decode($this->order->params);
+$n 					= count ($this->order->products);
 ?>
-
-<div id="digicom">
+<div id="digicom" class="dc dc-order">
 
 	<?php DigiComSiteHelperDigicom::loadModules('digicom_toolber'); ?>
 
-	<h1 class="digi-page-title"><?php echo JText::_('COM_DIGICOM_ORDER_DETAILS'); ?></h1>
+	<h1 class="page-title"><?php echo JText::_('COM_DIGICOM_ORDER_DETAILS'); ?></h1>
 
 	<table class="table table-striped table-hover table-bordered">
 		<thead>
@@ -91,10 +87,11 @@ $params = json_decode($this->order->params);
 
 		</tbody>
 	</table>
-	<?php if(strtolower($order->status) === 'pending'):
-	$item = JFactory::getApplication()->getMenu()->getItems('link', 'index.php?option=com_digicom&view=checkout', true);
-	$Itemid = isset($item->id) ? $item->id : '';
-	?>
+	<?php
+	if(strtolower($order->status) === 'pending'):
+		$item = JFactory::getApplication()->getMenu()->getItems('link', 'index.php?option=com_digicom&view=checkout', true);
+		$Itemid = isset($item->id) ? $item->id : '';
+		?>
 		<div class="well">
 			<p class="alert alert-info"><?php echo JText::sprintf('COM_DIGICOM_ORDER_COMPLETE_NOTICE'); ?></p>
 
@@ -110,7 +107,9 @@ $params = json_decode($this->order->params);
  		</div>
 
 	<?php endif; ?>
-	<h3 class="digi-section-title"><?php echo JText::_('COM_DIGICOM_PRODUCTS'); ?></h3>
+
+	<h3 class="dc-section-title"><?php echo JText::_('COM_DIGICOM_PRODUCTS'); ?></h3>
+
 	<table class="table table-striped table-hover table-bordered">
 		<thead>
 			<tr>
@@ -167,6 +166,6 @@ $params = json_decode($this->order->params);
 
 	<?php DigiComSiteHelperDigicom::loadModules('digicom_footer','xhtml'); ?>
 
-</div>
+	<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>
 
-<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>
+</div>
