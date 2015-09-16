@@ -85,7 +85,7 @@ if (typeof jQuery === 'undefined') {
 		root: function()
 		{
 			// Set the site root path
-			this.root = Digicom.getUrlParams('digicom.plugin.js', 'site');
+			this.root = site_url;
 			return this.root;
 		},
 
@@ -276,32 +276,6 @@ if (typeof jQuery === 'undefined') {
 							}
 						}
 			  });
-			}
-		},
-
-		/**
-		 * Generic function to get URL params passed in .js script include
-		 *
-		 * @targetScript   string  script file of plugin
-		 * @varName   string  value from url
-		 *
-		 * @return  string
-		 */
-
-		getUrlParams: function(targetScript, varName)
-		{
-			var scripts = document.getElementsByTagName('script');
-			var scriptCount = scripts.length;
-			for (var a = 0; a < scriptCount; a++) {
-				var scriptSrc = scripts[a].src;
-				if (scriptSrc.indexOf(targetScript) >= 0) {
-					varName = varName.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-					var re = new RegExp("[\\?&]" + varName + "=([^&#]*)");
-					var parsedVariables = re.exec(scriptSrc);
-					if (parsedVariables !== null) {
-						return parsedVariables[1];
-					}
-				}
 			}
 		}
 
