@@ -5,10 +5,12 @@
  * @copyright 	Copyright (c) 2006 - 2014 ThemeXpert Ltd. All rights reserved.
  * @license 	GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
+
+ // Core variables and mixins
+ @import "../bower_components/bootstrap/less/variables.less";
+ @import "../bower_components/bootstrap/less/mixins.less";
+
  #digicom.dc{
-   // Core variables and mixins
-   @import "../bower_components/bootstrap/less/variables.less";
-   @import "../bower_components/bootstrap/less/mixins.less";
    // Core CSS
    @import "../bower_components/bootstrap/less/scaffolding.less";
    @import "../bower_components/bootstrap/less/grid.less";
@@ -24,14 +26,15 @@
    @import "../bower_components/bootstrap/less/close.less";
    @import "../bower_components/bootstrap/less/navs.less";
 
-   // JS
-   @import "../bower_components/bootstrap/less/modals.less";
-
    // Utility
    @import "../bower_components/bootstrap/less/utilities.less";
    @import "../bower_components/bootstrap/less/responsive-utilities.less";
  }
- 
+
+ // Modal - loading outside namespace because some modal class load outside
+ //         our component area
+ @import "../bower_components/bootstrap/less/modals.less";
+
  #digicom{
   .digicom-loader{
     background: url(../images/spinner.gif) no-repeat 50% 42%;
