@@ -3270,3 +3270,32 @@
  #digicom .modal-body {
    overflow-y: auto;
  }
+ #digicom fieldset.radio.btn-group {
+   padding: 0;
+ }
+ #digicom fieldset.radio.btn-group input {
+   display: none;
+ }
+ #digicom fieldset.radio.btn-group label {
+   display: inline-block;
+   min-width: 54px;
+   padding: 0 12px;
+   border: 1px solid #aaa;
+   line-height: 28px;
+   background: #eee;
+   color: #555;
+   border-radius: 0;
+   text-align: center;
+   border-right-width: 0px;
+   text-transform: uppercase;
+   font-size: initial;
+ }
+ #digicom fieldset.radio.btn-group label:last-child {
+   border-right-width: 1px;
+   border-radius: 0 4px 4px 0;
+ }
+ #digicom fieldset.radio.btn-group label.active {
+   background: #690;
+   border-color: #5c8b00;
+   color: #fff;
+ }
