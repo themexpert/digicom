@@ -48,6 +48,7 @@ var config = {
   watch: {
     src: src + '/**/*.*',
     less: src + '/**/*.less',
+    css : src + '/css/*.css',
     js: src + '/*.js',
     tasks: ['build']
   }
@@ -58,6 +59,11 @@ gulp.task('less', function () {
   return gulp.src(config.less.src)
     .pipe(less(config.less.settings))
     .pipe(gulp.dest(config.less.dest));
+});
+gulp.task('minify-css', function() {
+  return gulp.src('css/*.css')
+    .pipe(minify({compatibility: 'ie8'}))
+    .pipe(gulp.dest('css'));
 });
 
 gulp.task('js', function () {
@@ -114,6 +120,7 @@ gulp.task('images', function () {
 gulp.task('watch', function () {
   gulp.watch(config.watch.less, ['less']);
   gulp.watch(config.watch.js, ['js']);
+  gulp.watch(config.watch.css, ['minify-css']);
 });
 
 
