@@ -52,7 +52,7 @@ $input = $app->input;
 			<a class="btn" href="<?php echo JRoute::_('');?>" title="<?php echo JText::_('JCANCEL');?>"><?php echo JText::_('JCANCEL');?></a>
 			<input type="hidden" name="option" value="com_digicom" />
 			<input type="hidden" name="task" value="profile.save" />
-			<input type="hidden" name="return" value="<?php echo $input->get("return", ""); ?>" />
+			<input type="hidden" name="return" value="<?php echo $input->get("return", "","base64"); ?>" />
 		</div>
 	</div>
 	<?php echo JHtml::_('form.token');?>

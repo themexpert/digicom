@@ -59,6 +59,6 @@ defined('_JEXEC') or die;
 
 	<input type="hidden" name="option" value="com_digicom" />
 	<input type="hidden" name="task" value="profile.logCustomerIn" />
-	<input type="hidden" name="return" value="<?php echo JFactory::getApplication()->input->get("return", ""); ?>" />
+	<input type="hidden" name="return" value="<?php echo JFactory::getApplication()->input->get("return", "","base64"); ?>" />
 	<?php echo JHtml::_('form.token');?>
 </form>
