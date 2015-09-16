@@ -14,10 +14,11 @@ $configs 	= $this->configs;
 $items 		= $this->items;
 $total 		= 0; // sub total for all products
 $currency = $configs->get('currency','USD');
+$text 		= ( count($items) > 1 ? "COM_DIGICOM_ITEMS_IN_CART" : "COM_DIGICOM_ITEM_IN_CART" );
 ?>
-<div id="digicom" class="digicom-wrapper com_digicom cart">
-	<div class="table-responsive">
-		<table class="table table-hover table-striped">
+<div id="digicom" class="dc dc-cart-popup">
+	<div class="dc-cart-items table-responsive">
+		<table class="dc-cart-items-table table table-hover table-striped">
 			<thead>
 				<tr valign="top">
 					<th width="30%"><?php echo JText::_("COM_DIGICOM_IMAGE");?></th>
@@ -48,7 +49,7 @@ $currency = $configs->get('currency','USD');
 					<!-- /End Product image -->
 
 					<!-- Product name -->
-					<td style="text-align:left;" class="digicom_product_name">
+					<td class="dc-product-name">
 						<?php echo $item->name;?>
 						<?php if ($this->configs->get('show_validity',1) == 1) : ?>
 						<div class="muted">
@@ -59,20 +60,18 @@ $currency = $configs->get('currency','USD');
 					<!-- /End Product name -->
 
 					<!-- Price -->
-					<td align="center" style="vertical-align:top;">
+					<td align="center">
 						<?php echo DigiComSiteHelperPrice::format_price($item->price, $item->currency, true, $configs); ?>
 					</td>
 					<!-- /End Price -->
 
 					<td align="center" nowrap="nowrap">
-						<span class="digicom_details">
 							<strong> <?php echo $item->quantity; ?> </strong>
-						</span>
 					</td>
 
 					<td nowrap>
-						<span id="cart_item_total<?php echo $item->cid; ?>" class="digi_cart_amount"><?php
-							echo DigiComSiteHelperPrice::format_price($item->subtotal-(isset($value_discount) ? $value_discount : 0), $item->currency, true, $configs); ?>
+						<span class="dc-cart-amount">
+							<?php echo DigiComSiteHelperPrice::format_price($item->subtotal-(isset($value_discount) ? $value_discount : 0), $item->currency, true, $configs); ?>
 						</span>
 					</td>
 				</tr>
@@ -80,20 +79,14 @@ $currency = $configs->get('currency','USD');
 			<?php endforeach;?>
 			</tbody>
 			<tfoot>
-				<tr class="info">
+				<tr class="dc-cart-info">
 					<td></td>
 					<td colspan="2">
-						<strong>
-							<?php
-							$text = "COM_DIGICOM_ITEM_IN_CART";
-							if(count($items) > 1){
-								$text = "COM_DIGICOM_ITEMS_IN_CART";
-							}
-							echo count($items)." ".JText::_($text);
-							?>
-						</strong>
+						<strong><?php echo count($items)." ".JText::_($text); ?></strong>
 					</td>
-					<td><strong><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></strong></td>
+					<td>
+						<strong><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></strong>
+					</td>
 					<td>
 						<strong><?php echo DigiComSiteHelperPrice::format_price($total, $currency, true, $configs); ?></strong>
 					</td>
