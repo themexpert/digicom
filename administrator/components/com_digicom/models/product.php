@@ -353,6 +353,8 @@ class DigiComModelProduct extends JModelAdmin
 			$item->images = $registry->toArray();
 			if(isset($item->images['image_intro'])){
 				$item->image_intro	=	$item->images['image_intro'];
+			}
+			if(isset($item->images['image_full'])){
 				$item->image_full		=	$item->images['image_full'];
 			}
 
