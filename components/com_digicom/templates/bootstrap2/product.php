@@ -42,7 +42,7 @@ if($this->item->price > 0){
 					</h1>
 
 					<?php if(!empty($images->image_full)): ?>
-						<img src="<?php echo $images->image_full; ?>" class="img-responsive"/>
+						<img src="<?php echo JURI::root().$images->image_full; ?>" class="img-responsive"/>
 					<?php endif; ?>
 
 

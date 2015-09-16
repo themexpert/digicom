@@ -54,7 +54,7 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 		<div class="product-details clearfix">
 			<?php if(!empty($images->image_full)): ?>
 				<div class="text-center">
-					<img itemprop="image" src="<?php echo $images->image_full; ?>" alt="<?php echo $this->item->name; ?>" class="img-responsive img-thumbnail"/>
+					<img itemprop="image" src="<?php echo JURI::root().$images->image_full; ?>" alt="<?php echo $this->item->name; ?>" class="img-responsive img-thumbnail"/>
 				</div>
 			<?php endif; ?>
 

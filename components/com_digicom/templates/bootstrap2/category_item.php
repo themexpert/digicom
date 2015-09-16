@@ -26,7 +26,7 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 	<div class="thumbnail">
 		<!-- Product Image -->
 		<?php if(!empty($images->image_intro)): ?>
-		<a href="<?php echo $link;?>" class="image"><img alt="Product Image" src="<?php echo $images->image_intro; ?>"></a>
+		<a href="<?php echo $link;?>" class="image"><img alt="Product Image" src="<?php echo JURI::root().$images->image_intro; ?>"></a>
 		<?php endif; ?>
 
 		<?php if($this->item->featured): ?>
