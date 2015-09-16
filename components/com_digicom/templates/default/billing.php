@@ -53,7 +53,7 @@ $input = $app->input;
 			<input type="hidden" name="option" value="com_digicom" />
 			<input type="hidden" name="view" value="billing" />
 			<input type="hidden" name="task" value="profile.billing" />
-			<input type="hidden" name="return" value="<?php echo $input->get("return", base64_encode(JRoute::_('index.php?option=com_digicom&view=cart')) ,"base64"); ?>" />
+			<input type="hidden" name="return" value="<?php echo $input->get("return", base64_encode(JRoute::_("index.php?option=com_digicom&view=cart")), "base64"); ?>" />
 		</div>
 	</div>
 	<?php echo JHtml::_('form.token');?>
