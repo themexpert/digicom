@@ -8,6 +8,8 @@ matrix:
     - php: 5.6
     - php: 7.0
 before_script:
+# Make sure all dev dependencies are installed
+- composer install
 - sudo apt-get update -qq
 # Install Apache
 - sudo apt-get install -y --force-yes apache2 libapache2-mod-php5 php5-curl php5-mysql php5-intl php5-gd > /dev/null
