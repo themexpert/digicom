@@ -73,6 +73,11 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	{
 		if(empty($layout)) $layout = "default";
 
+		// bootstrap2 check
+		$bootstrap2 	= $this->params->get( 'bootstrap2' , 0);
+		if($bootstrap2){
+			$layout = "bootstrap2";
+		}
 		$app = JFactory::getApplication();
 
 		// core path
