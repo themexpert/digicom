@@ -9,15 +9,15 @@
 
 defined('_JEXEC') or die;
 
-$invisible = 'style="display:none;"';
-$k = 0;
+$invisible 	= 'style="display:none;"';
+$configs 		= $this->configs;
+$order 			= $this->order;
+$user 			= $this->customer->_customer;
 $n = count ($this->order->products);
-$configs = $this->configs;
-$order = $this->order;
-$user = $this->customer->_customer;
+$k = 0;
 ?>
-<div id="digicom">
-	<div class="digi-view-order">
+<div id="digicom" class="dc dc-invoice">
+	<div class="dc-view-invoice">
 		<div class="container">
 			<div class="row-fluid">
 				<div class="span12">
@@ -209,10 +209,9 @@ $user = $this->customer->_customer;
 						</table>
 
 						<input type="hidden" name="option" value="com_digicom" />
-						<input type="hidden" name="task" value="" />
-						<input type="hidden" name="boxchecked" value="0" />
 						<input type="hidden" name="view" value="order" />
 						<input type="hidden" name="layout" value="invoice" />
+						<input type="hidden" name="boxchecked" value="0" />
 					</form>
 					<?php endif; ?>
 					<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>
