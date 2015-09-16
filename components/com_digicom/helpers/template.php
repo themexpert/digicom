@@ -23,13 +23,14 @@ class DigiComSiteHelperTemplate extends JViewLegacy {
 		JHtmlBehavior::core();
 		JText::script('COM_DIGICOM_REGISTRATION_EMAIL_ALREADY_USED');
 		JText::script('COM_DIGICOM_REGISTER_USERNAME_TAKEN');
+		$this->addScriptDeclaration('var site_url = "'. JURI::root().'";');
 
 		$this->params = JComponentHelper::getParams('com_digicom');
 		$this->view = $view;
 
 		// load core digicom js plugin
 		$this->addScript(JURI::root()."media/com_digicom/js/digicom.modal.js");
-		$this->addScript(JURI::root()."media/com_digicom/js/digicom.plugin.js?site=".JURI::root());
+		$this->addScript(JURI::root()."media/com_digicom/js/digicom.plugin.js");
 
 		// load core css file
 		$core_css = $this->params->get('load_core_css',1);
