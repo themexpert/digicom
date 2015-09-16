@@ -22,7 +22,7 @@ if($this->item->price > 0){
 ?>
 <div id="digicom">
 
-	<div class="digi-products">
+	<div class="digi-products" itemscope itemtype="http://schema.org/Product">
 
 			<div class="row-fluid">
 
@@ -30,7 +30,7 @@ if($this->item->price > 0){
 				<div class="span12">
 
 					<h1 class="digi-page-title">
-					<?php echo $this->item->name; ?>
+						<span itemprop="name"><?php echo $this->item->name; ?></span>
 
 						<?php if($this->item->featured):?>
 							<span class="label label-important"><?php echo JText::_('JFEATURED');?></span>
@@ -42,7 +42,7 @@ if($this->item->price > 0){
 					</h1>
 
 					<?php if(!empty($images->image_full)): ?>
-						<img src="<?php echo JURI::root().$images->image_full; ?>" class="img-responsive"/>
+						<img itemprop="img" src="<?php echo JURI::root().$images->image_full; ?>" class="img-responsive"/>
 					<?php endif; ?>
 
 
@@ -55,7 +55,7 @@ if($this->item->price > 0){
 						<?php echo $this->item->introtext; ?>
 					</p>
 
-					<div class="description">
+					<div class="description" itemprop="description">
 						<?php echo $this->item->text; ?>
 					</div>
 
@@ -66,9 +66,11 @@ if($this->item->price > 0){
 					?>
 
 					<?php if ($this->configs->get('catalogue',0) == '0' and !$this->item->hide_public) : ?>
-					<div class="well clearfix">
-						<div class="product-price">
-							<?php echo $price; ?>
+					<div class="well clearfix" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+						<meta itemprop="priceCurrency" content="<?php $conf->get('currency','USD');?>" />
+
+						<div class="product-price pull-left">
+							<span itemprop="price" content="<?php echo $this->item->price; ?>"><?php echo $price; ?></span>
 							<br/>
 							<?php if ($this->configs->get('show_validity',1) == 1) : ?>
 							<span>

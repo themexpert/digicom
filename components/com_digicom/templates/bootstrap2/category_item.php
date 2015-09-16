@@ -22,11 +22,12 @@ if($this->item->price > 0){
 }
 $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this->item->catid, $this->item->language));
 ?>
-<li class="<?php echo $this->bsGrid[$this->column]?>">
+<li class="<?php echo $this->bsGrid[$this->column]?><?php echo $item->published == 0 ? ' system-unpublished' : null; ?>"
+	itemscope itemtype="http://schema.org/Product">
 	<div class="thumbnail">
 		<!-- Product Image -->
 		<?php if(!empty($images->image_intro)): ?>
-		<a href="<?php echo $link;?>" class="image"><img alt="Product Image" src="<?php echo JURI::root().$images->image_intro; ?>"></a>
+		<a itemprop="url" href="<?php echo $link;?>" class="image"><img itemprop="image" alt="Product Image" src="<?php echo JURI::root().$images->image_intro; ?>"></a>
 		<?php endif; ?>
 
 		<?php if($this->item->featured): ?>
@@ -39,13 +40,13 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 
 	<!-- Product Name & Intro text -->
 		<div class="caption">
-			<h3><a href="<?php echo $link;?>"><?php echo $this->item->name; ?></a></h3>
+			<h3 itemprop="name"><a href="<?php echo $link;?>"><?php echo $this->item->name; ?></a></h3>
 			<p class="description"><?php echo $this->item->introtext; ?></p>
 
 		<!-- Price & Readmore Button -->
-			<div class="clearfix">
-				<span class="price"><?php echo $price; ?></span>
-				<a href="<?php echo $link;?>" class="btn btn-primary read-more"><?php echo JText::_('COM_DIGICOM_BUTTON_DETAILS'); ?></a>
+			<div class="clearfix" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+				<span class="price" itemprop="price" content="<?php echo $this->item->price; ?>"><?php echo $price; ?></span>
+				<a itemprop="url" href="<?php echo $link;?>" class="btn btn-primary read-more"><?php echo JText::_('COM_DIGICOM_BUTTON_DETAILS'); ?></a>
 			</div>
 		</div>
 	</div>
