@@ -38,6 +38,11 @@
 					<option value="1">YES</option>
 				</field>
 
+				<field name="bootstrap2" type="radio" class="btn-group" default="0" label="PAYPAL_BOOTSTRAP2_TEMPLATE_TITLE" description="PAYPAL_BOOTSTRAP2_TEMPLATE_DESC">
+					<option value="0">NO</option>
+					<option value="1">YES</option>
+				</field>
+
 				<field name="plugin_name" type="text" default="Paypal" label="PLG_NAME" description="" />
 
 				<field name="plugin_hidname" type="hidden" default="paypal" />
