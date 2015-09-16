@@ -18,7 +18,7 @@
 	</install>
 
 	<update>
-		<schemas> 
+		<schemas>
 			<schemapath type="mysql">sql/updates/mysql</schemapath>
 		</schemas>
 	</update>
@@ -49,8 +49,14 @@
 		<language tag="en-GB">language/en-GB/en-GB.com_digicom.ini</language>
 	</languages>
 
-	<media folder="media" destination="digicom">
-		<folder>assets</folder>
+	<media folder="media" destination="com_digicom">
+		<folder>css</folder>
+		<folder>images</folder>
+		<folder>js</folder>
+		<folder>less</folder>
+		<filename>gulpfile.js</filename>
+		<filename>index.html</filename>
+		<filename>package.json</filename>
 	</media>
 
 	<administration>
