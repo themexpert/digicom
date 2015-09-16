@@ -20,7 +20,6 @@ class DigiComSiteHelperTemplate extends JViewLegacy {
 	{
 		// load jquery n core joomla js for language string as we require it
 		JHtml::_('jquery.framework');
-		JHtml::_('bootstrap.framework');
 		JHtmlBehavior::core();
 		JText::script('COM_DIGICOM_REGISTRATION_EMAIL_ALREADY_USED');
 		JText::script('COM_DIGICOM_REGISTER_USERNAME_TAKEN');
@@ -29,6 +28,7 @@ class DigiComSiteHelperTemplate extends JViewLegacy {
 		$this->view = $view;
 
 		// load core digicom js plugin
+		$this->addScript(JURI::root()."media/com_digicom/js/digicom.modal.js");
 		$this->addScript(JURI::root()."media/com_digicom/js/digicom.plugin.js?site=".JURI::root());
 
 		// load core css file
