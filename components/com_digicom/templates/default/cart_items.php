@@ -9,16 +9,18 @@
 
 defined('_JEXEC') or die;
 ?>
-<div class="table-responsive">
-  <table id="digicomcarttable" class="table table-striped table-bordered" width="100%">
+<div class="dc-cart-items table-responsive">
+  <table class="dc-cart-items-table table table-striped table-bordered" width="100%">
     <thead>
       <tr valign="top">
         <th width="30%"><?php echo JText::_("COM_DIGICOM_PRODUCT");?></th>
         <th><?php echo JText::_("COM_DIGICOM_PRICE_PLAN");?></th>
         <th><?php echo JText::_("COM_DIGICOM_QUANTITY"); ?></th>
+
         <?php if ($this->tax['item_discount']){?>
-        <th><?php echo JText::_("COM_DIGICOM_PROMO_DISCOUNT"); ?></th>
+          <th><?php echo JText::_("COM_DIGICOM_PROMO_DISCOUNT"); ?></th>
         <?php } ?>
+
         <th><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></th>
         <th><?php echo JText::_("COM_DIGICOM_CART_REMOVE_ITEM");?></th>
       </tr>
@@ -46,7 +48,7 @@ defined('_JEXEC') or die;
           </td>
 
           <td align="center" nowrap="nowrap">
-            <span class="digicom_details">
+            <span class="dc-digicom-details">
               <strong>
                 <?php if($this->configs->get('show_quantity',0) == "1") { ?>
                   <input data-digicom-id="quantity<?php echo $item->cid; ?>" type="number" onchange="Digicom.updateCart(<?php echo $item->cid; ?>);" name="quantity[<?php echo $item->cid; ?>]" min="1" class="input-small" value="<?php echo $item->quantity; ?>" size="2" placeholder="<?php echo JText::_('COM_DIGICOM_QUANTITY'); ?>">
@@ -58,8 +60,8 @@ defined('_JEXEC') or die;
           </td>
 
           <?php if($this->tax['item_discount']) : ?>
-          <td style="text-align:center;" nowrap="nowrap">
-            <span data-digicom-id="discount<?php echo $item->cid; ?>" class="digi_cart_amount">
+          <td align="center" nowrap="nowrap">
+            <span data-digicom-id="discount<?php echo $item->cid; ?>" class="dc-cart-amount">
               <?php
               $value_discount = 0;
               if ( $item->discount > 0)
@@ -76,7 +78,7 @@ defined('_JEXEC') or die;
           <?php endif; ?>
 
           <td nowrap>
-            <span data-digicom-id="total<?php echo $item->cid; ?>" class="digi_cart_amount">
+            <span data-digicom-id="total<?php echo $item->cid; ?>" class="dc-cart-amount">
               <?php echo DigiComSiteHelperPrice::format_price($item->subtotal-(isset($value_discount) ? $value_discount : 0), $item->currency, true, $this->configs); ?>
             </span>
           </td>
