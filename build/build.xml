@@ -53,10 +53,10 @@
 
         <!--Copy media folder-->
         <copy todir="temp/com_digicom/media" overwrite="true">
-            <fileset dir="../media/digicom">
+            <fileset dir="../media/com_digicom">
                 <include name="**"/>
-                <exclude name="digicom/config.codekit" />
-                <exclude name="digicom/.codekit-cache" />
+                <exclude name="com_digicom/config.codekit" />
+                <exclude name="com_digicom/.codekit-cache" />
             </fileset>
         </copy>
     </target>
