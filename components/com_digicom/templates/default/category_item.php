@@ -24,7 +24,7 @@ if($this->item->price > 0){
 $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this->item->catid, $this->item->language));
 ?>
 
-<div class="thumbnail">
+<div class="dc-thumbnail thumbnail">
 	<!-- Product Image -->
 	<?php if(!empty($images->image_intro)): ?>
 		<img itemprop="image" src="<?php echo JURI::root().$images->image_intro; ?>" alt="<?php echo $this->item->name; ?> Image" >
