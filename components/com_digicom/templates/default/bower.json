@@ -1,0 +1,22 @@
+{
+  "name": "Digicom",
+  "version": "1.0.0",
+  "homepage": "https://github.com/themexpert/digicom",
+  "authors": [
+    "Parvez Akther <parvez@themexpert.com>"
+  ],
+  "moduleType": [
+    "amd"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "bootstrap": "~3.3.5"
+  }
+}
