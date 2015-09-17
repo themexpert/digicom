@@ -27,12 +27,13 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 
 <div class="dc-item thumbnail" itemscope itemtype="http://schema.org/Product" data-digicom-item data-id="<?php echo $this->item->id?>">
 
-	<?php if(!empty($images->image_intro)): ?>
 	<figure>
-		<a itemprop="url" href="<?php echo $link;?>">
-			<img itemprop="image" src="<?php echo JURI::root().$images->image_intro; ?>" alt="<?php echo $this->item->name; ?> Image" >
-		</a>
-
+		<?php if(!empty($images->image_intro)): ?>
+			<a itemprop="url" href="<?php echo $link;?>">
+				<img itemprop="image" src="<?php echo JURI::root().$images->image_intro; ?>" alt="<?php echo $this->item->name; ?> Image" >
+			</a>
+		<?php endif; ?>
+		
 		<figcaption class="caption">
 			<?php if(!empty($this->item->bundle_source)):?>
 			<span class="label label-info label--bundle"><?php echo JText::sprintf('COM_DIGICOM_PRODUCT_TYPE_BUNDLE');?></span>
@@ -46,9 +47,10 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 					<span itemprop="name"><?php echo $this->item->name; ?></span>
 				</a>
 			</h2>
+
 			<p class="dc-item-desc" itemprop="description"><?php echo $this->item->introtext; ?></p>
+
 			<a itemprop="url" href="<?php echo $link;?>" class="btn btn-primary read-more"><?php echo JText::_('COM_DIGICOM_BUTTON_DETAILS'); ?></a>
 		</figcaption>
 	</figure>
-	<?php endif; ?>
 </div>
