@@ -9,80 +9,70 @@
 
 defined('_JEXEC') or die;
 
-$this->bsGrid = array(1 => 'col-md-12', 2 => 'col-md-6', 3 => 'col-md-4', 4 => 'col-md-3', 6 => 'col-md-2');
-$this->column = $this->category->params->get('category_cols', 3);
+$column = $this->category->params->get('category_cols', 3);
+$items = array_chunk($this->items, $column);
+$grid = 12/$column;
 ?>
 <div id="digicom" class="dc dc-category">
 
-	<?php if ($this->params->get('show_page_heading')) : ?>
-		<div class="page-header">
-			<h1> <?php echo $this->escape($this->params->get('page_heading')); ?> </h1>
-		</div>
-	<?php endif; ?>
+	<?php if($this->params->get('show_page_heading') OR
+					 $this->category->params->get('show_cat_title') OR
+					 $this->category->params->get('show_cat_intro')): ?>
+	 <header class="dc-head">
+	 		<?php if ($this->params->get('show_page_heading')) : ?>
+   			<h1> <?php echo $this->escape($this->params->get('page_heading')); ?> </h1>
+   		<?php endif; ?>
 
-	<div class="dc-category-item">
-
-		<?php if($this->category->params->get('show_cat_title',1) or $this->category->params->get('show_cat_image',1) or $this->category->params->get('show_cat_intro',1)): ?>
-		<!-- Category Info -->
-		<div class="category-info clearfix">
-			<!-- Category Name -->
-			<?php if($this->category->params->get('show_cat_title',1) && !empty($this->category->title)): ?>
-			<h1 class="page-title"><?php echo $this->category->title; ?></h1>
-			<?php endif; ?>
-
-			<?php if ($this->params->get('show_cat_tags', 1) && !empty($this->category->tags->itemTags)) : ?>
-				<?php $this->category->tagLayout = new JLayoutFile('joomla.content.tags'); ?>
-				<?php echo $this->category->tagLayout->render($this->category->tags->itemTags); ?>
-			<?php endif; ?>
-
-			<?php if($this->category->params->get('show_cat_image',1) AND ($this->category->params->get('image') !== NULL ) ): ?>
-			<div class="pull-left">
-				<img class="img-rounded" src="<?php echo $this->category->params->get('image'); ?>" />
-			</div>
-			<?php endif; ?>
-
-			<?php if($this->category->params->get('show_cat_intro',1) && !empty($this->category->description)): ?>
-			<div class="category-desc">
-				<?php echo $this->category->description; ?>
-			</div>
-			<?php endif; ?>
-		</div>
-		<?php endif; ?>
-
-		<?php
-		$itemscount = (count($this->items));
-		$counter = 0;
-		?>
-		<?php if (!empty($this->items)) : ?>
-			<div class="dc-products-list clearfix">
-			<?php foreach ($this->items as $key => &$item) : ?>
-				<?php $rowcount = ((int) $key % (int) $this->column) + 1; ?>
-				<?php if ($rowcount == 1) : ?>
-					<?php $row = $counter / $this->column; ?>
-					<div class="dc-products-row row clearfix">
+			<?php if($this->category->params->get('show_cat_title',1) or $this->category->params->get('show_cat_image',1) or $this->category->params->get('show_cat_intro',1)): ?>
+			<!-- Category Info -->
+			<div class="dc-cat-head clearfix">
+				<?php if($this->category->params->get('show_cat_image',1) AND ($this->category->params->get('image') !== NULL ) ): ?>
+				<div class="dc-cat-media pull-left">
+					<img class="img-responsive" src="<?php echo $this->category->params->get('image'); ?>" />
+				</div>
 				<?php endif; ?>
-				<div class="<?php echo $this->bsGrid[$this->column]?>">
-					<div class="dc-product column-<?php echo $rowcount; ?><?php echo $item->published == 0 ? ' system-unpublished' : null; ?>"
-						itemscope itemtype="http://schema.org/Product">
-						<?php
-						$this->item = & $item;
-						echo $this->loadTemplate('item');
-						?>
+
+				<div class="dc-cat-body">
+					<?php if($this->category->params->get('show_cat_title',1) && !empty($this->category->title)): ?>
+					<!-- Category Name -->
+					<h1><?php echo $this->category->title; ?></h1>
+					<?php endif; ?>
+
+					<?php if ($this->params->get('show_cat_tags', 1) && !empty($this->category->tags->itemTags)) : ?>
+						<!-- Category Tags -->
+						<?php $this->category->tagLayout = new JLayoutFile('joomla.content.tags'); ?>
+						<?php echo $this->category->tagLayout->render($this->category->tags->itemTags); ?>
+					<?php endif; ?>
+
+					<?php if($this->category->params->get('show_cat_intro',1) && !empty($this->category->description)): ?>
+					<div class="dc-cat-desc">
+						<?php echo $this->category->description; ?>
 					</div>
-					<!-- end item -->
-					<?php $counter++; ?>
-				</div><!-- end column class -->
-				<?php if (($rowcount == $this->column) or ($counter == $itemscount)) : ?>
-					</div><!-- end row -->
-				<?php endif; ?>
-			<?php endforeach; ?>
-
+					<?php endif; ?>
+				</div>
 			</div>
-
-			<div class="dc-pagination pagination"><?php echo $this->pagination->getPagesLinks(); ?></div>
-
 		<?php endif; ?>
+	</header>
+	<?php endif;?>
 
+	<div class="dc-items">
+		<?php foreach($items as $row) :?>
+		<div class="row">
+			<?php foreach($row as $item) :?>
+				<div class="col-md-<?php echo $grid?>">
+					<?php
+						// Load item template
+						$this->item = $item;
+						echo $this->loadTemplate('item');
+					?>
+				</div>
+			<?php endforeach;?>
+		</div>
+		<?php endforeach;?>
+	</div>
+
+	<div class="dc-pagination pagination">
+		<?php echo $this->pagination->getPagesLinks(); ?>
 	</div>
 
 	<?php echo DigiComSiteHelperDigicom::powered_by(); ?>
