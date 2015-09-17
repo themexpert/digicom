@@ -13,6 +13,7 @@ JHtml::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.'/helpers/html/');
 JHtml::_('behavior.multiselect');
 JHtml::_('behavior.formvalidation');
 JHtml::_('formbehavior.chosen', 'select');
+
 $canDo = JHelperContent::getActions('com_digicom', 'component');
 $configs = JComponentHelper::getComponent('com_digicom')->params;
 ?>

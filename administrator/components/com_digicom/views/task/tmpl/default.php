@@ -8,6 +8,10 @@
  */
 
 defined('_JEXEC') or die;
+JHtml::_('bootstrap.tooltip');
+JHtml::_('behavior.multiselect');
+JHtml::_('formbehavior.chosen', 'select');
+
 $app = JFactory::getApplication();
 $input = $app->input;
 $input->set('layout', 'dgtabs');
@@ -23,7 +27,7 @@ $input->set('layout', 'dgtabs');
 	<div id="j-main-container" class="">
 <?php endif;?>
 
-		<?php 
+		<?php
 			JPluginHelper::importPlugin('digicom',$this->source);
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onDisplayView', array());

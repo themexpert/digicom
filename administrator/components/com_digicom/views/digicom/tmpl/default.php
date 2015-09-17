@@ -9,6 +9,10 @@
 
 defined('_JEXEC') or die;
 
+JHtml::_('bootstrap.tooltip');
+JHtml::_('behavior.multiselect');
+JHtml::_('formbehavior.chosen', 'select');
+
 $configs = $this->configs;
 $document = JFactory::getDocument();
 $document->addScript( JURI::root(true)."/media/com_digicom/js/chart.min.js");

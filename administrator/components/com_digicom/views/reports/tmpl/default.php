@@ -8,6 +8,10 @@
  */
 
 defined ('_JEXEC') or die ("Go away.");
+JHtml::_('bootstrap.tooltip');
+JHtml::_('behavior.multiselect');
+JHtml::_('formbehavior.chosen', 'select');
+
 $app		= JFactory::getApplication();
 $input	= $app->input;
 $tab		= $input->get('tab','sales');
@@ -38,7 +42,7 @@ JFactory::getDocument()->addScript( JURI::root(true)."/media/com_digicom/js/char
 			</li>
 			-->
 		</ul>
-		
+
 		<p class="clearfix"></p>
 
 		<section class="reportsWrapper">

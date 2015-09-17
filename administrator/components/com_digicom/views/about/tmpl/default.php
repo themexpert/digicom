@@ -9,6 +9,10 @@
 
 defined('_JEXEC') or die;
 
+JHtml::_('bootstrap.tooltip');
+JHtml::_('behavior.multiselect');
+JHtml::_('formbehavior.chosen', 'select');
+
 $mosConfig_absolute_path = JPATH_ROOT;
 $document = JFactory::getDocument();
 $app = JFactory::getApplication();

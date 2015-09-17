@@ -9,6 +9,11 @@
 
 defined('_JEXEC') or die;
 
+// Load the tooltip behavior.
+JHtml::_('bootstrap.tooltip');
+JHtml::_('behavior.formvalidation');
+JHtml::_('formbehavior.chosen', 'select');
+
 $app = JFactory::getApplication();
 $template = $app->getTemplate();
 $document = JFactory::getDocument();
@@ -16,10 +21,6 @@ $app = JFactory::getApplication();
 $input = $app->input;
 $input->set('layout', 'dgform');
 //$document->addStyleSheet("components/com_digicom/assets/css/digicom.css");
-// Load the tooltip behavior.
-JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.formvalidation');
-JHtml::_('formbehavior.chosen', 'select');
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)

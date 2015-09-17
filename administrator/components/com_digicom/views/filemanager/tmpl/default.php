@@ -8,7 +8,10 @@
  */
 
 defined('_JEXEC') or die;
-// TODO : Refactor - Codestandard
+JHtml::_('bootstrap.tooltip');
+JHtml::_('behavior.multiselect');
+JHtml::_('formbehavior.chosen', 'select');
+
 $showManager = false;
 $mosConfig_absolute_path = JPATH_ROOT;
 $max_upload = ini_get('upload_max_filesize');
