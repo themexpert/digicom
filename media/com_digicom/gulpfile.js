@@ -23,6 +23,7 @@ var config = {
     src: src + '/less/*.less',
     dest: dest + '/css',
     settings: {
+      compress: true ,
       indentedSyntax: false, // Enable .less syntax?
       imagePath: '/images' // Used by the image-url helper
     }
@@ -120,7 +121,7 @@ gulp.task('images', function () {
 gulp.task('watch', function () {
   gulp.watch(config.watch.less, ['less']);
   gulp.watch(config.watch.js, ['js']);
-  gulp.watch(config.watch.css, ['minify-css']);
+  // gulp.watch(config.watch.css, ['minify-css']);
 });
 
 
