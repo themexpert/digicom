@@ -71,6 +71,7 @@ class DigiComViewCategory extends JViewCategory
 	{
 		//parent::commonCategoryDisplay();
 		$this->commonCategoryDisplay();
+		
 		$this->configs = JComponentHelper::getComponent('com_digicom')->params;
 
 		// Prepare the data
@@ -320,7 +321,7 @@ class DigiComViewCategory extends JViewCategory
 		}
 
 		if(!$currentTemplate){
-			while ($category && $category->id > 1)
+			while ($category && $category->id > 1 && is_int($category->id))
 			{
 				$category = $category->getParent();
 
