@@ -13,6 +13,7 @@
 .dc{
  // Core CSS
  @import "../bower_components/bootstrap/less/scaffolding.less";
+ @import "../bower_components/bootstrap/less/type.less";
  @import "../bower_components/bootstrap/less/tables.less";
  @import "../bower_components/bootstrap/less/forms.less";
  @import "../bower_components/bootstrap/less/buttons.less";
@@ -35,7 +36,8 @@
 // Modal - loading outside namespace because some modal class load outside
 //         our component area
 @import "../bower_components/bootstrap/less/modals.less";
-
+// Dirty modal hack
+.modal-backdrop.fade.in{ opacity: 0.5; }
 .dc{
   .digicom-loader{
     background: url(../images/spinner.gif) no-repeat 50% 42%;
