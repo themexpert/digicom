@@ -55,7 +55,7 @@ $grid = 12/$column;
 	</header>
 	<?php endif;?>
 
-	<div class="dc-items">
+	<div class="dc-items" data-digicom-items>
 		<?php foreach($items as $row) :?>
 		<div class="row">
 			<?php foreach($row as $item) :?>

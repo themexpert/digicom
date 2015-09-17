@@ -15,6 +15,23 @@
     .tags.inline li{ display: inline-block; }
     .dc-cat-desc{ margin: 10px 0; }
   }
+  // Product Lists
+  .dc-items{
+    .dc-item{
+      position: relative;
+      // Title
+      h2{ font-size: 1.6em; line-height: 1.2em; }
+      .dc-item-desc{ margin: 0 0 15px; }
+      // Featured badge
+      .label--featured {
+ 				display: block;
+ 				position: absolute; top: 0; left: 0;
+ 				height: 40px; width: 40px;
+ 				background: url(../images/featured-badge.png) no-repeat 0 0;
+ 				font-size: 0; text-indent: -9999px;
+ 			}
+    }
+  }
 }
  // #digicom{
  //   ul.pagination{
@@ -28,17 +45,7 @@
  //      .thumbnail {
  //        position: relative
  //
- //        span.featured {
- // 				position: absolute;
- // 				top: 0;
- // 				left: 0;
- // 				display: block;
- // 				height: 40px;
- // 				width: 40px;
- // 				background: url(../images/featured-badge.png) no-repeat 0 0;
- // 				font-size: 0;
- // 				text-indent: -9999px;
- // 			}
+ //
  //      }
  //    }
  //  }
