@@ -48,11 +48,6 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 				<div class="dc-product-details" itemprop="description">
 					<?php echo $this->item->text; ?>
 				</div>
-				<?php
-				if(!empty($this->item->bundle_source)):
-					echo $this->loadTemplate('bundle');
-				endif;
-				?>
 			</div>
 			<div class="col-md-4">
 				<div class="dc-item-in">
@@ -134,6 +129,13 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 						</form>
 					</div>
 				<?php endif; ?>
+
+				<?php
+				if(!empty($this->item->bundle_source)):
+					echo $this->loadTemplate('bundle');
+				endif;
+				?>
+				
 			</div>
 		</div>
 	</artile>
