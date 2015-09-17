@@ -36,6 +36,8 @@
         <copy todir="temp/com_digicom/site" overwrite="true">
             <fileset dir="../components/com_digicom" id="com-site">
                 <include name="**" />
+                <exclude name="templates/default/node_modules/**" />
+                <exclude name="templates/default/bower_components/**" />
             </fileset>
         </copy>
         <copy todir="temp/com_digicom/site/language/en-GB" overwrite="true">
@@ -55,8 +57,8 @@
         <copy todir="temp/com_digicom/media" overwrite="true">
             <fileset dir="../media/com_digicom">
                 <include name="**"/>
-                <exclude name="com_digicom/config.codekit" />
-                <exclude name="com_digicom/.codekit-cache" />
+                <exclude name="bower_components/**" />
+                <exclude name="node_modules/**" />
             </fileset>
         </copy>
     </target>
