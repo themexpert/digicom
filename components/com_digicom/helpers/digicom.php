@@ -25,7 +25,7 @@ class DigiComSiteHelperDigicom {
 		if(!$digicom_credit) return;
 		$html = '<div style="margin: 0 auto; width: 250px; text-align: center;" class="small">';
 		$html .= '<span>Powered by ';
-		$html .= '<a target="_blank" title="Joomla Digital Download eCommerce" href="http://www.themexpert.com">';
+		$html .= '<a target="_blank" title="Sell digital product through Joomla!" href="http://www.themexpert.com/digicom">';
 		$html .= 'DigiCom</a></span>';
 		$html .= '</div>';
 
