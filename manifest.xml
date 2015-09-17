@@ -6,6 +6,7 @@
       <element>pkg_digicom</element>
       <type>package</type>
       <version>1.0.0</version>
+			<client>site</client>
       <infourl title="DigiCom Extension Package">https://github.com/themexpert/digicom/releases/tag/1.0.0</infourl>
       <downloads>
           <downloadurl type="full" format="zip">https://github.com/themexpert/digicom/releases/download/1.0.0/pkg_digicom_1.0.0.zip</downloadurl>
@@ -21,6 +22,7 @@
       <element>pkg_digicom</element>
       <type>package</type>
       <version>1.0.0-rc.2</version>
+			<client>site</client>
       <infourl title="DigiCom Extension Package">https://github.com/themexpert/digicom/releases/tag/1.0.0-rc.2</infourl>
       <downloads>
           <downloadurl type="full" format="zip">https://github.com/themexpert/digicom/releases/download/1.0.0-rc.2/pkg_digicom_1.0.0-rc.2.zip</downloadurl>
@@ -36,6 +38,7 @@
       <element>pkg_digicom</element>
       <type>package</type>
       <version>1.0.0-rc.1+build.1</version>
+			<client>site</client>
       <infourl title="DigiCom Extension Package">https://github.com/themexpert/digicom/releases/tag/1.0.0-rc.1%2Bbuild.1</infourl>
       <downloads>
           <downloadurl type="full" format="zip">https://github.com/themexpert/digicom/releases/download/1.0.0-rc.1%2Bbuild.1/pkg_digicom_1.0.0-rc.1.build.1.zip</downloadurl>
@@ -51,6 +54,7 @@
       <element>pkg_digicom</element>
       <type>package</type>
       <version>1.0.0-rc.1</version>
+			<client>site</client>
       <infourl title="DigiCom Extension Package">https://github.com/themexpert/digicom</infourl>
       <downloads>
           <downloadurl type="full" format="zip">https://github.com/themexpert/digicom/releases/download/1.0.0-rc.1/pkg_digicom_1.0.0-rc.1.zip</downloadurl>
@@ -66,6 +70,7 @@
       <element>pkg_digicom</element>
       <type>package</type>
       <version>1.0.0-beta.5</version>
+			<client>site</client>
       <infourl title="DigiCom Extension Package">https://github.com/themexpert/digicom</infourl>
       <downloads>
           <downloadurl type="full" format="zip">https://github.com/themexpert/digicom/releases/download/1.0.0-beta.5/pkg_digicom_1.0.0-beta.5.zip</downloadurl>
@@ -81,6 +86,7 @@
 			<element>pkg_digicom</element>
 			<type>package</type>
 			<version>1.0.0-beta.4</version>
+			<client>site</client>
 			<infourl title="DigiCom Extension Package">https://github.com/themexpert/digicom</infourl>
 			<downloads>
 				<downloadurl type="full" format="zip">https://github.com/themexpert/digicom/releases/download/1.0.0-beta.4/pkg_digicom_1.0.0-beta.4.zip</downloadurl>
@@ -96,6 +102,7 @@
 			<element>pkg_digicom</element>
 			<type>package</type>
 			<version>1.0.0-beta.3</version>
+			<client>site</client>
 			<infourl title="DigiCom Extension Package">https://github.com/themexpert/digicom</infourl>
 			<downloads>
 				<downloadurl type="full" format="zip">https://github.com/themexpert/digicom/releases/download/1.0.0-beta.3/pkg_digicom_1.0.0-beta.3.zip</downloadurl>
@@ -111,6 +118,7 @@
 			<element>pkg_digicom</element>
 			<type>package</type>
 			<version>1.0.0-beta.2</version>
+			<client>site</client>
 			<infourl title="DigiCom Extension Package">https://github.com/themexpert/digicom</infourl>
 			<downloads>
 				<downloadurl type="full" format="zip">https://github.com/themexpert/digicom/releases/download/1.0.0-beta.2/pkg_digicom_1.0.0-beta.2.zip</downloadurl>
@@ -126,6 +134,7 @@
 			<element>pkg_digicom</element>
 			<type>package</type>
 			<version>1.0.0-beta.1</version>
+			<client>site</client>
 			<infourl title="DigiCom Extension Package">https://github.com/themexpert/digicom</infourl>
 			<downloads>
 				<downloadurl type="full" format="zip">https://github.com/themexpert/digicom/releases/download/1.0.0-beta.1/pkg_digicom_1.0.0-beta.1.zip</downloadurl>
