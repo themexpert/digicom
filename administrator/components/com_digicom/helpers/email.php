@@ -43,6 +43,7 @@ class DigiComHelperEmail {
             $email_header_image = '<img src="'.JRoute::_(JURI::root().$email_header_image).'" />';
         }
         $phone = $configs->get('phone');
+        $address 		= $configs->get('address');
 
         $email_footer = $email_settings->email_footer;
 
@@ -150,6 +151,7 @@ class DigiComHelperEmail {
         $message = str_replace( "[DISCOUNT_AMOUNT]", $order->discount, $message );
         $message = str_replace( "[ORDER_STATUS]", $status, $message );
 
+        $message = str_replace( "[STORE_ADDRESS]", $address, $message );
         $message = str_replace( "[STORE_PHONE]", $phone, $message );
         $message = str_replace( "[FOOTER_TEXT]", $email_footer, $message );
 
