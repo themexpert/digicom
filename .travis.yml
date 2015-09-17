@@ -1,3 +1,6 @@
+# Forces new Travis-CI Infrastructure
+sudo: false
+
 language: php
 php:
 - 5.5
@@ -5,11 +8,9 @@ php:
 - 7.0
 matrix:
   allow_failures:
-    - php: 5.6
     - php: 7.0
 before_script:
 # Make sure all dev dependencies are installed
-- composer install
 - sudo apt-get update -qq
 # Install Apache
 - sudo apt-get install -y --force-yes apache2 libapache2-mod-php5 php5-curl php5-mysql php5-intl php5-gd > /dev/null
@@ -29,4 +30,28 @@ before_script:
 - sudo apt-get install fluxbox -y --force-yes
 - fluxbox &
 - sleep 3 # give fluxbox some time to start
+# zip
+- sudo apt-get install zip
+- sleep 3 # give fluxbox some time to start
+
+# Enable additional PHP extensions
+- sh -c "if [ '$TRAVIS_PHP_VERSION' != '7.0' ]; then phpenv config-add build/travis/phpenv/memcached.ini; fi"
+- sh -c "if [ '$TRAVIS_PHP_VERSION' == '5.3' ] || [ '$TRAVIS_PHP_VERSION' == '5.4' ]; then phpenv config-add build/travis/phpenv/apc-$TRAVIS_PHP_VERSION.ini; fi"
+- sh -c "if [ '$TRAVIS_PHP_VERSION' != '7.0' ]; then phpenv config-add build/travis/phpenv/redis.ini; fi"
+# PHP 5.5+ needs APCu
+- if [ '$TRAVIS_PHP_VERSION' == "5.5" ] || [ '$TRAVIS_PHP_VERSION' == "5.6" ]; then printf "\n" | echo -e "extension = apcu.so\napc.enabled=1\napc.enable_cli=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
+
+
+# Run Build command
+- cd build/
+- php phing.phar
+- cd release
+- mv pkg_digicom_* latest.zip
+- unzip latest.zip -d src
+- cd ../../
+# we are ready to run composer
 - composer update
+
+script:
+- mv tests/acceptance.suite.dist.yml tests/acceptance.suite.yml
+- vendor/bin/robo run:tests
