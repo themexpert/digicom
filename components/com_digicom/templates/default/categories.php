@@ -10,8 +10,6 @@
 defined('_JEXEC') or die;
 // Include helper and some js stuffs
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
-JHtml::_('behavior.caption');
-JHtml::_('bootstrap.tooltip');
 // Lets cache some variables for grid
 $column = $this->configs->get('category_cols','3');
 $items = array_chunk($this->items[$this->parent->id], $column);
@@ -58,7 +56,7 @@ $grid = 12/$column;
 										<?php echo $this->escape($item->title); ?>
 									</a>
 									<?php if ($this->params->get('show_cat_num_products_cat') == 1) :?>
-										<span class="badge badge-info tip hasTooltip" title="<?php echo JHtml::tooltipText('COM_DIGICOM_NUM_ITEMS'); ?>">
+										<span class="badge badge-info">
 											<?php echo $item->numitems; ?>
 										</span>
 									<?php endif; ?>
