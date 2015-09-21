@@ -37,13 +37,13 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 	<article>
 		<div class="row">
 			<div class="col-md-8">
+				<?php if(!empty($images->image_full)): ?>
 				<div class="dc-item-in">
-					<?php if(!empty($images->image_full)): ?>
 						<figure>
 							<img itemprop="image" src="<?php echo JURI::root().$images->image_full; ?>" alt="<?php echo $this->item->name; ?>" class="dc-product-image"/>
 						</figure>
-					<?php endif; ?>
 				</div>
+				<?php endif; ?>
 				<p class="dc-product-intro"><?php echo $this->item->introtext?></p>
 				<div class="dc-product-details" itemprop="description">
 					<?php echo $this->item->text; ?>
@@ -53,17 +53,17 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 				<div class="dc-item-in">
 					<div class="well clearfix" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
 						<div class="row">
-							<div class="col-md-6">
-								<div class="dc-product-price text-right">
-									<meta itemprop="priceCurrency" content="<?php $configs->get('currency','USD');?>" />
+							<div class="col-md-8">
+								<div class="dc-product-price text-left">
+									<meta itemprop="priceCurrency" content="<?php echo $configs->get('currency','USD');?>" />
 									<strong itemprop="price" content="<?php echo $this->item->price; ?>">
 										<?php echo $price; ?>
 									</strong>
 								</div>
 							</div>
 							<?php if ($this->configs->get('show_validity',1) == 1) : ?>
-								<div class="col-md-6">
-									<div class="dc-product-validity">
+								<div class="col-md-4">
+									<div class="dc-product-validity text-right">
 										<small><?php echo JText::_('COM_DIGICOM_PRODUCT_VALIDITY'); ?> <br/>
 										<?php echo DigiComSiteHelperPrice::getProductValidityPeriod($this->item); ?></small>
 									</div>
@@ -135,7 +135,7 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 					echo $this->loadTemplate('bundle');
 				endif;
 				?>
-				
+
 			</div>
 		</div>
 	</artile>
