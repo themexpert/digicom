@@ -16,7 +16,7 @@ JHtml::_('behavior.formvalidation');
 	<form name="adminForm" id="adminForm"
 		action="<?php echo JRoute::_('index.php?option=com_digicom&view=billing'); ?>"
 		method="post"
-		class="form-horizontal"
+		class="form-validate form-horizontal info-form"
 		enctype="multipart/form-data">
 
 		<?php foreach ($this->form->getFieldsets() as $fieldset): // Iterate through the form fieldsets and display each one.?>
@@ -59,5 +59,5 @@ JHtml::_('behavior.formvalidation');
 	</form>
 
 	<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>
-	
+
 </div>

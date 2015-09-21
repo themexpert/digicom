@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 JHtml::_('behavior.framework');
 JHtml::_('behavior.formvalidation');
+JHtml::_('formbehavior.chosen', 'select');
 $return = JFactory::getApplication()->input->get('return','');
 ?>
 <div id="digicom" class="dc dc-register">
@@ -27,24 +28,25 @@ $return = JFactory::getApplication()->input->get('return','');
 	<div id="login-register-wrapper">
     <ul id="login-registerTab" class="nav nav-tabs" role="tablist">
       <li role="presentation" class="active">
+				<a href="#digicom-register" id="digicom-register-tab" role="tab" data-toggle="tab" aria-controls="digicom-register" aria-expanded="true">
+					<?php echo JText::_("COM_DIGICOM_REGISTER_REGISTER_BELOW"); ?>
+				</a>
+			</li>
+
+      <li role="presentation">
 				<a href="#digicom-login" id="digicom-login-tab" role="tab" data-toggle="tab" aria-controls="digicom-login" aria-expanded="true">
 					<?php echo JText::_("COM_DIGICOM_REGISTER_LOGIN_BELOW"); ?>
 				</a>
 			</li>
 
-      <li role="presentation">
-				<a href="#digicom-register" id="digicom-register-tab" role="tab" data-toggle="tab" aria-controls="digicom-register" aria-expanded="true">
-					<?php echo JText::_("COM_DIGICOM_REGISTER_REGISTER_BELOW"); ?>
-				</a>
-			</li>
     </ul>
 
     <div id="login-registerContent" class="tab-content">
-      <div role="tabpanel" class="tab-pane fade active in" id="digicom-login" aria-labelledby="digicom-login-tab">
+      <div role="tabpanel" class="tab-pane fade" id="digicom-login" aria-labelledby="digicom-login-tab">
 				<h3><?php echo JText::_("COM_DIGICOM_LOGIN"); ?></h3>
         <?php echo $this->loadTemplate('login');	?>
       </div>
-      <div role="tabpanel" class="tab-pane fade" id="digicom-register" aria-labelledby="digicom-register-tab">
+      <div role="tabpanel" class="tab-pane fade active in" id="digicom-register" aria-labelledby="digicom-register-tab">
 				<h3><?php echo JText::_("COM_DIGICOM_REGISTER"); ?></h3>
 				<?php echo $this->loadTemplate('form');	?>
       </div>
