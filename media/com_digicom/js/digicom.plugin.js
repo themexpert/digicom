@@ -95,14 +95,15 @@ if (typeof jQuery === 'undefined') {
 		checkPersonStatus: function()
 		{
 			var persion = $("input:radio[name='jform[person]']:checked").val();
+      $("#jform_person label[for^='jform_person']").addClass('btn btn-default');
 			if(persion == '1'){
 				$(".group-input-company, .group-input-tax").hide();
-				$("label[for='jform_person0']").addClass('active');
-				$("label[for='jform_person1']").removeClass('active');
+				$("label[for='jform_person0']").addClass('active btn-success');
+				$("label[for='jform_person1']").removeClass('active btn-success');
 			}else{
 				$(".group-input-company, .group-input-tax").show();
-				$("label[for='jform_person0']").removeClass('active');
-				$("label[for='jform_person1']").addClass('active');
+				$("label[for='jform_person0']").removeClass('active btn-success');
+				$("label[for='jform_person1']").addClass('active btn-success');
 			}
 		},
 
