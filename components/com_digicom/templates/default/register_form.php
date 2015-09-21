@@ -8,7 +8,6 @@
  */
 
 defined('_JEXEC') or die;
-JHtml::_('formbehavior.chosen', 'select');
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.formvalidation');
 ?>
