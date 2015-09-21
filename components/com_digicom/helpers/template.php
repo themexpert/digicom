@@ -29,7 +29,7 @@ class DigiComSiteHelperTemplate extends JViewLegacy {
 		$this->view = $view;
 
 		// load core digicom js plugin
-		$this->addScript(JURI::root()."media/com_digicom/js/digicom.modal.js");
+		$this->addScript(JURI::root()."media/com_digicom/js/digicom.resource.js");
 		$this->addScript(JURI::root()."media/com_digicom/js/digicom.plugin.js");
 
 		// load core css file
