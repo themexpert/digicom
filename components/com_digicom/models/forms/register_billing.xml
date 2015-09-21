@@ -7,7 +7,7 @@
 
 		<field
 			name="person"
-			type="radio"
+			type="person"
 			class="btn-group"
 			default="1"
 			label="COM_DIGICOM_PERSON_OR_COMPANY"
