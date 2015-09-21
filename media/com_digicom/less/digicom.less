@@ -38,17 +38,18 @@
 @import "../bower_components/bootstrap/less/modals.less";
 // Dirty modal hack
 .modal-backdrop.fade.in{ opacity: 0.5; }
-#digicom.dc div.modal {
-    box-shadow: none;
-    border: none;
-    background-color: transparent;
-    width: 100%;
-    right: 0;
-    left: 0;
-    margin-left: 0;
-}
 
-.dc{
+#digicom.dc{
+  
+  div.modal {
+      box-shadow: none;
+      border: none;
+      background-color: transparent;
+      width: 100%;
+      right: 0;
+      left: 0;
+      margin-left: 0;
+  }
   .digicom-loader{
     background: url(../images/spinner.gif) no-repeat 50% 42%;
     height: 100px;
@@ -61,5 +62,14 @@
       width: 20px;
       background-size: 15px;
     }
+  }
+  #jform_person.radio.btn-group{
+    input[type="radio"]{
+      display: none;
+    }
+  }
+
+  input{
+    height: inherit;
   }
 }
