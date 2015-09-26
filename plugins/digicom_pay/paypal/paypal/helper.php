@@ -37,7 +37,7 @@ class plgDigiCom_PayPaypalHelper
 
 	/*
 	* method Storelog
-	* from onTP_Storelog
+	* from onDigicom_PayStorelog
 	* used to store log for plugin debug payment
 	* @data : the necessary info recieved from form about payment
 	* @return null
@@ -65,7 +65,7 @@ class plgDigiCom_PayPaypalHelper
 
 	/*
 	* method validateIPN
-	* from onTP_Processpayment
+	* from onDigicom_PayProcesspayment
 	* used to validate the data recieved from payment is untouched
 	* @data : the necessary info recieved from form about payment
 	* @return null
