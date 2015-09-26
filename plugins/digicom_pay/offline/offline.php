@@ -90,13 +90,13 @@ class plgDigiCom_PayOffline extends JPlugin
 	}
 
 	/*
-	* method onTP_GetHTML
+	* method onDigicom_PayGetHTML
 	* on transection process this function is being used to get html from component
 	* @dependent : self::buildLayout()
 	* @return html for view
 	* @vars : passed from component, all info regarding payment n order
 	*/
-	function onTP_GetHTML($vars,$pg_plugin)
+	function onDigicom_PayGetHTML($vars,$pg_plugin)
 	{
 		if($pg_plugin != $this->_name) return;
 		$vars->custom_name= $this->params->get( 'plugin_name' );
@@ -106,12 +106,12 @@ class plgDigiCom_PayOffline extends JPlugin
 	}
 
 	/*
-	* method onTP_GetInfo
+	* method onDigicom_PayGetInfo
 	* can be used Build List of Payment Gateway in the respective Components
 	* for payment process its not used
 	*/
 
-	function onTP_GetInfo($config)
+	function onDigicom_PayGetInfo($config)
 	{
 
 		if(!in_array($this->_name,$config)) return;
@@ -122,12 +122,12 @@ class plgDigiCom_PayOffline extends JPlugin
 	}
 
 	/*
-	* method onTP_Processpayment
+	* method onDigicom_PayProcesspayment
 	* used when we recieve payment from site or thurd party
 	* @data : the necessary info recieved from form about payment
 	* @return payment process final status
 	*/
-	function onTP_Processpayment($data)
+	function onDigicom_PayProcesspayment($data)
 	{
 		$processor = JFactory::getApplication()->input->get('processor','');
 		if($processor != $this->_name) return;
@@ -165,12 +165,12 @@ class plgDigiCom_PayOffline extends JPlugin
 	}
 
 	/*
-	* method onTP_Storelog
+	* method onDigicom_PayStorelog
 	* used to store log for plugin debug payment
 	* @data : the necessary info recieved from form about payment
 	* @return null
 	*/
-	function onTP_Storelog($name, $data)
+	function onDigicom_PayStorelog($name, $data)
 	{
 		if($name != $this->_name) return;
 		plgDigiCom_PayOfflineHelper::Storelog($this->_name,$data);

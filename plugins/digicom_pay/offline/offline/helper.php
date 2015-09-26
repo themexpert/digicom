@@ -27,7 +27,7 @@ class plgDigiCom_PayOfflineHelper
 
 	/*
 	* method Storelog
-	* from onTP_Storelog
+	* from onDigicom_PayStorelog
 	* used to store log for plugin debug payment
 	* @data : the necessary info recieved from form about payment
 	* @return null
