@@ -374,6 +374,8 @@ class DigiComModelCart extends JModelItem
 
 					if($promoamount > 0){
 
+						// lets prepare promoamount by quantity
+						$promoamount = $promoamount * $item->quantity;
 						$item->discount = $promoamount;
 						$item->price_formated = $item->price - $promoamount;
 						//$item->subtotal = $item->subtotal - $promoamount;
