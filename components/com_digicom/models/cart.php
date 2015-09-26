@@ -923,7 +923,7 @@ class DigiComModelCart extends JModelItem
 
 		$dispatcher=JDispatcher::getInstance();
 		// JPluginHelper::importPlugin('digicom_pay',$name);
-		$dispatcher->trigger('onTP_Storelog',array($name,$data1));
+		$dispatcher->trigger('onDigicom_PayStorelog',array($name,$data1));
 
 		return true;
 	}

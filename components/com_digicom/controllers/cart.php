@@ -586,7 +586,7 @@ class DigiComControllerCart extends JControllerLegacy
 		// after recieved payment request, get the status info
 		//JPluginHelper::importPlugin('digicom_pay', $processor);
 		$dispatcher = JDispatcher::getInstance();
-		$data = $dispatcher->trigger('onTP_Processpayment', array($post));
+		$data = $dispatcher->trigger('onDigicom_PayProcesspayment', array($post));
 
 		//after recieved payment, trigger any additional events
 		$param["cart_products"] = implode(" - ", $products);

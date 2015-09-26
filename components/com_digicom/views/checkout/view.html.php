@@ -82,7 +82,7 @@ class DigiComViewCheckout extends JViewLegacy
 		JPluginHelper::importPlugin('digicom_pay', $pay_plugin);
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onSendPayment', array(& $params));
-		$html = $dispatcher->trigger('onTP_GetHTML', array($vars,$pay_plugin));
+		$html = $dispatcher->trigger('onDigicom_PayGetHTML', array($vars,$pay_plugin));
 
 		if (!isset($html[0])){
 			$html[0] = '';
