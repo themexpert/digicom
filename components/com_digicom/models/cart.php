@@ -924,18 +924,18 @@ class DigiComModelCart extends JModelItem
 
 	}
 
-	function storelog($name,$data)
-	{
-		$data1=array();
-		$data1['raw_data']=isset($data['raw_data'])?$data['raw_data']:array();
-		$data1['JT_CLIENT']="com_digicom";
-
-		$dispatcher=JDispatcher::getInstance();
-		// JPluginHelper::importPlugin('digicom_pay',$name);
-		$dispatcher->trigger('onDigicom_PayStorelog',array($name,$data1));
-
-		return true;
-	}
+	// function storelog($name,$data)
+	// {
+	// 	$data1=array();
+	// 	$data1['raw_data']=isset($data['raw_data'])?$data['raw_data']:array();
+	// 	$data1['JT_CLIENT']="com_digicom";
+	//
+	// 	$dispatcher=JDispatcher::getInstance();
+	// 	// JPluginHelper::importPlugin('digicom_pay',$name);
+	// 	$dispatcher->trigger('onDigicom_PayStorelog',array($name,$data1));
+	//
+	// 	return true;
+	// }
 
 	function proccessSuccess($post, $pay_plugin, $order_id, $sid, $responce,$items)
 	{
@@ -952,7 +952,7 @@ class DigiComModelCart extends JModelItem
 		$result 	= $post;
 		$data 		= $responce[0];
 
-		$this->storelog($pay_plugin, $data);
+		// $this->storelog($pay_plugin, $data);
 
 		$logtype = 'status';
 
@@ -1327,7 +1327,7 @@ class DigiComModelCart extends JModelItem
 		$table->promocode							= $promocode;
 		$table->published							= 1;
 		// print_r($table);die;
-		
+
 		// Trigger the event
 		$dispatcher=JDispatcher::getInstance();
 		$dispatcher->trigger('onDigicomBeforePlaceOrder',array($table));
