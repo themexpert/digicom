@@ -142,7 +142,12 @@ if (typeof jQuery === 'undefined') {
 			var url = this.root + "index.php?option=com_digicom&view=cart&task=cart.getCartItem&cid="+pid;
 
 			if ( Digicom.dataSet('quantity'+pid).length ) {
-				url += '&quantity'+pid+'=' + Digicom.dataSet('quantity'+pid).val();
+        var quantity = Digicom.dataSet('quantity'+pid).val();
+				if(quantity <= 0){
+          quantity = 1;
+          Digicom.dataSet('quantity'+pid).val('1');
+        }
+        url += '&quantity'+pid+'=' + quantity;
 			}
 
 			$.ajax({
