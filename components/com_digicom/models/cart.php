@@ -250,7 +250,9 @@ class DigiComModelCart extends JModelItem
 			$item->discount = 0;
 			$item->currency = $configs->get('currency','USD');
 			$item->subtotal = $item->price * $item->quantity;
+
 			$item->price_formated = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
+			$item->subtotal_formated = DigiComSiteHelperPrice::format_price( $item->subtotal, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
 
 		}
 
@@ -337,12 +339,10 @@ class DigiComModelCart extends JModelItem
 			//initial promo amount as 0, so later we can use it
 			$promoamount = 0;
 
-			$payprocess['price'] = $total += $item->subtotal;
 			$payprocess['number_of_products'] += $item->quantity;
 
 			//check promocode on product apply
 			if($addPromo && $onProduct){
-				//TODO: Apply Product promo
 				// Get product restrictions
 				$query = $db->getQuery(true);
 				$query->select($db->quoteName('p.productid'))
@@ -363,40 +363,49 @@ class DigiComModelCart extends JModelItem
 						if($promoamount > $item->price){
 							$promoamount = $item->price;
 						}
-						$promovalue += $promoamount;
+
 					}
 					else
 					{
 						// Use percentage
 						$promoamount = $item->price * $promo->amount / 100;
-						$promovalue += $promoamount;
 					}
 
 					if($promoamount > 0){
 
 						// lets prepare promoamount by quantity
 						$promoamount = $promoamount * $item->quantity;
+						$promovalue += $promoamount;
+
 						$item->discount = $promoamount;
-						$item->price_formated = $item->price - $promoamount;
-						//$item->subtotal = $item->subtotal - $promoamount;
+
+						// $item->price_formated = $item->subtotal - $promoamount;
+						$item->subtotal = $item->subtotal - $promoamount;
+
 						$payprocess['item_discount'] = 1;
 					}
 					$payprocess['discount_calculated'] = 1;
 					//print_r($item);die;
 				}
 			} // end if for: product promo check
+
+			$total += $item->subtotal;
 		}
 
+		// lets declare the total payable amount
+		$payprocess['price'] = $total;
+
 		if($addPromo && $onProduct){
-			$total -= $promovalue;
+			// $total -= $promovalue;
 			$promo_applied = 1;
 			$payprocess['promo'] = $promovalue;
 		}
+		elseif($addPromo && $ontotal)
+		{
+			//--------------------------------------------------------
+			// Promo code on cart
+			//--------------------------------------------------------
 
-		//--------------------------------------------------------
-		// Promo code on cart
-		//--------------------------------------------------------
-		if($addPromo && $ontotal){
 			//echo 'apply promo on cart';die;
 			//now lets apply promo discounts if there are any
 			if($promo->promotype == '0'){//use absolute values
@@ -1391,7 +1400,7 @@ class DigiComModelCart extends JModelItem
 		$configs = $this->configs;
 		$customer = new DigiComSiteHelperSession();
 		$db 	= JFactory::getDbo();
-		$sql 	= 'SELECT `p`.*, `od`.quantity FROM
+		$sql 	= 'SELECT `p`.*, `od`.`price`, `od`.`quantity` FROM
 					`#__digicom_products` AS `p`
 						INNER JOIN
 					`#__digicom_orders_details` AS `od` ON (`od`.`productid` = `p`.`id`)
@@ -1406,13 +1415,11 @@ class DigiComModelCart extends JModelItem
 			$item = &$items[$i];
 			$item->discount = 0;
 			$item->currency = $configs->get('currency','USD');
-			$item->price = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
-			//$item->subtotal = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
-
-			//$item->price_formated = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
-			//$item->subtotal_formated = DigiComSiteHelperPrice::format_price( $item->subtotal, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
-
 			$item->subtotal = $item->price * $item->quantity;
+
+			$item->price_formated = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
+			$item->subtotal_formated = DigiComSiteHelperPrice::format_price( $item->subtotal, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
+
 		}
 
 		return $items ;
