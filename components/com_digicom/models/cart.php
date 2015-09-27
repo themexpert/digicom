@@ -384,10 +384,16 @@ class DigiComModelCart extends JModelItem
 			$total += $item->subtotal;
 		}
 
+		// lets declare the subtotal without discount
+		$payprocess['subtotal'] = $total;
+
 		if($addPromo && $onProduct){
 			$total -= $promovalue;
 			$promo_applied = 1;
 			$payprocess['promo'] = $promovalue;
+
+			// lets recalculate it
+			$payprocess['subtotal'] = $total;
 		}
 		elseif($addPromo && $ontotal)
 		{
