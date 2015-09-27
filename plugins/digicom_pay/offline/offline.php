@@ -134,6 +134,10 @@ class plgDigiCom_PayOffline extends JPlugin
 
 		$payment_status = $this->translateResponse('Pending');
 		$data['payment_status'] = $payment_status;
+		if(!isset($data['payment_status']))
+		{
+			$this->onDigicom_PayStorelog($this->_name, $data);
+		}
 
 		$result = array(
 			'transaction_id'	=>	$this->getUniqueTransactionId($data['order_id']),
