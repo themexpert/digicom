@@ -19,10 +19,10 @@ class DigiComControllerConfigs extends JControllerAdmin {
 
 		$this->registerTask("apply", "save");
 		$this->registerTask("save", "save");
-		
+
 		$this->_model = $this->getModel("Config");
 		$this->app = JFactory::getApplication();
-		
+
 	}
 
 	function cancel() {
@@ -31,27 +31,27 @@ class DigiComControllerConfigs extends JControllerAdmin {
 
 
 	function save () {
-		
+
 		// Check for request forgeries.
 		if (!JSession::checkToken())
 		{
 			$this->app->enqueueMessage(JText::_('JINVALID_TOKEN'));
 			$this->setRedirect('index.php?option=com_digicom&view=configs');
 		}
-		
+
 		$form   = $this->_model->getForm();
 		$data   = $this->input->get('jform', array(), 'array');
 		$id     = $this->input->getInt('id');
 		$option = $this->input->get('com_digicom');
 		$task = $this->input->get('task','apply');
-		
+
 		// Check if the user is authorized to do this.
 		if (!JFactory::getUser()->authorise('core.admin', $option))
 		{
 			$this->app->enqueueMessage(JText::_('JERROR_ALERTNOAUTHOR'));
 			$this->setRedirect('index.php?option=com_digicom&view=configs');
 		}
-		
+
 		// Validate the posted data.
 		$return = $this->_model->validate($form, $data);
 
@@ -111,12 +111,6 @@ class DigiComControllerConfigs extends JControllerAdmin {
 		return true;
 	}
 
-	function supportedsites(){
-		$view = $this->getView("Configs", "html");
-		$view->setLayout("supportedsites");
-		$view->supportedsites();
-	}
-
 	/*
 	* copyemail template
 	* to set override file;
@@ -128,7 +122,7 @@ class DigiComControllerConfigs extends JControllerAdmin {
 		$app = JFactory::getApplication();
 		$type     = $this->input->get('type','email');
 		$file     = $this->input->get('file','');
-		
+
 		switch ($type) {
 			case 'email':
 				//
@@ -157,7 +151,7 @@ class DigiComControllerConfigs extends JControllerAdmin {
 					return false;
 				}
 				break;
-			
+
 			default:
 				// we will handle only email for now
 				break;
@@ -191,4 +185,3 @@ class DigiComControllerConfigs extends JControllerAdmin {
 
 	}
 }
-

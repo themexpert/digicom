@@ -60,11 +60,6 @@ class DigiComViewConfigs extends JViewLegacy
 		parent::display($tpl);
 	}
 
-	function supportedsites($tpl = null)
-	{
-		parent::display($tpl);
-	}
-
 	/**
 	 * Add the page title and toolbar.
 		*
