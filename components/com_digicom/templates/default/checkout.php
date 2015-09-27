@@ -34,9 +34,9 @@ $data = $this->data;
 			  <thead>
 			    <tr>
 			      <th><?php echo JText::_("COM_DIGICOM_PRODUCT");?></th>
-			      <th><?php echo JText::_("COM_DIGICOM_PRICE_PLAN");?></th>
-			      <th><?php echo JText::_("COM_DIGICOM_QUANTITY"); ?></th>
-			      <th><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></th>
+			      <th class="text-center"><?php echo JText::_("COM_DIGICOM_PRICE_PLAN");?></th>
+			      <th class="text-center"><?php echo JText::_("COM_DIGICOM_QUANTITY"); ?></th>
+			      <th class="text-center"><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></th>
 			    </tr>
 			  </thead>
 			  <tbody>
@@ -50,9 +50,9 @@ $data = $this->data;
 			            </div>
 			          <?php endif; ?>
 			        </td>
-			        <td><?php echo DigiComSiteHelperPrice::format_price($item->price, $item->currency, true, $this->configs); ?></td>
-			        <td><?php echo $item->quantity; ?></td>
-			        <td><?php echo DigiComSiteHelperPrice::format_price($item->subtotal-(isset($value_discount) ? $value_discount : 0), $item->currency, true, $this->configs); ?></td>
+			        <td class="text-center"><?php echo DigiComSiteHelperPrice::format_price($item->price, $item->currency, true, $this->configs); ?></td>
+			        <td class="text-center"><?php echo $item->quantity; ?></td>
+			        <td class="text-center"><?php echo DigiComSiteHelperPrice::format_price($item->subtotal-(isset($value_discount) ? $value_discount : 0), $item->currency, true, $this->configs); ?></td>
 			      </tr>
 			      <?php
 			    endforeach;
@@ -60,8 +60,29 @@ $data = $this->data;
 			  </tbody>
 			  <tfoot>
 					<tr>
-						<td colspan="4" style="text-align:right;">
-							Total : <strong><?php echo  DigiComSiteHelperPrice::format_price($this->order->amount, $configs->get('currency','USD'), true, $configs);?></strong>
+						<td colspan="3">
+							<?php echo JText::_('COM_DIGICOM_SUBTOTAL'); ?>
+						</td>
+						<td class="text-center">
+							 <strong><?php echo  DigiComSiteHelperPrice::format_price($this->order->price, $configs->get('currency','USD'), true, $configs);?></strong>
+						</td>
+					</tr>
+					<?php if($this->order->discount > 0): ?>
+					<tr>
+						<td colspan="3">
+							<?php echo JText::_('COM_DIGICOM_PROMO_DISCOUNT'); ?>
+						</td>
+						<td  class="text-center">
+							 <strong><?php echo  DigiComSiteHelperPrice::format_price($this->order->discount	, $configs->get('currency','USD'), true, $configs);?></strong>
+						</td>
+					</tr>
+					<?php endif; ?>
+					<tr>
+						<td colspan="3">
+							<?php echo JText::_('COM_DIGICOM_TOTAL'); ?>
+						</td>
+						<td class="text-center">
+							 <strong><?php echo  DigiComSiteHelperPrice::format_price($this->order->amount, $configs->get('currency','USD'), true, $configs);?></strong>
 						</td>
 					</tr>
 			  </tfoot>
