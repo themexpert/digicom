@@ -24,7 +24,7 @@ $processor 		= $this->session->get('processor','1');
       </td>
       <td>
           <div class="dc-cart-subtotal-price text-right" data-digicom-id="cart_subtotal" style="font-size: 15px;text-align:right;">
-            <?php echo DigiComSiteHelperPrice::format_price($this->tax['price'], $this->tax['currency'], true, $this->configs); ?>
+            <?php echo DigiComSiteHelperPrice::format_price($this->tax['subtotal'], $this->tax['currency'], true, $this->configs); ?>
           </div>
       </td>
     </tr>
@@ -42,7 +42,7 @@ $processor 		= $this->session->get('processor','1');
       </td>
       <td nowrap="nowrap" style="text-align: center;">
         <ul class="list-unstyled">
-          <?php if ($this->tax['discount_calculated']): ?>
+          <?php if ( $this->tax['discount_calculated'] && !$this->tax['item_discount'] ): ?>
             <li class="dc-cart-discount-title" style="font-size: 15px;text-align:right;">
             <?php echo JText::_("COM_DIGICOM_PROMO_DISCOUNT");?>
           </li>
@@ -55,7 +55,7 @@ $processor 		= $this->session->get('processor','1');
       </td>
       <td nowrap="nowrap" style="text-align: center;">
         <ul style="margin: 0; padding: 0;list-style-type: none;">
-          <?php if ($this->tax['discount_calculated']): ?>
+          <?php if ($this->tax['discount_calculated'] && !$this->tax['item_discount']): ?>
           <li class="dc-cart-discount-price" data-digicom-id="cart_discount" style="font-size: 15px;text-align:right;">
             <?php echo DigiComSiteHelperPrice::format_price($this->tax['promo'], $this->tax['currency'], true, $this->configs); ?>
           </li>
