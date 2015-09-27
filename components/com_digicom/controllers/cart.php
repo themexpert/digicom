@@ -483,6 +483,8 @@ class DigiComControllerCart extends JControllerLegacy
 					$result['cart_item_price'.$cid] = DigiComSiteHelperPrice::format_price($item->price, $item->currency, true, $configs);
 					$result['cart_item_discount'.$cid] = DigiComSiteHelperPrice::format_price($item->discount, $item->currency, true, $configs);
 					$result['cart_item_total'.$cid] = DigiComSiteHelperPrice::format_price($item->subtotal-$item->discount, $item->currency, true, $configs);
+
+					break;
 				}
 			}
 		}
