@@ -287,13 +287,6 @@ class DigiComModelCart extends JModelItem
 			$configs = $configs->getConfigs();
 		}
 
-		// if(isset($cust_info->_customer) && !isset($cust_info->_customer->country)){
-		// 	$cust_info->_customer->country = '';
-		// }
-		// if(isset($cust_info->_customer) && !isset($cust_info->_customer->state)){
-		// 	$cust_info->_customer->state = '';
-		// }
-
 		$pay_flag = false;
 		$can_promo = true;
 		$payprocess = array();
@@ -338,7 +331,6 @@ class DigiComModelCart extends JModelItem
 		{
 			//initial promo amount as 0, so later we can use it
 			$promoamount = 0;
-
 			$payprocess['number_of_products'] += $item->quantity;
 
 			//check promocode on product apply
@@ -374,13 +366,13 @@ class DigiComModelCart extends JModelItem
 					if($promoamount > 0){
 
 						// lets prepare promoamount by quantity
-						$promoamount = $promoamount * $item->quantity;
+						$item->discount = $promoamount = $promoamount * $item->quantity;
 						$promovalue += $promoamount;
 
-						$item->discount = $promoamount;
-
+						// $item->discount = $promoamount;
 						// $item->price_formated = $item->subtotal - $promoamount;
-						$item->subtotal = $item->subtotal - $promoamount;
+
+						// $item->subtotal = $item->subtotal - $promoamount;
 
 						$payprocess['item_discount'] = 1;
 					}
@@ -392,11 +384,8 @@ class DigiComModelCart extends JModelItem
 			$total += $item->subtotal;
 		}
 
-		// lets declare the total payable amount
-		$payprocess['price'] = $total;
-
 		if($addPromo && $onProduct){
-			// $total -= $promovalue;
+			$total -= $promovalue;
 			$promo_applied = 1;
 			$payprocess['promo'] = $promovalue;
 		}
@@ -426,6 +415,9 @@ class DigiComModelCart extends JModelItem
 
 			$payprocess['discount_calculated'] = 1;
 		}
+
+		// lets declare the total payable amount
+		$payprocess['price'] = $total;
 
 		$name = 'promocode'.$cust_info->_sid;
 		$justapplied = $session->get($name,false);
