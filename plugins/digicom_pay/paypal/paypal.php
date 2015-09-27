@@ -172,7 +172,11 @@ class  plgDigiCom_PayPaypal extends JPlugin
 
 		$verify 		= plgDigiCom_PayPaypalHelper::validateIPN($data);
 
-		if (!$verify) { return false; }
+		if (!$verify) {
+			$info = array('raw_data'	=>	$data);
+			$this->onDigicom_PayStorelog($this->_name, $info);
+			return false;
+		}
 
 		$payment_status = $this->translateResponse( $data['payment_status'] );
 
