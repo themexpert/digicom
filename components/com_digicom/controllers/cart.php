@@ -489,7 +489,8 @@ class DigiComControllerCart extends JControllerLegacy
 
 		$price = DigiComSiteHelperPrice::format_price($tax['price'], $tax['currency'], true, $configs);
 		$total = DigiComSiteHelperPrice::format_price($tax['taxed'], $tax['currency'], true, $configs);
-		$result['cart_subtotal'] = $price;//"{$tax['taxed']}";
+		$subtotal = DigiComSiteHelperPrice::format_price($tax['subtotal'], $tax['currency'], true, $configs);
+		$result['cart_subtotal'] = $subtotal;
 		$result['cart_total'] = $total;//"{$tax['taxed']}";
 
 		//$cart = $this->_model;
