@@ -384,6 +384,9 @@ class DigiComModelCart extends JModelItem
 			$total += $item->subtotal;
 		}
 
+		// lets declare the total payable amount
+		$payprocess['price'] = $total;
+
 		// lets declare the subtotal without discount
 		$payprocess['subtotal'] = $total;
 
@@ -421,9 +424,6 @@ class DigiComModelCart extends JModelItem
 
 			$payprocess['discount_calculated'] = 1;
 		}
-
-		// lets declare the total payable amount
-		$payprocess['price'] = $total;
 
 		$name = 'promocode'.$cust_info->_sid;
 		$justapplied = $session->get($name,false);
@@ -1309,6 +1309,8 @@ class DigiComModelCart extends JModelItem
 			$transectionid = null;
 		}
 
+		// print_r($tax);die;
+
 		// trigger dispatcher
 		$table = $this->getTable('order');
 		$table->userid								= $uid;
@@ -1316,7 +1318,7 @@ class DigiComModelCart extends JModelItem
 		$table->order_date						= $now;
 		$table->price									= $tax['price'];
 		$table->amount								= $tax['payable_amount'];
-		$table->amount_paid						= $tax['promo'];
+		$table->discount							= $tax['promo'];
 		$table->currency							= $tax['currency'];
 		$table->processor							= $paymethod;
 		$table->number_of_products		= $tax['number_of_products'];
@@ -1324,11 +1326,11 @@ class DigiComModelCart extends JModelItem
 		$table->promocodeid						= $promoid;
 		$table->promocode							= $promocode;
 		$table->published							= 1;
-
+		// print_r($table);die;
+		
 		// Trigger the event
 		$dispatcher=JDispatcher::getInstance();
 		$dispatcher->trigger('onDigicomBeforePlaceOrder',array($table));
-		//print_r($table);die;
 		if($table->store()){
 			$orderid = $table->id;
 			$this->storeTransactionData( $items, $orderid, $tax, $sid );
