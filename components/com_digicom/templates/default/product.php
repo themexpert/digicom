@@ -118,7 +118,7 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 								<?php if($configs->get('afteradditem',0) == "2") {	?>
 									<div type="button" class="btn btn-success btn-large btn-block btn--cart" onclick="Digicom.addtoCart(<?php echo $this->item->id; ?>,'<?php echo JRoute::_("index.php?option=com_digicom&view=cart"); ?>');"><?php echo JText::_("COM_DIGICOM_ADD_TO_CART");?></div>
 								<?php }else { ?>
-									<div type="submit" class="btn btn-success btn-large btn-block"> <?php echo JText::_('COM_DIGICOM_ADD_TO_CART'); ?></div>
+									<button type="submit" class="btn btn-success btn-large btn-block"> <?php echo JText::_('COM_DIGICOM_ADD_TO_CART'); ?></button>
 									<?php } ?>
 							</div>
 
