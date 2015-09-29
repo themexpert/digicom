@@ -84,7 +84,7 @@ defined('_JEXEC') or die;
           </td>
 
           <td nowrap="nowrap">
-            <a href="#" class="btn btn-small btn-danger" onclick="Digicom.deleteFromCart(<?php echo $item->cid;?>);">
+            <a href="#" class="btn btn-small btn-danger" onclick="Digicom.deleteFromCart(<?php echo $item->cid;?>, event);">
               <i class="icon icon-trash glyphicon glyphicon-trash glyphicon-white"></i>
             </a>
           </td>
