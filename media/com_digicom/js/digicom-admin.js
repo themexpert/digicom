@@ -98,6 +98,7 @@ function removeFilesRow(selector)
 
   if (confirm(Joomla.JText._('COM_DIGICOM_PRODUCTS_FILES_REMOVE_WARNING')))
   {
+    beforeFileremove(row);
     jQuery(row).remove();
   }
 }
@@ -128,15 +129,32 @@ function afterAddRow(new_row, fileindex)
 
 }
 
-function reArranageFiles(){
-  // var rows = jQuery('table#filesitemList tbody#itemsfilesRows tr');
-  // jQuery('*', rows).each('',function()
-  // {
-  //   jQuery.each(this.attributes, function(index, element){
-  //     this.value = this.value.replace(/{{row-count-placeholder}}/, fileindex);
-  //     this.value = this.value.replace(/_row_count_placeholder_id_/, fileindex);
-  //   });
-  // });
+function reArranageFiles()
+{
+  var rows = jQuery('table#filesitemList tbody#itemsfilesRows tr');
+  jQuery(rows).each(function(index)
+  {
+    console.log(index);
+    // jQuery.each(this.attributes, function(index, element){
+    //   this.value = this.value.replace(/{{row-count-placeholder}}/, fileindex);
+    //   this.value = this.value.replace(/_row_count_placeholder_id_/, fileindex);
+    // });
+    jQuery(this).find("input[id^='files_ordering_']").val(index);
+  });
+}
+
+function beforeFileremove(row) {
+  var fields =  jQuery(row).find("input[id^='digicom_files_id']");
+  var filesId = '';
+  jQuery(fields).each(function(){
+    filesId = this.value;
+  });
+  var jform_files_remove_id = jQuery("#jform_files_remove_id").val();
+  if(jform_files_remove_id){
+    jQuery('#jform_files_remove_id').val(jform_files_remove_id + ',' + filesId);
+  }else{
+    jQuery('#jform_files_remove_id').val(filesId);
+  }
 }
 
 /* end files function */
@@ -145,7 +163,7 @@ jQuery(document).ready(function() {
 
   if( typeof jQuery.ui !== 'undefined' && typeof jQuery.ui.sortable !== 'undefined') {
     jQuery('#itemsfilesRows').sortable({
-      stop         : reArranageFiles();
+      stop         : reArranageFiles
     });
   }
 
