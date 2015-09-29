@@ -89,8 +89,66 @@ function showProperTemplateEmail(type, e){
     rawTemplate.parent().parent().show();
 	}
 }
+/* files functions */
+function removeFilesRow(selector)
+{
+  event.preventDefault();
+
+  var row = jQuery(selector).parents('tr');
+
+  if (confirm(Joomla.JText._('COM_DIGICOM_PRODUCTS_FILES_REMOVE_WARNING')))
+  {
+    jQuery(row).remove();
+  }
+}
+
+function addFilesRow(){
+  event.preventDefault();
+
+  var container = jQuery('table#filesitemList tbody');
+  var row       = jQuery('table#filesRowSample tbody').clone().html();
+  var fileindex = parseInt(jQuery('table#filesitemList tbody#itemsfilesRows tr').last().attr('data-index'))+1;
+  var new_row = jQuery(row).appendTo(container);
+  afterAddRow(new_row, fileindex);
+
+  jQuery(new_row).attr('data-index',fileindex);
+
+}
+
+function afterAddRow(new_row, fileindex)
+{
+
+  jQuery('*', new_row).each(function()
+  {
+    jQuery.each(this.attributes, function(index, element){
+      this.value = this.value.replace(/{{row-count-placeholder}}/, fileindex);
+      this.value = this.value.replace(/_row_count_placeholder_id_/, fileindex);
+    });
+  });
+
+}
+
+function reArranageFiles(){
+  // var rows = jQuery('table#filesitemList tbody#itemsfilesRows tr');
+  // jQuery('*', rows).each('',function()
+  // {
+  //   jQuery.each(this.attributes, function(index, element){
+  //     this.value = this.value.replace(/{{row-count-placeholder}}/, fileindex);
+  //     this.value = this.value.replace(/_row_count_placeholder_id_/, fileindex);
+  //   });
+  // });
+}
+
+/* end files function */
 
 jQuery(document).ready(function() {
+
+  if( typeof jQuery.ui !== 'undefined' && typeof jQuery.ui.sortable !== 'undefined') {
+    jQuery('#itemsfilesRows').sortable({
+      stop         : reArranageFiles();
+    });
+  }
+
 
   jQuery('.email_template_digicom').parent().parent().hide();
 
@@ -191,11 +249,11 @@ jQuery(document).ready(function() {
 		  });
 		}
 	};
-	jQuery('.repeat').each(function() {
-		jQuery(this).repeatable_fields({
-			'sortable_options': sortable
-		});
-	});
+	// jQuery('.repeat').each(function() {
+	// 	jQuery(this).repeatable_fields({
+	// 		'sortable_options': sortable
+	// 	});
+	// });
 
 
 
