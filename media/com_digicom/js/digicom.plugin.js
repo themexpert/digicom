@@ -32,16 +32,15 @@ if (typeof jQuery === 'undefined') {
 			Digicom.checkPersonStatus(); // check if need to toggle the field
 
 			// on click show terms, show
-			Digicom.dataSet('showterms').click(function() {
-			    event.preventDefault();
-					$('#termsShowModal').digicomodal('show');
+			Digicom.dataSet('showterms').click(function(e) {
+         e.preventDefault();
+         $('#termsShowModal').digicomodal('show');
 			});
 
 			// on click show terms, show
 			Digicom.taskSet('loading').click(function() {
 					$(this).append('<div class="digicom-loader small"></div>');
 					$(this).addClass('disabled');
-			    // event.preventDefault();
 			});
 
 			// on click agree, make the agreeterms accepet
@@ -179,7 +178,6 @@ if (typeof jQuery === 'undefined') {
 		*/
 		refreshCart: function ()
 		{
-			// event.preventDefault();
 			Digicom.dataSet('task').val('cart.updateCart');
 			Digicom.dataSet('cart_form').submit();
 		},
@@ -187,9 +185,9 @@ if (typeof jQuery === 'undefined') {
 		/**
 		* Update Cart Method
 		*/
-		deleteFromCart: function (cartid)
+		deleteFromCart: function (cartid, e)
 		{
-			event.preventDefault();
+      e.preventDefault();
 			location.href = this.root+'index.php?option=com_digicom&view=cart&task=cart.deleteFromCart&cartid='+cartid;
 		},
 
