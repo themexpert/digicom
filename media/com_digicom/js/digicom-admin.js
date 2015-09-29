@@ -107,7 +107,8 @@ function addFilesRow(){
   event.preventDefault();
 
   var container = jQuery('table#filesitemList tbody');
-  var row       = jQuery('table#filesRowSample tbody').clone().html();
+  // var row       = jQuery('table#filesRowSample tbody').clone().html();
+  var row       = fileSampleRow;
   var fileindex = parseInt(jQuery('table#filesitemList tbody#itemsfilesRows tr').last().attr('data-index'))+1;
   var new_row = jQuery(row).appendTo(container);
   afterAddRow(new_row, fileindex);
@@ -149,6 +150,7 @@ function beforeFileremove(row) {
   jQuery(fields).each(function(){
     filesId = this.value;
   });
+  if(!filesId) return;
   var jform_files_remove_id = jQuery("#jform_files_remove_id").val();
   if(jform_files_remove_id){
     jQuery('#jform_files_remove_id').val(jform_files_remove_id + ',' + filesId);
