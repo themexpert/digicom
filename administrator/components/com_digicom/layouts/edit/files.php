@@ -11,44 +11,31 @@
 defined('_JEXEC') or die;
 JHtml::_('jquery.ui', array('sortable'));
 JText::script('COM_DIGICOM_PRODUCTS_FILES_REMOVE_WARNING');
-// $document = JFactory::getDocument();
-// addFilesRow();
-// $document->addScriptDeclaration('var DIGICOM_ALERT_REMOVE_FILES = "'. JText::_("COM_DIGICOM_PRODUCTS_FILES_REMOVE_WARNING") . '";');
-// $document->addScript(JURI::root(true).'/media/com_digicom/js/repeatable-fields.js?v=1.0.0');
-// $saveOrderingUrl = 'index.php?option=com_digicom&task=categories.saveOrderAjax&tmpl=component';
-// $saveOrderingUrl = '';
-// JHtml::_('sortablelist.sortable');
+$document = JFactory::getDocument();
+$fileSampleRow  = '';
+$fileSampleRow .= '<tr>';
+$fileSampleRow .= '<td style="vertical-align: middle;">';
+$fileSampleRow .= '<div class="text-center">';
+$fileSampleRow .= '<span class="move"><i class="icon-move"></i></span>';
+$fileSampleRow .= '<input type="hidden" name="jform[file][{{row-count-placeholder}}][id]" id="digicom_files_id" value="" />';
+$fileSampleRow .= '<input type="hidden" name="jform[file][{{row-count-placeholder}}][ordering]" value="" id="files_row_count_placeholder_id_ordering"/>';
+$fileSampleRow .= '</div>';
+$fileSampleRow .= '</td>';
+$fileSampleRow .= '<td><input type="text" name="jform[file][{{row-count-placeholder}}][name]" id="files_row_count_placeholder_id_name" placeholder="File Name"/></td>';
+$fileSampleRow .= '<td>';
+$fileSampleRow .= '<div class="input-prepend input-append" style="display: block;">';
+$fileSampleRow .= '<input type="text" name="jform[file][{{row-count-placeholder}}][url]" id="files_row_count_placeholder_id_url" placeholder="Upload or enter the file URL" class="span8"/>';
+$fileSampleRow .= '<a class="files_uploader_modal btn modal" title="Select" href="javascript:;" onclick="openModal(this);">Select</a>';
+$fileSampleRow .= '</div>';
+$fileSampleRow .= '</td>';
+$fileSampleRow .= '<td style="vertical-align: middle;">';
+$fileSampleRow .= '<div class="text-center">';
+$fileSampleRow .= '<a href="#" class="remove" onclick="removeFilesRow(this);"><i class="icon-remove"></i></a>';
+$fileSampleRow .= '</div>';
+$fileSampleRow .= '</td>';
+$fileSampleRow .= '</tr>';
+$document->addScriptDeclaration("var fileSampleRow = '" . $fileSampleRow . "';");
 ?>
-<table id="filesRowSample" class="hide">
-	<tbody><tr>
-			<td style="vertical-align: middle;">
-				<div class="text-center">
-					<span class="move"><i class="icon-move"></i></span>
-					<input type="hidden" name="jform[file][{{row-count-placeholder}}][id]" id="digicom_files_id" value="" />
-					<input type="hidden" name="jform[file][{{row-count-placeholder}}][ordering]" value="" id="files_row_count_placeholder_id_ordering"/>
-				</div>
-			</td>
-			<td>
-				<input type="text" name="jform[file][{{row-count-placeholder}}][name]" id="files_row_count_placeholder_id_name" placeholder="File Name"/>
-			</td>
-
-			<td>
-				<div class="input-prepend input-append" style="display: block;">
-					<input type="text" name="jform[file][{{row-count-placeholder}}][url]" id="files_row_count_placeholder_id_url" placeholder="Upload or enter the file URL" class="span8"/>
-					<a class="files_uploader_modal btn modal" title="Select"
-					href="javascript:;" onclick="openModal(this);"
-					>
-					Select</a>
-				</div>
-			</td>
-			<td style="vertical-align: middle;">
-				<div class="text-center">
-					<a href="#" class="remove" onclick="removeFilesRow(this);"><i class="icon-remove"></i></a>
-				</div>
-			</td>
-		</tr></tbody>
-</table>
-
 <fieldset class="adminform">
 	<legend><?php echo JText::_('COM_DIGICOM_PRODUCT_SINGLE_FILES');?></legend>
 	<div id="digicom_item_files_items" class="repeat">
@@ -127,7 +114,4 @@ JText::script('COM_DIGICOM_PRODUCTS_FILES_REMOVE_WARNING');
 			</tfoot>
 		</table>
 	</div>
-
-
-
 </fieldset>
