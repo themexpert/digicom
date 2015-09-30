@@ -3,7 +3,7 @@
     "description": "DigiCom is next generation ecommerce extension for selling digital product with Joomla!",
     "license"    : "GPL-2.0+",
     "require"    : {
-        "php": ">=5.3.10"
+        "php"    : ">=5.4.0"
     },
     "require-dev": {
         "codeception/codeception": "2.0.13",
