@@ -205,6 +205,10 @@ class DigiComViewProduct extends JViewLegacy
 			{
 				$title = $this->item->name;
 			}
+			if ($this->item->metadesc)
+			{
+				$title = $this->item->metatitle;
+			}
 
 			$path = array(array('title' => $this->item->name, 'link' => ''));
 			$this->category = $category = JCategories::getInstance('Digicom')->get($this->item->catid);
