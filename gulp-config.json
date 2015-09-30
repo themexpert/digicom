@@ -1,0 +1,10 @@
+{
+	"wwwDir"					: "/home/abu/www/digicom/test110",
+	"browserConfig"		: {
+						"proxy"	: "http://localhost/digicom/test110/",
+						"port"	: ""
+	},
+	"defaultTasks"     : ["copy", "watch", "browser-sync"],
+	"extensions"       : {
+	}
+}
