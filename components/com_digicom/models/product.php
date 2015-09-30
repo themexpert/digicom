@@ -97,7 +97,7 @@ class DigiComModelProduct extends JModelItem
 							'CASE WHEN a.modified = ' . $db->quote($db->getNullDate()) . ' THEN a.created ELSE a.modified END as modified, ' .
 							'a.modified_by, a.checked_out, a.checked_out_time, a.publish_up, a.publish_down, ' .
 							'a.images, a.attribs, a.ordering, ' .
-							'a.metakey, a.metadesc, a.access, a.hits, a.metadata, a.featured, a.language'
+							'a.metatitle, a.metakey, a.metadesc, a.access, a.hits, a.metadata, a.featured, a.language'
 						)
 					);
 				$query->from('#__digicom_products AS a');
