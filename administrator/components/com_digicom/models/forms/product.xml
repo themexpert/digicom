@@ -119,6 +119,38 @@
 			<option value="0">JNO</option>
 		</field>
 
+		<field name="xreference" type="text" label="JFIELD_KEY_REFERENCE_LABEL" description="JFIELD_KEY_REFERENCE_DESC" size="20" />
+
+	</fields>
+	<fields name="metadata" label="JGLOBAL_FIELDSET_METADATA_OPTIONS">
+		<fieldset name="jmetadata"
+			label="JGLOBAL_FIELDSET_METADATA_OPTIONS">
+
+			<field name="robots"
+				type="list"
+				label="JFIELD_METADATA_ROBOTS_LABEL"
+				description="JFIELD_METADATA_ROBOTS_DESC"
+				>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="index, follow">JGLOBAL_INDEX_FOLLOW</option>
+				<option value="noindex, follow">JGLOBAL_NOINDEX_FOLLOW</option>
+				<option value="index, nofollow">JGLOBAL_INDEX_NOFOLLOW</option>
+				<option value="noindex, nofollow">JGLOBAL_NOINDEX_NOFOLLOW</option>
+			</field>
+
+			<field name="author" type="text"
+				label="JAUTHOR" description="JFIELD_METADATA_AUTHOR_DESC"
+				size="20" />
+
+			<field name="rights" type="textarea" label="JFIELD_META_RIGHTS_LABEL"
+				description="JFIELD_META_RIGHTS_DESC" required="false" filter="string"
+				cols="30" rows="2" />
+			<field name="xreference" type="text"
+				label="COM_CONTENT_FIELD_XREFERENCE_LABEL"
+				description="COM_CONTENT_FIELD_XREFERENCE_DESC"
+				size="20" />
+
+		</fieldset>
 	</fields>
 
 </form>
