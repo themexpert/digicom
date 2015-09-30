@@ -106,9 +106,9 @@
 
 		<field name="metatitle" type="text" label="JFIELD_META_TITLE_LABEL" description="JFIELD_META_TITLE_DESC" size="40" />
 
-		<field name="metakeywords" type="textarea" label="JFIELD_META_KEYWORDS_LABEL" description="JFIELD_META_KEYWORDS_DESC" rows="3" cols="30" />
+		<field name="metakey" type="textarea" label="JFIELD_META_KEYWORDS_LABEL" description="JFIELD_META_KEYWORDS_DESC" rows="3" cols="30" />
 
-		<field name="metadescription" type="textarea" label="JFIELD_META_DESCRIPTION_LABEL" description="JFIELD_META_DESCRIPTION_DESC" rows="3" cols="30" />
+		<field name="metadesc" type="textarea" label="JFIELD_META_DESCRIPTION_LABEL" description="JFIELD_META_DESCRIPTION_DESC" rows="3" cols="30" />
 
 		<field name="hits" type="text" label="JGLOBAL_HITS" description="COM_DIGICOM_PRODUCT_FIELD_HITS_DESC" class="readonly" size="6" readonly="true" filter="unset" />
 
