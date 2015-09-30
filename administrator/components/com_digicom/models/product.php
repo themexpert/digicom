@@ -504,7 +504,13 @@ class DigiComModelProduct extends JModelAdmin
 	{
 
 		$app = JFactory::getApplication();
+		$filter  = JFilterInput::getInstance();
 
+		if (isset($data['metadata']) && isset($data['metadata']['author']))
+		{
+			$data['metadata']['author'] = $filter->clean($data['metadata']['author'], 'TRIM');
+		}
+		
 		// Alter the name for save as copy
 		if ($app->input->get('task') == 'save2copy')
 		{
