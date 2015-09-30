@@ -18,7 +18,7 @@ $saveHistory = JComponentHelper::getParams($component)->get('save_history', 0);
 $fields0 = $displayData->get('fields') ?: array(
 	'sticky',
 	'language',
-	'note'	
+	'note'
 );
 
 $fields = $displayData->get('fields') ?: array(
@@ -41,7 +41,7 @@ $fields2 = $displayData->get('fields') ?: array(
 	'metadescription',
 	'metadata'
 );
-$fields3 = $displayData->get('fields') ?: array(	
+$fields3 = $displayData->get('fields') ?: array(
 	'hits',
 	'used',
 	'version_note'
@@ -64,7 +64,7 @@ $html[] = '<div id="basic_option" class="accordion-body collapse in">';
 $html[] = '<div class="accordion-inner">';
 
 foreach ($fields as $field)
-{	
+{
 	$field = is_array($field) ? $field : array($field);
 	foreach ($field as $f)
 	{
@@ -90,11 +90,29 @@ $html[] = '<div id="seo_option" class="accordion-body collapse">';
 $html[] = '<div class="accordion-inner">';
 
 foreach ($fields2 as $field)
-{	
+{
 	$field = is_array($field) ? $field : array($field);
 	foreach ($field as $f)
 	{
-		if ($form->getField($f))
+		if($f == 'metadata'){
+			$fieldSets = $form->getFieldsets('metadata');
+			foreach ($fieldSets as $name => $fieldSet) :
+				// Include the real fields in this panel.
+				if ($name == 'jmetadata')
+				{
+					$html[] = $form->renderField('xreference');
+				}
+
+				foreach ($form->getFieldset($name) as $key=>$field)
+				{
+					if ($field->name != 'jform[metadata][xreference]')
+					{
+						$html[] = $field->renderField();
+					}
+				}
+			endforeach;
+		}
+		elseif ($form->getField($f))
 		{
 			if (in_array($f, $hiddenFields))
 			{
