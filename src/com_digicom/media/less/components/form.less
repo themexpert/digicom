@@ -1,0 +1,51 @@
+.control-group{ margin-bottom: 10px; }
+/* Form elements Styling */
+.control-label,
+label{
+  color: @form-label-color; font-size: 14px;
+}
+.form-horizontal .control-label{ width: 300px; }
+
+form:not(.form-horizontal)
+{
+  .control-label,
+  label{ font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+}
+
+textarea, input[type="text"],
+input[type="number"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input {
+  background: @form-background;
+  padding: 4px 6px;
+  color: @form-color;
+  border-radius: 2px;
+  border: 1px solid @form-border;
+  box-shadow: none;
+  .transition(all 0.2s linear);
+
+  &:focus,&:active {
+    border: 1px solid @primary-blue;
+    box-shadow: 0 0 1px @secondary-blue;
+  }
+}
+input[type="number"]{ padding: 10px; }
+.input-append, .input-prepend {
+  textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"],
+  input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+    padding: 4px 5px;
+    border: 1px solid #ddd;
+  }
+}

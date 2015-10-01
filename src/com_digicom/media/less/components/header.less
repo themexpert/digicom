@@ -1,0 +1,68 @@
+header.header {display: none;}
+.subhead-collapse {
+  position: relative;
+  z-index: 11;
+  height:40px !important;
+  margin: 0;
+}
+.subhead {
+  margin-bottom: 0;
+  background: @primary-blue;
+  border-bottom: 0;
+  min-height: inherit;
+
+  .btn-toolbar {
+    text-align: right;
+    margin: 0;
+    .btn-wrapper {margin: 0;}
+    #toolbar-settings {float: right;}
+    #toolbar-title {
+      float: left;
+      margin-left: 0;
+      h3 {
+        margin: 0;
+        line-height: 40px;
+        color: #fff;
+        text-shadow: none;
+        [class^="icon-"],
+        [class*=" icon-"] {margin-right: 15px;}
+      }
+    }
+    .btn{
+      background: transparent;
+      color: #fff;
+      text-shadow: none;
+      border: 0; border-radius: 0;
+      padding: 0 15px;
+      line-height: 40px;
+
+      &:hover,
+      &:focus{
+        background: rgba(0,0,0,0.2);
+        outline: none;
+      }
+    }
+    [class^="icon-"], [class*=" icon-"]{
+      vertical-align: middle; margin-right: 0;
+    }
+    .btn-mini .caret,
+    .btn-small .caret {margin-top: 19px;}
+
+    .icon-publish:before, .icon-save:before, .icon-ok:before, .icon-save-new:before, .icon-save-copy:before, .icon-copy:before,
+    .icon-unpublish:before, .icon-not-ok:before, .icon-eye-close:before, .icon-ban-circle:before, .icon-minus-sign:before, .icon-cancel:before,
+    .icon-edit:before{ color: inherit}
+
+    .dropdown-menu{
+      border-radius: 0; margin: 0; border-color: @tabs-border-color;
+      > li > a{ text-shadow: none; }
+      > li > a:hover,
+      > li > a:focus,
+      &.dropdown-submenu:hover > a,
+      &.dropdown-submenu:focus > a{ background: @primary-blue; }
+    }
+
+    // Make video menu right
+    #toolbar-video{ float: left; margin-left: 10px; }
+  }
+  #toolbar .btn-success{ width: auto; }
+}
