@@ -3,7 +3,7 @@
 
 	<name>Paypal - DigiCom Pay Plugin</name>
 	<author>ThemeXpert</author>
-	<creationDate>2015-08-07</creationDate>
+	<creationDate>##CREATIONDATE##</creationDate>
 	<copyright>Copyright © 2013 themexpert.com All rights reserved.</copyright>
 	<license>GNU/GPLv3</license>
 	<authorEmail>info@themexpert.com</authorEmail>

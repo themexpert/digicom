@@ -2,7 +2,7 @@
 <extension type="module" version="3.4" client="site" method="upgrade">
 	<name>DigiCom Shopping Cart</name>
 	<author>ThemeXpert</author>
-	<creationDate>2015-08-07</creationDate>
+	<creationDate>##CREATIONDATE##</creationDate>
 	<copyright>Copyright (C) 2010-2015 ThemeXpert. All rights reserved.</copyright>
 	<license>GNU/GPLv3</license>
 	<authorEmail>info@themexpert.com</authorEmail>

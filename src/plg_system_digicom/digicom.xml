@@ -3,7 +3,7 @@
 
 	<name>System - DigiCom system plugin</name>
 	<author>ThemeXpert</author>
-	<creationDate>2015-08-07</creationDate>
+	<creationDate>##CREATIONDATE##</creationDate>
 	<copyright>Copyright (C) 2013 themexpert.com. All rights reserved.</copyright>
 	<license>GNU/GPL</license>
 	<authorEmail>info@themexpert.com</authorEmail>

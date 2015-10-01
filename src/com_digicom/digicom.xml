@@ -2,7 +2,7 @@
 <extension type="component" version="3.1" method="upgrade">
 	<name>com_digicom</name>
 	<author>ThemeXpert</author>
-	<creationDate>2015-08-07</creationDate>
+	<creationDate>##CREATIONDATE##</creationDate>
 	<copyright>(C) 2005 - 2015 Open Source Matters. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>admin@themexpert.com</authorEmail>

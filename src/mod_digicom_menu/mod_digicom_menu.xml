@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="3.0" client="administrator" method="upgrade">
 	<name>mod_digicom_menu</name>
-	<creationDate>2015-08-07</creationDate>
+	<creationDate>##CREATIONDATE##</creationDate>
 	<author>ThemeXpert</author>
 	<authorEmail>admin@themexpert.com</authorEmail>
 	<authorUrl>http://www.themexpert.com</authorUrl>
