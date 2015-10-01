@@ -1,3 +1,6 @@
 {
-	"components" : ["com_digicom"]
+	"components" 	: ["com_digicom"],
+	"modules" 		: ["modules"],
+	"plugins" 		: ["plugins"],
+	"media" 			: ["media"]
 }
