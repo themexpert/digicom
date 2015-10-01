@@ -14,16 +14,27 @@ Download package file from [latest release](https://github.com/themexpert/digico
 
 ## Developers
 
-### Build Instructions - Prerequisites
+<!-- ### Build Instructions - Prerequisites
 
 In order to build the installation packages of this component you will need to have the following tools:
 
 * A command line environment. Using Bash under Linux / Mac OS X works best. On Windows you will need to run most tools through an elevated privileges (administrator) command prompt on an NTFS filesystem due to the use of symlinks.
 * A PHP CLI binary in your path
 * Command line Git executables
-* Phing - PHP Archive(phar) is inside the build dir.
+* Phing - PHP Archive(phar) is inside the build dir. -->
 
-### Build Installable `zip` 
+### Tests
+To prepare the system tests (Selenium) to be run in your local machine you are asked to rename the file `tests/acceptance.suite.dist.yml` to `tests/acceptance.suite.yml`. Afterwards, please edit the file according to your system needs.
+
+To run the tests please execute the following commands (for the moment only working in Linux and MacOS, for more information see: https://docs.joomla.org/Testing_Joomla_Extensions_with_Codeception):
+
+```bash
+$ composer install
+$ vendor/bin/robo
+$ vendor/bin/robo run:tests
+```
+<!--
+### Build Installable `zip`
 
 1. Go inside the bild directory :
 
@@ -35,7 +46,7 @@ In order to build the installation packages of this component you will need to h
 	```
 	php phing.phar
 	```
-You will find installable package on `build/release` folder.
+You will find installable package on `build/release` folder. -->
 
 ## Contributing to DigiCom
 
