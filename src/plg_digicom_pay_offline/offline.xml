@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="digicom_pay" method="upgrade">
+
+	<name>Offline Payment - DigiCom Pay Plugin</name>
+	<author>ThemeXpert</author>
+	<creationDate>2015-08-07</creationDate>
+	<copyright>themexpert.com. All Rights Reserved.</copyright>
+	<authorEmail>extensions@themexpert.com</authorEmail>
+	<authorUrl>http://www.themexpert.com</authorUrl>
+	<license>GNU/GPLv3</license>
+	<version>1.0.0-rc.1+build.1</version>
+	<description>Offline Payment - DigiCom Pay Plugin by themexpert.com. </description>
+
+	<files>
+		<filename plugin="offline">offline.php</filename>
+		<folder>offline</folder>
+	</files>
+
+	<languages folder="language">
+			<language tag="en-GB">en-GB/en-GB.plg_digicom_pay_offline.ini</language>
+  </languages>
+
+	<config name="params">
+
+		<fields name="params">
+
+			<fieldset name="basic">
+
+				<field name="plugin_name" type="text" default="Offline Payment" label="PLG_DIGICOM_PAY_OFFLINE_PLUGIN_NAME" description="" />
+
+				<field name="plugin_mail" type="textarea" default="" label="PLG_DIGICOM_PAY_OFFLINE_MAIL_ADDRESS" description="PLG_DIGICOM_PAY_OFFLINE_MAIL_ADDRESS_DESC" rows="5" cols="20"  />
+
+			</fieldset>
+
+		</fields>
+
+	</config>
+
+</extension>
