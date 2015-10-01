@@ -8,7 +8,7 @@
 	<license>GNU/GPLv3</license>
 	<authorEmail>info@themexpert.com</authorEmail>
 	<authorUrl>www.themexpert.com</authorUrl>
-	<version>1.0.0-rc.1+build.1</version>
+	<version>##VERSION##</version>
 	<description>Paypal payment plugin for DigiCom Joomla Extension</description>
 
 	<files>

@@ -7,7 +7,7 @@
 	<license>GNU/GPLv3</license>
 	<authorEmail>info@themexpert.com</authorEmail>
 	<authorUrl>www.themexpert.com</authorUrl>
-	<version>1.0.0-rc.1+build.1</version>
+	<version>##VERSION##</version>
 	<description>DigiCom Categories Module</description>
 	<files>
 		<filename module="mod_digicom_categories">mod_digicom_categories.php</filename>

@@ -8,7 +8,7 @@
 	<license>GNU/GPL</license>
 	<authorEmail>info@themexpert.com</authorEmail>
 	<authorUrl>www.themexpert.com</authorUrl>
-	<version>1.0.0-rc.1+build.1</version>
+	<version>##VERSION##</version>
 
 	<description>Thank you for installing DigiCom Content Plugin.</description>
 

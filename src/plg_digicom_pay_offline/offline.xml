@@ -8,7 +8,7 @@
 	<authorEmail>extensions@themexpert.com</authorEmail>
 	<authorUrl>http://www.themexpert.com</authorUrl>
 	<license>GNU/GPLv3</license>
-	<version>1.0.0-rc.1+build.1</version>
+	<version>##VERSION##</version>
 	<description>Offline Payment - DigiCom Pay Plugin by themexpert.com. </description>
 
 	<files>
