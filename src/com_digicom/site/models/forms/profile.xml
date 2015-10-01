@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset
+		name="default"
+		label="COM_DIGICOM_PROFILE_INFO"
+		addfieldpath="/administrator/components/com_digicom/models/fields">
+		<field
+			name="id"
+			type="hidden"
+			filter="integer"
+		/>
+		<field
+			name="name"
+			type="text"
+			description=""
+			filter="string"
+			label="COM_DIGICOM_NAME"
+			required="true"
+			size="30"
+		/>
+
+		<field
+			name="email"
+			type="email"
+			description=""
+			field="id"
+			filter="string"
+			label="COM_DIGICOM_EMAIL"
+			message="COM_DIGICOM_REGISTER_EMAIL1_MESSAGE"
+			required="true"
+			size="30"
+			unique="true"
+			validate="email"
+			onchange="Digicom.validateInput('email')"
+		/>
+
+		<field
+			name="username"
+			type="text"
+			class="validate-username"
+			filter="username"
+			label="COM_DIGICOM_USERNAME"
+			message="COM_DIGICOM_REGISTER_USERNAME_MESSAGE"
+			required="true"
+			size="30"
+			onchange="Digicom.validateInput('username')"
+			validate="username"
+		/>
+
+		<field
+			name="password1"
+			type="password"
+			autocomplete="off"
+			class="validate-password"
+			description=""
+			field="password1"
+			filter="raw"
+			label="COM_DIGICOM_PASSWORD"
+			size="30"
+			validate="password"
+		/>
+
+		<field
+			name="password2"
+			type="password"
+			autocomplete="off"
+			class="validate-password"
+			description=""
+			field="password1"
+			filter="raw"
+			label="COM_DIGICOM_CONFIRM_PASSWORD"
+			message="COM_DIGICOM_PROFILE_PASSWORD1_MESSAGE"
+			size="30"
+			validate="equals"
+		/>
+	</fieldset>
+</form>

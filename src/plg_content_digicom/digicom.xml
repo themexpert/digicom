@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="content" method="upgrade">
+
+	<name>Content - DigiCom Content Plugin</name>
+	<author>ThemeXpert</author>
+	<creationDate>2015-08-07</creationDate>
+	<copyright>Copyright (C) 2013 themexpert.com. All rights reserved.</copyright>
+	<license>GNU/GPL</license>
+	<authorEmail>info@themexpert.com</authorEmail>
+	<authorUrl>www.themexpert.com</authorUrl>
+	<version>1.0.0-rc.1+build.1</version>
+
+	<description>Thank you for installing DigiCom Content Plugin.</description>
+
+	<files>
+		<filename plugin="digicom">digicom.php</filename>
+	</files>
+
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.plg_content_digicom.ini</language>
+	</languages>
+
+	<config>
+
+		<fields name="params">
+
+			<fieldset name="basic">
+
+				<field name="orient" type="radio" default="0" description="Plugin output layout." label="Orientation">
+					<option value="0">Horizontal</option>
+					<option value="1">Vertical</option>
+				</field>
+
+			</fieldset>
+
+		</fields>
+
+	</config>
+
+</extension>

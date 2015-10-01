@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset
+		name="billing"
+		label="COM_DIGICOM_BILLING_ADDRESS"
+		addfieldpath="/administrator/components/com_digicom/models/fields">
+
+		<field
+			name="person"
+			type="person"
+			class="btn-group"
+			default="1"
+			label="COM_DIGICOM_PERSON_OR_COMPANY"
+		>
+			<option value="1">COM_DIGICOM_PERSON</option>
+			<option value="2">COM_DIGICOM_COMPANY</option>
+		</field>
+
+		<field
+			name="company"
+			type="text"
+			description=""
+			filter="string"
+			label="COM_DIGICOM_COMPANY"
+			size="30"
+			class="input-company"
+		/>
+
+		<field
+			name="taxnum"
+			type="text"
+			description=""
+			filter="string"
+			label="COM_DIGICOM_TAX_NUMBER"
+			size="30"
+			class="input-tax"
+		/>
+
+
+		<field
+			name="country"
+			type="stateoption"
+			description=""
+			label="COM_DIGICOM_COUNTRY"
+			class="input-country"
+		/>
+
+		<field
+			name="state"
+			type="text"
+			description=""
+			filter="string"
+			label="COM_DIGICOM_STATE"
+			size="30"
+			class="input-state"
+		/>
+
+		<field
+			name="city"
+			type="text"
+			description=""
+			filter="string"
+			label="COM_DIGICOM_CITY"
+			size="30"
+			class="input-city"
+		/>
+
+		<field
+			name="zipcode"
+			type="text"
+			description=""
+			filter="number"
+			label="COM_DIGICOM_ZIP"
+			size="30"
+			class="input-zip"
+		/>
+
+		<field
+			name="address"
+			type="textarea"
+			description=""
+			filter="safehtml"
+			label="COM_DIGICOM_ADDRESS"
+			size="30"
+			class="input-address"
+		/>
+
+	</fieldset>
+</form>
