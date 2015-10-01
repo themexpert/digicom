@@ -23,6 +23,7 @@ gulp.task('release', function () {
 	])
   // run the replacement of version name from
   .pipe(replace(/##VERSION##/g, extension.version))
+  .pipe(replace(/##CREATIONDATE##/g, extension.creationDate))
   // .pipe(gulp.dest('releases/file.xml'));
 	.pipe(zip(extension.name + '_' + extension.version + '.zip'))
 	.pipe(gulp.dest('releases'));
