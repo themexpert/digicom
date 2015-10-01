@@ -11,7 +11,7 @@
     <author>ThemeXpert</author>
     <authorEmail>info@themexpert.com</authorEmail>
     <authorUrl>www.themexpert.com</authorUrl>
-    <version>1.0.0-beta.2</version>
+    <version>##VERSION##</version>
     <license>GNU General Public License version 3 or later;</license>
     <description>PKG_DIGICOM_XML_DESCRIPTION</description>
     <scriptfile>pkg.script.php</scriptfile>
@@ -43,7 +43,7 @@
     <languages folder="language">
         <language tag="en-GB">en-GB/en-GB.pkg_digicom.sys.ini</language>
     </languages>
-    
+
     <updateservers>
          <!-- Note: No spaces or linebreaks allowed between the server tags -->
         <server type="extension" priority="1" name="DigiCom Update Site"><![CDATA[https://raw.githubusercontent.com/themexpert/digicom/develop/manifest.xml]]></server>

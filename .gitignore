@@ -32,10 +32,6 @@ Desktop.ini
 *~.nib
 *~
 
-# Phing
-build.properties
-phing-latest.phar
-
 # Github pages and Jekyll files
 /_site/
 /Gemfile

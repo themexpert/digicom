@@ -1,5 +1,5 @@
 {
-  "name": "com_digicom",
+  "name": "pkg_com_digicom",
   "version": "1.1.0",
   "description": "DigiCom is next generation ecommerce extension for selling digital product with Joomla!",
   "author": "ThemeXpert <info@themexpert.com>",
@@ -19,7 +19,7 @@
   },
   "license": "GPL",
   "devDependencies": {
-    "browser-sync": "^2.9.3",
+    "browser-sync": "^2.9.7",
     "gulp": "^3.9.0",
     "gulp-changed": "^1.3.0",
     "gulp-concat": "^2.6.0",
@@ -27,8 +27,10 @@
     "gulp-minify-css": "^1.2.1",
     "gulp-phpcs": "^0.7.0",
     "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
     "gulp-rimraf": "^0.1.1",
     "gulp-zip": "^3.0.2",
-    "joomla-gulp": "^1.1.1"
+    "joomla-gulp": "^1.1.1",
+    "require-dir": "^0.3.0"
   }
 }

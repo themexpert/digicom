@@ -8,9 +8,11 @@ var dir = requireDir('./joomla-gulp-extensions', {recurse: true});
 var extension = require('./package.json');
 var config    = require('./gulp-config.json');
 
-var gulp = require('gulp');
-var zip  = require('gulp-zip');
-var rm   = require('gulp-rimraf');
+var gulp    = require('gulp');
+var zip     = require('gulp-zip');
+var rm      = require('gulp-rimraf');
+var replace = require('gulp-replace');
+
 //release
 gulp.task('release', function () {
   gulp.src('./releases', { read: false }).pipe(rm({ force: true }));
@@ -19,6 +21,9 @@ gulp.task('release', function () {
 		'!*',
 		'./src/**',
 	])
+  // run the replacement of version name from
+  .pipe(replace(/##VERSION##/g, extension.version))
+  // .pipe(gulp.dest('releases/file.xml'));
 	.pipe(zip(extension.name + '_' + extension.version + '.zip'))
 	.pipe(gulp.dest('releases'));
 });
