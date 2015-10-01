@@ -13,15 +13,7 @@ Coming soon...
 Download package file from [latest release](https://github.com/themexpert/digicom/releases) and install it as regular Joomla! extension.
 
 ## Developers
-
-<!-- ### Build Instructions - Prerequisites
-
-In order to build the installation packages of this component you will need to have the following tools:
-
-* A command line environment. Using Bash under Linux / Mac OS X works best. On Windows you will need to run most tools through an elevated privileges (administrator) command prompt on an NTFS filesystem due to the use of symlinks.
-* A PHP CLI binary in your path
-* Command line Git executables
-* Phing - PHP Archive(phar) is inside the build dir. -->
+Developer instruction will come soon.
 
 ### Tests
 To prepare the system tests (Selenium) to be run in your local machine you are asked to rename the file `tests/acceptance.suite.dist.yml` to `tests/acceptance.suite.yml`. Afterwards, please edit the file according to your system needs.
@@ -33,20 +25,28 @@ $ composer install
 $ vendor/bin/robo
 $ vendor/bin/robo run:tests
 ```
-<!--
+
+* still under development
+
 ### Build Installable `zip`
 
-1. Go inside the bild directory :
+You need NPM installed to build release package
+Please check package.json for details information
 
-	```
-	cd build
-	```
-2. Run this command
+`name` `version` `creationDate` is important. so make sure you have proper info, bcs it will be used in package version and creationdate for xml.
 
-	```
-	php phing.phar
-	```
-You will find installable package on `build/release` folder. -->
+after install run the command
+
+```
+npm install --save-dev
+```
+
+so now to prepare release package run below command
+```
+gulp release
+```
+under releases folder you will find your zip pkg for digicom
+
 
 ## Contributing to DigiCom
 
