@@ -15,3 +15,7 @@ gulp.task('clean:' + baseTask,function() {
 gulp.task('copy:' + baseTask,function() {
 		return true;
 });
+// watch
+gulp.task('watch:' + baseTask,function() {
+		return true;
+});
