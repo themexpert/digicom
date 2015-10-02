@@ -15,6 +15,27 @@ Download package file from [latest release](https://github.com/themexpert/digico
 ## Developers
 Developer instruction will come soon.
 
+### Development Process
+First configure `gulp-config.json` to match your settings
+`wwwDir` and `proxy` is important for your settings. so change them to match your own environment.
+if you have Node install, then run this command
+```
+npm install --save-dev
+```
+Now just run the command below
+```
+gulp watch
+```
+
+Now work as you wish and the files will be automatically copied to its location.
+
+### Less or CSS Work
+To work with lESS or css we are using bower. you need to install the bower first.
+```
+bower install
+```
+and then your
+
 ### Tests
 To prepare the system tests (Selenium) to be run in your local machine you are asked to rename the file `tests/acceptance.suite.dist.yml` to `tests/acceptance.suite.yml`. Afterwards, please edit the file according to your system needs.
 
@@ -26,7 +47,7 @@ $ vendor/bin/robo
 $ vendor/bin/robo run:tests
 ```
 
-* still under development
+* under development
 
 ### Build Installable `zip`
 
