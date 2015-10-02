@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="3.0" client="administrator" method="upgrade">
+	<name>mod_digicom_menu</name>
+	<creationDate>##CREATIONDATE##</creationDate>
+	<author>ThemeXpert</author>
+	<authorEmail>admin@themexpert.com</authorEmail>
+	<authorUrl>http://www.themexpert.com</authorUrl>
+	<copyright>Copyright (C) themexpert. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<version>##VERSION##</version>
+	<description>MOD_DIGICOM_MENU_XML_DESCRIPTION</description>
+
+  <scriptfile>script.php</scriptfile>
+
+  <languages folder="language">
+      <language tag="en-GB">en-GB/en-GB.mod_digicom_menu.ini</language>
+      <language tag="en-GB">en-GB/en-GB.mod_digicom_menu.sys.ini</language>
+  </languages>
+
+	<files>
+		<filename module="mod_digicom_menu">mod_digicom_menu.php</filename>
+        <filename>helper.php</filename>
+		<filename>script.php</filename>
+		<folder>tmpl</folder>
+	</files>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field
+                        name="show_digicom_menu"
+                        type="list"
+                        default="0"
+                        label="MOD_DIGICOM_MENU_FIELD_SHOW_DIGICOM_MENU_LABEL"
+                        description="MOD_DIGICOM_MENU_FIELD_SHOW_DIGICOM_MENU_DESC">
+                    <option value="0">JHIDE</option>
+                    <option value="1">JSHOW</option>
+                </field>
+            </fieldset>
+        </fields>
+    </config>
+</extension>

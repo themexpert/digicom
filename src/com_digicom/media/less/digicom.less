@@ -1,0 +1,75 @@
+/**
+ * @version 	1.0.0
+ * @package 	Com DigiCOm
+ * @author 		ThemeXpert
+ * @copyright 	Copyright (c) 2006 - 2014 ThemeXpert Ltd. All rights reserved.
+ * @license 	GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+ */
+
+// Core variables and mixins
+@import "../../../../bower_components/bootstrap/less/variables.less";
+@import "../../../../bower_components/bootstrap/less/mixins.less";
+
+.dc{
+ // Core CSS
+ @import "../../../../bower_components/bootstrap/less/scaffolding.less";
+ @import "../../../../bower_components/bootstrap/less/type.less";
+ @import "../../../../bower_components/bootstrap/less/tables.less";
+ @import "../../../../bower_components/bootstrap/less/forms.less";
+ @import "../../../../bower_components/bootstrap/less/buttons.less";
+ @import "../../../../bower_components/bootstrap/less/button-groups.less";
+ @import "../../../../bower_components/bootstrap/less/input-groups.less";
+ @import "../../../../bower_components/bootstrap/less/pagination.less";
+ @import "../../../../bower_components/bootstrap/less/labels.less";
+ @import "../../../../bower_components/bootstrap/less/progress-bars.less";
+ @import "../../../../bower_components/bootstrap/less/wells.less";
+ @import "../../../../bower_components/bootstrap/less/close.less";
+ @import "../../../../bower_components/bootstrap/less/navs.less";
+ @import "../../../../bower_components/bootstrap/less/thumbnails.less";
+
+ // Utility
+ @import "../../../../bower_components/bootstrap/less/utilities.less";
+ @import "../../../../bower_components/bootstrap/less/responsive-utilities.less";
+}
+// Off grid from namespae for better use outside the component area
+@import "../../../../bower_components/bootstrap/less/grid.less";
+// Modal - loading outside namespace because some modal class load outside
+//         our component area
+@import "../../../../bower_components/bootstrap/less/modals.less";
+// Dirty modal hack
+.modal-backdrop.fade.in{ opacity: 0.5; }
+
+#digicom.dc{
+
+  div.modal {
+      box-shadow: none;
+      border: none;
+      background-color: transparent;
+      width: 100%;
+      right: 0;
+      left: 0;
+      margin-left: 0;
+  }
+  .digicom-loader{
+    background: url(../images/spinner.gif) no-repeat 50% 42%;
+    height: 100px;
+    width: 100%;
+    background-size: auto 50px;
+
+    &.small{
+      display: inline-block;
+      height: 15px;
+      width: 20px;
+      background-size: 15px;
+    }
+  }
+  #jform_person.radio.btn-group{
+    input[type="radio"]{
+      display: none;
+    }
+  }
+
+  input{
+    height: inherit;
+  }
+}

@@ -1,0 +1,680 @@
+/**
+ * @version 	1.0.0
+ * @package 	com_digicom
+ * @author 		ThemeXpert
+ * @copyright 	Copyright (c) 2006 - 2014 ThemeXpert Ltd. All rights reserved.
+ * @license 	GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+ */
+
+// Import JUI mixins and variable
+@import "./joomla/variables.less";
+@import "./joomla/mixins.less";
+
+// Color Variables
+@primary-blue : #1976d2;
+@secondary-blue : #489be0;
+@dark-blue : #1E4973;
+
+@gray : #f9f9fb ;
+
+@body-background: @gray;
+@sidebar-background: #253238;
+@sidebar-active-background: @primary-blue;
+@sidebar-text-color: #c9d1dd;
+@sidebar-active-text-color: #fefefe;
+@sidebar-collapse-width: 38px;
+
+// Tabs
+@tabs-border-color : #e5e5e5;
+@tabs-color : #666;
+@tabs-active-color : @secondary-blue;
+
+// Forms
+@form-background : #fff;
+@form-color : @tabs-color;
+@form-border : #e5e5e5;
+@form-label-color : @tabs-color;
+
+// Button override
+@btn: @sidebar-active-text-color;
+@btn-primary: @primary-blue;
+@btn-success: #4CAF50;
+@btn-warning: #FBC02D;
+@btn-danger: #d32f2f;
+
+// Utility Classes
+.panel-box { background: #fff; padding: 15px; }
+
+/* Joomla 2.5 FIX */
+.pull-left {
+	float: left;
+}
+.media {
+	clear: both;
+}
+dt.acl-groups {
+	font-size: inherit;
+}
+
+/* Joomla 3.0 FIX */
+td.order input {
+	width: 30px;
+	text-align: right;
+}
+
+/* General FIX */
+#content [class^="icon-"], #content [class*=" icon-"] {
+	color: @secondary-blue;
+}
+#content .btn [class^="icon-"], #content .btn [class*=" icon-"] {
+	color: inherit;
+}
+
+span.label-ds, span.badge-ds {
+	background-color: @secondary-blue;
+}
+span.label-ds a, span.badge-ds a {
+	color: white;
+}
+
+.header_zone, .adminlist.header_zone {
+	background-color: #E8F8FF !important;
+	border: 1px solid #999999 !important;
+	padding: 5px !important;
+	text-align: left !important;
+	vertical-align: top !important;
+	font-weight: bold !important;
+}
+
+.icon-32-export{
+	background-image: url("../images/export.png") !important;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.hasTip img{
+	float:none;
+}
+
+div.current input, fieldset input{
+	float:none !important;
+	margin:0px !important;
+}
+
+#published0, #published1, fieldset img{
+	float:none !important;
+	margin: 1px !important;
+}
+
+#published0-lbl, #published1-lbl{
+	float:none !important;
+	display:inline !important;
+}
+
+.digi_video{
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.submenu-box, div.m {
+	background-color:#FFFFFF !important;
+}
+
+tr.row1 {
+	background-color: #FFFFFF !important;
+}
+
+div.current input, div.current textarea, div.current select {
+	clear: none !important;
+	float: none !important;
+	margin: 3px 0 0 2px !important;
+}
+fieldset ul.checklist input {
+	clear: left;
+	float: left !important;
+}
+/* User groups tweaks */
+ul.usergroups label {
+	display: inline;
+}
+div.current ul.usergroups input,
+fieldset ul.usergroups input,
+ul.usergroups input {
+	display: inline;
+	margin-top: -4px;
+	clear: left !important;
+	float: left !important;
+	margin: 11px 0 0 2px !important;
+}
+ul.usergroups {
+	margin: 5px 0 10px 0;
+}
+ul.usergroups li {
+	line-height: 20px;
+	list-style: none;
+}
+.digicom_icon_big{
+	font-size: 45px;
+	margin-right: 52px;
+	margin-top: 18px;
+}
+// Search tools
+.js-stools{ margin-bottom: 10px; }
+
+@import "components/alert.less";
+
+/* Layout Styling */
+body.com_digicom {
+	overflow-x: hidden;
+	background: @body-background;
+	.transition(all 0.3s ease-in-out);
+
+	// Chosen dropdown
+	@import "components/chosen.less";
+	/* Button classes */
+	.btn {
+		background: @btn;
+		border-color: #ddd;
+		box-shadow: none;
+		border-radius: 0;
+		text-shadow: none;
+	}
+	.btn-primary {
+		background: @btn-primary;
+	}
+	.btn-success {
+		background: @btn-success;
+	}
+	.btn-warning {
+		background: @btn-warning;
+		border-color: #aaa;
+	}
+	.btn-danger {
+		background: @btn-danger;
+		border-color: #888;
+	}
+	.digi-micro-btn {
+	    background: @btn;
+	    font-size: 9px;
+	    text-align: center;
+	    border-radius: 16px;
+	    line-height: 15px;
+	}
+
+  	// Products page
+	.product-thumb{ width: 48px; height: 48px; overflow: hidden; }
+
+  	// Toolbar
+  	#toolbar-publish,
+		#toolbar-unpublish,
+		#toolbar-trash,
+		#toolbar-delete,
+		#toolbar-edit{
+	  display: none;
+	  opacity: 0;
+	  .transition(all .15s linear);
+
+	  &.in{
+		display: inline-block;
+		opacity: 1;
+
+	  }
+	}
+
+	@import "components/header.less";
+	@import "components/sidebar.less";
+	@import "components/form.less";
+	@import "components/tabs.less";
+
+	.container-main { padding: 0; }
+
+
+	.j-toggle-button-wrapper,
+	.j-toggle-sidebar-header {display: none;}
+
+	#j-main-container {
+		padding: 20px;
+		width: auto;
+		margin-left: 200px;
+		box-sizing: border-box;
+		margin-right: 0;
+	}
+
+	#j-sidebar-container,
+	#j-main-container{
+		.transition(all 0.3s ease-in-out);
+	}
+
+	#system-message-container.j-toggle-main,
+	#j-main-container.j-toggle-main,
+	#system-debug.j-toggle-main {float: none;}
+
+	div#system-debug,
+	div#system-message-container {
+		margin: 0px 15px 0px 215px;
+
+		> div {margin: 20px 0 0;}
+	}
+
+
+	&.layout-dgform {
+		#j-toggle-sidebar-wrapper
+		{
+			opacity: 0.3;
+		}
+	}
+	/* Table Styles */
+	.table {
+		> thead > tr > th, > tbody > tr > th, > tfoot > tr > th,
+		> thead > tr > td, > tbody > tr > td, > tfoot > tr > td {
+			padding: 12px 15px;
+			line-height: 1.3;
+			border: 1px solid #ebedf0;
+		}
+
+		caption + thead tr:first-child th, caption + thead tr:first-child td,
+		colgroup + thead tr:first-child th, colgroup + thead tr:first-child td,
+		thead:first-child tr:first-child th, thead:first-child tr:first-child td {border-top: 1px solid #ebedf0;}
+
+		.pagination-toolbar {margin-top: 10px;}
+	}
+	.table-striped {
+		> tbody > tr:nth-child(2n+1) > td,
+		> tbody > tr:nth-child(2n+1) > th {
+			background-color: #fafafa;
+		}
+	}
+
+	#status { box-shadow: none;}
+
+}
+
+/* Layout Dgform Styling */
+body.layout-dgtabs ,
+body.layout-dgform {
+
+	#j-main-container {
+
+		.form-inline .controls {
+			margin-left: 0;
+		}
+	}
+}
+
+
+
+/* Sidebar right styling */
+#toggle_settings_wrap {
+	background: @primary-blue;
+	color: @sidebar-text-color;
+	padding: 20px;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: -200px;
+	z-index: 9999;
+	width: 200px;
+	.box-sizing(border-box);
+	.transition(all 0.3s ease-in-out);
+
+	h3 {
+		color: #fbfbfb;
+		font-size: 12px;
+		text-transform: uppercase;
+		border-bottom: 1px solid darken(@primary-blue, 5%);
+		box-shadow: 0 1px 0px lighten(@secondary-blue, 5%);
+		padding-bottom: 5px;
+		margin: 10px 0 5px;
+	}
+
+	ul {
+		list-style: none;
+		margin-left: 0px;
+
+		li a {
+			color: @gray;
+			line-height: 30px;
+			font-size: 14px;
+			.transition(all 0.3s ease-in-out);
+
+			&:hover {
+				color: #333;
+				text-decoration: none;
+				padding-left: 5px;
+
+			}
+		}
+	}
+}
+
+
+body.sidebar-right-collapse {
+	.translate(-200px,0);
+}
+
+/* elFinder File manager style */
+#elfinder {
+	.elfinder-workzone {
+		border-radius: 0;
+		.elfinder-navbar {
+			background: #f8f8fa;
+
+			.ui-state-active {
+				background: #cad1d9;
+				border: 0;
+			}
+		}
+	}
+
+	.elfinder-toolbar {
+		background: #f8f8fa;
+		border-style: solid;
+		border-radius: 0;
+		border-width: 0 0 1px;
+		border-color: #ddd;
+		padding: 10px 5px;
+
+		.ui-state-default {background: none;}
+
+		input[type="text"] {
+			margin: 0;
+			height: auto;
+			line-height: 1;
+		}
+	}
+
+	.elfinder-buttonset {
+		border-radius: 0;
+	}
+}
+
+/* Dashboard Styling */
+.sales-overview {
+	margin-bottom: 15px;
+
+	.panel-box {
+		box-shadow: 0 0 3px #ccc;
+	}
+	[class*=" icon-"],[class^="icon-"] {
+		font-size: 40px;
+		line-height: 1;
+		float: left;
+		margin-right: 15px;
+		height: auto;
+		width: auto;
+	}
+
+	p {
+		margin: 0;
+		color: #bbb;
+	}
+	strong {
+		font-size: 24px;
+		line-height: 1.3;
+		color: #444;
+	}
+}
+
+.panel {
+	border: 1px solid #e1e1e1;
+	margin-top: 20px;
+	.panel-header {
+		background: #f5f5f5;
+		padding: 10px;
+		.panel-title {
+			margin: 0;
+			float: left;
+			line-height: 26px;
+
+			span {margin-right: 7px;}
+		}
+	}
+
+	.panel-content {
+		background: #fff;
+		padding: 20px;
+	}
+}
+
+.nav-charts {
+	border: 1px solid #eee;
+	li {
+		float: left;
+		a {
+			display: block;
+			padding: 10px 15px;
+
+		}
+		&+li {border-left: 1px solid #eee;}
+		&.active a,
+		&.active a:focus,
+		&.active a:hover {background: @secondary-blue;color: #fff;}
+	}
+}
+
+/* Product page Styling */
+#thumb-image,
+#full-image{
+	.control-label{ display: none; }
+}
+.media-preview {
+	a{
+		background: @gray;
+		border: 2px dashed @form-border;
+		font-size: 15px;
+		color: #999;
+		text-align: center;
+		min-height: 100px;
+		min-width: 70px;
+		padding: 40px 0 30px;
+		display: block;
+		.box-sizing(border-box);
+
+	}
+	.icon-image{ color: #999 !important; font-size: 40px; width: 40px; margin: 0 auto; }
+	.img-preview{
+		width: 100%; max-height: 220px; overflow: hidden;
+		position: relative;
+
+		.btn{
+			position: absolute; top: 10px; right: 10px; z-index: 99;
+	    border: 0; border-radius: 4px;
+	    padding: 10px;
+	    text-align: center;
+	    font-size: 18px; color: #bbb;
+	    display: none;
+		}
+		.overlay-bg{ opacity: 0; }
+
+		&:hover{
+			.overlay-bg{
+				background: rgba(255,255,255,.4);
+				position: absolute; top: 0; bottom: 0; left: 0; right: 0;
+				padding: 20px; opacity: .7;
+			}
+			.btn{ display: block; }
+		}
+	}
+}
+
+.form-title-alias .digicom-product-title {
+	input[type="text"] {width: 100%; height: 100%; box-sizing: border-box; padding: 6px;}
+}
+
+.product-short-desc {
+	textarea {
+		width: 100%; .box-sizing(border-box);
+	}
+}
+
+.accordion {
+	.accordion-heading {background: #fff;}
+	.accordion-body.in {background: #f8f8f8;}
+}
+
+.order-details,
+.product-details {
+	> h3 {
+		font-weight: normal; line-height: 1;
+		border-bottom: 1px solid @tabs-border-color;
+		padding-bottom: 10px;
+	}
+}
+
+.product-details {
+	margin-top: 15px;
+}
+.promo-subtotal {
+	background: #f8f8f8;
+	padding: 10px;
+	border-top: 1px solid #e1e1e1;
+	margin: 15px -10px -10px;
+
+	.promos,
+	.subtotal {
+
+		.control-label {
+			float: none;
+			display: inline-block;
+		}
+		.controls {
+			margin-left: 20px;
+			display: inline-block;
+		}
+
+	}
+	.promos {
+		float: left;
+		width: 40%;
+	}
+	.subtotal {
+		float: right;
+		width: 40%;
+		text-align: right;
+	}
+}
+.grand-total {
+	text-align: right;
+	.control-group {
+		.control-label { float: none; display: inline-block; }
+		.controls { margin-left: 20px; display: inline-block; }
+	}
+}
+
+/* Statistics page styling */
+#digiReportsTabs {
+	border-bottom: 0;
+	>li {
+		margin-bottom: 0;
+		> a {
+			padding: 0px 5px;
+			font-size: 12px;
+			border: 0;
+		}
+
+		&+li a {border-left: 1px solid #ccc;}
+	}
+	>li > a:hover,
+	> .active > a,
+	> .active > a:hover,
+	> .active > a:focus {background: none;}
+}
+
+/* About page styling */
+.about-dglogo {
+	margin-bottom: 15px;
+	a {
+		display: block;
+		background: url(../images/dglogo-250x68.png) no-repeat;
+		width: 250px;
+		height: 68px;
+		margin: 0 auto;
+		font-size: 0;
+		text-indent: -9999px;
+	}
+}
+
+/* Global Settings page Styling */
+.mce-edit-area iframe {
+	height: 250px !important;
+}
+
+/* Responsive Styling */
+@media (min-width: 1300px) {
+	body.com_digicom {
+		&.task-edit,&.task-add {
+			#j-sidebar-container{
+				width: 200px;
+				#sidebar {
+					.sidebar-nav .nav-list > li > a.dglogo {
+						background: url(../images/dglogo-white-176x48.png) no-repeat 16px 0;
+						background-size: 80%;
+						height: 43px;
+						width: auto;
+					}
+				}
+			}
+			#j-main-container { margin-left: 200px; }
+			div#system-debug,
+			div#system-message-container {margin-left: 215px;}
+
+		}
+	}
+}
+
+
+@media (min-width: 1200px) {
+	body.com_digicom {
+		.row-fluid [class*="span"] {
+			margin-left: 2.5641025641026%;
+		}
+		.row-fluid [class*="span"]:first-child {margin-left: 0;}
+	}
+}
+
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+	body.com_digicom {
+		/* Table Styling */
+		.table {
+			table-layout: fixed;
+
+			th, td {
+				white-space: normal;
+				word-wrap: break-word;
+				overflow: hidden;
+			}
+		}
+	}
+}
+// Config page specific
+body.view-configs{
+	.tab-content{
+		h3{
+			font-weight: normal;
+			color: @tabs-color;
+			border-bottom: 1px solid @tabs-border-color;
+			padding-bottom: 10px;
+		}
+	}
+	.form-horizontal .controls{margin-left: 0; }
+}
+.dg-footer{ text-align: right; margin-bottom: 40px; margin-right: 25px; }
+
+body.com_digicom .digicom-product-title{
+	.control-group{margin-bottom: 2px;}
+	.form-inline{ margin-bottom: 15px; }
+
+	#jform_alias{
+	  padding: 2px 6px;
+	  font-size: 12px;
+	  font-weight: normal;
+	}
+}
+body.com_digicom .digicom-product-price{
+	.input-prepend{
+		[class*="span"]{
+			margin-left:-1px;
+		}
+	}
+}

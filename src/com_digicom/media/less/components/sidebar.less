@@ -1,0 +1,107 @@
+#j-sidebar-container {
+  background: @sidebar-background;
+  margin-left: 0;
+  width: 200px;
+  color: @sidebar-text-color;
+  position: fixed;
+  top: 68px;
+  bottom: 28px;
+  left: 0;
+  overflow: hidden;
+  border: 0;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  backface-visibility: hidden;
+
+  #sidebar {
+    padding: 15px 0;
+
+    #submenu {
+      width: 200px;
+      box-sizing: border-box;
+    }
+    .sidebar-nav .nav-list {
+      > li > a {
+        padding: 5px 12px;
+        color: @sidebar-text-color;
+        font-size: 14px;
+        line-height: 24px;
+        text-shadow: none;
+        > span + span {display: inline-block;}
+
+        &.dglogo {
+          background: url(../images/dglogo-white-176x48.png) no-repeat 16px 0;
+          background-size: 80%;
+          font-size: 0;
+          text-indent: -9999px;
+          height: 43px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          box-shadow: 0 2px 1px rgba(0, 0, 0, 0.15);
+          margin-bottom: 5px;
+        }
+
+        &:hover,&:focus {
+          background-color: inherit;
+          color: @sidebar-active-text-color;
+          [class^="icon-"], [class*=" icon-"] {color: @sidebar-active-text-color;}
+        }
+      }
+      [class^="icon-"], [class*=" icon-"] {
+        color: @sidebar-text-color;
+        margin-right: 15px;
+        width: auto;
+        height: auto;
+      }
+      > li.active > a {
+        background: @sidebar-active-background;
+        color: @sidebar-active-text-color;
+        position: relative;
+        > [class^="icon-"],
+        > [class*=" icon-"] {color: @sidebar-active-text-color;}
+
+        &:after {
+          content: "";
+          display: block;
+          position: absolute;
+          right: 0px;
+          top: 7px;
+          border-style: solid;
+          border-width: 10px;
+          border-color: transparent #f5f5f5 transparent transparent;
+        }
+      }
+    }
+  }
+}
+
+// Sidebar collaps
+&.sidebar-collapse,
+&.layout-dgform {
+  #j-sidebar-container{
+    width: @sidebar-collapse-width;
+    #sidebar {
+      .sidebar-nav{
+        #submenu.nav-list {
+          > li {
+            width: @sidebar-collapse-width;
+            > a.dglogo {
+               background: url(../images/dglogo-white-36x36.png) no-repeat 6px 0px;
+               background-size: 50%;
+               height: 28px;
+               width: 30px;
+            }
+            > a > span + span {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+
+  }
+
+  #j-main-container { margin-left: @sidebar-collapse-width; }
+  div#system-debug,
+  div#system-message-container {margin-left: 53px;}
+
+}

@@ -1,0 +1,23 @@
+{
+  "name": "digicom",
+  "version": "1.0.0",
+  "description": "Digital product selling software for Joomla",
+  "author": "ThemeXpert",
+  "main": "main.js",
+  "license": "GPL2",
+  "dependencies": {
+    "css-loader": "^0.15.1",
+    "gulp": "^3.8.11",
+    "gulp-clean": "^0.3.1",
+    "gulp-concat": "^2.5.2",
+    "gulp-filter": "^2.0.2",
+    "gulp-less": "^3.0.3",
+    "gulp-minify-css": "^1.1.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-run-sequence": "^0.3.2",
+    "gulp-shell": "^0.4.2",
+    "gulp-uglify": "^1.2.0",
+    "gulp-util": "^3.0.4",
+    "main-bower-files": "^2.7.0"
+  }
+}

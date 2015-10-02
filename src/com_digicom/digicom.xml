@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.1" method="upgrade">
+	<name>com_digicom</name>
+	<author>ThemeXpert</author>
+	<creationDate>##CREATIONDATE##</creationDate>
+	<copyright>(C) 2005 - 2015 Open Source Matters. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>admin@themexpert.com</authorEmail>
+	<authorUrl>www.themexpert.com</authorUrl>
+	<version>##VERSION##</version>
+	<description>COM_DIGICOM_XML_DESCRIPTION</description>
+	<scriptfile>script.php</scriptfile>
+
+	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">sql/install.mysql.sql</file>
+		</sql>
+	</install>
+
+	<update>
+		<schemas>
+			<schemapath type="mysql">sql/updates/mysql</schemapath>
+		</schemas>
+	</update>
+
+	<uninstall>
+		<sql>
+			<file charset="utf8" driver="mysql">sql/uninstall.mysql.sql</file>
+		</sql>
+	</uninstall>
+
+	<files folder="site">
+		<filename>digicom.php</filename>
+		<filename>controller.php</filename>
+		<filename>router.php</filename>
+		<filename>index.html</filename>
+		<filename>metadata.xml</filename>
+
+		<folder>controllers</folder>
+		<folder>emails</folder>
+		<folder>helpers</folder>
+		<folder>layouts</folder>
+		<folder>models</folder>
+		<folder>tables</folder>
+		<folder>templates</folder>
+		<folder>views</folder>
+	</files>
+
+	<languages folder="site">
+		<language tag="en-GB">language/en-GB/en-GB.com_digicom.ini</language>
+	</languages>
+
+	<media folder="media" destination="com_digicom">
+		<folder>css</folder>
+		<folder>images</folder>
+		<folder>js</folder>
+		<folder>less</folder>
+		<filename>bower.json</filename>
+		<filename>gulpfile.js</filename>
+		<filename>index.html</filename>
+		<filename>package.json</filename>
+	</media>
+
+	<administration>
+		<menu img="class:digicom">com_digicom</menu>
+
+		<files folder="admin">
+			<filename>digicom.php</filename>
+			<filename>controller.php</filename>
+			<filename>access.xml</filename>
+			<filename>config.xml</filename>
+			<filename>index.html</filename>
+
+			<folder>controllers</folder>
+			<folder>helpers</folder>
+			<folder>layouts</folder>
+			<folder>libs</folder>
+			<folder>models</folder>
+			<folder>sql</folder>
+			<folder>tables</folder>
+			<folder>views</folder>
+		</files>
+
+		<languages folder="admin">
+			<language tag="en-GB">language/en-GB/en-GB.com_digicom.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.com_digicom.sys.ini</language>
+		</languages>
+
+	</administration>
+
+</extension>
