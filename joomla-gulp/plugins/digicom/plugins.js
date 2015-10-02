@@ -80,44 +80,39 @@ gulp.task('copy:' + baseTask,
 });
 
 gulp.task('copy:' +  baseTask + ':content', ['clean:' + baseTask + ':content'], function() {
-	return gulp.src([
-		'!' + extPath + '/plg_content_digicom/language',
-		extPath + '/plg_content_digicom/**'
-	])
-				.pipe(gulp.dest(config.wwwDir + '/plugins/content/digicom'));
+	return gulp.src(extPath + '/plg_content_digicom/**').pipe(gulp.dest(config.wwwDir + '/plugins/content/digicom'));
 });
-//
-// gulp.task('copy:' +  baseTask + ':editor', ['clean:' + baseTask + ':editor'], function() {
-// 	return gulp.src(extPath + '/plugins/editors-xtd/digicom/**').pipe(gulp.dest(config.wwwDir + '/plugins/editors-xtd/digicom'));
-// });
-//
-// gulp.task('copy:' +  baseTask + ':finder', ['clean:' + baseTask + ':finder'], function() {
-// 	return gulp.src(extPath + '/plugins/finder/digicom/**').pipe(gulp.dest(config.wwwDir + '/plugins/finder/digicom'));
-// });
-//
-// gulp.task('copy:' +  baseTask + ':system', ['clean:' + baseTask + ':system'], function() {
-// 	return gulp.src(extPath + '/plugins/system/digicom/**').pipe(gulp.dest(config.wwwDir + '/plugins/system/digicom'));
-// });
-//
-// gulp.task('copy:' +  baseTask + ':offline', ['clean:' + baseTask + ':offline'], function() {
-// 	return gulp.src(extPath + '/plugins/digicom_pay/offline/**').pipe(gulp.dest(config.wwwDir + '/plugins/digicom_pay/offline'));
-// });
-//
-// gulp.task('copy:' +  baseTask + ':paypal', ['clean:' + baseTask + ':paypal'], function() {
-// 	return gulp.src(extPath + '/plugins/digicom_pay/paypal/**').pipe(gulp.dest(config.wwwDir + '/plugins/digicom_pay/paypal'));
-// });
-//
-// gulp.task('copy:' +  baseTask + ':language', ['clean:' + baseTask + ':language'], function() {
-//   //extPath + '/plg_**/language/en-GB/**',
-// 	return gulp.src([
-//     extPath + '/plg_content_digicom/language/en-GB/**',
-//     extPath + '/plg_digicom_pay_offline/language/en-GB/**',
-//     extPath + '/plg_digicom_pay_paypal/language/en-GB/**',
-//     extPath + '/plg_editors-xtd_digicom/language/en-GB/**',
-//     extPath + '/plg_finder_digicom/language/en-GB/**',
-//     extPath + '/plg_system_digicom/language/en-GB/**',
-//   ]).pipe(gulp.dest(config.wwwDir + '/administrator/language/en-GB'));
-// });
+
+gulp.task('copy:' +  baseTask + ':editor', ['clean:' + baseTask + ':editor'], function() {
+	return gulp.src(extPath + '/plg_editors-xtd_digicom/**').pipe(gulp.dest(config.wwwDir + '/plugins/editors-xtd/digicom'));
+});
+
+gulp.task('copy:' +  baseTask + ':finder', ['clean:' + baseTask + ':finder'], function() {
+	return gulp.src(extPath + '/plg_finder_digicom/**').pipe(gulp.dest(config.wwwDir + '/plugins/finder/digicom'));
+});
+
+gulp.task('copy:' +  baseTask + ':system', ['clean:' + baseTask + ':system'], function() {
+	return gulp.src(extPath + '/plg_system_digicom/**').pipe(gulp.dest(config.wwwDir + '/plugins/system/digicom'));
+});
+
+gulp.task('copy:' +  baseTask + ':offline', ['clean:' + baseTask + ':offline'], function() {
+	return gulp.src(extPath + '/plg_digicom_pay_offline/**').pipe(gulp.dest(config.wwwDir + '/plugins/digicom_pay/offline'));
+});
+
+gulp.task('copy:' +  baseTask + ':paypal', ['clean:' + baseTask + ':paypal'], function() {
+	return gulp.src(extPath + '/plg_digicom_pay_paypal/**').pipe(gulp.dest(config.wwwDir + '/plugins/digicom_pay/paypal'));
+});
+
+gulp.task('copy:' +  baseTask + ':language', ['clean:' + baseTask + ':language'], function() {
+	return gulp.src([
+    extPath + '/plg_content_digicom/language/en-GB/**',
+    extPath + '/plg_digicom_pay_offline/language/en-GB/**',
+    extPath + '/plg_digicom_pay_paypal/language/en-GB/**',
+    extPath + '/plg_editors-xtd_digicom/language/en-GB/**',
+    extPath + '/plg_finder_digicom/language/en-GB/**',
+    extPath + '/plg_system_digicom/language/en-GB/**',
+  ]).pipe(gulp.dest(config.wwwDir + '/administrator/language/en-GB'));
+});
 
 // Watch
 gulp.task('watch:' + baseTask,
@@ -134,25 +129,25 @@ gulp.task('watch:' + baseTask,
 });
 
 gulp.task('watch:' +  baseTask + ':content', function() {
-	gulp.watch(extPath + '/plugins/content/digicom/**', ['copy:' + baseTask + ':content', browserSync.reload]);
+	gulp.watch(extPath + '/plg_content_digicom/**', ['copy:' + baseTask + ':content', browserSync.reload]);
 });
 
 gulp.task('watch:' +  baseTask + ':editor', function() {
-	gulp.watch(extPath + '/plugins/editors-xtd/digicom/**', ['copy:' + baseTask + ':editor', browserSync.reload]);
+	gulp.watch(extPath + '/plg_editors-xtd_digicom/**', ['copy:' + baseTask + ':editor', browserSync.reload]);
 });
 
 gulp.task('watch:' +  baseTask + ':finder', function() {
-	gulp.watch(extPath + '/plugins/finder/digicom/**', ['copy:' + baseTask + ':finder', browserSync.reload]);
+	gulp.watch(extPath + '/plg_finder_digicom/**', ['copy:' + baseTask + ':finder', browserSync.reload]);
 });
 
 gulp.task('watch:' +  baseTask + ':system', function() {
-	gulp.watch(extPath + '/plugins/system/digicom/**', ['copy:' + baseTask + ':system', browserSync.reload]);
+	gulp.watch(extPath + '/plg_system_digicom/**', ['copy:' + baseTask + ':system', browserSync.reload]);
 });
 
 gulp.task('watch:' +  baseTask + ':offline', function() {
-	gulp.watch(extPath + '/plugins/digicom_pay/offline/**', ['copy:' + baseTask + ':offline', browserSync.reload]);
+	gulp.watch(extPath + '/plg_digicom_pay_offline/**', ['copy:' + baseTask + ':offline', browserSync.reload]);
 });
 
 gulp.task('watch:' +  baseTask + ':paypal', function() {
-	gulp.watch(extPath + '/plugins/digicom_pay/paypal/**', ['copy:' + baseTask + ':paypal', browserSync.reload]);
+	gulp.watch(extPath + '/plg_digicom_pay_paypal/**', ['copy:' + baseTask + ':paypal', browserSync.reload]);
 });
