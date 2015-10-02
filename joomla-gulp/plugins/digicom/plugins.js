@@ -1,11 +1,11 @@
 var gulp = require('gulp');
-var config = require('../../gulp-config.json');
+var config = require('../../../gulp-config.json');
 
 // Dependencies
 var browserSync = require('browser-sync');
 var rm          = require('gulp-rimraf');
-
-var baseTask  = 'plugins.plugins';
+var gutil 			= require('gulp-util');
+var baseTask  = 'plugins.digicom.plugins';
 var extPath   = './src';
 
 // Clean
@@ -24,6 +24,8 @@ gulp.task('clean:' + baseTask,
 });
 
 gulp.task('clean:' +  baseTask + ':content', function() {
+	gutil.log('Lets start cleaning content plugin');
+	gutil.log('...............................................');
 	return gulp.src(config.wwwDir + '/plugins/content/digicom/', { read: false }).pipe(rm({ force: true }));
 });
 
