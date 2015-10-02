@@ -24,10 +24,6 @@ class plgContentDigiCom extends JPlugin{
 
 	public $configs = null;
 
-	function __construct( &$subject, $params ) {
-		parent::__construct( $subject, $params );
-	}
-
 	/**
 	 * Plugin that retrieves contact information for contact
 	 *
