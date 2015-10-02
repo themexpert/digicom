@@ -122,7 +122,8 @@ gulp.task('watch:' + baseTask,
 		'watch:' + baseTask + ':finder',
 		'watch:' + baseTask + ':system',
 		'watch:' + baseTask + ':offline',
-		'watch:' + baseTask + ':paypal'
+		'watch:' + baseTask + ':paypal',
+		'watch:' + baseTask + ':language'
 	],
 	function() {
 		return true;
@@ -150,4 +151,16 @@ gulp.task('watch:' +  baseTask + ':offline', function() {
 
 gulp.task('watch:' +  baseTask + ':paypal', function() {
 	gulp.watch(extPath + '/plg_digicom_pay_paypal/**', ['copy:' + baseTask + ':paypal', browserSync.reload]);
+});
+gulp.task('watch:' +  baseTask + ':language', function() {
+	gulp.watch([
+		extPath + '/plg_content_digicom/language/en-GB/**',
+    extPath + '/plg_digicom_pay_offline/language/en-GB/**',
+    extPath + '/plg_digicom_pay_paypal/language/en-GB/**',
+    extPath + '/plg_editors-xtd_digicom/language/en-GB/**',
+    extPath + '/plg_finder_digicom/language/en-GB/**',
+    extPath + '/plg_system_digicom/language/en-GB/**',
+	],
+		['copy:' + baseTask + ':language', browserSync.reload]
+	);
 });
