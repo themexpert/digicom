@@ -24,8 +24,7 @@ gulp.task('clean:' + baseTask,
 });
 
 gulp.task('clean:' +  baseTask + ':content', function() {
-	gutil.log('Lets start cleaning content plugin');
-	gutil.log('...............................................');
+	// gutil.log('Lets start cleaning content plugin');
 	return gulp.src(config.wwwDir + '/plugins/content/digicom/', { read: false }).pipe(rm({ force: true }));
 });
 
@@ -77,47 +76,48 @@ gulp.task('copy:' + baseTask,
 		'copy:' + baseTask + ':language'
 	],
 	function() {
+		return true;
 });
 
 gulp.task('copy:' +  baseTask + ':content', ['clean:' + baseTask + ':content'], function() {
 	return gulp.src([
-
-    extPath + '/**/content/digicom/**',
-
-  ]).pipe(gulp.dest(config.wwwDir + '/plugins/content/digicom'));
+		'!' + extPath + '/plg_content_digicom/language',
+		extPath + '/plg_content_digicom/**'
+	])
+				.pipe(gulp.dest(config.wwwDir + '/plugins/content/digicom'));
 });
-
-gulp.task('copy:' +  baseTask + ':editor', ['clean:' + baseTask + ':editor'], function() {
-	return gulp.src(extPath + '/plugins/editors-xtd/digicom/**').pipe(gulp.dest(config.wwwDir + '/plugins/editors-xtd/digicom'));
-});
-
-gulp.task('copy:' +  baseTask + ':finder', ['clean:' + baseTask + ':finder'], function() {
-	return gulp.src(extPath + '/plugins/finder/digicom/**').pipe(gulp.dest(config.wwwDir + '/plugins/finder/digicom'));
-});
-
-gulp.task('copy:' +  baseTask + ':system', ['clean:' + baseTask + ':system'], function() {
-	return gulp.src(extPath + '/plugins/system/digicom/**').pipe(gulp.dest(config.wwwDir + '/plugins/system/digicom'));
-});
-
-gulp.task('copy:' +  baseTask + ':offline', ['clean:' + baseTask + ':offline'], function() {
-	return gulp.src(extPath + '/plugins/digicom_pay/offline/**').pipe(gulp.dest(config.wwwDir + '/plugins/digicom_pay/offline'));
-});
-
-gulp.task('copy:' +  baseTask + ':paypal', ['clean:' + baseTask + ':paypal'], function() {
-	return gulp.src(extPath + '/plugins/digicom_pay/paypal/**').pipe(gulp.dest(config.wwwDir + '/plugins/digicom_pay/paypal'));
-});
-
-gulp.task('copy:' +  baseTask + ':language', ['clean:' + baseTask + ':language'], function() {
-  //extPath + '/plg_**/language/en-GB/**',
-	return gulp.src([
-    extPath + '/plg_content_digicom/language/en-GB/**',
-    extPath + '/plg_digicom_pay_offline/language/en-GB/**',
-    extPath + '/plg_digicom_pay_paypal/language/en-GB/**',
-    extPath + '/plg_editors-xtd_digicom/language/en-GB/**',
-    extPath + '/plg_finder_digicom/language/en-GB/**',
-    extPath + '/plg_system_digicom/language/en-GB/**',
-  ]).pipe(gulp.dest(config.wwwDir + '/administrator/language/en-GB'));
-});
+//
+// gulp.task('copy:' +  baseTask + ':editor', ['clean:' + baseTask + ':editor'], function() {
+// 	return gulp.src(extPath + '/plugins/editors-xtd/digicom/**').pipe(gulp.dest(config.wwwDir + '/plugins/editors-xtd/digicom'));
+// });
+//
+// gulp.task('copy:' +  baseTask + ':finder', ['clean:' + baseTask + ':finder'], function() {
+// 	return gulp.src(extPath + '/plugins/finder/digicom/**').pipe(gulp.dest(config.wwwDir + '/plugins/finder/digicom'));
+// });
+//
+// gulp.task('copy:' +  baseTask + ':system', ['clean:' + baseTask + ':system'], function() {
+// 	return gulp.src(extPath + '/plugins/system/digicom/**').pipe(gulp.dest(config.wwwDir + '/plugins/system/digicom'));
+// });
+//
+// gulp.task('copy:' +  baseTask + ':offline', ['clean:' + baseTask + ':offline'], function() {
+// 	return gulp.src(extPath + '/plugins/digicom_pay/offline/**').pipe(gulp.dest(config.wwwDir + '/plugins/digicom_pay/offline'));
+// });
+//
+// gulp.task('copy:' +  baseTask + ':paypal', ['clean:' + baseTask + ':paypal'], function() {
+// 	return gulp.src(extPath + '/plugins/digicom_pay/paypal/**').pipe(gulp.dest(config.wwwDir + '/plugins/digicom_pay/paypal'));
+// });
+//
+// gulp.task('copy:' +  baseTask + ':language', ['clean:' + baseTask + ':language'], function() {
+//   //extPath + '/plg_**/language/en-GB/**',
+// 	return gulp.src([
+//     extPath + '/plg_content_digicom/language/en-GB/**',
+//     extPath + '/plg_digicom_pay_offline/language/en-GB/**',
+//     extPath + '/plg_digicom_pay_paypal/language/en-GB/**',
+//     extPath + '/plg_editors-xtd_digicom/language/en-GB/**',
+//     extPath + '/plg_finder_digicom/language/en-GB/**',
+//     extPath + '/plg_system_digicom/language/en-GB/**',
+//   ]).pipe(gulp.dest(config.wwwDir + '/administrator/language/en-GB'));
+// });
 
 // Watch
 gulp.task('watch:' + baseTask,

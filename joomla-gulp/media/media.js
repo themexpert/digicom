@@ -11,3 +11,7 @@ var extPath   = './src';
 gulp.task('clean:' + baseTask,function() {
 		return true;
 });
+// copy
+gulp.task('copy:' + baseTask,function() {
+		return true;
+});
