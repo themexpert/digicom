@@ -16,7 +16,7 @@ Download package file from [latest release](https://github.com/themexpert/digico
 Developer instruction will come soon.
 
 ### Development Process
-First configure `gulp-config.json` to match your settings
+First clone the project from github and then configure `gulp-config.json` to match your settings
 `wwwDir` and `proxy` is important for your settings. so change them to match your own environment.
 if you have Node install, then run this command
 ```
