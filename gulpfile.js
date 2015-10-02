@@ -46,7 +46,7 @@ gulp.task('release', ['cleanRelease'], function() {
         zips.push(modelZip);
     }
 
-    var pkgfiles = gulp.src(['!*', './src/language', './src/pkg.script.php', './src/pkg_digicom.xml'])
+    var pkgfiles = gulp.src(['!*', './src/pkg_language/**', './src/pkg.script.php', './src/pkg_digicom.xml'])
                         // run the replacement of version name
                         .pipe(replace(/##VERSION##/g, extension.version))
                         // run the replacement of creation date
