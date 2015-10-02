@@ -1,7 +1,7 @@
 {
 	"wwwDir"					: "/home/abu/www/digicom/test110",
 	"browserConfig"		: {
-						"proxy"	: "http://localhost/digicom/test110/",
+						"proxy"	: "http://local.digicom.themexpert.com/",
 						"port"	: ""
 	},
 	"defaultTasks"     : ["copy", "watch", "browser-sync"],
