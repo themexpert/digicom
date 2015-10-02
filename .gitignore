@@ -42,6 +42,9 @@ composer.lock
 composer.phar
 vendor/*
 
+#bower
+bower_components
+
 # Robo
 robo.phar
 
