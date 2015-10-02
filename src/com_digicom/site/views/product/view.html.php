@@ -281,7 +281,11 @@ class DigiComViewProduct extends JViewLegacy
 		{
 			$this->document->setDescription($this->item->metadesc);
 		}
-		elseif (!$this->item->metadesc && $this->params->get('menu-meta_description'))
+		elseif ($this->item->introtext)
+		{
+			$this->document->setDescription($this->item->introtext);
+		}
+		elseif ($this->params->get('menu-meta_description'))
 		{
 			$this->document->setDescription($this->params->get('menu-meta_description'));
 		}
