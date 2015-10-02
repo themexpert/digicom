@@ -57,7 +57,6 @@ gulp.task('copy:' + baseTask,
 	],
 	function() {
 		return gulp.src([
-			extPath + '/com_digicom/media/bower.json',
 			extPath + '/com_digicom/media/index.html'
 		]).pipe(gulp.dest(config.wwwDir + '/media/com_digicom'));
 		return true;bower.json
