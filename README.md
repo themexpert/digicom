@@ -34,7 +34,10 @@ To work with lESS or css we are using bower. you need to install the bower first
 ```
 bower install
 ```
-and then your
+```
+gulp watch
+```
+and then your less files will be compile and copied automatically to its location
 
 ### Tests
 To prepare the system tests (Selenium) to be run in your local machine you are asked to rename the file `tests/acceptance.suite.dist.yml` to `tests/acceptance.suite.yml`. Afterwards, please edit the file according to your system needs.
