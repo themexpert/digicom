@@ -1,6 +1,8 @@
 {
 	"components" 	: ["com_digicom"],
-	"modules" 		: ["modules"],
+	"modules" 		: {
+		"frontend"	: ["digicom"]
+	},
 	"plugins" 		: {
 		"digicom"		:	["plugins"]
 	},
