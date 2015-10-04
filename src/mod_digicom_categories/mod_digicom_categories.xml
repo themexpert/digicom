@@ -2,12 +2,12 @@
 <extension type="module" version="2.5" client="site" method="upgrade">
 	<name>DigiCom Categories</name>
 	<author>ThemeXpert</author>
-	<creationDate>##CREATIONDATE##</creationDate>
+	<creationDate>##DIGICOM_CREATIONDATE##</creationDate>
 	<copyright>Copyright (C) 2010-2015 Themexpert. All rights reserved.</copyright>
 	<license>GNU/GPLv3</license>
 	<authorEmail>info@themexpert.com</authorEmail>
 	<authorUrl>www.themexpert.com</authorUrl>
-	<version>##VERSION##</version>
+	<version>##DIGICOM_VERSION##</version>
 	<description>DigiCom Categories Module</description>
 	<files>
 		<filename module="mod_digicom_categories">mod_digicom_categories.php</filename>

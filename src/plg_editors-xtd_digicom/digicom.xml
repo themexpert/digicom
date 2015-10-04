@@ -2,12 +2,12 @@
 <extension version="3.0" type="plugin" group="editors-xtd" method="upgrade">
 	<name>editors-xtd - DigiCom editors-xtd Plugin</name>
 	<author>ThemeXpert</author>
-	<creationDate>##CREATIONDATE##</creationDate>
+	<creationDate>##DIGICOM_CREATIONDATE##</creationDate>
 	<copyright>Copyright (C) 2013 themexpert.com. All rights reserved.</copyright>
 	<license>GNU/GPL</license>
 	<authorEmail>info@themexpert.com</authorEmail>
 	<authorUrl>www.themexpert.com</authorUrl>
-	<version>##VERSION##</version>
+	<version>##DIGICOM_VERSION##</version>
 
 	<description>Thank you for installing DigiCom editors-xtd Plugin.</description>
 

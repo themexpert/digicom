@@ -3,12 +3,12 @@
 
 	<name>Paypal - DigiCom Pay Plugin</name>
 	<author>ThemeXpert</author>
-	<creationDate>##CREATIONDATE##</creationDate>
+	<creationDate>##DIGICOM_CREATIONDATE##</creationDate>
 	<copyright>Copyright © 2013 themexpert.com All rights reserved.</copyright>
 	<license>GNU/GPLv3</license>
 	<authorEmail>info@themexpert.com</authorEmail>
 	<authorUrl>www.themexpert.com</authorUrl>
-	<version>##VERSION##</version>
+	<version>##DIGICOM_VERSION##</version>
 	<description>Paypal payment plugin for DigiCom Joomla Extension</description>
 
 	<files>

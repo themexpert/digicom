@@ -11,7 +11,7 @@
     <author>ThemeXpert</author>
     <authorEmail>info@themexpert.com</authorEmail>
     <authorUrl>www.themexpert.com</authorUrl>
-    <version>##VERSION##</version>
+    <version>##DIGICOM_VERSION##</version>
     <license>GNU General Public License version 3 or later;</license>
     <description>PKG_DIGICOM_XML_DESCRIPTION</description>
     <scriptfile>pkg.script.php</scriptfile>

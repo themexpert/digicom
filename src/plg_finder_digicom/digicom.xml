@@ -2,12 +2,12 @@
 <extension version="3.1" type="plugin" group="finder" method="upgrade">
 	<name>plg_finder_digicom</name>
 	<author>ThemeXpert</author>
-	<creationDate>##CREATIONDATE##</creationDate>
+	<creationDate>##DIGICOM_CREATIONDATE##</creationDate>
 	<copyright>(C) 2005 - 2015 Open Source Matters. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>admin@themexpert.com</authorEmail>
 	<authorUrl>www.themexpert.com</authorUrl>
-	<version>##VERSION##</version>
+	<version>##DIGICOM_VERSION##</version>
 	<description>PLG_FINDER_DIGICOM_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="digicom">digicom.php</filename>
