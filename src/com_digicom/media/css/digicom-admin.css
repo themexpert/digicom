@@ -264,6 +264,9 @@ body.com_digicom .digi-micro-btn {
   border-radius: 16px;
   line-height: 15px;
 }
+body.com_digicom .subhead .btn-toolbar .btn.btn-preview {
+  background: #4CAF50;
+}
 body.com_digicom .product-thumb {
   width: 48px;
   height: 48px;
