@@ -58,15 +58,16 @@ class DigiComSiteHelperSession
 			$sql = "SELECT GROUP_CONCAT(sid) as sid from #__digicom_session where create_time< now() - INTERVAL 7 DAY";
 			$db->setQuery($sql);
 
-			$this->oldsids = $db->loadObject();
+			$oldsids = $db->loadObject();
+			$this->oldsids = rtrim($oldsids->sid, ',');
 		}
 
-		if(!empty($this->oldsids->sid)){
-			$sql = "delete from #__digicom_cart where `sid` in (".$this->oldsids->sid.")";
+		if(!empty($this->oldsids)){
+			$sql = "delete from #__digicom_cart where `sid` in (".$this->oldsids.")";
 			$db->setQuery($sql);
 			$db->execute();
 
-			$sql = "delete from #__digicom_session where `sid` in (".$this->oldsids->sid.")";
+			$sql = "delete from #__digicom_session where `sid` in (".$this->oldsids.")";
 			$db->setQuery($sql);
 			$db->execute();
 		}
