@@ -39,8 +39,8 @@ gulp.task('release', ['cleanRelease'], function() {
     for (var i = 0; i < modelFolders.length; i++) {
         var model = modelFolders[i];
         modelZip = gulp.src('./src/'+ model+'/**')
-                       .pipe(replace(/##VERSION##/g, extension.version))
-                       .pipe(replace(/##CREATIONDATE##/g, extension.creationDate))
+                       .pipe(replace(/##DIGICOM_VERSION##/g, extension.version))
+                       .pipe(replace(/##DIGICOM_CREATIONDATE##/g, extension.creationDate))
                        .pipe(zip(model + '.zip'));
         // notice we removed the dest step and store the zip stream (still in memory)
         zips.push(modelZip);
@@ -48,9 +48,9 @@ gulp.task('release', ['cleanRelease'], function() {
 
     var pkgfiles = gulp.src(['!*', './src/pkg_language/**', './src/pkg.script.php', './src/pkg_digicom.xml'])
                         // run the replacement of version name
-                        .pipe(replace(/##VERSION##/g, extension.version))
+                        .pipe(replace(/##DIGICOM_VERSION##/g, extension.version))
                         // run the replacement of creation date
-                        .pipe(replace(/##CREATIONDATE##/g, extension.creationDate));
+                        .pipe(replace(/##DIGICOM_CREATIONDATE##/g, extension.creationDate));
 
     zips.push(pkgfiles);
 
