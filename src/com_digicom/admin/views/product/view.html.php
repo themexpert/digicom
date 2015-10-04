@@ -80,6 +80,20 @@ class DigiComViewProduct extends JViewLegacy
 			);
 		$bar->appendButton('Custom', $layout->render($title), 'title');
 
+		if(!$isNew){
+			$layout = new JLayoutFile('toolbar.links');
+			$config=array(
+					'href' => '#previewProduct',
+					'role' => 'button',
+					'class' => 'btn btn-small',
+					'data' => 'modal',
+					'icon' => 'icon-eye-open',
+					'text' => JText::_('COM_DIGICOM_PRODUCT_PREVIEW'),
+					'title' => JText::_('COM_DIGICOM_PRODUCT_PREVIEW')
+			);
+			$bar->appendButton('Custom', $layout->render($config), 'preview');
+		}
+
 		// If not checked out, can save the item.
 		if (!$checkedOut && ($canDo->get('core.edit')||(count($user->getAuthorisedCategories('com_digicom', 'core.create')))))
 		{
