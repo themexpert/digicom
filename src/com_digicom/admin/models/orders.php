@@ -286,9 +286,10 @@ class DigiComModelOrders extends JModelList
 		if($status == 'Paid'){
 			$table->amount_paid = $table->amount;
 			$table->status = 'Active';
+		}elseif ($status == 'Refund') {
+			$table->amount_paid = 0;
 		}
-		//print_r($status);die;
-		//print_r($table);die;
+
 		if(!$table->store()){
 			return JFactory::getApplication()->enqueueMessage(JText::_('COM_DIGICOM_ORDER_STATUS_CHANGED_FAILED',$table->getErrorMsg()),'error');
 		}
@@ -304,6 +305,10 @@ class DigiComModelOrders extends JModelList
 		elseif($status == "Cancel"){
 			$sql = "update #__digicom_orders_details set published='-1' where orderid in ('" . $id  . "')";
 			$type = 'cancel_order';
+		}
+		elseif($status == "Refund"){
+			$sql = "update #__digicom_orders_details set published='-2' where orderid in ('" . $id  . "')";
+			$type = 'refund_order';
 		}
 
 		$db->setQuery($sql);

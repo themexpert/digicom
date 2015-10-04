@@ -115,7 +115,7 @@ Joomla.submitbutton = function (pressbutton) {
 					<th>
 						<?php echo JText::_( 'COM_DIGICOM_CUSTOMER_PAYMENT_METHOD' ); ?>
 					</th>
-					<th>
+					<th style="width: 200px;">
 						<?php echo JText::_( 'COM_DIGICOM_ACTION' ); ?>
 					</th>
 				</tr>
@@ -195,7 +195,7 @@ Joomla.submitbutton = function (pressbutton) {
 						<td align="center">
 							<?php echo $order->processor; ?>
 						</td>
-            <td align="center" width="1%">
+            <td align="center" class="orders-action">
 
  							<?php if ($canDo->get('core.edit.state')) : ?>
                  <?php echo DigiComHelperDigiCom::getOrderSratusList($order->status, $i, $order); ?>
@@ -204,7 +204,12 @@ Joomla.submitbutton = function (pressbutton) {
                 $class = 'badge badge-success';
 								if($order->status == "Pending"){
 									$class = 'badge badge-warning';
-								} ?>
+								}
+                elseif($order->status == "Pending")
+                {
+                  $class = 'badge badge-important';
+                }
+                ?>
                 <span class="<?php echo $class; ?>">
                   <?php echo (trim( $order->status ) != "in_progres" ? $order->status : "Active"); ?>
                 </span>
@@ -220,12 +225,14 @@ Joomla.submitbutton = function (pressbutton) {
 					</tr>
 				<?php endif; ?>
 			</tbody>
-
+      <?php
+        $total_pag = $this->pagination->get("pages.total", "0");
+        if($total_pag > 1):
+      ?>
 			<tfoot>
 				<tr>
-					<td colspan="9">
+					<td colspan="10">
 						<?php
-							$total_pag = $this->pagination->get("pages.total", "0");
 							$pag_start = $this->pagination->get("pages.start", "1");
 							if($total_pag > ($pag_start + 9)){
 								$this->pagination->set("pages.stop", ($pag_start + 9));
@@ -238,6 +245,7 @@ Joomla.submitbutton = function (pressbutton) {
 					</td>
 				</tr>
 			</tfoot>
+    <?php endif; ?>
 		</table>
 
 		<input type="hidden" name="option" value="com_digicom" />

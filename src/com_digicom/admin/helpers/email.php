@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 class DigiComHelperEmail {
 
     /*
-	* $type = process_order, new_order, cancel_order;
+	* $type = process_order, new_order, cancel_order, refund_order;
 	*/
     public static function sendApprovedEmail( $orderid = 0 , $type = 'complete_order', $status = 'Active', $paid = '')
     {
@@ -27,16 +27,8 @@ class DigiComHelperEmail {
         $cust_info = JTable::getInstance( 'Customer','table' );
         $cust_info->load( $order->userid );
         $cust_info->username = JFactory::getUser($order->userid)->username;
-
         $my = $cust_info;
-        //print_r($my);jexit();
-        /*
-        $emailinfo = $configs->get('email');
-        $message = $emailinfo->$type->body;
-        $subject = $emailinfo->$type->subject;
-        */
 
-        //echo $type;die;
         $email_settings = $configs->get('email_settings');
         $email_header_image = $email_settings->email_header_image;//jform[email_settings][email_header_image]
         if(!empty($email_header_image)){
@@ -54,7 +46,6 @@ class DigiComHelperEmail {
         $enable = $emailinfo->enable;
         $heading = $emailinfo->heading;//jform[email_settings][heading]
         if(!$enable) return;
-        //print_r($emailinfo);die;
 
         //-----------------------------------------------------------------------
         $path = '/components/com_digicom/emails/';
@@ -73,6 +64,11 @@ class DigiComHelperEmail {
             case 'cancel_order':
                 $emailType = JText::_('COM_DIGIOM_CANCEL_ORDER');
                 $filename = 'cancel-order.'.$email_type.'.php';
+                break;
+
+            case 'refund_order':
+                $emailType = JText::_('COM_DIGIOM_REFUND_ORDER');
+                $filename = 'refund-order.'.$email_type.'.php';
                 break;
 
             case 'complete_order':
@@ -95,19 +91,11 @@ class DigiComHelperEmail {
             $filePath = JPath::clean($client->path . $path . '/'.$filename);
             $emailbody = file_get_contents($filePath);
         }
-        //echo $emailbody;die;
+
         //-----------------------------------------------------------------------
 
-
-        //$email = $configs->get('email');
-
-        /*$message = $email->$type->body;
-        $subject = $email->$type->subject;
-        */
         $message = $emailbody;
         $subject = $Subject;
-
-
         $mes = new stdClass();
 
         $promo = new stdClass(); //$cart->get_promo($cust_info);

@@ -435,7 +435,8 @@ class DigiComHelperDigiCom extends JHelperContent{
 			'Active' => JText::_('COM_DIGICOM_ORDER_STATUS_ACTIVE'),
 			'Pending' => JText::_('COM_DIGICOM_ORDER_STATUS_PENDING'),
 			'Cancel' => JText::_('COM_DIGICOM_ORDER_STATUS_CANCEL'),
-			'Paid' => JText::_('COM_DIGICOM_ORDER_MAKE_PAID')
+			'Paid' => JText::_('COM_DIGICOM_ORDER_MAKE_PAID'),
+			'Refund' => JText::_('COM_DIGICOM_ORDER_MAKE_REFUND')
 		);
 		## Initialize array to store dropdown options ##
 		$options = array();

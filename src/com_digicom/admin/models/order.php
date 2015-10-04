@@ -223,6 +223,10 @@ class DigiComModelOrder extends JModelAdmin
 			$data['amount_paid'] = $table->amount;
 			$data['status'] = 'Active';
 		}
+		elseif($status == 'Refund')
+		{
+			$data['amount_paid'] = 0;
+		}
 
 		if(empty($table->transaction_number)){
 			$data['transaction_number'] = DigiComSiteHelperDigicom::getUniqueTransactionId($table->id);
@@ -244,6 +248,11 @@ class DigiComModelOrder extends JModelAdmin
 				$sql = "update #__digicom_orders_details set published='-1' where orderid in ('" . $table->id  . "')";
 				$type = 'cancel_order';
 			}
+			elseif($status == "Refund"){
+				$sql = "update #__digicom_orders_details set published='-2' where orderid in ('" . $table->id  . "')";
+				$type = 'refund_order';
+			}
+
 			$db->setQuery($sql);
 			$db->execute();
 
