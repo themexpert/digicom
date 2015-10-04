@@ -91,6 +91,7 @@ $input->set('layout', 'dgform');
 									<li><a href="#COMPLETE_ORDER" data-toggle="tab"><?php echo JText::_('COM_DIGICOM_CONFIG_EMAIL_TEMPLATES_COMPLETE_ORDER');?></a></li>
 									<li><a href="#PROCESS_ORDER" data-toggle="tab"><?php echo JText::_('COM_DIGICOM_CONFIG_EMAIL_TEMPLATES_PROCESS_ORDER');?></a></li>
 									<li><a href="#CANCEL_ORDER" data-toggle="tab"><?php echo JText::_('COM_DIGICOM_CONFIG_EMAIL_TEMPLATES_CANCEL_ORDER');?></a></li>
+									<li><a href="#REFUND_ORDER" data-toggle="tab"><?php echo JText::_('COM_DIGICOM_CONFIG_EMAIL_TEMPLATES_REFUND_ORDER');?></a></li>
 								</ul>
 
 								<div class="tab-content">
@@ -183,6 +184,29 @@ $input->set('layout', 'dgform');
 									</div>
 									<div class="tab-pane" id="CANCEL_ORDER">
 										<?php foreach ($this->form->getGroup('cancel_order') as $field) :
+											$name = $field->getAttribute('name');
+											if($name != 'template'):
+											?>
+												<?php //echo $field->getControlGroup(); ?>
+												<div class="control-group">
+													<?php if($field->getAttribute('type') == 'spacer'):?>
+														<?php echo '<p class="'.$field->getAttribute('class','').'">'.JText::_($field->getAttribute('label')).'</p>'; ?>
+													<?php else: ?>
+														<div class="control-label">
+															<?php echo $field->label; ?>
+														</div>
+														<div class="controls">
+															<?php echo $field->input; ?>
+														</div>
+													<?php endif; ?>
+												</div>
+											<?php else: ?>
+											<?php echo $field->input; ?>
+											<?php endif; ?>
+										<?php endforeach; ?>
+									</div>
+									<div class="tab-pane" id="REFUND_ORDER">
+										<?php foreach ($this->form->getGroup('refund_order') as $field) :
 											$name = $field->getAttribute('name');
 											if($name != 'template'):
 											?>

@@ -812,6 +812,84 @@
 
 
 			</fields>
+			<fields name="refund_order">
+
+				<field name="email_settings_spacer_refund_order_notice" type="spacer" class="alert"
+				label="COM_DIGICOM_SETTINGS_EMAIL_SETTINGS_SPACER_REFUND_ORDER_NOTICE"
+				/>
+
+				<field
+					name="enable"
+					type="radio"
+					class="btn-group"
+					label="COM_DIGICOM_SETTINGS_EMAIL_ENABLE_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_ENABLE_DESC"
+					default="1"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field name="recipients" type="text"
+					label="COM_DIGICOM_SETTINGS_RECIPIENTS_LABEL"
+					description="COM_DIGICOM_SETTINGS_RECIPIENTS_DESC"
+				/>
+				<field name="Subject" type="text"
+					label="COM_DIGICOM_SETTINGS_EMAIL_SUBJECT_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_SUBJECT_DESC"
+				>
+					<option value="[{site_title}] Cancel order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_REFUND_ORDER_SUBJECT_DEFAULT</option>
+				</field>
+				<field name="heading" type="text"
+					label="COM_DIGICOM_SETTINGS_EMAIL_HEADING_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_HEADING_DESC"
+				>
+					<option value="[{site_title}] Cancel order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_REFUND_ORDER_SUBJECT_DEFAULT</option>
+				</field>
+
+				<field name="email_type" type="list"
+					label="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_LABEL"
+					description="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_DESC"
+					onchange="showProperTemplateEmail('refund_order',event)"
+				>
+					<option value="html">COM_DIGICOM_SETTINGS_EMAIL_TYPE_HTML</option>
+					<option value="raw">COM_DIGICOM_SETTINGS_EMAIL_TYPE_TEXT</option>
+				</field>
+				<field name="email_settings_spacer_refund_order_show_hide" type="spacer"
+					label="COM_DIGICOM_SETTINGS_EMAIL_SETTINGS_SPACER_REFUND_ORDER_SHOW_HIDE_NOTICE"
+				/>
+				<field name="template_html" type="dgeditor"
+					noname="true"
+					editor="codemirror|none"
+					readonly="true"
+					buttons="no"
+					label="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_HTML_LABEL" description="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_DESC"
+					height="500px" rows="20" cols="80" syntax="php" filter="raw"
+					path="/components/com_digicom/emails/"
+					filename="refund-order.html.php"
+					overridepath="template"
+					override="/html/com_digicom/emails/"
+					overridemsg="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_OVERRIDE_REFUND_ORDER_HTML_MSG"
+					class="span12 email_template_digicom_refund_order_html"
+				/>
+
+				<field name="template_raw" type="dgeditor"
+					noname="true"
+					editor="codemirror|none"
+					readonly="true"
+					buttons="no"
+					label="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_RAW_LABEL" description="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_DESC"
+					height="500px" rows="20" cols="80" syntax="php" filter="raw"
+					path="/components/com_digicom/emails/"
+					filename="refund-order.raw.php"
+					overridepath="template"
+					override="/html/com_digicom/emails/"
+					overridemsg="COM_DIGICOM_SETTINGS_EMAIL_TEMPLATE_OVERRIDE_REFUND_ORDER_RAW_MSG"
+					class="span12 email_template_digicom_refund_order_raw"
+				/>
+
+
+			</fields>
 
 
 			<!--

@@ -234,14 +234,13 @@ class DigiComHelperEmail {
             $adminEmail2 = $email_settings->from_email;
         }
 
-
         $mailSender = JFactory::getMailer();
         $mailSender->IsHTML( true );
         $mailSender->addRecipient( $my->email );
         $mailSender->setSender( array($adminEmail2, $adminName2) );
         $mailSender->setSubject( $subject );
         $mailSender->setBody( $message );
-
+        
         $info = array(
             'orderid' => $orderid,
             'amount' => $amount,
