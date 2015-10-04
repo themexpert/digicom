@@ -18,6 +18,7 @@
 			<option value="Active">COM_DIGICOM_ORDER_STATUS_ACTIVE</option>
 			<option value="Pending">COM_DIGICOM_ORDER_STATUS_PENDING</option>
 			<option value="Cancel">COM_DIGICOM_ORDER_STATUS_CANCEL</option>
+			<option value="Refund">COM_DIGICOM_ORDER_STATUS_REFUND</option>
 		</field>
 		<field
 			name="order_type"
