@@ -87,6 +87,7 @@ class DigiComViewProduct extends JViewLegacy
 					'role' => 'button',
 					'class' => 'btn btn-small btn-success btn-preview',
 					'target'	=> '_blank',
+					'data'	=> '',
 					'icon' => 'icon-eye-open',
 					'text' => JText::_('COM_DIGICOM_PRODUCT_PREVIEW'),
 					'title' => JText::_('COM_DIGICOM_PRODUCT_PREVIEW')
