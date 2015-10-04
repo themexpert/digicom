@@ -1120,3 +1120,6 @@ body.com_digicom .digicom-product-title #jform_alias {
 body.com_digicom .digicom-product-price .input-prepend [class*="span"] {
   margin-left: -1px;
 }
+body.com_digicom .orders-action .chzn-container {
+  width: 100% !important;
+}
