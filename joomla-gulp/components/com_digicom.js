@@ -76,7 +76,7 @@ gulp.task('watch:' + baseTask,
 });
 
 gulp.task('watch:' +  baseTask + ':admin', function() {
-	gulp.watch(extPath + '/com_digicom/site/**', ['copy:' + baseTask + ':admin', browserSync.reload]);
+	gulp.watch(extPath + '/com_digicom/admin/**', ['copy:' + baseTask + ':admin', browserSync.reload]);
 });
 
 gulp.task('watch:' +  baseTask + ':site', function() {
