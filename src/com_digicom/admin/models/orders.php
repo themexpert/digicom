@@ -286,7 +286,8 @@ class DigiComModelOrders extends JModelList
 		if($status == 'Paid'){
 			$table->amount_paid = $table->amount;
 			$table->status = 'Active';
-		}elseif ($status == 'Refund') {
+		}
+		elseif ($status == 'Refund') {
 			$table->amount_paid = 0;
 		}
 
@@ -312,9 +313,7 @@ class DigiComModelOrders extends JModelList
 		}
 
 		$db->setQuery($sql);
-		if(!$db->query()){
-			$res = false;
-		}
+		$db->execute();
 
 		// based on order status changes, we need to update license too :)
 		$this->updateLicensesStatus($id, $type);

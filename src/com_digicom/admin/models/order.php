@@ -227,7 +227,7 @@ class DigiComModelOrder extends JModelAdmin
 		{
 			$data['amount_paid'] = 0;
 		}
-
+		
 		if(empty($table->transaction_number)){
 			$data['transaction_number'] = DigiComSiteHelperDigicom::getUniqueTransactionId($table->id);
 		}
@@ -265,9 +265,6 @@ class DigiComModelOrder extends JModelAdmin
 			);
 
 			DigiComSiteHelperLog::setLog($logtype, 'Admin order save', $table->id, 'Admin changed order#'.$table->id.', status: '.$status.', paid: '.$data['amount_paid'], json_encode($info),$status);
-
-			$table = $this->getTable();
-			$table->load($data['id']);
 
 			if($table->status != $data['status']){
 
