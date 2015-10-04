@@ -16,6 +16,7 @@ $data = $displayData['data'];
 $icon = $displayData['icon'];
 $text = $displayData['text'];
 $title = $displayData['title'];
+$target = $displayData['target'];
 
 $attr = '';
 $attr .= ($href ? ' href="'.$href.'"' : '');
@@ -23,6 +24,7 @@ $attr .= ($role ? ' role="'.$role.'"' : '');
 $attr .= ($class ? ' class="'.$class.'"' : '');
 $attr .= ($data ? ' data-toggle="'.$data.'"' : '');
 $attr .= ($title ? ' title="'.$title.'"' : '');
+$attr .= ($target ? ' target="'.$target.'"' : '');
 ?>
 <a<?php echo $attr; ?>>
 		<?php if($icon): ?> <span class="<?php echo $icon; ?>"></span><?php endif; ?>
