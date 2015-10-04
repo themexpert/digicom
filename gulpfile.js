@@ -38,10 +38,31 @@ gulp.task('release', ['cleanRelease'], function() {
 
     for (var i = 0; i < modelFolders.length; i++) {
         var model = modelFolders[i];
-        modelZip = gulp.src('./src/'+ model+'/**')
-                       .pipe(replace(/##DIGICOM_VERSION##/g, extension.version))
-                       .pipe(replace(/##DIGICOM_CREATIONDATE##/g, extension.creationDate))
-                       .pipe(zip(model + '.zip'));
+        if(model == 'com_digicom'){
+          var component = [], modofiedapp, completeapp;
+
+          completeapp =  gulp.src('./src/'+ model+'/**');
+
+          modofiedapp = gulp.src([
+                    './src/'+ model+'/**',
+                    '!./src/'+ model+'/media/images/**'
+                  ])
+                  .pipe(replace(/##DIGICOM_VERSION##/g, extension.version))
+                  .pipe(replace(/##DIGICOM_CREATIONDATE##/g, extension.creationDate));
+
+          component.push(completeapp);
+          component.push(modofiedapp);
+          
+          component = es.merge.apply(null, component)
+
+          modelZip = component.pipe(zip(model + '.zip'));
+        }else{
+          modelZip = gulp.src('./src/'+ model+'/**')
+                     .pipe(replace(/##DIGICOM_VERSION##/g, extension.version))
+                     .pipe(replace(/##DIGICOM_CREATIONDATE##/g, extension.creationDate))
+                     .pipe(zip(model + '.zip'));
+        }
+
         // notice we removed the dest step and store the zip stream (still in memory)
         zips.push(modelZip);
     }
