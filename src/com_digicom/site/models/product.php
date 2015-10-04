@@ -37,7 +37,7 @@ class DigiComModelProduct extends JModelItem
 	protected function populateState()
 	{
 		$app = JFactory::getApplication('site');
-
+		$preview	= $app->input->get('preview', 0, 'int');
 		// Load state from the request.
 		$pk = $app->input->getInt('id');
 		$this->setState('product.id', $pk);
@@ -52,7 +52,13 @@ class DigiComModelProduct extends JModelItem
 		// TODO: Tune these values based on other permissions.
 		$user = JFactory::getUser();
 
-		if ((!$user->authorise('core.edit.state', 'com_digicom')) && (!$user->authorise('core.edit', 'com_digicom')))
+		if((!$user->authorise('core.edit.state', 'com_digicom')) && (!$user->authorise('core.edit', 'com_digicom')) && $preview )
+		{
+			$url = base64_encode( JURI::getInstance()->toString() );
+			$link = JRoute::_('index.php?option=com_users&view=login&return='.$url, false);
+			$app->redirect($link, JText::_('COM_DIGICOM_ERROR_VIEW_PREVIEW_PLEASE_LOGIN_WITH_ACCESS'));
+		}
+		elseif((!$user->authorise('core.edit.state', 'com_digicom')) && (!$user->authorise('core.edit', 'com_digicom')))
 		{
 			$this->setState('filter.published', 1);
 			$this->setState('filter.archived', 2);
