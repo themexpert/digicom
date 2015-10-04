@@ -83,10 +83,10 @@ class DigiComViewProduct extends JViewLegacy
 		if(!$isNew){
 			$layout = new JLayoutFile('toolbar.links');
 			$config=array(
-					'href' => '#previewProduct',
+					'href' => JRoute::_(JUri::root().'index.php?option=com_digicom&view=product&id='.$this->item->id.'&preview=1'),
 					'role' => 'button',
-					'class' => 'btn btn-small',
-					'data' => 'modal',
+					'class' => 'btn btn-small btn-success btn-preview',
+					'target'	=> '_blank',
 					'icon' => 'icon-eye-open',
 					'text' => JText::_('COM_DIGICOM_PRODUCT_PREVIEW'),
 					'title' => JText::_('COM_DIGICOM_PRODUCT_PREVIEW')
