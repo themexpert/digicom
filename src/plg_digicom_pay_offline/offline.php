@@ -33,8 +33,8 @@ class plgDigiCom_PayOffline extends JPlugin
 		//Define Payment Status codes in Authorise  And Respective Alias in Framework
 		//1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review
 		$this->responseStatus= array(
-			'Success' =>'C',
-			'Failure' =>'X',
+			'Success' =>'A',
+			'Failure' =>'C',
 			'Pending' =>'P'
 		);
 	}
@@ -134,7 +134,7 @@ class plgDigiCom_PayOffline extends JPlugin
 
 		$payment_status = $this->translateResponse('Pending');
 		$data['payment_status'] = $payment_status;
-		
+
 		if(!isset($data['payment_status']))
 		{
 			$info = array('raw_data'	=>	$data);

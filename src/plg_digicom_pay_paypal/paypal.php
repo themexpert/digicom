@@ -39,13 +39,11 @@ class  plgDigiCom_PayPaypal extends JPlugin
 
 		//Define Payment Status codes in API  And Respective Alias in Framework
 		$this->responseStatus= array (
-			'Completed' 		=> 'C',
+			'Completed' 		=> 'A',
 			'Pending' 			=> 'P',
-			'Failed' 			=> 'E',
-			'Denied' 			=> 'D',
-			'Refunded'			=> 'RF',
-			'Canceled_Reversal' => 'CRV',
-			'Reversed'			=> 'RV'
+			'Failed' 			=> 'P',
+			'Denied' 			=> 'P',
+			'Refunded'			=> 'RF'
 		);
 	}
 
