@@ -9,7 +9,6 @@
 
 defined('_JEXEC') or die;
 $table_column = 4;
-$processor 		= $this->session->get('processor','1');
 ?>
 <div class="dc-cart-price table-responsive">
   <table id="dc-cart-price-table" class="table well" width="100%">
@@ -85,7 +84,7 @@ $processor 		= $this->session->get('processor','1');
       </td>
       <td>
         <div class="pull-right">
-          <?php echo DigiComSiteHelperDigicom::getPaymentPlugins($this->configs, $processor); ?>
+          <?php echo DigiComSiteHelperDigicom::getPaymentPlugins($this->configs); ?>
         </div>
       </td>
     </tr>
