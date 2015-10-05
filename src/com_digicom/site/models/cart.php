@@ -964,9 +964,16 @@ class DigiComModelCart extends JModelItem
 			$_SESSION['in_trans'] = 1;
 
 			switch ($data['status']) {
-				case 'C':
+				case 'A':
 					$msg 			= JText::_("COM_DIGICOM_PAYMENT_SUCCESSFUL_THANK_YOU");
 					$status 	= "Active";
+					$logtype 	= "payment";
+					$app->enqueueMessage($msg,'message');
+					break;
+
+				case 'C':
+					$msg 			= JText::_("COM_DIGICOM_PAYMENT_CANCEL_THANK_YOU");
+					$status 	= "Cancel";
 					$logtype 	= "payment";
 					$app->enqueueMessage($msg,'message');
 					break;
