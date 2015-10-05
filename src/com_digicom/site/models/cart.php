@@ -1044,12 +1044,12 @@ class DigiComModelCart extends JModelItem
 		if($status != 'Refund')
 		{
 			$orderTable->amount_paid = $orderTable->amount_paid + $data['total_paid_amt'];
-			$type = 'refund_order';
 		}
 		else{
 			$orderTable->amount_paid = 0;
+			$type = 'refund_order';
 		}
-
+		
 		//transection id
 		$orderTable->transaction_number = $data['transaction_id'];
 
