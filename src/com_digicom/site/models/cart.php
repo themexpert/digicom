@@ -937,11 +937,13 @@ class DigiComModelCart extends JModelItem
 	// 	return true;
 	// }
 
-	function proccessSuccess($post, $pay_plugin, $order_id, $sid, $responce,$items)
+	function proccessSuccess($post, $pay_plugin, $order_id, $sid, $responce, $items)
 	{
 		$app 			= JFactory::getApplication();
 		$customer = $this->loadCustomer($sid);
-		if(!$customer){
+
+		if(!$customer)
+		{
 			$order 	= $this->getOrder($order_id);
 			$sid 		= $customer = $order->userid;
 		}
@@ -951,28 +953,41 @@ class DigiComModelCart extends JModelItem
 
 		$result 	= $post;
 		$data 		= $responce[0];
-
+		// store log, dont need as its on processor work, let them do it
 		// $this->storelog($pay_plugin, $data);
 
+		// print_r($data);jexit();
 		$logtype = 'status';
 
 		if(isset($data['status']))
 		{
 			$_SESSION['in_trans'] = 1;
 
-			if($data['status'] == 'C'){
-				$msg 		= JText::_("COM_DIGICOM_PAYMENT_SUCCESSFUL_THANK_YOU");
-				$status = "Active";
-				$logtype = "payment";
-				$app->enqueueMessage($msg,'message');
-			} elseif($data['status'] == 'P') {
-				$status = "Pending";
-				$msg 		= JText::_("COM_DIGICOM_PAYMENT_PENDING_THANK_YOU");
-				$app->enqueueMessage($msg, 'notice');
-			}else{
-				$status = $data['status'];
-				$msg 		= JText::_("COM_DIGICOM_PAYMENT_WAITING_THANK_YOU");
-				$app->enqueueMessage($msg, 'notice');
+			switch ($data['status']) {
+				case 'C':
+					$msg 			= JText::_("COM_DIGICOM_PAYMENT_SUCCESSFUL_THANK_YOU");
+					$status 	= "Active";
+					$logtype 	= "payment";
+					$app->enqueueMessage($msg,'message');
+					break;
+
+				case 'P':
+					$status = "Pending";
+					$msg 		= JText::_("COM_DIGICOM_PAYMENT_PENDING_THANK_YOU");
+					$app->enqueueMessage($msg, 'notice');
+					break;
+
+				case 'RF':
+					$status = "Refund";
+					$msg 		= JText::_("COM_DIGICOM_PAYMENT_REFUND_THANK_YOU");
+					$app->enqueueMessage($msg, 'notice');
+					break;
+
+				default:
+					$status = $data['status'];
+					$msg 		= JText::_("COM_DIGICOM_PAYMENT_WAITING_THANK_YOU");
+					$app->enqueueMessage($msg, 'notice');
+					break;
 			}
 
 			$info = array(
@@ -980,22 +995,19 @@ class DigiComModelCart extends JModelItem
 				'data' => $data,
 				'plugin' => $pay_plugin
 			);
+
 			//$callback, $callbackid, $status = 'Active', $type = 'payment'
 			$log = DigiComSiteHelperLog::getLog('cart proccessSuccess', $order_id, $status, $logtype);
+			// print_r($log);jexit();
+			if($log === NULL or $log->status != 'Active'){
+				// let update order
+				DigiComSiteHelperLog::setLog($logtype, 'cart proccessSuccess', $order_id, 'Order id#'.$order_id.' updated & method is '.$pay_plugin, json_encode($info), $status);
 
-			if(
-					(empty($log->id) or $log->id == 0)
-					or
-					$log->status != 'Active'
-			)
+				$this->updateOrder($order_id, $result, $data, $pay_plugin, $status, $items, $customer);
+
+			}else
 			{
-				DigiComSiteHelperLog::setLog($logtype, 'cart proccessSuccess', $order_id, 'Order id#'.$order_id.' updated & method is '.$pay_plugin, json_encode($info),$status);
-
-				$this->updateOrder($order_id,$result,$data,$pay_plugin,$status,$items,$customer);
-
-			}else{
-				DigiComSiteHelperLog::setLog($logtype, 'cart proccessSuccess', $order_id, 'Post recieved for Order id#'.$order_id.' from '.$pay_plugin, json_encode($info),$status);
-
+				DigiComSiteHelperLog::setLog($logtype, 'cart proccessSuccess', $order_id, 'Post recieved for Order id#'.$order_id.' from '.$pay_plugin, json_encode($info), $status);
 			}
 
 		}
@@ -1014,14 +1026,22 @@ class DigiComModelCart extends JModelItem
 		return true;
 	}
 
-	function updateOrder($order_id,$result,$data,$pay_plugin,$status,$items,$customer)
+	function updateOrder($order_id, $result, $data, $pay_plugin, $status, $items, $customer)
 	{
 
 		$orderTable = $this->getTable('Order');
 		$orderTable->load($order_id);
-
+		// print_r($data);die;
 		//amount_paid
-		$orderTable->amount_paid = $orderTable->amount_paid + $data['total_paid_amt'];
+		$type = 'process_order';
+		if($status != 'Refund')
+		{
+			$orderTable->amount_paid = $orderTable->amount_paid + $data['total_paid_amt'];
+			$type = 'refund_order';
+		}
+		else{
+			$orderTable->amount_paid = 0;
+		}
 
 		//transection id
 		$orderTable->transaction_number = $data['transaction_id'];
@@ -1029,24 +1049,33 @@ class DigiComModelCart extends JModelItem
 		//processor
 		$orderTable->processor = $data['processor'];
 		$warning = '';
-		$type = 'process_order';
+
 		//status
 		if($orderTable->amount_paid >= $orderTable->amount){
 			$orderTable->status = $status;
 			$type = 'complete_order';
-		}else if(($orderTable->amount_paid > 0) && ($orderTable->amount_paid < $orderTable->amount)){
+		}
+		else if(($orderTable->amount_paid > 0) && ($orderTable->amount_paid < $orderTable->amount))
+		{
 			$warning = JText::_('COM_DIGICOM_PAYMENT_FROUD_CASE_PAYMENT_MANUPULATION');
 			$orderTable->status = 'Pending';
-		}else{
+		}
+		else{
 			$orderTable->status = $status;
 		}
 
-		if($type == 'complete_order'){
-			DigiComSiteHelperLicense::updateLicenses($order_id, $orderTable->number_of_products, $items, $orderTable->userid , $type);
-
-			$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
+		if($type == 'complete_order')
+		{
 			$dispatcher->trigger('onDigicomAfterPaymentComplete', array($order_id, $result, $pay_plugin, $items, $customer));
+		}
+		elseif($type == 'refund_order')
+		{
+			$dispatcher->trigger('onDigicomAfterPaymentRefund', array($order_id, $result, $pay_plugin, $items, $customer));
+		}
 
+		if($type == 'complete_order' or $type == 'refund_order'){
+			DigiComSiteHelperLicense::updateLicenses($order_id, $orderTable->number_of_products, $items, $orderTable->userid , $type);
 		}
 
 		$comment = array();
@@ -1400,11 +1429,11 @@ class DigiComModelCart extends JModelItem
 		$configs = $this->configs;
 		$customer = new DigiComSiteHelperSession();
 		$db 	= JFactory::getDbo();
-		$sql 	= 'SELECT `p`.*, `od`.`price`, `od`.`quantity` FROM
-					`#__digicom_products` AS `p`
-						INNER JOIN
-					`#__digicom_orders_details` AS `od` ON (`od`.`productid` = `p`.`id`)
-				WHERE `orderid` ='.$order_id;
+		$sql 	= 'SELECT `p`.*, ';
+		$sql 	.= '`od`.`price`, `od`.`quantity` ';
+		$sql 	.= 'FROM `#__digicom_products` AS `p` ';
+		$sql 	.= 'INNER JOIN `#__digicom_orders_details` AS `od` ON (`od`.`productid` = `p`.`id`) ';
+		$sql 	.= 'WHERE `orderid` ='.$order_id;
 
 		$db->setQuery($sql);
 		$items = $db->loadObjectList();
@@ -1420,6 +1449,7 @@ class DigiComModelCart extends JModelItem
 			$item->price_formated = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
 			$item->subtotal_formated = DigiComSiteHelperPrice::format_price( $item->subtotal, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
 
+			unset($item->fulltext);
 		}
 
 		return $items ;

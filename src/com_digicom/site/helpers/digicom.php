@@ -726,7 +726,8 @@ class DigiComSiteHelperDigicom {
 
 	}
 
-	public static function getPaymentPlugins($configs, $processor = 'offline'){
+	public static function getPaymentPlugins($configs)
+	{
 
 		$lang = JFactory::getLanguage();
 		$db = JFactory::getDBO();
@@ -738,7 +739,7 @@ class DigiComSiteHelperDigicom {
 		$db->setQuery($query);
 		$gatewayplugin = $db->loadobjectList();
 
-		$default = $processor;
+		$default 		= $this->session->get('processor', '');
 		if(empty($default)){
 				$default = $configs->get('default_payment','offline');
 		}

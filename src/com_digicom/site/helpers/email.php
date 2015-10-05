@@ -43,6 +43,7 @@ class DigiComSiteHelperEmail {
 		$address 		= $configs->get('address');
 
 		$emailinfo 		= $configs->get($type,'new_order');
+
 		$enable 			= $emailinfo->enable;
 		if(!$enable) return;
 
@@ -101,6 +102,11 @@ class DigiComSiteHelperEmail {
 			case 'cancel_order':
 				$emailType 	= JText::_('COM_DIGIOM_CANCEL_ORDER');
 				$filename 	= 'cancel-order.'.$email_type.'.php';
+				break;
+
+			case 'refund_order':
+				$emailType = JText::_('COM_DIGIOM_REFUND_ORDER');
+				$filename = 'refund-order.'.$email_type.'.php';
 				break;
 
 			case 'complete_order':
@@ -244,7 +250,7 @@ class DigiComSiteHelperEmail {
 		}else{
 			DigiComSiteHelperLog::setLog('email', 'cart dispatch email', $orderid, $message, json_encode($info),'success');
 		}
-
+		
 		// Send email to admin if its enabled on email common settings
 		if ( $email_settings->sendmailtoadmin)
 		{

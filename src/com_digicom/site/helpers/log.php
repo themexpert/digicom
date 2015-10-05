@@ -55,18 +55,19 @@ class DigiComSiteHelperLog {
     public static function getLog($callback, $callbackid, $status = 'Active', $type = 'payment')
     {
 
-      $logTable = JTable::getInstance('log','Table');
-      $logTable->load(
-        array(
-          'type'        => $type,
-          'callback'    => $callback,
-          'callbackid'  => $callbackid,
-          // 'userid'      => $userid,
-          'status'      => $status
-        )
-      );
+      $db = JFactory::getDBO();
+  		$query = $db->getQuery(true);
+  		$query->select('*')
+  		      ->from($db->quoteName('#__digicom_log'))
+        		->where($db->quoteName('type') . ' = '. $db->quote($type))
+        		->where($db->quoteName('callback') . ' = '. $db->quote($callback))
+        		->where($db->quoteName('callbackid') . ' = '. $db->quote($callbackid))
+        		->where($db->quoteName('status') . ' = '. $db->quote($status));
 
-      return $logTable;
+  		// Reset the query using our newly populated query object.
+  		$db->setQuery($query);
+
+  		return $db->loadObject();
 
     }
 
