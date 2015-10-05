@@ -730,6 +730,8 @@ class DigiComSiteHelperDigicom {
 	{
 
 		$lang = JFactory::getLanguage();
+		$session = JFactory::getSession();
+
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true)
 					->select('extension_id as id , name, element,enabled as published, params')
@@ -739,7 +741,7 @@ class DigiComSiteHelperDigicom {
 		$db->setQuery($query);
 		$gatewayplugin = $db->loadobjectList();
 
-		$default 		= $this->session->get('processor', '');
+		$default 		= $session->get('processor', '');
 		if(empty($default)){
 				$default = $configs->get('default_payment','offline');
 		}
