@@ -205,7 +205,7 @@ class DigiComViewProduct extends JViewLegacy
 			{
 				$title = $this->item->name;
 			}
-			if ($this->item->metadesc)
+			if ($this->item->metatitle)
 			{
 				$title = $this->item->metatitle;
 			}
