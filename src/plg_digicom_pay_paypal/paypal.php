@@ -39,11 +39,11 @@ class  plgDigiCom_PayPaypal extends JPlugin
 
 		//Define Payment Status codes in API  And Respective Alias in Framework
 		$this->responseStatus= array (
-			'Completed' 		=> 'A',
-			'Pending' 			=> 'P',
-			'Failed' 			=> 'P',
-			'Denied' 			=> 'P',
-			'Refunded'			=> 'RF'
+			'Completed' => 'A',
+			'Pending' 	=> 'P',
+			'Failed' 		=> 'P',
+			'Denied' 		=> 'P',
+			'Refunded'	=> 'RF'
 		);
 	}
 
@@ -56,8 +56,9 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	public function onDigicomSidebarMenuItem()
 	{
 		$pluginid = $this->getPluginId('paypal','digicom_pay','plugin');
-		$params 		= $this->params;
-		$link = JRoute::_("index.php?option=com_plugins&client_id=0&task=plugin.edit&extension_id=".$pluginid);
+		$params 	= $this->params;
+		$link 		= JRoute::_("index.php?option=com_plugins&client_id=0&task=plugin.edit&extension_id=".$pluginid);
+
 		return '<a target="_blank" href="' . $link . '" title="'.JText::_("PLG_DIGICOM_PAY_PAYPAL").'" id="plugin-'.$pluginid.'">' . JText::_("PLG_DIGICOM_PAY_PAYPAL_NICKNAME") . '</a>';
 
 	}
@@ -90,7 +91,7 @@ class  plgDigiCom_PayPaypal extends JPlugin
 		}
 		else
 		{
-	  		$file =  $core_file;
+  		$file =  $core_file;
 		}
 
 		return $file;
@@ -138,13 +139,13 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	* @return html for view
 	* @vars : passed from component, all info regarding payment n order
 	*/
-	function onDigicom_PayGetHTML($vars,$pg_plugin)
+	function onDigicom_PayGetHTML($vars, $pg_plugin)
 	{
 		if($pg_plugin != $this->_name) return;
-		$params 		= $this->params;
-		$secure_post 	= $params->get('secure_post');
-		$sandbox 		= $params->get('sandbox');
-		$vars->sandbox 	= $sandbox;
+		$params 					= $this->params;
+		$secure_post 			= $params->get('secure_post');
+		$sandbox 					= $params->get('sandbox');
+		$vars->sandbox 		= $sandbox;
 		$vars->action_url = plgDigiCom_PayPaypalHelper::buildPaymentSubmitUrl($secure_post , $sandbox);
 
 		//Take this receiver email address from plugin if component not provided it
@@ -152,7 +153,6 @@ class  plgDigiCom_PayPaypal extends JPlugin
 
 		$html = $this->buildLayout($vars);
 		return $html;
-
 
 	}
 
@@ -165,29 +165,33 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	*/
 	function onDigicom_PayProcesspayment($data)
 	{
+
 		$processor = JFactory::getApplication()->input->get('processor','');
 		if($processor != $this->_name) return;
 
 		$verify 		= plgDigiCom_PayPaypalHelper::validateIPN($data);
 
-		if (!$verify) {
+		if (!$verify or !isset( $data['txn_type'] ) or  $data['txn_type'] != 'web_accept')
+		{
 			$info = array('raw_data'	=>	$data);
 			$this->onDigicom_PayStorelog($this->_name, $info);
+
 			return false;
 		}
 
-		$payment_status = $this->translateResponse( $data['payment_status'] );
+		$payment_status = $this->translateResponse( $data );
 
 		$result = array(
-			'order_id'=>$data['custom'],
-			'transaction_id'=>$data['txn_id'],
-			'buyer_email'=>$data['payer_email'],
-			'status'=>$payment_status,
-			'txn_type'=>$data['txn_type'],
-			'total_paid_amt'=>$data['mc_gross'],
-			'raw_data'=>$data,
-			'processor'=>'paypal'
+			'order_id'				=> $data['custom'],
+			'transaction_id'	=> $data['txn_id'],
+			'buyer_email'			=> $data['payer_email'],
+			'status'					=> $payment_status,
+			'txn_type'				=> $data['txn_type'],
+			'total_paid_amt'	=> $data['mc_gross'],
+			'raw_data'				=> $data,
+			'processor'				=> 'paypal'
 		);
+
 		return $result;
 	}
 
@@ -197,8 +201,12 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	* @invoice_status : payment status recieved from payment site: processor
 	* @return order status
 	*/
-	function translateResponse($payment_status){
-			if(array_key_exists($payment_status,$this->responseStatus)){
+	function translateResponse($data)
+	{
+			$payment_status = $data['payment_status'];
+
+			if(array_key_exists($payment_status, $this->responseStatus))
+			{
 				return $this->responseStatus[$payment_status];
 			}
 	}
@@ -233,6 +241,7 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	        ->where($db->quoteName('a.element').' = '.$db->quote($element))
 	        ->where($db->quoteName('a.folder').' = '.$db->quote($folder))
 	        ->where($db->quoteName('a.type').' = '.$db->quote($type));
+					
 	    $db->setQuery($query);
 	    $db->execute();
 	    if($db->getNumRows()){
