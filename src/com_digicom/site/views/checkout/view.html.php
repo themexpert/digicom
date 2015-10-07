@@ -61,8 +61,9 @@ class DigiComViewCheckout extends JViewLegacy
 		$vars->customer		= $customer->_customer;
 		$vars->item_name 	= '';
 
-		foreach ($items as $key => $value) {
-			$vars->item_name.= $value->name . ', ';
+		foreach ($items as $key => $value)
+		{
+			$vars->item_name .= $value->name . ', ';
 		}
 
 		$vars->item_name = substr($vars->item_name, 0, strlen($vars->item_name)-2);
@@ -82,9 +83,11 @@ class DigiComViewCheckout extends JViewLegacy
 		JPluginHelper::importPlugin('digicom_pay', $pay_plugin);
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onSendPayment', array(& $params));
-		$html = $dispatcher->trigger('onDigicom_PayGetHTML', array($vars,$pay_plugin));
 
-		if (!isset($html[0])){
+		$html = $dispatcher->trigger('onDigicom_PayGetHTML', array($vars, $pay_plugin));
+		// print_r($html);die;
+		if (!isset($html[0]))
+		{
 			$html[0] = '';
 		}
 
