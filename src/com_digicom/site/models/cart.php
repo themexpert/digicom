@@ -937,7 +937,7 @@ class DigiComModelCart extends JModelItem
 	// 	return true;
 	// }
 
-	function proccessSuccess($post, $pay_plugin, $order_id, $sid, $responce, $items)
+	function proccessSuccess($post, $pay_plugin, $order_id, $sid, $data, $items)
 	{
 		$app 			= JFactory::getApplication();
 		$customer = $this->loadCustomer($sid);
@@ -952,7 +952,7 @@ class DigiComModelCart extends JModelItem
 		$configs	= $conf->getConfigs();
 
 		$result 	= $post;
-		$data 		= $responce[0];
+		// $data 		= $responce[0];
 		// store log, dont need as its on processor work, let them do it
 		// $this->storelog($pay_plugin, $data);
 
@@ -1046,10 +1046,11 @@ class DigiComModelCart extends JModelItem
 			$orderTable->amount_paid = $orderTable->amount_paid + $data['total_paid_amt'];
 		}
 		else{
-			$orderTable->amount_paid = 0;
+
+			$orderTable->amount_paid = $orderTable->amount_paid - $data['total_paid_amt'];
 			$type = 'refund_order';
 		}
-		
+
 		//transection id
 		$orderTable->transaction_number = $data['transaction_id'];
 
