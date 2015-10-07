@@ -548,23 +548,32 @@ class DigiComControllerCart extends JControllerLegacy
 		if(empty($processor)){
 			$processor = $input->get('processor','');
 		}
-		$order_id 	= $input->get('order_id',0);
-		$sid 				= $input->get('sid','');
 
-		if(empty($sid)){
-			$sid = $input->get('user_id','');
-		}
-
-		$post 			= $input->post->getArray();
-
-		if($processor == ''){
+		if($processor == '')
+		{
 			$app->redirect(JRoute::_('index.php?option=com_digicom&view=orders'),JText::_('COM_DIGICOM_PAYMENT_NO_PROCESSOR_SELECTED'));
 			return false;
 		}
 
-		if($order_id == 0)
+		$post 			= $input->post->getArray();
+		// after recieved payment request, get the status info
+		$dispatcher = JDispatcher::getInstance();
+		$data = $dispatcher->trigger('onDigicom_PayProcesspayment', array($post));
+		$data = $data[0];
+		$order_id 	= $input->get('order_id', '', 'int');
+		$sid 				= $input->get('sid', '', 'int');
+
+		if(empty($sid)){
+			$sid = $input->get('user_id','');
+		}
+		// print_r($data);die;
+		if(!$order_id)
 		{
-			$app->redirect(JRoute::_("index.php?option=com_digicom&view=orders"),JText::_('COM_DIGICOM_PAYMENT_NO_ORDER_PASSED'));
+			if(isset($data['order_id'])){
+				$order_id = $data['order_id'];
+			}else{
+				$app->redirect(JRoute::_("index.php?option=com_digicom&view=orders"),JText::_('COM_DIGICOM_PAYMENT_NO_ORDER_PASSED'));
+			}
 		}
 
 		$param = array();
@@ -573,7 +582,7 @@ class DigiComControllerCart extends JControllerLegacy
 
 		$configs 	= $this->_config;
 		$cart 		= $this->_model;
-		$items 		= $cart->getOrderItems($order_id, $configs);
+		$items 		= $cart->getOrderItems($order_id);
 
 		$products = array();
 		if(isset($items) && count($items) > 0){
@@ -584,17 +593,13 @@ class DigiComControllerCart extends JControllerLegacy
 			}
 		}
 
-		// after recieved payment request, get the status info
-		//JPluginHelper::importPlugin('digicom_pay', $processor);
-		$dispatcher = JDispatcher::getInstance();
-		$data = $dispatcher->trigger('onDigicom_PayProcesspayment', array($post));
 		//after recieved payment, trigger any additional events
 		$param["cart_products"] = implode(" - ", $products);
 		$param["transaction"] = $data;
 
-		$dispatcher->trigger('onReceivePayment', array(& $param));
+		$dispatcher->trigger('onDigicom_PayReceivePayment', array(& $param));
 
-		$this->_model->proccessSuccess($post, $processor, $order_id, $sid,$data, $items);
+		$this->_model->proccessSuccess($post, $processor, $order_id, $sid, $data, $items);
 
 		return true;
 	}
