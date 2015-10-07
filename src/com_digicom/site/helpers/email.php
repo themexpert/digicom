@@ -250,7 +250,7 @@ class DigiComSiteHelperEmail {
 		}else{
 			DigiComSiteHelperLog::setLog('email', 'cart dispatch email', $orderid, $message, json_encode($info),'success');
 		}
-		
+
 		// Send email to admin if its enabled on email common settings
 		if ( $email_settings->sendmailtoadmin)
 		{
@@ -289,6 +289,7 @@ class DigiComSiteHelperEmail {
 			$mailSender->setSubject( $subject );
 			$mailSender->setBody( $message );
 
+			$message = $type.' email for order#'.$orderid.', status: '.$status;
 			//Log::write( $message );
 			if ( $mailSender->Send() !== true ) {
 				DigiComSiteHelperLog::setLog('email', 'cart dispatch email', $orderid, $message, json_encode($info),'failed');
