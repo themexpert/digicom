@@ -62,7 +62,8 @@ class DigiComSiteHelperLog {
         		->where($db->quoteName('type') . ' = '. $db->quote($type))
         		->where($db->quoteName('callback') . ' = '. $db->quote($callback))
         		->where($db->quoteName('callbackid') . ' = '. $db->quote($callbackid))
-        		->where($db->quoteName('status') . ' = '. $db->quote($status));
+        		->where($db->quoteName('status') . ' = '. $db->quote($status))
+        		->order($db->quoteName('id') . ' DESC');
 
   		// Reset the query using our newly populated query object.
   		$db->setQuery($query);
