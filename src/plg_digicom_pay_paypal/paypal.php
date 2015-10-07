@@ -126,9 +126,9 @@ class  plgDigiCom_PayPaypal extends JPlugin
 
 		if(!in_array($this->_name,$config)) return;
 
-		$obj 		= new stdClass;
-		$obj->name 	=$this->params->get( 'plugin_name' );
-		$obj->id	= $this->_name;
+		$obj 				= new stdClass;
+		$obj->name 	=	$this->params->get( 'plugin_name' );
+		$obj->id		= $this->_name;
 		return $obj;
 	}
 
@@ -241,7 +241,7 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	        ->where($db->quoteName('a.element').' = '.$db->quote($element))
 	        ->where($db->quoteName('a.folder').' = '.$db->quote($folder))
 	        ->where($db->quoteName('a.type').' = '.$db->quote($type));
-					
+
 	    $db->setQuery($query);
 	    $db->execute();
 	    if($db->getNumRows()){
