@@ -66,6 +66,21 @@ if (typeof jQuery === 'undefined') {
 		/**
 		* get digicom dataset
 		*/
+		submitForm: function(id, e)
+		{
+			e.preventDefault();
+
+      $(id).digicomodal({
+        backdrop  : 'static',
+        keyboard  : true
+      });
+
+      Digicom.dataSet("paymentForm").submit();
+		},
+		/**
+		/**
+		* get digicom dataset
+		*/
 		dataSet: function(name)
 		{
 			return $('[data-digicom-id="'+name+'"]');
