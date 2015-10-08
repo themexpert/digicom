@@ -77,13 +77,6 @@ if ($saveOrder)
 						</th>
 					</tr>
 				</thead>
-				<tfoot>
-					<tr>
-						<td colspan="<?php echo ($this->assoc) ? '8' : '7'; ?>">
-							<?php echo $this->pagination->getListFooter(); ?>
-						</td>
-					</tr>
-				</tfoot>
 				<tbody>
 					<?php foreach ($this->items as $i => $item) : ?>
 						<?php
@@ -189,6 +182,9 @@ if ($saveOrder)
 					<?php endforeach; ?>
 				</tbody>
 			</table>
+			<div class="pagination-centered">
+				<?php echo $this->pagination->getListFooter(); ?>
+			</div>
 		<?php endif; ?>
 		<?php //Load the batch processing form. ?>
 		<?php echo $this->loadTemplate('batch'); ?>

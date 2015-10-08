@@ -37,7 +37,7 @@ $document = JFactory::getDocument();
 		<br>
 		<div class="js-stools">
 			<div class="clearfix">
-				<div class="btn-wrapper input-append">
+				<div class="btn-group input-append">
 					<?php $promosearch = JRequest::getVar("promosearch", ""); ?>
 					<input id="filter_search" type="text" name="promosearch" value="<?php echo trim($promosearch);?>" placeholder="<?php echo JText::_("COM_DIGICOM_SEARCH");?>" />
 					<button type="submit" class="btn hasTooltip" title="" data-original-title="Search">
@@ -47,14 +47,20 @@ $document = JFactory::getDocument();
 							<i class="icon-remove"></i>
 						</button>
 				</div>
-				<div class="btn-wrapper pull-right">
+				<div class="btn-group pull-right hidden-phone">
+					<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
+					<?php echo $this->pagination->getLimitBox(); ?>
+				</div>
 
+				<div class="btn-group pull-right">
 					<?php echo JText::_("COM_DIGICOM_PUBLISH");?>:
 					<select name="status" onchange="document.adminForm.task.value=''; document.adminForm.submit();">
 						<option value="" <?php if($this->status == ""){ echo 'selected="selected"';} ?> ><?php echo JText::_("COM_DIGICOM_SELECT"); ?></option>
 						<option value="0" <?php if($this->status == "0"){ echo 'selected="selected"';} ?> ><?php echo JText::_("COM_DIGICOM_UNPUBLISHED"); ?></option>
 						<option value="1" <?php if($this->status == "1"){ echo 'selected="selected"';} ?> ><?php echo JText::_("COM_DIGICOM_PUBLISHED"); ?></option>
 					</select>
+				</div>
+				<div class="btn-group pull-right">
 					<?php echo JText::_("JSTATUS");?>:
 					<select name="condition" onchange="document.adminForm.task.value=''; document.adminForm.submit();">
 						<option value="-1" <?php if($this->condition == "-1"){ echo 'selected="selected"';} ?> ><?php echo JText::_("COM_DIGICOM_SELECT"); ?></option>
@@ -63,6 +69,7 @@ $document = JFactory::getDocument();
 					</select>
 
 				</div>
+
 
 			</div>
 		</div>
@@ -193,26 +200,11 @@ $document = JFactory::getDocument();
 
 				</tbody>
 
-				<tfoot>
-					<tr>
-						<td colspan="9">
-							<?php
-								$total_pag = $this->pagination->get("pages.total", "0");
-								$pag_start = $this->pagination->get("pages.start", "1");
-								if($total_pag > ($pag_start + 9)){
-									$this->pagination->set("pages.stop", ($pag_start + 9));
-								}
-								else{
-									$this->pagination->set("pages.stop", $total_pag);
-								}
-								echo $this->pagination->getListFooter();
-							?>
-						</td>
-					</tr>
-				</tfoot>
-
 			</table>
-
+			
+			<div class="pagination-centered">
+				<?php echo $this->pagination->getListFooter(); ?>
+			</div>
 		</div>
 
 		<input type="hidden" name="option" value="com_digicom" />

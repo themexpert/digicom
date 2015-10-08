@@ -229,24 +229,11 @@ Joomla.submitbutton = function (pressbutton) {
         $total_pag = $this->pagination->get("pages.total", "0");
         if($total_pag > 1):
       ?>
-			<tfoot>
-				<tr>
-					<td colspan="10">
-						<?php
-							$pag_start = $this->pagination->get("pages.start", "1");
-							if($total_pag > ($pag_start + 9)){
-								$this->pagination->set("pages.stop", ($pag_start + 9));
-							}
-							else{
-								$this->pagination->set("pages.stop", $total_pag);
-							}
-							echo $this->pagination->getListFooter();
-						?>
-					</td>
-				</tr>
-			</tfoot>
     <?php endif; ?>
 		</table>
+    <div class="pagination-centered">
+      <?php echo $this->pagination->getListFooter(); ?>
+    </div>
 
 		<input type="hidden" name="option" value="com_digicom" />
 		<input type="hidden" name="task" value="" />

@@ -251,15 +251,10 @@ JFactory::getDocument()->addScriptDeclaration('
 					</tr>
 					<?php endforeach; ?>
 				</tbody>
-
-				<tfoot>
-					<tr>
-						<td colspan="11">
-							<?php echo $this->pagination->getListFooter(); ?>
-						</td>
-					</tr>
-				</tfoot>
 			</table>
+			<div class="pagination-centered">
+				<?php echo $this->pagination->getListFooter(); ?>
+			</div>
 		</div>
 	</div>
 

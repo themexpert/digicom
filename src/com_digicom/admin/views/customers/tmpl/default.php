@@ -44,6 +44,10 @@ $n = count ($this->custs);
 						<i class="icon-remove"></i>
 					</button>
 				</div>
+				<div class="btn-group pull-right hidden-phone">
+					<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
+					<?php echo $this->pagination->getLimitBox(); ?>
+				</div>
 
 			</div>
 		</div>
@@ -98,22 +102,6 @@ $n = count ($this->custs);
 					$k = 1 - $k;
 					endfor;
 					?>
-
-					<tr>
-						<td colspan="4">
-							<?php
-							$total_pag = $this->pagination->get("pages.total", "0");
-							$pag_start = $this->pagination->get("pages.start", "1");
-							if($total_pag > ($pag_start + 9)){
-								$this->pagination->set("pages.stop", ($pag_start + 9));
-							}
-							else{
-								$this->pagination->set("pages.stop", $total_pag);
-							}
-							echo $this->pagination->getListFooter();
-							?>
-						</td>
-					</tr>
 				<?php else: ?>
 					<tr>
 						<td colspan="4">
@@ -123,13 +111,16 @@ $n = count ($this->custs);
 				<?php endif; ?>
 				</tbody>
 			</table>
+			<div class="pagination-centered">
+				<?php echo $this->pagination->getListFooter(); ?>
+			</div>
 
 		</div>
 
 		<input type="hidden" name="option" value="com_digicom" />
+		<input type="hidden" name="view" value="customers" />
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />
-		<input type="hidden" name="view" value="customers" />
 	</form>
 </div>
 <?php

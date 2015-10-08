@@ -17,7 +17,7 @@ use Joomla\String\String;
  */
 class DigiComModelProducts extends JModelList
 {
-	protected $_context = 'com_digicom.product';
+	protected $_context = 'com_digicom.products';
 	/**
 	 * Constructor.
 	 *
