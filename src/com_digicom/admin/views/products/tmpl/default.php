@@ -95,7 +95,7 @@ JFactory::getDocument()->addScriptDeclaration('
 						<th width="1%" style="min-width:55px">
 							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_ACTION', 'published', $listDirn, $listOrder); ?>
 						</th>
-						<th width="1%">
+						<th class="nowrap hidden-phone" width="10%">
 							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_IMAGE', 'id', $listDirn, $listOrder); ?>
 						</th>
 						<th>
@@ -107,16 +107,16 @@ JFactory::getDocument()->addScriptDeclaration('
 						<th width="10%">
 							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_PRICE', 'price', $listDirn, $listOrder); ?>
 						</th>
-						<th width="1%">
+						<th width="1%" class="nowrap hidden-phone">
 							<?php echo JText::_('COM_DIGICOM_PRODUCTS_VALIDITY'); ?>
 						</th>
 						<th width="10%">
 							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_STOCK', 'hide_public', $listDirn, $listOrder); ?>
 						</th>
-						<th width="10%" class="nowrap hidden-phone">
+						<th width="10%" class="nowrap hidden-phone hide-mediam">
 							<?php echo JHtml::_('searchtools.sort',  'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
 						</th>
-						<th width="1%">
+						<th width="1%" class="nowrap hidden-phone hide-mediam">
 							<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'id', $listDirn, $listOrder); ?>
 						</th>
 						<th width="1%" class="nowrap hidden-phone">
@@ -184,7 +184,7 @@ JFactory::getDocument()->addScriptDeclaration('
 								?>
 							</div>
 						</td>
-						<td align="center">
+						<td align="center" class="nowrap hidden-phone">
 							<?php if(!empty($item->image_intro)): ?>
 								<div class="product-thumb">
 									<img src="<?php echo JUri::root() . $item->image_intro; ?>" >
@@ -238,11 +238,11 @@ JFactory::getDocument()->addScriptDeclaration('
 						<td align="center" style="text-align: center; ">
 							<?php echo ($item->hide_public ? '<span class="label label-important">' . JText::_("JNO") . '</span>' : '<span class="label label-success">' . JText::_("JYES") . '</span>' ); ?>
 						</td>
-						<td class="small hidden-phone">
+						<td class="small hidden-phone hide-mediam">
 							<?php echo $this->escape($item->access_level); ?>
 						</td>
 
-						<td class="center hidden-phone">
+						<td class="center hidden-phone hide-mediam">
 							<?php echo (int) $item->id; ?>
 						</td>
 						<td class="center hidden-phone">
