@@ -101,15 +101,17 @@ class DigiComHelperDigiCom extends JHelperContent{
 
 	}
 
-	public static function format_price ($amount, $ccode, $add_sym = true, $configs)
+	public static function format_price ($amount, $ccode, $add_sym = true, $configs, $decial = null)
 	{
-
+		if($decial === NULL){
+			$decial = $configs->get('decimaldigits','2');
+		}
 		$currency_use = $configs->get('currency_use','symbol');
 		$currency_symbol = $configs->get('currency_symbol','$');
 		if($currency_use == 'symbol'){
 			$ccode = $currency_symbol;
 		}
-		$price = number_format( $amount, $configs->get('decimaldigits','2') , $configs->get('dec_group_symbol','.') , $configs->get('thousands_group_symbol',',') );
+		$price = number_format( $amount, $decial , $configs->get('dec_group_symbol','.') , $configs->get('thousands_group_symbol',',') );
 		if ( $add_sym ) {
 			if ( $configs->get('currency_position','1') ) {
 				$price = $price . $ccode;
