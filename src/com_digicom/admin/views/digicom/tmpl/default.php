@@ -26,20 +26,29 @@ $document->addScript( JURI::root(true)."/media/com_digicom/js/chart.min.js");
 <?php else : ?>
 	<div id="j-main-container" class="">
 <?php endif;?>
-		<p class="text-right alert alert-info">Report of the Month <span class="label label-info"><?php echo date('F'); ?></span> </p>
+		<h3 class="alert alert-info nomargin-top">
+			<?php echo JText::sprintf('COM_DIGICOM_REPORTS_OF_THE_MONTH', date('F'));?>
+	 	</h3>
 
 		<div class="row-fluid sales-overview">
 			<div class="span3">
 				<div class="panel-box">
-					<span class="icon-briefcase"></span>
-					<p><strong><?php echo DigiComHelperDigiCom::format_price($this->totalOrder, $configs->get('currency','USD'), true, $configs);?></strong><br><?php echo JText::_('COM_DIGICOM_REPORTS_TOTAL_SALES'); ?></p>
+					<p>
+						<span class="icon-briefcase"></span>
+						<strong>
+							<?php echo DigiComHelperDigiCom::format_price($this->totalOrder, $configs->get('currency','USD'), true, $configs, 1);?>
+						</strong>
+						<br>
+						<?php echo JText::_('COM_DIGICOM_REPORTS_TOTAL_SALES'); ?>
+					</p>
 				</div>
 			</div>
 
 			<div class="span3">
 				<div class="panel-box">
-					<span class="icon-cart"></span>
 					<p>
+						<span class="icon-cart"></span>
+
 						<strong><?php echo $this->reportOrders['total']; ?></strong>
 						<?php echo JText::_('COM_DIGICOM_REPORTS_TOTAL_ORDERS'); ?>
 						<br>
@@ -54,15 +63,13 @@ $document->addScript( JURI::root(true)."/media/com_digicom/js/chart.min.js");
 
 			<div class="span3">
 				<div class="panel-box">
-					<span class="icon-warning"></span>
-					<p><strong><?php echo $this->reportOrders['pending']; ?></strong><br><?php echo JText::_('COM_DIGICOM_REPORTS_PENDING_ORDERS'); ?></p>
+					<p><span class="icon-warning"></span><strong><?php echo $this->reportOrders['pending']; ?></strong><br><?php echo JText::_('COM_DIGICOM_REPORTS_PENDING_ORDERS'); ?></p>
 				</div>
 			</div>
 
 			<div class="span3">
 				<div class="panel-box">
-					<span class="icon-users"></span>
-					<p><strong><?php echo $this->reportCustomer; ?></strong><br><?php echo JText::_('COM_DIGICOM_REPORTS_NEW_CUSTOMERS'); ?></p>
+					<p><span class="icon-users"></span><strong><?php echo $this->reportCustomer; ?></strong><br><?php echo JText::_('COM_DIGICOM_REPORTS_NEW_CUSTOMERS'); ?></p>
 				</div>
 			</div>
 		</div>
@@ -71,7 +78,7 @@ $document->addScript( JURI::root(true)."/media/com_digicom/js/chart.min.js");
 		<div class="row-fluid">
 			<div class="span12">
 
-				<div class="panel">
+				<div class="panel nomargin-top">
 					<div class="panel-header clearfix">
 						<h3 class="panel-title"><span class="icon-bars"></span> <?php echo JText::_('COM_DIGICOM_REPORTS_SALES_ANALYTICS'); ?></h3>
 					</div>
@@ -115,10 +122,10 @@ $document->addScript( JURI::root(true)."/media/com_digicom/js/chart.min.js");
 			</div>
 		</div>
 
-		<div class="row-fluid">
+		<div class="row-fluid dashboard-info">
 			<div class="span6 panel">
 				<div class="panel-header clearfix">
-					<h3 class="panel-title"><span class="icon-star-empty"></span><?php echo JText::_('COM_DIGICOM_REPORTS_LATEST_ORDERS'); ?></h3>
+					<h3 class="panel-title"><span class="icon-star-empty"></span> <?php echo JText::_('COM_DIGICOM_REPORTS_LATEST_ORDERS'); ?></h3>
 				</div>
 				<div class="panel-content">
 					<table class="table table-striped">
@@ -160,13 +167,13 @@ $document->addScript( JURI::root(true)."/media/com_digicom/js/chart.min.js");
 			</div>
 			<div class="span6 panel">
 				<div class="panel-header clearfix">
-					<h3 class="panel-title"><span class="icon-download"></span><?php echo JText::_('COM_DIGICOM_REPORTS_MOST_SOLD_PRODUCTS'); ?></h3>
+					<h3 class="panel-title"><span class="icon-download"></span> <?php echo JText::_('COM_DIGICOM_REPORTS_MOST_SOLD_PRODUCTS'); ?></h3>
 				</div>
 				<div class="panel-content">
 					<table class="table table-striped" style="text-align: center;">
 						<thead>
 						<tr>
-							<th><?php echo JText::_('COM_DIGICOM_NAME'); ?></th>
+							<th width="15%"><?php echo JText::_('COM_DIGICOM_NAME'); ?></th>
 							<th><?php echo JText::_('COM_DIGICOM_PRODUCTS_TYPE'); ?></th>
 							<th><?php echo JText::_('COM_DIGICOM_PRICE'); ?></th>
 							<th><?php echo JText::_('COM_DIGICOM_TOTAL_SOLD'); ?></th>
