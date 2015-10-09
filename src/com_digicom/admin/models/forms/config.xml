@@ -404,17 +404,6 @@
 					<option value="1">JYES</option>
 			</field>
 
-			<field
-				name="load_bootstrap3"
-				type="radio"
-				class="btn-group"
-				label="COM_DIGICOM_THEME_LOAD_BOOTSTRAP3_LABEL"
-				description="COM_DIGICOM_THEME_LOAD_BOOTSTRAP3_DESC"
-				default="1">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-			</field>
-
 		</fieldset>
 
 		<fieldset name="email_settings" addfieldpath="/administrator/components/com_digicom/models/fields"
@@ -469,7 +458,7 @@
 					name="email_base_color"
 					type="color"
 					label="COM_DIGICOM_SETTINGS_EMAIL_BASE_COLOR_LABEL"
-					class="span12" row="12"
+					class="input-large" row="12"
 					description="COM_DIGICOM_SETTINGS_EMAIL_BASE_COLOR_DESC"
 					default="#557da1"
 					/>
