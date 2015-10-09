@@ -38,12 +38,6 @@ class DigiComSiteHelperTemplate extends JViewLegacy {
 			$this->addStyleSheet(JURI::root()."media/com_digicom/css/digicom.css");
 		}
 
-		// load bootstrap3
-		$load_bootstrap3 = $this->params->get('load_bootstrap3',0);
-		if($load_bootstrap3){
-			$this->addStyleSheet(JURI::root()."media/com_digicom/css/bootstrap.min.css");
-		}
-
 	}
 
 	public function rander($layout = 'products', $template = null)
