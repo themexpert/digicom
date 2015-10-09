@@ -218,6 +218,12 @@ class DigicomModelProfile extends JModelForm
 			$form->setFieldAttribute('username', 'readonly', 'true');
 			$form->setFieldAttribute('username', 'required', 'false');
 		}
+		if (!JComponentHelper::getParams('com_digicom')->get('show_changepass',1))
+		{
+			// print_r($form->getField('password1'));die;
+			$form->removeField('password1');
+			$form->removeField('password2');
+		}
 
 		return $form;
 	}
