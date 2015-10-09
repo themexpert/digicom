@@ -154,7 +154,7 @@ $input->set('layout', 'dgform');
 					<?php echo JHtml::_('bootstrap.endTab'); ?>
 					<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'order_details', JText::_('COM_DIGICOM_CUSTOMER_TAB_HEADING_CUSTOMER_ORDERS', true)); ?>
 
-						<table class="adminlist table table-striped">
+						<table class="adminlist table table-striped table-bordered">
 							<thead>
 								<tr>
 									<th width="20">
