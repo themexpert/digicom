@@ -12,7 +12,17 @@ defined ('_JEXEC') or die ("Go away.");
 $configs = $this->configs;
 $rangeDays = DigiComHelperChart::getRangeDayLabel($this->range);
 $rangePrices = DigiComHelperChart::getRangePricesLabel($this->range,$rangeDays);
+$prices = explode(', ', $rangePrices);
+$price = 0;
+foreach ($prices as $key => $value) {
+  $price += $value;
+}
+$price = DigiComHelperDigiCom::format_price($price, $configs->get('currency','USD'), true, $configs);
+
 ?>
+<div class="panel-box dc-block">
+  <h3><?php echo JText::sprintf('COM_DIGICOM_TOTAL_SALE_AMOUNT', $price); ?></h3>
+</div>
 
 <div><canvas id="myChart" width="400" height="150"></canvas></div>
 
