@@ -54,7 +54,7 @@ $document = JFactory::getDocument();
 
 				<div class="btn-group pull-right">
 					<?php echo JText::_("COM_DIGICOM_PUBLISH");?>:
-					<select name="status" onchange="document.adminForm.task.value=''; document.adminForm.submit();">
+					<select class="input-small" name="status" onchange="document.adminForm.task.value=''; document.adminForm.submit();">
 						<option value="" <?php if($this->status == ""){ echo 'selected="selected"';} ?> ><?php echo JText::_("COM_DIGICOM_SELECT"); ?></option>
 						<option value="0" <?php if($this->status == "0"){ echo 'selected="selected"';} ?> ><?php echo JText::_("COM_DIGICOM_UNPUBLISHED"); ?></option>
 						<option value="1" <?php if($this->status == "1"){ echo 'selected="selected"';} ?> ><?php echo JText::_("COM_DIGICOM_PUBLISHED"); ?></option>
@@ -62,7 +62,7 @@ $document = JFactory::getDocument();
 				</div>
 				<div class="btn-group pull-right">
 					<?php echo JText::_("JSTATUS");?>:
-					<select name="condition" onchange="document.adminForm.task.value=''; document.adminForm.submit();">
+					<select class="input-small" name="condition" onchange="document.adminForm.task.value=''; document.adminForm.submit();">
 						<option value="-1" <?php if($this->condition == "-1"){ echo 'selected="selected"';} ?> ><?php echo JText::_("COM_DIGICOM_SELECT"); ?></option>
 						<option value="0" <?php if($this->condition == "0"){ echo 'selected="selected"';} ?> ><?php echo JText::_("COM_DIGICOM_EXPIRED"); ?></option>
 						<option value="1" <?php if($this->condition == "1"){ echo 'selected="selected"';} ?> ><?php echo JText::_("COM_DIGICOM_ACTIVE"); ?></option>
@@ -73,15 +73,11 @@ $document = JFactory::getDocument();
 
 			</div>
 		</div>
-
-		<table width="100%">
-			<tr>
-				<td width="100%" align="right" style="padding-bottom: 5px;">
-
-				</td>
-			</tr>
-		</table>
-
+		<?php if(!$n): ?>
+		<div class="alert alert-no-items">
+			<?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
+		</div>
+		<?php else: ?>
 		<div id="editcell" >
 			<table class="adminlist table">
 				<thead>
@@ -201,12 +197,12 @@ $document = JFactory::getDocument();
 				</tbody>
 
 			</table>
-			
+
 			<div class="pagination-centered">
 				<?php echo $this->pagination->getListFooter(); ?>
 			</div>
 		</div>
-
+	<?php endif; ?>
 		<input type="hidden" name="option" value="com_digicom" />
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />
