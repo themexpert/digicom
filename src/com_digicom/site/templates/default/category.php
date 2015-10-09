@@ -15,30 +15,46 @@ $grid = 12/$column;
 ?>
 <div id="digicom" class="dc dc-category">
 
-	<?php if($this->params->get('show_page_heading') OR
-					 $this->category->params->get('show_cat_title') OR
-					 $this->category->params->get('show_cat_intro')): ?>
-	 <header class="dc-head">
+	<?php
+		if($this->params->get('show_page_heading') OR
+			$this->category->params->get('show_cat_title') OR
+			$this->category->params->get('show_cat_intro') OR
+			($this->category->params->get('show_cat_image')  AND $this->category->params->get('image') !== NULL )
+
+
+		):
+	?>
+	 <header class="dc-category">
 	 		<?php if ($this->params->get('show_page_heading')) : ?>
    			<h1> <?php echo $this->escape($this->params->get('page_heading')); ?> </h1>
    		<?php endif; ?>
 
-			<?php if($this->category->params->get('show_cat_title',1) or $this->category->params->get('show_cat_image',1) or $this->category->params->get('show_cat_intro',1)): ?>
-			<!-- Category Info -->
-			<div class="dc-cat-head clearfix">
-				<?php if($this->category->params->get('show_cat_image',1) AND ($this->category->params->get('image') !== NULL ) ): ?>
-				<div class="dc-cat-media pull-left">
-					<img class="img-responsive" src="<?php echo $this->category->params->get('image'); ?>" />
+			<?php if($this->category->params->get('show_cat_image', 1) AND ($this->category->params->get('image') !== NULL ) ): ?>
+				<!-- Category Info -->
+				<div class="dc-cat-head clearfix">
+					<div class="dc-cat-media pull-left">
+						<img class="img-responsive" src="<?php echo $this->category->params->get('image'); ?>" />
+					</div>
 				</div>
-				<?php endif; ?>
+			<?php endif; ?>
+
+			<?php
+			if(
+				($this->category->params->get('show_cat_intro',1) && !empty($this->category->description))
+				or
+				($this->params->get('show_cat_tags', 1) && !empty($this->category->tags->itemTags) && count($this->category->tags->itemTags) > 0)
+				or
+				($this->category->params->get('show_cat_title',1) && !empty($this->category->title))
+			): ?>
 
 				<div class="dc-cat-body">
+
 					<?php if($this->category->params->get('show_cat_title',1) && !empty($this->category->title)): ?>
 					<!-- Category Name -->
 					<h1><?php echo $this->category->title; ?></h1>
 					<?php endif; ?>
 
-					<?php if ($this->params->get('show_cat_tags', 1) && !empty($this->category->tags->itemTags)) : ?>
+					<?php if ($this->params->get('show_cat_tags', 1) && !empty($this->category->tags->itemTags)) : echo 44;?>
 						<!-- Category Tags -->
 						<?php $this->category->tagLayout = new JLayoutFile('joomla.content.tags'); ?>
 						<?php echo $this->category->tagLayout->render($this->category->tags->itemTags); ?>
@@ -50,8 +66,7 @@ $grid = 12/$column;
 					</div>
 					<?php endif; ?>
 				</div>
-			</div>
-		<?php endif; ?>
+			<?php endif; ?>
 	</header>
 	<?php endif;?>
 
