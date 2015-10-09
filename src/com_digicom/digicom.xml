@@ -55,10 +55,7 @@
 		<folder>images</folder>
 		<folder>js</folder>
 		<folder>less</folder>
-		<filename>bower.json</filename>
-		<filename>gulpfile.js</filename>
 		<filename>index.html</filename>
-		<filename>package.json</filename>
 	</media>
 
 	<administration>
