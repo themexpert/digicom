@@ -91,14 +91,14 @@ class DigicomControllerRegister extends JControllerLegacy
 			$app->setUserState('com_digicom.register.data', $data);
 
 			// Redirect back to the edit screen.
-			$this->setMessage($model->getError(), 'warning');
+			$app->enqueueMessage($model->getError(), 'warning');
 			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=register&return'.$returnpage, false));
 
 			return false;
 		}
 		// Flush the data from the session.
 		$app->setUserState('com_digicom.register.data', null);
-		$this->setMessage(JText::_('COM_DIGICOM_REGISTRATION_SUCCESSFULL'));
+		$app->enqueueMessage(JText::_('COM_DIGICOM_REGISTRATION_SUCCESSFULL'));
 
 		$options                 = array();
 		$options['remember']     = true;

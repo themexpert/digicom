@@ -58,14 +58,16 @@ class DigiComControllerProfile extends JControllerLegacy
 
 	function save()
 	{
-
 		// Check for request forgeries.
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		$getreturn = JRequest::getVar("return", "");
-		if($getreturn){
+		if($getreturn)
+		{
 			$return = base64_decode( $getreturn );
-		}else{
+		}
+		else
+		{
 			$return = JRoute::_('index.php?option=com_digicom&view=profile');
 		}
 
@@ -81,7 +83,6 @@ class DigiComControllerProfile extends JControllerLegacy
 		if (!$form)
 		{
 			JError::raiseError(500, $model->getError());
-
 			return false;
 		}
 
@@ -125,14 +126,15 @@ class DigiComControllerProfile extends JControllerLegacy
 			$app->setUserState('com_digicom.profile.data', $data);
 
 			// Redirect back to the edit screen.
-			$this->setMessage($model->getError(), 'warning');
+			$app->enqueueMessage($model->getError(), 'warning');
 			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=profile'));
 
 			return false;
 		}
+
 		// Flush the data from the session.
 		$app->setUserState('com_digicom.profile.data', null);
-		$this->setMessage(JText::_('COM_DIGICOM_PROFILE_UPDATED_SUCCESSFULL'));
+		$app->enqueueMessage(JText::_('COM_DIGICOM_PROFILE_UPDATED_SUCCESSFULL'));
 
 		$this->setRedirect($return, false);
 
@@ -209,14 +211,14 @@ class DigiComControllerProfile extends JControllerLegacy
 			$app->setUserState('com_digicom.billing.data', $data);
 
 			// Redirect back to the edit screen.
-			$this->setMessage($model->getError(), 'warning');
+			$app->enqueueMessage($model->getError(), 'warning');
 			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=billing'));
 
 			return false;
 		}
 		// Flush the data from the session.
 		$app->setUserState('com_digicom.billing.data', null);
-		$this->setMessage(JText::_('COM_DIGICOM_BILLING_UPDATED_SUCCESSFULL'));
+		$app->enqueueMessage(JText::_('COM_DIGICOM_BILLING_UPDATED_SUCCESSFULL'));
 
 		$this->setRedirect($return, false);
 
