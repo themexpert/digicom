@@ -15,6 +15,8 @@ $images  = json_decode($this->item->images);
 if(!isset($images->image_full)){
 	$images = new stdClass();
 	$images->image_full = $this->item->images;
+}elseif(empty($images->image_full)){
+	$images->image_full = $images->image_intro;
 }
 if($this->item->price > 0){
 	$price = DigiComSiteHelperPrice::format_price($this->item->price, $configs->get('currency','USD'), true, $configs).'</span>';
@@ -53,19 +55,18 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 				<div class="dc-item-in">
 					<div class="well clearfix" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
 						<div class="row">
-							<div class="col-md-8">
-								<div class="dc-product-price text-left">
+							<div class="col-md-12">
+								<p class="dc-product-price text-center">
 									<meta itemprop="priceCurrency" content="<?php echo $configs->get('currency','USD');?>" />
 									<strong itemprop="price" content="<?php echo $this->item->price; ?>">
 										<?php echo $price; ?>
 									</strong>
-								</div>
+								</p>
 							</div>
 							<?php if ($this->configs->get('show_validity',1) == 1) : ?>
-								<div class="col-md-4">
-									<div class="dc-product-validity text-right">
-										<small><?php echo JText::_('COM_DIGICOM_PRODUCT_VALIDITY'); ?> <br/>
-										<?php echo DigiComSiteHelperPrice::getProductValidityPeriod($this->item); ?></small>
+								<div class="col-md-12">
+									<div class="dc-product-validity text-muted text-center">
+										<?php echo JText::_('COM_DIGICOM_PRODUCT_VALIDITY'); ?> : <?php echo DigiComSiteHelperPrice::getProductValidityPeriod($this->item); ?>
 									</div>
 								</div>
 							<?php endif; ?>
