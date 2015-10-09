@@ -120,7 +120,7 @@ gulp.task('watch:' + baseTask + ':js', function() {
 	gulp.watch(src + '/js/*.js', ['copy:' + baseTask + ':js', browserSync.reload]);
 });
 gulp.task('watch:' + baseTask + ':less', function(cb) {
-	gulp.watch(src + '/less/*.less', ['less:' + baseTask, 'copy:' + baseTask + ':js', browserSync.reload]);
+	gulp.watch(src + '/less/*.less', ['less:' + baseTask, 'copy:' + baseTask + ':less', browserSync.reload]);
 });
 gulp.task('watch:' + baseTask + ':images', function() {
 	gulp.watch(src + '/images/**',  ['copy:' + baseTask + ':images', browserSync.reload]);
