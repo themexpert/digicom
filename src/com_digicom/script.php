@@ -69,6 +69,7 @@ class Com_DigiComInstallerScript
 
 		if ( $type == 'install' ) {
 			self::enablePlugins();
+			self::createDigiComMainMenu();
 			self::createDigiComMenu();
 			self::createUploadDirectory();
 			self::removeTemplateScript();
@@ -106,6 +107,54 @@ class Com_DigiComInstallerScript
 	}
 
 	/**
+	 * method to create digicom Menu menu
+	 */
+	function createDigiComMainMenu()
+	{
+		$db = JFactory::getDBO();
+		$sql = "SELECT `menutype` FROM #__menu WHERE `home` = '1'";
+		$db->setQuery($sql);
+		$menutype = $db->loadResult();
+
+		$sql = "SELECT COUNT(*) from #__menu WHERE `link` = 'index.php?option=com_digicom&view=category&id=0' AND `type` = 'component'";
+		$sql .= " AND `menutype` = '".$menutype."'";
+		$db->setQuery($sql);
+		$count = $db->loadResult();
+
+		if(!$count)
+		{
+			$sql = "SELECT `extension_id` FROM #__extensions WHERE `name`='com_digicom' AND `element`='com_digicom'";
+			$db->setQuery($sql);
+			$db->query();
+			$componentid = intval($db->loadResult());
+
+			$names = array('store', 'shop', 'dg-store');
+			foreach($names as $name)
+			{
+				$sql = "SELECT `alias` FROM `#__menu` WHERE `alias`='".$name."' AND `client_id`='0'";
+				$db->setQuery($sql);
+				$alias = $db->loadResult();
+
+				if(empty($alias))
+				{
+					$sql = "
+						INSERT IGNORE INTO `#__menu`
+						(`menutype`, `title`, `alias`, `note`, `path`, `link`, `type`, `published`, `parent_id`, `level`, `component_id`, `checked_out`, `checked_out_time`, `browserNav`, `access`, `img`, `template_style_id`, `params`, `lft`, `rgt`, `home`, `language`, `client_id`)
+						VALUES
+						('".$menutype."', '".JText::_('COM_DIGICOM')."', '".$name."', '', '".$name."', 'index.php?option=com_digicom&view=category&id=0', 'component', 1, 1, 1, ".$componentid.", 0, '0000-00-00 00:00:00', 0, 1, '', 0, '{\"menu-anchor_title\":\"\",\"menu-anchor_css\":\"\",\"menu_image\":\"\",\"menu_text\":1,\"page_title\":\"\",\"show_page_heading\":0,\"page_heading\":\"\",\"pageclass_sfx\":\"\",\"menu-meta_description\":\"\",\"menu-meta_keywords\":\"\",\"robots\":\"\",\"secure\":0}', 998, 999, 0, '*', 0)
+					";
+					$db->setQuery($sql);
+					$db->execute();
+
+					break;
+				}
+			}
+
+		}
+
+		return true;
+	}
+	/**
 	 * method to create digicom toolber menu
 	 */
 	function createDigiComMenu(){
@@ -136,7 +185,7 @@ class Com_DigiComInstallerScript
 						('digicom_toolber', 'Cart', 'cart', '', 'cart', 'index.php?option=com_digicom&view=cart', 'component', 1, 1, 1, ".$componentid.", 0, '0000-00-00 00:00:00', 0, 1, '', 0, '{\"menu-anchor_title\":\"\",\"menu-anchor_css\":\"\",\"menu_image\":\"\",\"menu_text\":1,\"page_title\":\"\",\"show_page_heading\":0,\"page_heading\":\"\",\"pageclass_sfx\":\"\",\"menu-meta_description\":\"\",\"menu-meta_keywords\":\"\",\"robots\":\"\",\"secure\":0}', 297, 298, 0, '*', 0)
 				";
 				$db->setQuery($sql);
-				if (!$db->query()) {
+				if (!$db->execute()) {
 					echo "FIX ME: admin/controller.php, line: ".__LINE__.'<br />';
 					echo $db->getErrorMsg();
 				}
