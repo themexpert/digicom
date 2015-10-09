@@ -112,7 +112,7 @@ Joomla.submitbutton = function (pressbutton) {
 					<th>
 						<?php echo JText::_( 'JSTATUS' ); ?>
 					</th>
-					<th>
+					<th class="hide-mediam">
 						<?php echo JText::_( 'COM_DIGICOM_CUSTOMER_PAYMENT_METHOD' ); ?>
 					</th>
 					<th style="width: 200px;">
@@ -192,7 +192,7 @@ Joomla.submitbutton = function (pressbutton) {
                   <?php echo (trim( $order->status ) != "in_progres" ? $order->status : "Active"); ?>
                 </span>
             </td>
-						<td align="center">
+						<td align="center" class="hide-mediam">
 							<?php echo $order->processor; ?>
 						</td>
             <td align="center" class="orders-action">
