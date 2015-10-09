@@ -248,6 +248,18 @@ $input->set('layout', 'dgform');
 		<?php echo JHtml::_('form.token'); ?>
 	</div>
 </form>
+<?php
+	echo JHtml::_(
+		'bootstrap.renderModal',
+		'showTemplatepreview',
+		array(
+			'url' 		=> 'index.php?option=com_digicom&view=configs&layout=templatepreview',
+			'height' 	=> '400px',
+			'width' 	=> '800px',
+			'closeButton'	=> false
+		)
+	);
+?>
 <script type="text/javascript">
 	jQuery('#configTabs a:first').tab('show'); // Select first tab
 </script>
