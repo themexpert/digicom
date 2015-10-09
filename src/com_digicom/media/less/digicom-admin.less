@@ -273,7 +273,8 @@ body.com_digicom {
 		> thead > tr > td, > tbody > tr > td, > tfoot > tr > td {
 			padding: 12px 15px;
 			line-height: 1.3;
-			border: 1px solid #ebedf0;
+			border-color: #ebedf0;
+			// border: 1px solid #ebedf0;
 		}
 
 		caption + thead tr:first-child th, caption + thead tr:first-child td,
@@ -290,7 +291,9 @@ body.com_digicom {
 	}
 
 	#status { box-shadow: none;}
-
+	.dc-block{
+		margin-bottom: 25px;
+	}
 }
 
 /* Layout Dgform Styling */
@@ -400,7 +403,7 @@ body.sidebar-right-collapse {
 		box-shadow: 0 0 3px #ccc;
 	}
 	[class*=" icon-"],[class^="icon-"] {
-		font-size: 40px;
+		font-size: 28px;
 		line-height: 1;
 		float: left;
 		margin-right: 15px;
@@ -559,6 +562,7 @@ body.sidebar-right-collapse {
 }
 .grand-total {
 	text-align: right;
+
 	.control-group {
 		.control-label { float: none; display: inline-block; }
 		.controls { margin-left: 20px; display: inline-block; }
@@ -635,6 +639,45 @@ body.sidebar-right-collapse {
 		.row-fluid [class*="span"]:first-child {margin-left: 0;}
 	}
 }
+@media (max-width: 1024px) {
+	body.com_digicom {
+		.control-group input{
+			max-width: 95%;
+		}
+
+		.form-vertical{
+			.control-group textarea,
+			.control-group select,
+			.control-group input{
+				max-width: 95%;
+			}
+		}
+		.controls .btn-group.btn-group-yesno > .btn{
+			padding: 2px 6px;
+		}
+		.hide-mediam{
+			display: none;
+		}
+		.nav-tabs > li > a{
+	    padding: 12px 10px;
+		}
+		.digicom-product-price [class*="span"] {
+	    margin-left: 0;
+		}
+		.dashboard-info .panel .panel-content table{
+			margin: -20px -20px 20px;
+			width: auto;
+			max-width: 150%;
+		}
+		.accordion {
+	    margin-bottom: 18px;
+	    max-width: 90%;
+			.accordion-inner{
+				padding: 9px 12px;
+			}
+		}
+	}
+}
 
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px) {
@@ -644,10 +687,20 @@ body.sidebar-right-collapse {
 			table-layout: fixed;
 
 			th, td {
-				white-space: normal;
-				word-wrap: break-word;
+				// white-space: normal;
+				// word-wrap: break-word;
 				overflow: hidden;
 			}
+		}
+		.dashboard-info.row-fluid .span6{
+			width: 100%;
+			margin-left: 0px;
+		}
+		#j-sidebar-container{
+	    width: 150px;
+		}
+		#j-main-container{
+			margin-left: 150px;
 		}
 	}
 }
@@ -666,6 +719,7 @@ body.view-configs{
 .dg-footer{ text-align: right; margin-bottom: 40px; margin-right: 25px; }
 
 body.com_digicom{
+
 	.digicom-product-title{
 	 	.control-group{margin-bottom: 2px;}
 	 	.form-inline{ margin-bottom: 15px; }
@@ -688,5 +742,22 @@ body.com_digicom{
 		.chzn-container{
 			width: 100% !important;
 		}
+	}
+	&.view-configs{
+		.form-horizontal .control-label{
+			width: 300px;
+			label{
+				line-height: 25px;
+			}
+		}
+	}
+	.nomargin-top {
+		margin-top: 0px;
+	}
+	.nomargin {
+		margin: 0px;
+	}
+	.nopadding{
+		padding: 0px;
 	}
 }
