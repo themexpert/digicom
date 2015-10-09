@@ -24,21 +24,22 @@ $active = 'cat-'.$firstkey['catid'];
 
 	<?php
 	$i = 0;
-	foreach($this->items as $key=>$items):	?>
+	foreach($this->items as $key=>$items):
+	?>
 		<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'cat-'.$key, $items['title']); ?>
 		<div class="panel-group" id="accordion<?php echo $items['catid'];?>" role="tablist" aria-multiselectable="true">
 	    <h3><?php echo $items['title']; ?></h3>
-	  	<?php foreach($items['items'] as $key=>$item): ?>
+	  	<?php foreach($items['items'] as $pkey=>$item): ?>
 			<div class="panel panel-default">
 				<div class="panel-heading" role="tab" id="#productheading<?php echo $item->productid; ?>">
 		      <h4 class="panel-title">
 		        <a role="button" data-toggle="collapse" data-parent="#accordion<?php echo $items['catid'];?>" href="#product<?php echo $item->productid; ?>" aria-expanded="true" aria-controls="product<?php echo $item->productid; ?>">
 		          <?php echo $item->name; ?>
-							<span class="pull-right"><i class="glyphicon glyphicon-download"></i></span>
+							<span class="pull-right"><i class="glyphicon glyphicon-download icon-download"></i></span>
 		        </a>
 		      </h4>
 		    </div>
-		    <div id="product<?php echo $item->productid; ?>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="#productheading<?php echo $item->productid; ?>">
+		    <div id="product<?php echo $item->productid; ?>" class="panel-collapse collapse<?php echo ($pkey==0 ? ' in' : ''); ?>" role="tabpanel" aria-labelledby="#productheading<?php echo $item->productid; ?>">
 		      <div class="panel-body">
 						<table class="table table-bordered">
 							<thead>
