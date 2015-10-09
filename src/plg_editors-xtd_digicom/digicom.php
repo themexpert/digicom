@@ -27,6 +27,24 @@ class PlgButtonDigiCom extends JPlugin
 		$js = "
 		function jSelectProduct(id, name, catid)
 		{
+			// price = false;
+			// description = false;
+			// addtocart = false;
+			// if (confirm('Show Price ?')) {
+			// 	price = true;
+			// }
+			//
+			// if (confirm('Show description ?')) {
+			// 	description = true;
+			// }
+			//
+			// if (confirm('Show addtocart ?')) {
+			// 	addtocart = true;
+			// }
+			// console.log(price);
+			// console.log(description);
+			// console.log(addtocart);
+
 			var tag = '{digicom id='+id+'}';
 			jInsertEditorText(tag, '".$name."');
 			SqueezeBox.close();
