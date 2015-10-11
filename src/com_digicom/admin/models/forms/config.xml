@@ -217,8 +217,7 @@
 			</field>
 		</fieldset>
 
-		<fieldset
-			name="CURRENCY"
+		<fieldset name="CURRENCY"
 			addfieldpath="/administrator/components/com_digicom/models/fields">
 			<field
 				name="currency_spacer"
@@ -893,6 +892,95 @@
 			-->
 		</fieldset>
 
+		<fieldset name="TAX" addfieldpath="/administrator/components/com_digicom/models/fields">
+
+			<field
+				name="enable_taxes"
+				type="checkbox"
+				label="COM_DIGICOM_SETTINGS_TAX_ENABLE_TAXES_LABEL"
+				description="COM_DIGICOM_SETTINGS_TAX_ENABLE_TAXES_DESC"
+				value="1"
+				default="0"
+				/>
+
+			<field name="tax_rates"
+				type="repeatable"
+				icon="list"
+				description="COM_DIGICOM_SETTINGS_TAX_TAX_RATES_DESC"
+				label="COM_DIGICOM_SETTINGS_TAX_TAX_RATES_LABEL"
+				default="{'country':[''],'state':[''],'country_wide':['0'],'rate':['']}">
+
+				<fieldset hidden="true" repeat="true">
+					<field name="country"
+						label="COM_DIGICOM_SETTINGS_TAX_TAX_RATES_COUNTRY_LABEL"
+						size="30"
+						id="tax_countrylist"
+						type="countrylist" />
+
+					<field name="state"
+						label="COM_DIGICOM_SETTINGS_TAX_TAX_RATES_STATE_LABEL"
+						size="30"
+						countrylistid="tax_countrylist"
+						type="statelist"
+						/>
+
+					<field name="country_wide"
+						label="COM_DIGICOM_SETTINGS_TAX_TAX_RATES_COUNTRY_WIDE_LABEL"
+						description="COM_DIGICOM_SETTINGS_TAX_TAX_RATES_COUNTRY_WIDE_DESC"
+						size="30"
+						type="checkbox"
+						value="1"
+						default="0"
+					/>
+
+					<field name="rate"
+						label="COM_DIGICOM_SETTINGS_TAX_TAX_RATES_RATE_LABEL"
+						size="30"
+						type="text"
+					/>
+
+				</fieldset>
+
+			</field>
+
+			<field name="fallback_tax_rate"
+				label="COM_DIGICOM_SETTINGS_TAX_FALLBACK_TAX_RATE_LABEL"
+				description="COM_DIGICOM_SETTINGS_TAX_FALLBACK_TAX_RATE_DESC"
+				size="30"
+				type="text"
+			/>
+
+			<field
+				name="price_with_tax"
+				type="radio"
+				class="btn-group radio"
+				label="COM_DIGICOM_SETTINGS_TAX_PRICE_WITH_TAX_LABEL"
+				description="COM_DIGICOM_SETTINGS_TAX_PRICE_WITH_TAX_DESC"
+				default="0">
+					<option value="0">COM_DIGICOM_SETTINGS_TAX_PRICE_WITH_TAX_NO_LABEL</option>
+					<option value="1">COM_DIGICOM_SETTINGS_TAX_PRICE_WITH_TAX_YES_LABEL</option>
+			</field>
+
+			<field name="display_tax_with_price"
+				label="COM_DIGICOM_SETTINGS_TAX_DISPLAY_TAX_WITH_PRICE_LABEL"
+				description="COM_DIGICOM_SETTINGS_TAX_DISPLAY_TAX_WITH_PRICE_DESC"
+				size="30"
+				type="checkbox"
+				value="1"
+				default="0"
+			/>
+			<field
+				name="display_on_checkout"
+				type="list"
+				label="COM_DIGICOM_SETTINGS_TAX_DISPLAY_ON_CHECKOUT_LABEL"
+				description="COM_DIGICOM_SETTINGS_TAX_DISPLAY_ON_CHECKOUT_DESC"
+				default="0"
+				>
+					<option value="0">COM_DIGICOM_SETTINGS_TAX_DISPLAY_ON_CHECKOUT_EXCLUDING_LABEL</option>
+					<option value="1">COM_DIGICOM_SETTINGS_TAX_DISPLAY_ON_CHECKOUT_INCLUDING_LABEL</option>
+			</field>
+
+		</fieldset>
 	</fields>
 
 </form>
