@@ -54,7 +54,7 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @param null $country
 	 * @return mixed|void  A list of states for the store's base country
 	 */
-	function get_store_states( $country = null ) {
+	public static function get_store_states( $country = null ) {
 		if( empty( $country ) )
 			$country = $this->get_store_country();
 
@@ -145,9 +145,9 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @since 1.0
 	 * @return array $countries A list of the available countries
 	 */
-	function get_country_list() {
+	public static function get_country_list() {
 		$countries = array(
-			''   => '',
+			// ''   => JText::_('COM_DIGICOM_SELECT_COUNTRY_TITLE'),
 			'US' => 'United States',
 			'CA' => 'Canada',
 			'GB' => 'United Kingdom',
