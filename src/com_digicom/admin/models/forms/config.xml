@@ -129,6 +129,14 @@
 
 			<field
 				name="topcountries"
+				type="countrylist"
+				class="btn-group"
+				label="COM_DIGICOM_SETTINGS_GENERAL_TOP_COUNTRIES"
+				multiple="true"
+				description="COM_DIGICOM_SETTINGS_GENERAL_TOP_COUNTRIES_DESC"
+			/>
+			<!-- <field
+				name="topcountries"
 				type="sql"
 				query="SELECT distinct country FROM #__digicom_states order by country"
 				key_field="country"
@@ -138,7 +146,7 @@
 				default=""
 				multiple="true"
 				description="COM_DIGICOM_SETTINGS_GENERAL_TOP_COUNTRIES_DESC"
-			/>
+			/> -->
 
 			<field
 				name="askterms"
@@ -914,13 +922,14 @@
 					<field name="country"
 						label="COM_DIGICOM_SETTINGS_TAX_TAX_RATES_COUNTRY_LABEL"
 						size="30"
-						id="tax_countrylist"
-						type="countrylist" />
+						type="countrylist"
+						class="tax-country"
+						onchange="javascript:getStatelist();"
+						/>
 
 					<field name="state"
 						label="COM_DIGICOM_SETTINGS_TAX_TAX_RATES_STATE_LABEL"
 						size="30"
-						countrylistid="tax_countrylist"
 						type="statelist"
 						/>
 
