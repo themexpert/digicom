@@ -19,6 +19,7 @@ defined('_JEXEC') or die;
 class JFormFieldCountryList extends JFormField {
 
 	protected $type = 'CountryList';
+	protected $showtop = false;
 	/**
 	 * The initialised state of the document object.
 	 *
@@ -33,6 +34,9 @@ class JFormFieldCountryList extends JFormField {
 	{
 		$html = array();
 		$attr = '';
+		if(isset($this->element['showtop'])){
+			$this->showtop = $this->element['showtop'];
+		}
 
 		// Initialize some field attributes.
 		$attr .= !empty($this->class) ? ' class="' . $this->class . '"' : '';
@@ -45,14 +49,16 @@ class JFormFieldCountryList extends JFormField {
 		if ((string) $this->readonly == '1' || (string) $this->readonly == 'true' || (string) $this->disabled == '1'|| (string) $this->disabled == 'true')
 		{
 			$attr .= ' disabled="disabled"';
-		} 
+		}
 
 		// Initialize JavaScript field attributes.
 		$attr .= $this->onchange ? ' onchange="' . $this->onchange . '"' : '';
 
 		// Get the field options.
 		$options = (array) $this->getItems();
+
 		$value = $this->value;
+
 		// Create a read-only list (no name) with a hidden input to store the value.
 		if ((string) $this->readonly == '1' || (string) $this->readonly == 'true')
 		{
@@ -68,52 +74,46 @@ class JFormFieldCountryList extends JFormField {
 		return implode($html);
 	}
 
-	function getItems(){
+	function getItems()
+	{
 		$configs = JComponentHelper::getComponent('com_digicom')->params;
-    $db 	= JFactory::getDBO();
-		$query = $db->getQuery(true)
-					->select('country')
-					->from('#__digicom_states')
-					->group('country')
-					->order('country ASC');
-		$db->setQuery($query);
-		$countries = $db->loadObjectList();
+    $countries = DigiComHelperCountry::get_country_list();
 
 		## Initialize array to store dropdown options ##
 		$options = array();
-	    $options[] = JHTML::_('select.option', '', JText::_('COM_DIGICOM_SELECT_COUNTRY_TITLE'));
 
-		#Top Countries#
-		$topcountries = $configs->get('topcountries', array());
-
+		if($this->showtop){
+			#Top Countries#
+			$topcountries = $configs->get('topcountries', array());
 	    $options[] = JHTML::_('select.optgroup', JText::_('COM_DIGICOM_SELECT_FAVORITE_COUNTRY_TITLE'));
 
-		if ( count( $topcountries ) > 0 ) {
+			if ( count( $topcountries ) > 0 ) {
+				// print_r($topcountries);die;
+				foreach($topcountries as $key => $value) :
+					## Create $value ##
+					$options[] = JHTML::_('select.option', $value, $countries[$value]);
+				endforeach;
 
-			foreach($topcountries as $key=>$value) :
-				## Create $value ##
-				$options[] = JHTML::_('select.option', $value, $value);
-			endforeach;
+			}else{
 
-		}else{
+				$options[] = JHTML::_('select.option', 'US', 'United States');
+				$options[] = JHTML::_('select.option', 'CA', 'Canada');
+				$options[] = JHTML::_('select.option', 'BD', 'Bangladesh');
 
-			$options[] = JHTML::_('select.option', 'United-States', 'United-States');
-			$options[] = JHTML::_('select.option', 'Canada', 'Canada');
-			$options[] = JHTML::_('select.option', 'Bangladesh', 'Bangladesh');
-
+			}
 		}
 
 
 		$options[] = JHTML::_('select.optgroup', '');
 		$options[] = JHTML::_('select.optgroup', JText::_('COM_DIGICOM_SELECT_COUNTRY_TITLE'));
 
-		foreach($countries as $key=>$value) :
+		foreach($countries as $key => $value) :
 			## Create $value ##
-			$options[] = JHTML::_('select.option', $value->country, $value->country);
+			$options[] = JHTML::_('select.option', $key, $value);
 		endforeach;
 
-
 		return $options;
+
 	}
 
 }
