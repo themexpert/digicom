@@ -159,6 +159,34 @@ function beforeFileremove(row) {
   }
 }
 
+function getStatelist(){
+  var ajaxurl = 'index.php?option=com_digicom&task=action';
+  // Update tax rate state field based on selected rate country
+  // jQuery( document.body ).on('change', '#jform_tax_rates_modal select.tax-country', function() {
+  jQuery('#jform_tax_rates_modal select.tax-country').change(function() {
+    console.log(ajaxurl);
+    var jQuerythis = jQuery(this);
+    data = {
+      action  : 'get_store_states',
+      class   : 'DigiComHelperCountry',
+      country: jQuery(this).val(),
+      field_name: jQuerythis.attr('name').replace('country', 'state')
+    };
+    jQuery.post(ajaxurl, data, function (response) {
+      console.log(response);
+      if( 'nostates' == response ) {
+        var text_field = '<input type="text" name="' + data.field_name + '" value=""/>';
+        jQuerythis.parent().next().find('select').replaceWith( text_field );
+      } else {
+        jQuerythis.parent().next().find('input,select').show();
+        jQuerythis.parent().next().find('input,select').replaceWith( response );
+      }
+    });
+
+    return false;
+  });
+}
+
 /* end files function */
 
 jQuery(document).ready(function() {
@@ -269,12 +297,16 @@ jQuery(document).ready(function() {
 		  });
 		}
 	};
-	// jQuery('.repeat').each(function() {
-	// 	jQuery(this).repeatable_fields({
-	// 		'sortable_options': sortable
-	// 	});
-	// });
+  // jQuery(").trigger("liszt:updated");
+  //  jQuery(document).on('change', '#jform_country-1', getStatelist);
+  //
+  // jQuery("select.tax-country").chosen().change( function() {
+  //   getStatelist();
+  // });
 
-
+  // jQuery("#jform_tax_rates_container select.tax-country").change(function() {
+  //   getStatelist();
+  // });
+  // jQuery('#jform_tax_rates_container select.tax-country').prop('disabled', true).trigger("chosen:updated");
 
 });
