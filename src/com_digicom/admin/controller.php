@@ -49,4 +49,13 @@ class DigiComController extends JControllerLegacy
 		return parent::display();
 	}
 
+	public function action(){
+		$input = JFactory::getApplication()->input;
+		$class = $input->get('class');
+		$action =  $input->get('action');
+		$country =  $input->get('country');
+		print_r($class::$action($country));
+		JFactory::getApplication()->close();
+	}
+
 }
