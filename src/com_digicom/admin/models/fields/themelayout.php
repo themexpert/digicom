@@ -42,6 +42,7 @@ class JFormFieldThemelayout extends JFormField
     $mainframe = JFactory::getApplication();
     $fieldName = $this->name;
     $text			 = isset( $this->element['text'] ) ? $this->element['text'] : '';
+		$class        = !empty($this->class) ? ' class="' . $this->class . '"' : '';
 		if(empty($text)){
 			$text = 'JDEFAULT';
 		}
@@ -78,6 +79,6 @@ class JFormFieldThemelayout extends JFormField
 
     array_unshift($options, JHTML::_('select.option', '', '-- '.JText::_($text).' --'));
 
-    return JHTML::_('select.genericlist', $options, $fieldName, 'class="inputbox"', 'value', 'text', $this->value);
+    return JHTML::_('select.genericlist', $options, $fieldName, $class, 'value', 'text', $this->value);
 	}
 }
