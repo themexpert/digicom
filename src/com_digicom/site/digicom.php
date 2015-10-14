@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 JHtml::_('jquery.framework');
 
 JLoader::discover('DigiComSiteHelper', JPATH_COMPONENT_SITE . '/helpers');
+JLoader::discover('DigiComHelper', JPATH_COMPONENT_ADMINISTRATOR . '/helpers');
 
 require_once JPATH_COMPONENT . '/helpers/route.php';
 
