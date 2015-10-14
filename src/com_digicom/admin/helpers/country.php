@@ -17,37 +17,54 @@ defined('_JEXEC') or die;
 class DigiComHelperCountry extends JHelperContent{
 
 	/**
-	* get the config
-	* var config
-	*/
-	private $config;
+	 * Get Store states list in select option
+	 *
+	 * @since 1.6
+	 * @return string $states The two letter country code for the store's base country in list
+	 */
+	public static function getStates( $country = null , $field_name)
+	{
 
-	function __construct(){
-		$this->config = JComponentHelper::getParams('com_digicom');
+		$states = DigiComHelperCountry::get_store_states($country);
+
+		## Initialize array to store dropdown options ##
+		$options = array();
+
+		foreach($states as $key => $value) :
+			## Create $value ##
+			$options[] = JHTML::_('select.option', $key, $value);
+		endforeach;
+
+		$html = JHtml::_('select.genericlist', $options, $field_name, 'id="jform_'.$field_name.'"', 'value', 'text', '', '');
+
+		// print_r($html);die;
+		return $html;
 	}
 
 	/**
-	 * Get Shop Base Country
+	 * Get Store Base Country
 	 *
 	 * @since 1.6
 	 * @return string $country The two letter country code for the store's base country
 	 */
-	function get_store_country() {
-		return $this->config->get( 'base_country', 'US' );
+	public static function get_store_country() {
+		$config = JComponentHelper::getParams('com_digicom');
+		return $config->get( 'base_country', 'US' );
 	}
 
 	/**
-	 * Get Shop Base State
+	 * Get Store Base State
 	 *
 	 * @since 1.6
 	 * @return string $state The store's base state name
 	 */
-	function get_store_state() {
-		return $this->config->get( 'base_state', '' );
+	public static function get_store_state() {
+		$config = JComponentHelper::getParams('com_digicom');
+		return $config->get( 'base_state', '' );
 	}
 
 	/**
-	 * Get Shop States
+	 * Get Store States
 	 *
 	 * @since 1.6
 	 *
@@ -56,78 +73,78 @@ class DigiComHelperCountry extends JHelperContent{
 	 */
 	public static function get_store_states( $country = null ) {
 		if( empty( $country ) )
-			$country = $this->get_store_country();
+			$country = DigiComHelperCountry::get_store_country();
 
 		switch( $country ) :
 
 			case 'US' :
-				$states = $this->get_states_list();
+				$states = DigiComHelperCountry::get_states_list();
 				break;
 			case 'CA' :
-				$states = $this->get_provinces_list();
+				$states = DigiComHelperCountry::get_provinces_list();
 				break;
 			case 'AU' :
-				$states = $this->get_australian_states_list();
+				$states = DigiComHelperCountry::get_australian_states_list();
 				break;
 			case 'BD' :
-				$states = $this->get_bangladeshi_states_list();
+				$states = DigiComHelperCountry::get_bangladeshi_states_list();
 				break;
 			case 'BG' :
-				$states = $this->get_bulgarian_states_list();
+				$states = DigiComHelperCountry::get_bulgarian_states_list();
 				break;
 			case 'BR' :
-				$states = $this->get_brazil_states_list();
+				$states = DigiComHelperCountry::get_brazil_states_list();
 				break;
 			case 'CN' :
-				$states = $this->get_chinese_states_list();
+				$states = DigiComHelperCountry::get_chinese_states_list();
 				break;
 			case 'HK' :
-				$states = $this->get_hong_kong_states_list();
+				$states = DigiComHelperCountry::get_hong_kong_states_list();
 				break;
 			case 'HU' :
-				$states = $this->get_hungary_states_list();
+				$states = DigiComHelperCountry::get_hungary_states_list();
 				break;
 			case 'ID' :
-				$states = $this->get_indonesian_states_list();
+				$states = DigiComHelperCountry::get_indonesian_states_list();
 				break;
 			case 'IN' :
-				$states = $this->get_indian_states_list();
+				$states = DigiComHelperCountry::get_indian_states_list();
 				break;
 			case 'IR' :
-				$states = $this->get_iranian_states_list();
+				$states = DigiComHelperCountry::get_iranian_states_list();
 				break;
 			case 'IT' :
-				$states = $this->get_italian_states_list();
+				$states = DigiComHelperCountry::get_italian_states_list();
 				break;
 			case 'JP' :
-				$states = $this->get_japanese_states_list();
+				$states = DigiComHelperCountry::get_japanese_states_list();
 				break;
 			case 'MX' :
-				$states = $this->get_mexican_states_list();
+				$states = DigiComHelperCountry::get_mexican_states_list();
 				break;
 			case 'MY' :
-				$states = $this->get_malaysian_states_list();
+				$states = DigiComHelperCountry::get_malaysian_states_list();
 				break;
 			case 'NP' :
-				$states = $this->get_nepalese_states_list();
+				$states = DigiComHelperCountry::get_nepalese_states_list();
 				break;
 			case 'NZ' :
-				$states = $this->get_new_zealand_states_list();
+				$states = DigiComHelperCountry::get_new_zealand_states_list();
 				break;
 			case 'PE' :
-				$states = $this->get_peruvian_states_list();
+				$states = DigiComHelperCountry::get_peruvian_states_list();
 				break;
 			case 'TH' :
-				$states = $this->get_thailand_states_list();
+				$states = DigiComHelperCountry::get_thailand_states_list();
 				break;
 			case 'TR' :
-				$states = $this->get_turkey_states_list();
+				$states = DigiComHelperCountry::get_turkey_states_list();
 				break;
 			case 'ZA' :
-				$states = $this->get_south_african_states_list();
+				$states = DigiComHelperCountry::get_south_african_states_list();
 				break;
 			case 'ES' :
-				$states = $this->get_spain_states_list();
+				$states = DigiComHelperCountry::get_spain_states_list();
 				break;
 			default :
 				$states = array();
@@ -412,7 +429,7 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @since       1.2
 	 * @return      array
 	 */
-	function get_states_list() {
+	public static function get_states_list() {
 		$states = array(
 			''   => '',
 			'AL' => 'Alabama',
@@ -493,7 +510,7 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @since       1.2
 	 * @return      array
 	 */
-	function get_provinces_list() {
+	public static function get_provinces_list() {
 		$provinces = array(
 			''   => '',
 			'AB' => 'Alberta',
@@ -520,7 +537,7 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @since 1.6
 	 * @return array $states A list of states
 	 */
-	function get_australian_states_list() {
+	public static function get_australian_states_list() {
 		$states = array(
 			''    => '',
 			'ACT' => 'Australian Capital Territory',
@@ -542,7 +559,7 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @since 2.2.3
 	 * @return array $states A list of states
 	 */
-	function get_bangladeshi_states_list() {
+	public static function get_bangladeshi_states_list() {
 		$states = array(
 			''    => '',
 			'BAG' => 'Bagerhat',
@@ -620,7 +637,7 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @since 1.6
 	 * @return array $states A list of states
 	 */
-	function get_brazil_states_list() {
+	public static function get_brazil_states_list() {
 		$states = array(
 			''   => '',
 			'AC' => 'Acre',
@@ -661,7 +678,7 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @since 2.2.3
 	 * @return array $states A list of states
 	 */
-	function get_bulgarian_states_list() {
+	public static function get_bulgarian_states_list() {
 		$states = array(
 			''      => '',
 			'BG-01' => 'Blagoevgrad',
@@ -703,7 +720,7 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @since 1.6
 	 * @return array $states A list of states
 	 */
-	function get_hong_kong_states_list() {
+	public static function get_hong_kong_states_list() {
 		$states = array(
 			''                => '',
 			'HONG KONG'       => 'Hong Kong Island',
@@ -720,7 +737,7 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @since 1.6
 	 * @return array $states A list of states
 	 */
-	function get_hungary_states_list() {
+	public static function get_hungary_states_list() {
 		$states = array(
 			''   => '',
 			'BK' => 'Bács-Kiskun',
@@ -754,7 +771,7 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @since 2.2.3
 	 * @return array $states A list of states
 	 */
-	function get_japanese_states_list() {
+	public static function get_japanese_states_list() {
 		$states = array(
 			''     => '',
 			'JP01' => 'Hokkaido',
@@ -815,7 +832,7 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @since 1.6
 	 * @return array $states A list of states
 	 */
-	function get_chinese_states_list() {
+	public static function get_chinese_states_list() {
 		$states = array(
 			''     => '',
 		    'CN1'  => 'Yunnan / &#20113;&#21335;',
@@ -861,7 +878,7 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @since 1.6
 	 * @return array $states A list of states
 	 */
-	function get_new_zealand_states_list() {
+	public static function get_new_zealand_states_list() {
 		$states = array(
 			''   => '',
 			'AK' => 'Auckland',
@@ -890,7 +907,7 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @since 2.2.3
 	 * @return array $states A list of states
 	 */
-	function get_peruvian_states_list() {
+	public static function get_peruvian_states_list() {
 		$states = array(
 			''    => '',
 			'CAL' => 'El Callao',
@@ -930,7 +947,7 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @since 1.6
 	 * @return array $states A list of states
 	 */
-	function get_indonesian_states_list() {
+	public static function get_indonesian_states_list() {
 		$states  = array(
 			''   => '',
 			'AC' => 'Daerah Istimewa Aceh',
@@ -978,7 +995,7 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @since 1.6
 	 * @return array $states A list of states
 	 */
-	function get_indian_states_list() {
+	public static function get_indian_states_list() {
 		$states = array(
 			''   => '',
 			'AP' => 'Andhra Pradesh',
@@ -1028,7 +1045,7 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @since 2.2.3
 	 * @return array $states A list of states
 	 */
-	function get_iranian_states_list() {
+	public static function get_iranian_states_list() {
 		$states = array(
 			''    => '',
 			'KHZ' => 'Khuzestan',
@@ -1073,7 +1090,7 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @since 2.2.3
 	 * @return array $states A list of states
 	 */
-	function get_italian_states_list() {
+	public static function get_italian_states_list() {
 		$states = array(
 			''   => '',
 			'AG' => 'Agrigento',
@@ -1197,7 +1214,7 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @since 1.6
 	 * @return array $states A list of states
 	 */
-	function get_malaysian_states_list() {
+	public static function get_malaysian_states_list() {
 		$states = array(
 			''    => '',
 			'JHR' => 'Johor',
@@ -1227,7 +1244,7 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @since 2.2.3
 	 * @return array $states A list of states
 	 */
-	function get_mexican_states_list() {
+	public static function get_mexican_states_list() {
 		$states = array(
 			''    => '',
 			'DIF' => 'Distrito Federal',
@@ -1273,7 +1290,7 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @since 2.2.3
 	 * @return array $states A list of states
 	 */
-	function get_nepalese_states_list() {
+	public static function get_nepalese_states_list() {
 		$states = array(
 			''    => '',
 			'ILL' => 'Illam',
@@ -1362,7 +1379,7 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @since 1.6
 	 * @return array $states A list of states
 	 */
-	function get_south_african_states_list() {
+	public static function get_south_african_states_list() {
 		$states = array(
 			''    => '',
 			'EC'  => 'Eastern Cape',
@@ -1385,7 +1402,7 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @since 1.6
 	 * @return array $states A list of states
 	 */
-	function get_thailand_states_list() {
+	public static function get_thailand_states_list() {
 		$states = array(
 			''      => '',
 			'TH-37' => 'Amnat Charoen (&#3629;&#3635;&#3609;&#3634;&#3592;&#3648;&#3592;&#3619;&#3636;&#3597;)',
@@ -1476,7 +1493,7 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @since 2.2.3
 	 * @return array $states A list of states
 	 */
-	function get_turkey_states_list() {
+	public static function get_turkey_states_list() {
 		$states = array(
 			''     => '',
 			'TR01' => 'Adana',
@@ -1571,7 +1588,7 @@ class DigiComHelperCountry extends JHelperContent{
 	 * @since 2.2
 	 * @return array $states A list of states
 	 */
-	function get_spain_states_list() {
+	public static function get_spain_states_list() {
 		$states = array(
 			''   => '',
 		    'C'  => 'A Coru&ntilde;a',
