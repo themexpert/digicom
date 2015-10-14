@@ -60,9 +60,61 @@ if (typeof jQuery === 'undefined') {
 			if( Digicom.taskSet('formSubmit').length ){
 				Digicom.taskSet('formSubmit').submit();
 			}
-
+      Digicom.dataSet('digicom_country').each(function()
+      {
+        var item = $(this);
+        Digicom.changeStatelist(item);
+      });
 		},
 
+		/**
+		* get digicom change state
+		*/
+		changeStatelist: function(e)
+		{
+      var ajaxurl = this.root + 'administrator/index.php?option=com_digicom&task=action&format=json';
+      var item = $(e);
+
+      var data = {
+        action      : 'get_store_states',
+        class       : 'DigiComHelperCountry',
+        country     : item.val(),
+        field_name  : item.attr('name').replace('country', 'state')
+      };
+      // console.log(data);
+      var stateval = item.parent().parent().next().find('input').val();
+      $.getJSON(ajaxurl, data, function(response)
+      {
+        var total = Object.keys(response).length;
+
+        if(total == '0')
+        {
+          var text_field = '<input type="text" name="' + data.field_name + '" value=""/>';
+          item.parent().parent().next().find('select[name="'+data.field_name+'"]').chosen('destroy');
+          item.parent().parent().next().find('select').replaceWith( text_field );
+        }
+        else
+        {
+          var items = [];
+
+          // Build options
+          $.each(response, function(key, val) {
+            if(key == stateval){
+              items.push('<option value="' + key + '" selected>' + val + '</option>');
+            }else{
+              items.push('<option value="' + key + '">' + val + '</option>');
+            }
+
+          });
+
+          // Replace current select options. The trigger is needed for Chosen select box enhancer
+          var select_field = '<select name="' + data.field_name + '"></select>';
+          item.parent().parent().next().find('select').chosen('destroy');
+          item.parent().parent().next().find('select, input').replaceWith( select_field );
+          item.parent().parent().next().find('select').empty().append(items).chosen();
+        }
+      });
+		},
 		/**
 		* get digicom dataset
 		*/
