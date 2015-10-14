@@ -39,10 +39,11 @@
 
 		<field
 			name="country"
-			type="stateoption"
+			type="countrylist"
 			description=""
 			label="COM_DIGICOM_COUNTRY"
 			class="input-country"
+			onchange="Digicom.changeStatelist(this);"
 		/>
 
 		<field
