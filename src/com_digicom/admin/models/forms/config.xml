@@ -45,6 +45,7 @@
 				type="list"
 				label="COM_DIGICOM_SETTINGS_GENERAL_DATE_FORMAT"
 				default="d-m-Y"
+				class="chosen"
 				description="COM_DIGICOM_SETTINGS_GENERAL_DATE_FORMAT_DESC">
 					<option value="d-m-Y">DATE_FORMAT_1</option>
 					<option value="m-d-Y">DATE_FORMAT_2</option>
@@ -130,7 +131,7 @@
 			<field
 				name="topcountries"
 				type="countrylist"
-				class="btn-group"
+				class="btn-group chosen"
 				label="COM_DIGICOM_SETTINGS_GENERAL_TOP_COUNTRIES"
 				multiple="true"
 				description="COM_DIGICOM_SETTINGS_GENERAL_TOP_COUNTRIES_DESC"
@@ -166,6 +167,7 @@
 				description="COM_DIGICOM_TERMSID_TIP"
 				query="SELECT id, title FROM #__content"
 				key_field="id"
+				class="chosen"
 				value_field="title">
 			</field>
 
@@ -178,7 +180,7 @@
 			<field
 				name="afteradditem"
 				type="list"
-				class="btn-group"
+				class="btn-group chosen"
 				label="COM_DIGICOM_SETTINGS_GENERAL_AFTER_ADDING_ITEM_TAKE_USER"
 				default="0"
 				description="COM_DIGICOM_SETTINGS_GENERAL_AFTER_ADDING_ITEM_TAKE_USER_DESC">
@@ -192,7 +194,7 @@
 				query="SELECT extension_id as id,name,element,enabled as published FROM #__extensions WHERE folder in ('digicom_pay') AND enabled=1"
 				key_field="element"
 				value_field="name"
-				class="btn-group"
+				class="btn-group chosen"
 				label="COM_DIGICOM_SETTINGS_GENERAL_DEFAULT_PAYMENT_METHOD"
 				description="COM_DIGICOM_SETTINGS_GENERAL_DEFAULT_PAYMENT_METHOD_DESC">
 					<!-- <option value="">Select payment gateway</option> -->
@@ -236,7 +238,7 @@
 			<field
 				name="decimaldigits"
 				type="list"
-				class="btn-group"
+				class="btn-group chosen"
 				label="COM_DIGICOM_SETTINGS_CURRENCY_DECIMALDIGITS_LABEL"
 				default="2"
 				description="COM_DIGICOM_SETTINGS_CURRENCY_DECIMALDIGITS_DESC">
@@ -280,7 +282,7 @@
 				<field
 					name="currency_use"
 					type="list"
-					class="btn-group"
+					class="btn-group chosen"
 					label="COM_DIGICOM_CURRENCY_USE_SITE_LABEL"
 					default="symbol"
 					description="COM_DIGICOM_CURRENCY_USE_SITE_DESC">
@@ -302,7 +304,7 @@
 			<field
 				name="currency_position"
 				type="list"
-				class="btn-group"
+				class="btn-group chosen"
 				label="COM_DIGICOM_SETTINGS_CURRENCY_DISPLAY_POSITION"
 				default="1"
 				description="COM_DIGICOM_SETTINGS_CURRENCY_DISPLAY_POSITION_DESC">
@@ -382,7 +384,7 @@
 			<field
 				name="template"
 				type="themelayout"
-				class="title"
+				class="title chosen"
 				label="COM_DIGICOM_SETTINGS_THEME_TEMPLATE_TITLE"
 				description="COM_DIGICOM_SETTINGS_THEME_TEMPLATE_TITLE_DESC"
 				/>
@@ -390,6 +392,7 @@
 			<field
 				name="category_cols"
 				type="list"
+				class="chosen"
 				label="COM_DIGICOM_SETTINGS_THEME_COLUMN_NO"
 				description="COM_DIGICOM_SETTINGS_THEME_COLUMN_NO_DESC"
 			>
@@ -531,7 +534,7 @@
 					<option value="[{site_title}] New customer order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_SUBJECT_DEFAULT</option>
 				</field>
 
-				<field name="email_type" type="list"
+				<field name="email_type" type="list" class="chosen"
 					label="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_LABEL"
 					description="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_DESC"
 					onchange="showProperTemplateEmail('new_order',event)"
@@ -609,7 +612,7 @@
 					<option value="[{site_title}] Process order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_PROCESS_ORDER_SUBJECT_DEFAULT</option>
 				</field>
 
-				<field name="email_type" type="list"
+				<field name="email_type" type="list" class="chosen"
 					label="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_LABEL"
 					description="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_DESC"
 					onchange="showProperTemplateEmail('process_order',event)"
@@ -687,7 +690,7 @@
 					<option value="[{site_title}] Complete order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_COMPLETE_ORDER_SUBJECT_DEFAULT</option>
 				</field>
 
-				<field name="email_type" type="list"
+				<field name="email_type" type="list" class="chosen"
 					label="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_LABEL"
 					description="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_DESC"
 					onchange="showProperTemplateEmail('complete_order',event)"
@@ -765,7 +768,7 @@
 					<option value="[{site_title}] Cancel order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_CANCEL_ORDER_SUBJECT_DEFAULT</option>
 				</field>
 
-				<field name="email_type" type="list"
+				<field name="email_type" type="list" class="chosen"
 					label="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_LABEL"
 					description="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_DESC"
 					onchange="showProperTemplateEmail('cancel_order',event)"
@@ -843,7 +846,7 @@
 					<option value="[{site_title}] Cancel order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_REFUND_ORDER_SUBJECT_DEFAULT</option>
 				</field>
 
-				<field name="email_type" type="list"
+				<field name="email_type" type="list" class="chosen"
 					label="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_LABEL"
 					description="COM_DIGICOM_SETTINGS_EMAIL_EMAIL_TYPE_DESC"
 					onchange="showProperTemplateEmail('refund_order',event)"
@@ -924,23 +927,23 @@
 						size="30"
 						type="countrylist"
 						class="tax-country"
-						onchange="javascript:getStatelist();"
+						onchange="javascript:getStatelist(this);"
 						/>
 
 					<field name="state"
 						label="COM_DIGICOM_SETTINGS_TAX_TAX_RATES_STATE_LABEL"
 						size="30"
-						type="statelist"
+						class="tax-states"
+						type="text"
 						/>
-
-					<field name="country_wide"
+					<field name="all_states" type="list" class="chosen"
 						label="COM_DIGICOM_SETTINGS_TAX_TAX_RATES_COUNTRY_WIDE_LABEL"
 						description="COM_DIGICOM_SETTINGS_TAX_TAX_RATES_COUNTRY_WIDE_DESC"
-						size="30"
-						type="checkbox"
-						value="1"
 						default="0"
-					/>
+					>
+						<option value="1">JYES</option>
+						<option value="0">JNO</option>
+					</field>
 
 					<field name="rate"
 						label="COM_DIGICOM_SETTINGS_TAX_TAX_RATES_RATE_LABEL"
@@ -981,6 +984,7 @@
 			<field
 				name="display_on_checkout"
 				type="list"
+				class="chosen"
 				label="COM_DIGICOM_SETTINGS_TAX_DISPLAY_ON_CHECKOUT_LABEL"
 				description="COM_DIGICOM_SETTINGS_TAX_DISPLAY_ON_CHECKOUT_DESC"
 				default="0"
