@@ -54,7 +54,10 @@ class DigiComController extends JControllerLegacy
 		$class = $input->get('class');
 		$action =  $input->get('action');
 		$country =  $input->get('country');
-		print_r($class::$action($country));
+		$field_name =  $input->get('field_name');
+
+		$result = $class::$action($country, $field_name);
+		echo json_encode($result);
 		JFactory::getApplication()->close();
 	}
 
