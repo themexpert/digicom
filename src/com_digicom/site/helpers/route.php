@@ -232,7 +232,7 @@ abstract class DigiComSiteHelperRoute
 		if (isset(self::$lookup[$language]['categories']))
 		{
 			return self::$lookup[$language]['categories'][0];
-		}elseif(isset(self::$lookup[$language]['category']))
+		}elseif(isset(self::$lookup[$language]['category'][0]))
 		{
 			return self::$lookup[$language]['category'][0];
 		}
