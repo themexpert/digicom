@@ -338,6 +338,22 @@
 				description="COM_DIGICOM_SETTINGS_STORE_NAME_DESC" />
 
 			<field
+				name="base_country"
+				type="countrylist"
+				class="chosen digicom_country"
+				label="COM_DIGICOM_SETTINGS_STORE_BASE_COUNTRY_LABEL"
+				description="COM_DIGICOM_SETTINGS_STORE_BASE_COUNTRY_DESC"
+				onchange="javascript:changeStatelist(this);"
+				/>
+
+			<field
+				name="base_state"
+				type="text"
+				label="COM_DIGICOM_SETTINGS_STORE_BASE_STATE_LABEL"
+				description="COM_DIGICOM_SETTINGS_STORE_BASE_STATE_DESC"
+				/>
+
+			<field
 				name="address"
 				type="textarea"
 				label="COM_DIGICOM_SETTINGS_STORE_ADDRESS"
