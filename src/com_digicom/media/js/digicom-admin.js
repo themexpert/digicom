@@ -159,34 +159,6 @@ function beforeFileremove(row) {
   }
 }
 
-function getStatelist(){
-  var ajaxurl = 'index.php?option=com_digicom&task=action';
-  // Update tax rate state field based on selected rate country
-  // jQuery( document.body ).on('change', '#jform_tax_rates_modal select.tax-country', function() {
-  jQuery('#jform_tax_rates_modal select.tax-country').change(function() {
-    console.log(ajaxurl);
-    var jQuerythis = jQuery(this);
-    data = {
-      action  : 'get_store_states',
-      class   : 'DigiComHelperCountry',
-      country: jQuery(this).val(),
-      field_name: jQuerythis.attr('name').replace('country', 'state')
-    };
-    jQuery.post(ajaxurl, data, function (response) {
-      console.log(response);
-      if( 'nostates' == response ) {
-        var text_field = '<input type="text" name="' + data.field_name + '" value=""/>';
-        jQuerythis.parent().next().find('select').replaceWith( text_field );
-      } else {
-        jQuerythis.parent().next().find('input,select').show();
-        jQuerythis.parent().next().find('input,select').replaceWith( response );
-      }
-    });
-
-    return false;
-  });
-}
-
 /* end files function */
 
 jQuery(document).ready(function() {
@@ -309,4 +281,106 @@ jQuery(document).ready(function() {
   // });
   // jQuery('#jform_tax_rates_container select.tax-country').prop('disabled', true).trigger("chosen:updated");
 
+    // jQuery('#jform_tax_rates_container').find('select').val()
+    // jQuery( "#jform_tax_rates_container select.tax-country").each(function() {
+    //   var item = jQuery(this);
+    //   autoUpdateTaxstate(item);
+    // });
+    jQuery('#jform_tax_rates_button').click(function(e){
+      e.preventDefault();
+      var ajaxurl = 'index.php?option=com_digicom&task=action&format=json';
+
+      jQuery( "#jform_tax_rates_container select.tax-country").each(function()
+      {
+        var item = jQuery(this);
+        var field_name = item.attr('name').replace('country', 'state');
+        var stateval = jQuery('#jform_tax_rates_modal input#jform_'+field_name).val();
+
+        if(stateval != ''){
+
+          var data = {
+            action  : 'get_store_states',
+            class   : 'DigiComHelperCountry',
+            country: item.val(),
+            field_name: field_name
+          };
+
+          // Replace current select options. The trigger is needed for Chosen select box enhancer
+          var select_field = '<select name="' + data.field_name + '"></select>';
+          item.parent().next().find('input[type="text"]').replaceWith( select_field );
+          // jQuery('#jform_tax_rates_modal input#jform_'+field_name).css('display','none');
+          // jQuery('#jform_tax_rates_modal input#jform_'+field_name).remove();
+
+          jQuery.getJSON(ajaxurl, data, function(response)
+          {
+            // console.log(data);
+            // console.log(field_name);
+            // console.log(stateval);
+
+            // The response contains the options to use in help site select field
+            var items = [];
+
+            // Build options
+            jQuery.each(response, function(key, val) {
+              if(key == stateval){
+                items.push('<option value="' + key + '" selected>' + val + '</option>');
+              }else{
+                items.push('<option value="' + key + '">' + val + '</option>');
+              }
+            });
+            // Replace current select options. The trigger is needed for Chosen select box enhancer
+            item.parent().next().find('select').empty().append(items).chosen();
+
+          });
+
+        }
+
+       });
+
+    });
 });
+
+
+function getStatelist(e){
+  var ajaxurl = 'index.php?option=com_digicom&task=action&format=json';
+
+// Update tax rate state field based on selected rate country
+  // jQuery('#jform_tax_rates_modal select.tax-country').change(function() {
+    // console.log(ajaxurl);
+    var item = jQuery(e);
+    data = {
+      action  : 'get_store_states',
+      class   : 'DigiComHelperCountry',
+      country: item.val(),
+      field_name: item.attr('name').replace('country', 'state')
+    };
+    // console.log(data);
+
+    jQuery.getJSON(ajaxurl, data, function(response)
+    {
+      var total = Object.keys(response).length;
+      if(total == '0')
+      {
+        var text_field = '<input type="text" name="' + data.field_name + '" value=""/>';
+        item.parent().next().find('select[name="'+data.field_name+'"]').chosen('destroy');
+        item.parent().next().find('select').replaceWith( text_field );
+      }
+      else
+      {
+  			var items = [];
+
+  			// Build options
+  			jQuery.each(response, function(key, val) {
+  				items.push('<option value="' + key + '">' + val + '</option>');
+  			});
+
+  			// Replace current select options. The trigger is needed for Chosen select box enhancer
+        var select_field = '<select name="' + data.field_name + '"></select>';
+        item.parent().next().find('select').chosen('destroy');
+        item.parent().next().find('select, input').replaceWith( select_field );
+        item.parent().next().find('select').empty().append(items).chosen();
+      }
+    });
+
+  // });
+}
