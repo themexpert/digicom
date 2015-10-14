@@ -338,17 +338,25 @@ jQuery(document).ready(function() {
        });
 
     });
+
+    jQuery('select.digicom_country').each(function()
+    {
+      var item = jQuery(this);
+      changeStatelist(item);
+    });
+
 });
 
 
-function getStatelist(e){
+function getStatelist(e)
+{
   var ajaxurl = 'index.php?option=com_digicom&task=action&format=json';
 
-// Update tax rate state field based on selected rate country
+  // Update tax rate state field based on selected rate country
   // jQuery('#jform_tax_rates_modal select.tax-country').change(function() {
     // console.log(ajaxurl);
     var item = jQuery(e);
-    data = {
+    var data = {
       action  : 'get_store_states',
       class   : 'DigiComHelperCountry',
       country: item.val(),
@@ -383,4 +391,51 @@ function getStatelist(e){
     });
 
   // });
+}
+
+function changeStatelist(e)
+{
+  var ajaxurl = 'index.php?option=com_digicom&task=action&format=json';
+  var item = jQuery(e);
+
+  var data = {
+    action  : 'get_store_states',
+    class   : 'DigiComHelperCountry',
+    country: item.val(),
+    field_name: item.attr('name').replace('country', 'state')
+  };
+  // console.log(data);
+  var stateval = item.parent().parent().next().find('input').val();
+  jQuery.getJSON(ajaxurl, data, function(response)
+  {
+    var total = Object.keys(response).length;
+
+    if(total == '0')
+    {
+      var text_field = '<input type="text" name="' + data.field_name + '" value=""/>';
+      item.parent().parent().next().find('select[name="'+data.field_name+'"]').chosen('destroy');
+      item.parent().parent().next().find('select').replaceWith( text_field );
+    }
+    else
+    {
+      var items = [];
+
+      // Build options
+      jQuery.each(response, function(key, val) {
+        if(key == stateval){
+          items.push('<option value="' + key + '" selected>' + val + '</option>');
+        }else{
+          items.push('<option value="' + key + '">' + val + '</option>');
+        }
+
+      });
+
+      // Replace current select options. The trigger is needed for Chosen select box enhancer
+      var select_field = '<select name="' + data.field_name + '"></select>';
+      item.parent().parent().next().find('select').chosen('destroy');
+      item.parent().parent().next().find('select, input').replaceWith( select_field );
+      item.parent().parent().next().find('select').empty().append(items).chosen();
+    }
+  });
+
 }
