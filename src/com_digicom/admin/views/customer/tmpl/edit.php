@@ -121,23 +121,9 @@ $input->set('layout', 'dgform');
 									</div>
 								</div>
 
-								<div class="control-group">
-									<label for="" class="control-label"><?php echo JText::_( "COM_DIGICOM_CUSTOMER_COUNTRY" ); ?></label>
-									<div class="controls">
-										<?php
-											$country_option = DigiComSiteHelperDigiCom::get_country_options($cust, false, $configs, false);
-											echo $country_option;
-										?>
-									</div>
-								</div>
+								<?php echo $this->form->renderField('country'); ?>
 
-								<div class="control-group">
-									<label for="" class="control-label"><?php echo JText::_( "COM_DIGICOM_CUSTOMER_STATE" ); ?></label>
-									<div class="controls">
-										<input name="state" type="text" id="state" size="30" value="<?php echo $cust->state; ?>">
-										<?php // echo DigiComSiteHelperDigiCom::get_store_province($cust, false); ?>
-									</div>
-								</div>
+								<?php echo $this->form->renderField('state'); ?>
 
 								<div class="control-group">
 									<label for="" class="control-label"><?php echo JText::_( "COM_DIGICOM_CUSTOMER_CITY" ); ?></label>
