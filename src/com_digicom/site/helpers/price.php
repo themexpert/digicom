@@ -39,7 +39,7 @@ class DigiComSiteHelperPrice {
 	/**
 	* price formet helper
 	*/
-	public static function tax_price($price, $configs)
+	public static function tax_price($price, $configs, $rateonly = false)
 	{
 		if($price <= 0) return;
 		// check the tax info
@@ -54,6 +54,10 @@ class DigiComSiteHelperPrice {
 		if(!$tax_enable)
 		{
 			return '';
+		}
+		elseif ($rateonly)
+		{
+			return $tax_rate;
 		}
 		elseif($display_tax_with_price && $price_with_tax)
 		{
