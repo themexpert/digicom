@@ -281,7 +281,7 @@ class DigiComHelperChart {
 
 	}
 
-	public static function getRangePricesLabel($range,$rangeDays = null, $byproduct = false){
+	public static function getRangePricesLabel($range, $rangeDays = null, $byproduct = false){
 
 		$price = '';
 		$prefix = '';
@@ -362,6 +362,81 @@ class DigiComHelperChart {
 
 				break;
 		}
+
+		return $price;
+
+	}
+
+	public static function getRangeTotalNoSale($range)
+	{
+		$price = 0;
+		$app      = JFactory::getApplication();
+		$db 			= JFactory::getDBO();
+		$input 		= $app->input;
+		$session  = JFactory::getSession();
+
+		$productid = $input->get('productid', '');
+	  if(empty($productid)){
+	    $productid = $session->get( 'productid', '' );
+	  }
+		if(empty($productid)) return 0;
+
+		switch($range){
+			case "custom":
+
+				$start_date = $input->get('start_date', '');
+				$end_date 	= $input->get('end_date', '');
+
+				$startdate 	= date($start_date . " 00:00:00");
+				$enddate 		= date($end_date . " 23:59:59");
+
+				break;
+			case "year":
+				$startdate 	= date("Y-1-1 00:00:00");
+				$enddate 		= date("Y-m-d 23:59:59");
+
+				break;
+			case "last_month":
+				$lastday = new DateTime('last day of last month');
+				$lastdate = $lastday->format('j');
+
+				$month = new DateTime('first day of last month');
+				$date = $month->modify("+0 days");
+				$startdate = $date->format('Y-m-d 00:00:00');
+				$enddate = $date->format("Y-m-".$lastdate." 23:59:59");
+
+				break;
+			case "month":
+				$date = new DateTime('now');
+				$date->modify("first day of this month");
+				$startdate = $date->format('Y-m-d 00:00:00');
+
+				$date = new DateTime('now');
+				$enddate = $date->format('Y-m-d 23:59:59');
+
+				break;
+			case "7day":
+			default:
+				//7day
+				$date = new DateTime('6 days ago');
+				$startdate = $date->format('Y-m-d 00:00:00');
+
+				$date = new DateTime('0 days ago');
+				$enddate = $date->format('Y-m-d 23:59:59');
+				break;
+		}
+
+		$query = $db->getQuery(true); //
+		$query->select('count('.$db->quoteName('od.productid').') as '.$db->quoteName('total'))
+				->from($db->quoteName('#__digicom_orders', 'o'));
+
+		$query->join('inner',$db->quoteName('#__digicom_orders_details','od') . ' ON ('.$db->quoteName('od.orderid').'='.$db->quoteName('o.id').')');
+		$query->where($db->quoteName('o.order_date')." BETWEEN '".$startdate."' AND '".$enddate."'");
+		$query->where($db->quoteName('od.productid')." = " . $db->quote($productid));
+
+		$db->setQuery($query);
+
+		$price = $db->loadResult();
 
 		return $price;
 
