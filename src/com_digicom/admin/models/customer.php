@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 class DigiComModelCustomer extends JModelAdmin {
 
-	protected $_context = 'com_digicom.customer';   
+	protected $_context = 'com_digicom.customer';
 	protected $_customers;
 	protected $_customer;
 	protected $_id = null;
@@ -40,8 +40,8 @@ class DigiComModelCustomer extends JModelAdmin {
 			$user = JFactory::getUser($this->_id);
 			if (!isset($this->_customer->registered)) $this->_customer->registered = $user->registerDate;
 		}
-		
-		
+
+
 		$this->_customer->orders = $this->getlistCustomerOrders($this->_id);
 
 		return $this->_customer;
@@ -73,15 +73,15 @@ class DigiComModelCustomer extends JModelAdmin {
 	}
 
 	function store (&$error){
-		
+
 		jimport("joomla.database.table.user");
-		
+
 		$db = JFactory::getDBO();
 		$user = new JUser();
 		$my = new stdClass;
 		$item = $this->getTable('Customer');
 		$id = JRequest::getVar("id", "0");
-		
+
 		if($id != "0"){
 			$data = JRequest::get('post');
 			$data['groups']= array(2);
@@ -115,7 +115,7 @@ class DigiComModelCustomer extends JModelAdmin {
 		if (!$item->check()) {
 			$res = false;
 		}
-		
+
 		if (!$item->store()) {
 			$res = false;
 		}
@@ -123,12 +123,12 @@ class DigiComModelCustomer extends JModelAdmin {
 
 		$this->setId($item->id);
 		$this->getCustomer();
-		
+
 		return $res;
 	}
 	/*
 	function delete () {
-		
+
 		$cids = JRequest::getVar('cid', array(0), 'post', 'array');
 		$item = $this->getTable('Customer');
 		foreach ($cids as $cid) {
@@ -138,7 +138,7 @@ class DigiComModelCustomer extends JModelAdmin {
 
 			}
 		}
-		
+
 		jimport("joomla.database.table.user");
 		$db = JFactory::getDBO();
 		$user = new JUser();
@@ -216,7 +216,7 @@ class DigiComModelCustomer extends JModelAdmin {
 		$result = $db->loadObject();
 		if($result->total==0){
 			return false;
-		} 
+		}
 		return true;
 	}
 
@@ -261,14 +261,35 @@ class DigiComModelCustomer extends JModelAdmin {
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		$form = $this->loadForm('com_digicom.customer', 'customer', array('control' => 'jform', 'load_data' => $loadData));
-		
+		$form = $this->loadForm('com_digicom.customer', 'customer', array('control' => '', 'load_data' => $loadData));
+
 		if (empty($form))
 		{
 			return false;
 		}
-		
+
 		return $form;
+	}
+	/**
+	 * Method to get the data that should be injected in the form.
+	 *
+	 * @return  array  The default data is an empty array.
+	 *
+	 * @since   1.6
+	 */
+	protected function loadFormData()
+	{
+		// Check the session for previously entered form data.
+		$data = JFactory::getApplication()->getUserState('com_digicom.edit.customer.data', array());
+
+		if (empty($data))
+		{
+			$data = $this->getCustomer();
+		}
+
+		$this->preprocessData('com_digicom.order', $data);
+
+		return $data;
 	}
 
 }
