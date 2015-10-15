@@ -449,12 +449,8 @@ class DigiComModelCart extends JModelItem
 
 		$payprocess['payable_amount'] = $total;
 
-		//final price calculations
-		// $tmp_customer = $customer;
-		// if (is_object($customer) && isset($customer->_customer) && !empty($customer->_customer)) $tmp_customer = $customer->_customer;
-		// if (is_array($customer)) $tmp_customer = $customer;
-		// $customer = $tmp_customer;
-		// //final calculations end here
+		// lets calculate the tax
+		$payprocess['value'] = '10';
 
 		if(!isset($payprocess['value'])) $payprocess['value'] = 0;
 		$sum_tax = $total + $payprocess['value']; //$vat_tax + $state_tax;//total tax
@@ -466,6 +462,8 @@ class DigiComModelCart extends JModelItem
 		$payprocess['discount_calculated'] = (isset($payprocess['discount_calculated']) ? $payprocess['discount_calculated'] : 0);
 		//$payprocess['taxed'] = DigiComSiteHelperPrice::format_price( $payprocess['taxed'], $payprocess['currency'], false, $configs ); //sprintf($price_format, $payprocess['taxed']);//." ".$payprocess['currency'];
 		$payprocess['type'] = 'TAX';
+
+		// print_r($payprocess);die;
 
 		$this->_tax = $payprocess;
 
