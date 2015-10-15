@@ -16,7 +16,8 @@ $session  = JFactory::getSession();
 $productid = $session->get( 'productid', '' );
 $rangeDays = DigiComHelperChart::getRangeDayLabel($this->range);
 $rangePrices = DigiComHelperChart::getRangePricesLabel($this->range,$rangeDays,true);
-
+$num_of_sale = DigiComHelperChart::getRangeTotalNoSale($this->range);
+// echo $num_of_sale;die;
 ?>
 <div class="row-fluid">
 	<div class="span3">
@@ -32,9 +33,9 @@ $rangePrices = DigiComHelperChart::getRangePricesLabel($this->range,$rangeDays,t
 					foreach ($productsList as $key => $value) {
 						$arr[] = JHTML::_('select.option', $value->id, $value->name );
 					}
-					 
-					echo JHTML::_('select.genericlist', $arr, 'productid', null, 'value', 'text', $productid); 
-					?>					
+
+					echo JHTML::_('select.genericlist', $arr, 'productid', null, 'value', 'text', $productid);
+					?>
 				</div>
 			 	<div class="control-group">
 					<input type="submit" class="btn" value="Show">
@@ -47,6 +48,10 @@ $rangePrices = DigiComHelperChart::getRangePricesLabel($this->range,$rangeDays,t
 				</div>
 
 			</form>
+
+			<div class="panel-box dc-block">
+			  <h3><?php echo JText::sprintf('COM_DIGICOM_TOTAL_SALE_AMOUNT', $num_of_sale); ?></h3>
+			</div>
 		</div>
 	</div>
 	<div class="span9">
