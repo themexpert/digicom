@@ -433,6 +433,7 @@ class DigiComHelperChart {
 		$query->join('inner',$db->quoteName('#__digicom_orders_details','od') . ' ON ('.$db->quoteName('od.orderid').'='.$db->quoteName('o.id').')');
 		$query->where($db->quoteName('o.order_date')." BETWEEN '".$startdate."' AND '".$enddate."'");
 		$query->where($db->quoteName('od.productid')." = " . $db->quote($productid));
+		$query->where($db->quoteName('o.status')." = " . $db->quote('Active'));
 
 		$db->setQuery($query);
 
