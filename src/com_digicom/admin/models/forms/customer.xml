@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
 	<fields addfieldpath="/administrator/components/com_digicom/models/fields">
-	
+
 		<field name="id" type="hidden" />
 		<field name="name" type="hidden" />
 		<field name="email" type="hidden" />
 		<field name="address" type="hidden" />
 		<field name="city" type="hidden" />
-		<field name="state" type="hidden" />
 		<field name="zipcode" type="hidden" />
-		<field name="country" type="hidden" />
+
+		<field
+			name="country"
+			type="countrylist"
+			class="chosen digicom_country"
+			label="COM_DIGICOM_CUSTOMER_COUNTRY"
+			onchange="javascript:changeStatelist(this);"
+			/>
+
+		<field
+			name="state"
+			type="text"
+			label="COM_DIGICOM_CUSTOMER_STATE"
+			/>
+
 		<field name="phone" type="hidden" />
 		<field name="payment_type" type="hidden" />
 		<field name="company" type="hidden" />
@@ -17,7 +30,7 @@
 		<field name="taxnum" type="hidden" />
 		<field name="taxclass" type="hidden" />
 		<field name="registered" type="hidden" />
-			
+
 	</fields>
-	
+
 </form>
