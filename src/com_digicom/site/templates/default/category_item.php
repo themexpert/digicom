@@ -56,6 +56,12 @@ if($this->item->price > 0){
 				<strong itemprop="price">
 					<?php echo $price; ?>
 				</strong>
+				
+				<?php if($this->configs->get('enable_taxes','0') && $this->configs->get('display_tax_with_price','0')):?>
+					<span class="text-info">
+						<?php echo JLayoutHelper::render('tax.price', array('config' => $this->configs, 'item' => $this->item)); ?>
+					</span>
+				<?php endif; ?>
 			</div>
 			<p class="dc-item-desc" itemprop="description"><?php echo $this->item->introtext; ?></p>
 
