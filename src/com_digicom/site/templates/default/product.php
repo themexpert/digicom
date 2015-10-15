@@ -62,7 +62,15 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 										<?php echo $price; ?>
 									</strong>
 								</p>
+
+								<?php if($configs->get('enable_taxes','0') && $configs->get('display_tax_with_price','0')):?>
+									<div class="dc-product-tax text-info text-center">
+										<?php echo JLayoutHelper::render('tax.price', array('config' => $configs, 'item' => $this->item)); ?>
+									</div>
+								<?php endif; ?>
+
 							</div>
+
 							<?php if ($this->configs->get('show_validity',1) == 1) : ?>
 								<div class="col-md-12">
 									<div class="dc-product-validity text-muted text-center">
