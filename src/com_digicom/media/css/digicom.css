@@ -4141,3 +4141,8 @@ tbody.dc .collapse.in {
 #digicom.dc .dc-item.thumbnail figure img {
   width: 100%;
 }
+#digicom.dc .dc-product-validity {
+  border-top: 1px solid #eee;
+  padding-top: 5px;
+  margin-top: 5px;
+}
