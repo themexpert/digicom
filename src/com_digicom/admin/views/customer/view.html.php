@@ -11,6 +11,8 @@ defined('_JEXEC') or die;
 
 class DigiComViewCustomer extends JViewLegacy {
 
+	protected $form;
+
 	function display ($tpl =  null )
 	{
 		$db = JFactory::getDBO();
@@ -49,6 +51,8 @@ class DigiComViewCustomer extends JViewLegacy {
 		$configs = $this->get("Configs");
 
 		$this->assign("configs", $configs);
+
+		$this->form		= $this->get('Form');
 
 		DigiComHelperDigiCom::addSubmenu('customers');
 		$this->sidebar = DigiComHelperDigiCom::renderSidebar();
