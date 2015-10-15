@@ -6,3 +6,5 @@
 .dc-register .control-group .chzn-container{margin: 5px 0px 10px;}
 .text-center{text-align: center;}
 .dc .modal-body{max-height: none;}
+.dc .no-margin{margin:0px;}
+.dc .no-padding{padding:0px;}
