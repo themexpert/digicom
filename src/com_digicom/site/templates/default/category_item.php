@@ -23,7 +23,11 @@ if($this->item->price > 0){
 	$price = JText::_('COM_DIGICOM_PRODUCT_PRICE_FREE');
 }
 $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this->item->catid, $this->item->language));
-?>
+if($this->item->price > 0){
+	$price = DigiComSiteHelperPrice::format_price($this->item->price, $this->configs->get('currency','USD'), true, $this->configs).'</span>';
+}else{
+	$price = '<span>'.JText::_('COM_DIGICOM_PRODUCT_PRICE_FREE').'</span>';
+}?>
 
 <div class="dc-item thumbnail" itemscope itemtype="http://schema.org/Product" data-digicom-item data-id="<?php echo $this->item->id?>">
 
@@ -33,7 +37,7 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 				<img itemprop="image" src="<?php echo JURI::root().$images->image_intro; ?>" alt="<?php echo $this->item->name; ?> Image" >
 			</a>
 		<?php endif; ?>
-		
+
 		<figcaption class="caption">
 			<?php if(!empty($this->item->bundle_source)):?>
 			<span class="label label-info label--bundle"><?php echo JText::sprintf('COM_DIGICOM_PRODUCT_TYPE_BUNDLE');?></span>
@@ -47,7 +51,12 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 					<span itemprop="name"><?php echo $this->item->name; ?></span>
 				</a>
 			</h2>
-
+			<div class="dc-price text-muted" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
+				<meta itemprop="priceCurrency" content="<?php echo $this->configs->get('currency','USD'); ?>">
+				<strong itemprop="price">
+					<?php echo $price; ?>
+				</strong>
+			</div>
 			<p class="dc-item-desc" itemprop="description"><?php echo $this->item->introtext; ?></p>
 
 			<a itemprop="url" href="<?php echo $link;?>" class="btn btn-primary read-more"><?php echo JText::_('COM_DIGICOM_BUTTON_DETAILS'); ?></a>
