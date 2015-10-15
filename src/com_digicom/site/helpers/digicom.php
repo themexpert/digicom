@@ -32,59 +32,6 @@ class DigiComSiteHelperDigicom {
 		return $html;
 	}
 
-
-	function getPromoDisc( $totaldisc, $items ) {
-		$qty = 0;
-		foreach ( $items as $i => $item ) {
-			if ( $i < 0 ) {
-				continue;
-			}
-			$qty += $item->quantity;
-		}
-		$res = $totaldisc / $qty;
-
-		return $res;
-	}
-
-
-	function getItemTax( &$items, $cust_info, $sid = 0 ) {
-		$temp = array();
-
-		foreach ( $items as $i => $item ) {
-			if ( $i < 0 ) {
-				continue;
-			}
-			$temp[0]                  = $item;
-			$tax                      = calc_price( $temp, $cust_info, $sid );
-			$items[ $i ]->partial_tax = $tax['value'];
-
-		}
-
-		return;
-
-	}
-
-
-	function getItemPrice( $promo, &$items ) {
-		$promodisc = DigiComSiteHelperDigiCom::getPromoDisc( $promo, $items );
-		foreach ( $items as $i => $item ) {
-			if ( $i < 0 ) {
-				continue;
-			}
-			if ( isset( $item->discounted_price ) && $item->discounted_price ) {
-				$price = $item->discounted_price;
-			} else if ( isset( $item->no_discounted_price ) && $item->no_discounted_price ) {
-				$price = $item->no_discounted_price;
-			} else {
-				$price = $item->price;
-			}
-			$price -= $promodisc;
-			$items[ $i ]->cart_price = $price;
-		}
-	}
-
-
-
 	public static function getLiveSite() {
 		// Check if a bypass url was set
 		$config    = JFactory::getConfig();
@@ -159,51 +106,9 @@ class DigiComSiteHelperDigicom {
 		}
 	}
 
-	public static function DisplayContinueUrl( $configs, $cat_url ) {
-		$continue_shopping_url = trim( $configs->get('continue_shopping_url','') );
-
-		if ( ! empty( $continue_shopping_url ) ) {
-			$protocol = '';
-			if ( strpos( $continue_shopping_url, 'http://' ) === false ) {
-				$protocol = 'http://';
-			}
-			$continue_shopping_url = $protocol . $continue_shopping_url;
-		} else {
-			$continue_shopping_url = $cat_url;
-		}
-		$result = JRoute::_( $continue_shopping_url );
-
-		return $result;
-	}
-
 	// check if this user has filled in profile information
 	public static function checkProfileCompletion( $customer , $askforbilling = 0)
 	{
-		// $tcustomer = "";
-		// if ( ! empty( $customer ) ) {
-		// 	if ( isset( $customer->_customer ) ) {
-		// 		$tcustomer = &$customer->_customer;
-		// 	} else {
-		// 		$tcustomer = $customer;
-		// 	}
-		// } else {
-		// 	return - 1;
-		// }
-		//
-		// $user_email = "";
-		// if ( isset( $tcustomer->id ) && ( $tcustomer->id > 0 ) ) {
-		// 	$user       = JFactory::getUser( $tcustomer->id );
-		// 	$user_email = $user->email;
-		// }
-		//
-		// if ( ! isset( $tcustomer->id )
-		//      || ( (int) $tcustomer->id <= 0 )
-		//      || strlen( trim( $tcustomer->name ) ) < 1
-		//      || strlen( trim( $user_email ) ) < 1
-		// ) {
-		// 	return - 1;
-		// }
-		//
 
 		if (isset( $customer->_customer ) ) {
 			$customer = $customer->_customer;
@@ -236,24 +141,6 @@ class DigiComSiteHelperDigicom {
 			return 1;
 		}
 
-	}
-
-
-	public static function ShowHomeDescriptionBlock( $configs ) {
-
-		$html = '';
-		if ( $configs->get('displaystoredesc','') ) {
-			$html = '
-				<!-- Show description on store home page -->
-				<div class="well well-small">
-					<h3 style="margin:5px;">' . $configs->get('store_name','DigiCom Store') . '</h3>
-					<p style="margin:5px;">' . $configs->get('storedesc','') . '</p>
-				</div>
-				<!-- /Show description on store home page -->
-			';
-		}
-
-		return $html;
 	}
 
 	function str_word_count_unicode( $str, $format = 0 ) {
@@ -504,99 +391,6 @@ class DigiComSiteHelperDigicom {
 		return false;
 
 	}
-	public static function getUsersProductAccess_x($user_id,$product_id){
-
-		if($user_id < 1) return false;
-		$db = JFactory::getDBO();
-		//$product_id
-		$query = $db->getQuery(true);
-		$query->select($db->quoteName('od.productid'));
-		$query->from($db->quoteName('#__digicom_orders_details').' od');
-		$query->where($db->quoteName('od.userid') . ' = '. $db->quote($user_id));
-		$query->where($db->quoteName('od.productid') . ' = '. $product_id);
-		$query->where($db->quoteName('od.published') . ' = '. $db->quote('1'));
-
-		// Reset the query using our newly populated query object.
-		$db->setQuery($query);
-		$orders = $db->loadObject();
-		if(isset($orders->id) && ($orders->id > 0)) return true;
-
-		$query = $db->getQuery(true);
-		$query->select('DISTINCT('.$db->quoteName('od.productid').')');
-		$query->select($db->quoteName(array('p.name', 'p.catid', 'p.bundle_source')));
-		$query->select($db->quoteName('od.package_type').' type');
-		$query->from($db->quoteName('#__digicom_products').' p');
-		$query->from($db->quoteName('#__digicom_orders_details').' od');
-		$query->where($db->quoteName('od.userid') . ' = '. $db->quote($user_id));
-		$query->where($db->quoteName('od.productid') . ' = '. $db->quoteName('p.id'));
-		$query->where($db->quoteName('od.published') . ' = '. $db->quote('1'));
-		$query->order('ordering ASC');
-
-		// Reset the query using our newly populated query object.
-		$db->setQuery($query);
-
-		$products = $db->loadObjectList();
-		//print_r($products);die;
-		$bundleItems = array();
-		foreach($products as $key=>$product){
-
-			if($product->type != 'reguler'){
-				switch($product->type){
-					case 'category':
-
-						$BundleTable = JTable::getInstance('Bundle', 'Table');
-						$BundleList = $BundleTable->getFieldValues('product_id',$product->productid,$product->bundle_source);
-						$bundle_ids = $BundleList->bundle_id;
-						if($bundle_ids){
-							$db =JFactory::getDbo();
-							$query = $db->getQuery(true)
-								->select(array('id as productid','name','catid'))
-								->from($db->quoteName('#__digicom_products'))
-								->where($db->quoteName('bundle_source').' IS NULL')
-								->where($db->quoteName('catid').' in ('.$bundle_ids.')');
-							$db->setQuery($query);
-							$bundleItems[] = $db->loadObjectList();
-							//we should show only items
-						}
-
-						unset($products[$key]);
-
-						break;
-					case 'product':
-					default:
-						$BundleTable = JTable::getInstance('Bundle', 'Table');
-						$BundleList = $BundleTable->getFieldValues('product_id',$product->productid,$product->bundle_source);
-						$bundle_ids = $BundleList->bundle_id;
-						if($bundle_ids){
-							$db =JFactory::getDbo();
-							$query = $db->getQuery(true)
-								->select(array('id as productid','name','catid'))
-								->from($db->quoteName('#__digicom_products'))
-								->where($db->quoteName('bundle_source').' IS NULL')
-								->where($db->quoteName('id').' in ('.$bundle_ids.')');
-							$db->setQuery($query);
-							$bundleItems[] = $db->loadObjectList();
-						}
-						//we should show only items
-						unset($products[$key]);
-
-						break;
-				}
-			}
-		}
-		//print_r($products);die;
-		//we got all our products
-		// now add bundle item to the products array
-		if(count($bundleItems) >0){
-			foreach($bundleItems as $item2){
-				foreach($item2 as $item3){
-					if($item3->productid == $product_id) return true;
-				}
-			}
-		}
-		return false;
-
-	}
 
 	public static function checkUserAccessToFile($fileInfo,$user_id)
 	{
@@ -624,106 +418,6 @@ class DigiComSiteHelperDigicom {
 		foreach ($modules as $module) {
 			echo JModuleHelper::renderModule($module, $params);
 		}
-	}
-
-	public static function get_country_options( $profile, $ship = false, $configs , $onchange=true) {
-
-		$db 	= JFactory::getDBO();
-		$query = $db->getQuery(true)
-					->select('country')
-					->from('#__digicom_states')
-					->group('country')
-					->order('country ASC');
-		$db->setQuery($query);
-		$countries = $db->loadObjectList();
-
-		if ( ! $profile ) $profile = new stdClass();
-		if ( ! isset( $profile->country ) ) $profile->country = '';
-
-		$default = $profile->country;
-
-		## Initialize array to store dropdown options ##
-		$options = array();
-	    $options[] = JHTML::_('select.option', '', JText::_('COM_DIGICOM_SELECT_COUNTRY_TITLE'));
-
-		#Top Countries#
-		$topcountries = $configs->get('topcountries', array());
-
-	    $options[] = JHTML::_('select.optgroup', JText::_('COM_DIGICOM_SELECT_FAVORITE_COUNTRY_TITLE'));
-
-		if ( count( $topcountries ) > 0 ) {
-
-			foreach($topcountries as $key=>$value) :
-				## Create $value ##
-				$options[] = JHTML::_('select.option', $value, $value);
-			endforeach;
-
-		}else{
-
-			$options[] = JHTML::_('select.option', 'United-States', 'United-States');
-			$options[] = JHTML::_('select.option', 'Canada', 'Canada');
-			$options[] = JHTML::_('select.option', 'Bangladesh', 'Bangladesh');
-
-		}
-
-
-		$options[] = JHTML::_('select.optgroup', '');
-		$options[] = JHTML::_('select.optgroup', JText::_('COM_DIGICOM_SELECT_COUNTRY_TITLE'));
-
-		foreach($countries as $key=>$value) :
-			## Create $value ##
-			$options[] = JHTML::_('select.option', $value->country, $value->country);
-		endforeach;
-
-		if($onchange){
-			$onChange = ' onChange="changeProvince();"';
-		}else{
-			$onChange= '';
-		}
-
-		## Create <select name="country" class="inputbox"></select> ##
-		return JHTML::_('select.genericlist', $options, 'country', 'id="country" class="inputbox"'.$onChange, 'value', 'text', $default);
-
-	}
-
-	public static function get_store_province( $custommer, $ship = 0 ) {
-
-		## Initialize array to store dropdown options ##
-		$options = array();
-		$html = array();
-		$html[] = '<div id="province">';
-		if ($custommer->state) {
-
-			$db 	= JFactory::getDBO();
-			$query = $db->getQuery(true)
-						->select('state')
-						->from('#__digicom_states')
-						->where($db->quoteName('country') . ' = ' . $db->quote($custommer->country) )
-						->order('state ASC');
-			$db->setQuery($query);
-			$province = $db->loadObjectList();
-
-			$default = $custommer->state;
-
-			foreach($province as $key=>$value) :
-				## Create $value ##
-				$options[] = JHTML::_('select.option', $value->state, $value->state);
-			endforeach;
-
-			## Create <select name="country" class="inputbox"></select> ##
-			$html[] = JHTML::_('select.genericlist', $options, 'state', 'id="state" class="inputbox"', 'value', 'text', $default);
-
-		}else{
-
-			$options[] = JHTML::_('select.option', '', JText::_( 'COM_DIGICOM_SELECT_COUNTRY_FIRST' ));
-			## Create <select name="country" class="inputbox"></select> ##
-			$html[] = JHTML::_('select.genericlist', $options, 'state', 'id="state" class="inputbox"', 'value', 'text', '');
-
-		}
-		$html[] = '</div>';
-
-		return implode("\n", $html);
-
 	}
 
 	public static function getPaymentPlugins($configs)
@@ -757,7 +451,8 @@ class DigiComSiteHelperDigicom {
 
 	}
 
-	public static function getUniqueTransactionId($order_id){
+	public static function getUniqueTransactionId($order_id)
+	{
 		$uniqueValue = $order_id.time();
 		$long = md5(uniqid($uniqueValue, true));
 		return substr($long, 0, 15);
