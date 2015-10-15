@@ -11,14 +11,16 @@ defined('_JEXEC') or die;
 
 class DigiComSiteHelperDigicom {
 
-	public static function getCartItemid() {
+	public static function getCartItemid()
+	{
 		$app = JFactory::getApplication();
 		$item = $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=cart', true);
 		$Itemid = isset($item->id) ? $item->id : '';
 		return $Itemid;
 	}
 
-	public static function powered_by() {
+	public static function powered_by()
+	{
 		//digicom_credit
 		$config = JComponentHelper::getComponent('com_digicom')->params;
 		$digicom_credit = $config->get('digicom_credit',1);
@@ -43,7 +45,7 @@ class DigiComSiteHelperDigicom {
 		} else {
 			$https = '://';
 		}
-		//	print_r($_SERVER);
+
 		$subdom = $_SERVER['PHP_SELF'];
 		$subdom = explode( "/", $subdom );
 		$res    = array();
@@ -96,7 +98,8 @@ class DigiComSiteHelperDigicom {
 		return $theURI;
 	}
 
-	function CreateIndexFile( $dir ) {
+	function CreateIndexFile( $dir )
+	{
 		if ( file_exists( $dir ) ) {
 			if ( ! file_exists( $dir . DS . "index.html" ) ) {
 				$handle = @fopen( $dir . DS . "index.html", "w" );
@@ -143,7 +146,8 @@ class DigiComSiteHelperDigicom {
 
 	}
 
-	function str_word_count_unicode( $str, $format = 0 ) {
+	function str_word_count_unicode( $str, $format = 0 )
+	{
 		$words = preg_split( '~[\s0-9_]|[^\w]~u', $str, - 1, PREG_SPLIT_NO_EMPTY );
 
 		return ( $format === 0 ) ? count( $words ) : $words;
@@ -195,7 +199,8 @@ class DigiComSiteHelperDigicom {
 		return $result;
 	}
 
-	public static function getUsersProduct($user_id){
+	public static function getUsersProduct($user_id)
+	{
 
 		if($user_id < 1) return false;
 
@@ -273,7 +278,8 @@ class DigiComSiteHelperDigicom {
 
 	}
 
-	public static function getUsersProductAccess($user_id,$product_id){
+	public static function getUsersProductAccess($user_id,$product_id)
+	{
 
 		if($user_id < 1) return false;
 		$db = JFactory::getDBO();
@@ -295,17 +301,7 @@ class DigiComSiteHelperDigicom {
 		// so check for the bundle/category item
 
 		$query = $db->getQuery(true);
-		/*
-		$query->select('DISTINCT('.$db->quoteName('od.productid').')');
-		$query->select($db->quoteName(array('p.name', 'p.catid', 'p.bundle_source')));
-		$query->select($db->quoteName('od.package_type').' type');
-		$query->from($db->quoteName('#__digicom_products').' p');
-		$query->from($db->quoteName('#__digicom_orders_details').' od');
-		$query->where($db->quoteName('od.userid') . ' = '. $db->quote($user_id));
-		$query->where($db->quoteName('od.productid') . ' = '. $db->quoteName('p.id'));
-		$query->where($db->quoteName('od.published') . ' = '. $db->quote('1'));
-		$query->order('ordering ASC');
-		*/
+
 		// Select required fields from the dashboard.
 		$query->select('DISTINCT p.id as productid')
 			  ->select(array('p.name,p.catid,p.bundle_source,p.product_type as type'))
@@ -368,7 +364,6 @@ class DigiComSiteHelperDigicom {
 				}
 			}
 		}
-		//print_r($bundleItems);die;
 		//we got all our items
 		// now add bundle item to the items array
 		if(count($bundleItems) >0){
@@ -395,7 +390,6 @@ class DigiComSiteHelperDigicom {
 	public static function checkUserAccessToFile($fileInfo,$user_id)
 	{
 
-		//print_r($fileInfo);die;
 		$user = JFactory::getUser($user_id);
 		$access = DigiComSiteHelperDigiCom::getUsersProductAccess($user_id,$fileInfo->product_id);
 
