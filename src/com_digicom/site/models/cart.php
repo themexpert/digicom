@@ -409,7 +409,7 @@ class DigiComModelCart extends JModelItem
 		$payprocess['value'] = ($total * $tax_amount)/100;
 
 		if(!isset($payprocess['value'])) $payprocess['value'] = 0;
-		$sum_tax = $total + $payprocess['value']; //$vat_tax + $state_tax;//total tax
+		$sum_tax = $total + $payprocess['value'];
 
 		$payprocess['promo_error'] = (!$user->id && isset($promo->orders) && count($promo->orders) ? JText::_("DIGI_PROMO_LOGIN") : '');
 		//$payprocess['total'] = $total;
@@ -800,7 +800,8 @@ class DigiComModelCart extends JModelItem
 		return $orderid;
 	}
 
-	function addOrderInfo($items, $customer, $tax, $status,$prosessor){
+	function addOrderInfo($items, $customer, $tax, $status,$prosessor)
+	{
 		$config = JFactory::getConfig();
 		$tzoffset = $config->get('offset');
 		//$now = time();
@@ -1191,7 +1192,8 @@ class DigiComModelCart extends JModelItem
 	 * @param int $sid - session id
 	 * @return Array
 	 */
-	function loadCustomer($sid){
+	function loadCustomer($sid)
+	{
 		$db = JFactory::getDbo();
 		$sql = "select transaction_details from #__digicom_session where sid=" . intval($sid);
 		$db->setQuery( $sql );
@@ -1199,7 +1201,8 @@ class DigiComModelCart extends JModelItem
 		return unserialize(base64_decode($prof));
 	}
 
-	function getCat_url(){
+	function getCat_url()
+	{
 		return '#';
 	}
 
@@ -1269,6 +1272,7 @@ class DigiComModelCart extends JModelItem
 		}
 
 		$promo = $cart->get_promo( $cust_info );
+
 		if ( $promo->id > 0 ) {
 			$query = $db->getQuery(true);
 
@@ -1308,7 +1312,8 @@ class DigiComModelCart extends JModelItem
 		$table->transaction_number		= $transectionid;
 		$table->order_date						= $now;
 		$table->price									= $tax['price'];
-		$table->amount								= $tax['payable_amount'];
+		$table->amount								= $tax['taxed'];
+		$table->tax										= $tax['value'];
 		$table->discount							= $tax['promo'];
 		$table->currency							= $tax['currency'];
 		$table->processor							= $paymethod;
