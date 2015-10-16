@@ -26,7 +26,7 @@ if($this->item->price > 0){
 $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this->item->catid, $this->item->language));
 ?>
 
-<div id="digicom" class="dc dc-product" itemscope itemtype="http://schema.org/Product">
+<div id="digicom" class="dc dc-product" itemscope itemtype="http://schema.org/CreativeWork">
 
 	<header class="dc-item-head">
 		<h1 class="dc-product-title">

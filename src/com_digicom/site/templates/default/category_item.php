@@ -29,7 +29,7 @@ if($this->item->price > 0){
 	$price = '<span>'.JText::_('COM_DIGICOM_PRODUCT_PRICE_FREE').'</span>';
 }?>
 
-<div class="dc-item thumbnail" itemscope itemtype="http://schema.org/Product" data-digicom-item data-id="<?php echo $this->item->id?>">
+<div class="dc-item thumbnail" itemscope itemtype="http://schema.org/CreativeWork" data-digicom-item data-id="<?php echo $this->item->id?>">
 
 	<figure>
 		<?php if(!empty($images->image_intro)): ?>
@@ -56,7 +56,7 @@ if($this->item->price > 0){
 				<strong itemprop="price">
 					<?php echo $price; ?>
 				</strong>
-				
+
 				<?php if($this->configs->get('enable_taxes','0') && $this->configs->get('display_tax_with_price','0')):?>
 					<span class="text-info">
 						<?php echo JLayoutHelper::render('tax.price', array('config' => $this->configs, 'item' => $this->item)); ?>
