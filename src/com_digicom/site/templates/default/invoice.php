@@ -179,8 +179,7 @@ $k = 0;
 									</td>
 								</tr>
 
-								<?php
-									if($order->discount > 0){
+								<?php if($order->discount > 0){
 										$total = $total - $order->discount;
 								?>
 								<tr>
@@ -191,11 +190,20 @@ $k = 0;
 										</span>
 									</td>
 								</tr>
-								<?php
-									}
-								?>
+								<?php } ?>
 
+								<?php if($order->tax > 0){ ?>
 								<tr>
+									<td style="font-weight:bold;text-align: right;" width="70%"><?php echo JText::_("COM_DIGICOM_TAX_TITLE");?></td>
+									<td style="text-align: right;">
+										<span style="white-space:nowrap;font-weight: bold;">
+											<?php echo DigiComSiteHelperPrice::format_price($order->tax, $order->currency, true, $configs);?>
+										</span>
+									</td>
+								</tr>
+								<?php } ?>
+								<tr>
+
 							   		<td style="font-weight:bold;text-align: right;" width="70%"><?php echo JText::_("COM_DIGICOM_TOTAL_PAID");?></td>
 									<?php
 										if($order->amount_paid != "" && $order->amount_paid != "-1" && $order->amount_paid != $total){
