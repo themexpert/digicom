@@ -81,7 +81,7 @@ $data = $this->data;
 					<?php if($this->order->tax > 0): ?>
 					<tr>
 						<td colspan="3">
-							<?php echo JText::_('COM_DIGICOM_TAX_TITLE'); ?>
+							<?php echo JText::_('COM_DIGICOM_TAX_TITLE'); ?> (<?php echo DigiComSiteHelperPrice::tax_price($this->order->amount, $configs, false, true); ?>)
 						</td>
 						<td  class="text-center">
 							 <strong><?php echo  DigiComSiteHelperPrice::format_price($this->order->tax	, $configs->get('currency','USD'), true, $configs);?></strong>
