@@ -26,6 +26,14 @@ $document->addScript( JURI::root(true)."/media/com_digicom/js/chart.min.js");
 <?php else : ?>
 	<div id="j-main-container" class="">
 <?php endif;?>
+		<?php
+		//checking if installed joomla version is less  3.0
+		if ( version_compare( JVERSION, '3.4', '<' ) == 1){
+		?>
+		<p class="alert alert-error nomargin-top">
+			<?php echo JText::sprintf('COM_DIGICOM_ERROR_JVERSION_NEED_UPGADE', JVERSION);?>
+		</p>
+		<?php } ?>
 		<h3 class="alert alert-info nomargin-top">
 			<?php echo JText::sprintf('COM_DIGICOM_REPORTS_OF_THE_MONTH', date('F'));?>
 	 	</h3>
