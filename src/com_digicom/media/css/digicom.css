@@ -4089,6 +4089,11 @@ tbody.dc .collapse.in {
 .modal-backdrop.fade.in {
   opacity: 0.5;
 }
+body.modal {
+  display: block;
+  position: static;
+  overflow: auto;
+}
 #digicom.dc a:hover,
 #digicom.dc a:focus {
   text-decoration: none;
