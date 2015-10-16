@@ -37,11 +37,12 @@ function changePlain() {
 			product_ids.push(tmp);
 		}
 	}
+	var tuserid = $('jform_userid_id').value;
 	var tprocessor = $('jform_processor').value;
 	var tpromocode = $('jformpromocode').value;
 	var tamount_paid = $('amount_paid').value;
 
-	var jsonString = JSON.encode({pids: product_ids, processor: tprocessor, promocode: tpromocode, amount_paid: tamount_paid});
+	var jsonString = JSON.encode({pids: product_ids, processor: tprocessor, promocode: tpromocode, amount_paid: tamount_paid, userid: tuserid});
 	var url = \"index.php?option=com_digicom&task=ordernew.calc&tmpl=component&jsonString=\"+jsonString;
 	var req = new Request.HTML({
 		method: 'get',
@@ -53,7 +54,7 @@ function changePlain() {
 			var encoded_string = $('from_ajax_div').innerHTML;
 
 			var resp = JSON.decode(encoded_string);
-
+			console.log(resp);
 			var processor_select = $('jform_processor');
 			var CountPayments = processor_select.options.length;
 			for(payindex = 0; payindex < CountPayments; payindex++) {
@@ -74,6 +75,7 @@ function changePlain() {
 
 			$('amount').innerHTML = resp.amount;
 			$('amount_value').value = resp.amount_value;
+			$('price_value').value = resp.price_value;
 			$('tax').innerHTML = resp.tax;
 			$('tax_value').value = resp.tax_value;
 			$('discount').value = resp.discount;
@@ -174,9 +176,9 @@ JHTML::_('behavior.tooltip');
 				<table id="productincludes" class="table table-striped table-hover" id="productList">
 					<thead>
 						<tr>
-							<td>Product Name</td>
-							<td width="100px">Price</td>
-							<td width="1%">Action</td>
+							<td><?php echo JText::_('COM_DIGICOM_PRODUCT'); ?></td>
+							<td width="100px"><?php echo JText::_('COM_DIGICOM_PRICE'); ?></td>
+							<td width="1%"><?php echo JText::_('COM_DIGICOM_ACTION'); ?></td>
 						</tr>
 					</thead>
 					<tbody id="productincludes_items">
@@ -214,17 +216,17 @@ JHTML::_('behavior.tooltip');
 			</div>
 
 			<div class="grand-total clearfix">
-			  	<div class="control-group hide">
-				    <label class="control-label" for="total"><?php echo JText::_( 'COM_DIGICOM_TAX' ); ?></label>
-				    <div class="controls">
-				      	<span id="tax"></span>
-				    </div>
-			  	</div>
-
 			  	<div class="control-group">
 				    <label class="control-label" for="total"><?php echo JText::_( 'COM_DIGICOM_DISCOUNT' ); ?></label>
 				    <div class="controls">
 						<span id="discount_sign">00.00 <?php echo $configs->get('currency','USD'); ?></span>
+				    </div>
+			  	</div>
+
+			  	<div class="control-group">
+				    <label class="control-label" for="total"><?php echo JText::_( 'COM_DIGICOM_TAX' ); ?></label>
+				    <div class="controls">
+				      	<span id="tax">00.00 <?php echo $configs->get('currency','USD'); ?></span>
 				    </div>
 			  	</div>
 
@@ -253,10 +255,11 @@ JHTML::_('behavior.tooltip');
 
 
 
-		  		<div id="from_ajax_div" style="display:none;"></div>
+	  		<div id="from_ajax_div" style="display:none;"></div>
 
 				<input type="hidden" name="option" value="com_digicom"/>
 				<input type="hidden" name="view" value="ordernew"/>
+				<input type="hidden" name="jform[price]" id="price_value" value="0"/>
 				<input type="hidden" name="jform[tax]" id="tax_value" value="0"/>
 				<input type="hidden" name="jform[shipping]" value="0"/>
 				<input type="hidden" name="jform[amount]" id="amount_value" value="0"/>
