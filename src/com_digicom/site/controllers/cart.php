@@ -442,8 +442,8 @@ class DigiComControllerCart extends JControllerLegacy
 
 		$cid 	= JRequest::getVar('cid', -1);
 		$qty 	= JRequest::getVar('quantity'.$cid, 1);
-		$promocode 	= JRequest::getVar('promocode');
 		$db 	= JFactory::getDBO();
+		$promocode 	= JRequest::getVar('promocode');
 
 		$cart 			= $this->_model;
 		$customer 	= $this->_customer;
@@ -452,14 +452,14 @@ class DigiComControllerCart extends JControllerLegacy
 
 		if ($cid > 0) {
 
-			$sql = "UPDATE #__digicom_cart SET quantity = ".$qty." where cid=" . $cid; // sid = " . $sid . " and
+			$sql = "UPDATE `#__digicom_cart` SET `quantity` = ".$qty." WHERE `cid`=" . $cid; // sid = " . $sid . " and
 			$db->setQuery( $sql );
 			$db->query();
 
 		}
 
 		// if($promocode){
-		// 	$items 	= $cart->updateCart($customer, $configs);
+		// 	$cart->updateCart($customer, $configs);
 		// }
 
 		$items 	= $cart->getCartItems($customer, $configs);
