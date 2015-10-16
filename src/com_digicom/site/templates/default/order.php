@@ -57,12 +57,18 @@ $n 					= count ($this->order->products);
 				<td><strong><?php echo JText::_('COM_DIGICOM_PRICE'); ?></strong></td>
 				<td><?php echo DigiComSiteHelperPrice::format_price($order->price, $configs->get('currency','USD'), true, $configs);?></td>
 			</tr>
-
+			<?php if($order->discount > 0): ?>
 			<tr>
 				<td><strong><?php echo JText::_('COM_DIGICOM_DISCOUNT'); ?></strong></td>
-				<td><?php echo DigiComSiteHelperPrice::format_price($order->discount, $configs->get('currency','USD'), true, $configs);?></td>
+				<td>–&nbsp;<?php echo DigiComSiteHelperPrice::format_price($order->discount, $configs->get('currency','USD'), true, $configs);?></td>
 			</tr>
-
+			<?php endif; ?>
+			<?php if($order->tax > 0): ?>
+			<tr>
+				<td><strong><?php echo JText::_('COM_DIGICOM_TAX_TITLE'); ?></strong></td>
+				<td><?php echo DigiComSiteHelperPrice::format_price($order->tax, $configs->get('currency','USD'), true, $configs);?></td>
+			</tr>
+			<?php endif; ?>
 			<tr>
 				<td><strong><?php echo JText::_('COM_DIGICOM_TOTAL'); ?></strong> (<?php echo JText::_('COM_DIGICOM_TOTAL_PAYABLE_AMOUNT'); ?>)</td>
 				<td><?php echo DigiComSiteHelperPrice::format_price($order->amount, $configs->get('currency','USD'), true, $configs);?></td>
@@ -116,7 +122,7 @@ $n 					= count ($this->order->products);
 				<th><?php echo JText::_('COM_DIGICOM_IMAGE'); ?></th>
 				<th><?php echo JText::_('JGLOBAL_TITLE'); ?></th>
 				<th><?php echo JText::_('COM_DIGICOM_TYPE'); ?></th>
-				<th><?php echo JText::_("COM_DIGICOM_PRODUCTS"); ?></th>
+				<th><?php echo JText::_("COM_DIGICOM_QUANTITY"); ?></th>
 				<th><?php echo JText::_('COM_DIGICOM_PRODUCT_PRICE'); ?></th>
 			</tr>
 		</thead>
