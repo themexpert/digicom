@@ -112,9 +112,7 @@ defined('_JEXEC') or die;
         </td>
       </tr>
       <?php endif; ?>
-      <?php if ( $this->tax['value'] && ($this->tax['value'] > 0) ):
-      // $this->tax['tax'] = 0;
-        ?>
+      <?php if ( $this->tax['value'] && ($this->tax['value'] > 0) ): ?>
       <tr>
         <td colspan="3">
           <div class="dc-cart-discount-title text-right">
@@ -122,7 +120,7 @@ defined('_JEXEC') or die;
           </div>
         </td>
         <td colspan="2">
-          <div class="dc-cart-discount-price text-left" data-digicom-id="cart_discount">
+          <div class="dc-cart-discount-price text-left" data-digicom-id="cart_tax">
             <?php echo DigiComSiteHelperPrice::format_price($this->tax['value'], $this->tax['currency'], true, $this->configs); ?>
           </div>
         </td>
