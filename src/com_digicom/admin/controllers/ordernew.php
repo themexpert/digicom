@@ -82,6 +82,7 @@ class DigiComControllerOrderNew extends JControllerForm
 		$data = new stdclass();
 		$data->amount = $calc_result['amount'];
 		$data->amount_value = $calc_result['amount_value'];
+		$data->price_value = $calc_result['price_value'];
 		$data->tax = $calc_result['tax'];
 		$data->tax_value = $calc_result['tax_value'];
 		$data->discount_sign = $calc_result['discount_sign'];
