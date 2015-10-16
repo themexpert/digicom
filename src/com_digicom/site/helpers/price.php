@@ -90,14 +90,16 @@ class DigiComSiteHelperPrice {
 		// print_r($user_address);die;
 		// return;
 		if( empty( $country ) ) {
-			if( $customer->_user->id < 1 && ! empty( $customer ) ) {
+			if( $customer->_user->id > 0 && !empty( $customer ) ) {
 				$country = $customer->_customer->country;
 			}
+
 			$country = ! empty( $country ) ? $country : $configs->get('base_country','');
 		}
 
+
 		if( empty( $state ) ) {
-			if( $customer->_user->id < 1 && ! empty( $customer ) ) {
+			if( $customer->_user->id > 0 && ! empty( $customer ) ) {
 				$state = $customer->_customer->state;
 			}
 			$state = ! empty( $state ) ? $state : $configs->get('base_state','');
@@ -132,6 +134,7 @@ class DigiComSiteHelperPrice {
 				}
 			}
 		}
+
 		// echo $rate;die;
 		if( $rate > 1 ) {
 			// Convert to a number we can use
