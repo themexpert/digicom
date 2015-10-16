@@ -73,7 +73,18 @@ $data = $this->data;
 							<?php echo JText::_('COM_DIGICOM_PROMO_DISCOUNT'); ?>
 						</td>
 						<td  class="text-center">
-							 <strong><?php echo  DigiComSiteHelperPrice::format_price($this->order->discount	, $configs->get('currency','USD'), true, $configs);?></strong>
+							 <strong>–&nbsp;<?php echo  DigiComSiteHelperPrice::format_price($this->order->discount	, $configs->get('currency','USD'), true, $configs);?></strong>
+						</td>
+					</tr>
+					<?php endif; ?>
+
+					<?php if($this->order->tax > 0): ?>
+					<tr>
+						<td colspan="3">
+							<?php echo JText::_('COM_DIGICOM_TAX_TITLE'); ?>
+						</td>
+						<td  class="text-center">
+							 <strong><?php echo  DigiComSiteHelperPrice::format_price($this->order->tax	, $configs->get('currency','USD'), true, $configs);?></strong>
 						</td>
 					</tr>
 					<?php endif; ?>
