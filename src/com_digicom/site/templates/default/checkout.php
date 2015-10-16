@@ -60,7 +60,7 @@ $data = $this->data;
 			  </tbody>
 			  <tfoot>
 					<tr>
-						<td colspan="3">
+						<td colspan="3" class="text-right">
 							<?php echo JText::_('COM_DIGICOM_SUBTOTAL'); ?>
 						</td>
 						<td class="text-center">
@@ -69,7 +69,7 @@ $data = $this->data;
 					</tr>
 					<?php if($this->order->discount > 0): ?>
 					<tr>
-						<td colspan="3">
+						<td colspan="3" class="text-right">
 							<?php echo JText::_('COM_DIGICOM_PROMO_DISCOUNT'); ?>
 						</td>
 						<td  class="text-center">
@@ -80,8 +80,8 @@ $data = $this->data;
 
 					<?php if($this->order->tax > 0): ?>
 					<tr>
-						<td colspan="3">
-							<?php echo JText::_('COM_DIGICOM_TAX_TITLE'); ?> (<?php echo DigiComSiteHelperPrice::tax_price($this->order->amount, $configs, false, true); ?>)
+						<td colspan="3" class="text-right">
+							<?php echo JText::_('COM_DIGICOM_TAX_TITLE'); ?> <span class="text-info">(<?php echo DigiComSiteHelperPrice::tax_price($this->order->amount, $configs, false, true); ?>)</span>
 						</td>
 						<td  class="text-center">
 							 <strong><?php echo  DigiComSiteHelperPrice::format_price($this->order->tax	, $configs->get('currency','USD'), true, $configs);?></strong>
@@ -89,7 +89,7 @@ $data = $this->data;
 					</tr>
 					<?php endif; ?>
 					<tr>
-						<td colspan="3">
+						<td colspan="3" class="text-right">
 							<?php echo JText::_('COM_DIGICOM_TOTAL'); ?>
 						</td>
 						<td class="text-center">
