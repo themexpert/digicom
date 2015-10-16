@@ -28,6 +28,8 @@
 
 		<field name="discount" type="text" label="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_LABEL" description="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_DESC" buttons="true" />
 
+		<field name="tax" type="text" label="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_LABEL" description="COM_DIGICOM_FIELD_ARTICLETEXT_FULL_DESC" buttons="true" />
+
 		<field name="amount_paid" type="number" label="COM_DIGICOM_ORDER_DETAILS_UPDATE_PAID_AMOUNT_LABEL" description="COM_DIGICOM_ORDER_DETAILS_UPDATE_PAID_AMOUNT_DESC" buttons="true" />
 
 		<field name="processor" type="plugins" folder="digicom_pay"
@@ -43,6 +45,7 @@
 
 		<field name="amount" type="text" label="JFIELD_ORDER_AMOUNT_LABEL" description="JFIELD_ORDER_AMOUNT_DESC" hint="JFIELD_ALIAS_PLACEHOLDER" size="40" />
 
+		<field name="price" type="hidden" />
 		<field name="products" type="hidden" />
 
 
