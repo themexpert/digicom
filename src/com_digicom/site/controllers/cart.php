@@ -299,13 +299,6 @@ class DigiComControllerCart extends JControllerLegacy
 		// return -1 for not found core info, 2 for missing billing info, 1 for has core info
 		$res = DigiComSiteHelperDigiCom::checkProfileCompletion($customer, $askforbilling);
 
-		// //if username, name, email, id not found for user
-		// if( $res < 1 ) {
-		// 	$this->setRedirect('index.php?option=com_digicom&view=profile&layout=edit&return='.$return);
-		// 	JFactory::getApplication()->enqueueMessage(JText::_('COM_DIGICOM_PROFILE_MUST_COMPLETE'));
-		// 	return true;
-		// }
-
 		$plugin 			= JPluginHelper::getPlugin('digicom_pay',$processor);
 		$pluginParams = json_decode($plugin->params);
 
@@ -352,7 +345,7 @@ class DigiComControllerCart extends JControllerLegacy
 		$items 		= $cart->getCartItems($customer, $configs);
 		$tax 			= $cart->calc_price($items, $customer, $configs);
 		$total 		= $tax['taxed'];
-		//print_r($tax);die;
+		// print_r($tax);die;
 
 		// Add free product
 		if( (double)$total == 0 ) {
