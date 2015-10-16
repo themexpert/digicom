@@ -213,11 +213,11 @@ class DigiComModelOrderNew extends JModelAdmin
 			$data['status'] = 'Active';
 		}
 		$data['price'] = $data['amount'];
-		$data['amount'] = $data['amount'] - $data['discount'];
+		// $data['amount'] = $data['amount'] - $data['discount'];
 		$data['promocodeid'] = $this->getPromocodeByCode($data['promocode']);
 
 		//DigiComSiteHelperLicense::addLicenceSubscription($data['product_id'], $data['userid'], 1, $data['status']);
-		//print_r($data);die;
+		// print_r($data);die;
 		if(parent::save($data)){
 
 			//hook the files here
@@ -397,7 +397,7 @@ class DigiComModelOrderNew extends JModelAdmin
 					$amount_subtotal += $price;
 					$amount += $price;
 					//$taxvalue += $this->getTax( $product_id, $cust_id, $price );
-					$taxvalue += 0;
+					// $taxvalue += 0;
 
 					//check promocode on product apply
 					if($addPromo && $onProduct){
@@ -433,7 +433,7 @@ class DigiComModelOrderNew extends JModelAdmin
 		}
 
 		//add tax to total
-		$amount = $amount + $taxvalue;
+		// $amount = $amount + $taxvalue;
 
 		if($addPromo && $onProduct){
 			$amount -= $promovalue;
@@ -464,8 +464,23 @@ class DigiComModelOrderNew extends JModelAdmin
 		$amount_subtotal = $amount_subtotal < 0 ? "0.00" : $amount_subtotal;
 		$amount = $amount < 0 ? "0.00" : $amount;
 
+		if($configs->get('enable_taxes',0) && $req->userid)
+		{
+			$customer = $this->getTable("Customer");
+			$customer->load($req->userid);
+			$tax_amount = DigiComSiteHelperPrice::get_tax_rate($configs, $customer->country, $customer->state);
+			$taxvalue = $amount * $tax_amount;
+			$amount = $amount + $taxvalue;
+		}
+		else
+		{
+			$taxvalue = 0;
+		}
+
+
 		$result['amount'] = trim( DigiComHelperDigiCom::format_price( $amount_subtotal, $configs->get('currency','USD'), true, $configs ) );
-		$result['amount_value'] = trim( DigiComHelperDigiCom::format_price( $amount_subtotal, $configs->get('currency','USD'), false, $configs ) );
+		$result['amount_value'] = trim( DigiComHelperDigiCom::format_price( $amount, $configs->get('currency','USD'), false, $configs ) );
+		$result['price_value'] = trim( DigiComHelperDigiCom::format_price( $amount_subtotal, $configs->get('currency','USD'), false, $configs ) );
 		$result['tax_value'] = trim( DigiComHelperDigiCom::format_price( $taxvalue, $configs->get('currency','USD'), false, $configs ) );
 		$result['tax'] = trim( DigiComHelperDigiCom::format_price( $taxvalue, $configs->get('currency','USD'), true, $configs ) );;
 		$result['discount_sign'] = trim( DigiComHelperDigiCom::format_price( $promovalue, $configs->get('currency','USD'), true, $configs ) );
