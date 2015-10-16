@@ -216,12 +216,20 @@ if (typeof jQuery === 'undefined') {
         url += '&quantity'+pid+'=' + quantity;
 			}
 
+			if ( Digicom.dataSet('promocode').length ) {
+        var promocode = Digicom.dataSet('promocode').val();
+				if(promocode != ''){
+          url += '&promocode=' + promocode;
+        }
+			}
+
+
 			$.ajax({
 		      url: url,
 					method: 'get',
 		      success: function (data, textStatus, xhr) { // data= returnval, textStatus=success, xhr = responseobject
 						var responce = $.parseJSON(data);
-						// console.log(responce);
+						console.log(responce);
 						var cart_item_price = eval('responce.cart_item_price'+pid);
 						var cart_item_total = eval('responce.cart_item_total'+pid);
 						var cart_item_discount = eval('responce.cart_item_discount'+pid);
@@ -233,6 +241,7 @@ if (typeof jQuery === 'undefined') {
 
 						Digicom.dataSet('cart_subtotal').html(responce.cart_subtotal);
 						Digicom.dataSet('cart_discount').html(responce.cart_discount);
+						Digicom.dataSet('cart_tax').html(responce.cart_tax);
 						Digicom.dataSet('cart_total').html(responce.cart_total);
 
 						Digicom.refresCartModule();
