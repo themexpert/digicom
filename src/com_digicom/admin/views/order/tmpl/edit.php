@@ -124,9 +124,16 @@ $input->set('layout', 'dgtabs');
 					</td>
 				</tr>
 
-				<tr><td colspan="2"></td>
+				<tr>
+					<td colspan="2"></td>
 					<td><strong><?php echo JText::_("COM_DIGICOM_DISCOUNT");?></strong> (<?php echo $order->promocode; ?>)</td>
-					<td><?php echo DigiComHelperDigiCom::format_price($order->discount, $order->currency, true, $configs);?></td></tr>
+					<td><?php echo DigiComHelperDigiCom::format_price($order->discount, $order->currency, true, $configs);?></td>
+				</tr>
+				<tr>
+					<td colspan="2"></td>
+					<td><strong><?php echo JText::_("COM_DIGICOM_TAX");?></strong></td>
+					<td><?php echo DigiComHelperDigiCom::format_price($order->tax, $order->currency, true, $configs);?></td>
+				</tr>
 				<?php if ($refunds > 0):?>
 				<tr>
 					<td colspan="2"></td>
