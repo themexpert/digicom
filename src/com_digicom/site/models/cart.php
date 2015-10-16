@@ -53,49 +53,6 @@ class DigiComModelCart extends JModelItem
 
 	}
 
-	/*
-	function existUser($username, $email){
-		$db = JFactory::getDbo();
-		if(trim($username) == "" || trim($email) == ""){
-			return false;
-		}else{
-			$query = $db->getQuery(true);
-
-			$query->select('count(*)')
-				  ->from($db->quoteName('#__users'))
-				  ->where($db->quoteName('username') . '='.$db->quote($username));
-			$db->setQuery($query);
-			$db->execute();
-
-			// $sql = "select count(*) from #__users where username='".addslashes(trim($username))."'";
-			// $db->setQuery($sql);
-			// $db->query();
-
-			$result = $db->loadResult();
-			if($result > 0){
-				return true;
-			}
-
-			$db->clear();
-			$query = $db->getQuery(true);
-			$query->select('count(*)')
-				  ->from($db->quoteName('#__users'))
-				  ->where($db->quoteName('email') . '='.$db->quote($email));
-			$db->setQuery($query);
-			$db->execute();
-
-			// $sql = "select count(*) from #__users where email='".addslashes(trim($email))."'";
-			// $db->setQuery($sql);
-			// $db->query();
-			$result = $db->loadResult();
-			if($result > 0){
-				return true;
-			}
-		}
-		return false;
-	}
-	*/
-
 	/**
 	 * Method to add product to cart object
 	 *
@@ -278,10 +235,7 @@ class DigiComModelCart extends JModelItem
 		$db = JFactory::getDbo();
 		$user = JFactory::getUser();
 		$session = JFactory::getSession();
-		// if (is_object($cust_info))	$sid = $cust_info->_sid;
-		// if (is_array($cust_info))	$sid = $cust_info['sid'];
-		// $customer = $cust_info;
-		//print_r($cust_info);die;
+
 		if ( null != $configs->get('totaldigits','') ) {
 			$configs = $this->getInstance( "Config", "digicomModel" );
 			$configs = $configs->getConfigs();
@@ -428,8 +382,8 @@ class DigiComModelCart extends JModelItem
 		$name = 'promocode'.$cust_info->_sid;
 		$justapplied = $session->get($name,false);
 
-		if($promo_applied && ($promovalue > 0)){
-
+		if($promo_applied && ($promovalue > 0))
+		{
 			//echo $justapplied;die;
 			if($justapplied){
 				$session->clear($name);
@@ -450,7 +404,9 @@ class DigiComModelCart extends JModelItem
 		$payprocess['payable_amount'] = $total;
 
 		// lets calculate the tax
-		$payprocess['value'] = '10';
+		// tax amount is in (%) percentage
+		$tax_amount = DigiComSiteHelperPrice::tax_price($total, $configs, true);
+		$payprocess['value'] = ($total * $tax_amount)/100;
 
 		if(!isset($payprocess['value'])) $payprocess['value'] = 0;
 		$sum_tax = $total + $payprocess['value']; //$vat_tax + $state_tax;//total tax
