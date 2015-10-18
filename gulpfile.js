@@ -41,18 +41,20 @@ gulp.task('release', ['cleanRelease'], function() {
         if(model == 'com_digicom'){
           var component = [], modofiedapp, completeapp;
 
-          completeapp =  gulp.src('./src/'+ model+'/**');
+          completeapp =  gulp.src(
+            './src/'+ model+'/media/**', {base: './src/com_digicom/'}
+          );
 
           modofiedapp = gulp.src([
                     './src/'+ model+'/**',
-                    '!./src/'+ model+'/media/images/**'
+                    '!./src/'+ model+'/media/**',
                   ])
                   .pipe(replace(/##DIGICOM_VERSION##/g, extension.version))
                   .pipe(replace(/##DIGICOM_CREATIONDATE##/g, extension.creationDate));
 
           component.push(completeapp);
           component.push(modofiedapp);
-          
+
           component = es.merge.apply(null, component)
 
           modelZip = component.pipe(zip(model + '.zip'));
