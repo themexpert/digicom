@@ -90,7 +90,7 @@ function showProperTemplateEmail(type, e){
 	}
 }
 /* files functions */
-function removeFilesRow(selector)
+function removeFilesRow(selector, event)
 {
   event.preventDefault();
 
@@ -103,7 +103,7 @@ function removeFilesRow(selector)
   }
 }
 
-function addFilesRow(){
+function addFilesRow(event){
   event.preventDefault();
 
   var container = jQuery('table#filesitemList tbody');

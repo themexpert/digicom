@@ -30,7 +30,7 @@ $fileSampleRow .= '</div>';
 $fileSampleRow .= '</td>';
 $fileSampleRow .= '<td style="vertical-align: middle;">';
 $fileSampleRow .= '<div class="text-center">';
-$fileSampleRow .= '<a href="#" class="remove" onclick="removeFilesRow(this);"><i class="icon-remove"></i></a>';
+$fileSampleRow .= '<a href="#" class="remove" onclick="removeFilesRow(this, event);"><i class="icon-remove"></i></a>';
 $fileSampleRow .= '</div>';
 $fileSampleRow .= '</td>';
 $fileSampleRow .= '</tr>';
@@ -95,7 +95,7 @@ $document->addScriptDeclaration("var fileSampleRow = '" . $fileSampleRow . "';")
 						</td>
 						<td style="vertical-align: middle;">
 							<div class="text-center">
-								<a href="#" class="remove" onclick="removeFilesRow(this);"><i class="icon-remove"></i></a>
+								<a href="#" class="remove" onclick="removeFilesRow(this, event);"><i class="icon-remove"></i></a>
 							</div>
 						</td>
 					</tr>
@@ -107,7 +107,7 @@ $document->addScriptDeclaration("var fileSampleRow = '" . $fileSampleRow . "';")
 			<tfoot>
 				<tr>
 					<td colspan="4">
-						<a href="#" onclick="addFilesRow();" class="add btn btn-success">Add File +</a>
+						<a href="#" onclick="addFilesRow(event);" class="add btn btn-success">Add File +</a>
 						<input type="hidden" name="jform[files_remove_id]" value="" id="jform_files_remove_id"/>
 					</td>
 				</tr>
