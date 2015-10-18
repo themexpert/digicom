@@ -733,6 +733,19 @@ body.layout-dgtabs #j-main-container .form-inline .controls,
 body.layout-dgform #j-main-container .form-inline .controls {
   margin-left: 0;
 }
+@media (max-width: 767px) {
+  body.com_digicom .subhead-collapse {
+    position: static;
+  }
+  body.com_digicom #j-sidebar-container {
+    position: absolute;
+    top: 75px;
+  }
+  body.com_digicom #j-main-container {
+    width: 100%;
+    margin: 0px;
+  }
+}
 /* Sidebar right styling */
 #toggle_settings_wrap {
   background: #1976d2;
