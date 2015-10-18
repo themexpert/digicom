@@ -52,16 +52,13 @@ class DigiComModelProduct extends JModelItem
 		// TODO: Tune these values based on other permissions.
 		$user = JFactory::getUser();
 
-		if((!$user->authorise('core.edit.state', 'com_digicom')) && (!$user->authorise('core.edit', 'com_digicom')) && $preview )
-		{
-			$url = base64_encode( JURI::getInstance()->toString() );
-			$link = JRoute::_('index.php?option=com_users&view=login&return='.$url, false);
-			$app->redirect($link, JText::_('COM_DIGICOM_ERROR_VIEW_PREVIEW_PLEASE_LOGIN_WITH_ACCESS'));
-		}
-		elseif((!$user->authorise('core.edit.state', 'com_digicom')) && (!$user->authorise('core.edit', 'com_digicom')))
+		if((!$user->authorise('core.edit.state', 'com_digicom')) && (!$user->authorise('core.edit', 'com_digicom')))
 		{
 			$this->setState('filter.published', 1);
 			$this->setState('filter.archived', 2);
+			if($preview){
+				$this->setState('filter.preview', 1);
+			}
 		}
 
 		$this->setState('filter.language', JLanguageMultilang::isEnabled());
@@ -155,8 +152,9 @@ class DigiComModelProduct extends JModelItem
 				// Filter by published state.
 				$published = $this->getState('filter.published');
 				$archived = $this->getState('filter.archived');
+				$preview = $this->getState('filter.preview');
 
-				if (is_numeric($published))
+				if (is_numeric($published) && !is_numeric($preview))
 				{
 					$query->where('(a.published = ' . (int) $published . ' OR a.published =' . (int) $archived . ')');
 				}
@@ -170,8 +168,23 @@ class DigiComModelProduct extends JModelItem
 					return JError::raiseError(404, JText::_('COM_DIGICOM_ERROR_PRODUCT_NOT_FOUND'));
 				}
 
+				// Filter by preview
+				if(is_numeric($preview))
+				{
+					// Check for published state if filter set.
+					if (((is_numeric($published)) || (is_numeric($archived))) && (($data->state != $published) && ($data->state != $archived)))
+					{
+						if((!$user->authorise('core.edit.state', 'com_digicom')) && (!$user->authorise('core.edit', 'com_digicom')))
+						{
+							$url = base64_encode( JURI::getInstance()->toString() );
+							$link = JRoute::_('index.php?option=com_users&view=login&return='.$url, false);
+							JFactory::getApplication('site')->redirect($link, JText::_('COM_DIGICOM_ERROR_VIEW_PREVIEW_PLEASE_LOGIN_WITH_ACCESS'));
+						}
+					}
+				}
 				// Check for published state if filter set.
-				if (((is_numeric($published)) || (is_numeric($archived))) && (($data->state != $published) && ($data->state != $archived)))
+				elseif
+				(((is_numeric($published)) || (is_numeric($archived))) && (($data->state != $published) && ($data->state != $archived)))
 				{
 					return JError::raiseError(404, JText::_('COM_DIGICOM_ERROR_PRODUCT_NOT_FOUND'));
 				}
