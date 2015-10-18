@@ -985,8 +985,8 @@
 				label="COM_DIGICOM_SETTINGS_TAX_PRICE_WITH_TAX_LABEL"
 				description="COM_DIGICOM_SETTINGS_TAX_PRICE_WITH_TAX_DESC"
 				default="0">
-					<option value="0">COM_DIGICOM_SETTINGS_TAX_PRICE_WITH_TAX_NO_LABEL</option>
-					<option value="1">COM_DIGICOM_SETTINGS_TAX_PRICE_WITH_TAX_YES_LABEL</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 			</field>
 
 			<field name="display_tax_with_price"
@@ -997,7 +997,7 @@
 				value="1"
 				default="0"
 			/>
-			<field
+			<!-- <field
 				name="display_on_checkout"
 				type="list"
 				class="chosen"
@@ -1007,7 +1007,7 @@
 				>
 					<option value="0">COM_DIGICOM_SETTINGS_TAX_DISPLAY_ON_CHECKOUT_EXCLUDING_LABEL</option>
 					<option value="1">COM_DIGICOM_SETTINGS_TAX_DISPLAY_ON_CHECKOUT_INCLUDING_LABEL</option>
-			</field>
+			</field> -->
 
 		</fieldset>
 	</fields>
