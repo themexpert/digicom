@@ -74,8 +74,8 @@ class Com_DigiComInstallerScript
 			self::createUploadDirectory();
 			self::removeTemplateScript();
 
-			self::updateDB();
 		}
+		self::updateDB();
 		return;
 	}
 
