@@ -216,7 +216,15 @@ class DigiComSiteHelperEmail {
 		$jfromname = $app->getCfg("fromname");
 
 		// admin email info
-		$adminName2	 = $jfromname;
+		if ( $adminName2 != "" )
+		{
+			$adminName2 = $jfromname;
+		}
+		else
+		{
+			$adminName2 = $configs->get('store_name','DigiCom Store');
+		}
+
 		$adminEmail2 = $jmailfrom;
 
 		// now override the value with digicom config
