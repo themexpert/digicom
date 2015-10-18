@@ -195,42 +195,37 @@ class DigiComHelperEmail {
         $message = str_replace( "[TMPL_COLOR]", $tmplcolor, $message );
         $message = str_replace( "[TMPL_BG_COLOR]", $tmplbgcolor, $message );
 
-
-
         $subject = html_entity_decode( $subject, ENT_QUOTES );
         $message = html_entity_decode( $message, ENT_QUOTES );
 
         // Send email to user
         //global $mosConfig_mailfrom, $mosConfig_fromname, $configs;
 
-
         $mosConfig_mailfrom = $app->getCfg( "mailfrom" );
         $mosConfig_fromname = $app->getCfg( "fromname" );
-        if ( $configs->get('usestoremail',0) == '1' && strlen( trim( $configs->get('store_name','DigiCom Store') ) ) > 0 && strlen( trim( $configs->get('store_email',JFactory::getConfig()->get('mailfrom')) ) ) > 0 ) {
-            $adminName2 = $configs->get('store_name','DigiCom Store');
-            $adminEmail2 = $configs->get('store_email',JFactory::getConfig()->get('mailfrom'));
-        } else if ( $mosConfig_mailfrom != "" && $mosConfig_fromname != "" ) {
-            $adminName2 = $mosConfig_fromname;
-            $adminEmail2 = $mosConfig_mailfrom;
-        } else {
 
-            $query = "SELECT name, email"
-                . "\n FROM #__users"
-                . "\n WHERE LOWER( usertype ) = 'superadministrator'"
-                . "\n OR LOWER( usertype ) = 'super administrator'"
-            ;
-            $database->setQuery( $query );
-            $rows = $database->loadObjectList();
-            $row2 = $rows[0];
-            $adminName2 = $row2->name;
-            $adminEmail2 = $row2->email;
+        if ( $mosConfig_fromname != "" )
+        {
+          $adminName2 = $mosConfig_fromname;
+        }
+        else
+        {
+          $adminName2 = $configs->get('store_name','DigiCom Store');
+        }
+
+        if ( $mosConfig_mailfrom != "")
+        {
+            $adminEmail2 = $mosConfig_mailfrom;
         }
 
         // now override the value with digicom config
-        if(!empty($email_settings->from_name)){
+        if(!empty($email_settings->from_name))
+        {
             $adminName2 = $email_settings->from_name;
         }
-        if(!empty($email_settings->from_email)){
+
+        if(!empty($email_settings->from_email))
+        {
             $adminEmail2 = $email_settings->from_email;
         }
 
@@ -240,7 +235,7 @@ class DigiComHelperEmail {
         $mailSender->setSender( array($adminEmail2, $adminName2) );
         $mailSender->setSubject( $subject );
         $mailSender->setBody( $message );
-        
+
         $info = array(
             'orderid' => $orderid,
             'amount' => $amount,
@@ -267,7 +262,8 @@ class DigiComHelperEmail {
 	* get the site template for frontend
 	*/
 
-    public static function getTemplate(){
+    public static function getTemplate()
+    {
         // Get the database object.
         $db = JFactory::getDbo();
         // Build the query.
