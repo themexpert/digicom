@@ -73,6 +73,8 @@ class Com_DigiComInstallerScript
 			self::createDigiComMenu();
 			self::createUploadDirectory();
 			self::removeTemplateScript();
+
+			self::updateDB();
 		}
 		return;
 	}
@@ -250,4 +252,22 @@ class Com_DigiComInstallerScript
 
 		return true;
 	}
+
+	/*
+	* update db structure
+	*/
+	function updateDB()
+	{
+
+		$db = JFactory::getDbo();
+		$query = "SHOW COLUMNS FROM `#__digicom_orders` LIKE 'tax'";
+		$db->setQuery($query);
+		$column = $db->loadObject();
+		if(!COUNT($column)){
+			$query = "ALTER TABLE `#__digicom_orders` ADD `tax` DECIMAL( 13, 3 ) NOT NULL AFTER `amount`";
+			$db->setQuery($query);
+			$db->execute();
+		}
+	}
+
 }
