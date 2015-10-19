@@ -348,8 +348,10 @@ class DigiComControllerCart extends JControllerLegacy
 		// print_r($tax);die;
 
 		// Add free product
-		if( (double)$total == 0 ) {
-			if(count($items) != "0"){
+		if( (double)$total == 0 )
+		{
+			if(count($items) != "0")
+			{
 
 				$orderid 	= $cart->addFreeProduct($items, $customer, $tax);
 				$dispatcher->trigger('onDigicomAfterPlaceOrder', array($orderid, $items, $tax, $customer, 'free'));
