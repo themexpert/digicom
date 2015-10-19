@@ -104,10 +104,10 @@ class plgSystemDigiCom extends JPlugin{
 			$config = json_decode($value->params, true);
 
 			$className = 'plg'.$value->folder.$value->element;
-			if(method_exists($className,'onMainMenuItem')){
+			if(method_exists($className,'onDigicomMainMenuItem')){
 				JFactory::getLanguage()->load('plg_'.$value->folder.'_'.$value->element, JPATH_ADMINISTRATOR);
 				$class = new $className($dispatcher, $config);
-				$results[] = $class->onMainMenuItem(array());
+				$results[] = $class->onDigicomMainMenuItem(array());
 			}
 		}
 
