@@ -30,7 +30,7 @@ $input->set('layout', 'dgtabs');
 		<?php
 			JPluginHelper::importPlugin('digicom',$this->source);
 			$dispatcher = JDispatcher::getInstance();
-			$dispatcher->trigger('onDisplayView', array());
+			$dispatcher->trigger('onDigicomTaskDisplayView', array());
 		?>
 
 	</div>
