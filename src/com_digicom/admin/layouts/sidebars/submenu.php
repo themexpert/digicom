@@ -24,7 +24,9 @@ JHtmlBehavior::core();
 			<?php if ($displayData->displayMenu) : ?>
 			<ul id="submenu" class="nav nav-list">
 				<li>
-					<a class="dglogo" href="index.php?option=com_digicom">DigiCom</a>
+					<a class="dglogo" href="index.php?option=com_digicom">
+						<?php echo JText::_('COM_DIGICOM');?>
+					</a>
 				</li>
 				<?php
 				$total = count($displayData->list);
