@@ -510,7 +510,7 @@ class DigiComModelProduct extends JModelAdmin
 		{
 			$data['metadata']['author'] = $filter->clean($data['metadata']['author'], 'TRIM');
 		}
-		
+
 		// Alter the name for save as copy
 		if ($app->input->get('task') == 'save2copy')
 		{
@@ -553,10 +553,10 @@ class DigiComModelProduct extends JModelAdmin
               $filesTable->ordering = $file['ordering'];
               $filesTable->store();
           }
-          if (isset($data['files_remove_id']) && !empty($data['files_remove_id'])){
-              $filesTable = JTable::getInstance('Files', 'Table');
-              $filesTable->removeUnmatch($data['files_remove_id'],$recordId);
-          }
+      }
+      if (isset($data['files_remove_id']) && !empty($data['files_remove_id'])){
+          $filesTable = JTable::getInstance('Files', 'Table');
+          $filesTable->removeUnmatch($data['files_remove_id'],$recordId);
       }
 
       // hook bundle item
