@@ -109,7 +109,12 @@ function addFilesRow(event){
   var container = jQuery('table#filesitemList tbody');
   // var row       = jQuery('table#filesRowSample tbody').clone().html();
   var row       = fileSampleRow;
-  var fileindex = parseInt(jQuery('table#filesitemList tbody#itemsfilesRows tr').last().attr('data-index'))+1;
+  if(jQuery('table#filesitemList tbody#itemsfilesRows tr').length){
+    var fileindex = parseInt(jQuery('table#filesitemList tbody#itemsfilesRows tr').last().attr('data-index'))+1;
+  }else{
+    var fileindex = 0;
+  }
+
   var new_row = jQuery(row).appendTo(container);
   afterAddRow(new_row, fileindex);
 
