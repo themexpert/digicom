@@ -37,7 +37,7 @@ foreach ($fieldSets as $name => $fieldSet)
   }
 
   echo JHtml::_('bootstrap.addTab', 'digicomTab', 'attrib-' . $name, $label);
-
+	echo '<div class="form-horizontal">';
   if (isset($fieldSet->description) && trim($fieldSet->description))
   {
     echo '<p class="alert alert-info">' . $this->escape(JText::_($fieldSet->description)) . '</p>';
@@ -45,7 +45,7 @@ foreach ($fieldSets as $name => $fieldSet)
 
   $this->fieldset = $name;
   echo JLayoutHelper::render('joomla.edit.fieldset', $this);
-
+	echo '</div>';
   echo JHtml::_('bootstrap.endTab');
 }
 
