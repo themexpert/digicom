@@ -158,4 +158,34 @@ class DigiComController extends JControllerLegacy
 		$app->close();
 
 	}
+
+	function responses($config = array())
+	{
+		$cmd 	= JFactory::getApplication()->input->get('task') . '.execute';
+		$format = JFactory::getApplication()->input->get('format','');
+		// Explode the controller.task command.
+		list ($type, $task) = explode('.', $cmd);
+
+		$file		= JControllerLegacy::createFileName('controller', array('name' => 'responses', 'format' => $format));
+		$path 	= JPATH_COMPONENT . '/controllers/' . $file;
+
+		// If the controller file path exists, include it.
+		if (file_exists($path))
+		{
+			require_once $path;
+
+			// Get the controller class name.
+			$class = ucfirst('Digicom') . 'Controller' . ucfirst($type);
+			$controller = new $class($config);
+			$controller->execute($task);
+			$controller->redirect();
+		}
+		else
+		{
+			$class = ucfirst('Digicom') . 'Controller' . ucfirst($type);
+			$e = new Exception(JText::sprintf('COM_DIGICOM_ERROR_METHOD_UNDEFINED',$class,$format));
+			echo new JResponseJson($e);
+			JFactory::getApplication()->close();
+		}
+	}
 }
