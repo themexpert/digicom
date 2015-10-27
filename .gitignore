@@ -17,6 +17,9 @@ Desktop.ini
 # PHPStorm
 .idea/
 
+# Eclipse
+.metadata/
+
 # Sublime Text
 *.sublime*
 
