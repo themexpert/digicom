@@ -20,6 +20,7 @@ gulp.task('clean:' + baseTask,
 	[
 		'clean:' + baseTask + ':css',
 		'clean:' + baseTask + ':less',
+		'clean:' + baseTask + ':tmpless',
 		'clean:' + baseTask + ':js',
 		'clean:' + baseTask + ':images'
 	],
@@ -45,6 +46,10 @@ gulp.task('clean:' +  baseTask + ':images', function() {
 	// gutil.log('Lets start cleaning content plugin');
 	return gulp.src(config.wwwDir + '/media/com_digicom/images', { read: false }).pipe(rm({ force: true }));
 });
+gulp.task('clean:' +  baseTask + ':tmpless', function() {
+	gulp.src(config.wwwDir + '/components/com_digicom/templates/default/less', { read: false }).pipe(rm({ force: true }));
+	return gulp.src(config.wwwDir + '/components/com_digicom/templates/default/css', { read: false }).pipe(rm({ force: true }));
+});
 
 
 // Copy
@@ -52,6 +57,7 @@ gulp.task('copy:' + baseTask,
 	[
 		'copy:' + baseTask + ':css',
 		'copy:' + baseTask + ':less',
+		'copy:' + baseTask + ':tmpless',
 		'copy:' + baseTask + ':js',
 		'copy:' + baseTask + ':images'
 	],
@@ -67,6 +73,10 @@ gulp.task('copy:' +  baseTask + ':css', ['clean:' + baseTask + ':css'], function
 });
 gulp.task('copy:' +  baseTask + ':less', ['clean:' + baseTask + ':less'], function() {
 	return gulp.src(extPath + '/com_digicom/media/less/**').pipe(gulp.dest(config.wwwDir + '/media/com_digicom/less'));
+});
+gulp.task('copy:' +  baseTask + ':tmpless', ['clean:' + baseTask + ':tmpless'], function() {
+	gulp.src(extPath + '/com_digicom/templates/default/less/**').pipe(gulp.dest(config.wwwDir + '/components/com_digicom/templates/default/less'));
+	return gulp.src(extPath + '/com_digicom/templates/default/css/**').pipe(gulp.dest(config.wwwDir + '/components/com_digicom/templates/default/css'));
 });
 gulp.task('copy:' +  baseTask + ':js', ['clean:' + baseTask + ':js'], function() {
 	return gulp.src(extPath + '/com_digicom/media/js/**').pipe(gulp.dest(config.wwwDir + '/media/com_digicom/js'));
@@ -101,12 +111,19 @@ gulp.task('less:' + baseTask, function () {
     .pipe(gulp.dest(mediaconfig.less.dest));
 });
 
+gulp.task('less:' + baseTask + ':tmpless', function () {
+	return gulp.src(extPath  + '/com_digicom/site/templates/default/less/*.less')
+    .pipe(less(mediaconfig.less.settings))
+    .pipe(gulp.dest(extPath  + '/com_digicom/site/templates/default/css'));
+});
+
 // Watch
 gulp.task('watch:' + baseTask,
 	[
 		'watch:' + baseTask + ':css',
 		'watch:' + baseTask + ':js',
 		'watch:' + baseTask + ':less',
+		'watch:' + baseTask + ':tmpless',
 		'watch:' + baseTask + ':images'
 	],
 	function() {
@@ -124,4 +141,8 @@ gulp.task('watch:' + baseTask + ':less', function(cb) {
 });
 gulp.task('watch:' + baseTask + ':images', function() {
 	gulp.watch(src + '/images/**',  ['copy:' + baseTask + ':images', browserSync.reload]);
+});
+
+gulp.task('watch:' + baseTask + ':tmpless', function(cb) {
+	gulp.watch(extPath  + '/com_digicom/site/templates/default/less/*.less', ['less:' + baseTask + ':tmpless', 'copy:' + baseTask + ':tmpless', browserSync.reload]);
 });
