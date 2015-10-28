@@ -64,6 +64,7 @@ class DigicomModelRegister extends JModelForm
 			// Get the dispatcher and load the users plugins.
 			$dispatcher = JEventDispatcher::getInstance();
 			JPluginHelper::importPlugin('user');
+			JPluginHelper::importPlugin('digicom');
 
 			// Trigger the data preparation event.
 			$results = $dispatcher->trigger('onContentPrepareData', array('com_digicom.register', $this->data));
@@ -213,6 +214,7 @@ class DigicomModelRegister extends JModelForm
 
 		// Load the users plugin group.
 		JPluginHelper::importPlugin('user');
+		JPluginHelper::importPlugin('digicom');
 		//print_r($data);die;
 		// Store the data.
 		if (!$user->save())
