@@ -215,6 +215,7 @@ class DigicomModelRegister extends JModelForm
 		// Load the users plugin group.
 		JPluginHelper::importPlugin('user');
 		JPluginHelper::importPlugin('digicom');
+
 		//print_r($data);die;
 		// Store the data.
 		if (!$user->save())
@@ -225,6 +226,18 @@ class DigicomModelRegister extends JModelForm
 		}
 
 		$data['id'] = $user->id;
+
+		// Get the dispatcher and load the users plugins.
+		$dispatcher = JEventDispatcher::getInstance();
+
+		// Trigger the data preparation event.
+		$results = $dispatcher->trigger('onDigicomBeforeCustomerCreate', array('com_digicom.registration', $data));
+		// Check for errors encountered while preparing the data.
+		if (count($results) && in_array(false, $results, true))
+		{
+			$this->setError($dispatcher->getError());
+		}
+
 		$customer = $this->getTable( 'Customer' );
 		// Bind the data.
 		if (!$customer->bind($data))
@@ -234,14 +247,20 @@ class DigicomModelRegister extends JModelForm
 			return false;
 		}
 
-		//print_r($customer);die;
-
 		// create user
 		if (!$customer->create())
 		{
 			$this->setError(JText::sprintf('COM_DIGICOM_CUSTOMER_SAVE_FAILED', $customer->getError()));
 
 			return false;
+		}
+
+		// Trigger the client save event.
+		$results = $dispatcher->trigger('onDigicomAfterCustomerCreate', array('com_digicom.registration', $data));
+		// Check for errors encountered while preparing the data.
+		if (count($results) && in_array(false, $results, true))
+		{
+			$this->setError($dispatcher->getError());
 		}
 
 		return $user->id;
