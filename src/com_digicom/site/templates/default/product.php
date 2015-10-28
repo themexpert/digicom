@@ -81,7 +81,7 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 						</div>
 					</div>
 					<div class="dc-product-info">
-						<ul class="list-unstyled">
+						<ul class="list-unstyled no-margin">
 							<li>
 								<strong><?php echo JText::_('COM_DIGICOM_PRODUCT_CREATE_DATE');?> :</strong> <?php echo JFactory::getDate($this->item->publish_up)->format('M d, Y')?>
 							</li>
@@ -111,33 +111,36 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 
 					<?php if($this->item->featured):?>
 						<!-- Featured label -->
-						<span class="label label-info label--featured"><?php echo JText::_('JFEATURED');?></span>
+						<span class="label label-info label-featured"><?php echo JText::_('JFEATURED');?></span>
 					<?php endif; ?>
+
+					<?php if ($this->configs->get('catalogue',0) == '0' and !$this->item->hide_public) : ?>
+						<div class="dc-addtocart-bar">
+							<form name="prod" class="form" id="product-form" action="<?php echo JRoute::_('index.php?option=com_digicom&view=cart');?>" method="post" style="width:100%;">
+								<div class="form-group<?php echo ($configs->get('show_quantity',0) == 1 ? " with-qnty " : ' '); ?>no-padding no-margin">
+
+									<?php if($configs->get('show_quantity',0) == "1") {	?>
+										<input data-digicom-id="quantity_<?php echo $this->item->id; ?>" type="number" name="qty" min="1" class="dc-product-qnty form-control" value="1" size="2" placeholder="<?php echo JText::_('COM_DIGICOM_QUANTITY'); ?>">
+									<?php } ?>
+
+									<?php if($configs->get('afteradditem',0) == "2") {	?>
+										<div type="button" class="btn btn-success btn-md btn-block btn-cart" onclick="Digicom.addtoCart(<?php echo $this->item->id; ?>,'<?php echo JRoute::_("index.php?option=com_digicom&view=cart"); ?>');"><?php echo JText::_("COM_DIGICOM_ADD_TO_CART");?></div>
+									<?php }else { ?>
+										<button type="submit" class="btn btn-success btn-lg btn-block"> <?php echo JText::_('COM_DIGICOM_ADD_TO_CART'); ?></button>
+										<?php } ?>
+								</div>
+
+								<input type="hidden" name="option" value="com_digicom"/>
+								<input type="hidden" name="view" value="cart"/>
+								<input type="hidden" name="task" value="cart.add"/>
+								<input type="hidden" name="pid" value="<?php echo $this->item->id; ?>"/>
+							</form>
+						</div>
+					<?php endif; ?>
+
 				</div>
 
-				<?php if ($this->configs->get('catalogue',0) == '0' and !$this->item->hide_public) : ?>
-					<div class="dc-addtocart-bar">
-						<form name="prod" class="form-inline" id="product-form" action="<?php echo JRoute::_('index.php?option=com_digicom&view=cart');?>" method="post" style="width:100%;">
-							<div class="<?php echo ($configs->get('show_quantity',0) == 1 ? "with-qnty" : ''); ?>">
 
-								<?php if($configs->get('show_quantity',0) == "1") {	?>
-									<input data-digicom-id="quantity_<?php echo $this->item->id; ?>" type="number" name="qty" min="1" class="dc-product-qnty" value="1" size="2" placeholder="<?php echo JText::_('COM_DIGICOM_QUANTITY'); ?>">
-								<?php } ?>
-
-								<?php if($configs->get('afteradditem',0) == "2") {	?>
-									<div type="button" class="btn btn-success btn-large btn-block btn--cart" onclick="Digicom.addtoCart(<?php echo $this->item->id; ?>,'<?php echo JRoute::_("index.php?option=com_digicom&view=cart"); ?>');"><?php echo JText::_("COM_DIGICOM_ADD_TO_CART");?></div>
-								<?php }else { ?>
-									<button type="submit" class="btn btn-success btn-large btn-block"> <?php echo JText::_('COM_DIGICOM_ADD_TO_CART'); ?></button>
-									<?php } ?>
-							</div>
-
-							<input type="hidden" name="option" value="com_digicom"/>
-							<input type="hidden" name="view" value="cart"/>
-							<input type="hidden" name="task" value="cart.add"/>
-							<input type="hidden" name="pid" value="<?php echo $this->item->id; ?>"/>
-						</form>
-					</div>
-				<?php endif; ?>
 
 				<?php
 				if(!empty($this->item->bundle_source)):
