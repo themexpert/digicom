@@ -25,7 +25,7 @@ gulp.task('clean:' +  baseTask + ':admin', function() {
 });
 
 gulp.task('clean:' + baseTask + ':site', function() {
-	return gulp.src(config.wwwDir + '/components/com_digicom', { read: false }).pipe(rm({ force: true }));
+	return gulp.src(config.wwwDir + '/components/com_digicom/', { read: false }).pipe(rm({ force: true }));
 });
 
 gulp.task('clean:' + baseTask + ':language', function() {
