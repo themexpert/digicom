@@ -229,7 +229,7 @@ $input->set('layout', 'dgform');
 								<?php else: ?>
 									<tr>
 										<td colspan="9">
-											<?php echo  JText::_('COM_DIGICOM_NO_ORDER_FOUND'); ?>
+											<?php echo  JText::_('COM_DIGICOM_ORDERS_NOTICE_NO_ORDER_FOUND'); ?>
 										</td>
 									</tr>
 								<?php endif; ?>
