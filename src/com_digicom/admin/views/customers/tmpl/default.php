@@ -15,7 +15,7 @@ JHtml::_('formbehavior.chosen', 'select');
 $canDo = JHelperContent::getActions('com_digicom', 'component');
 $document = JFactory::getDocument();
 $k = 0;
-$n = count ($this->custs);
+$n = count ($this->Items);
 
 ?>
 <?php if (!empty( $this->sidebar)) : ?>
@@ -26,7 +26,7 @@ $n = count ($this->custs);
 <?php else : ?>
 <div id="j-main-container" class="">
 <?php endif;?>
-	<form id="adminForm" action="index.php" name="adminForm" method="post">
+	<form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&view=customers');?>" name="adminForm" method="post">
 
 		<div class="dg-alert dg-alert-with-icon">
 			<span class="icon-support"></span>
@@ -36,7 +36,7 @@ $n = count ($this->custs);
 		<div class="js-stools">
 			<div class="clearfix">
 				<div class="btn-wrapper input-append">
-					<input type="text" id="filter_search" class="input-large" name="keyword" placeholder="<?php echo JText::_('COM_DIGICOM_SEARCH'); ?>" value="<?php echo (strlen(trim($this->keyword)) > 0 ?$this->keyword:"");?>" class="span6" />
+					<input type="text" id="filter_search" class="input-large" name="keyword" placeholder="<?php echo JText::_('COM_DIGICOM_SEARCH'); ?>" value="<?php echo $this->state->get('filter.search');?>" class="span6" />
 					<button type="submit" class="btn hasTooltip" title="" data-original-title="Search">
 						<i class="icon-search"></i>
 					</button>
@@ -74,11 +74,11 @@ $n = count ($this->custs);
 
 				<tbody>
 				<?php
-					//var_dump($this->custs);
+					//var_dump($this->Items);
 					if ($n > 0): ?>
 					<?php
 					for ($i = 0; $i < $n; $i++):
-						$cust = $this->custs[$i];
+						$cust = $this->Items[$i];
 						//print_r( $cust);die;
 						$id = $cust->id;
 						$link = JRoute::_("index.php?option=com_digicom&view=customer&task=customer.edit&id=".$id.(strlen(trim($this->keyword))>0?"&keyword=".$this->keyword:""));
@@ -94,7 +94,7 @@ $n = count ($this->custs);
 							<?php endif; ?>
 						</td>
 						<td><?php echo ($cust->username ? $cust->username : $cust->email) ;?></td>
-						<td><?php echo $cust->total_order;?></td>
+						<td><?php echo $this->getCustomerOrdersTotal($cust->id);?></td>
 					</tr>
 
 
