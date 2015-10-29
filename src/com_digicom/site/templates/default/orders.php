@@ -107,6 +107,10 @@ $k = 0;
 		</tbody>
 	</table>
 
+	<div class="dc-pagination pagination">
+		<?php echo $this->pagination->getPagesLinks(); ?>
+	</div>
+
 	<?php DigiComSiteHelperDigicom::loadModules('digicom_footer','xhtml'); ?>
 
 	<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>
