@@ -125,7 +125,7 @@ class DigiComSiteHelperQuery
 	 */
 	public static function orderbyDownload($orderby, $orderDate = 'created', $select='p', $name='name')
 	{
-		$queryDate = self::getQueryDate($orderDate);
+		$queryDate = self::getQueryDate($orderDate, 'p');
 
 		switch ($orderby)
 		{
@@ -181,24 +181,24 @@ class DigiComSiteHelperQuery
 	 *
 	 * @since   1.6
 	 */
-	public static function getQueryDate($orderDate)
+	public static function getQueryDate($orderDate, $select='a')
 	{
 		$db = JFactory::getDbo();
 
 		switch ($orderDate)
 		{
 			case 'modified' :
-				$queryDate = ' CASE WHEN a.modified = ' . $db->quote($db->getNullDate()) . ' THEN a.created ELSE a.modified END';
+				$queryDate = ' CASE WHEN '.$select.'.modified = ' . $db->quote($db->getNullDate()) . ' THEN '.$select.'.created ELSE '.$select.'.modified END';
 				break;
 
 			// Use created if publish_up is not set
 			case 'published' :
-				$queryDate = ' CASE WHEN a.publish_up = ' . $db->quote($db->getNullDate()) . ' THEN a.created ELSE a.publish_up END ';
+				$queryDate = ' CASE WHEN '.$select.'.publish_up = ' . $db->quote($db->getNullDate()) . ' THEN '.$select.'.created ELSE '.$select.'.publish_up END ';
 				break;
 
 			case 'created' :
 			default :
-				$queryDate = ' a.created ';
+				$queryDate = ' '.$select.'.created ';
 				break;
 		}
 
