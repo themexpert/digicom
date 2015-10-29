@@ -151,30 +151,45 @@ class DigiComSiteHelperSession
 		$this->_user = $my;
 
 		// set the customer info
-		if ($this->_user->id > 0) {
+		if ($this->_user->id > 0)
+		{
+
+			$table = JTable::getInstance('Customer','Table');
+			$table->load(array('email'=>$this->_user->email));
+
+			// update customer info if re-registered as customer
+			if($table->id != $this->_user->id)
+			{
+				$query = "UPDATE `#__digicom_customers` SET `id`=".$this->_user->id." WHERE `email`='" . $this->_user->email."'";
+				$db->setQuery( $query );
+				$db->execute();
+
+				$query = "UPDATE `#__digicom_licenses` SET `userid`=".$this->_user->id." WHERE `userid`='" . $table->id."'";
+				$db->setQuery( $query );
+				$db->execute();
+
+				$query = "UPDATE `#__digicom_orders` SET `userid`=".$this->_user->id." WHERE `userid`='" . $table->id."'";
+				$db->setQuery( $query );
+				$db->execute();
+
+				$query = "UPDATE `#__digicom_orders_details` SET `userid`=".$this->_user->id." WHERE `userid`='" . $table->id."'";
+				$db->setQuery( $query );
+				$db->execute();
 
 				$table = JTable::getInstance('Customer','Table');
 				$table->load(array('email'=>$this->_user->email));
-
-				// update customer info if re-registered as customer
-				if($table->id != $this->_user->id){
-					$query = "UPDATE `#__digicom_customers` SET `id`=".$this->_user->id." WHERE `email`='" . $this->_user->email."'";
-					$db->setQuery( $query );
-					$db->execute();
-					$table = JTable::getInstance('Customer','Table');
-					$table->load(array('email'=>$this->_user->email));
-				}
+			}
 
 
 
-				if($my->id && (empty($this->_customer->name) or empty($this->_customer->email))){
-					$table->name = $my->name;
-					$table->email = $my->email;
-					$table->store();
-				}
+			if($my->id && (empty($this->_customer->name) or empty($this->_customer->email))){
+				$table->name = $my->name;
+				$table->email = $my->email;
+				$table->store();
+			}
 
-				// as we have userlogedin, make use we fill info for customer table
-				$this->_customer = $table;
+			// as we have userlogedin, make use we fill info for customer table
+			$this->_customer = $table;
 		} else {
 			// guest access
 			$this->_customer = JTable::getInstance('Customer','Table');
