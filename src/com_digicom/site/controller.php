@@ -162,7 +162,7 @@ class DigiComController extends JControllerLegacy
 	function responses($config = array())
 	{
 		$cmd 	= JFactory::getApplication()->input->get('task') . '.execute';
-		$format = JFactory::getApplication()->input->get('format','');
+		$format = JFactory::getApplication()->input->get('format','json');
 		// Explode the controller.task command.
 		list ($type, $task) = explode('.', $cmd);
 
