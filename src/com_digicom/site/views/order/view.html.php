@@ -11,31 +11,34 @@ defined('_JEXEC') or die;
 
 class DigiComViewOrder extends JViewLegacy {
 
+	protected $order;
+	protected $state;
+	protected $params;
+	protected $configs;
+	protected $customer;
+
 	function display($tpl = null)
 	{
 		$app 			= JFactory::getApplication();
 		$input 		= $app->input;
-		$customer = new DigiComSiteHelperSession();
+
+		$this->order = $this->get("Item");
+		$this->state = $this->get("State");
+		$this->params = $this->state->get('params');
+		$this->configs = JComponentHelper::getComponent('com_digicom')->params;
+		$this->customer = new DigiComSiteHelperSession();
 
 		$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=orders', true);
-		$Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
-
-		$this->order = $this->_models['order']->getOrder();
+		$this->Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
 
 		if($this->order->id < 1)
 		{
 			return JError::raiseError(404, JText::_('COM_DIGICOM_ORDER_NOT_FOUND'));
 		}
-		elseif($this->order->userid != $customer->_customer->id)
+		elseif($this->order->userid != $this->customer->_customer->id)
 		{
 			return JError::raiseError(203, JText::_('COM_DIGICOM_ORDER_NOT_OWN'));
 		}
-
-		$configs = JComponentHelper::getComponent('com_digicom')->params;
-		$this->assign("configs", $configs);
-
-		$this->assign("customer", $customer);
-		$this->assign("Itemid", $Itemid);
 
 		$layout = $input->get('layout','order');
 		$template = new DigiComSiteHelperTemplate($this);
@@ -61,16 +64,7 @@ class DigiComViewOrder extends JViewLegacy {
 		// we need to get it from the menu item itself
 		$menu = $menus->getActive();
 
-		if ($menu)
-		{
-			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
-		}
-		else
-		{
-			$this->params->def('page_heading', JText::sprintf('COM_DIGICOM_ORDER_PAGE_TITLE',$this->order->id));
-		}
-
-		$title = $this->params->get('page_title', '');
+		$title = JText::sprintf('COM_DIGICOM_ORDER_PAGE_TITLE',$this->order->id);
 
 		// Check for empty title and add site name if param is set
 		if (empty($title))
