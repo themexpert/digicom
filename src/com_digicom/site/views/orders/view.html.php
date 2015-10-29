@@ -21,10 +21,11 @@ class DigiComViewOrders extends JViewLegacy {
 		$input 		= $app->input;
 		$customer = new DigiComSiteHelperSession();
 
-		$this->state		= $this->get('State');
-		$this->params 	= $this->state->get('params');
-		$this->orders 	= $this->get('listOrders');
-		$this->configs 	= JComponentHelper::getComponent('com_digicom')->params;
+		$this->orders 		= $this->get('Items');
+		$this->pagination	= $this->get('pagination');
+		$this->state			= $this->get('State');
+		$this->params 		= $this->state->get('params');
+		$this->configs 		= JComponentHelper::getComponent('com_digicom')->params;
 
 
 		$template = new DigiComSiteHelperTemplate($this);
@@ -41,7 +42,7 @@ class DigiComViewOrders extends JViewLegacy {
 	 */
 	protected function _prepareDocument()
 	{
-		$app		= JFactory::getApplication();
+		$app			= JFactory::getApplication();
 		$menus		= $app->getMenu();
 		$pathway	= $app->getPathway();
 		$title		= null;
@@ -50,11 +51,16 @@ class DigiComViewOrders extends JViewLegacy {
 		// we need to get it from the menu item itself
 		$menu = $menus->getActive();
 
-		if (isset($menu->title) && !empty($menu->title))
+		if ($menu)
 		{
-			$title = $menu->title;
+			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
 		}
-		//JText::_('COM_DIGICOM_ORDERS_PAGE_TITLE')
+		else
+		{
+			$this->params->def('page_heading', JText::_('COM_DIGICOM_ORDERS_PAGE_TITLE'));
+		}
+
+		$title = $this->params->get('page_title', '');
 
 		// Check for empty title and add site name if param is set
 		if (empty($title))
