@@ -39,7 +39,7 @@ class DigicomModelRegister extends JModelForm
 		{
 			$this->data = new stdClass;
 			$app = JFactory::getApplication();
-			$params = JComponentHelper::getParams('com_digicom');
+			$params = JComponentHelper::getParams('com_users');
 
 			// Override the base user data with any data in the session.
 			$temp = (array) $app->getUserState('com_digicom.register.data', array());
@@ -188,7 +188,7 @@ class DigicomModelRegister extends JModelForm
 	public function register($temp)
 	{
 
-		$params = JComponentHelper::getParams('com_digicom');
+		$params = JComponentHelper::getParams('com_users');
 
 		// Initialise the table with JUser.
 		$user = new JUser;
@@ -203,6 +203,14 @@ class DigicomModelRegister extends JModelForm
 		// Prepare the data for the user object.
 		$data['email'] = JStringPunycode::emailToPunycode($data['email']);
 		$data['password'] = $data['password1'];
+		$useractivation = $params->get('useractivation');
+
+		// Check if the user needs to activate their account.
+		if (($useractivation == 1) || ($useractivation == 2))
+		{
+			$data['activation'] = JApplicationHelper::getHash(JUserHelper::genRandomPassword());
+			$data['block'] = 0;
+		}
 
 		// Bind the data.
 		if (!$user->bind($data))
