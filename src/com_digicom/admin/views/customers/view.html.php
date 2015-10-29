@@ -14,7 +14,6 @@ jimport ("joomla.application.component.view");
 class DigiComViewCustomers extends JViewLegacy {
 
 	public $custs;
-	public $pagination;
 	public $state;
 
 	function display ($tpl =  null )
@@ -25,12 +24,9 @@ class DigiComViewCustomers extends JViewLegacy {
 			$this->setLayout($layout);
 		}
 
-		$this->custs = $this->get('Items');
+		$this->Items = $this->get('Items');
 		$this->state = $this->get('State');
 		$this->pagination = $this->get('Pagination');
-
-		$prd = JRequest::getVar("prd", 0, "request");
-		$this->assign("prd", $prd);
 
 		$keyword = JRequest::getVar("keyword", "", "request");
 		$this->assign ("keyword", $keyword);
@@ -69,6 +65,21 @@ class DigiComViewCustomers extends JViewLegacy {
 		$layout = new JLayoutFile('toolbar.video');
 		$bar->appendButton('Custom', $layout->render(array()), 'video');
 
+	}
+
+	/**
+	 * get the total order number of a custoer
+	 * @return toal number
+	 *
+	 * @since   1.6
+	 */
+	function getCustomerOrdersTotal ($userid)
+	{
+		$sql = "select count('id') as total from #__digicom_orders where userid='".$userid."' order by id desc";
+		$db = JFactory::getDBO();
+		$db->setQuery($sql);
+
+		return $db->loadObject()->total;
 	}
 
 
