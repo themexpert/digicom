@@ -31,6 +31,10 @@ class DigiComModelOrders extends JModelList
 	{
 		$app = JFactory::getApplication();
 
+		// Get the parent id if defined.
+		$search = $app->input->get('search', '');
+		$this->setState('filter.search', $search);
+
 		$params = $app->getParams();
 		$this->setState('params', $params);
 
@@ -47,7 +51,7 @@ class DigiComModelOrders extends JModelList
 	{
 		$custommer = new DigiComSiteHelperSession();
 		$input = JFactory::getApplication()->input;
-		$search = $input->get('search','');
+		$search = $this->getState('filter.search');
 
 		$sql = "SELECT o.*"
 				." FROM #__digicom_orders o, #__digicom_orders_details od"
