@@ -16,7 +16,7 @@ $layoutData = array(
                   'title' => JText::_("COM_DIGICOM_WARNING"),
                   'height' => '400px',
                   'width' => '1280',
-                  'footer' => '<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>'
+                  'footer' => '<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>'
                 ),
   'body'     => JText::_("COM_DIGICOM_CART_PAYMENT_METHOD_REQUIRED_NOTICE")
 );
@@ -39,7 +39,7 @@ if($this->configs->get('askterms',0) == '1' && ($this->configs->get('termsid',0)
                     'title' => $terms_title,
                     'height' => 'auto',
                     'width' => '1280',
-                    'footer' => '<button data-digicom-id="action-agree" class="action-agree btn btn-success" data-dismiss="modal" aria-hidden="true">' . JText::_("COM_DIGICOM_CART_AGREE_TERMS_BUTTON") . '</button> <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>'
+                    'footer' => '<button data-digicom-id="action-agree" class="action-agree btn btn-success" data-dismiss="modal" aria-hidden="true">' . JText::_("COM_DIGICOM_CART_AGREE_TERMS_BUTTON") . '</button> <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>'
 
                   ),
     'body'     => $terms_content
@@ -52,7 +52,7 @@ if($this->configs->get('askterms',0) == '1' && ($this->configs->get('termsid',0)
                     'title' => JText::_("COM_DIGICOM_WARNING"),
                     'height' => '400px',
                     'width' => '1280',
-                    'footer' => '<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>'
+                    'footer' => '<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>'
                   ),
     'body'     => JText::_("COM_DIGICOM_CART_ACCEPT_TERMS_CONDITIONS_REQUIRED_NOTICE")
   );
