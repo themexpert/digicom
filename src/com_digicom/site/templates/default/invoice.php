@@ -26,7 +26,7 @@ $k = 0;
 					<?php else: ?>
 
 					<form action="index.php" name="adminForm" method="post" style="padding-left: 10px; padding-right:10px; padding-top:100px;">
-						<input id="print_button" class="btn" style="float:right;margin-bottom: 10px;" type="button" value="<?php echo JText::_("COM_DIGICOM_PRINT");?>" onclick="document.getElementById('print_button').style.display='none'; javascript:window.print(); return false;" />
+						<input id="print_button" class="btn btn-default" style="float:right;margin-bottom: 10px;" type="button" value="<?php echo JText::_("COM_DIGICOM_PRINT");?>" onclick="document.getElementById('print_button').style.display='none'; javascript:window.print(); return false;" />
 
 						<table  class="table" width="100%"  border="0" cellpadding="3" cellspacing="0" bordercolor="#cccccc" style="border-collapse: collapse">
 							<tr>
