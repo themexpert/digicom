@@ -80,7 +80,10 @@ gulp.task('watch:' +  baseTask + ':admin', function() {
 });
 
 gulp.task('watch:' +  baseTask + ':site', function() {
-	gulp.watch(extPath + '/com_digicom/site/**', ['copy:' + baseTask + ':site', browserSync.reload]);
+	gulp.watch([
+		extPath + '/com_digicom/site/**',
+		'!' + extPath + '/com_digicom/site/templates/default/less/**',
+	], ['copy:' + baseTask + ':site', browserSync.reload]);
 });
 
 gulp.task('watch:' +  baseTask + ':language', function() {
