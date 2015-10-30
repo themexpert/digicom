@@ -153,7 +153,12 @@ class DigiComModelCategory extends JModelList
 		}
 		else
 		{
-			$this->setState('filter.published', array(0, 1, 2));
+			// to shoow all status products, create error on category specific page and details package
+			// later will handle it then enable admin view only
+			//$this->setState('filter.published', array(0, 1, 2));
+
+			// Limit to published for people who can't edit or edit.state.
+			$this->setState('filter.published', 1);
 		}
 
 		// Process show_noauth parameter
