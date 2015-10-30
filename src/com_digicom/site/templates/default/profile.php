@@ -50,7 +50,7 @@ JHtml::_('formbehavior.chosen', 'select');
 		<div class="control-group">
 			<div class="controls">
 				<button type="submit" class="btn btn-primary validate"><?php echo JText::_('COM_DIGICOM_PROFILE_UPDATE');?></button>
-				<a class="btn" href="<?php echo JRoute::_('index.php?option=com_digicom&view=dashboard');?>" title="<?php echo JText::_('JCANCEL');?>"><?php echo JText::_('JCANCEL');?></a>
+				<a class="btn btn-default" href="<?php echo JRoute::_('index.php?option=com_digicom&view=dashboard');?>" title="<?php echo JText::_('JCANCEL');?>"><?php echo JText::_('JCANCEL');?></a>
 			</div>
 		</div>
 
