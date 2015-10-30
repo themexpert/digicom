@@ -14,26 +14,25 @@ class plgContentDigiComInstallerScript
 
 	public function postflight($type, $parent)
 	{
-		if ( $type == 'install' )
-		{
-			$db = JFactory::getDbo();
-			$query = $db->getQuery(true);
+		
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
 
-			$fields = array(
-				$db->quoteName('enabled') . ' = ' . (int) 1,
-				$db->quoteName('ordering') . ' = ' . (int) 9999
-			);
+		$fields = array(
+			$db->quoteName('enabled') . ' = ' . (int) 1,
+			$db->quoteName('ordering') . ' = ' . (int) 9999
+		);
 
-			$conditions = array(
-				$db->quoteName('element') . ' = ' . $db->quote('digicom'),
-				$db->quoteName('type') . ' = ' . $db->quote('plugin')
-			);
+		$conditions = array(
+			$db->quoteName('element') . ' = ' . $db->quote('digicom'),
+			$db->quoteName('type') . ' = ' . $db->quote('plugin')
+		);
 
-			$query->update($db->quoteName('#__extensions'))->set($fields)->where($conditions);
+		$query->update($db->quoteName('#__extensions'))->set($fields)->where($conditions);
 
-			$db->setQuery($query);
-			$db->execute();
-		}
+		$db->setQuery($query);
+		$db->execute();
+
 
 		return true;
 	}
