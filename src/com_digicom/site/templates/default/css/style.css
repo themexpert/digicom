@@ -26,6 +26,7 @@
 .dc .dc-cat-head .tags {
   list-style: none;
   margin: 5px 0;
+  padding: 0px;
 }
 .dc .dc-cat-head .tags.inline li {
   display: inline-block;
@@ -84,6 +85,7 @@
 .dc.dc-product .tags li {
   display: inline-block;
   margin-left: 2px;
+  padding: 0px;
 }
 .dc.dc-product .dc-addtocart-bar form {
   margin: 15px 0 0;
@@ -141,6 +143,12 @@
 }
 .dc .modal-body {
   max-height: none;
+}
+.dc select {
+  font-size: initial;
+}
+.dc legend {
+  line-height: 40px;
 }
 .text-center {
   text-align: center;
