@@ -268,6 +268,11 @@ class Com_DigiComInstallerScript
 			$db->setQuery($query);
 			$db->execute();
 		}
+		
+		$query = "ALTER TABLE `#__digicom_customers` CHANGE `taxnum` `taxnum` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL";
+		$db->setQuery($query);
+		$db->execute();
+
 	}
 
 }
