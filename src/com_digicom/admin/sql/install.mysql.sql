@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS `#__digicom_customers` (
   `payment_type` varchar(20) NOT NULL DEFAULT '',
   `company` varchar(100) NOT NULL DEFAULT '',
   `person` int(2) NOT NULL DEFAULT '0',
-  `taxnum` varchar(11) DEFAULT '1',
+  `taxnum` varchar(255) DEFAULT '1',
   `taxclass` int(11) NOT NULL DEFAULT '0',
   `registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
