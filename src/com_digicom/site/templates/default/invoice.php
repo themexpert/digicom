@@ -25,8 +25,9 @@ $k = 0;
 						<div class="alert alert-danger"><?php echo JText::_('COM_DIGICOM_ORDERS_NO_ORDER_FOUND_NOTICE'); ?></div>
 					<?php else: ?>
 
-					<form action="index.php" name="adminForm" method="post" style="padding-left: 10px; padding-right:10px; padding-top:100px;">
-						<input id="print_button" class="btn btn-default" style="float:right;margin-bottom: 10px;" type="button" value="<?php echo JText::_("COM_DIGICOM_PRINT");?>" onclick="document.getElementById('print_button').style.display='none'; javascript:window.print(); return false;" />
+						<button id="print_button" class="btn btn-default" style="float:right;margin-bottom: 10px;" type="button" onclick="document.getElementById('print_button').style.display='none'; javascript:window.print(); return false;">
+							<?php echo JText::_("COM_DIGICOM_PRINT");?>
+						</button>
 
 						<table  class="table" width="100%"  border="0" cellpadding="3" cellspacing="0" bordercolor="#cccccc" style="border-collapse: collapse">
 							<tr>
@@ -70,6 +71,9 @@ $k = 0;
 									<?php endif; ?>
 									<?php if(!empty($user->zipcode)) : ?>
 									<?php echo $user->zipcode;?>,&nbsp;<?php echo $user->country?> <br />
+									<?php endif; ?>
+									<?php if(!empty($user->taxnum)) : ?>
+									<?php echo JText::_('COM_DIGICOM_TAX_NUMBER_TITLE');?> : <?php echo $user->taxnum?> <br />
 									<?php endif; ?>
 								</td>
 
@@ -215,12 +219,6 @@ $k = 0;
 
 							</tbody>
 						</table>
-
-						<input type="hidden" name="option" value="com_digicom" />
-						<input type="hidden" name="view" value="order" />
-						<input type="hidden" name="layout" value="invoice" />
-						<input type="hidden" name="boxchecked" value="0" />
-					</form>
 					<?php endif; ?>
 					<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>
 				</div><!-- End of span12 -->
