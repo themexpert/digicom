@@ -34,6 +34,7 @@ class DigiComModelProducts extends JModelList
 				'id', 'a.id',
 				'name', 'a.name',
 				'alias', 'a.alias',
+				'hide_public', 'a.hide_public',
 				'checked_out', 'a.checked_out',
 				'checked_out_time', 'a.checked_out_time',
 				'catid', 'a.catid', 'category_title',
@@ -109,6 +110,8 @@ class DigiComModelProducts extends JModelList
 			// Filter on published for those who do not have edit or edit.state rights.
 			$this->setState('filter.published', 1);
 		}
+
+		$this->setState('filter.hide_public', 0);
 
 		$this->setState('filter.language', JLanguageMultilang::isEnabled());
 
@@ -512,6 +515,13 @@ class DigiComModelProducts extends JModelList
 			$query->where('a.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
 		}
 
+		// Filter by language
+		$hide_public = $this->getState('filter.hide_public', 0);
+		if ($hide_public)
+		{
+			$query->where('a.hide_public =' . 1);
+		}
+
 		// Add the list ordering clause.
 		$query->order($this->getState('list.ordering', 'a.ordering') . ' ' . $this->getState('list.direction', 'ASC'));
 
@@ -538,7 +548,7 @@ class DigiComModelProducts extends JModelList
 
 		// Get the global params
 		$globalParams = JComponentHelper::getParams('com_digicom', true);
-
+		if(!$items) return;
 		// Convert the parameter fields into objects.
 		foreach ($items as &$item)
 		{
