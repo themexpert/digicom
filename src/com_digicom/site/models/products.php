@@ -111,7 +111,12 @@ class DigiComModelProducts extends JModelList
 			$this->setState('filter.published', 1);
 		}
 
-		$this->setState('filter.hide_public', 0);
+		// Process show_noauth parameter
+		$hide_public = $params->get('hide_public', '');
+
+		if(!empty($hide_public)){
+			$this->setState('filter.hide_public', $hide_public);
+		}
 
 		$this->setState('filter.language', JLanguageMultilang::isEnabled());
 
@@ -516,10 +521,10 @@ class DigiComModelProducts extends JModelList
 		}
 
 		// Filter by language
-		$hide_public = $this->getState('filter.hide_public', 0);
-		if ($hide_public)
+		$hide_public = (int) $this->getState('filter.hide_public');
+		if (!empty($hide_public))
 		{
-			$query->where('a.hide_public =' . 1);
+			$query->where('a.hide_public =' . $qb->quote($hide_public));
 		}
 
 		// Add the list ordering clause.
