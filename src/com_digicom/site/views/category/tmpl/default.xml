@@ -34,7 +34,7 @@
 			<field
 				name="category_cols"
 				type="list"
-				default="4"
+				default="3"
 				label="COM_DIGICOM_PRODUCTS_COLUMN_NO_LABEL"
 			>
 				<option value="1">1</option>
@@ -97,6 +97,16 @@
 				default=""
 			>
 				<option value="">JALL</option>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+			<field name="show_hide_public" type="radio"
+				description="COM_DIGICOM_SHOW_HIDE_PUBLIC_DESC"
+				label="COM_DIGICOM_SHOW_HIDE_PUBLIC_LABEL"
+				class="btn-group"
+				default="0"
+			>
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>

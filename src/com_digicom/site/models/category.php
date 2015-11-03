@@ -221,6 +221,9 @@ class DigiComModelCategory extends JModelList
 		// Set the featured products state
 		$this->setState('filter.featured', $params->get('show_only_featured'));
 
+		// Set the hide_public state
+		$this->setState('filter.hide_public', $params->get('show_hide_public'));
+
 		$this->setState('filter.bundle', $params->get('show_only_bundle'));
 	}
 
@@ -244,6 +247,7 @@ class DigiComModelCategory extends JModelList
 			$model->setState('filter.access', $this->getState('filter.access'));
 			$model->setState('filter.language', $this->getState('filter.language'));
 			$model->setState('filter.featured', $this->getState('filter.featured'));
+			$model->setState('filter.hide_public', $this->getState('filter.hide_public'));
 			$model->setState('filter.bundle', $this->getState('filter.bundle'));
 			$model->setState('list.ordering', $this->_buildContentOrderBy());
 			$model->setState('list.start', $this->getState('list.start'));

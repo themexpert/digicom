@@ -112,11 +112,7 @@ class DigiComModelProducts extends JModelList
 		}
 
 		// Process show_noauth parameter
-		$hide_public = $params->get('hide_public', '');
-
-		if(!empty($hide_public)){
-			$this->setState('filter.hide_public', $hide_public);
-		}
+		$this->setState('filter.hide_public', $params->get('show_hide_public'));
 
 		$this->setState('filter.language', JLanguageMultilang::isEnabled());
 
@@ -152,6 +148,7 @@ class DigiComModelProducts extends JModelList
 		$id .= ':' . serialize($this->getState('filter.published'));
 		$id .= ':' . $this->getState('filter.access');
 		$id .= ':' . $this->getState('filter.featured');
+		$id .= ':' . $this->getState('filter.hide_public');
 		$id .= ':' . $this->getState('filter.bundle');
 		$id .= ':' . serialize($this->getState('filter.product_id'));
 		$id .= ':' . $this->getState('filter.product_id.include');
@@ -308,6 +305,24 @@ class DigiComModelProducts extends JModelList
 				$query->where('a.featured = 1');
 				break;
 
+			case 'show':
+			default:
+				// Normally we do not discriminate
+				// between featured/unfeatured items.
+				break;
+		}
+
+		// Filter by hide_public
+		$hide_public = $this->getState('filter.hide_public');
+		switch ($hide_public)
+		{
+			case '1':
+			case 'only':
+				$query->where('a.hide_public = 0');
+				break;
+
+			case '0':
+			case 'hide':
 			case 'show':
 			default:
 				// Normally we do not discriminate
@@ -518,13 +533,6 @@ class DigiComModelProducts extends JModelList
 		if ($this->getState('filter.language'))
 		{
 			$query->where('a.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
-		}
-
-		// Filter by language
-		$hide_public = (int) $this->getState('filter.hide_public');
-		if (!empty($hide_public))
-		{
-			$query->where('a.hide_public =' . $qb->quote($hide_public));
 		}
 
 		// Add the list ordering clause.
