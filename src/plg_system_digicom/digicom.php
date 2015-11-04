@@ -122,6 +122,26 @@ class plgSystemDigiCom extends JPlugin{
 	}
 
 
+	public function onDigicomSessionOnChangeCustomerID($context, $userid_old, $userid_new)
+	{
+		$db 	 = JFactory::getDBO();
+		$query = "UPDATE `#__digicom_licenses` SET `userid`=".$userid_new." WHERE `userid`='" . $userid_old."'";
+		$db->setQuery( $query );
+		$db->execute();
+
+		$query = "UPDATE `#__digicom_orders` SET `userid`=".$userid_new." WHERE `userid`='" . $userid_old."'";
+		$db->setQuery( $query );
+		$db->execute();
+
+		$query = "UPDATE `#__digicom_orders_details` SET `userid`=".$userid_new." WHERE `userid`='" . $userid_old."'";
+		$db->setQuery( $query );
+		$db->execute();
+
+		$query = "UPDATE `#__digicom_log` SET `userid`=".$userid_new." WHERE `userid`='" . $userid_old."'";
+		$db->setQuery( $query );
+		$db->execute();
+
+	}
 
 	public function getConfigs(){
 		if( !$this->configs ) {
