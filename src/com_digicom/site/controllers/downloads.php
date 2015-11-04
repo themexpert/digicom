@@ -34,17 +34,23 @@ class DigiComControllerDownloads extends JControllerLegacy
 
 	function makeDownload()
 	{
-
-		if($this->_customer->_user->id < 1)
+		$dispatcher	= JDispatcher::getInstance();
+		$customer   = $this->_customer;
+		if($customer->_user->id < 1)
 		{
-			$this->setRedirect(JRoute::_($this->log_link, false));
-			return;
+			$result = $dispatcher->trigger('onDigicomDownloadInitialize',array('com_digicom.download', $customer));
+
+			if (!isset($result[0]) or in_array(false, $result))
+			{
+				$this->setRedirect(JRoute::_($this->log_link, false));
+				return;
+			}
 		}
 
 		$fileInfo = $this->_model->getfileinfo();
-		//print_r($fileInfo);die;
-		DigiComSiteHelperDigiCom::checkUserAccessToFile($fileInfo,$this->_customer->_user->id);
 
+		DigiComSiteHelperDigiCom::checkUserAccessToFile($fileInfo, $customer->_user->id);
+		
 		if(empty($fileInfo->url)){
 			$itemid = JFactory::getApplication()->input->get('itemid',0);
 			$msg = JText::sprintf('COM_DIGICOM_DOWNLOADS_FILE_DONT_EXIST_DETAILS',$fileInfo->name);
