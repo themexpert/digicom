@@ -69,6 +69,10 @@ class DigiComModelDownloads extends JModelList
 		$this->setState('list.ordering', $this->_buildCategoryOrderBy());
 		$this->setState('list.itemsordering', $this->_buildItemOrderBy());
 
+
+		$user = new DigiComSiteHelperSession();
+		$this->setState('filter.userid', $user->_customer->id);
+
 	}
 
 	/**
@@ -309,7 +313,6 @@ class DigiComModelDownloads extends JModelList
 	protected function getListQuery()
 	{
 		$app = JFactory::getApplication('site');
-		$user = new DigiComSiteHelperSession();
 		$published = $this->state->params->get('published', 1);
 
 		// $ordering =  $this->state->get('list.ordering', 'p.ordering ASC');
@@ -355,7 +358,12 @@ class DigiComModelDownloads extends JModelList
 		}
 
 		$query->where($db->quoteName('l.active') . ' = ' . $published);
-		$query->where($db->quoteName('l.userid') . ' = ' . $user->_customer->id);
+
+		// filter by userid
+		$userid = $this->state->get('filter.userid');
+		$query->where($db->quoteName('l.userid') . ' = ' . $userid);
+
+		// query by expire
 		$query->where(' ( DATEDIFF(`expires`, now()) > -1 or DATEDIFF(`expires`, now()) IS NULL )' );
 
 		// Add the list ordering clause.
