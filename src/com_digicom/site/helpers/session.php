@@ -46,6 +46,7 @@ class DigiComSiteHelperSession
 		$db 				= JFactory::getDBO();
 		$my 				= JFactory::getUser();
 		$reg 				= JFactory::getSession();
+		$dispatcher	= JDispatcher::getInstance();
 		$digicomid 	= 'digicomid';
 		$sid 				= $reg->get($digicomid, 0);
 		$debug 			= $app->input->get('debug');
@@ -160,21 +161,13 @@ class DigiComSiteHelperSession
 			// update customer info if re-registered as customer
 			if($table->id != $this->_user->id)
 			{
+
+
 				$query = "UPDATE `#__digicom_customers` SET `id`=".$this->_user->id." WHERE `email`='" . $this->_user->email."'";
 				$db->setQuery( $query );
 				$db->execute();
 
-				$query = "UPDATE `#__digicom_licenses` SET `userid`=".$this->_user->id." WHERE `userid`='" . $table->id."'";
-				$db->setQuery( $query );
-				$db->execute();
-
-				$query = "UPDATE `#__digicom_orders` SET `userid`=".$this->_user->id." WHERE `userid`='" . $table->id."'";
-				$db->setQuery( $query );
-				$db->execute();
-
-				$query = "UPDATE `#__digicom_orders_details` SET `userid`=".$this->_user->id." WHERE `userid`='" . $table->id."'";
-				$db->setQuery( $query );
-				$db->execute();
+				$dispatcher->trigger('onDigicomSessionOnChangeCustomerID',array('com_digicom.session', $table->id, $this->_user->id));
 
 				$table = JTable::getInstance('Customer','Table');
 				$table->load(array('email'=>$this->_user->email));
