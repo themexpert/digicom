@@ -8,12 +8,13 @@
  */
 
 defined('_JEXEC') or die;
-$app			= JFactory::getApplication();
-$input		= $app->input;
-$Itemid		= $input->get("Itemid", 0);
-$customer = $this->customer->_customer;
-$user			= $this->customer->_user;
-$configs 	= $this->configs;
+$app				= JFactory::getApplication();
+$dispatcher	= JDispatcher::getInstance();
+$input			= $app->input;
+$Itemid			= $input->get("Itemid", 0);
+$customer 	= $this->customer->_customer;
+$user				= $this->customer->_user;
+$configs 		= $this->configs;
 ?>
 
 <div id="digicom" class="dc dc-dashboard">
@@ -33,9 +34,11 @@ $configs 	= $this->configs;
 				<h4><?php echo $customer->name; ?> </h4>
 				<p>
 					<?php echo JText::_('COM_DIGICOM_CUSTOMER_ID'); ?>: <?php echo $customer->id; ?> <br>
+					<?php echo JText::_('COM_DIGICOM_CUSTOMER_USERNAME'); ?>: <?php echo $user->username; ?> <br>
 					<?php echo JText::_('COM_DIGICOM_EMAIL'); ?>: <?php echo $user->email; ?> <br>
-					<?php echo JText::_('COM_DIGICOM_CUSTOMER_SINCE') . $customer->registerDate; ?>
+					<?php echo JText::_('COM_DIGICOM_CUSTOMER_SINCE');?>: <?php echo $customer->registerDate; ?>
 				</p>
+				<?php $dispatcher->trigger('onDigicomDashboardAfterUserinfo',array('com_digicom.dashboard', $customer)); ?>
 			</div>
 		</div>
 	</div>
@@ -67,10 +70,7 @@ $configs 	= $this->configs;
 									<?php echo $licence->name; ?>
 								</a>
 							</span>
-							<?php
-								$dispatcher=JDispatcher::getInstance();
-								$dispatcher->trigger('onDigicomDashboardAfterProductName',array($licence));
-							?>
+							<?php $dispatcher->trigger('onDigicomDashboardAfterProductName',array('com_digicom.dashboard', $licence)); ?>
 						</td>
 						<td>
 							<?php
