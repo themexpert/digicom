@@ -112,7 +112,12 @@ class DigiComSiteHelperPrice {
 		if( ! empty( $country ) ) {
 			$tax_rates   = $configs->get('tax_rates',array());
 			$json = json_decode($tax_rates, true);
-			$tax_rates = self::group_by_key($json);
+			if(is_array($json)){
+				$tax_rates = self::group_by_key($json);
+			}else{
+				$tax_rates = '';
+			}
+			
 			if( ! empty( $tax_rates ) ) {
 			// print_r($tax_rates);die;
 				// Locate the tax rate for this country / state, if it exists
