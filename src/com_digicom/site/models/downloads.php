@@ -326,10 +326,10 @@ class DigiComModelDownloads extends JModelList
 		// Select required fields from the downloads.
 		//$query->select('DISTINCT(p.id) as productid')
 		$query->select('DISTINCT p.id as productid')
-			  ->select(array('p.name,p.catid,p.catid,p.bundle_source,p.product_type as type'))
+			  ->select(array('p.name,p.catid,p.catid,p.images,p.introtext,p.bundle_source,p.product_type as type, p.attribs, p.publish_up'))
 			  ->from($db->quoteName('#__digicom_licenses') . ' AS l')
 			  ->join('inner', '#__digicom_products AS p ON l.productid = p.id');
-
+		
 		if ($this->state->params->get('show_pagination_limit'))
 		{
 			$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->get('list_limit'), 'uint');
@@ -357,7 +357,8 @@ class DigiComModelDownloads extends JModelList
 			);
 		}
 
-		$query->where($db->quoteName('l.active') . ' = ' . $published);
+		$query->where($db->quoteName('l.active') . ' = ' . (int) $published);
+		$query->where($db->quoteName('p.published') . ' = ' . (int) $published);
 
 		// filter by userid
 		$userid = $this->state->get('filter.userid');
