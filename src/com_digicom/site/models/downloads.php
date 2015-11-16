@@ -159,7 +159,7 @@ class DigiComModelDownloads extends JModelList
 							if($bundle_ids){
 
 								$query = $db->getQuery(true)
-									->select(array('p.id as productid','p.name','p.catid'))
+									->select(array('p.id as productid','p.name','p.catid','p.images','p.introtext','p.attribs','p.publish_up'))
 									->from($db->quoteName('#__digicom_products','p'))
 									//->from($db->quoteName('#__categories','c'))
 									->where($db->quoteName('p.bundle_source').' IS NULL')
@@ -187,7 +187,7 @@ class DigiComModelDownloads extends JModelList
 							if($bundle_ids){
 								$db = $this->getDbo();
 								$query = $db->getQuery(true)
-									->select(array('p.id as productid','p.name','p.catid'))
+									->select(array('p.id as productid','p.name','p.catid','p.images','p.introtext','p.attribs','p.publish_up'))
 									->from($db->quoteName('#__digicom_products','p'))
 									->where($db->quoteName('p.bundle_source').' IS NULL')
 									->where($db->quoteName('p.id').' in ('.$bundle_ids.')')
