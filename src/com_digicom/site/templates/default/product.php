@@ -150,7 +150,7 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 
 			</div>
 		</div>
-	</artile>
+	</article>
 
 	<?php
 		if($configs->get('afteradditem',0) == "2"):
