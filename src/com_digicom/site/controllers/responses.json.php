@@ -28,6 +28,8 @@ class DigicomControllerResponses extends JControllerLegacy
      */
     public function execute($task)
     {
+        header('Content-type: application/json');
+        
         $source = JFactory::getApplication()->input->get('source', '', 'string');
         try
         {
