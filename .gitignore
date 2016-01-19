@@ -45,6 +45,9 @@ composer.lock
 composer.phar
 vendor/*
 
+# config
+gulp-config.json
+
 #bower
 bower_components
 
