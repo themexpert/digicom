@@ -28,21 +28,27 @@ class DigicomControllerResponses extends JControllerLegacy
      */
     public function execute($task)
     {
+        header('Content-type: application/xml');
+        $source = JFactory::getApplication()->input->get('source', '', 'string');
         try
         {
-            $dispatcher = JEventDispatcher::getInstance();
+          $dispatcher = JEventDispatcher::getInstance();
 
-            // Include the digicom plugin group
-        		JPluginHelper::importPlugin('digicom');
+          // Include the digicom plugin group
+        	JPluginHelper::importPlugin('digicom');
 
-            // Trigger the before delete event.
-  					$result = $dispatcher->trigger($this->event_xml_request, $this->context);
+          // Trigger the before delete event.
+  			  $result = $dispatcher->trigger($this->event_xml_request, array($this->context, $source));
 
-            echo new JResponseJson($result);
+          if($source){
+            $result = $result[0];
+          }else{
+            echo $result;
+          }
         }
         catch(Exception $e)
         {
-            echo new JResponseJson($e);
+            echo $e;
         }
 
         JFactory::getApplication()->close();
