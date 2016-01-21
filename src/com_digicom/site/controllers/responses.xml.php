@@ -38,13 +38,8 @@ class DigicomControllerResponses extends JControllerLegacy
         	JPluginHelper::importPlugin('digicom');
 
           // Trigger the before delete event.
-  			  $result = $dispatcher->trigger($this->event_xml_request, array($this->context, $source));
-
-          if($source){
-            $result = $result[0];
-          }else{
-            echo $result;
-          }
+  			  $dispatcher->trigger($this->event_xml_request, array($this->context, $source));
+          
         }
         catch(Exception $e)
         {
