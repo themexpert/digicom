@@ -1,0 +1,10 @@
+{
+	"wwwDir"			: "/home/user/digicom/www/digicom",
+	"browserConfig"		: {
+		"proxy"	: "dev.digicom.com",
+		"port"	: "3000"
+	},
+	"defaultTasks"     : ["copy", "watch", "browser-sync"],
+	"extensions"       : {
+	}
+}
