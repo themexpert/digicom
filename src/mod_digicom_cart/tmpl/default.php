@@ -36,12 +36,6 @@ $doc->addStyleSheet( JUri::root(true). '/modules/mod_digicom_cart/assets/css/mod
 		<?php endforeach; ?>
 	</ul>
 	<div class="dg-total">
-		<!-- <?php if($tax['promo'] > 0): ?>
-		<p class="dg-amount-discount">
-			<strong><?php echo JText::_('MOD_DIGICOM_CART_PROMO_DISCOUNT')?>:</strong>
-			<?php echo DigiComSiteHelperPrice::format_price($tax["promo"], $tax["currency"], true, $configs); ?>
-		</p>
-		<?php endif; ?> -->
 
 		<p class="dg-amount">
 			<strong><?php echo JText::_('MOD_DIGICOM_CART_PRICE_TOTAL')?>:</strong>
