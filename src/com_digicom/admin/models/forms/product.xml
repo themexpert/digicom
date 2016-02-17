@@ -154,5 +154,5 @@
 
 		</fieldset>
 	</fields>
-
+	<fields name="attribs"></fields>
 </form>
