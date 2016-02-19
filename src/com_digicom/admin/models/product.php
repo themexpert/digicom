@@ -10,7 +10,6 @@
 defined('_JEXEC') or die;
 
 use Joomla\Registry\Registry;
-use Joomla\String\String;
 
 /**
  * Product model.
@@ -737,10 +736,10 @@ class DigiComModelProduct extends JModelAdmin
 		{
 			if ($name == $table->name)
 			{
-				$name = String::increment($name);
+				$name = JString::increment($name);
 			}
 
-			$alias = String::increment($alias, 'dash');
+			$alias = JString::increment($alias, 'dash');
 		}
 
 		return array($name, $alias);

@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 use Joomla\Registry\Registry;
-use Joomla\String\String;
+
 /**
  * Methods supporting a list of product records.
  *
