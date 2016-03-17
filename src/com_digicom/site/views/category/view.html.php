@@ -82,44 +82,48 @@ class DigiComViewCategory extends JViewCategory
 		$numLinks	= 0;
 
 		// Compute the product slugs and prepare introtext (runs content plugins).
-		foreach ($this->items as $item)
-		{
-			$item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
-
-			$item->parent_slug = ($item->parent_alias) ? ($item->parent_id . ':' . $item->parent_alias) : $item->parent_id;
-
-			// No link for ROOT category
-			if ($item->parent_alias == 'root')
+		if(count($this->items)){
+			foreach ($this->items as $item)
 			{
-				$item->parent_slug = null;
+				$item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
+
+				$item->parent_slug = ($item->parent_alias) ? ($item->parent_id . ':' . $item->parent_alias) : $item->parent_id;
+
+				// No link for ROOT category
+				if ($item->parent_alias == 'root')
+				{
+					$item->parent_slug = null;
+				}
+
+				$item->catslug = $item->category_alias ? ($item->catid . ':' . $item->category_alias) : $item->catid;
+				$item->event   = new stdClass;
+
+				$dispatcher = JEventDispatcher::getInstance();
+
+				// Old plugins: Ensure that text property is available
+				if (!isset($item->text))
+				{
+					$item->text = $item->introtext;
+				}
+
+				JPluginHelper::importPlugin('content');
+				$dispatcher->trigger('onContentPrepare', array ('com_digicom.category', &$item, &$item->params, 0));
+
+				// Old plugins: Use processed text as introtext
+				$item->introtext = $item->text;
+
+				$results = $dispatcher->trigger('onContentAfterTitle', array('com_digicom.category', &$item, &$item->params, 0));
+				$item->event->afterDisplayTitle = trim(implode("\n", $results));
+
+				$results = $dispatcher->trigger('onContentBeforeDisplay', array('com_digicom.category', &$item, &$item->params, 0));
+				$item->event->beforeDisplayContent = trim(implode("\n", $results));
+
+				$results = $dispatcher->trigger('onContentAfterDisplay', array('com_digicom.category', &$item, &$item->params, 0));
+				$item->event->afterDisplayContent = trim(implode("\n", $results));
+
 			}
-
-			$item->catslug = $item->category_alias ? ($item->catid . ':' . $item->category_alias) : $item->catid;
-			$item->event   = new stdClass;
-
-			$dispatcher = JEventDispatcher::getInstance();
-
-			// Old plugins: Ensure that text property is available
-			if (!isset($item->text))
-			{
-				$item->text = $item->introtext;
-			}
-
-			JPluginHelper::importPlugin('content');
-			$dispatcher->trigger('onContentPrepare', array ('com_digicom.category', &$item, &$item->params, 0));
-
-			// Old plugins: Use processed text as introtext
-			$item->introtext = $item->text;
-
-			$results = $dispatcher->trigger('onContentAfterTitle', array('com_digicom.category', &$item, &$item->params, 0));
-			$item->event->afterDisplayTitle = trim(implode("\n", $results));
-
-			$results = $dispatcher->trigger('onContentBeforeDisplay', array('com_digicom.category', &$item, &$item->params, 0));
-			$item->event->beforeDisplayContent = trim(implode("\n", $results));
-
-			$results = $dispatcher->trigger('onContentAfterDisplay', array('com_digicom.category', &$item, &$item->params, 0));
-			$item->event->afterDisplayContent = trim(implode("\n", $results));
-
+		}else{
+			$this->items = array();
 		}
 
 		// Check for layout override only if this is not the active menu item
