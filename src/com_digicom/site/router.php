@@ -16,6 +16,13 @@ defined('_JEXEC') or die;
  */
 class DigiComRouter extends JComponentRouterBase
 {
+	private $alias;
+	
+	function __construct(){
+		$this->alias = new stdClass();
+
+		parent::__construct();
+	}
 	/**
 	 * Build the route for the com_digicom component
 	 *
@@ -215,18 +222,20 @@ class DigiComRouter extends JComponentRouterBase
 				// if (isset($query['id']) && isset($query['catid']) && $query['catid'])
 				if (isset($query['id']))
 				{
+					$productid = $query['id'];
 					// Make sure we have the id and the alias
-					if (strpos($query['id'], ':') === false)
+					if (strpos($query['id'], ':') === false && !isset($this->alias->$productid))
 					{
-						$productid = $query['id'];
 						$db = JFactory::getDbo();
 						$dbQuery = $db->getQuery(true)
 							->select('alias')
 							->from('#__digicom_products')
 							->where('id=' . (int) $query['id']);
 						$db->setQuery($dbQuery);
-						$alias = $db->loadResult();
-						$query['id'] = $query['id'] . ':' . $alias;
+						$this->alias->$productid = $db->loadResult();
+						$query['id'] = $query['id'] . ':' . $this->alias->$productid;
+					}elseif (strpos($query['id'], ':') === false && isset($this->alias->$productid)) {
+						$query['id'] = $query['id'] . ':' . $this->alias->$productid;
 					}
 					else
 					{
