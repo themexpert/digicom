@@ -41,7 +41,7 @@ class DigiComSiteHelperSession
 	 */
 	public function __construct ()
 	{
-
+		
 		$app 				= JFactory::getApplication();
 		$db 				= JFactory::getDBO();
 		$my 				= JFactory::getUser();
@@ -54,7 +54,7 @@ class DigiComSiteHelperSession
 			new DigiComSiteHelperTest();
 		}
 
-		if(empty($this->oldsids)){
+		if(empty($this->oldsids) && !$sid){
 			// first we will remove all session n cart info from db that passed 24 hours
 			$sql = "SELECT GROUP_CONCAT(sid) as sid from #__digicom_session where create_time< now() - INTERVAL 7 DAY";
 			$db->setQuery($sql);
