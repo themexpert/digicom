@@ -20,7 +20,7 @@ class DigiComViewCart extends JViewLegacy
 
 		$this->Itemid = JRequest::getvar("Itemid", "0");
 
-		$this->customer = new DigiComSiteHelperSession();
+		$this->customer = $this->get('Customer');
 
 		$this->items = $model->getCartItems($this->customer, $this->configs);
 
