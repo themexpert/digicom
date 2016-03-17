@@ -12,17 +12,7 @@ defined('_JEXEC') or die;
 class DigiComModelCheckout extends JModelItem
 {
 	public $orders 		= array();
-	public $configs 	= array();
-	public $customer 	= array();
 	
-	function __construct()
-	{
-		parent::__construct();
-		$this->configs = JComponentHelper::getComponent('com_digicom')->params;
-		$this->customer = new DigiComSiteHelperSession();
-
-	}
-
 	public function getOrder(){
 		$input = JFactory::getApplication()->input; 
 		$order_id = $input->get('id','0');
