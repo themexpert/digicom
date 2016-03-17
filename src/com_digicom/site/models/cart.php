@@ -36,6 +36,10 @@ class DigiComModelCart extends JModelItem
 
 	}
 
+	function getCustomer(){
+		return $this->customer;
+	}
+
 	/**
 	 * Get plugins type DigiCom payment list
 	 *
@@ -616,14 +620,13 @@ class DigiComModelCart extends JModelItem
 
 	}
 
-	function checkCartIsEmpty() {
-
-		$customer = new DigiComSiteHelperSession();
+	function checkCartIsEmpty() 
+	{
 
 		$conf = $this->getInstance( "config", "digicomModel" );
 		$configs = $conf->getConfigs();
 
-		$items = $this->getCartItems( $customer, $configs );
+		$items = $this->getCartItems( $this->customer, $configs );
 
 		if ( count($items) > 0 ) {
 			return false;
@@ -959,7 +962,7 @@ class DigiComModelCart extends JModelItem
 				$cart_items = unserialize( $cust_info['cart']['items'] );
 		}
 
-		$customer = new DigiComSiteHelperSession();
+		$customer = $this->customer;
 		$_Itemid = $Itemid;
 		if ( isset( $customer->_Itemid ) && ($customer->_Itemid > 0) )
 			$_Itemid = $customer->_Itemid;
@@ -1012,7 +1015,7 @@ class DigiComModelCart extends JModelItem
 			//debug($cart_items);
 		}
 
-		$customer = new DigiComSiteHelperSession();
+		$customer = $this->customer;
 		$_Itemid = $Itemid;
 		if ( isset( $customer->_Itemid ) && ($customer->_Itemid > 0) )
 			$_Itemid = $customer->_Itemid;
@@ -1251,7 +1254,7 @@ class DigiComModelCart extends JModelItem
 	public function getOrderItems( $order_id ){
 
 		$configs = $this->configs;
-		$customer = new DigiComSiteHelperSession();
+		$customer = $this->customer;
 		$db 	= JFactory::getDbo();
 		$sql 	= 'SELECT `p`.*, ';
 		$sql 	.= '`od`.`price`, `od`.`quantity` ';
