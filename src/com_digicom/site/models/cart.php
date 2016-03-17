@@ -25,6 +25,7 @@ class DigiComModelCart extends JModelItem
 
 	public $_items = null;
 	public $tax = null;
+	public $promo_data = null;
 
 	function __construct()
 	{
@@ -233,6 +234,7 @@ class DigiComModelCart extends JModelItem
 
 	function calc_price($items,$cust_info,$configs)
 	{
+		if(empty($items)) return;
 		$db = JFactory::getDbo();
 		$user = JFactory::getUser();
 		$session = JFactory::getSession();
@@ -446,6 +448,7 @@ class DigiComModelCart extends JModelItem
 
 	function get_promo( $customer, $checkvalid = 1 )
 	{
+		if($this->promo_data) return $this->promo_data;
 		$db = JFactory::getDbo();
 		$app = JFactory::getApplication();
 		$session = JFactory::getSession();
@@ -475,7 +478,7 @@ class DigiComModelCart extends JModelItem
 		}else{
 			$promo_data = $this->getTable( "Discount" );
 			$promo_data->error = '';
-			return $promo_data;
+			return $this->promo_data = $promo_data;
 		}
 
 		// $promo->error = "";
@@ -553,7 +556,7 @@ class DigiComModelCart extends JModelItem
 				JFactory::getApplication()->enqueueMessage(JText::_('COM_DIGICOM_DISCOUNT_CODE_WRONG'),'warning');
 		}
 
-		return $promo_data;
+		return $this->promo_data = $promo_data;
 
 	}
 
