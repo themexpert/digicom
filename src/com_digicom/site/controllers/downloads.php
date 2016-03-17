@@ -14,40 +14,24 @@ defined('_JEXEC') or die;
 class DigiComControllerDownloads extends JControllerLegacy
 {
 
-	var $_model = null;
-	var $_config = null;
-	var $_order = null;
-	var $_customer = null;
-
-	function __construct () {
-		global $Itemid;
-		parent::__construct();
-
-		$this->_model = $this->getModel("Downloads");
-		$this->_config = $this->getModel("Config");
-		$this->_order = $this->getModel("Order");
-		$this->_customers_model = $this->getModel("Customer");
-
-		$this->log_link = JRoute::_("index.php?option=com_digicom&view=profile&layout=login&returnpage=downloads&Itemid=".$Itemid, false);
-		$this->_customer = new DigiComSiteHelperSession();;
-	}
-
 	function makeDownload()
 	{
+		global $Itemid;
 		$dispatcher	= JDispatcher::getInstance();
-		$customer   = $this->_customer;
+		$model 			= $this->getModel("Downloads");
+		$customer   = new DigiComSiteHelperSession();
 		if($customer->_user->id < 1)
 		{
 			$result = $dispatcher->trigger('onDigicomDownloadInitialize',array('com_digicom.download', $customer));
 
 			if (!isset($result[0]) or in_array(false, $result))
 			{
-				$this->setRedirect(JRoute::_($this->log_link, false));
+				$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=profile&layout=login&returnpage=downloads&Itemid=".$Itemid, false));
 				return;
 			}
 		}
 
-		$fileInfo = $this->_model->getfileinfo();
+		$fileInfo = $model->getfileinfo();
 
 		DigiComSiteHelperDigiCom::checkUserAccessToFile($fileInfo, $customer->_user->id);
 		
