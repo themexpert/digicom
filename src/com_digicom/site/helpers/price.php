@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 
 class DigiComSiteHelperPrice {
 
+	public static $customer;
 
 	/**
 	* price formet helper
@@ -87,9 +88,12 @@ class DigiComSiteHelperPrice {
 	 */
 	public static function get_tax_rate($configs, $country = false, $state = false )
 	{
+		if(!self::$customer){
+			self::$customer = new DigiComSiteHelperSession();
+		}
+		$customer = self::$customer;
 		$rate = (float) $configs->get('fallback_tax_rate', 0 );
 
-		$customer = new DigiComSiteHelperSession();
 
 		// print_r($user_address);die;
 		// return;
