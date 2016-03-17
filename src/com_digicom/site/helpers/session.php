@@ -30,7 +30,7 @@ class DigiComSiteHelperSession
 	/*
 	* digicom customer, object
 	*/
-	public $_customer;
+	public $_customer = array();
 
 	/**
 	 * Class constructor
@@ -39,9 +39,9 @@ class DigiComSiteHelperSession
 	 *
 	 * @since   1.0.0
 	 */
+
 	public function __construct ()
 	{
-		
 		$app 				= JFactory::getApplication();
 		$db 				= JFactory::getDBO();
 		$my 				= JFactory::getUser();
@@ -193,7 +193,8 @@ class DigiComSiteHelperSession
 		if (!isset($this->_customer->registerDate)) $this->_customer->registerDate = $my->registerDate;
 		if (!isset($this->_customer->id) && $my->id ) $this->_customer->id = $my->id;
 
-		return true;
+		// echo "<pre> return: ".print_r($this->_customer)."</pre>";
+		return $this->_customer;
 	}
 
 	/**
