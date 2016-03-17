@@ -64,7 +64,7 @@
 				description="COM_DIGICOM_SHOW_CAT_TITLE_DESC"
 				label="COM_DIGICOM_SHOW_CAT_TITLE_LABEL"
 				class="btn-group"
-				default="1"
+				default="0"
 			>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
