@@ -50,9 +50,9 @@ $data = $this->data;
 			            </div>
 			          <?php endif; ?>
 			        </td>
-			        <td class="text-center"><?php echo DigiComSiteHelperPrice::format_price($item->price, $item->currency, true, $this->configs); ?></td>
+			        <td class="text-center"><?php echo DigiComSiteHelperPrice::format_price($item->price_formated, $item->currency, true, $this->configs); ?></td>
 			        <td class="text-center"><?php echo $item->quantity; ?></td>
-			        <td class="text-center"><?php echo DigiComSiteHelperPrice::format_price($item->subtotal-(isset($value_discount) ? $value_discount : 0), $item->currency, true, $this->configs); ?></td>
+			        <td class="text-center"><?php echo DigiComSiteHelperPrice::format_price($item->subtotal_formated-(isset($value_discount) ? $value_discount : 0), $item->currency, true, $this->configs); ?></td>
 			      </tr>
 			      <?php
 			    endforeach;
