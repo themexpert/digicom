@@ -323,7 +323,8 @@ class DigiComControllerCart extends JControllerLegacy
 		}
 
 		$items 		= $cart->getCartItems($customer, $configs);
-		$tax 			= $cart->calc_price($items, $customer, $configs);
+		// $tax 			= $cart->calc_price($items, $customer, $configs);
+		$tax 			= $cart->tax;
 		$total 		= $tax['taxed'];
 		// print_r($tax);die;
 
@@ -445,7 +446,8 @@ class DigiComControllerCart extends JControllerLegacy
 		// }
 
 		$items 	= $cart->getCartItems($customer, $configs);
-		$tax 	= $cart->calc_price($items, $customer, $configs);
+		// $tax 	= $cart->calc_price($items, $customer, $configs);
+		$tax 	= $cart->tax;
 		$result = array();
 
 		if ($cid > 0) {
