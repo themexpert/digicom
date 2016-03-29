@@ -26,7 +26,7 @@ $doc->addStyleSheet( JUri::root(true). '/modules/mod_digicom_cart/assets/css/mod
 
 			<li class="clearfix">
 				<a href="<?php echo JRoute::_(DigiComSiteHelperRoute::getProductRoute($item->id, $item->catid)) ?>">
-					<?php if($item->images): ?><img src="<?php echo JURI::root() . $images->image_intro; ?>" alt="<?php echo $item->name; ?>"/><?php endif; ?>
+					<?php if(isset($item->images->image_intro)): ?><img src="<?php echo JURI::root() . $images->image_intro; ?>" alt="<?php echo $item->name; ?>"/><?php endif; ?>
 					<?php echo $item->name; ?>
 				</a>
 				<span class="dg-quantity">
