@@ -136,6 +136,7 @@ $n 					= count ($this->order->products);
 				$images = new stdClass();
 				$images->image_intro = $product->images;
 			}
+			$price = ($product->amount_paid > 0 ? $product->amount_paid : $product->price);
 			?>
 			<tr>
 				<td>
@@ -155,7 +156,7 @@ $n 					= count ($this->order->products);
 				<td>
 					<?php echo $product->quantity; ?>
 				</td>
-				<td><?php echo DigiComSiteHelperPrice::format_price($product->price, $configs->get('currency','USD'), true, $configs);?></td>
+				<td><?php echo DigiComSiteHelperPrice::format_price($price, $configs->get('currency','USD'), true, $configs);?></td>
 			</tr>
 			<?php endforeach; ?>
 		</tbody>
