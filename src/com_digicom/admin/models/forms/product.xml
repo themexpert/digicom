@@ -41,12 +41,12 @@
 
 		<field
 			name="image_intro"
-			type="digimedia"
+			type="media"
 			label="COM_DIGICOM_PRODUCT_FIELD_INTRO_LABEL"
 			description="COM_DIGICOM_PRODUCT_FIELD_INTRO_DESC" />
 		<field
 			name="image_full"
-			type="digimedia"
+			type="media"
 			label="COM_DIGICOM_PRODUCT_FIELD_FULL_LABEL"
 			description="COM_DIGICOM_PRODUCT_FIELD_FULL_DESC"/>
 
