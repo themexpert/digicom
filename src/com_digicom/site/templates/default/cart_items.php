@@ -98,7 +98,8 @@ defined('_JEXEC') or die;
           </div>
         </td>
       </tr>
-      <?php if ( $this->tax['discount_calculated'] && !$this->tax['item_discount'] ): ?>
+      <?php //if ( $this->tax['discount_calculated'] && !$this->tax['item_discount'] ): ?>
+      <?php if ( $this->tax['discount_calculated'] ): ?>
       <tr>
         <td colspan="3">
           <div class="dc-cart-discount-title text-right">
