@@ -70,6 +70,7 @@ class DigiComModelOrder extends JModelItem
 					  ->select($db->quoteName('od.quantity'))
 					  ->select($db->quoteName('od.package_type'))
 					  ->select($db->quoteName('od.price', 'price'))
+					  ->select($db->quoteName('od.amount_paid', 'amount_paid'))
 					  ->select($db->quoteName('od.userid'))
 					  ->from($db->quoteName('#__digicom_products','p'))
 					  ->from($db->quoteName('#__digicom_orders_details','od'))
@@ -77,7 +78,7 @@ class DigiComModelOrder extends JModelItem
 					  ->where($db->quoteName('od.orderid').'='.$db->quote($data->id));
 				$db->setQuery($query);
 				$prods = $db->loadObjectList();
-
+				// print_r($prods);die;
 				$data->products = $prods;
 
 				$this->_item[$pk] = $data;
