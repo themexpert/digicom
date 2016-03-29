@@ -56,7 +56,7 @@ class DigiComSiteHelperSession
 
 		if(empty($this->oldsids) && !$sid){
 			// first we will remove all session n cart info from db that passed 24 hours
-			$sql = "SELECT GROUP_CONCAT(sid) as sid from #__digicom_session where create_time< now() - INTERVAL 7 DAY";
+			$sql = "SELECT GROUP_CONCAT(sid) as sid from #__digicom_session where create_time< now() - INTERVAL 3 DAY";
 			$db->setQuery($sql);
 
 			$oldsids = $db->loadObject();
@@ -72,23 +72,26 @@ class DigiComSiteHelperSession
 			$db->setQuery($sql);
 			$db->execute();
 		}
+		$session = JFactory::getSession();
+		$sessionid = $session->getId();	
 
 		//as we already removed all 24h old sessions, we need to check if we have current one or not
 		if (!$sid) {
 			// so we dont have any digicomid, we need to create one
 			// but before that lets checck in session table if we have with user id
-
 			if(!$my->id){
 				// we dont have session id, userid
-				$sql = "INSERT INTO #__digicom_session (`uid`,`create_time`, `cart_details`, `transaction_details`, `shipping_details`)
+				$sql = "INSERT INTO #__digicom_session (`uid`,`create_time`, `cart_details`, `transaction_details`, `shipping_details`, `key`)
 					VALUES
-					('".$my->id."',now(), '', '', '')
+					('".$my->id."',now(), '', '', '', '".$sessionid."')
 				 ";
 
 				$db->setQuery($sql);
 				$db->execute();
 				$sid = $db->insertId();
 				$reg->set($digicomid, $sid);
+
+				$this->addLog();
 
 			}
 			else{
@@ -112,9 +115,9 @@ class DigiComSiteHelperSession
 				}else{
 
 					//user dosent have anyting before pending
-					$sql = "INSERT INTO #__digicom_session (`uid`,`create_time`, `cart_details`, `transaction_details`, `shipping_details`)
+					$sql = "INSERT INTO #__digicom_session (`uid`,`create_time`, `cart_details`, `transaction_details`, `shipping_details`, `key`)
 						VALUES
-						('".$my->id."',now(), '', '', '')
+						('".$my->id."',now(), '', '', '', '".$sessionid."')
 					 ";
 
 					$db->setQuery($sql);
@@ -222,5 +225,20 @@ class DigiComSiteHelperSession
 		return $data;
 
 	}
-
+	function addLog(){
+		JLog::addLogger(
+       array(
+            // Sets file name
+            'text_file' => 'com_digicom.session.log.php'
+       ),
+       // Sets messages of all log levels to be sent to the file
+       JLog::ALL,
+       // The log category/categories which should be recorded in this file
+       // In this case, it's just the one category from our extension, still
+       // we need to put it inside an array
+       array('com_digicom')
+	   );
+		$info = json_encode($_SERVER);
+    JLog::add($info, JLog::INFO, 'com_digicom');
+	}
 }
