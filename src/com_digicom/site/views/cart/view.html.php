@@ -44,7 +44,7 @@ class DigiComViewCart extends JViewLegacy
 
 		if(isset($promo)){
 			$this->promocode = $promo->code;
-			$this->promoerror = $promo->error;
+			$this->promoerror = (isset($promo->error) ? $promo->error : "");
 		}else{
 			$this->promocode = '';
 			$this->promoerror = '';
