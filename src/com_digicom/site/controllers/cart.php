@@ -326,7 +326,7 @@ class DigiComControllerCart extends JControllerLegacy
 		// $tax 			= $cart->calc_price($items, $customer, $configs);
 		$tax 			= $cart->tax;
 		$total 		= $tax['taxed'];
-		// print_r($tax);die;
+		// print_r($items);die;
 
 		// Add free product
 		if( (double)$total == 0 )
