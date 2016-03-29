@@ -136,6 +136,7 @@ $k = 0;
 								for ($i = 0; $i < $n; $i++):
 									$prod = $order->products[$i];
 									if (!isset($prod->currency)) $prod->currency = $configs->get('currency','USD');
+									$price  = ($prod->amount_paid > 0 ? $prod->amount_paid : $prod->price);
 							?>
 								<tr class="row<?php echo $k;?> sectiontableentry<?php echo ($i%2 + 1);?>">
 									<td>
@@ -158,11 +159,11 @@ $k = 0;
 									</td>
 
 									<td style="text-align: right;">
-										<?php echo DigiComSiteHelperPrice::format_price($prod->price, $prod->currency, true, $configs);?>
+										<?php echo DigiComSiteHelperPrice::format_price($price, $prod->currency, true, $configs);?>
 									</td>
 								</tr>
 							<?php
-									$total += $prod->price;
+									$total += $price;
 									$k = 1 - $k;
 								endfor;
 							?>
