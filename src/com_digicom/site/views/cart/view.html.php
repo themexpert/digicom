@@ -21,7 +21,7 @@ class DigiComViewCart extends JViewLegacy
 		$this->Itemid = JRequest::getvar("Itemid", "0");
 
 		$this->customer = $this->get('Customer');
-
+		
 		$this->items = $model->getCartItems($this->customer, $this->configs);
 
 		$this->plugins = $this->get('PluginList');
@@ -37,8 +37,9 @@ class DigiComViewCart extends JViewLegacy
 
 		$this->discount = $disc;
 
-		$this->tax = $model->calc_price($this->items, $this->customer, $this->configs);
-		//print_r($this->tax);die;
+		// $this->tax = $model->calc_price($this->items, $this->customer, $this->configs);
+		$this->tax = $model->tax;
+		// print_r($this->tax);die;
 		$promo = $model->get_promo($this->customer , 1);
 
 		if(isset($promo)){
@@ -49,6 +50,12 @@ class DigiComViewCart extends JViewLegacy
 			$this->promoerror = '';
 		}
 
+		// as all the preparation has complete, lets trigger cart event
+		$this->event = new stdClass();
+		$dispatcher	= JEventDispatcher::getInstance();
+		$results = $dispatcher->trigger('onDigicomAfterDisplayCartItems', array('com_digicom.cart', &$this->items, &$this->tax, &$promo, &$this->customer));
+		$this->event->afterDisplayCartItems = trim(implode("\n", $results));
+		
 		$this->cat_url = $this->get('cat_url');
 
 		$template = new DigiComSiteHelperTemplate($this);
