@@ -174,6 +174,7 @@ class DigiComModelCart extends JModelItem
 
 	function getCartItems($customer, $configs)
 	{
+		$dispatcher	= JEventDispatcher::getInstance();
 
 		if(count($this->_items)){
 			return $this->_items;
@@ -219,13 +220,21 @@ class DigiComModelCart extends JModelItem
 
 		}
 
-
-		//return $this->_items = $items;
 		$this->_items = $items;
 
-		if(count($items) > 0){
+		// trigger digicom event for after prepare cart items
+		$dispatcher->trigger(
+			'onDigicomAfterPrepareCartItems', 
+			array('com_digicom.cart', &$items, &$this->customer)
+		);
+
+		if(count($items) > 0)
+		{
+			// we have items, now manupulate the price and tax variable
 			$this->calc_price($items, $customer, $configs);
-		}else{
+		}
+		else
+		{
 			$db->clear();
 			$sql = "update #__digicom_session set cart_details='' where sid='" . $customer->_sid . "'";
 			$db->setQuery($sql);
@@ -236,12 +245,24 @@ class DigiComModelCart extends JModelItem
 
 	}
 
-	function calc_price($items,$cust_info,$configs)
+	/**
+	 * calc_price method to calculate the discount, promocode
+	 *
+	 * @param   object  $items 
+	 * @param   object  $cust_info customer object from session helper with _sid
+	 * @param   object  $config digicom settings or config
+	 *
+	 * @return  array of payment finalize variable, and set $this->tax as global
+	 *
+	 * @since   1.0
+	 */		
+	function calc_price($items, $cust_info, $configs, $calculate = true)
 	{
 		if(empty($items)) return;
 		$db = JFactory::getDbo();
 		$user = JFactory::getUser();
 		$session = JFactory::getSession();
+		$dispatcher	= JEventDispatcher::getInstance();
 
 		if ( null != $configs->get('totaldigits','') ) {
 			$configs = $this->getInstance( "Config", "digicomModel" );
@@ -259,6 +280,7 @@ class DigiComModelCart extends JModelItem
 		$payprocess['currency'] = $configs->get('currency','USD');
 		$payprocess['promo'] = 0;
 		$payprocess['item_discount'] = 0;
+		
 		//--------------------------------------------------------
 		// Promo code
 		//--------------------------------------------------------
@@ -425,11 +447,16 @@ class DigiComModelCart extends JModelItem
 		$payprocess['discount_calculated'] = (isset($payprocess['discount_calculated']) ? $payprocess['discount_calculated'] : 0);
 		//$payprocess['taxed'] = DigiComSiteHelperPrice::format_price( $payprocess['taxed'], $payprocess['currency'], false, $configs ); //sprintf($price_format, $payprocess['taxed']);//." ".$payprocess['currency'];
 		$payprocess['type'] = 'TAX';
-
-		// print_r($payprocess);die;
-
-		$this->_tax = $payprocess;
-
+		if($calculate){
+			// trigger digicom event for after calculate cart price
+			$dispatcher->trigger(
+				'onDigicomAfterCalculateCartItems', 
+				array('com_digicom.cart', &$items, &$payprocess, &$this->customer)
+			);		
+			
+			$this->tax = $payprocess;
+			// print_r($payprocess);die;
+		}
 		return $payprocess;
 	}
 
@@ -560,6 +587,10 @@ class DigiComModelCart extends JModelItem
 				JFactory::getApplication()->enqueueMessage(JText::_('COM_DIGICOM_DISCOUNT_CODE_WRONG'),'warning');
 		}
 
+		// prepare table to fresh info
+		$properties = $promo_data->getProperties(1);
+		$promo_data = JArrayHelper::toObject($properties, 'JObject');
+		
 		return $this->promo_data = $promo_data;
 
 	}
@@ -975,7 +1006,8 @@ class DigiComModelCart extends JModelItem
 			$items = $cart->getCartItems( $customer, $configs );
 		}
 
-		$tax = $cart->calc_price( $items, $customer, $configs );
+		// $tax = $cart->calc_price( $items, $customer, $configs );
+		$tax = $cart->tax;
 
 		if ( $orderid == 0 && is_array( $cust_info ) && isset( $cust_info['cart'] ) && isset( $cust_info['cart']['orderid'] ) )
 			$orderid = $cust_info['cart']['orderid'];
@@ -1028,7 +1060,8 @@ class DigiComModelCart extends JModelItem
 			$items = $cart->getCartItems( $customer, $configs );
 		}
 
-		$tax = $cart->calc_price( $items, $customer, $configs );
+		// $tax = $cart->calc_price( $items, $customer, $configs );
+		$tax = $cart->tax;
 
 		//triggere email
 		$config = JFactory::getConfig();
@@ -1108,7 +1141,8 @@ class DigiComModelCart extends JModelItem
 		$customer = $this->loadCustomer( $sid );
 		$cart = $this->getInstance( "cart", "digicomModel" );
 		$items = $cart->getCartItems( $customer, $configs );
-		$tax = $cart->calc_price( $items, $customer, $configs );
+		// $tax = $cart->calc_price( $items, $customer, $configs );
+		$tax = $cart->tax;
 		$this->storeTransactionData( $items, -1, $tax, $sid );
 
 	}
