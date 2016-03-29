@@ -36,6 +36,8 @@ $user = JFactory::getUser();
 			action="<?php echo JRoute::_("index.php?option=com_digicom&view=cart"); ?>">
 
 			<?php echo $this->loadTemplate('items');?>
+			
+			<?php echo $this->event->afterDisplayCartItems; ?>
 
 			<?php echo $this->loadTemplate('price');?>
 
