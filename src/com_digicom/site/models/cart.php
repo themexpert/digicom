@@ -214,9 +214,10 @@ class DigiComModelCart extends JModelItem
 			$item->discount = 0;
 			$item->currency = $configs->get('currency','USD');
 			$item->subtotal = $item->price * $item->quantity;
-
-			$item->price_formated = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
-			$item->subtotal_formated = DigiComSiteHelperPrice::format_price( $item->subtotal, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
+			$price_formated = ($item->price - $item->discount);
+			$item->price = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); 
+			$item->price_formated = DigiComSiteHelperPrice::format_price( $price_formated, $item->currency, false, $configs ); 
+			$item->subtotal_formated = DigiComSiteHelperPrice::format_price( $item->subtotal, $item->currency, false, $configs ); 
 
 		}
 
@@ -1254,12 +1255,13 @@ class DigiComModelCart extends JModelItem
 		// start foreach
 		foreach($items as $key=>$item)
 		{
-			$price = (isset($item->discount) && ($item->discount > 0)) ? $item->price_formated : $item->price ;
+			$price 				= $item->price;
+			$amount_paid 	= $item->price_formated;
 			$date = JFactory::getDate();
 			$purchase_date = $date->toSql();
 			$package_type = (!empty($item->bundle_source) ? $item->bundle_source : 'reguler');
-			$sql = "insert into #__digicom_orders_details(userid, productid,quantity, orderid, price, published, package_type, purchase_date) "
-					. "values ('{$user_id}', '{$item->item_id}', '{$item->quantity}', '".$orderid."', '{$price}', ".$published.", '".$package_type."', '".$purchase_date."')";
+			$sql = "insert into #__digicom_orders_details(userid, productid,quantity, orderid, price, amount_paid, published, package_type, purchase_date) "
+					. "values ('{$user_id}', '{$item->item_id}', '{$item->quantity}', '{$orderid}', '{$price}', '{$amount_paid}', ".$published.", '{$package_type}', '{$purchase_date}')";
 			//echo $sql;die;
 			$database->setQuery($sql);
 			$database->query();
@@ -1291,7 +1293,7 @@ class DigiComModelCart extends JModelItem
 		$customer = $this->customer;
 		$db 	= JFactory::getDbo();
 		$sql 	= 'SELECT `p`.*, ';
-		$sql 	.= '`od`.`price`, `od`.`quantity` ';
+		$sql 	.= '`od`.`price`, `od`.`amount_paid`, `od`.`quantity` ';
 		$sql 	.= 'FROM `#__digicom_products` AS `p` ';
 		$sql 	.= 'INNER JOIN `#__digicom_orders_details` AS `od` ON (`od`.`productid` = `p`.`id`) ';
 		$sql 	.= 'WHERE `orderid` ='.$order_id;
@@ -1307,9 +1309,10 @@ class DigiComModelCart extends JModelItem
 			$item->currency = $configs->get('currency','USD');
 			$item->subtotal = $item->price * $item->quantity;
 
-			$item->price_formated = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
-			$item->subtotal_formated = DigiComSiteHelperPrice::format_price( $item->subtotal, $item->currency, false, $configs ); //sprintf( $price_format, $item->subtotal );
-
+			$item->price = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); 
+			$item->price_formated = DigiComSiteHelperPrice::format_price( $item->amount_paid, $item->currency, false, $configs ); 
+			$item->subtotal_formated = DigiComSiteHelperPrice::format_price( $item->subtotal, $item->currency, false, $configs ); 
+			
 			unset($item->fulltext);
 		}
 
