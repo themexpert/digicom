@@ -145,4 +145,5 @@ gulp.task('watch:' + baseTask + ':images', function() {
 
 gulp.task('watch:' + baseTask + ':tmpless', function(cb) {
 	gulp.watch(extPath  + '/com_digicom/site/templates/default/less/*.less', ['less:' + baseTask + ':tmpless', 'copy:' + baseTask + ':tmpless', browserSync.reload]);
+	gulp.watch(extPath  + '/com_digicom/media/js/*.js', ['copy:' + baseTask + ':js', browserSync.reload]);
 });
