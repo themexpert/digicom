@@ -19,13 +19,20 @@ class DigiComHelperEmail {
         if ( $orderid < 1 )
             return;
         $db = JFactory::getDBO();
-        $order = JTable::getInstance( 'Order','table' );
-        $order->load( $orderid );
+        $orderTable = JTable::getInstance( 'Order','table' );
+        $orderTable->load( $orderid );
+
+        $properties = $orderTable->getProperties(1);
+        $order = JArrayHelper::toObject($properties, 'JObject');
 
         $configs = JComponentHelper::getComponent('com_digicom')->params;
 
-        $cust_info = JTable::getInstance( 'Customer','table' );
-        $cust_info->load( $order->userid );
+        $custTable = JTable::getInstance( 'Customer','table' );
+        $custTable->load( $order->userid );
+        
+        $properties = $custTable->getProperties(1);
+        $cust_info = JArrayHelper::toObject($properties, 'JObject');
+
         $cust_info->username = JFactory::getUser($order->userid)->username;
         $my = $cust_info;
 
@@ -84,19 +91,15 @@ class DigiComHelperEmail {
         //echo $filePath;die;
         if (file_exists($filePath))
         {
-            $emailbody = file_get_contents($filePath);
+            // $emailbody = file_get_contents($filePath);
+            $emailbodypath = $filePath;
         }
         else
         {
             $filePath = JPath::clean($client->path . $path . '/'.$filename);
-            $emailbody = file_get_contents($filePath);
+            // $emailbody = file_get_contents($filePath);
+            $emailbodypath = $filePath;
         }
-
-        //-----------------------------------------------------------------------
-
-        $message = $emailbody;
-        $subject = $Subject;
-        $mes = new stdClass();
 
         $promo = new stdClass(); //$cart->get_promo($cust_info);
         $promo->id = $order->promocodeid;
@@ -117,8 +120,35 @@ class DigiComHelperEmail {
         $sitename = (trim( $configs->get('store_name','DigiCom Store') ) != '') ? $configs->get('store_name','DigiCom Store') : $app->getCfg( 'sitename' );
         $siteurl = (trim( $configs->get('store_url',JURI::root()) ) != '') ? $configs->get('store_url',JURI::root()) : JURI::root();
 
-        $message = str_replace( "[SITENAME]", $sitename, $message );
+        $product_list = '';
+        $sql = "select od.*, p.name from #__digicom_orders_details od, #__digicom_products p where od.productid=p.id and od.orderid=" . $orderid;
+        $db->setQuery( $sql );
+        $items = $db->loadObjectList();
 
+        $product_list = "";
+        foreach ( $items as $item ) {
+            $product_list .= $item->quantity . " - " . $item->name . '<br />';
+        }
+
+        // prepare the emailbody
+        //-----------------------------------------------------------
+        // accecable variables from email template:
+        // $items = products object
+        // $promo = promo object
+        // $order
+        // $cust_info
+        // $amount
+        ob_start();
+        include_once $emailbodypath;
+        $emailbody = ob_get_contents();
+        ob_end_clean();
+        print_r($emailbody);die;
+
+        $message = $emailbody;
+        $subject = $Subject;
+
+        // now start margin
+        $message = str_replace( "[SITENAME]", $sitename, $message );
         $message = str_replace("[EMAIL_TYPE]", $emailType, $message);
         $message = str_replace("[EMAIL_HEADER]", $heading, $message);
         $message = str_replace("[HEADER_IMAGE]", $email_header_image, $message);
@@ -126,7 +156,6 @@ class DigiComHelperEmail {
         $message = str_replace( "../%5BSITEURL%5D", $siteurl, $message );
         $message = str_replace( "%5BSITEURL%5D", $siteurl, $message );
         $message = str_replace( "[SITEURL]", $siteurl, $message );
-
 
         $message = str_replace( "[CUSTOMER_USER_NAME]", $my->username, $message );
         $message = str_replace( "[CUSTOMER_NAME]", $my->name, $message );
@@ -143,19 +172,15 @@ class DigiComHelperEmail {
         $message = str_replace( "[STORE_PHONE]", $phone, $message );
         $message = str_replace( "[FOOTER_TEXT]", $email_footer, $message );
 
-        $displayed = array();
-        $product_list = '';
-
-        $sql = "select od.*, p.name from #__digicom_orders_details od, #__digicom_products p where od.productid=p.id and od.orderid=" . $orderid;
-        $db->setQuery( $sql );
-        $items = $db->loadObjectList();
-
-        $product_list = "";
-        foreach ( $items as $item ) {
-            $product_list .= $item->quantity . " - " . $item->name . '<br />';
-        }
-
         $message = str_replace( "[PRODUCTS]", $product_list, $message );
+        
+        $message = str_replace( "{site_title}", $sitename, $message );
+        $message = str_replace( "{order_number}", $orderid, $message );
+        $message = str_replace( "{order_date}", date( $configs->get('time_format','d-m-Y'), $timestamp ), $message );
+        $message = str_replace( "[BASE_COLOR]", $basecolor, $message );
+        $message = str_replace( "[BASE_BG_COLOR]", $basebgcolor, $message );
+        $message = str_replace( "[TMPL_COLOR]", $tmplcolor, $message );
+        $message = str_replace( "[TMPL_BG_COLOR]", $tmplbgcolor, $message );
 
         //subject
         $subject = str_replace( "[SITENAME]", $sitename, $subject );
@@ -166,7 +191,6 @@ class DigiComHelperEmail {
         $subject = str_replace( "[CUSTOMER_USER_NAME]", $my->username, $subject );
         $subject = str_replace( "[CUSTOMER_NAME]", $my->name, $subject );
         $subject = str_replace( "[CUSTOMER_EMAIL]", $my->email, $subject );
-
 
         $subject = str_replace( "[ORDER_DATE]", date( $configs->get('time_format','DD-MM-YYYY'), $timestamp ), $subject );
         $subject = str_replace( "[ORDER_ID]", $orderid, $subject );
@@ -179,10 +203,6 @@ class DigiComHelperEmail {
         $subject = str_replace( "{order_number}", $orderid, $subject );
         $subject = str_replace( "{order_date}", date( $configs->get('time_format','d-m-Y'), $timestamp ), $subject );
 
-        $message = str_replace( "{site_title}", $sitename, $message );
-        $message = str_replace( "{order_number}", $orderid, $message );
-        $message = str_replace( "{order_date}", date( $configs->get('time_format','d-m-Y'), $timestamp ), $message );
-
         $subject = str_replace( "[PRODUCTS]", $product_list, $subject );
 
         //replace styles
@@ -190,14 +210,11 @@ class DigiComHelperEmail {
         $basebgcolor = $email_settings->email_bg_color; //
         $tmplcolor = $email_settings->email_body_color; //
         $tmplbgcolor = $email_settings->email_body_bg_color; //
-        $message = str_replace( "[BASE_COLOR]", $basecolor, $message );
-        $message = str_replace( "[BASE_BG_COLOR]", $basebgcolor, $message );
-        $message = str_replace( "[TMPL_COLOR]", $tmplcolor, $message );
-        $message = str_replace( "[TMPL_BG_COLOR]", $tmplbgcolor, $message );
+       
 
         $subject = html_entity_decode( $subject, ENT_QUOTES );
         $message = html_entity_decode( $message, ENT_QUOTES );
-
+        // echo $message;die;
         // Send email to user
         //global $mosConfig_mailfrom, $mosConfig_fromname, $configs;
 

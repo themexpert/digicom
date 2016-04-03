@@ -52,8 +52,11 @@ class DigiComSiteHelperEmail {
 		$recipients 	= $emailinfo->recipients;
 		$heading 			= $emailinfo->heading;//jform[email_settings][heading]
 
-		$order 			= JTable::getInstance( "Order" ,"Table");
-		$order->load( $orderid );
+		$orderTable 			= JTable::getInstance( "Order" ,"Table");
+		$orderTable->load( $orderid );
+
+		$properties = $orderTable->getProperties(1);
+		$order = JArrayHelper::toObject($properties, 'JObject');
 
 		// Replace all variables in template
 		$uri 			= JURI::getInstance();
@@ -122,19 +125,26 @@ class DigiComSiteHelperEmail {
 
 		if (file_exists($filePath))
 		{
-			$emailbody = file_get_contents($filePath);
+			// $emailbody = file_get_contents($filePath);
+			$emailbodypath = $filePath;
 		}
 		else
 		{
 			$filePath  = JPath::clean($client->path . $path . '/'.$filename);
-			$emailbody = file_get_contents($filePath);
+			// $emailbody = file_get_contents($filePath);
+			$emailbodypath = $filePath;
 		}
 
-		$query = "select company from #__digicom_customers where id=" . $my->id;
+		$query = "select * from #__digicom_customers where id=" . $my->id;
 		$db->setQuery( $query );
 		$customerinfo = $db->loadObject();
 		$company = (isset($customerinfo->company) ? $customerinfo->company : '');
 
+		// prepare product list
+		// $layout = new JLayoutFile('email.product_list');
+		// $product_list_new = $layout->render(array('products'=>$items));
+		// print_r($product_list_new);die;
+		// echo 4;die;
 		$displayed = array();
 		$product_list = '';
 		foreach ( $items as $i => $item ) {
@@ -144,7 +154,18 @@ class DigiComSiteHelperEmail {
 			$displayed[] = $item->name;
 		}
 		$order_date = date( $configs->get('time_format','d-m-Y'), strtotime($timestamp) );
-		//-----------------------------------------------------------------------
+		
+		// prepare the emailbody
+    //-----------------------------------------------------------
+    // accecable variables from email template:
+    // $items = products object
+    // $order
+    // $customerinfo
+    ob_start();
+    include_once $emailbodypath;
+    $emailbody = ob_get_contents();
+    ob_end_clean();
+    // print_r($emailbody);die;
 
 		$message = $emailbody;
 		$subject = $Subject;
@@ -183,9 +204,9 @@ class DigiComSiteHelperEmail {
 		$message 			= str_replace( "[BASE_BG_COLOR]", $basebgcolor, $message );
 		$message 			= str_replace( "[TMPL_COLOR]", $tmplcolor, $message );
 		$message 			= str_replace( "[TMPL_BG_COLOR]", $tmplbgcolor, $message );
-
-		//subject
 		$message = str_replace("[EMAIL_TYPE]", $emailType, $message);
+		
+		//subject
 		$subject = str_replace( "[SITENAME]", $sitename, $subject );
 		$subject = str_replace("[CUSTOMER_COMPANY_NAME]", $company, $subject);
 		$subject = str_replace( "../%5BSITEURL%5D", $siteurl, $subject );
