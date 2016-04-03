@@ -353,11 +353,11 @@ class DigiComControllerCart extends JControllerLegacy
 		{
 			// add products not free
 			$db = JFactory::getDBO();
-			$sql = "update #__digicom_session set transaction_details='" . base64_encode(serialize($customer)) . "' where sid=" . $customer->_sid;
+			$sql = "update #__digicom_session set transaction_details='" . base64_encode(serialize($customer)) . "' where id=" . $customer->_sid;
 			$db->setQuery($sql);
 			$db->query();
 
-			$sql = "select processor from #__digicom_session where sid='".$this->_customer->_sid."'";
+			$sql = "select processor from #__digicom_session where id='".$this->_customer->_sid."'";
 			$db->setQuery($sql);
 			$prosessor = $db->loadResult();
 
