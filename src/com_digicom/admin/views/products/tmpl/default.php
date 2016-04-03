@@ -81,7 +81,7 @@ JFactory::getDocument()->addScriptDeclaration('
 
 		<div id="editcell" >
 
-			<table class="adminlist table table-striped table-hover" id="productList">
+			<table class="adminlist table table-striped table-hover table-responsive" id="productList">
 
 				<thead>
 
@@ -92,7 +92,7 @@ JFactory::getDocument()->addScriptDeclaration('
 						<th width="1%">
 							<span><?php echo JHtml::_('grid.checkall'); ?></span>
 						</th>
-						<th width="1%" style="min-width:55px">
+						<th class="nowrap hidden-phone" width="10%">
 							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_ACTION', 'published', $listDirn, $listOrder); ?>
 						</th>
 						<th class="nowrap hidden-phone" width="10%">
@@ -110,7 +110,7 @@ JFactory::getDocument()->addScriptDeclaration('
 						<th width="1%" class="nowrap hidden-phone">
 							<?php echo JText::_('COM_DIGICOM_PRODUCTS_VALIDITY'); ?>
 						</th>
-						<th width="10%">
+						<th class="center hidden-phone">
 							<?php echo JHtml::_('grid.sort', 'COM_DIGICOM_PRODUCTS_STOCK', 'hide_public', $listDirn, $listOrder); ?>
 						</th>
 						<th width="10%" class="nowrap hidden-phone hide-mediam">
@@ -159,7 +159,7 @@ JFactory::getDocument()->addScriptDeclaration('
 						<td class="center">
 							<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 						</td>
-						<td class="center">
+						<th class="center hidden-phone">
 							<div class="btn-group">
 								<?php //echo $checked; ?>
 
@@ -235,7 +235,7 @@ JFactory::getDocument()->addScriptDeclaration('
 						<td class="small hidden-phone">
 								<?php echo DigiComSiteHelperPrice::getProductValidityPeriod($item); ?>
 						</td>
-						<td align="center" style="text-align: center; ">
+						<th class="center hidden-phone">
 							<?php echo ($item->hide_public ? '<span class="label label-important">' . JText::_("JNO") . '</span>' : '<span class="label label-success">' . JText::_("JYES") . '</span>' ); ?>
 						</td>
 						<td class="small hidden-phone hide-mediam">

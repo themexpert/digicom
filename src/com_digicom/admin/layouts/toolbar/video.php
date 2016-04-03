@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 //$displayData['link']
 ?>
-<a href="#videoTutorialModal" role="button" class="btn btn-small" data-toggle="modal">
+<a href="#videoTutorialModal" role="button" class="btn btn-small btn-success" data-toggle="modal">
 	<span class="icon-video"></span>
 	<?php echo JText::_('COM_DIGICOM_GUIDE_VIDEO'); ?>
 </a>

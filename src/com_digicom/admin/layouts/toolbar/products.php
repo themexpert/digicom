@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 JHtml::_('bootstrap.popover');
 ?>
 <div class="btn-group">
-  <a href="#" class="newproduct btn btn-small btn-success" data-toggle="dropdown" aria-expanded="false">
+  <a href="#" class="newproduct btn btn-small btn-primary" data-toggle="dropdown" aria-expanded="false">
 	<span class="icon-cart"></span>
 	<?php echo JText::_('COM_DIGICOM_PRODUCTS_TOOLBAR_ADD_NEW'); ?>
 	<span class="caret"></span>
