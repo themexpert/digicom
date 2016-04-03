@@ -91,7 +91,7 @@ class DigiComSiteHelperSession
 				$sid = $db->insertId();
 				$reg->set($digicomid, $sid);
 
-				$this->addLog();
+				// $this->addLog();
 
 			}
 			else{
