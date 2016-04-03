@@ -8,15 +8,10 @@
  */
 
 defined('_JEXEC') or die;
-?>
-
-<?php 
 //----------------------------------------------
 // Processing Order Html Template 
 //----------------------------------------------
 ?>
-
-
 <!DOCTYPE html>
 <html>
    <head>

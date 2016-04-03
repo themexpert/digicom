@@ -8,9 +8,6 @@
  */
 
 defined('_JEXEC') or die;
-?>
-
-<?php 
 //----------------------------------------------
 // Processing Order Raw Template , text version
 //----------------------------------------------

@@ -8,14 +8,11 @@
  */
 
 defined('_JEXEC') or die;
-?>
 
-<?php
 //----------------------------------------------
 // Refund Order Raw Template , text version
 //----------------------------------------------
 ?>
-
 = [EMAIL_HEADER] =
 
 

@@ -12,8 +12,8 @@ defined('_JEXEC') or die;
 //----------------------------------------------
 // New Order Html Template
 //----------------------------------------------
+// print_r($order);die;
 ?>
-
 <!DOCTYPE html>
 <html>
    <head>
