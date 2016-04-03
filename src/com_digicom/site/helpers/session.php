@@ -46,6 +46,7 @@ class DigiComSiteHelperSession
 		$db 				= JFactory::getDBO();
 		$my 				= JFactory::getUser();
 		$reg 				= JFactory::getSession();
+		$sessionid  = $reg->getId();	
 		$dispatcher	= JDispatcher::getInstance();
 		$digicomid 	= 'digicomid';
 		$sid 				= $reg->get($digicomid, 0);
@@ -56,7 +57,7 @@ class DigiComSiteHelperSession
 
 		if(empty($this->oldsids) && !$sid){
 			// first we will remove all session n cart info from db that passed 24 hours
-			$sql = "SELECT GROUP_CONCAT(sid) as sid from #__digicom_session where create_time< now() - INTERVAL 3 DAY";
+			$sql = "SELECT GROUP_CONCAT(id) as sid from #__digicom_session where create_time< now() - INTERVAL 3 DAY";
 			$db->setQuery($sql);
 
 			$oldsids = $db->loadObject();
@@ -68,83 +69,105 @@ class DigiComSiteHelperSession
 			$db->setQuery($sql);
 			$db->execute();
 
-			$sql = "delete from #__digicom_session where `sid` in (".$this->oldsids.")";
+			$sql = "delete from #__digicom_session where `id` in (".$this->oldsids.")";
 			$db->setQuery($sql);
 			$db->execute();
 		}
-		$session = JFactory::getSession();
-		$sessionid = $session->getId();	
-
+		
 		//as we already removed all 24h old sessions, we need to check if we have current one or not
 		if (!$sid) {
+			// check with jsession id
+			// first we will remove all session n cart info from db that passed 24 hours
+			$sql = "SELECT * from #__digicom_session where `sid` = '" . $sessionid . "'";
+			$db->setQuery($sql);
+			$this->digisession = $db->loadObject();
 			// so we dont have any digicomid, we need to create one
 			// but before that lets checck in session table if we have with user id
-			if(!$my->id){
+			
+			// no session no user
+			if(!isset($this->digisession->id) && !$my->id)
+			{
 				// we dont have session id, userid
-				$sql = "INSERT INTO #__digicom_session (`uid`,`create_time`, `cart_details`, `transaction_details`, `shipping_details`, `key`)
-					VALUES
-					('".$my->id."',now(), '', '', '', '".$sessionid."')
-				 ";
+				$sql = "INSERT INTO #__digicom_session 
+					(`sid`, `uid`,`create_time`, `cart_details`, `transaction_details`, `shipping_details`)
+					VALUES ('".$sessionid."','".$my->id."',now(), '', '', '')";
 
 				$db->setQuery($sql);
 				$db->execute();
 				$sid = $db->insertId();
+				// $sid = $sessionid;
 				$reg->set($digicomid, $sid);
 
 				// $this->addLog();
-
 			}
-			else{
+			// no session but has user
+			elseif(!isset($this->digisession->id) && $my->id)
+			{
+				//we dont have session id but have userid
+				$sql = "select * from #__digicom_session where uid='".$my->id."'";
+				$db->setQuery($sql);
+				$info = $db->loadObject();
+				if($info->uid)
+				{
+					$this->digisession = $info;
 
-				if(empty($this->digisession)){
-					//we dont have session id but have userid
-					$sql = "select * from #__digicom_session where uid='".$my->id."'";
-					$db->setQuery($sql);
-					$this->digisession = $db->loadObject();
-				}
-
-				if(isset($this->digisession->uid) &&  $this->digisession->uid != 0){
 					// user have previous session id
-					$sid = $this->digisession->sid;
+					$sid = $this->digisession->id;
 					$reg->set($digicomid, $sid);
 
 					// we have session id, so update the time
 					$sql = "UPDATE #__digicom_session SET `create_time`= now()";
 					$db->setQuery($sql);
 					$db->execute();
-				}else{
-
-					//user dosent have anyting before pending
-					$sql = "INSERT INTO #__digicom_session (`uid`,`create_time`, `cart_details`, `transaction_details`, `shipping_details`, `key`)
-						VALUES
-						('".$my->id."',now(), '', '', '', '".$sessionid."')
-					 ";
+				}
+				else
+				{
+					// we dont have session id, userid
+					$sql = "INSERT INTO #__digicom_session 
+						(`sid`, `uid`,`create_time`, `cart_details`, `transaction_details`, `shipping_details`)
+						VALUES ('".$sessionid."','".$my->id."',now(), '', '', '')";
 
 					$db->setQuery($sql);
 					$db->execute();
 					$sid = $db->insertId();
+					// $sid = $sessionid;
 					$reg->set($digicomid, $sid);
-
 				}
-
-
 			}
 
 
 		} elseif($my->id != 0) {
+			// echo $my->id;die;
 			// we have sessionid  $sid
 			// check if has userid
 			//i'm loged in with session id
-			$sql = "select * from #__digicom_session where sid='".$sid."'";
+			$sql = "select * from #__digicom_session where id='".$sid."'";
 			$db->setQuery($sql);
 			$this->digisession = $db->loadObject();
-
+			// print_r($this->digisession);die;
 			if(isset($this->digisession) && !$this->digisession->uid){
 				//no userid
-				$sql = "UPDATE #__digicom_session SET `uid`='".$my->id."' WHERE sid='".$sid."'";
+				$sql = "UPDATE #__digicom_session SET `uid`='".$my->id."' WHERE id='".$sid."'";
 				$db->setQuery($sql);
 				$db->execute();
 				$this->digisession->uid = $my->id;
+
+				$sql = "SELECT GROUP_CONCAT(id) as sid from #__digicom_session where uid='".$my->id."' and id != '".$sid."'";
+				$db->setQuery($sql);
+				$oldids = $db->loadObject();
+				$oldidslist = rtrim($oldids->sid, ',');
+				
+				if(!empty($oldidslist))
+				{
+					$sql = "delete from #__digicom_cart where `sid` in (".$oldidslist.")";
+					$db->setQuery($sql);
+					$db->execute();
+
+					$sql = "delete from #__digicom_session where `id` in (".$oldidslist.")";
+					$db->setQuery($sql);
+					$db->execute();
+				}
+
 			}
 
 		}
@@ -164,8 +187,6 @@ class DigiComSiteHelperSession
 			// update customer info if re-registered as customer
 			if($table->id != $this->_user->id)
 			{
-
-
 				$query = "UPDATE `#__digicom_customers` SET `id`=".$this->_user->id." WHERE `email`='" . $this->_user->email."'";
 				$db->setQuery( $query );
 				$db->execute();
@@ -212,7 +233,7 @@ class DigiComSiteHelperSession
 		// return null of no session id $_sid
 		if (empty($this->_sid) || $this->_sid < 1) return null;
 		$db = JFactory::getDBO();
-		$sql = "select transaction_details from #__digicom_session where sid=".$this->_sid;
+		$sql = "select transaction_details from #__digicom_session where id=".$this->_sid;
 		$db->setQuery($sql);
 		$data = $db->loadResult();
 		$data = unserialize(base64_decode($data));
