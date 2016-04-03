@@ -418,13 +418,12 @@ jQuery(document).ready(function() {
       var item = jQuery(this);
       changeStatelist(item);
     });
-
+    checkPosition();
 });
 jQuery(document).load(jQuery(window).bind("resize", checkPosition));
-
 function checkPosition()
 {
-    if(jQuery(window).width() < 767)
+    if(jQuery(window).width() < 769)
     {
         jQuery("body").addClass("sidebar-collapse");
     }

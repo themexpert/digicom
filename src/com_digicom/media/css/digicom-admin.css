@@ -298,7 +298,7 @@ body.com_digicom header.header {
 body.com_digicom .subhead-collapse {
   position: relative;
   z-index: 11;
-  height: 40px !important;
+  height: 40px;
   margin: 0;
 }
 body.com_digicom .subhead {
@@ -320,6 +320,8 @@ body.com_digicom .subhead .btn-toolbar #toolbar-settings {
 body.com_digicom .subhead .btn-toolbar #toolbar-title {
   float: left;
   margin-left: 0;
+  min-width: 170px;
+  text-align: left;
 }
 body.com_digicom .subhead .btn-toolbar #toolbar-title h3 {
   margin: 0;
@@ -343,6 +345,22 @@ body.com_digicom .subhead .btn-toolbar .btn {
 body.com_digicom .subhead .btn-toolbar .btn:hover,
 body.com_digicom .subhead .btn-toolbar .btn:focus {
   background: rgba(0, 0, 0, 0.2);
+  outline: none;
+}
+body.com_digicom .subhead .btn-toolbar .btn.btn-success {
+  background: #1669bb;
+}
+body.com_digicom .subhead .btn-toolbar .btn.btn-success:hover,
+body.com_digicom .subhead .btn-toolbar .btn.btn-success:focus {
+  background: #11508e;
+  outline: none;
+}
+body.com_digicom .subhead .btn-toolbar .btn.btn-primary {
+  background: #11508e;
+}
+body.com_digicom .subhead .btn-toolbar .btn.btn-primary:hover,
+body.com_digicom .subhead .btn-toolbar .btn.btn-primary:focus {
+  background: #0b3660;
   outline: none;
 }
 body.com_digicom .subhead .btn-toolbar [class^="icon-"],
@@ -736,6 +754,7 @@ body.layout-dgform #j-main-container .form-inline .controls {
 @media (max-width: 767px) {
   body.com_digicom .subhead-collapse {
     position: static;
+    height: 0px;
   }
   body.com_digicom #j-sidebar-container {
     position: absolute;
@@ -745,10 +764,39 @@ body.layout-dgform #j-main-container .form-inline .controls {
     width: 100%;
     margin: 0px;
   }
+  body.com_digicom #j-sidebar-container {
+    display: none;
+  }
+  body.com_digicom.sidebar-collapse #j-main-container {
+    margin-left: 0px;
+  }
+  body.com_digicom header.header {
+    display: block;
+  }
+  body.com_digicom .subhead {
+    background: transparent;
+  }
+  body.com_digicom .subhead #toolbar-title {
+    display: none;
+  }
+  body.com_digicom .subhead .btn-toolbar .btn-wrapper {
+    margin: 0px 10px 5px 10px;
+    display: inline-block;
+    text-align: left;
+    float: left !important;
+  }
+  body.com_digicom .subhead .btn-toolbar .btn-wrapper .btn {
+    width: auto !important;
+    background: #fff;
+    color: inherit;
+  }
+  body.com_digicom .subhead .btn-toolbar .btn-wrapper#toolbar-settings {
+    float: none;
+  }
 }
 /* Sidebar right styling */
 #toggle_settings_wrap {
-  background: #1976d2;
+  background: rgba(25, 118, 210, 0.9);
   color: #c9d1dd;
   padding: 20px;
   position: fixed;

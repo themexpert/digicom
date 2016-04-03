@@ -2,7 +2,8 @@ header.header {display: none;}
 .subhead-collapse {
   position: relative;
   z-index: 11;
-  height:40px !important;
+  // height:40px !important;
+  height:40px;
   margin: 0;
 }
 .subhead {
@@ -19,6 +20,8 @@ header.header {display: none;}
     #toolbar-title {
       float: left;
       margin-left: 0;
+      min-width: 170px;
+      text-align: left;
       h3 {
         margin: 0;
         line-height: 40px;
@@ -41,6 +44,23 @@ header.header {display: none;}
         background: rgba(0,0,0,0.2);
         outline: none;
       }
+      &.btn-success{
+        background: darken(@btn-primary, 5%);
+        &:hover,
+        &:focus{
+          background: darken(@btn-primary, 15%);
+          outline: none;
+        }
+      }
+      &.btn-primary{
+        background: darken(@btn-primary, 15%);
+        &:hover,
+        &:focus{
+          background: darken(@btn-primary, 25%);
+          outline: none;
+        }
+      }
+      
     }
     [class^="icon-"], [class*=" icon-"]{
       vertical-align: middle; margin-right: 0;

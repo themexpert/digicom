@@ -313,6 +313,7 @@ body.layout-dgform {
 
 		.subhead-collapse {
 			position: static;
+			height: 0px;
 		}
 		#j-sidebar-container{
       position: absolute;
@@ -322,12 +323,43 @@ body.layout-dgform {
 			width: 100%;
 			margin: 0px;
 		}
+		// test
+		#j-sidebar-container{
+			display: none;
+		}
+		&.sidebar-collapse #j-main-container{
+	    margin-left: 0px;
+		}
+		header.header{
+			display: block;
+		}
+		.subhead{
+			background: transparent;
+			#toolbar-title{
+				display: none;
+			}
+			
+			.btn-toolbar .btn-wrapper{
+				margin: 0px 10px 5px 10px;
+		    display: inline-block;
+    		text-align: left;
+		    float: left !important;
+				.btn{
+					width: auto !important;
+			    background: #fff;
+    			color: inherit;
+				}
+				&#toolbar-settings{
+					float: none
+				}
+			}
+		}
 	}
 }
 
 /* Sidebar right styling */
 #toggle_settings_wrap {
-	background: @primary-blue;
+	background: fade(@primary-blue, 90%);
 	color: @sidebar-text-color;
 	padding: 20px;
 	position: fixed;
