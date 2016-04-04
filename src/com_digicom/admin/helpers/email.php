@@ -142,7 +142,7 @@ class DigiComHelperEmail {
         include_once $emailbodypath;
         $emailbody = ob_get_contents();
         ob_end_clean();
-        print_r($emailbody);die;
+        // print_r($emailbody);die;
 
         $message = $emailbody;
         $subject = $Subject;
