@@ -76,6 +76,9 @@ class DigiComSiteHelperSession
 		
 		//as we already removed all 24h old sessions, we need to check if we have current one or not
 		if (!$sid) {
+			//test code to verify old sessions
+			//JSession::hasToken($tCheck, $forceExpire = true)
+
 			// check with jsession id
 			// first we will remove all session n cart info from db that passed 24 hours
 			$sql = "SELECT * from #__digicom_session where `sid` = '" . $sessionid . "'";
