@@ -48,7 +48,15 @@ $grid = 12/$column;
 					<div class="col-md-<?php echo $grid ?>">
 						<div class="thumbnail">
 							<?php if($item->getParams()->get('image')) : ?>
+								<?php if ($this->params->get('link_cat_image') == 1) :?>
+									<a href="<?php echo JRoute::_(DigiComSiteHelperRoute::getCategoryRoute($item->id));?>">
+								<?php endif; ?>
+					
 								<img src="<?php echo $item->getParams()->get('image'); ?>" alt="<?php echo htmlspecialchars($item->getParams()->get('image_alt')); ?>" />
+
+								<?php if ($this->params->get('link_cat_image') == 1) :?>
+									</a>
+								<?php endif; ?>
 							<?php endif; ?>
 							<div class="caption">
 								<h3 class="dc-cat-title">
