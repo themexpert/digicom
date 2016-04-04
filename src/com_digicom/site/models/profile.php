@@ -327,7 +327,7 @@ class DigicomModelProfile extends JModelForm
 		{
 			$model = new UsersModelUser;
 
-			$twoFactorMethod = $data['twofactor']['method'];
+			$twoFactorMethod = (isset($data['twofactor']['method']) ? $data['twofactor']['method'] : 'none');
 
 			// Get the current One Time Password (two factor auth) configuration
 			$otpConfig = $model->getOtpConfig($userId);
