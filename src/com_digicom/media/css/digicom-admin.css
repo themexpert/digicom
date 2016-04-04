@@ -764,6 +764,10 @@ body.layout-dgform #j-main-container .form-inline .controls {
     width: 100%;
     margin: 0px;
   }
+  body.com_digicom #j-main-container .dg-alert a.pull-right {
+    float: none;
+    margin-top: 10px;
+  }
   body.com_digicom #j-sidebar-container {
     display: none;
   }
