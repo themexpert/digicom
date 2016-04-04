@@ -8,9 +8,11 @@
  */
 
 defined('_JEXEC') or die;
-
+$items = array();
 $column = $this->category->params->get('category_cols', 3);
-$items = array_chunk($this->items, $column);
+if(count($this->items)){
+	$items = array_chunk($this->items, $column);
+}
 $grid = 12/$column;
 ?>
 <div id="digicom" class="dc dc-category">
@@ -71,6 +73,7 @@ $grid = 12/$column;
 	<?php endif;?>
 
 	<div class="dc-items" data-digicom-items>
+	<?php if(count($items)): ?>
 		<?php foreach($items as $row) :?>
 		<div class="row">
 			<?php foreach($row as $item) :?>
@@ -83,7 +86,8 @@ $grid = 12/$column;
 				</div>
 			<?php endforeach;?>
 		</div>
-		<?php endforeach;?>
+		<?php endforeach; ?>
+	<?php endif;?>
 	</div>
 
 	<div class="dc-pagination pagination">
