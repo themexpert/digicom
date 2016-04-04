@@ -8,6 +8,7 @@
  */
 
 defined('_JEXEC') or die;
+use Joomla\Registry\Registry;
 
 class DigiComSiteHelperEmail {
 
@@ -42,15 +43,17 @@ class DigiComSiteHelperEmail {
 		$phone 			= $configs->get('phone');
 		$address 		= $configs->get('address');
 
-		$emailinfo 		= $configs->get($type,'new_order');
+		$configinfo = $configs->get($type,'new_order');
+		$emailinfo 	= new Registry;
+		$emailinfo->loadObject($configinfo);
 
-		$enable 			= $emailinfo->enable;
+		$enable 		= $emailinfo->get('enable', 1);;
 		if(!$enable) return;
 
-		$email_type 	= $emailinfo->email_type;
-		$Subject	 		= $emailinfo->Subject;
-		$recipients 	= $emailinfo->recipients;
-		$heading 			= $emailinfo->heading;//jform[email_settings][heading]
+		$email_type 	= $emailinfo->get('email_type', 'html');
+		$Subject	 		= $emailinfo->get('Subject', 'Digicom system email');
+		$recipients 	= $emailinfo->get('recipients', '');
+		$heading 			= $emailinfo->get('heading', 'Digicom system email');//jform[email_settings][heading]
 
 		$orderTable 			= JTable::getInstance( "Order" ,"Table");
 		$orderTable->load( $orderid );
@@ -237,7 +240,7 @@ class DigiComSiteHelperEmail {
 		$jfromname = $app->getCfg("fromname");
 
 		// admin email info
-		if ( $adminName2 != "" )
+		if ( $jfromname != "" )
 		{
 			$adminName2 = $jfromname;
 		}
