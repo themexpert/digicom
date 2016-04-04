@@ -408,7 +408,7 @@ class DigiComControllerCart extends JControllerLegacy
 			$params['order_currency'] = $tax['currency'];
 
 			$cart->storeOrderParams( $user->id, $order_id ,$params);
-			$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=checkout&id=".$order_id));
+			$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=checkout&id=".$order_id, false));
 
 		}
 
