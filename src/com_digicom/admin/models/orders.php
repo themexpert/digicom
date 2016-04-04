@@ -325,7 +325,7 @@ class DigiComModelOrders extends JModelList
 		if($status == "Active" or $status == "Paid"){
 
 			$orders = $this->getInstance( "Order", "DigiComModel" );
-			$orders->getOrderItems($id);
+			$items = $orders->getOrderItems($id);
 
 			$dispatcher->trigger('onDigicomAfterPaymentComplete', array($id, $info = array(), $table->processor, $items, $table->userid));
 		}else{
