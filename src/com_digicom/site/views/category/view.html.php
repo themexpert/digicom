@@ -19,10 +19,10 @@ use Joomla\Registry\Registry;
 class DigiComViewCategory extends JViewCategory
 {
 	/**
-	 * @var    array  Array of leading items for blog display
+	 * @var    array  Array of products to display
 	 * @since  3.2
 	 */
-	protected $lead_items = array();
+	protected $items = array();
 
 	/**
 	 * @var    array  Array of intro (multicolumn display) items for blog display
