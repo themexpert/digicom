@@ -675,11 +675,9 @@ class DigiComModelCart extends JModelItem
 	{
 		$db = JFactory::getDbo();
 		$reg = JSession::getInstance("none", array());
+		$sid = (!$sid ? $reg->set("digicomid", 0) : $sid);
+		if(!$sid) return;
 
-		$sid = $reg->set("digicomid", 0);
-		if(!$sid){
-			return;
-		}
 		$sql = "update #__digicom_session set cart_details='', transaction_details='' where id='" . $sid . "'";
 		$db->setQuery( $sql );
 		$db->execute();
@@ -1037,7 +1035,6 @@ class DigiComModelCart extends JModelItem
 
 	function getFinalize( $sid, $msg = '', $orderid = 0 , $type, $status)
 	{
-
 		global $Itemid;
 
 		$conf = $this->getInstance( "config", "digicomModel" );
