@@ -30,7 +30,7 @@ $doc->addStyleSheet( JUri::root(true). '/modules/mod_digicom_cart/assets/css/mod
 					<?php echo $item->name; ?>
 				</a>
 				<span class="dg-quantity">
-					<?php echo $item->quantity;?> x <?php echo DigiComSiteHelperPrice::format_price($item->price, $item->currency, true, $configs); ?>
+					<?php echo $item->quantity;?> x <?php echo DigiComSiteHelperPrice::format_price($item->price_formated, $item->currency, true, $configs); ?>
 				</span>
 			</li>
 		<?php endforeach; ?>
