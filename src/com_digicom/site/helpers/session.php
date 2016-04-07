@@ -73,7 +73,7 @@ class DigiComSiteHelperSession
 			$db->setQuery($sql);
 			$db->execute();
 		}
-		
+		// echo $sid;die;
 		//as we already removed all 24h old sessions, we need to check if we have current one or not
 		if (!$sid) {
 			//test code to verify old sessions
@@ -86,7 +86,7 @@ class DigiComSiteHelperSession
 			$this->digisession = $db->loadObject();
 			// so we dont have any digicomid, we need to create one
 			// but before that lets checck in session table if we have with user id
-			
+						
 			// no session no user
 			if(!isset($this->digisession->id) && !$my->id)
 			{
@@ -136,6 +136,10 @@ class DigiComSiteHelperSession
 					// $sid = $sessionid;
 					$reg->set($digicomid, $sid);
 				}
+			}else{
+				$sid = $this->digisession->id;
+				// $sid = $sessionid;
+				$reg->set($digicomid, $sid);
 			}
 
 
@@ -176,6 +180,7 @@ class DigiComSiteHelperSession
 		}
 
 		// set session id
+		// echo $sid;die;
 		$this->_sid = $sid;
 		// set user object
 		$this->_user = $my;
@@ -202,20 +207,23 @@ class DigiComSiteHelperSession
 
 
 
-			if($my->id && (empty($this->_customer->name) or empty($this->_customer->email))){
+			if($my->id && (empty($table->name) or empty($table->email))){
 				$table->name = $my->name;
 				$table->email = $my->email;
 				$table->store();
 			}
 
 			// as we have userlogedin, make use we fill info for customer table
-			$this->_customer = $table;
+			$customer = $table;
+			// $this->_customer = $table;
 		} else {
 			// guest access
-			$this->_customer = JTable::getInstance('Customer','Table');
+			$customer = JTable::getInstance('Customer','Table');
 		}
+		// prepare table to fresh info
+		$properties = $customer->getProperties(1);
+		$this->_customer = JArrayHelper::toObject($properties, 'JObject');
 
-		//
 		// // dont allow empty value, so define blank
 		if (!isset($this->_customer->registerDate)) $this->_customer->registerDate = $my->registerDate;
 		if (!isset($this->_customer->id) && $my->id ) $this->_customer->id = $my->id;
