@@ -56,23 +56,13 @@ defined('_JEXEC') or die;
           <?php if($this->tax['item_discount']) : ?>
           <td align="center" nowrap="nowrap">
             <span data-digicom-id="discount<?php echo $item->cid; ?>" class="dc-cart-amount">
-              <?php
-              $value_discount = 0;
-              if ( $item->discount > 0)
-              {
-                $value_discount = $item->discount;
-              }
-              elseif ( isset($item->percent_discount) && $item->percent_discount > 0)
-              {
-                $value_discount = ($item->price * $item->percent_discount) / 100;
-              }
-              echo DigiComSiteHelperPrice::format_price($value_discount, $item->currency, true, $this->configs);?>
+              <?php echo DigiComSiteHelperPrice::format_price($item->discount, $item->currency, true, $this->configs); ?>
             </span>
           </td>
           <?php endif; ?>
           <td nowrap>
             <span data-digicom-id="total<?php echo $item->cid; ?>" class="dc-cart-amount">
-              <?php echo DigiComSiteHelperPrice::format_price($item->subtotal-(isset($value_discount) ? $value_discount : 0), $item->currency, true, $this->configs); ?>
+              <?php echo DigiComSiteHelperPrice::format_price($item->price_formated, $item->currency, true, $this->configs); ?>
             </span>
           </td>
           <td nowrap="nowrap">
