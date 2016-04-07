@@ -115,7 +115,6 @@ class DigiComControllerCart extends JControllerLegacy
 			if($res < 0) {
 				$msg = JText::_("COM_DIGICOM_CART_WRONG_PID_OR_ACCESS_LABEL");
 				$link = "index.php?option=com_digicom&view=category&id=" . $cid;
-				echo $link;die;
 				$this->setRedirect(JRoute::_($link, false), $msg);
 			}
 			elseif($res == 0){
@@ -249,6 +248,8 @@ class DigiComControllerCart extends JControllerLegacy
 		$processor	= JRequest::getVar("processor", '');
 		$user 			= JFactory::getUser();
 		$cart 			= $this->_model;
+		$customer 	= $this->_customer;
+		$configs 		= $this->_config;
 
 		$plugins_enabled = $cart->getPluginList();
 		if(!isset($processor) or !$processor){
@@ -262,7 +263,7 @@ class DigiComControllerCart extends JControllerLegacy
 		$return = base64_encode(JRoute::_("index.php?option=com_digicom&view=cart&task=cart.checkout"));
 
 		// Check Login
-		if(!$user->id or $this->_customer->_user->id < 1){
+		if(!$user->id or $customer->_user->id < 1){
  			$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=register&return=".$return));
 			return true;
 		}
@@ -274,8 +275,6 @@ class DigiComControllerCart extends JControllerLegacy
 			return;
 		}
 
-		$customer = $this->_customer;
-		$configs = $this->_config;
 		$askforbilling = $configs->get('askforbilling',0);
 
 		// return -1 for not found core info, 2 for missing billing info, 1 for has core info
@@ -304,18 +303,18 @@ class DigiComControllerCart extends JControllerLegacy
 			// 	return true;
 			// }
 
-			$name = $this->_customer->_user->name;
+			$name = $customer->_user->name;
 			$db = JFactory::getDBO();
 
-			$sql = "SELECT `name` FROM #__digicom_customers WHERE id=".intval($this->_customer->_user->id);
+			$sql = "SELECT `name` FROM #__digicom_customers WHERE id=".intval($customer->_user->id);
 			$db->setQuery($sql);
 			$db->query();
 			$result = $db->loadObject();
 			if(isset($result) && (trim($result->name) == ""))
 			{
-				$sql = "UPDATE #__digicom_customers set `name`='".addslashes(trim($name))."' where id=".intval($this->_customer->_user->id);
+				$sql = "UPDATE #__digicom_customers set `name`='".addslashes(trim($name))."' where id=".intval($customer->_user->id);
 			} elseif (!$result){
-				$sql = "INSERT INTO #__digicom_customers(`id`, `name`) VALUES (".intval($this->_customer->_user->id).", '".addslashes(trim($name))."')";
+				$sql = "INSERT INTO #__digicom_customers(`id`, `name`) VALUES (".intval($customer->_user->id).", '".addslashes(trim($name))."')";
 			}
 
 			$db->setQuery($sql);
@@ -352,12 +351,13 @@ class DigiComControllerCart extends JControllerLegacy
 		else
 		{
 			// add products not free
+			// print_r($customer);die;
 			$db = JFactory::getDBO();
 			$sql = "update #__digicom_session set transaction_details='" . base64_encode(serialize($customer)) . "' where id=" . $customer->_sid;
 			$db->setQuery($sql);
 			$db->query();
 
-			$sql = "select processor from #__digicom_session where id='".$this->_customer->_sid."'";
+			$sql = "select processor from #__digicom_session where id='".$customer->_sid."'";
 			$db->setQuery($sql);
 			$prosessor = $db->loadResult();
 
@@ -369,14 +369,14 @@ class DigiComControllerCart extends JControllerLegacy
 			$order_id = $cart->addOrderInfo($items, $customer, $tax, $status = 'Pending', $prosessor);
 			$dispatcher->trigger('onDigicomAfterPlaceOrder', array($order_id, $items, $tax, $customer));
 
-			$cart->getFinalize($this->_customer->_sid, $msg = '', $order_id, $type= 'new_order', $status);
+			$cart->getFinalize($customer->_sid, $msg = '', $order_id, $type= 'new_order', $status);
 
 			/* Prepare params*/
 			$params = array();
-			$params['user_id'] = $this->_customer->_user->id;
+			$params['user_id'] = $customer->_user->id;
 
-			if(isset($this->_customer) && isset($this->_customer->_customer)){
-				$this->_customer->_customer->id = $user->id;
+			if(isset($customer) && isset($customer->_customer)){
+				$customer->_customer->id = $user->id;
 				$user = JFactory::getUser();
 
 				$params['customer'] = new stdClass();
@@ -403,7 +403,7 @@ class DigiComControllerCart extends JControllerLegacy
 			}
 
 			$params['order_id'] = $order_id;
-			$params['sid'] = $this->_customer->_sid;
+			$params['sid'] = $customer->_sid;
 			$params['order_amount'] = $tax['taxed'];
 			$params['order_currency'] = $tax['currency'];
 
