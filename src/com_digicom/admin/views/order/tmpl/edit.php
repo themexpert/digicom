@@ -95,8 +95,8 @@ $input->set('layout', 'dgtabs');
 							<?php echo $prod->quantity;?>
 						</td>
 						<td style="<?php echo $cancelled == 3 ? 'text-decoration: line-through;' : '';?>"><?php
-							$price = $prod->price - $refund - $chargeback;
-							echo DigiComHelperDigiCom::format_price($prod->price, $prod->currency, true, $configs);
+							$price = $prod->amount_paid - $refund - $chargeback;
+							echo DigiComHelperDigiCom::format_price($prod->amount_paid, $prod->currency, true, $configs);
 							$oll_courses_total += $price;
 							if ($refund > 0)
 							{
