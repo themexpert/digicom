@@ -28,6 +28,7 @@ class DigicomControllerRegister extends JControllerLegacy
 	{
 		// Check for request forgeries.
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JFactory::getLanguage()->load('com_users', JPATH_SITE);
 
 		$app	= JFactory::getApplication();
 		$model	= $this->getModel('Register', 'DigicomModel');
@@ -41,6 +42,7 @@ class DigicomControllerRegister extends JControllerLegacy
 		}else{
 			$returnurl = JRoute::_('index.php?option=com_digicom&view=dashboard');
 		}
+
 		// Validate the posted data.
 		$form	= $model->getForm();
 
@@ -98,11 +100,23 @@ class DigicomControllerRegister extends JControllerLegacy
 		}
 		// Flush the data from the session.
 		$app->setUserState('com_digicom.register.data', null);
-		$app->enqueueMessage(JText::_('COM_DIGICOM_REGISTRATION_SUCCESSFULL'));
 
+		// Redirect to the profile screen.
+		if ($return === 'adminactivate')
+		{
+			$this->setMessage(JText::_('COM_DIGICOM_REGISTRATION_COMPLETE_VERIFY'));
+		}
+		elseif ($return === 'useractivate')
+		{
+			$this->setMessage(JText::_('COM_DIGICOM_REGISTRATION_COMPLETE_ACTIVATE'));
+		}
+		else
+		{
+			$this->setMessage(JText::_('COM_DIGICOM_REGISTRATION_SUCCESSFULL'));
+		}
+		
 		$options                 = array();
 		$options['remember']     = true;
-		//$options['return']       = JRoute::_('index.php?option=com_digicom&view=cart&layout=summary');
 		$options['return']       = $returnurl;
 		$credentials             = array();
 		$credentials['username'] = $data['username'];
@@ -118,7 +132,7 @@ class DigicomControllerRegister extends JControllerLegacy
 			}
 
 			$app->setUserState('users.login.form.data', array());
-			//$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=cart&layout=summary', false));
+			$app->enqueueMessage(JText::_('COM_DIGICOM_REGISTRATION_SUCCESSFULL'));
 			$this->setRedirect($returnurl, false);
 
 		}
@@ -127,6 +141,7 @@ class DigicomControllerRegister extends JControllerLegacy
 			// Login failed !
 			$data['remember'] = (int) $options['remember'];
 			$app->setUserState('com_digicom.register.login.data', $data);
+			$app->enqueueMessage(JText::_('COM_DIGICOM_REGISTRATION_SUCCESSFULL'));
 			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=register&return'.$returnpage, false));
 		}
 
