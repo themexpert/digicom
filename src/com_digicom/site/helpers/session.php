@@ -51,7 +51,8 @@ class DigiComSiteHelperSession
 		$digicomid 	= 'digicomid';
 		$sid 				= $reg->get($digicomid, 0);
 		$debug 			= $app->input->get('debug');
-		if($debug){
+		if($debug)
+		{
 			new DigiComSiteHelperTest();
 		}
 
@@ -64,7 +65,8 @@ class DigiComSiteHelperSession
 			$this->oldsids = rtrim($oldsids->sid, ',');
 		}
 
-		if(!empty($this->oldsids)){
+		if(!empty($this->oldsids))
+		{
 			$sql = "delete from #__digicom_cart where `sid` in (".$this->oldsids.")";
 			$db->setQuery($sql);
 			$db->execute();
@@ -75,7 +77,8 @@ class DigiComSiteHelperSession
 		}
 		// echo $sid;die;
 		//as we already removed all 24h old sessions, we need to check if we have current one or not
-		if (!$sid) {
+		if (!$sid) 
+		{
 			//test code to verify old sessions
 			//JSession::hasToken($tCheck, $forceExpire = true)
 
@@ -136,14 +139,18 @@ class DigiComSiteHelperSession
 					// $sid = $sessionid;
 					$reg->set($digicomid, $sid);
 				}
-			}else{
+			}
+			else
+			{
 				$sid = $this->digisession->id;
 				// $sid = $sessionid;
 				$reg->set($digicomid, $sid);
 			}
 
 
-		} elseif($my->id != 0) {
+		} 
+		elseif($my->id != 0) 
+		{
 			// echo $my->id;die;
 			// we have sessionid  $sid
 			// check if has userid
@@ -221,6 +228,9 @@ class DigiComSiteHelperSession
 			$customer = JTable::getInstance('Customer','Table');
 		}
 		// prepare table to fresh info
+		if(!is_object($customer)){
+			$customer = JTable::getInstance('Customer','Table');
+		}
 		$properties = $customer->getProperties(1);
 		$this->_customer = JArrayHelper::toObject($properties, 'JObject');
 
