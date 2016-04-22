@@ -15,7 +15,9 @@ function elFinderUpdate(fieldID, value) {
   var filenameID = fieldID.replace("url", "name");
 
   jQuery('#' + fieldID).val(value);
-  jQuery('#' + filenameID).val(filename);
+  if(!jQuery('#' + filenameID).val()){
+    jQuery('#' + filenameID).val(filename);
+  }
   if (typeof SqueezeBox !== 'undefined' && jQuery.isFunction(SqueezeBox)) {
   	SqueezeBox.close();
   } else {
@@ -140,11 +142,6 @@ function reArranageFiles()
   var rows = jQuery('table#filesitemList tbody#itemsfilesRows tr');
   jQuery(rows).each(function(index)
   {
-    console.log(index);
-    // jQuery.each(this.attributes, function(index, element){
-    //   this.value = this.value.replace(/{{row-count-placeholder}}/, fileindex);
-    //   this.value = this.value.replace(/_row_count_placeholder_id_/, fileindex);
-    // });
     jQuery(this).find("input[id^='files_ordering_']").val(index);
   });
 }
