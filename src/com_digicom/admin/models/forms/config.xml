@@ -97,6 +97,18 @@
 				class="title"
 				label="COM_DIGICOM_SETTINGS_GENERAL_REGISTRATION_FIELD_LABEL"
 				/>
+				
+			<field
+				name="useDigicomRegistration"
+				type="radio"
+				class="btn-group"
+				label="COM_DIGICOM_SETTINGS_GENERAL_USEDIGICOMREGISTRATION_LABEL"
+				default="0"
+				description="COM_DIGICOM_SETTINGS_GENERAL_USEDIGICOMREGISTRATION_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+			</field>
+			
 			<field
 				name="askforbilling"
 				type="radio"

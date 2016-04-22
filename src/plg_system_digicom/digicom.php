@@ -38,6 +38,32 @@ class plgSystemDigiCom extends JPlugin{
 		JPluginHelper::importPlugin('digicom_pay');
 	}
 
+	// redirect the user to digicom registration page
+	function onAfterDispatch()
+	{
+		$app = JFactory::getApplication();
+		if ($app->isAdmin()) return;
+
+		$option = JRequest::getCmd('option');
+		$view = JRequest::getCmd('view');
+		$layout = JRequest::getCmd('layout');
+		if ($option == 'com_users' && ($view == 'registration' or $view == 'login'))
+		{
+			$params = $this->getConfigs();
+			if (!$params->get('useDigicomRegistration', 1)){
+				return;
+			}else{
+				$user = JFactory::getUser();
+				if (!$user->guest) return;
+				
+				$app->redirect(JRoute::_('index.php?option=com_digicom&view=register'));
+				$app->close();
+			}
+		}
+
+		return;
+	}
+
 	/**
 	 * Plugin method with the same name as the event will be called automatically.
 	 */
