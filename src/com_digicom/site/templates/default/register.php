@@ -13,7 +13,6 @@ JHtml::_('behavior.formvalidation');
 JHtml::_('formbehavior.chosen', 'select');
 $return = JFactory::getApplication()->input->get('return','');
 $usersConfig = JComponentHelper::getParams('com_users');
-
 ?>
 <div id="digicom" class="dc dc-register">
 
@@ -25,7 +24,15 @@ $usersConfig = JComponentHelper::getParams('com_users');
 		endif;
 	?>
 
-	<h1 class="page-title"><?php echo JText::_("COM_DIGICOM_LOGIN_REGISTER");?></h1>
+	<h1 class="page-title">
+		<?php 
+			if($usersConfig->get('allowUserRegistration')){
+				echo JText::_("COM_DIGICOM_LOGIN_REGISTER");
+			}else{
+				echo JText::_("COM_DIGICOM_LOGIN");
+			}
+		?>
+	</h1>
 
 	<div id="login-register-wrapper">
     <ul id="login-registerTab" class="nav nav-tabs" role="tablist">
