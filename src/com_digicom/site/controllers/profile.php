@@ -19,7 +19,7 @@ class DigiComControllerProfile extends JControllerLegacy
 		$app = JFactory::getApplication("site");
 		$Itemid = JRequest::getInt('Itemid', 0);
 
-		$return = JRoute::_('index.php?option=com_digicom&view=cart&task=cart.checkout');
+		$return = JRoute::_('index.php?option=com_digicom&view=dashboard');
 		if($returnpage = JRequest::getVar('return', '', 'request', 'base64'))
 		{
 		 	$return = base64_decode($returnpage);
