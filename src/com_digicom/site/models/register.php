@@ -281,6 +281,7 @@ class DigicomModelRegister extends JModelForm
 
 	public function operateUserActivationEmail($params, $user)
 	{
+		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
@@ -433,7 +434,8 @@ class DigicomModelRegister extends JModelForm
 			}
 			catch (RuntimeException $e)
 			{
-				$this->setError(JText::sprintf('COM_USERS_DATABASE_ERROR', $e->getMessage()), 500);
+				// $this->setError(JText::sprintf('COM_USERS_DATABASE_ERROR', $e->getMessage()), 500);
+				$app->enqueueMessage(JText::sprintf('COM_USERS_DATABASE_ERROR', $e->getMessage()), 'error');
 				// return false;
 			}
 
@@ -445,7 +447,8 @@ class DigicomModelRegister extends JModelForm
 				// Check for an error.
 				if ($return !== true)
 				{
-					$this->setError(JText::_('COM_USERS_REGISTRATION_ACTIVATION_NOTIFY_SEND_MAIL_FAILED'));
+					// $this->setError(JText::_('COM_USERS_REGISTRATION_ACTIVATION_NOTIFY_SEND_MAIL_FAILED'));
+					$app->enqueueMessage(JText::_('COM_USERS_REGISTRATION_ACTIVATION_NOTIFY_SEND_MAIL_FAILED'), 'error');
 					// return false;
 				}
 			}
@@ -454,7 +457,8 @@ class DigicomModelRegister extends JModelForm
 		// Check for an error.
 		if ($return !== true)
 		{
-			$this->setError(JText::_('COM_USERS_REGISTRATION_SEND_MAIL_FAILED'));
+			// $this->setError(JText::_('COM_USERS_REGISTRATION_SEND_MAIL_FAILED'));
+			$app->enqueueMessage(JText::_('COM_USERS_REGISTRATION_SEND_MAIL_FAILED'), 'error');
 
 			// Send a system message to administrators receiving system mails
 			$db = $this->getDbo();
@@ -471,7 +475,8 @@ class DigicomModelRegister extends JModelForm
 			}
 			catch (RuntimeException $e)
 			{
-				$this->setError(JText::sprintf('COM_USERS_DATABASE_ERROR', $e->getMessage()), 500);
+				// $this->setError(JText::sprintf('COM_USERS_DATABASE_ERROR', $e->getMessage()), 500);
+				$app->enqueueMessage(JText::sprintf('COM_USERS_DATABASE_ERROR', $e->getMessage()), 'error');
 				// return false;
 			}
 
@@ -501,7 +506,8 @@ class DigicomModelRegister extends JModelForm
 					}
 					catch (RuntimeException $e)
 					{
-						$this->setError(JText::sprintf('COM_USERS_DATABASE_ERROR', $e->getMessage()), 500);
+						// $this->setError(JText::sprintf('COM_USERS_DATABASE_ERROR', $e->getMessage()), 500);
+						$app->enqueueMessage(JText::sprintf('COM_USERS_DATABASE_ERROR', $e->getMessage()), 'error');
 						// return false;
 					}
 				}
