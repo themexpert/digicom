@@ -17,7 +17,7 @@ JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_digicom/tables', '
  */
 class DigiComSiteHelperSession
 {
-	protected $oldsids;
+	protected $oldsidscleaned = false;
 	protected $digisession;
 	/*
 	* session id, int
@@ -46,6 +46,7 @@ class DigiComSiteHelperSession
 		$db 				= JFactory::getDBO();
 		$my 				= JFactory::getUser();
 		$reg 				= JFactory::getSession();
+		$config 		= JFactory::getConfig();
 		$sessionid  = $reg->getId();	
 		$dispatcher	= JDispatcher::getInstance();
 		$digicomid 	= 'digicomid';
@@ -56,33 +57,19 @@ class DigiComSiteHelperSession
 			new DigiComSiteHelperTest();
 		}
 
-		if(empty($this->oldsids) && !$sid){
-			// first we will remove all session n cart info from db that passed 24 hours
-			$sql = "SELECT GROUP_CONCAT(id) as sid from #__digicom_session where create_time< now() - INTERVAL 3 DAY";
-			$db->setQuery($sql);
-
-			$oldsids = $db->loadObject();
-			$this->oldsids = rtrim($oldsids->sid, ',');
-		}
-
-		if(!empty($this->oldsids))
-		{
-			$sql = "delete from #__digicom_cart where `sid` in (".$this->oldsids.")";
+		if(!$this->oldsidscleaned && !$sid){
+			$lifetime = $config->get( 'lifetime', 15); //MINUTE
+			$sql = "DELETE FROM `#__digicom_session`
+			WHERE `create_time` < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL $lifetime MINUTE))
+			and `uid` = '0'";
 			$db->setQuery($sql);
 			$db->execute();
-
-			$sql = "delete from #__digicom_session where `id` in (".$this->oldsids.")";
-			$db->setQuery($sql);
-			$db->execute();
+			$this->oldsidscleaned = true;
 		}
-		// echo $sid;die;
+
 		//as we already removed all 24h old sessions, we need to check if we have current one or not
 		if (!$sid) 
 		{
-			//test code to verify old sessions
-			//JSession::hasToken($tCheck, $forceExpire = true)
-
-			// check with jsession id
 			// first we will remove all session n cart info from db that passed 24 hours
 			$sql = "SELECT * from #__digicom_session where `sid` = '" . $sessionid . "'";
 			$db->setQuery($sql);
@@ -93,18 +80,21 @@ class DigiComSiteHelperSession
 			// no session no user
 			if(!isset($this->digisession->id) && !$my->id)
 			{
+				$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+				$info = array(
+					'ip' => $_SERVER['REMOTE_ADDR'],
+					'url'	=> $actual_link
+				);
+				$keyinfo = json_encode($info);
 				// we dont have session id, userid
 				$sql = "INSERT INTO #__digicom_session 
-					(`sid`, `uid`,`create_time`, `cart_details`, `transaction_details`, `shipping_details`)
-					VALUES ('".$sessionid."','".$my->id."',now(), '', '', '')";
+					(`sid`, `uid`,`create_time`, `cart_details`, `transaction_details`, `shipping_details`, `key`)
+					VALUES ('".$sessionid."','".$my->id."',now(), '', '', '', '".$keyinfo."')";
 
 				$db->setQuery($sql);
 				$db->execute();
 				$sid = $db->insertId();
-				// $sid = $sessionid;
 				$reg->set($digicomid, $sid);
-
-				// $this->addLog();
 			}
 			// no session but has user
 			elseif(!isset($this->digisession->id) && $my->id)
@@ -128,10 +118,16 @@ class DigiComSiteHelperSession
 				}
 				else
 				{
+					$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+					$info = array(
+						'ip' => $_SERVER['REMOTE_ADDR'],
+						'url'	=> $actual_link
+					);
+					$keyinfo = json_encode($info);
 					// we dont have session id, userid
 					$sql = "INSERT INTO #__digicom_session 
-						(`sid`, `uid`,`create_time`, `cart_details`, `transaction_details`, `shipping_details`)
-						VALUES ('".$sessionid."','".$my->id."',now(), '', '', '')";
+						(`sid`, `uid`,`create_time`, `cart_details`, `transaction_details`, `shipping_details`, `key`)
+						VALUES ('".$sessionid."','".$my->id."',now(), '', '', '', '".$keyinfo."')";
 
 					$db->setQuery($sql);
 					$db->execute();
