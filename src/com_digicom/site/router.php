@@ -488,7 +488,16 @@ class DigiComRouter extends JComponentRouterBase
 		}
 
 		// lets deal with if not product or cat
-		$tmpview = $item->query['view'];
+		$tmpview 	= $item->query['view'];
+		$option 	= $item->query['option'];
+		if($option != 'com_digicom'){
+			$vars['option'] = 'com_digicom';
+			if(count($segments) == 1){
+				$vars['view'] = $segments[0];
+			}
+			return $vars;
+		}
+
 		switch($tmpview){
 			case "profile":
 			case "dashboard":
