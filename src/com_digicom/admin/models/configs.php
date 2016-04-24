@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Registry\Registry;
+
 class DigiComModelConfigs extends JModelForm
 {
 
@@ -50,8 +52,20 @@ class DigiComModelConfigs extends JModelForm
 		$lang->load($option, JPATH_BASE, null, false, true)
 		|| $lang->load($option, JPATH_BASE . "/components/com_digicom", null, false, true);
 
-		$result = JComponentHelper::getComponent($option);
-		
+		// $result = JComponentHelper::getComponent($option);
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('extension_id AS id, element AS "option", params, enabled')
+			->from('#__extensions')
+			->where($db->quoteName('type') . ' = ' . $db->quote('component'))
+			->where($db->quoteName('element') . ' = ' . $db->quote('com_digicom'));
+		$db->setQuery($query);
+		$result = $db->loadObject();
+		// print_r($result);die;
+		$params = new Registry;
+		$result->params = $params->loadString($result->params);
+		// print_r($params);die;
+
 		return $result;
 	}
 
