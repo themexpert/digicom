@@ -26,7 +26,7 @@ class DigiComSiteHelperSession
 	/*
 	* joomla user, object
 	*/
-	public $user = null;
+	public $_user = null;
 	/*
 	* digicom customer, object
 	*/
@@ -103,7 +103,7 @@ class DigiComSiteHelperSession
 				$sql = "select * from #__digicom_session where uid='".$my->id."'";
 				$db->setQuery($sql);
 				$info = $db->loadObject();
-				if($info->uid)
+				if(isset($info->uid) && !empty($info->uid->id))
 				{
 					$this->digisession = $info;
 
