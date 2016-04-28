@@ -232,10 +232,11 @@
 				type="radio"
 				class="btn-group"
 				label="COM_DIGICOM_SETTINGS_GENERAL_AFTER_PAYMENT_GO_TO"
-				default="1"
+				default="2"
 				description="COM_DIGICOM_SETTINGS_GENERAL_AFTER_PAYMENT_GO_TO_DESC">
-					<option value="0">COM_DIGICOM_SETTINGS_GENERAL_AFTER_PAYMENT_GO_TO_LICENSE</option>
+					<option value="0">COM_DIGICOM_SETTINGS_GENERAL_AFTER_PAYMENT_GO_TO_DOWNLOAD</option>
 					<option value="1">COM_DIGICOM_SETTINGS_GENERAL_AFTER_PAYMENT_GO_TO_ORDER</option>
+					<option value="2">COM_DIGICOM_SETTINGS_GENERAL_AFTER_PAYMENT_GO_TO_THANK_YOU</option>
 			</field>
 		</fieldset>
 
