@@ -348,7 +348,7 @@ class DigiComControllerCart extends JControllerLegacy
 						break;
 				}
 				
-				$this->setRedirect($link);
+				$this->setRedirect(JRoute::_($link, false));
 				return true;
 			}
 		}
@@ -532,7 +532,7 @@ class DigiComControllerCart extends JControllerLegacy
 
 		if($processor == '')
 		{
-			$app->redirect(JRoute::_('index.php?option=com_digicom&view=orders'),JText::_('COM_DIGICOM_PAYMENT_NO_PROCESSOR_SELECTED'));
+			$app->redirect(JRoute::_('index.php?option=com_digicom&view=orders', false),JText::_('COM_DIGICOM_PAYMENT_NO_PROCESSOR_SELECTED'));
 			return false;
 		}
 
@@ -553,7 +553,7 @@ class DigiComControllerCart extends JControllerLegacy
 			if(isset($data['order_id'])){
 				$order_id = $data['order_id'];
 			}else{
-				$app->redirect(JRoute::_("index.php?option=com_digicom&view=orders"),JText::_('COM_DIGICOM_PAYMENT_NO_ORDER_PASSED'));
+				$app->redirect(JRoute::_("index.php?option=com_digicom&view=orders", false),JText::_('COM_DIGICOM_PAYMENT_NO_ORDER_PASSED'));
 			}
 		}
 
@@ -650,7 +650,7 @@ class DigiComControllerCart extends JControllerLegacy
 		$session = JFactory::getSession();
 		$session->set('processor', $processor);
 
-		$url = JRoute::_('index.php?option=com_digicom&view=checkout&id='.$id);
+		$url = JRoute::_('index.php?option=com_digicom&view=checkout&id='.$id, false);
 		//print_r($url);die;
 		$this->setRedirect($url);
 	}

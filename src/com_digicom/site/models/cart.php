@@ -883,21 +883,21 @@ class DigiComModelCart extends JModelItem
 			case '2':
 				if('Active' == $status){
 					$session->set('com_digicom', array('action' => 'payment_complete', 'id' => $order_id));
-					$link 	= 'index.php?option=com_digicom&view=thankyou';					
+					$link 	= JRoute::_('index.php?option=com_digicom&view=thankyou', false);					
 				}else{
 					$app->enqueueMessage($msg,'message');
-					$link 	= 'index.php?option=com_digicom&view=order&id='.$orderid;
+					$link 	= JRoute::_('index.php?option=com_digicom&view=order&id='.$orderid, false);
 				}
 				break;
 			case '1':
 				$app->enqueueMessage($msg,'message');
-				$link 	= 'index.php?option=com_digicom&view=order&id='.$orderid;
+				$link 	= JRoute::_('index.php?option=com_digicom&view=order&id='.$orderid, false);
 				break;
 			default:
 				$app->enqueueMessage($msg,'message');
 				$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=downloads', true);
 				$Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
-				$link 	= 'index.php?option=com_digicom&view=downloads'.$Itemid;
+				$link 	= JRoute::_('index.php?option=com_digicom&view=downloads'.$Itemid, false);
 				break;
 		}
 		
