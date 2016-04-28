@@ -20,6 +20,7 @@ class DigiComViewThankYou extends JViewLegacy
 		$app 			= JFactory::getApplication();
 		$session 	= JFactory::getSession();
 		$digicom_session = $session->get('com_digicom', array());
+		$this->state	= $this->get('State');
 		
 		if(isset($digicom_session['action']) && $digicom_session['action'] == 'payment_complete' && $digicom_session['id'])
 		{
@@ -43,6 +44,7 @@ class DigiComViewThankYou extends JViewLegacy
 
 		$results = $dispatcher->trigger('onDigicomAfterThankyou', array('com_digicom.thankyou', &$this->item, &$this->customer));
 		$this->item->event->afterThankyou = trim(implode("\n", $results));
+		$this->params = $this->state->get('params');
 
 		$template = new DigiComSiteHelperTemplate($this);
 		$template->rander('thankyou');
@@ -68,7 +70,7 @@ class DigiComViewThankYou extends JViewLegacy
 		// we need to get it from the menu item itself
 		$menu = $menus->getActive();
 
-		$title = JText::sprintf('COM_DIGICOM_ORDER_PAGE_TITLE',$this->order->id);
+		$title = JText::sprintf('COM_DIGICOM_THANKYOU_PAGE_TITLE',$this->item->id);
 
 		// Check for empty title and add site name if param is set
 		if (empty($title))
