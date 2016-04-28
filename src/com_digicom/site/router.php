@@ -135,7 +135,7 @@ class DigiComRouter extends JComponentRouterBase
 		//print_r($segments);die;
 
 		// lets handle view specific routing
-		if ($view == 'orders' or $view == 'order')
+		if ($view == 'orders' or $view == 'order' or $view == 'thankyou')
 		{
 			unset($query['view']);
 
@@ -167,7 +167,7 @@ class DigiComRouter extends JComponentRouterBase
 				unset($query['id']);
 			}
 
-		}elseif ($view == 'dashboard' or $view == 'downloads' or $view == 'profile' or $view == 'login' or $view == 'register'or $view == 'billing')
+		}elseif ($view == 'dashboard' or $view == 'downloads' or $view == 'profile' or $view == 'login' or $view == 'register' or $view == 'billing')
 		{
 			if (!$menuItemGiven)
 			{
@@ -473,7 +473,8 @@ class DigiComRouter extends JComponentRouterBase
 
 		// Count route segments
 		$count = count($segments);
-
+		// we have menu item, Check again if its com_digicom
+		
 		/*
 		 * Standard routing for products.  If we don't pick up an Itemid then we get the view from the segments
 		 * the first segment is the view and the last segment is the id of the product or category.
@@ -492,9 +493,15 @@ class DigiComRouter extends JComponentRouterBase
 		$option 	= $item->query['option'];
 		if($option != 'com_digicom'){
 			$vars['option'] = 'com_digicom';
-			if(count($segments) == 1){
+			$vars['view'] = $segments[0];
+
+			if(isset($segments[0])){
 				$vars['view'] = $segments[0];
 			}
+			if(isset($segments[1])){
+				$vars['id'] = $segments[1];
+			}
+
 			return $vars;
 		}
 
@@ -509,6 +516,7 @@ class DigiComRouter extends JComponentRouterBase
 
 				return $vars;
 				break;
+			case "thankyou":
 			case "orders":
 			case "order":
 				//print_r($segments);die;//checkout
