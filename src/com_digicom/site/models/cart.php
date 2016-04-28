@@ -824,10 +824,9 @@ class DigiComModelCart extends JModelItem
 
 			switch ($data['status']) {
 				case 'A':
-					$msg 			= JText::_("COM_DIGICOM_PAYMENT_SUCCESSFUL_THANK_YOU");
 					$status 	= "Active";
 					$logtype 	= "payment";
-					$app->enqueueMessage($msg,'message');
+					$msg 			= JText::_("COM_DIGICOM_PAYMENT_SUCCESSFUL_THANK_YOU");
 					break;
 
 				case 'C':
@@ -886,20 +885,23 @@ class DigiComModelCart extends JModelItem
 					$session->set('com_digicom', array('action' => 'payment_complete', 'id' => $order_id));
 					$link 	= 'index.php?option=com_digicom&view=thankyou';					
 				}else{
+					$app->enqueueMessage($msg,'message');
 					$link 	= 'index.php?option=com_digicom&view=order&id='.$orderid;
 				}
 				break;
 			case '1':
+				$app->enqueueMessage($msg,'message');
 				$link 	= 'index.php?option=com_digicom&view=order&id='.$orderid;
 				break;
 			default:
+				$app->enqueueMessage($msg,'message');
 				$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=downloads', true);
 				$Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
 				$link 	= 'index.php?option=com_digicom&view=downloads'.$Itemid;
 				break;
 		}
-
-		$this->setRedirect(JRoute::_($link), JText::_("COM_DIGICOM_PAYMENT_FREE_PRUCHASE_COMPLETE_MESSAGE"));
+		
+		$app->redirect($link);
 		return true;
 
 	}
