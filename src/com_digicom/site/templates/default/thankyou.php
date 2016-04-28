@@ -17,9 +17,9 @@ defined('_JEXEC') or die;
 		<i class="icon-checkmark-2" style="font-size: 100px;color: #00C853;height: 65px;width: 100px;margin: 0px;padding: 50px 0 0;"></i>
 	</div>
 	<h2 class="thankyou-title">
-		<?php echo JText::_('COM_DIGICOM_THANKYOU_TITLE'); ?>
+		<?php echo JText::_('COM_DIGICOM_THANKYOU_MSG_TITLE'); ?>
 	</h2>
-	<p><?php echo JText::_('COM_DIGICOM_THANKYOU_DESC'); ?></p>
+	<p><?php echo JText::_('COM_DIGICOM_THANKYOU_MSG_DESC'); ?></p>
 	
 	<p class="thankyou-action">
 		<a 
