@@ -878,18 +878,30 @@ class DigiComModelCart extends JModelItem
 
 		}
 
-		// orders page
-		if ($configs->get('afterpurchase',1) == 1)
-		{
-			$app->redirect(JRoute::_("index.php?option=com_digicom&view=order&id=".$order_id));
-		}
-		// download page
-		else
-		{
-			$app->redirect(JRoute::_("index.php?option=com_digicom&view=downloads"));
+		// redirect after payment complete
+		$afterpurchase = $configs->get('afterpurchase', 2);
+		switch ($afterpurchase) {
+			case '2':
+				if('Active' == $status){
+					$session->set('com_digicom', array('action' => 'payment_complete', 'id' => $order_id));
+					$link 	= 'index.php?option=com_digicom&view=thankyou';					
+				}else{
+					$link 	= 'index.php?option=com_digicom&view=order&id='.$orderid;
+				}
+				break;
+			case '1':
+				$link 	= 'index.php?option=com_digicom&view=order&id='.$orderid;
+				break;
+			default:
+				$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=downloads', true);
+				$Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
+				$link 	= 'index.php?option=com_digicom&view=downloads'.$Itemid;
+				break;
 		}
 
+		$this->setRedirect(JRoute::_($link), JText::_("COM_DIGICOM_PAYMENT_FREE_PRUCHASE_COMPLETE_MESSAGE"));
 		return true;
+
 	}
 
 	function updateOrder($order_id, $result, $data, $pay_plugin, $status, $items, $customer)
