@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_DIGICOM_MENU_ITEM_TYPE_THANKYOU">
+		<message>
+			<![CDATA[COM_DIGICOM_MENU_ITEM_TYPE_THANKYOU_DESC]]>
+		</message>
+	</layout>
+	<state>
+		<name>COM_DIGICOM_MENU_ITEM_TYPE_THANKYOU</name>
+		<description>DIGICOM_THANKYOU_DESC</description>
+		<params>
+		</params>
+	</state>
+</metadata>
