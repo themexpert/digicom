@@ -135,7 +135,7 @@ class DigiComRouter extends JComponentRouterBase
 		//print_r($segments);die;
 
 		// lets handle view specific routing
-		if ($view == 'orders' or $view == 'order' or $view == 'thankyou')
+		if ($view == 'orders' or $view == 'order')
 		{
 			unset($query['view']);
 
@@ -167,7 +167,8 @@ class DigiComRouter extends JComponentRouterBase
 				unset($query['id']);
 			}
 
-		}elseif ($view == 'dashboard' or $view == 'downloads' or $view == 'profile' or $view == 'login' or $view == 'register' or $view == 'billing')
+		}
+		elseif ($view == 'dashboard' or $view == 'downloads' or $view == 'profile' or $view == 'login' or $view == 'register' or $view == 'billing' or $view == 'thankyou')
 		{
 			if (!$menuItemGiven)
 			{
@@ -512,11 +513,11 @@ class DigiComRouter extends JComponentRouterBase
 			case "checkout":
 			case "register":
 			case "billing":
+			case "thankyou":
 				$vars['view'] = $item->query['view'];
 
 				return $vars;
 				break;
-			case "thankyou":
 			case "orders":
 			case "order":
 				//print_r($segments);die;//checkout
