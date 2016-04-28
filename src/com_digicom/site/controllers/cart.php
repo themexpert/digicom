@@ -318,7 +318,6 @@ class DigiComControllerCart extends JControllerLegacy
 		// $tax 			= $cart->calc_price($items, $customer, $configs);
 		$tax 			= $cart->tax;
 		$total 		= $tax['taxed'];
-		// print_r($items);die;
 
 		// Add free product
 		if( (double)$total == 0 )
@@ -331,22 +330,26 @@ class DigiComControllerCart extends JControllerLegacy
 
 				// Order complete, now redirect to the original page
 				$afterpurchase = $configs->get('afterpurchase', 2);
+				$msg = JText::_("COM_DIGICOM_PAYMENT_FREE_PRUCHASE_COMPLETE_MESSAGE");
 				switch ($afterpurchase) {
 					case '2':
 						$session->set('com_digicom', array('action' => 'payment_complete', 'id' => $orderid));
 						$link 	= 'index.php?option=com_digicom&view=thankyou';
 						break;
 					case '1':
+						JFactory::getApplication()->enqueueMessage($msg);
 						$link 	= 'index.php?option=com_digicom&view=order&id='.$orderid;
 						break;
 					default:
+						JFactory::getApplication()->enqueueMessage($msg);
 						$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=downloads', true);
 						$Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
 						$link 	= 'index.php?option=com_digicom&view=downloads'.$Itemid;
 						break;
 				}
 				
-				$this->setRedirect(JRoute::_($link), JText::_("COM_DIGICOM_PAYMENT_FREE_PRUCHASE_COMPLETE_MESSAGE"));
+				$this->setRedirect($link);
+				return true;
 			}
 		}
 		else
