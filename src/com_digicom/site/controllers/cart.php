@@ -259,7 +259,6 @@ class DigiComControllerCart extends JControllerLegacy
 		}
 
 		// set default redirect url
-		//$return = base64_encode(JRoute::_("index.php?option=com_digicom&view=cart&layout=summary"));
 		$return = base64_encode(JRoute::_("index.php?option=com_digicom&view=cart&task=cart.checkout"));
 
 		// Check Login
@@ -297,12 +296,6 @@ class DigiComControllerCart extends JControllerLegacy
 
 		if( $res == 1 ) {
 
-			// $fromsum = 1;//JRequest::getVar('fromsum', '1');
-			// if(!$fromsum) {
-			// 	$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=cart&layout=summary"));
-			// 	return true;
-			// }
-
 			$name = $customer->_user->name;
 			$db = JFactory::getDBO();
 
@@ -337,14 +330,22 @@ class DigiComControllerCart extends JControllerLegacy
 				$dispatcher->trigger('onDigicomAfterPlaceOrder', array($orderid, $items, $tax, $customer, 'free'));
 
 				// Order complete, now redirect to the original page
-				if ( $configs->get('afterpurchase',1) == 1 ) {
-					$link 	= 'index.php?option=com_digicom&view=order&id='.$orderid;
-				} else {
-					$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=downloads', true);
-					$Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
-					$link 	= 'index.php?option=com_digicom&view=downloads'.$Itemid;
+				$afterpurchase = $configs->get('afterpurchase', 2);
+				switch ($afterpurchase) {
+					case '2':
+						$session->set('com_digicom', array('action' => 'payment_complete', 'id' => $orderid));
+						$link 	= 'index.php?option=com_digicom&view=thankyou';
+						break;
+					case '1':
+						$link 	= 'index.php?option=com_digicom&view=order&id='.$orderid;
+						break;
+					default:
+						$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=downloads', true);
+						$Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
+						$link 	= 'index.php?option=com_digicom&view=downloads'.$Itemid;
+						break;
 				}
-
+				
 				$this->setRedirect(JRoute::_($link), JText::_("COM_DIGICOM_PAYMENT_FREE_PRUCHASE_COMPLETE_MESSAGE"));
 			}
 		}
