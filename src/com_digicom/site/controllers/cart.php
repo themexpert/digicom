@@ -288,7 +288,7 @@ class DigiComControllerCart extends JControllerLegacy
 				(isset($pluginParams->askforbilling) && $pluginParams->askforbilling && $res == 2)
 			)
 		{
-			$this->setRedirect('index.php?option=com_digicom&view=billing&return='.$return);
+			$this->setRedirect(JRoute::_('index.php?option=com_digicom&view=billing&return='.$return));
 			JFactory::getApplication()->enqueueMessage(JText::_('COM_DIGICOM_BILLING_INFO_REQUIRED'));
 
 			return true;

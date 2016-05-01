@@ -28,7 +28,7 @@ class DigiComViewThankYou extends JViewLegacy
 			$session->set('com_digicom', array());
 		}else{
 			$msg = JText::_('COM_DIGICOM_THANKYOU_PAGE_WRONG_PID');
-			$app->redirect('index.php?option=com_digicom&view=orders', $msg, 'warning');
+			$app->redirect(JRoute::_('index.php?option=com_digicom&view=orders'), $msg, 'warning');
 			return true;
 		}
 
