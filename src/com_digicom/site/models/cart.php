@@ -803,8 +803,8 @@ class DigiComModelCart extends JModelItem
 	function proccessSuccess($post, $pay_plugin, $order_id, $sid, $data, $items)
 	{
 		$app 			= JFactory::getApplication();
+		$session 	= JFactory::getSession();
 		$customer = $this->loadCustomer($sid);
-
 		if(!$customer)
 		{
 			$order 	= $this->getOrder($order_id);
@@ -817,12 +817,13 @@ class DigiComModelCart extends JModelItem
 		$result 	= $post;
 
 		$logtype = 'status';
-
+		$link = JRoute::_('index.php?option=com_digicom&view=orders');
 		if(isset($data['status']))
 		{
 			$_SESSION['in_trans'] = 1;
 
-			switch ($data['status']) {
+			switch ($data['status']) 
+			{
 				case 'A':
 					$status 	= "Active";
 					$logtype 	= "payment";
@@ -870,40 +871,39 @@ class DigiComModelCart extends JModelItem
 
 				$this->updateOrder($order_id, $result, $data, $pay_plugin, $status, $items, $customer);
 
-			}else
+			}
+			else
 			{
 				DigiComSiteHelperLog::setLog($logtype, 'cart proccessSuccess', $order_id, 'Post recieved for Order id#'.$order_id.' from '.$pay_plugin, json_encode($info), $status);
 			}
 
-		}
-
-		// redirect after payment complete
-		$afterpurchase = $configs->get('afterpurchase', 2);
-		switch ($afterpurchase) {
-			case '2':
-				if('Active' == $status){
-					$session->set('com_digicom', array('action' => 'payment_complete', 'id' => $order_id));
-					$link 	= JRoute::_('index.php?option=com_digicom&view=thankyou', false);					
-				}else{
+			// redirect after payment complete
+			$afterpurchase = $configs->get('afterpurchase', 2);
+			switch ($afterpurchase) {
+				case '2':
+					if('Active' == $status){
+						$session->set('com_digicom', array('action' => 'payment_complete', 'id' => $order_id));
+						$link 	= JRoute::_('index.php?option=com_digicom&view=thankyou', false);					
+					}else{
+						$app->enqueueMessage($msg, 'message');
+						$link 	= JRoute::_('index.php?option=com_digicom&view=order&id='.$order_id, false);
+					}
+					break;
+				case '1':
+					$app->enqueueMessage($msg, 'message');
+					$link 	= JRoute::_('index.php?option=com_digicom&view=order&id='.$order_id, false);
+					break;
+				default:
 					$app->enqueueMessage($msg,'message');
-					$link 	= JRoute::_('index.php?option=com_digicom&view=order&id='.$orderid, false);
-				}
-				break;
-			case '1':
-				$app->enqueueMessage($msg,'message');
-				$link 	= JRoute::_('index.php?option=com_digicom&view=order&id='.$orderid, false);
-				break;
-			default:
-				$app->enqueueMessage($msg,'message');
-				$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=downloads', true);
-				$Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
-				$link 	= JRoute::_('index.php?option=com_digicom&view=downloads'.$Itemid, false);
-				break;
+					$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=downloads', true);
+					$link 	= JRoute::_('index.php?option=com_digicom&view=downloads', false);
+					break;
+			}
+
 		}
 		
 		$app->redirect($link);
 		return true;
-
 	}
 
 	function updateOrder($order_id, $result, $data, $pay_plugin, $status, $items, $customer)
