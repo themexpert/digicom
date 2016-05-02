@@ -919,8 +919,9 @@ class DigiComModelCart extends JModelItem
 			$orderTable->amount_paid = $orderTable->amount_paid + $data['total_paid_amt'];
 		}
 		else{
-
-			$orderTable->amount_paid = $orderTable->amount_paid - $data['total_paid_amt'];
+			// as refund, check if has refund amout else all
+			$balance_amount = ($data['total_paid_amt'] > 0 ? ($orderTable->amount_paid - $data['total_paid_amt']) : 0); 
+			$orderTable->amount_paid = $balance_amount;
 			$type = 'refund_order';
 		}
 
