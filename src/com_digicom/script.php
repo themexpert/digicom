@@ -269,10 +269,20 @@ class Com_DigiComInstallerScript
 			$db->execute();
 		}
 		
+		$db->clear();
 		$query = "ALTER TABLE `#__digicom_customers` CHANGE `taxnum` `taxnum` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL";
 		$db->setQuery($query);
 		$db->execute();
 
+		$query = "SHOW COLUMNS FROM `#__digicom_session` LIKE 'id'";
+		$db->setQuery($query);
+		$column = $db->loadObject();
+		if(!COUNT($column)){
+			$query = "ALTER TABLE `#__digicom_session` ADD `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;";
+			$db->setQuery($query);
+			$db->execute();
+		}
+		
 	}
 
 }
