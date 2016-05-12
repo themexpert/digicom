@@ -10,7 +10,7 @@
 // no direct access
 defined('_JEXEC') or die;
 
-require dirname(__FILE__).'/helper.php';
+require_once dirname(__FILE__).'/helper.php';
 
 // Initialise variables.
 $lang		= JFactory::getLanguage();
