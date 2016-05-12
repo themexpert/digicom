@@ -78,6 +78,10 @@ DigiCom follows the [GitFlow branching model](http://nvie.com/posts/a-successful
 
 Each time you want to work on a fix or a new feature, create a new branch based on the ```develop``` branch: ```git checkout -b BRANCH_NAME develop```. Only pull requests to the ```develop``` branch will be merged.
 
+## Requirements
+Digicom works fine with php 5.4 and Joomla 3.x. but we have some third party extensions like: elfinder, they have some dependency too. Please make sure you have them.
+>>> proc_open is required for file manager operation. check your system info and see php settings, if you find it under disabled functions then contact your support.
+
 ## Versioning
 
 DigiCom is maintained by using the [Semantic Versioning Specification (SemVer)](http://semver.org).
