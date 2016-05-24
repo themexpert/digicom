@@ -60,8 +60,7 @@ class DigiComSiteHelperSession
 		if(!$this->oldsidscleaned && !$sid){
 			$lifetime = $config->get( 'lifetime', 15); //MINUTE
 			$sql = "DELETE FROM `#__digicom_session`
-			WHERE `create_time` < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL $lifetime MINUTE))
-			and `uid` = '0'";
+			WHERE `create_time` <= DATE_SUB(NOW(), INTERVAL 1200 MINUTE) ORDER BY `create_time` and `uid` = '0'";
 			$db->setQuery($sql);
 			$db->execute();
 			$this->oldsidscleaned = true;
