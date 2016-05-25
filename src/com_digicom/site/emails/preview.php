@@ -53,7 +53,7 @@ defined('_JEXEC') or die;
                                           <td valign="top" style="padding: 48px;">
                                              <div id="body_content_inner" style='color: #737373; font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif; font-size: 14px; line-height: 150%; text-align: left;'>
                                                 <p style="margin: 0 0 16px;">Hi, Customer</p>
-                                                <p style="margin: 0 0 16px;">This is an email to let you inform about your order from Digicom Store. The order is as follows: </p>
+                                                <p style="margin: 0 0 16px;">This is an email to inform you about your order from Digicom Store. The order is as follows: </p>
 
                                                 <h2 style='color: [BASE_COLOR]; display: block; font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif; font-size: 18px; font-weight: bold; line-height: 130%; margin: 16px 0 8px; text-align: left;'>
                                                   Order #999 (<time datetime="12-12-2015">12-12-2015</time>)

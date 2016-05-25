@@ -17,7 +17,7 @@ defined('_JEXEC') or die;
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 Hi [ADMIN_NAME],
-This is an email to let you inform about your order # [ORDER_ID] at [SITENAME]. Here is the details:
+This is an email to inform you about your order # [ORDER_ID] at [SITENAME]. Here is the details:
 
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
