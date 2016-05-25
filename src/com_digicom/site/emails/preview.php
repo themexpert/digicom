@@ -22,7 +22,7 @@ defined('_JEXEC') or die;
                <td align="center" valign="top">
                   <div id="template_header_image">
                     <p style="margin-top: 0;">
-                      <img src="<?php echo JRoute::_('/media/com_digicom/images/dglogo-250x68.png');?>" />
+                      <img src="<?php echo JUri::root().JRoute::_('media/com_digicom/images/dglogo-250x68.png');?>" />
                     </p>
                   </div>
                   <table border="0" cellpadding="0" cellspacing="0" width="600" id="template_container" style="box-shadow: 0 1px 4px rgba(0,0,0,0.1) !important; background-color: [TMPL_BG_COLOR];color: [TMPL_COLOR];border: 1px solid #dcdcdc; border-radius: 3px !important;">
