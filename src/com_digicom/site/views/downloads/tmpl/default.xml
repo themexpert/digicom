@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_DIGICOM_MENU_ITEM_TYPE_DOWNLOADS">
+		<message>
+			<![CDATA[COM_DIGICOM_MENU_ITEM_TYPE_DOWNLOADS_DESC]]>
+		</message>
+	</layout>
+	<fields name="params">
+		<fieldset name="basic" label="COM_DIGICOM_MENU_ITEM_TYPE_DOWNLOADS_OPTIONS">
+
+			<!-- <field name="orderby" type="list"
+			  description="JGLOBAL_CATEGORY_ORDER_DESC"
+			  label="JGLOBAL_CATEGORY_ORDER_LABEL"
+				defautl="rdate"
+			>
+			  <option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
+			  <option value="date">JGLOBAL_OLDEST_FIRST</option>
+			  <option value="alpha">JGLOBAL_TITLE_ALPHABETICAL</option>
+			  <option value="ralpha">JGLOBAL_TITLE_REVERSE_ALPHABETICAL</option>
+			  <option value="order">JGLOBAL_CATEGORY_MANAGER_ORDER</option>
+			</field>
+ -->
+
+			<field name="iorderby" type="list"
+			  description="JGLOBAL_PRODUCT_ORDER_DESC"
+			  label="JGLOBAL_PRODUCT_ORDER_LABEL"
+				defautl="order"
+			>
+			  <option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
+			  <option value="date">JGLOBAL_OLDEST_FIRST</option>
+			  <option value="alpha">JGLOBAL_TITLE_ALPHABETICAL</option>
+			  <option value="ralpha">JGLOBAL_TITLE_REVERSE_ALPHABETICAL</option>
+			  <option value="order">JGLOBAL_PRODUCT_ORDERING</option>
+			</field>
+
+			<field name="order_date" type="list"
+			  description="JGLOBAL_PRODUCT_ORDERING_DATE_DESC"
+			  label="JGLOBAL_PRODUCT_ORDERING_DATE_LABEL"
+				default="published"
+			>
+			  <option value="created">JGLOBAL_CREATED</option>
+			  <option value="modified">JGLOBAL_MODIFIED</option>
+			  <option value="published">JPUBLISHED</option>
+			</field>
+
+
+		</fieldset>
+	</fields>
+</metadata>

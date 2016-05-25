@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="3.4" client="site" method="upgrade">
+	<name>DigiCom Shopping Cart</name>
+	<author>ThemeXpert</author>
+	<creationDate>##DIGICOM_CREATIONDATE##</creationDate>
+	<copyright>Copyright (C) 2010-2015 ThemeXpert. All rights reserved.</copyright>
+	<license>GNU/GPLv3</license>
+	<authorEmail>info@themexpert.com</authorEmail>
+	<authorUrl>www.themexpert.com</authorUrl>
+	<version>##DIGICOM_VERSION##</version>
+	<description>DigiCom Shopping Cart</description>
+	<files>
+		<filename module="mod_digicom_cart">mod_digicom_cart.xml</filename>
+		<filename module="mod_digicom_cart">mod_digicom_cart.php</filename>
+		<folder>assets</folder>
+		<folder>tmpl</folder>
+		<filename>index.html</filename>
+	</files>
+	<languages folder="language">
+			<language tag="en-GB">en-GB/en-GB.mod_digicom_cart.ini</language>
+	</languages>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic" label="">
+
+			</fieldset>
+			<fieldset
+				name="advanced">
+				<field
+					name="layout"
+					type="modulelayout"
+					label="JFIELD_ALT_LAYOUT_LABEL"
+					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+
+				<field
+					name="moduleclass_sfx"
+					type="textarea" rows="3"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+
+				<field
+					name="cache"
+					type="list"
+					default="1"
+					label="COM_MODULES_FIELD_CACHING_LABEL"
+					description="COM_MODULES_FIELD_CACHING_DESC">
+					<option
+						value="1">JGLOBAL_USE_GLOBAL</option>
+					<option
+						value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+				</field>
+
+				<field
+					name="cache_time"
+					type="text"
+					default="900"
+					label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+					description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
+				<field
+					name="cachemode"
+					type="hidden"
+					default="static">
+					<option
+						value="static"></option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

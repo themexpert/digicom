@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_DIGICOM_MENU_ITEM_TYPE_ORDERS">
+		<message>
+			<![CDATA[COM_DIGICOM_MENU_ITEM_TYPE_ORDERS_DESC]]>
+		</message>
+	</layout>
+	<!-- Add fields to the parameters object for the layout. -->
+	<fields name="params">
+
+		<!-- Basic options. -->
+		<fieldset name="basic" label="JOPTIONS">
+			<field
+				name="filter_field"
+				type="radio"
+				class="btn-group"
+				label="JGLOBAL_FILTER_FIELD_LABEL"
+				description="JGLOBAL_FILTER_FIELD_DESC"
+				default="1">
+				<option value="1">JSHOW</option>
+				<option value="0">JHIDE</option>
+			</field>
+
+			<field
+				name="show_pagination_limit"
+				type="radio"
+				class="btn-group"
+				label="JGLOBAL_PAGINATION_LABEL"
+				description="JGLOBAL_PAGINATION_DESC"
+				default="1">
+				<option value="1">JSHOW</option>
+				<option value="0">JHIDE</option>
+			</field>
+
+		</fieldset>
+
+	</fields>
+
+</metadata>

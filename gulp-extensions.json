@@ -1,0 +1,10 @@
+{
+	"components" 	: ["com_digicom"],
+	"modules" 		: {
+		"frontend"	: ["digicom"]
+	},
+	"plugins" 		: {
+		"digicom"		:	["plugins"]
+	},
+	"media" 			: ["media"]
+}

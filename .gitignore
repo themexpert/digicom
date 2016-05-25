@@ -1,97 +1,64 @@
-# Project management
-/.buildpath
-/.idea
-/.settings
-/nbproject
-/TODO
-config.codekit
+# Builds
+releases
 
-#Build files
-/build/temp
-/build/release
+# Node modules
+node_modules
 
-# Joomla core files
-/.htaccess
+# OSX
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
 
-# Administrator files n folders
-/administrator/cache/*
-/administrator/components/*
-!/administrator/components/com_digicom/
-/administrator/help/*
-/administrator/includes/*
-/administrator/language/*
-!/administrator/language/en-GB/
-/administrator/language/en-GB/*
-!/administrator/language/en-GB/en-GB.com_digicom.ini
-!/administrator/language/en-GB/en-GB.com_digicom.sys.ini
-!/administrator/language/en-GB/en-GB.mod_digicom_menu.ini
-!/administrator/language/en-GB/en-GB.mod_digicom_menu.sys.ini
-!/administrator/language/en-GB/en-GB.plg_content_digicom.ini
-!/administrator/language/en-GB/en-GB.plg_digicom_pay_offline.ini
-!/administrator/language/en-GB/en-GB.plg_digicom_pay_paypal.ini
-!/administrator/language/en-GB/en-GB.plg_editors-xtd_digicom.ini
-!/administrator/language/en-GB/en-GB.plg_finder_digicom.ini
-!/administrator/language/en-GB/en-GB.plg_finder_digicom.sys.ini
-!/administrator/language/en-GB/en-GB.plg_system_digicom.ini
-/administrator/manifests/*
-/administrator/modules/*
-!/administrator/modules/mod_digicom_menu*
-/administrator/templates/*
-/administrator/index.php
-/backup/*
-/bin/*
-/cache/*
-/cli/*
-/components/*
-!/components/com_digicom/
-/digicom/*
-/images/*
-/includes/*
-/installation/*
-/language/*
-!/language/en-GB/
-/language/en-GB/*
-!/language/en-GB/en-GB.com_digicom.ini
-!/language/en-GB/en-GB.mod_digicom_cart.ini
-!/language/en-GB/en-GB.mod_digicom_categories.ini
-/layouts/*
-/libraries/*
-/logs/*
-/log/*
-/media/*
-!/media/digicom/
-/modules/*
-!/modules/mod_digicom_cart/
-!/modules/mod_digicom_categories/
+# Windows
+Thumbs.db
+Desktop.ini
 
-# plugins index
-/plugins/*
+# PHPStorm
+.idea/
 
-!/plugins/digicom_pay/
-/plugins/digicom_pay/*
-!/plugins/digicom_pay/offline/
-!/plugins/digicom_pay/paypal/
+# Eclipse
+.metadata/
 
-!/plugins/editors-xtd/
-/plugins/editors-xtd/*
-!/plugins/editors-xtd/digicom/
+# Sublime Text
+*.sublime*
 
-!/plugins/content/
-/plugins/content/*
-!/plugins/content/digicom/
+# Eclipse
+.buildpath
+.project
+.settings
 
-!/plugins/system/
-/plugins/system/*
-!/plugins/system/digicom/
+# Temp files
+*.tmp
+*.bak
+*.swp
+*~.nib
+*~
 
-!/plugins/finder/
-/plugins/finder/*
-!/plugins/finder/digicom*
+# Github pages and Jekyll files
+/_site/
+/Gemfile
+/Gemfile.lock
 
-/templates/*
-/tmp/*
-/configuration.php
-/index.php
-/joomla.xml
-/*.txt
-/*.dist
+# composer
+composer.lock
+composer.phar
+vendor/*
+
+# config
+gulp-config.json
+
+#bower
+bower_components
+
+# Robo
+robo.phar
+
+# Test related files
+tests/acceptance.suite.yml
+tests/*/*Tester.php
+tests/joomla-cms3*
+tests/_output*
+selenium-server-standalone.jar
+codecept.phar
+selenium.log

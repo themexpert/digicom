@@ -1,0 +1,92 @@
+/**
+ * @version 	1.0.0
+ * @package 	com_digicom
+ * @author 		ThemeXpert
+ * @copyright Copyright (c) 2010 - 2015 ThemeXpert Ltd. All rights reserved.
+ * @license 	GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+ */
+.dc{
+  .row{ padding-top: 0; padding-bottom: 0; }
+  img{max-width: 100%;}
+  // Category Header
+  .dc-cat-head{
+    background: #fff; padding: 15px; margin: 0 15px 15px;
+    h1{ font-size: 2em; }
+    .dc-cat-media{ max-width: 30%; }
+    .tags{ list-style: none; margin: 5px 0; padding:0px;}
+    .tags.inline li{ display: inline-block; }
+    .dc-cat-desc{ margin: 10px 0; }
+  }
+  // Product Lists
+  .dc-items{
+    .dc-item{
+      position: relative;
+      // Title
+      h2{ font-size: 1.6em; line-height: 1.2em; }
+      .dc-item-desc{ margin: 0 0 15px; }
+    }
+  }
+  // Featured badge
+  .label-featured {
+    display: block;
+    position: absolute; top: 0; left: 0;
+    height: 40px; width: 40px;
+    background: url(../images/featured-badge.png) no-repeat 0 0;
+    font-size: 0; text-indent: -9999px;
+  }
+  .dc-item-in{ background: #fff; padding: 15px; border-radius: 4px; position: relative;box-shadow: 0px 0px 2px #ddd;}
+  // Product Details
+  &.dc-product{
+    .dc-product-title{ margin: 10px 0 30px; }
+    .dc-product-intro,
+    .dc-product-details{ margin: 20px 0; }
+    .dc-product-price{ font-size: 30px; line-height: 1; padding-top: 5px;}
+    .dc-product-info{
+      > ul > li{ margin-bottom: 6px; }
+    }
+    .tags{
+      list-style: none;
+      margin: 0; display: inline-block;
+      li{ display: inline-block; margin-left: 2px;padding: 0px;}
+    }
+    .dc-addtocart-bar{
+      // .btn-cart{ margin: 30px 0; padding-top: 20px; padding-bottom: 20px; font-size: 20px; }
+      form{
+        margin: 15px 0 0;
+      }
+    }
+  }
+  // Bundle product style
+  .dc-bundle-products{
+    background: #fff; border-radius: 4px; margin-top: 10px;
+    h3{
+      margin: 0; padding: 10px 20px; font-size: 17px; line-height: 1; text-transform: uppercase;
+      border-bottom: 1px solid #e7e7e7;
+    }
+    > ul{
+      list-style: none; margin: 0;
+      > li{ position: relative; }
+      > li:not(:last-child){ border-bottom: 1px solid #e7e7e7; }
+      > li a{
+        padding: 6px 20px; display: block;
+        &:hover{ background: #fafafa; }
+      }
+      > li .badge{ position: absolute; top: 7px; right: 10px; }
+    }
+  }
+  .form-horizontal .control-label {float: left;width: 160px;}
+  .form-horizontal .controls {margin-left: 180px;}
+  #jform_person{margin: 0px 0px 10px;}
+  #jform_person .btn{padding: 4px 12px;}
+  &.dc-register .control-group .chzn-container{margin: 5px 0px 10px;}
+  .modal-body{max-height: none;}
+  select{
+    font-size: initial;
+  }
+  legend{
+    line-height: 40px;
+  }
+}
+.text-center{text-align: center;}
+.dc .no-margin{margin:0px;}
+.dc .no-padding{padding:0px;}

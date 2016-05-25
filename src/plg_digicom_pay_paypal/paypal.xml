@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="digicom_pay" method="upgrade">
+
+	<name>Paypal - DigiCom Pay Plugin</name>
+	<author>ThemeXpert</author>
+	<creationDate>##DIGICOM_CREATIONDATE##</creationDate>
+	<copyright>Copyright © 2013 themexpert.com All rights reserved.</copyright>
+	<license>GNU/GPLv3</license>
+	<authorEmail>info@themexpert.com</authorEmail>
+	<authorUrl>www.themexpert.com</authorUrl>
+	<version>##DIGICOM_VERSION##</version>
+	<description>Paypal payment plugin for DigiCom Joomla Extension</description>
+
+	<files>
+		<filename plugin="paypal">paypal.php</filename>
+		<folder>paypal</folder>
+	</files>
+
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.plg_digicom_pay_paypal.ini</language>
+	</languages>
+
+ 	<config>
+
+		<fields name="params">
+
+			<fieldset name="basic">
+
+				<field name="business" type="text" default="" label="PAYPAL_EMAIL" description="PAYPAL_EMAIL_DESC"/>
+
+				<field name="sandbox" type="radio" class="btn-group" default="0" label="PAYPAL_SANDBOX" description="PAYPAL_SANDBOX_DESC">
+					<option value="0">NO</option>
+					<option value="1">YES</option>
+				</field>
+
+				<field name="secure_post" type="radio" class="btn-group" default="1"  label="secure post(use	https)?" description="Use https for secure post">
+					<option value="0">NO</option>
+					<option value="1">YES</option>
+				</field>
+
+				<field name="bootstrap2" type="radio" class="btn-group" default="0" label="PAYPAL_BOOTSTRAP2_TEMPLATE_TITLE" description="PAYPAL_BOOTSTRAP2_TEMPLATE_DESC">
+					<option value="0">NO</option>
+					<option value="1">YES</option>
+				</field>
+
+				<field name="plugin_name" type="text" default="Paypal" label="PLG_NAME" description="" />
+
+				<field name="plugin_hidname" type="hidden" default="paypal" />
+
+			</fieldset>
+
+		</fields>
+
+	</config>
+
+</extension>
