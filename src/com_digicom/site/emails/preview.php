@@ -22,7 +22,7 @@ defined('_JEXEC') or die;
                <td align="center" valign="top">
                   <div id="template_header_image">
                     <p style="margin-top: 0;">
-                      <img src="<?php echo JRoute::_('/media/com_digicom/images/dglogo-250x68.png');?>" />
+                      <img src="<?php echo JUri::root().JRoute::_('media/com_digicom/images/dglogo-250x68.png');?>" />
                     </p>
                   </div>
                   <table border="0" cellpadding="0" cellspacing="0" width="600" id="template_container" style="box-shadow: 0 1px 4px rgba(0,0,0,0.1) !important; background-color: [TMPL_BG_COLOR];color: [TMPL_COLOR];border: 1px solid #dcdcdc; border-radius: 3px !important;">
@@ -53,7 +53,7 @@ defined('_JEXEC') or die;
                                           <td valign="top" style="padding: 48px;">
                                              <div id="body_content_inner" style='color: #737373; font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif; font-size: 14px; line-height: 150%; text-align: left;'>
                                                 <p style="margin: 0 0 16px;">Hi, Customer</p>
-                                                <p style="margin: 0 0 16px;">This is an email to let you inform about your order from Digicom Store. The order is as follows: </p>
+                                                <p style="margin: 0 0 16px;">This is an email to inform you about your order from Digicom Store. The order is as follows: </p>
 
                                                 <h2 style='color: [BASE_COLOR]; display: block; font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif; font-size: 18px; font-weight: bold; line-height: 130%; margin: 16px 0 8px; text-align: left;'>
                                                   Order #999 (<time datetime="12-12-2015">12-12-2015</time>)

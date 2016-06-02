@@ -278,9 +278,9 @@ class DigiComSiteHelperEmail {
 		$message = $type.' email for order#'.$orderid.', status: '.$status;
 
 		if ( $mailSender->Send() !== true ) {
-			DigiComSiteHelperLog::setLog('email', 'cart dispatch email', $orderid, $message, json_encode($info),'failed');
+			DigiComSiteHelperLog::setLog('email', $type . ' - cart dispatch email', $orderid, $message, json_encode($info),'failed');
 		}else{
-			DigiComSiteHelperLog::setLog('email', 'cart dispatch email', $orderid, $message, json_encode($info),'success');
+			DigiComSiteHelperLog::setLog('email', $type . ' - cart dispatch email', $orderid, $message, json_encode($info),'success');
 		}
 
 		// Send email to admin if its enabled on email common settings
@@ -324,9 +324,9 @@ class DigiComSiteHelperEmail {
 			$message = $type.' email for order#'.$orderid.', status: '.$status;
 			//Log::write( $message );
 			if ( $mailSender->Send() !== true ) {
-				DigiComSiteHelperLog::setLog('email', 'cart dispatch email', $orderid, $message, json_encode($info),'failed');
+				DigiComSiteHelperLog::setLog('email', $type . ' - to admin cart dispatch email', $orderid, $message, json_encode($info),'failed');
 			}else{
-				DigiComSiteHelperLog::setLog('email', 'cart dispatch email', $orderid, $message, json_encode($info),'success');
+				DigiComSiteHelperLog::setLog('email', $type . ' - to admin cart dispatch email', $orderid, $message, json_encode($info),'success');
 			}
 		}
 
