@@ -339,7 +339,8 @@ class DigiComModelDownloads extends JModelList
 			$limit = $this->state->params->get('maximum', 20);
 		}
 
-		$this->setState('list.limit', $limit);
+		// TODO:: should be $limit instead 999, no pagination now
+		$this->setState('list.limit', 999);
 
 		$offset = $app->input->get('limitstart', 0, 'uint');
 		$this->setState('list.start', $offset);
