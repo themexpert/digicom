@@ -326,7 +326,7 @@ class DigiComModelDownloads extends JModelList
 		// Select required fields from the downloads.
 		//$query->select('DISTINCT(p.id) as productid')
 		$query->select('DISTINCT p.id as productid')
-			  ->select(array('p.name,p.catid,p.catid,p.images,p.introtext,p.bundle_source,p.product_type as type, p.attribs, p.publish_up'))
+			  ->select(array('p.name,p.catid,p.images,p.introtext,p.bundle_source,p.product_type as type, p.attribs, p.publish_up'))
 			  ->from($db->quoteName('#__digicom_licenses') . ' AS l')
 			  ->join('inner', '#__digicom_products AS p ON l.productid = p.id');
 		
