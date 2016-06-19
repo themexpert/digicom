@@ -71,7 +71,7 @@ $grid = 12/$column;
 								</h3>
 								<?php if (($this->params->get('show_cat_num_products_cat') == 1) AND 						   $item->description ) : ?>
 									<div class="dc-cat-desc">
-										<?php echo JHtml::_('content.prepare', $item->description, '', 'com_content.categories'); ?>
+										<?php echo JHtml::_('content.prepare', $item->description, '', $this->parent->extension . '.categories'); ?>
 									</div>
 								<?php endif; ?>
 							</div>
