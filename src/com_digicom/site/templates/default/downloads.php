@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 JHtml::_('jquery.framework');
+$dispatcher	= JEventDispatcher::getInstance();
+JPluginHelper::importPlugin('digicom');
 
 $allitems = $this->items;
 $firstkey = reset($allitems);
@@ -28,19 +30,31 @@ $active = 'cat-'.$firstkey['catid'];
 	?>
 		<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'cat-'.$key, $items['title']); ?>
 		<div class="panel-group" id="accordion<?php echo $items['catid'];?>" role="tablist" aria-multiselectable="true">
-	    <h3><?php echo $items['title']; ?></h3>
-	  	<?php foreach($items['items'] as $pkey=>$item): ?>
+		    <h3><?php echo $items['title']; ?></h3>
+		  	<?php foreach($items['items'] as $pkey=>$item): ?>
+			
 			<div class="panel panel-default">
 				<div class="panel-heading" role="tab" id="#productheading<?php echo $item->productid; ?>">
-		      <h4 class="panel-title">
-		        <a role="button" data-toggle="collapse" data-parent="#accordion<?php echo $items['catid'];?>" href="#product<?php echo $item->productid; ?>" aria-expanded="true" aria-controls="product<?php echo $item->productid; ?>">
-		          <?php echo $item->name; ?>
+					<h4 class="panel-title">
+
+						<?php echo $item->name; ?>
+
+					<?php $dispatcher->trigger('onDigicomProductDownloadAction', array ('com_digicom.downloads', &$item)); ?>
+
+					<a 
+						role="button" 
+						data-toggle="collapse" data-parent="#accordion<?php echo $items['catid'];?>" 
+						href="#product<?php echo $item->productid; ?>" aria-expanded="true" aria-controls="product<?php echo $item->productid; ?>">
 							<span class="pull-right"><i class="glyphicon glyphicon-download icon-download"></i></span>
-		        </a>
-		      </h4>
-		    </div>
-		    <div id="product<?php echo $item->productid; ?>" class="panel-collapse collapse<?php echo ($pkey==0 ? ' in' : ''); ?>" role="tabpanel" aria-labelledby="#productheading<?php echo $item->productid; ?>">
-		      <div class="panel-body">
+					</a>
+
+					</h4>
+		   		</div>
+		    	<div id="product<?php echo $item->productid; ?>" 
+		    		class="panel-collapse collapse<?php echo ($pkey==0 ? ' in' : ''); ?>" role="tabpanel" 
+		    		aria-labelledby="#productheading<?php echo $item->productid; ?>">
+		      		
+		      		<div class="panel-body">
 						<table class="table table-bordered">
 							<thead>
 								<tr>
@@ -65,9 +79,9 @@ $active = 'cat-'.$firstkey['catid'];
 								<?php endforeach; ?>
 							</tbody>
 						</table>
-		      </div>
-		    </div>
-		  </div>
+		      		</div>
+		    	</div>
+		  	</div>
 			<?php endforeach; ?>
 		</div>
 
