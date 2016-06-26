@@ -39,14 +39,16 @@ $active = 'cat-'.$firstkey['catid'];
 
 						<?php echo $item->name; ?>
 
-					<?php $dispatcher->trigger('onDigicomProductDownloadAction', array ('com_digicom.downloads', &$item)); ?>
+						<?php $dispatcher->trigger('onDigicomProductDownloadAction', array ('com_digicom.downloads', &$item)); ?>
 
-					<a 
-						role="button" 
-						data-toggle="collapse" data-parent="#accordion<?php echo $items['catid'];?>" 
-						href="#product<?php echo $item->productid; ?>" aria-expanded="true" aria-controls="product<?php echo $item->productid; ?>">
-							<span class="pull-right"><i class="glyphicon glyphicon-download icon-download"></i></span>
-					</a>
+						<?php $dispatcher->trigger('onDigicomProductDownloadInfo', array ('com_digicom.downloads', &$item)); ?>
+
+						<a 
+							role="button" 
+							data-toggle="collapse" data-parent="#accordion<?php echo $items['catid'];?>" 
+							href="#product<?php echo $item->productid; ?>" aria-expanded="true" aria-controls="product<?php echo $item->productid; ?>">
+								<span class="pull-right"><i class="glyphicon glyphicon-download icon-download"></i></span>
+						</a>
 
 					</h4>
 		   		</div>
