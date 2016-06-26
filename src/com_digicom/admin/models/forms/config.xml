@@ -92,6 +92,16 @@
 					<option value="1">JSHOW</option>
 			</field>
 			<field
+				name="enable_log"
+				type="radio"
+				class="btn-group"
+				label="COM_DIGICOM_SETTINGS_GENERAL_ENABLE_LOG_LABEL"
+				default="1"
+				description="COM_DIGICOM_SETTINGS_GENERAL_ENABLE_LOG_DESC">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+			</field>
+			<field
 				name="registration_spacer"
 				type="spacer"
 				class="title"
