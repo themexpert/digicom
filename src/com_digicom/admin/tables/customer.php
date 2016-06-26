@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 class TableCustomer extends JTable
 {
-	function TableCustomer( &$db )
+	function __construct( &$db )
 	{
 		parent::__construct( '#__digicom_customers', 'id', $db );
 	}
