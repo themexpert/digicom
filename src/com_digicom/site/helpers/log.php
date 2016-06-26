@@ -1,10 +1,10 @@
 <?php
 /**
- * @package		DigiCom
- * @author 		ThemeXpert http://www.themexpert.com
- * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
- * @license 	GNU General Public License version 3 or later; see LICENSE.txt
- * @since 		1.0.0
+ * @package     DigiCom
+ * @author      ThemeXpert http://www.themexpert.com
+ * @copyright   Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license     GNU General Public License version 3 or later; see LICENSE.txt
+ * @since       1.0.0
  */
 
 defined('_JEXEC') or die;
@@ -31,6 +31,9 @@ class DigiComSiteHelperLog {
      * */
     public static function setLog($type, $hook, $callbackid, $message, $info, $status = 'complete')
     {
+        $config = JComponentHelper::getParams('com_digicom');
+        if( !$config->get('enable_log', false) ) return false;
+
         $logTable = JTable::getInstance('log','Table');
         $logTable->type     = $type;
         $logTable->callback = $hook;
@@ -56,19 +59,19 @@ class DigiComSiteHelperLog {
     {
 
       $db = JFactory::getDBO();
-  		$query = $db->getQuery(true);
-  		$query->select('*')
-  		      ->from($db->quoteName('#__digicom_log'))
-        		->where($db->quoteName('type') . ' = '. $db->quote($type))
-        		->where($db->quoteName('callback') . ' = '. $db->quote($callback))
-        		->where($db->quoteName('callbackid') . ' = '. $db->quote($callbackid))
-        		->where($db->quoteName('status') . ' = '. $db->quote($status))
-        		->order($db->quoteName('id') . ' DESC');
+        $query = $db->getQuery(true);
+        $query->select('*')
+              ->from($db->quoteName('#__digicom_log'))
+                ->where($db->quoteName('type') . ' = '. $db->quote($type))
+                ->where($db->quoteName('callback') . ' = '. $db->quote($callback))
+                ->where($db->quoteName('callbackid') . ' = '. $db->quote($callbackid))
+                ->where($db->quoteName('status') . ' = '. $db->quote($status))
+                ->order($db->quoteName('id') . ' DESC');
 
-  		// Reset the query using our newly populated query object.
-  		$db->setQuery($query);
+        // Reset the query using our newly populated query object.
+        $db->setQuery($query);
 
-  		return $db->loadObject();
+        return $db->loadObject();
 
     }
 
