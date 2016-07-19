@@ -42,22 +42,31 @@ class DigiComHelperDigiCom extends JHelperContent{
 			'index.php?option=com_digicom&view=products',
 			$vName == 'products'
 		);
+
 		JHtmlSidebar::addEntry(
 			JText::_('COM_DIGICOM_SIDEBAR_MENU_FILE_MANAGER'),
 			'index.php?option=com_digicom&view=filemanager',
 			$vName == 'filemanager'
 		);
+
 		JHtmlSidebar::addEntry(
 			JText::_('COM_DIGICOM_SIDEBAR_MENU_CUSTOMERS'),
 			'index.php?option=com_digicom&view=customers',
 			$vName == 'customers'
 		);
+
 		JHtmlSidebar::addEntry(
 			JText::_('COM_DIGICOM_SIDEBAR_MENU_ORDERS'),
 			'index.php?option=com_digicom&view=orders',
 			$vName == 'orders'
 		);
 
+		JHtmlSidebar::addEntry(
+			JText::_('COM_DIGICOM_SIDEBAR_MENU_LICENSES'),
+			'index.php?option=com_digicom&view=licenses',
+			$vName == 'licenses'
+		);
+		
 		JHtmlSidebar::addEntry(
 			JText::_('COM_DIGICOM_SIDEBAR_MENU_DISCOUNTS'),
 			'index.php?option=com_digicom&view=discounts',
@@ -363,6 +372,44 @@ class DigiComHelperDigiCom extends JHelperContent{
 		return $status;
 
 	}
+
+	public static function licenseExpiryHelper($item, $configs)
+	{
+
+
+		$today = date('Y-m-d 00:00:00');
+		$tomorrow = date('Y-m-d  00:00:00',strtotime($today . "+1 days"));
+
+		$now = strtotime($today);
+		$tomorrow = strtotime($tomorrow);
+		$timestart = strtotime($item->purchase);
+		$timeend = strtotime($item->expires);
+		$nullDate = strtotime('0000-00-00 00:00:00');
+
+		$status = '';
+
+		if(!$item->active)
+		{
+			$status = "<span class='label label-warning'>".(JText::_("COM_DIGICOM_INACTIVE"))."</span>";
+		}
+		elseif(
+			($timeend >= $now || $timeend == $nullDate )
+			&&
+			$item->active
+		)
+		{
+			$status = "<span class='label label-success'>".(JText::_("COM_DIGICOM_ACTIVE"))."</span>";
+		}
+		else
+		{
+			$status = "<span class='label'>".(JText::_("COM_DIGICOM_EXPIRED"))."</span>";
+		}
+
+		return $status;
+
+	}
+
+
 
 	//This function transforms the php.ini notation for numbers (like '2M') to an integer (2*1024*1024 in this case)
 	public static function convertPHPSizeToBytes($sSize)
