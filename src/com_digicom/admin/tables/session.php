@@ -15,7 +15,7 @@ class TableSession extends JTable {
 	var $transaction_details = null;
 	var $create_time = null;
 
-	function TableSession (&$db) {
+	function __construct (&$db) {
 		parent::__construct('#__digicom_session', 'sid', $db);
 	}
 
