@@ -51,6 +51,7 @@ class DigiComViewOrderNew extends JViewLegacy
 
 		DigiComHelperDigiCom::addSubmenu('orders');
 		$this->sidebar = JHtmlSidebar::render();
+		JFactory::getApplication()->input->set('hidemainmenu', true);
 
 		parent::display( $tpl );
 	}
