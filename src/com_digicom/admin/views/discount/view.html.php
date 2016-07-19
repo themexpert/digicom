@@ -48,6 +48,7 @@ class DigiComViewDiscount extends JViewLegacy
 
 		DigiComHelperDigiCom::addSubmenu('discounts');
 		$this->sidebar = JHtmlSidebar::render();
+		JFactory::getApplication()->input->set('hidemainmenu', true);
 
 		parent::display( $tpl );
 	}
