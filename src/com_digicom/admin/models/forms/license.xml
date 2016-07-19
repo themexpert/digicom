@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields addfieldpath="/administrator/components/com_digicom/models/fields">
+
+		<field name="id" type="hidden" readonly="true" />
+		<field name="licenseid" type="text" label="COM_DIGICOM_LICENSE_ID" readonly="true" />
+		<field name="orderid" type="text" label="COM_DIGICOM_ORDER_ID" readonly="true" />
+		<field name="userid" type="user" label="COM_DIGICOM_CUSTOMER" readonly="true" />
+		<field name="productid" type="sql" 
+				query="SELECT id, name FROM #__digicom_products order by id"
+				key_field="id"
+				value_field="name"
+				multiple="false"
+				label="COM_DIGICOM_PRODUCT" readonly="true" />
+
+		<field name="purchase" type="calendar" label="COM_DIGICOM_LICENSE_ISSUE" />
+		<field name="expires" type="calendar" label="COM_DIGICOM_LICENSE_EXPIRE" />
+
+		<field name="active" type="radio" label="JSTATUS" description="JSTATUS_DESC" 
+			class="btn-group" default="1">
+			<option value="1"> JPUBLISHED</option>
+			<option value="0"> JUNPUBLISHED</option>
+		</field>
+	</fields>
+
+</form>
