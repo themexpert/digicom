@@ -24,7 +24,7 @@ $deleted = DigiComHelperDigiCom::getDeleted($order->id);
 $date = $order->order_date;
 $app = JFactory::getApplication();
 $input = $app->input;
-$input->set('layout', 'dgtabs');
+$input->set('layout', 'dgform');
 ?>
 
 <?php if (!empty( $this->sidebar)) : ?>
