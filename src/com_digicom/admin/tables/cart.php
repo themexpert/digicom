@@ -18,7 +18,7 @@ class TableCart extends JTable {
 	var $userid = null;
 	var $quantity = null;
 
-	function TableCart (&$db) {
+	function __construct (&$db) {
 		parent::__construct('#__digicom_cart', 'cid', $db);
 	}
 
