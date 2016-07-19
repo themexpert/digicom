@@ -22,9 +22,14 @@ defined('_JEXEC') or die;
 		</a>
 
 		<?php if (!$hideMainmenu) : ?>
-			<?php if (count($menuItems->submenu) > 0) : ?>
+			<?php 
+			if (count($menuItems->submenu) > 0) : 
+				$menuItems  = $menuItems->submenu;
+				$dispatcher = JDispatcher::getInstance();
+				$dispatcher->trigger( 'onDigicomAfterAdminModMenuItem', array(&$menuItems));
+			?>
 				<ul class="dropdown-menu">
-					<?php foreach ($menuItems->submenu as $sub) { 
+					<?php foreach ($menuItems as $sub) { 
 						$child = ($sub->child ? true : false);
 					?>
 						<li<?php echo ($child ? ' class="dropdown-submenu"' : ''); ?>>
