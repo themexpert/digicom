@@ -56,6 +56,7 @@ class DigiComViewCustomer extends JViewLegacy {
 
 		DigiComHelperDigiCom::addSubmenu('customers');
 		$this->sidebar = DigiComHelperDigiCom::renderSidebar();
+		JFactory::getApplication()->input->set('hidemainmenu', true);
 
 		parent::display($tpl);
 	}
