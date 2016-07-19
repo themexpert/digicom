@@ -34,9 +34,9 @@ class DigiComController extends JControllerLegacy
 		$id     = $this->input->getInt('id');
 
 		//all edit view
-		$editviews = array("category", "product", "customer", "order","ordernew", "discount");
+		$editviews = array("category", "product", "customer", "order", "license", "ordernew", "discount");
 		// Check for edit form.
-		if (in_array($view,$editviews) && $layout == 'edit' && !$this->checkEditId('com_digicom.edit.'.$view, $id))
+		if (in_array($view, $editviews) && $layout == 'edit' && !$this->checkEditId('com_digicom.edit.'.$view, $id))
 		{
 			// Somehow the person just went to the form - we don't allow that.
 			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
