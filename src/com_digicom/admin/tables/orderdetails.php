@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 class TableOrderDetails extends JTable
 {
 
-	function TableOrderDetails( &$db )
+	function __construct( &$db )
 	{
 		parent::__construct( '#__digicom_orders_details', 'id', $db );
 	}
