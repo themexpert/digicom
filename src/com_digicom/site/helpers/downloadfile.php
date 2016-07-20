@@ -19,8 +19,12 @@ class DigiComSiteHelperDownloadFile {
 	function __construct($filepath, $basefileLink){
 		$this->filepath = $filepath;
 		$this->basefilepath = $basefileLink;
-	}
 
+	}
+	/*
+	* download method
+	* $type = int; 1= unique download link, no direct link to file
+	*/
 	function download($type = 0, $directLink = 0, $externalLink = 0)
 	{
 		$app					= JFactory::getApplication();
@@ -61,21 +65,34 @@ class DigiComSiteHelperDownloadFile {
 				$errorDisallowed	= true;
 			}
 
-		if(!$errorAllowed && $errorDisallowed) {
-
+			if(!$errorAllowed && $errorDisallowed) 
+			{
 				if ($directLink == 1 or $externalLink)
 				{
-
 					// Direct Link on the same server
 					if (empty($parsed['scheme'])) {
-						$downloadpath = JURI::root() . $this->filepath;
+						$downloadpath = JURI::root(true) . $this->filepath;
 					}else{
 						$downloadpath = $this->filepath;
 					}
-					$app->redirect ($downloadpath);
+
+					if($directLink != 1)
+					{
+						$name = basename($downloadpath);
+						header("Content-Description: File Transfer");
+						header("Content-Type: application/octet-stream");
+						header("Content-Disposition: attachment; filename=" .  $name);
+						@readfile($downloadpath);						
+					}
+					else
+					{
+						$app->redirect ($downloadpath);
+					}
+
 					exit;
 				}
-				else {
+				else 
+				{
 
 					$fileWithoutPath	= basename($absOrRelFile);
 					$fileSize 			= filesize($absOrRelFile);
@@ -100,13 +117,13 @@ class DigiComSiteHelperDownloadFile {
 					// Clean the output buffer
 					ob_end_clean();
 					// test for protocol and set the appropriate headers
-			    jimport( 'joomla.environment.uri' );
-			    $_tmp_uri 					= JURI::getInstance( JURI::current() );
-			    $_tmp_protocol 			= $_tmp_uri->getScheme();
+				    jimport( 'joomla.environment.uri' );
+				    $_tmp_uri 					= JURI::getInstance( JURI::current() );
+				    $_tmp_protocol 			= $_tmp_uri->getScheme();
 					if ($_tmp_protocol 	== "https") {
 						// SSL Support
 						header('Cache-Control: private, max-age=0, must-revalidate, no-store');
-			    } else {
+			    	} else {
 						header("Cache-Control: public, must-revalidate");
 						header('Cache-Control: pre-check=0, post-check=0, max-age=0');
 						header("Pragma: no-cache");
