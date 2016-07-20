@@ -607,18 +607,19 @@ class DigiComModelCart extends JModelItem
 
 	function updateCart( $customer, $configs )
 	{
-		// $app = JFactory::getApplication();
+		$app = JFactory::getApplication();
+		$input = $app->input;
 		$db = JFactory::getDbo();
 		$sid = $customer->_sid;
 		// $uid = $customer->_user->id;
 		$session = JFactory::getSession();
 		// Update prosessor
-		$processor = JRequest::getVar( 'processor', '' );
+		$processor = $input->get( 'processor', '' );
 		if(empty($processor)){
 			$processor = $session->get('processor','offline');
 		}
 
-		$promocode = JRequest::getVar( 'promocode', '' );
+		$promocode = $input->get( 'promocode', '' );
 		if($promocode){
 			$name = 'promocode'.$customer->_sid;
 			$session->set($name, true);
