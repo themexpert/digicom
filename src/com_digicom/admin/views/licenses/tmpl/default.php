@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+JHtml::_('bootstrap.tooltip');
+JHtml::_('behavior.formvalidation');
 JHtml::_('formbehavior.chosen', 'select');
 $user 		= JFactory::getUser();
 $canDo 		= JHelperContent::getActions('com_digicom', 'component');
@@ -33,14 +35,17 @@ $configs 	= $this->params->params;
 		<div class="js-stools">
 			<div class="clearfix">
 				<div class="btn-group input-append">
-					<?php $promosearch = JRequest::getVar("promosearch", ""); ?>
-					<input id="filter_search" type="text" name="promosearch" value="<?php echo trim($promosearch);?>" placeholder="<?php echo JText::_("COM_DIGICOM_SEARCH");?>" />
+					<input id="filter_search" type="text" name="filter[search]" value="<?php echo trim($this->params->get('filter.search'));?>" placeholder="<?php echo JText::_("COM_DIGICOM_SEARCH");?>" />
 					<button type="submit" class="btn hasTooltip" title="" data-original-title="Search">
 						<i class="icon-search"></i>
 					</button>
 					<button type="button" class="btn hasTooltip js-stools-btn-clear" onclick="document.id('filter_search').value='';this.form.submit();">
 							<i class="icon-remove"></i>
-						</button>
+					</button>
+					<span class="btn hasTooltip"
+						data-title="<?php echo JText::_('COM_DIGICOM_LICENSE_SEARCH_HINTS');?>">
+					<i class="icon-info"></i>
+					</span>
 				</div>
 				<div class="btn-group pull-right hidden-phone">
 					<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
@@ -50,7 +55,7 @@ $configs 	= $this->params->params;
 
 			</div>
 		</div>
-		<?php if(!count($this->items)): ?>
+		<?php if( !$this->items ): ?>
 		<div class="alert alert-no-items">
 			<?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
 		</div>
@@ -127,30 +132,42 @@ $configs 	= $this->params->params;
 						<td>
 							<?php if ($canDo->get('core.edit')): ?>
 							<a target="_blank" href="<?php echo JRoute::_('index.php?option=com_digicom&view=product&task=product.edit&id=' . $item->productid); ?>">
-								<?php echo $item->productname;?>							
+								<span class="label">
+									<?php echo $item->productname;?>							
+								</span>
 							</a>
 							<?php else: ?>
-								<?php echo $item->productname;?>
+								<span class="label">
+									<?php echo $item->productname;?>
+								</span>
 							<?php endif;?>
 						</td>
 
 						<td>
 							<?php if ($canDo->get('core.edit')): ?>
 							<a target="_blank" href="<?php echo JRoute::_('index.php?option=com_digicom&view=customer&task=customer.edit&id=' . $item->userid);?>">
-								<?php echo $item->client; ?>
+								<span class="label">
+									<?php echo $item->client; ?>
+								</span>
 							</a>
 							<?php else: ?>
-								<?php echo $item->client;?>
+								<span class="label">
+									<?php echo $item->client;?>
+								</span>
 							<?php endif;?>
 						</td>
 
 						<td>
 							<?php if ($canDo->get('core.edit')): ?>
 							<a target="_blank" href="<?php echo JRoute::_('index.php?option=com_digicom&view=order&task=order.edit&id=' . $item->orderid);?>">
-								#<?php echo $item->orderid; ?>
+								<span class="label">
+									#<?php echo $item->orderid; ?>
+								</span>
 							</a>
 							<?php else: ?>
-								#<?php echo $item->orderid;?>
+								<span class="label">
+									#<?php echo $item->orderid;?>
+								</span>
 							<?php endif;?>
 						</td>
 

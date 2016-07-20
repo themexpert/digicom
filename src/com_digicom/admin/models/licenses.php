@@ -150,29 +150,28 @@ class DigiComModelLicenses extends JModelList {
 			$query->where($db->quoteName('a.userid') . ' = ' . (int) $clientId);
 		}
 
-		// // Filter by search in title
-		// $search = $this->getState('filter.search');
+		// Filter by search in title
+		$search = $this->getState('filter.search');
 
-		// if (!empty($search))
-		// {
-		// 	if (stripos($search, 'user:') === 0)
-		// 	{
-		// 		$query->where(
-		// 			$db->quoteName('dc.id') . ' = ' . (int) substr($search, 5)
-		// 			. ' OR ' .
-		// 			$db->quoteName('dc.name') . ' = ' . (int) substr($search, 5)
-		// 		);
-		// 	}
-		// 	elseif (stripos($search, 'id:') === 0)
-		// 	{
-		// 		$query->where($db->quoteName('a.id') . ' = ' . (int) substr($search, 3));
-		// 	}
-		// 	else
-		// 	{
-		// 		$search = $db->quote('%' . str_replace(' ', '%', $db->escape(trim($search), true) . '%'));
-		// 		$query->where('(dc.name LIKE ' . $search . ' OR a.alias LIKE ' . $search . ')');
-		// 	}
-		// }
+		if (!empty($search))
+		{
+			if (stripos($search, 'user:') === 0)
+			{
+				$query->where(
+					$db->quoteName('dc.id') . ' = ' . (int) substr($search, 5)
+					. ' OR ' .
+					$db->quoteName('dc.name') . ' like "%' . substr($search, 5) . '%"'
+				);
+			}
+			elseif (stripos($search, 'id:') === 0)
+			{
+				$query->where($db->quoteName('a.id') . ' = ' . (int) substr($search, 3));
+			}
+			else
+			{
+				$query->where($db->quoteName('a.licenseid') . ' = ' . (int) $search);
+			}
+		}
 
 		// Add the list ordering clause.
 		$orderCol  = $this->state->get('list.ordering', 'a.id');
