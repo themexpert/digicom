@@ -379,8 +379,14 @@ class DigiComModelDownloads extends JModelList
 
 		$jinput = JFactory::getApplication()->input;
 		$fileid = $jinput->get('downloadid', '0');
+		
+		if($fileid == '0')
+		{
+			$fileid = $jinput->get('token', '0');
+			if($fileid == '0') return false;
+		}
+		
 		//echo $fileid;die;
-		if($fileid == '0') return false;
 		$fileid = base64_decode($fileid);
 		$fileid = json_decode($fileid);
 		//print_r( $fileid );die;

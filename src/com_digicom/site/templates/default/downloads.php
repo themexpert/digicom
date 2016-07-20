@@ -75,7 +75,7 @@ $active = 'cat-'.$firstkey['catid'];
 									<td><?php echo $file->filemtime; ?></td>
 									<td><?php echo $file->hits; ?></td>
 									<td>
-										<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=downloads&task=downloads.makeDownload&downloadid='.$file->downloadid);?>" class="btn btn-warning btn-mini"><?php echo JText::_('COM_DIGICOM_DOWNLOAD'); ?></a>
+										<a href="<?php echo JRoute::_('index.php?option=com_digicom&view=downloads&task=downloads.go&token='.$file->downloadid);?>" class="btn btn-warning btn-mini"><?php echo JText::_('COM_DIGICOM_DOWNLOAD'); ?></a>
 									</td>
 								</tr>
 								<?php endforeach; ?>

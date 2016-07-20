@@ -14,7 +14,15 @@ defined('_JEXEC') or die;
 class DigiComControllerDownloads extends JControllerLegacy
 {
 
+	/*
+	* repricated old method, to shorten the url
+	*/
 	function makeDownload()
+	{
+		$this->go();
+	}
+
+	function go()
 	{
 		global $Itemid;
 		$dispatcher	= JDispatcher::getInstance();
@@ -69,14 +77,14 @@ class DigiComControllerDownloads extends JControllerLegacy
 		if (!$downloadfile->download($type, $directLink))
 		{
 
-			DigiComSiteHelperLog::setLog('download', 'downloads makeDownload', $fileInfo->id, 'Download product : '.$fileInfo->product_name . ', file : '. $fileInfo->name, json_encode($info),'failed');
+			DigiComSiteHelperLog::setLog('download', 'downloads go method', $fileInfo->id, 'Download product : '.$fileInfo->product_name . ', file : '. $fileInfo->name, json_encode($info),'failed');
 
 			$itemid = JFactory::getApplication()->input->get('itemid',0);
 			$msg = JText::sprintf("COM_DIGICOM_FILE_DOWNLOAD_FAILED",$fileInfo->name);
 			JFactory::getApplication()->redirect(JRoute::_('index.php?option=com_digicom&view=downloads&Itemid='.$itemid), $msg);
 
 		}
-		DigiComSiteHelperLog::setLog('download', 'downloads makeDownload', $fileInfo->id, 'Download product : '.$fileInfo->product_name . ', file : '. $fileInfo->name, json_encode($info));
+		DigiComSiteHelperLog::setLog('download', 'downloads go method', $fileInfo->id, 'Download product : '.$fileInfo->product_name . ', file : '. $fileInfo->name, json_encode($info));
 
 	}
 
