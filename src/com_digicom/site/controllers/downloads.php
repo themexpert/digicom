@@ -56,13 +56,18 @@ class DigiComControllerDownloads extends JControllerLegacy
 		$files->hits = $files->hits+1;
 		$files->store();
 
-		$downloadfile = new DigiComSiteHelperDownloadFile($fileLink,$basefileLink);
+		$downloadfile = new DigiComSiteHelperDownloadFile($fileLink, $basefileLink);
 
 		$info = array(
 			'fileinfo' => $fileInfo
 		);
 
-		if (!$downloadfile->download()){
+		$params = JComponentHelper::getParams('com_digicom');
+		$type = 0; 
+		$directLink = $params->get('directfilelink', 0);
+		
+		if (!$downloadfile->download($type, $directLink))
+		{
 
 			DigiComSiteHelperLog::setLog('download', 'downloads makeDownload', $fileInfo->id, 'Download product : '.$fileInfo->product_name . ', file : '. $fileInfo->name, json_encode($info),'failed');
 
