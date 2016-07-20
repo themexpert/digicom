@@ -22,6 +22,184 @@ class DigicomModelRegister extends JModelForm
 	 */
 	protected $data;
 
+	/**
+	 * Method to activate a user account.
+	 *
+	 * @param   string  $token  The activation token.
+	 *
+	 * @return  mixed    False on failure, user object on success.
+	 *
+	 * @since   1.6
+	 */
+	public function activate($token)
+	{
+		$config = JFactory::getConfig();
+		$userParams = JComponentHelper::getParams('com_users');
+		$db = $this->getDbo();
+
+		// Get the user id based on the token.
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName('id'))
+			->from($db->quoteName('#__users'))
+			->where($db->quoteName('activation') . ' = ' . $db->quote($token));
+			// ->where($db->quoteName('block') . ' = ' . 1)
+			// ->where($db->quoteName('lastvisitDate') . ' = ' . $db->quote($db->getNullDate()));
+		$db->setQuery($query);
+
+		try
+		{
+			$userId = (int) $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			$this->setError(JText::sprintf('COM_USERS_DATABASE_ERROR', $e->getMessage()), 500);
+
+			return false;
+		}
+
+		// Check for a valid user id.
+		if (!$userId)
+		{
+			$this->setError(JText::_('COM_USERS_ACTIVATION_TOKEN_NOT_FOUND'));
+
+			return false;
+		}
+
+		// Load the users plugin group.
+		JPluginHelper::importPlugin('user');
+
+		// Activate the user.
+		$user = JFactory::getUser($userId);
+
+		// Admin activation is on and user is verifying their email
+		if (($userParams->get('useractivation') == 2) && !$user->getParam('activate', 0))
+		{
+			$uri = JUri::getInstance();
+
+			// Compile the admin notification mail values.
+			$data = $user->getProperties();
+			$data['activation'] = JApplicationHelper::getHash(JUserHelper::genRandomPassword());
+			$user->set('activation', $data['activation']);
+			$data['siteurl'] = JUri::base();
+			$base = $uri->toString(array('scheme', 'user', 'pass', 'host', 'port'));
+			$data['activate'] = $base . JRoute::_('index.php?option=com_users&task=registration.activate&token=' . $data['activation'], false);
+
+			// Remove administrator/ from activate url in case this method is called from admin
+			if (JFactory::getApplication()->isAdmin())
+			{
+				$adminPos         = strrpos($data['activate'], 'administrator/');
+				$data['activate'] = substr_replace($data['activate'], '', $adminPos, 14);
+			}
+
+			$data['fromname'] = $config->get('fromname');
+			$data['mailfrom'] = $config->get('mailfrom');
+			$data['sitename'] = $config->get('sitename');
+			$user->setParam('activate', 1);
+			$emailSubject = JText::sprintf(
+				'COM_USERS_EMAIL_ACTIVATE_WITH_ADMIN_ACTIVATION_SUBJECT',
+				$data['name'],
+				$data['sitename']
+			);
+
+			$emailBody = JText::sprintf(
+				'COM_USERS_EMAIL_ACTIVATE_WITH_ADMIN_ACTIVATION_BODY',
+				$data['sitename'],
+				$data['name'],
+				$data['email'],
+				$data['username'],
+				$data['activate']
+			);
+
+			// Get all admin users
+			$query->clear()
+				->select($db->quoteName(array('name', 'email', 'sendEmail', 'id')))
+				->from($db->quoteName('#__users'))
+				->where($db->quoteName('sendEmail') . ' = ' . 1);
+
+			$db->setQuery($query);
+
+			try
+			{
+				$rows = $db->loadObjectList();
+			}
+			catch (RuntimeException $e)
+			{
+				$this->setError(JText::sprintf('COM_USERS_DATABASE_ERROR', $e->getMessage()), 500);
+
+				return false;
+			}
+
+			// Send mail to all users with users creating permissions and receiving system emails
+			foreach ($rows as $row)
+			{
+				$usercreator = JFactory::getUser($row->id);
+
+				if ($usercreator->authorise('core.create', 'com_users'))
+				{
+					$return = JFactory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $row->email, $emailSubject, $emailBody);
+
+					// Check for an error.
+					if ($return !== true)
+					{
+						$this->setError(JText::_('COM_USERS_REGISTRATION_ACTIVATION_NOTIFY_SEND_MAIL_FAILED'));
+
+						return false;
+					}
+				}
+			}
+		}
+		// Admin activation is on and admin is activating the account
+		elseif (($userParams->get('useractivation') == 2) && $user->getParam('activate', 0))
+		{
+			$user->set('activation', '');
+			$user->set('block', '0');
+
+			// Compile the user activated notification mail values.
+			$data = $user->getProperties();
+			$user->setParam('activate', 0);
+			$data['fromname'] = $config->get('fromname');
+			$data['mailfrom'] = $config->get('mailfrom');
+			$data['sitename'] = $config->get('sitename');
+			$data['siteurl'] = JUri::base();
+			$emailSubject = JText::sprintf(
+				'COM_USERS_EMAIL_ACTIVATED_BY_ADMIN_ACTIVATION_SUBJECT',
+				$data['name'],
+				$data['sitename']
+			);
+
+			$emailBody = JText::sprintf(
+				'COM_USERS_EMAIL_ACTIVATED_BY_ADMIN_ACTIVATION_BODY',
+				$data['name'],
+				$data['siteurl'],
+				$data['username']
+			);
+
+			$return = JFactory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $data['email'], $emailSubject, $emailBody);
+
+			// Check for an error.
+			if ($return !== true)
+			{
+				$this->setError(JText::_('COM_USERS_REGISTRATION_ACTIVATION_NOTIFY_SEND_MAIL_FAILED'));
+
+				return false;
+			}
+		}
+		else
+		{
+			$user->set('activation', '');
+			$user->set('block', '0');
+		}
+
+		// Store the user object.
+		if (!$user->save())
+		{
+			$this->setError(JText::sprintf('COM_USERS_REGISTRATION_ACTIVATION_SAVE_FAILED', $user->getError()));
+
+			return false;
+		}
+
+		return $user;
+	}
 
 	/**
 	 * Method to get the register form data.
