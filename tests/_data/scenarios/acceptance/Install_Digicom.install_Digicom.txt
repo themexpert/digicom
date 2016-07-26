@@ -1,0 +1,16 @@
+I WANT TO INSTALL DIGICOM
+
+I do administrator login ""
+I comment('get digicom repository folder from acceptance.suite.yml  "see _support/AcceptanceHelper.php)"
+I get configuration "repo_folder"
+I install extension from url "$url . 'filename.zip"
+I do administrator logout ""
+
+I do administrator login ""
+I comment('Now go to Digicom dashboard to see everything ok"
+I am going to Navigate to Digicom page in /administrator/
+I am on page administrator/index.php?option=com_digicom
+I wait for text Report of the Month
+I am expecting to see digicom page
+I do administrator logout ""
+
