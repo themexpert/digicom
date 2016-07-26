@@ -52,6 +52,7 @@ gulp-config.json
 bower_components
 
 # Robo
+RoboFile.ini
 robo.phar
 
 # Test related files
