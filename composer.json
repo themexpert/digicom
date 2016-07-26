@@ -2,13 +2,22 @@
     "name"       : "themexpert/digicom",
     "description": "DigiCom is next generation ecommerce extension for selling digital product with Joomla!",
     "license"    : "GPL-2.0+",
+    "config": {
+        "platform": {
+            "php": "5.6.19"
+        }
+    },
     "require"    : {
         "php"    : ">=5.4.0"
     },
     "require-dev": {
-        "codeception/codeception": "2.0.13",
-        "joomla-projects/joomla-browser": "dev-develop",
+        "codeception/codeception": "^2.2",
+        "joomla-projects/joomla-browser": "v3.6.0",
         "codegyre/robo": "~0.5",
-        "joomla-projects/robo": "dev-master"
+        "joomla-projects/robo": "dev-master",
+        "joomla-projects/selenium-server-standalone": "v2.53.1",
+        "fzaninotto/faker": "^1.5",
+        "joomla-projects/jorobo": "0.4",
+        "Behat/Gherkin": "^4.4.1"
     }
 }
