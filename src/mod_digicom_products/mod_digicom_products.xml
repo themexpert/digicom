@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="3.1" client="site" method="upgrade">
+	<name>mod_digicom_products</name>
+	<creationDate>##DIGICOM_CREATIONDATE##</creationDate>
+	<author>ThemeXpert</author>
+	<authorEmail>support@themexpert.com</authorEmail>
+	<copyright>Copyright (C) 2010 - 2015 ThemeXpert. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorUrl>www.themexpert.com</authorUrl>
+	<version>##DIGICOM_VERSION##</version>
+	<description>MOD_DIGICOM_PRODUCTS_XML_DESCRIPTION</description>
+
+	<files>
+		<filename module="mod_digicom_products">mod_digicom_products.php</filename>
+		<folder>tmpl</folder>
+		<filename>helper.php</filename>
+		<filename>mod_digicom_products.xml</filename>
+	</files>
+
+	<languages folder="language">
+		<language tag="en-GB">en-GB.mod_digicom_products.ini</language>
+		<language tag="en-GB">en-GB.mod_digicom_products.sys.ini</language>
+	</languages>
+
+	<help key="JHELP_EXTENSIONS_MODULE_MANAGER_LATEST_NEWS" />
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field
+					name="catid"
+					type="category"
+					extension="com_digicom"
+					multiple="true"
+					size="10"
+					default=""
+					label="JCATEGORY"
+					description="MOD_DIGICOM_PRODUCTS_FIELD_CATEGORY_DESC"
+				>
+					<option value="">JOPTION_ALL_CATEGORIES</option>
+				</field>
+
+				<field
+					name="count"
+					type="text"
+					default="5"
+					label="MOD_DIGICOM_PRODUCTS_FIELD_COUNT_LABEL"
+					description="MOD_DIGICOM_PRODUCTS_FIELD_COUNT_DESC" />
+
+				<field
+					name="column"
+					type="list"
+					default="3"
+					label="No Column"
+					description="No Column"
+					>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="6">6</option>
+				</field>
+
+				<field
+					name="show_featured"
+					type="list"
+					default=""
+					label="MOD_DIGICOM_PRODUCTS_FIELD_FEATURED_LABEL"
+					description="MOD_DIGICOM_PRODUCTS_FIELD_FEATURED_DESC"
+				>
+					<option value="">JSHOW</option>
+					<option value="0">JHIDE</option>
+					<option value="1">MOD_DIGICOM_PRODUCTS_VALUE_ONLY_SHOW_FEATURED</option>
+				</field>
+
+				<field
+					name="ordering"
+					type="list"
+					default="published"
+					label="MOD_DIGICOM_PRODUCTS_FIELD_ORDERING_LABEL"
+					description="MOD_DIGICOM_PRODUCTS_FIELD_ORDERING_DESC"
+				>
+					<option value="c_dsc">MOD_DIGICOM_PRODUCTS_VALUE_RECENT_ADDED</option>
+					<option value="m_dsc">MOD_DIGICOM_PRODUCTS_VALUE_RECENT_MODIFIED</option>
+					<option value="p_dsc">MOD_DIGICOM_PRODUCTS_VALUE_RECENT_PUBLISHED</option>
+					<option value="mc_dsc">MOD_DIGICOM_PRODUCTS_VALUE_RECENT_TOUCHED</option>
+					<option	value="random">MOD_DIGICOM_PRODUCTS_VALUE_RECENT_RAND</option>
+				</field>
+
+				<field
+					name="user_id"
+					type="list"
+					default="0"
+					label="MOD_DIGICOM_PRODUCTS_FIELD_USER_LABEL"
+					description="MOD_DIGICOM_PRODUCTS_FIELD_USER_DESC"
+				>
+					<option value="0">MOD_DIGICOM_PRODUCTS_VALUE_ANYONE</option>
+					<option value="by_me">MOD_DIGICOM_PRODUCTS_VALUE_ADDED_BY_ME</option>
+					<option value="not_me">MOD_DIGICOM_PRODUCTS_VALUE_NOTADDED_BY_ME</option>
+				</field>
+				<field
+					name="cat_text"
+					type="text"
+					default="Browse More"
+					label="Category Text"
+					description=""
+			 	/>
+
+				<field name="more_link" type="menuitem" default="" label="Category Link" description="Select a menu item">
+					<option	value="">JNONE</option>
+				</field>
+
+			</fieldset>
+
+			<fieldset name="advanced">
+				<field
+					name="layout"
+					type="modulelayout"
+					label="JFIELD_ALT_LAYOUT_LABEL"
+					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+
+				<field
+					name="moduleclass_sfx"
+					type="textarea" rows="3"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+
+				<field
+					name="cache"
+					type="list"
+					default="1"
+					label="COM_MODULES_FIELD_CACHING_LABEL"
+					description="COM_MODULES_FIELD_CACHING_DESC"
+				>
+					<option value="1">JGLOBAL_USE_GLOBAL</option>
+					<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+				</field>
+
+				<field
+					name="cache_time"
+					type="text"
+					default="900"
+					label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+					description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
+
+				<field
+					name="cachemode"
+					type="hidden"
+					default="static"
+				>
+					<option value="static"></option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
