@@ -108,7 +108,7 @@ class mod_digicom_menuInstallerScript
 		$menus = $db->loadObject();
 
 		// Insert the new records into the table
-		if(!$menus->moduleid)
+		if( !isset($menus->moduleid) )
 		{
 			$query->clear()
 				->insert($db->quoteName('#__modules_menu'))
