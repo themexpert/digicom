@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 ?>
 
 <?php if ($menuItems) : ?>
-<ul id="digicom-menu" class="nav<?php echo ($hideMainmenu ? ' disabled' : ''); ?>" >
+<ul id="menu" class="nav digicom-menu<?php echo ($hideMainmenu ? ' disabled' : ''); ?>" >
 	<li class="dropdown<?php echo ($hideMainmenu ? ' disabled' : ''); ?>" >
 		<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 			<!-- <span class="icon-cart" style="color: #1f82e0;"></span> -->
