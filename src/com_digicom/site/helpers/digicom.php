@@ -438,7 +438,7 @@ class DigiComSiteHelperDigicom {
 
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true)
-					->select('extension_id as id , name, element,enabled as published, params')
+					->select('extension_id as id , name, element, enabled as published, params')
 					->from('#__extensions')
 					->where($db->quoteName('folder') . ' in (' . $db->quote('digicom_pay') .')')
 					->where($db->quoteName('enabled') . ' = 1 ');
