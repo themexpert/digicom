@@ -14,19 +14,24 @@ JHTML::_('behavior.formvalidation');
 $configs = JComponentHelper::getComponent('com_digicom')->params;
 
 $document = JFactory::getDocument();
-if($vars->custom_email=="")
+if($vars->custom_email==""){
 	$email = JText::_('PLG_DIGICOM_PAY_OFFLINE_AFTER_PAYMENT_CONTACT_NO_ADDRS');
-else
+}
+else{
 	$email = $vars->custom_email;
-
+}
+$preview_image = $this->params->get('preview_image');
+$buy_image = $this->params->get('buy_image');
 ?>
 
 <div class="digicom-payment-form">
 	<form action="<?php echo $vars->url; ?>" name="adminForm" id="adminForm" class="form-validate form-horizontal"  method="post">
 		<div>
+			<?php if($preview_image): ?>
 			<div class="control-group text-center center align-center">
-				<img src="<?php echo $this->params->get('preview_image'); ?>" />
+				<img src="<?php echo $preview_image; ?>" />
 			</div>
+			<?php endif; ?>
 			<div class="control-group">
 				<label for="cardfname" class="control-label"><?php  echo JText::_( 'PLG_DIGICOM_PAY_OFFLINE_ORDER_INFORMATION_LABEL' );?></label>
 				<div class="controls">	<?php  echo JText::sprintf( 'PLG_DIGICOM_PAY_OFFLINE_ORDER_INFO', $vars->custom_name);?></div>
@@ -61,9 +66,19 @@ else
 				<input type='hidden' name='return' value="<?php echo $vars->return;?>" >
 				<input type="hidden" name="plugin_payment_method" value="onsite" />
 
-				<input type="image" name="submit"
-				src="<?php echo $this->params->get('buy_image'); ?>" value="<?php echo JText::_('PLG_DIGICOM_PAY_OFFLINE_SUBMIT'); ?>" alt="<?php echo $this->params->get('title'); ?>" />
-
+				<?php if($buy_image) : ?>
+					<input type="image" name="submit"
+						src="<?php echo $this->params->get('buy_image'); ?>" 
+						value="<?php echo JText::_('PLG_DIGICOM_PAY_OFFLINE_SUBMIT'); ?>" 
+						alt="<?php echo $this->params->get('title'); ?>" 
+						class="btn"
+						/>
+				<?php else: ?>
+					<input type="submit" name="submit"
+						class="btn btn-success btn-large btn-lg"
+						value="<?php echo JText::_('PLG_DIGICOM_PAY_OFFLINE_SUBMIT'); ?>" 
+						alt="<?php echo $this->params->get('title'); ?>" />
+				<?php endif; ?>
 			</div>
 		</div>
 		<?php echo JHtml::_('form.token');?>
