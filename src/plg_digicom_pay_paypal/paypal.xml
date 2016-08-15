@@ -49,6 +49,18 @@
 
 			</fieldset>
 
+			<fieldset name="style" label="PLG_DIGICOM_PAY_PAYPAL_STYLE_LABEL">
+
+				<field type="text" name="title" label="PLG_DIGICOM_PAY_PAYPAL_TITLE_LABEL" default="Paypal" />
+
+				<field type="textarea" name="description" label="PLG_DIGICOM_PAY_PAYPAL_DESCRIPTION_LABEL" default="" />
+
+				<field type="media" name="preview_image" label="PLG_DIGICOM_PAY_PAYPAL_PREVIEW_IMAGE_LABEL" default="" />
+
+				<field type="media" name="buy_image" label="PLG_DIGICOM_PAY_PAYPAL_BUY_IMAGE_LABEL" default="" />
+				
+			</fieldset>
+
 		</fields>
 
 	</config>

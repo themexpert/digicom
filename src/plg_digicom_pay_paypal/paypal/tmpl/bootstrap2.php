@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 //data-digicom-task="formSubmit"
+$buy_image = $this->params->get('buy_image', 'https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-medium.png');
+// $this->params->get('preview_image');
 ?>
 <div class="digicom-payment-form">
 
@@ -16,7 +18,7 @@ defined('_JEXEC') or die;
 		<input
 		type="image"
 		name="submit"
-		src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-medium.png"
+		src="<?php echo $buy_image; ?>"
 		value="<?php echo JText::_('SUBMIT'); ?>"
 		alt="Check out with PayPal - it's fast, free and secure!"
 		onclick="Digicom.submitForm('#showFormSubmitModal', event);"
@@ -41,8 +43,9 @@ defined('_JEXEC') or die;
 			<input type="hidden" name="cmd" value="_xclick" />
 
 			<div class="hide">
-				<input type="image" name="submit"
-				src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-medium.png" value="<?php echo JText::_('SUBMIT'); ?>" alt="Make payments with PayPal - it's fast, free and secure!" />
+				<input type="submit" name="submit"
+				value="<?php echo JText::_('SUBMIT'); ?>" 
+				alt="Make payments with PayPal - it's fast, free and secure!" />
 			</div>
 
 		</form>
