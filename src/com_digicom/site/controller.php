@@ -39,7 +39,7 @@ class DigiComController extends JControllerLegacy
 		$vName = $this->input->get('view', 'categories');
 		$this->input->set('view', $vName);
 
-		if (!$user->guest || ($this->input->getMethod() == 'POST' && ('cart' == $vName || 'checkout' == $vName || 'thankyou' == $vName || 'register' == $vName)))
+		if (!$user->guest || $this->input->getMethod() == 'POST' || ('cart' == $vName || 'checkout' == $vName || 'thankyou' == $vName || 'register' == $vName))
 		{
 			$cachable = false;
 		}
