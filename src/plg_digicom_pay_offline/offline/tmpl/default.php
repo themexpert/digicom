@@ -24,6 +24,9 @@ else
 <div class="digicom-payment-form">
 	<form action="<?php echo $vars->url; ?>" name="adminForm" id="adminForm" class="form-validate form-horizontal"  method="post">
 		<div>
+			<div class="control-group text-center center align-center">
+				<img src="<?php echo $this->params->get('preview_image'); ?>" />
+			</div>
 			<div class="control-group">
 				<label for="cardfname" class="control-label"><?php  echo JText::_( 'PLG_DIGICOM_PAY_OFFLINE_ORDER_INFORMATION_LABEL' );?></label>
 				<div class="controls">	<?php  echo JText::sprintf( 'PLG_DIGICOM_PAY_OFFLINE_ORDER_INFO', $vars->custom_name);?></div>
@@ -57,7 +60,10 @@ else
 				<input type="hidden" name="user_id" size="10" value="<?php echo $vars->user_id;?>" />
 				<input type='hidden' name='return' value="<?php echo $vars->return;?>" >
 				<input type="hidden" name="plugin_payment_method" value="onsite" />
-				<input type='submit' name='btn_check' id='btn_check' class="btn btn-success btn-large"  value="<?php echo JText::_('PLG_DIGICOM_PAY_OFFLINE_SUBMIT'); ?>">
+
+				<input type="image" name="submit"
+				src="<?php echo $this->params->get('buy_image'); ?>" value="<?php echo JText::_('PLG_DIGICOM_PAY_OFFLINE_SUBMIT'); ?>" alt="<?php echo $this->params->get('title'); ?>" />
+
 			</div>
 		</div>
 		<?php echo JHtml::_('form.token');?>
