@@ -11,6 +11,13 @@ defined('_JEXEC') or die;
 
 class DigiComSiteHelperDigicom {
 
+	/**
+	 * Method to get cart menu itemid
+	 *
+	 * @return  Int 	if itemid found return int or return empty
+	 *
+	 * @since   1.0.0
+	 */
 	public static function getCartItemid()
 	{
 		$app = JFactory::getApplication();
@@ -414,7 +421,16 @@ class DigiComSiteHelperDigicom {
 		}
 	}
 
-	public static function getPaymentPlugins($configs)
+	/**
+	 * Method to get the payment plugin list
+	 *
+	 * @param  JRegistry Object	Config of Digicom settings
+	 * @param  Boolian False	If listonly for query result,
+	 * @return  Object    A Objectlist from payment plugins
+	 *
+	 * @since   1.3.3
+	 */
+	public static function getPaymentPlugins($configs, $listonly = false)
 	{
 
 		$lang = JFactory::getLanguage();
@@ -429,6 +445,12 @@ class DigiComSiteHelperDigicom {
 		$db->setQuery($query);
 		$gatewayplugin = $db->loadobjectList();
 
+		// if listonly, return lists
+		if($listonly)
+		{
+			return $gatewayplugin;
+		}
+
 		$default 		= $session->get('processor', '');
 		if(empty($default)){
 				$default = $configs->get('default_payment','offline');
@@ -438,12 +460,20 @@ class DigiComSiteHelperDigicom {
 		foreach($gatewayplugin as $gateway)
 		{
 			$params = json_decode($gateway->params);
-			$options[] = JHTML::_('select.option',$gateway->element, $params->plugin_name);
+			if(isset($params->plugin_name)){
+				$name = $params->plugin_name;
+			}else
+			{
+				$name = $gateway->name;
+			}
+
+			$options[] = JHTML::_('select.option',$gateway->element, $name );
 		}
 
 		return JHTML::_('select.genericlist', $options, 'processor', 'class="inputbox required" data-digicom-id="processor"', 'value', 'text', $default, 'processor' );
 
 	}
+	
 
 	public static function getUniqueTransactionId($order_id)
 	{
