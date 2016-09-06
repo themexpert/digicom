@@ -71,7 +71,13 @@ class DigiComViewCategory extends JViewCategory
 	{
 		//parent::commonCategoryDisplay();
 		$this->commonCategoryDisplay();
+
+		// import plugins
+		JPluginHelper::importPlugin('content');
+		JPluginHelper::importPlugin('digicom');
+		$dispatcher = JEventDispatcher::getInstance();
 		
+						
 		$this->configs = JComponentHelper::getComponent('com_digicom')->params;
 
 		// Prepare the data
@@ -81,8 +87,20 @@ class DigiComViewCategory extends JViewCategory
 		$numIntro	= $params->def('num_products', 9);
 		$numLinks	= 0;
 
+		// Prepare category
+		$this->category->event = new stdClass;
+		$results = $dispatcher->trigger('onDigicomBeforeCategory', array('com_digicom.category', &$this->category, &$this->params));
+		$this->category->event->beforeDisplayContent = trim(implode("\n", $results));
+
+		$results = $dispatcher->trigger('onDigicomBeforeItems', array('com_digicom.category', &$this->category, &$this->params));
+		$this->category->event->beforeDisplayItems = trim(implode("\n", $results));
+		
+		$results = $dispatcher->trigger('onDigicomAfterCategory', array('com_digicom.category', &$this->category, &$this->params));
+		$this->category->event->afterDisplayContent = trim(implode("\n", $results));
+
 		// Compute the product slugs and prepare introtext (runs content plugins).
-		if(count($this->items)){
+		if(count($this->items))
+		{
 			foreach ($this->items as $item)
 			{
 				$item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
@@ -98,15 +116,12 @@ class DigiComViewCategory extends JViewCategory
 				$item->catslug = $item->category_alias ? ($item->catid . ':' . $item->category_alias) : $item->catid;
 				$item->event   = new stdClass;
 
-				$dispatcher = JEventDispatcher::getInstance();
-
 				// Old plugins: Ensure that text property is available
 				if (!isset($item->text))
 				{
 					$item->text = $item->introtext;
 				}
 
-				JPluginHelper::importPlugin('content');
 				$dispatcher->trigger('onContentPrepare', array ('com_digicom.category', &$item, &$item->params, 0));
 
 				// Old plugins: Use processed text as introtext
