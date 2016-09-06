@@ -16,7 +16,9 @@ if(count($this->items)){
 $grid = 12/$column;
 ?>
 <div id="digicom" class="dc dc-category">
-
+	
+	<?php echo $this->category->event->beforeDisplayContent; ?>
+	
 	<?php
 		if($this->params->get('show_page_heading') OR
 			$this->category->params->get('show_cat_title') OR
@@ -71,25 +73,29 @@ $grid = 12/$column;
 			<?php endif; ?>
 	</header>
 	<?php endif;?>
+	
+	<?php echo $this->category->event->beforeDisplayItems; ?>
 
 	<div class="dc-items" data-digicom-items>
-	<?php if(count($items)): ?>
-		<?php foreach($items as $row) :?>
-		<div class="row">
-			<?php foreach($row as $item) :?>
-				<div class="col-md-<?php echo $grid?>">
-					<?php
-						// Load item template
-						$this->item = $item;
-						echo $this->loadTemplate('item');
-					?>
-				</div>
-			<?php endforeach;?>
-		</div>
-		<?php endforeach; ?>
-	<?php endif;?>
+		<?php if(count($items)): ?>
+			<?php foreach($items as $row) :?>
+			<div class="row">
+				<?php foreach($row as $item) :?>
+					<div class="col-md-<?php echo $grid?>">
+						<?php
+							// Load item template
+							$this->item = $item;
+							echo $this->loadTemplate('item');
+						?>
+					</div>
+				<?php endforeach;?>
+			</div>
+			<?php endforeach; ?>
+		<?php endif;?>
 	</div>
 
+	<?php echo $this->category->event->afterDisplayContent; ?>
+	
 	<div class="dc-pagination pagination">
 		<?php echo $this->pagination->getPagesLinks(); ?>
 	</div>
