@@ -538,6 +538,10 @@ class DigiComModelProducts extends JModelList
 		// Add the list ordering clause.
 		$query->order($this->getState('list.ordering', 'a.ordering') . ' ' . $this->getState('list.direction', 'ASC'));
 
+		JPluginHelper::importPlugin('digicom');
+		$dispatcher	= JEventDispatcher::getInstance();
+		$dispatcher->trigger('onDigicomAfterCategoryQuery', array ('com_digicom.products', &$query, &$params));
+		
 		return $query;
 	}
 
