@@ -29,7 +29,7 @@ $configs 	= $this->params->params;
 
 		<div class="dg-alert dg-alert-with-icon">
 			<span class="icon-support"></span>
-			<?php echo JText::_("COM_DIGICOM_DISCOUNTS_HEADER_NOTICE"); ?>
+			<?php echo JText::_("COM_DIGICOM_LICENSES_HEADER_NOTICE"); ?>
 		</div>
 		<br>
 		<div class="js-stools">
@@ -114,7 +114,7 @@ $configs 	= $this->params->params;
 						$status = DigiComHelperDigiCom::licenseExpiryHelper($item, $configs);
 
 				?>
-					<tr class="row<?php echo $k;?>">
+					<tr class="row<?php echo $key;?>">
 						<td>
 							<?php echo $id;?>
 						</td>
