@@ -81,7 +81,8 @@ class DigiComModelCart extends JModelItem
 		// now get the product with access label
 		$query = $db->getQuery(true);
 		$query->select(array('name', 'access'))
-			  ->from($db->quoteName('#__digicom_products'));
+			  ->from($db->quoteName('#__digicom_products'))
+			  ->where($db->quoteName('id') . " = " . $pid);
 
 		$groups = implode(',', $user->getAuthorisedViewLevels());
 		$query->where($db->quoteName('access').' IN (' . $groups . ')');
@@ -90,6 +91,7 @@ class DigiComModelCart extends JModelItem
 		$res = $db->loadObject();
 
 		$productname 	= $res->name;
+		
 		$access 		= $res->access;
 
 		// if product name is empty, return -1
@@ -161,7 +163,7 @@ class DigiComModelCart extends JModelItem
 			$db->setQuery($query);
 
 			if($db->execute()){
-				DigiComSiteHelperLog::setLog('add2cart', 'cart addToCart', $pid, $productname . ' Has been added to cart', null,1);
+				// DigiComSiteHelperLog::setLog('add2cart', 'cart addToCart', $pid, $productname . ' Has been added to cart', null,1);
 			}
 
 			$cid = $db->insertid(); //cart id of the item inserted
