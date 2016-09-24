@@ -74,6 +74,10 @@ class DigiComController extends JControllerLegacy
 			return;
 		}
 
+		$dispatcher	= JEventDispatcher::getInstance();
+		JPluginHelper::importPlugin('digicom');
+		$dispatcher->trigger('onDigicomPrepareView', array ('com_digicom.controller', &$cachable, &$urlparams, &$safeurlparams));
+		
 		return parent::display($cachable, $safeurlparams);
 	}
 
