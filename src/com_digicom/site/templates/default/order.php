@@ -103,7 +103,7 @@ $n 					= count ($this->order->products);
 
 			<form method="post" class="form-inline" action="<?php echo JRoute::_('index.php?option=com_digicom&view=checkout'); ?>">
 
-				<?php echo DigiComSiteHelperDigicom::getPaymentPlugins($configs,$configs->get('default_payment','offline')); ?>
+				<?php echo DigiComSiteHelperDigicom::getPaymentPlugins($configs); ?>
 				<button class="btn pull-right" type="submit"><?php echo JText::_('COM_DIGICOM_ORDER_PAY_NOW'); ?></button>
 
 				<input type="hidden" name="option" value="com_digicom">

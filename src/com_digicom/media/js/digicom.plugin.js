@@ -122,12 +122,12 @@ if (typeof jQuery === 'undefined') {
 		{
 			e.preventDefault();
 
-      $(id).digicomodal({
-        backdrop  : 'static',
-        keyboard  : true
-      });
+			$(id).digicomodal({
+				backdrop  : 'static',
+				keyboard  : true
+			});
 
-      Digicom.dataSet("paymentForm").submit();
+			Digicom.dataSet("paymentForm").submit();
 		},
 		/**
 		/**

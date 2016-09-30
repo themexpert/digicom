@@ -44,7 +44,7 @@ $buy_image = $this->params->get('buy_image', 'https://www.paypalobjects.com/webs
 		<input type="hidden" name="cmd" value="_xclick" />
 
 		<div class="hide">
-			<input type="submit" name="submit" value="<?php echo JText::_('SUBMIT'); ?>" alt="Make payments with PayPal - it's fast, free and secure!" />
+			<input type="submit" name="Submit" value="<?php echo JText::_('SUBMIT'); ?>" alt="Make payments with PayPal - it's fast, free and secure!" />
 		</div>
 
 	</form>
