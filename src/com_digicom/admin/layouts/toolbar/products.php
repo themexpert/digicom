@@ -33,5 +33,11 @@ JHtml::_('bootstrap.popover');
 			<?php echo JText::_("COM_DIGICOM_PRODUCTS_TOOLBAR_ADD_BUNDLE_PRODUCT"); ?>
 		</a>
 	</li>
+
+	<?php
+	$dispatcher = JDispatcher::getInstance();
+	$results = $dispatcher->trigger( 'onDigicomAfterCreateProductMenu', array());
+	?>
+
   </ul>
 </div>
