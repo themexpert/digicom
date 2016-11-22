@@ -74,17 +74,17 @@ class DigiComControllerDownloads extends JControllerLegacy
 		$type = 0; 
 		$directLink = $params->get('directfilelink', 0);
 		
+		$logid = DigiComSiteHelperLog::setLog('download', 'downloads go method', $fileInfo->id, 'Download product : '.$fileInfo->product_name . ', file : '. $fileInfo->name, json_encode($info));
+		
 		if (!$downloadfile->download($type, $directLink))
 		{
-
-			DigiComSiteHelperLog::setLog('download', 'downloads go method', $fileInfo->id, 'Download product : '.$fileInfo->product_name . ', file : '. $fileInfo->name, json_encode($info),'failed');
+			DigiComSiteHelperLog::update($logid, 'failed', array('error' => $downloadfile->__toString()));
 
 			$itemid = JFactory::getApplication()->input->get('itemid',0);
 			$msg = JText::sprintf("COM_DIGICOM_FILE_DOWNLOAD_FAILED",$fileInfo->name);
-			JFactory::getApplication()->redirect(JRoute::_('index.php?option=com_digicom&view=downloads&Itemid='.$itemid), $msg);
+			JFactory::getApplication()->redirect(JRoute::_('index.php?option=com_digicom&view=downloads&Itemid='.$itemid), $msg, 'warning');
 
 		}
-		DigiComSiteHelperLog::setLog('download', 'downloads go method', $fileInfo->id, 'Download product : '.$fileInfo->product_name . ', file : '. $fileInfo->name, json_encode($info));
 
 	}
 
