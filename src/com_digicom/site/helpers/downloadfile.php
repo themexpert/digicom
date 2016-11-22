@@ -15,10 +15,12 @@ jimport( 'joomla.filesystem.file' );
 class DigiComSiteHelperDownloadFile {
 	private $filepath;
 	private $file_ext;
+	private $error;
 
 	function __construct($filepath, $basefileLink){
 		$this->filepath = $filepath;
 		$this->basefilepath = $basefileLink;
+		$this->error = '';
 
 	}
 	/*
@@ -110,8 +112,8 @@ class DigiComSiteHelperDownloadFile {
 					$mimeType = isset($content_types[$this->file_ext]) ? $content_types[$this->file_ext] : $mimeType_default;
 
 					if ($fileSize == 0 ) {
-						die(JText::_('COM_DIGICOM_FILE_SIZE_EMPTY'));
-						exit;
+						$this->error = JText::_('COM_DIGICOM_FILE_SIZE_EMPTY');
+						return false;
 					}
 
 					// Clean the output buffer
@@ -196,6 +198,15 @@ class DigiComSiteHelperDownloadFile {
 		}
 		return false;
 
+	}
+
+	/*
+	* Get the error message
+	* for download
+	*/
+	function __toString()
+	{
+		return $this->error;
 	}
 
 }
