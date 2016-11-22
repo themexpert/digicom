@@ -183,6 +183,7 @@ class DigiComModelCart extends JModelItem
 		if(is_object($customer)){
 			$sid = $customer->_sid;
 		}
+
 		if(is_array($customer)){
 			$sid = $customer['sid'];
 		}
@@ -190,6 +191,7 @@ class DigiComModelCart extends JModelItem
 		if(is_object($customer) && isset($customer->_user->id)){
 			$uid = $customer->_user->id;
 		}
+
 		if(is_array($customer)){
 			$uid = $customer['userid'];
 		}
@@ -197,7 +199,7 @@ class DigiComModelCart extends JModelItem
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		// $query->select(array('c.*', 'p.*'))
-		$query->select(array('c.*', 'p.id','p.catid','p.product_type','p.name','p.images', 'p.price', 'p.price_type', 'p.expiration_length','p.expiration_type', 'p.bundle_source', 'p.attribs', 'p.language'))
+		$query->select(array('c.*', 'p.id','p.catid','p.product_type','p.name','p.images', 'p.price', 'p.price_type', 'p.expiration_length','p.expiration_type', 'p.bundle_source', 'p.attribs', 'p.language', 'p.attribs'))
 			  ->from($db->quoteName('#__digicom_products','p'))
 			  ->join('INNER', $db->quoteName('#__digicom_cart', 'c') . ' ON (' . $db->quoteName('c.item_id') . ' = ' . $db->quoteName('p.id') . ')')
 			  ->where($db->quoteName('c.sid') . '='.$db->quote(intval($sid)))
