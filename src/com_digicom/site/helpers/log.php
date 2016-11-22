@@ -39,11 +39,36 @@ class DigiComSiteHelperLog {
         $logTable->callback = $hook;
         $logTable->callbackid = $callbackid;
         $logTable->message  = $message;
-        $logTable->params     = json_encode($info);
+        $logTable->params     = $info;
         $logTable->status   = $status;
         $logTable->ip       = DigiComSiteHelperLog::get_ip();
 
         //print_r($logTable);die;
+        $logTable->store();
+
+        return $logTable->id;
+
+    }
+
+    /*
+    * method update
+    * if download fails, set log status
+    */
+    public static function update($id = 0, $status = 'complete', $params = array())
+    {
+        if(!$id) return false;
+
+        $logTable = JTable::getInstance('log','Table');
+        $logTable->load($id);
+        $logTable->status   = $status;
+
+        if(count($params))
+        {
+            $paramsold = json_decode($logTable->params, true);
+            $params = array_merge($paramsold, $params);
+            $logTable->params = json_encode($params);
+        }
+        
         $logTable->store();
 
         return true;
