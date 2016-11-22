@@ -31,8 +31,26 @@ class DigiComSiteHelperLog {
      * */
     public static function setLog($type, $hook, $callbackid, $message, $info, $status = 'complete')
     {
+        $dispatcher = JDispatcher::getInstance();
         $config = JComponentHelper::getParams('com_digicom');
-        if( !$config->get('enable_log', false) ) return false;
+
+        $result = $dispatcher->trigger('onDigicomBeforeLog', 
+            array('com_digicom.log', $type, $hook, $callbackid, $message, $info, $status)
+        );
+
+        if ( 
+            (!isset($result[0]) or in_array(false, $result) 
+                or 
+            !$config->get('enable_log', false)
+        )
+        {
+            return false;
+        }
+
+        $dispatcher->trigger('onDigicomLogSet', 
+            array('com_digicom.log', &$type, &$hook, &$callbackid, &$message, &$info, &$status)
+        );
+
 
         $logTable = JTable::getInstance('log','Table');
         $logTable->type     = $type;
@@ -46,6 +64,10 @@ class DigiComSiteHelperLog {
         //print_r($logTable);die;
         $logTable->store();
 
+        $dispatcher->trigger('onDigicomAfterLog', 
+            array('com_digicom.log', $logTable)
+        );
+        
         return $logTable->id;
 
     }
