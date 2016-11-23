@@ -28,21 +28,29 @@ class DigiComControllerDownloads extends JControllerLegacy
 		$dispatcher	= JDispatcher::getInstance();
 		$model 			= $this->getModel("Downloads");
 		$customer   = new DigiComSiteHelperSession();
-		if($customer->_user->id < 1)
-		{
-			$result = $dispatcher->trigger('onDigicomDownloadInitialize',array('com_digicom.download', $customer));
 
-			if (!isset($result[0]) or in_array(false, $result))
-			{
-				$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=profile&layout=login&returnpage=downloads&Itemid=".$Itemid, false));
-				return;
-			}
+		$result = $dispatcher->trigger('onDigicomDownloadInitialize',array('com_digicom.download', &$customer));
+		
+		if( 
+			$customer->_user->id < 1 
+			and 
+			( 
+				!isset($result[0]) 
+				or 
+				in_array(false, $result) 
+			) 
+		)
+		{
+
+			$this->setRedirect(JRoute::_("index.php?option=com_digicom&view=profile&layout=login&returnpage=downloads&Itemid=".$Itemid, false));
+			return;
 		}
 
 		$fileInfo = $model->getfileinfo();
 
 		DigiComSiteHelperDigiCom::checkUserAccessToFile($fileInfo, $customer->_user->id);
-		
+		$dispatcher->trigger('onDigicomDownloadCheckAccess',array('com_digicom.download', $fileInfo, $customer->_user));
+
 		if(empty($fileInfo->url)){
 			$itemid = JFactory::getApplication()->input->get('itemid',0);
 			$msg = JText::sprintf('COM_DIGICOM_DOWNLOADS_FILE_DONT_EXIST_DETAILS',$fileInfo->name);
