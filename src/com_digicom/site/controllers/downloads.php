@@ -82,7 +82,7 @@ class DigiComControllerDownloads extends JControllerLegacy
 		$type = 0; 
 		$directLink = $params->get('directfilelink', 0);
 		
-		$logid = DigiComSiteHelperLog::setLog('download', 'downloads go method', $fileInfo->id, 'Download product : '.$fileInfo->product_name . ', file : '. $fileInfo->name, json_encode($info));
+		$logid = DigiComSiteHelperLog::setLog('download', 'downloads go method', $fileInfo->id, 'Download product : '.$fileInfo->product_name . ', file : '. $fileInfo->name, json_encode($info), 'complete', $fileInfo->product_id);
 		
 		if (!$downloadfile->download($type, $directLink))
 		{

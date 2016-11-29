@@ -29,17 +29,17 @@ class DigiComSiteHelperLog {
      * @info = log details or extra info encoded by json formet
      * setLog($type, $hook, $message, $info, $status = 'complete');
      * */
-    public static function setLog($type, $hook, $callbackid, $message, $info, $status = 'complete')
+    public static function setLog($type, $hook, $callbackid, $message, $info, $status = 'complete', $refid = 0)
     {
         $dispatcher = JDispatcher::getInstance();
         $config = JComponentHelper::getParams('com_digicom');
 
         $result = $dispatcher->trigger('onDigicomBeforeLog', 
-            array('com_digicom.log', $type, $hook, $callbackid, $message, $info, $status)
+            array('com_digicom.log', &$type, &$hook, &$callbackid, &$message, &$info, &$status, &$refid)
         );
 
         if ( 
-            (!isset($result[0]) or in_array(false, $result) 
+            !isset($result[0]) or in_array(false, $result) 
                 or 
             !$config->get('enable_log', false)
         )
@@ -48,7 +48,7 @@ class DigiComSiteHelperLog {
         }
 
         $dispatcher->trigger('onDigicomLogSet', 
-            array('com_digicom.log', &$type, &$hook, &$callbackid, &$message, &$info, &$status)
+            array('com_digicom.log', &$type, &$hook, &$callbackid, &$message, &$info, &$status, &$refid)
         );
 
 
@@ -56,6 +56,7 @@ class DigiComSiteHelperLog {
         $logTable->type     = $type;
         $logTable->callback = $hook;
         $logTable->callbackid = $callbackid;
+        $logTable->refid = $refid;
         $logTable->message  = $message;
         $logTable->params     = $info;
         $logTable->status   = $status;

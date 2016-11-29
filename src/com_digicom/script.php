@@ -283,6 +283,26 @@ class Com_DigiComInstallerScript
 			$db->execute();
 		}
 		
+		$query = "SHOW COLUMNS FROM `#__digicom_log` LIKE 'refid'";
+		$db->setQuery($query);
+		$column = $db->loadObject();
+		if(!COUNT($column)){
+			$query = "ALTER TABLE `#__digicom_log` ADD `refid` VARCHAR(50) NOT NULL COMMENT 'if ref numbar' AFTER `callbackid`";
+			$db->setQuery($query);
+			$db->execute();
+		}
+
+		//ALTER TABLE `m4gtx_digicom_products` CHANGE `images` `images` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '';
+
+		$query = "SHOW COLUMNS FROM `#__digicom_products` LIKE 'images'";
+		$db->setQuery($query);
+		$column = $db->loadObject();
+		if(!COUNT($column)){
+			$query = "ALTER TABLE `#__digicom_log` ADD `refid` VARCHAR(50) NOT NULL COMMENT 'if ref numbar' AFTER `callbackid`";
+			$db->setQuery($query);
+			$db->execute();
+		}
+		
 	}
 
 }
