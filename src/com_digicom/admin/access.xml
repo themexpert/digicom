@@ -7,7 +7,15 @@
 		<action name="core.delete" title="JACTION_DELETE" description="JACTION_DELETE_COMPONENT_DESC" />
 		<action name="core.edit" title="JACTION_EDIT" description="JACTION_EDIT_COMPONENT_DESC" />
 		<action name="core.edit.state" title="JACTION_EDITSTATE" description="JACTION_EDITSTATE_COMPONENT_DESC" />
+		<action name="core.products" title="COM_DIGICOM_ACCESS_PRDUCTS_TITLE" description="COM_DIGICOM_ACCESS_PRDUCTS_DESC" />
+		<action name="core.categories" title="COM_DIGICOM_ACCESS_CATEGORIES_TITLE" description="COM_DIGICOM_ACCESS_CATEGORIES_DESC" />
+		<action name="core.filemanager" title="COM_DIGICOM_ACCESS_FILEMANAGER_TITLE" description="COM_DIGICOM_ACCESS_FILEMANAGER_DESC" />
+		<action name="core.customers" title="COM_DIGICOM_ACCESS_CUSTOMERS_TITLE" description="COM_DIGICOM_ACCESS_CUSTOMERS_DESC" />
+		<action name="core.orders" title="COM_DIGICOM_ACCESS_ORDERS_TITLE" description="COM_DIGICOM_ACCESS_ORDERS_DESC" />
+		<action name="core.discounts" title="COM_DIGICOM_ACCESS_DISCOUNTS_TITLE" description="COM_DIGICOM_ACCESS_DISCOUNTS_DESC" />
+		<action name="core.reports" title="COM_DIGICOM_ACCESS_REPORTS_TITLE" description="COM_DIGICOM_ACCESS_REPORTS_DESC" />
 	</section>
+
 	<section name="category">
 		<action name="core.create" title="JACTION_CREATE" description="COM_CATEGORIES_ACCESS_CREATE_DESC" />
 		<action name="core.delete" title="JACTION_DELETE" description="COM_CATEGORIES_ACCESS_DELETE_DESC" />
