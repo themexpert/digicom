@@ -48,8 +48,29 @@ class DigiComControllerDownloads extends JControllerLegacy
 
 		$fileInfo = $model->getfileinfo();
 
-		DigiComSiteHelperDigiCom::checkUserAccessToFile($fileInfo, $customer->_user->id);
-		$dispatcher->trigger('onDigicomDownloadCheckAccess',array('com_digicom.download', $fileInfo, $customer->_user));
+		$access = DigiComSiteHelperDigiCom::checkUserAccessToFile($fileInfo, $customer->_user->id);
+		$result = $dispatcher->trigger('onDigicomDownloadCheckAccess',array('com_digicom.download', $fileInfo, $customer->_user));
+
+		if( 
+			!$access
+			and 
+			( 
+				!isset($result[0]) 
+				or 
+				in_array(false, $result) 
+			) 
+		)
+		{
+
+			// Wrong Download ID
+			$msg = array(
+				'access' => JText::_('COM_DIGICOM_DOWNLOADS_ACCESS_DENIED')
+			);
+			$msgcode = json_encode($msg);
+			echo $msgcode;
+			JFactory::getApplication()->close();
+		}
+		
 
 		if(empty($fileInfo->url)){
 			$itemid = JFactory::getApplication()->input->get('itemid',0);
