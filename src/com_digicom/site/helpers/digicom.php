@@ -402,13 +402,15 @@ class DigiComSiteHelperDigicom {
 
 		if($access) return true;
 
+		return false;
+		
 		// Wrong Download ID
-		$msg = array(
-			'access' => JText::_('COM_DIGICOM_DOWNLOADS_ACCESS_DENIED')
-		);
-		$msgcode = json_encode($msg);
-		echo $msgcode;
-		JFactory::getApplication()->close();
+		// $msg = array(
+		// 	'access' => JText::_('COM_DIGICOM_DOWNLOADS_ACCESS_DENIED')
+		// );
+		// $msgcode = json_encode($msg);
+		// echo $msgcode;
+		// JFactory::getApplication()->close();
 	}
 
 	public static function loadModules($position, $style = 'raw')
