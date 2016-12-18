@@ -217,7 +217,7 @@ CREATE TABLE IF NOT EXISTS `#__digicom_products` (
   `alias` varchar(150) NOT NULL,
   `introtext` mediumtext NOT NULL,
   `fulltext` longtext NOT NULL COMMENT 'full desc',
-  `images` varchar(255) NOT NULL DEFAULT '',
+  `images` varchar(255) NOT NULL DEFAULT '', 
   `price` DECIMAL( 12, 2 ) NOT NULL ,
   `price_type` tinyint(4) NOT NULL DEFAULT '3',
   `expiration_length` tinyint(4) NOT NULL,
