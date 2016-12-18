@@ -284,6 +284,7 @@ class Com_DigiComInstallerScript
 		}
 		
 		// add refid for log table
+		// since 1.3.6
 		$query = "SHOW COLUMNS FROM `#__digicom_log` LIKE 'refid'";
 		$db->setQuery($query);
 		$column = $db->loadObject();
