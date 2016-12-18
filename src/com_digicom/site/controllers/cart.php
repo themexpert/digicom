@@ -540,6 +540,7 @@ class DigiComControllerCart extends JControllerLegacy
 		// after recieved payment request, get the status info
 		$dispatcher = JDispatcher::getInstance();
 		
+		// add post field exception
 		if( !count($post) ) $post = @file_get_contents('php://input');		
 
 		$data = $dispatcher->trigger('onDigicom_PayProcesspayment', array($post));
