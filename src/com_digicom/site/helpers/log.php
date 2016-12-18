@@ -39,9 +39,17 @@ class DigiComSiteHelperLog {
         );
 
         if ( 
-            !isset($result[0]) or in_array(false, $result) 
-                or 
-            !$config->get('enable_log', false)
+            (
+                !$config->get('enable_log', false)
+                and
+                (
+                    !isset($result[0]) 
+                    or
+                    in_array(false, $result) 
+                )
+            )
+            or
+            in_array(false, $result)
         )
         {
             return false;

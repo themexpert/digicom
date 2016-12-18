@@ -32,13 +32,17 @@ class DigiComControllerDownloads extends JControllerLegacy
 		$result = $dispatcher->trigger('onDigicomDownloadInitialize',array('com_digicom.download', &$customer));
 		
 		if( 
-			$customer->_user->id < 1 
-			and 
-			( 
-				!isset($result[0]) 
-				or 
-				in_array(false, $result) 
-			) 
+			(
+				$customer->_user->id < 1 
+				and 
+				( 
+					!isset($result[0]) 
+					or 
+					in_array(false, $result) 
+				)
+			)
+			or
+			in_array(false, $result) 
 		)
 		{
 
@@ -51,14 +55,18 @@ class DigiComControllerDownloads extends JControllerLegacy
 		$access = DigiComSiteHelperDigiCom::checkUserAccessToFile($fileInfo, $customer->_user->id);
 		$result = $dispatcher->trigger('onDigicomDownloadCheckAccess',array('com_digicom.download', $fileInfo, $customer->_user));
 
-		if( 
-			!$access
-			and 
-			( 
-				!isset($result[0]) 
-				or 
-				in_array(false, $result) 
-			) 
+		if(
+			(
+				!$access
+				and
+				(
+					!isset($result[0]) 
+					or 
+					in_array(false, $result) 
+				)
+			)
+			or 
+			in_array(false, $result)
 		)
 		{
 
