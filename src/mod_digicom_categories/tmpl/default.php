@@ -9,26 +9,6 @@
 
 defined('_JEXEC') or die;
 ?>
-<ul class="nav nav-menu <?php echo $moduleclass_sfx; ?>">
-	<?php foreach($list as $item) :?>
-		<li <?php if ($_SERVER['REQUEST_URI'] == JRoute::_(DigiComSiteHelperRoute::getCategoryRoute($item->id))) echo ' class="active"';?>>
-			<a href="<?php echo JRoute::_(DigiComSiteHelperRoute::getCategoryRoute($item->id)); ?>">
-				<?php echo $item->title; ?>
-					<?php if ($params->get('numitems')) : ?>
-						(<?php echo $item->numitems; ?>)
-					<?php endif; ?>
-			</a>
-
-			<?php if ($params->get('show_children', 0) && (($params->get('maxlevel', 0) == 0)
-					|| ($params->get('maxlevel') >= ($item->level - $startLevel)))
-				&& count($item->getChildren())) : ?>
-				<?php echo '<ul>'; ?>
-				<?php $temp = $list; ?>
-				<?php $list = $item->getChildren(); ?>
-				<?php require JModuleHelper::getLayoutPath('mod_digicom_categories', $params->get('layout', 'default')); ?>
-				<?php $list = $temp; ?>
-				<?php echo '</ul>'; ?>
-			<?php endif; ?>
-		</li>
-	<?php endforeach; ?>
+<ul class="digicom-categories-module nav nav-menu <?php echo $moduleclass_sfx; ?>">
+<?php require JModuleHelper::getLayoutPath('mod_digicom_categories', $params->get('layout', 'default') . '_items'); ?>
 </ul>
