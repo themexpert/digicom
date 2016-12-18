@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `#__digicom_log` (
   `type` varchar(255) NOT NULL COMMENT 'download|email|purchase|status|payment',
   `callback` varchar(255) NOT NULL COMMENT 'who trigger the event',
   `callbackid` INT NULL DEFAULT NULL COMMENT  'orderid | fileid ; quickid to find items',
-  `refid` VARCHAR(50) NOT NULL COMMENT 'if ref numbar',
+  `refid` VARCHAR(50) NOT NULL COMMENT 'if ref numbar provided',
   `message` varchar(255) NOT NULL COMMENT 'small message',
   `status` varchar(255) NOT NULL DEFAULT 'complete' COMMENT 'event status:complete',
   `ip` varchar(255) NOT NULL,
