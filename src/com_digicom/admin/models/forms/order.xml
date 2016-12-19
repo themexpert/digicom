@@ -6,13 +6,13 @@
 
 		<field name="userid" type="user" label="COM_DIGICOM_ORDER_CREATE_NEW_FIELD_CUSTOMER_LABEL" description ="COM_DIGICOM_FIELD_SELECT_USER_DESC" required="true" size="10" default="0" />
 
-		<field name="order_date" type="calendar" label="COM_DIGICOM_ORDER_CREATE_NEW_FIELD_ORDER_DATE_LABEL" description="COM_DIGICOM_ORDER_CREATE_NEW_FIELD_ORDER_DATE_DESC" size="40" required="true" />
+		<field name="order_date" type="calendar" label="COM_DIGICOM_ORDER_CREATE_NEW_FIELD_ORDER_DATE_LABEL" description="COM_DIGICOM_ORDER_CREATE_NEW_FIELD_ORDER_DATE_DESC" default="now" size="40" required="true" />
 
 		<field name="currency" type="media" label="COM_DIGICOM_FIELD_INTRO_LABEL" description="COM_DIGICOM_FIELD_INTRO_DESC" />
 
 		<field name="product_id" type="media" label="COM_DIGICOM_FIELD_INTRO_LABEL" description="COM_DIGICOM_FIELD_INTRO_DESC" />
 
-		<field id="order_status" name="status" default="Active" type="radio" label="COM_DIGICOM_ORDER_CREATE_NEW_FIELD_ORDER_STATUS_LABEL" description="COM_DIGICOM_ORDER_CREATE_NEW_FIELD_ORDER_STATUS_DESC" class="btn-group" size="1" >
+		<field id="order_status" name="status" default="Pending" type="radio" label="COM_DIGICOM_ORDER_CREATE_NEW_FIELD_ORDER_STATUS_LABEL" description="COM_DIGICOM_ORDER_CREATE_NEW_FIELD_ORDER_STATUS_DESC" class="btn-group" size="1" >
 			<option value="Active">COM_DIGICOM_ORDER_STATUS_ACTIVE</option>
 			<option value="Pending">COM_DIGICOM_ORDER_STATUS_PENDING</option>
 			<option value="Cancel">COM_DIGICOM_ORDER_STATUS_CANCEL</option>

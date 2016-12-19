@@ -211,9 +211,15 @@ class DigiComModelOrderNew extends JModelAdmin
 			$data['amount_paid'] = $data['amount'];
 			$data['status'] = 'Active';
 		}
-		$data['price'] = $data['amount'];
+		// $data['price'] = $data['amount'];
 		// $data['amount'] = $data['amount'] - $data['discount'];
-		$data['promocodeid'] = $this->getPromocodeByCode($data['promocode']);
+		if($data['amount'] != $data['price']){
+			$data['promocode'] = '';
+			$data['discount'] = $data['price'] - $data['amount'];
+		}else{
+			$data['promocodeid'] = $this->getPromocodeByCode($data['promocode']);
+			$data['discount'] = $this->getPromocodeByCode($data['promocode']);
+		}
 
 		//DigiComSiteHelperLicense::addLicenceSubscription($data['product_id'], $data['userid'], 1, $data['status']);
 		// print_r($data);die;

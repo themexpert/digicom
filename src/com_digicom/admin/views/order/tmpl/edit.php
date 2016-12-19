@@ -96,7 +96,7 @@ $input->set('layout', 'dgform');
 						</td>
 						<td style="<?php echo $cancelled == 3 ? 'text-decoration: line-through;' : '';?>"><?php
 							$price = $prod->amount_paid - $refund - $chargeback;
-							echo DigiComHelperDigiCom::format_price($prod->amount_paid, $prod->currency, true, $configs);
+							echo DigiComHelperDigiCom::format_price($prod->price, $prod->currency, true, $configs);
 							$oll_courses_total += $price;
 							if ($refund > 0)
 							{
@@ -119,7 +119,7 @@ $input->set('layout', 'dgform');
 					<td style="font-weight:bold"><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></td>
 					<td>
 						<?php
-							echo DigiComHelperDigiCom::format_price($oll_courses_total, $order->currency, true, $configs);
+							echo DigiComHelperDigiCom::format_price($order->price, $order->currency, true, $configs);
 						?>
 					</td>
 				</tr>

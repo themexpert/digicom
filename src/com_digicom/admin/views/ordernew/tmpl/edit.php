@@ -81,7 +81,7 @@ function changePlain() {
 			$('discount').value = resp.discount;
 			$('discount_sign').innerHTML = resp.discount_sign;
 			$('total').innerHTML = resp.total;
-			$('amount_paid').value = resp.total_value;
+			/* $('amount_paid').value = resp.total_value; */
 			$('currency_amount_paid').innerHTML = resp.currency;
 			$('currency_value').value = resp.currency;
 		}
@@ -217,36 +217,37 @@ JHTML::_('behavior.tooltip');
 
 			<div class="grand-total clearfix">
 			  	<div class="control-group">
-				    <label class="control-label" for="total"><?php echo JText::_( 'COM_DIGICOM_DISCOUNT' ); ?></label>
+				    <label class="control-label" for="discount_sign"><?php echo JText::_( 'COM_DIGICOM_DISCOUNT' ); ?></label>
 				    <div class="controls">
 						<span id="discount_sign">00.00 <?php echo $configs->get('currency','USD'); ?></span>
 				    </div>
 			  	</div>
 
 			  	<div class="control-group">
-				    <label class="control-label" for="total"><?php echo JText::_( 'COM_DIGICOM_TAX' ); ?></label>
+				    <label class="control-label" for="tax"><?php echo JText::_( 'COM_DIGICOM_TAX' ); ?></label>
 				    <div class="controls">
 				      	<span id="tax">00.00 <?php echo $configs->get('currency','USD'); ?></span>
 				    </div>
 			  	</div>
 
 			  	<div class="control-group">
-				   <label id="jform_discount-lbl" for="jform_total" class="hasTooltip control-label" title="<?php echo JText::_( 'COM_DIGICOM_ORDER_TOTAL_TIP' ); ?>">
+				   <label id="jform_discount-lbl" for="amount_value" class="hasTooltip control-label" title="<?php echo JText::_( 'COM_DIGICOM_ORDER_TOTAL_TIP' ); ?>">
 						<?php echo JText::_( 'COM_DIGICOM_TOTAL' ); ?>
 					</label>
 				    <div class="controls">
-						<span id="total">00.00 <?php echo $configs->get('currency','USD'); ?></span>
-
+						<span id="total" class="hide">00.00 <?php echo $configs->get('currency','USD'); ?></span>
+						<input id="amount_value" name="jform[amount]" type="text" value=""/>
 				    </div>
 			  	</div>
 
 			  	<div class="control-group">
-				    <label id="jform_discount-lbl" for="jform_total" class="hasTooltip control-label" title="<?php echo JText::_( 'COM_DIGICOM_ORDER_AMOUNT_PAID_TIP' ); ?>">
+				    <label id="jform_discount-lbl" for="amount_paid" class="hasTooltip control-label" title="<?php echo JText::_( 'COM_DIGICOM_ORDER_AMOUNT_PAID_TIP' ); ?>">
 						<?php echo JText::_( 'COM_DIGICOM_AMOUNT_PAID' ); ?>
 					</label>
 
 				    <div class="controls">
-				      	<span id="currency_amount_paid" class="hide"></span><input id="amount_paid" name="jform[amount_paid]" type="text" value=""/>
+				      	<span id="currency_amount_paid" class="hide"></span>
+				      	<input id="amount_paid" name="jform[amount_paid]" type="text" value="0"/>
 				    </div>
 			  	</div>
 
@@ -262,7 +263,6 @@ JHTML::_('behavior.tooltip');
 				<input type="hidden" name="jform[price]" id="price_value" value="0"/>
 				<input type="hidden" name="jform[tax]" id="tax_value" value="0"/>
 				<input type="hidden" name="jform[shipping]" value="0"/>
-				<input type="hidden" name="jform[amount]" id="amount_value" value="0"/>
 				<input type="hidden" name="jform[discount]" id="discount" value="0"/>
 				<input type="hidden" name="jform[currency]" id="currency_value" value=""/>
 				<input type="hidden" name="task" value=""/>
