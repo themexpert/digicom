@@ -101,6 +101,11 @@
 					<option value="0">JHIDE</option>
 					<option value="1">JSHOW</option>
 			</field>
+			
+
+		</fieldset>
+
+		<fieldset name="REGISTRATION">
 			<field
 				name="registration_spacer"
 				type="spacer"
@@ -193,63 +198,7 @@
 				value_field="title">
 			</field>
 
-			<field
-				name="buyprocess_spacer"
-				type="spacer"
-				class="title"
-				label="COM_DIGICOM_SETTINGS_GENERAL_BUYING_PROCESS_FIELD_LABEL"
-				/>
-			<field
-				name="afteradditem"
-				type="list"
-				class="btn-group chosen"
-				label="COM_DIGICOM_SETTINGS_GENERAL_AFTER_ADDING_ITEM_TAKE_USER"
-				default="0"
-				description="COM_DIGICOM_SETTINGS_GENERAL_AFTER_ADDING_ITEM_TAKE_USER_DESC">
-					<option value="0">COM_DIGICOM_SETTINGS_GENERAL_AFTER_ADDING_ITEM_TAKE_USER_TO_CART</option>
-					<!-- <option value="1">COM_DIGICOM_SETTINGS_GENERAL_AFTER_ADDING_ITEM_TAKE_USER_STAY_PRODUCT</option> -->
-					<option value="2">COM_DIGICOM_SETTINGS_GENERAL_AFTER_ADDING_ITEM_TAKE_USER_CART_POPUP</option>
-			</field>
-			<field
-				name="default_payment"
-				type="sql"
-				query="SELECT extension_id as id,name,element,enabled as published FROM #__extensions WHERE folder in ('digicom_pay') AND enabled=1"
-				key_field="element"
-				value_field="name"
-				class="btn-group chosen"
-				label="COM_DIGICOM_SETTINGS_GENERAL_DEFAULT_PAYMENT_METHOD"
-				description="COM_DIGICOM_SETTINGS_GENERAL_DEFAULT_PAYMENT_METHOD_DESC">
-					<!-- <option value="">Select payment gateway</option> -->
-			</field>
-			<field
-				name="checkout_spacer"
-				type="spacer"
-				class="title"
-				label="COM_DIGICOM_SETTINGS_GENERAL_CHECKOUT_FIELD_LABEL"
-				/>
-			<field
-				name="show_steps"
-				type="radio"
-				class="btn-group"
-				label="COM_DIGICOM_SETTINGS_GENERAL_SHOW_STEPS"
-				default="1"
-				description="COM_DIGICOM_SETTINGS_GENERAL_SHOW_STEPS_DESC">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-			</field>
-			<field
-				name="afterpurchase"
-				type="radio"
-				class="btn-group"
-				label="COM_DIGICOM_SETTINGS_GENERAL_AFTER_PAYMENT_GO_TO"
-				default="2"
-				description="COM_DIGICOM_SETTINGS_GENERAL_AFTER_PAYMENT_GO_TO_DESC">
-					<option value="0">COM_DIGICOM_SETTINGS_GENERAL_AFTER_PAYMENT_GO_TO_DOWNLOAD</option>
-					<option value="1">COM_DIGICOM_SETTINGS_GENERAL_AFTER_PAYMENT_GO_TO_ORDER</option>
-					<option value="2">COM_DIGICOM_SETTINGS_GENERAL_AFTER_PAYMENT_GO_TO_THANK_YOU</option>
-			</field>
 		</fieldset>
-
 		<fieldset name="CURRENCY"
 			addfieldpath="/administrator/components/com_digicom/models/fields">
 			<field
@@ -347,6 +296,24 @@
 
 		<fieldset name="STORE">
 			<field
+				name="checkout_spacer"
+				type="spacer"
+				class="title"
+				label="COM_DIGICOM_SETTINGS_GENERAL_CHECKOUT_FIELD_LABEL"
+				/>
+			<field
+				name="default_payment"
+				type="sql"
+				query="SELECT extension_id as id,name,element,enabled as published FROM #__extensions WHERE folder in ('digicom_pay') AND enabled=1"
+				key_field="element"
+				value_field="name"
+				class="btn-group chosen"
+				label="COM_DIGICOM_SETTINGS_GENERAL_DEFAULT_PAYMENT_METHOD"
+				description="COM_DIGICOM_SETTINGS_GENERAL_DEFAULT_PAYMENT_METHOD_DESC">
+					<!-- <option value="">Select payment gateway</option> -->
+			</field>
+
+			<field
 				name="store_spacer"
 				type="spacer"
 				class="title"
@@ -413,6 +380,48 @@
 		</fieldset>
 
 		<fieldset name="THEME" addfieldpath="/administrator/components/com_digicom/models/fields">
+			<field
+				name="buyprocess_spacer"
+				type="spacer"
+				class="title"
+				label="COM_DIGICOM_SETTINGS_GENERAL_BUYING_PROCESS_FIELD_LABEL"
+				/>
+
+			<field
+				name="show_steps"
+				type="radio"
+				class="btn-group"
+				label="COM_DIGICOM_SETTINGS_GENERAL_SHOW_STEPS"
+				default="1"
+				description="COM_DIGICOM_SETTINGS_GENERAL_SHOW_STEPS_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+			</field>
+			<field
+				name="afterpurchase"
+				type="radio"
+				class="btn-group"
+				label="COM_DIGICOM_SETTINGS_GENERAL_AFTER_PAYMENT_GO_TO"
+				default="2"
+				description="COM_DIGICOM_SETTINGS_GENERAL_AFTER_PAYMENT_GO_TO_DESC">
+					<option value="0">COM_DIGICOM_SETTINGS_GENERAL_AFTER_PAYMENT_GO_TO_DOWNLOAD</option>
+					<option value="1">COM_DIGICOM_SETTINGS_GENERAL_AFTER_PAYMENT_GO_TO_ORDER</option>
+					<option value="2">COM_DIGICOM_SETTINGS_GENERAL_AFTER_PAYMENT_GO_TO_THANK_YOU</option>
+			</field>
+
+			
+			<field
+				name="afteradditem"
+				type="list"
+				class="btn-group chosen"
+				label="COM_DIGICOM_SETTINGS_GENERAL_AFTER_ADDING_ITEM_TAKE_USER"
+				default="0"
+				description="COM_DIGICOM_SETTINGS_GENERAL_AFTER_ADDING_ITEM_TAKE_USER_DESC">
+					<option value="0">COM_DIGICOM_SETTINGS_GENERAL_AFTER_ADDING_ITEM_TAKE_USER_TO_CART</option>
+					<!-- <option value="1">COM_DIGICOM_SETTINGS_GENERAL_AFTER_ADDING_ITEM_TAKE_USER_STAY_PRODUCT</option> -->
+					<option value="2">COM_DIGICOM_SETTINGS_GENERAL_AFTER_ADDING_ITEM_TAKE_USER_CART_POPUP</option>
+			</field>
+			
 			<field
 				name="theme_spacer"
 				type="spacer"
