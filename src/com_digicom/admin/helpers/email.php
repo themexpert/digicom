@@ -8,6 +8,7 @@
  */
 
 defined('_JEXEC') or die;
+use Joomla\Registry\Registry;
 
 class DigiComHelperEmail {
 
@@ -25,7 +26,10 @@ class DigiComHelperEmail {
         $properties = $orderTable->getProperties(1);
         $order = JArrayHelper::toObject($properties, 'JObject');
 
+        $jconfig    = JFactory::getConfig();
         $configs = JComponentHelper::getComponent('com_digicom')->params;
+        // site name n url
+        $sitename       = (trim( $configs->get('store_name','DigiCom Store') ) != '') ? $configs->get('store_name','DigiCom Store') : $jconfig->get( 'sitename' );
 
         $custTable = JTable::getInstance( 'Customer','table' );
         $custTable->load( $order->userid );
@@ -46,12 +50,17 @@ class DigiComHelperEmail {
 
         $email_footer = $email_settings->email_footer;
 
-        $emailinfo = $configs->get($type,'new_order');
-        $email_type = $emailinfo->email_type;
-        $Subject = $emailinfo->Subject;
-        $recipients = $emailinfo->recipients;
-        $enable = $emailinfo->enable;
-        $heading = $emailinfo->heading;//jform[email_settings][heading]
+        $configinfo = $configs->get($type,'new_order');
+        $emailinfo      = new Registry;
+        $emailinfo->loadObject($configinfo);
+
+        $enable         = $emailinfo->get('enable', 1);;
+        if(!$enable) return;
+
+        $email_type     = $emailinfo->get('email_type', 'html');
+        $Subject        = $emailinfo->get('Subject', JText::sprintf('COM_DIGICOM_SYSTEM_EMAIL_SUBJECT', $sitename, ucfirst(str_replace("_", " ", $type))));
+        $recipients     = $emailinfo->get('recipients', $jconfig->get('mailfrom'));
+        $heading        = $emailinfo->get('heading', JText::sprintf('COM_DIGICOM_SYSTEM_EMAIL_SUBJECT', $sitename, ucfirst(str_replace("_", " ", $type))));
         if(!$enable) return;
 
         //-----------------------------------------------------------------------
@@ -241,10 +250,10 @@ class DigiComHelperEmail {
             $adminName2 = $email_settings->from_name;
         }
 
-        if(!empty($email_settings->from_email))
-        {
-            $adminEmail2 = $email_settings->from_email;
-        }
+        // if(!empty($email_settings->from_email))
+        // {
+        //     $adminEmail2 = $email_settings->from_email;
+        // }
 
         $mailSender = JFactory::getMailer();
         $mailSender->IsHTML( true );
@@ -260,6 +269,7 @@ class DigiComHelperEmail {
             'type' => $type,
             'status' => $status
         );
+        
         $message = 'admin: order#'.$orderid.', type:'.$type.', status: '.$status.', amount: '.$amount;
 
         if ( $mailSender->Send() !== true ) {
