@@ -476,14 +476,14 @@
 					label="COM_DIGICOM_SETTINGS_EMAIL_FROM_NAME_LABEL"
 					description="COM_DIGICOM_SETTINGS_EMAIL_FROM_NAME_LABEL_DESC"
 					/>
-
+				<!--
 				<field
 					name="from_email"
 					type="email"
 					label="COM_DIGICOM_SETTINGS_EMAIL_FROM_LABEL"
 					description="COM_DIGICOM_SETTINGS_EMAIL_FROM_LABEL_DESC"
 					/>
-
+				-->
 				<field
 					name="sendmailtoadmin"
 					type="radio"
