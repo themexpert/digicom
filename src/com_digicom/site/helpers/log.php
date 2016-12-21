@@ -74,7 +74,7 @@ class DigiComSiteHelperLog {
         $logTable->store();
 
         $dispatcher->trigger('onDigicomAfterLog', 
-            array('com_digicom.log', $logTable)
+            array('com_digicom.log', &$logTable)
         );
         
         return $logTable->id;
