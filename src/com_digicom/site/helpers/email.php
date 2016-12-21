@@ -18,59 +18,63 @@ class DigiComSiteHelperEmail {
 	*/
 	public static function dispatchMail($orderid, $amount, $number_of_products, $timestamp, $items, $customer, $type = 'new_order', $status = '')
 	{
-		$db 			= JFactory::getDbo();
+		$db 		= JFactory::getDbo();
 		$jconfig 	= JFactory::getConfig();
 
 		// get sid & uid
-		if(is_object($customer)){
-			$sid 		= $customer->_sid;
+		if(is_object($customer))
+		{
+			$sid 	= $customer->_sid;
 
-			if(isset($customer->_user->id)){
-				$uid 	= $customer->_user->id;
+			if(isset($customer->_user->id))
+			{
+				$uid= $customer->_user->id;
 			}
-		}elseif(is_array($customer)){
-			$sid 		= $customer['sid'];
-			$uid 		= $customer['userid'];
-		}elseif(is_numeric($customer)){
-			$uid 		= $customer;
+		}
+		elseif(is_array($customer))
+		{
+			$sid 	= $customer['sid'];
+			$uid 	= $customer['userid'];
+		}
+		elseif(is_numeric($customer))
+		{
+			$uid 	= $customer;
 		}
 		if ( !$uid ) return;
 
-		$my 				= JFactory::getUser($uid);
-		$database 	= JFactory::getDBO();
+		$my 			= JFactory::getUser($uid);
+		$database 		= JFactory::getDBO();
 
 		$configs 		= JComponentHelper::getComponent('com_digicom')->params;
 		$phone 			= $configs->get('phone');
 		$address 		= $configs->get('address');
 
-		$configinfo = $configs->get($type,'new_order');
-		$emailinfo 	= new Registry;
+		$configinfo 	= $configs->get($type,'new_order');
+		$emailinfo 		= new Registry;
 		$emailinfo->loadObject($configinfo);
-
 		$enable 		= $emailinfo->get('enable', 1);;
 		if(!$enable) return;
 
-		$email_type 	= $emailinfo->get('email_type', 'html');
-		$Subject	 		= $emailinfo->get('Subject', 'Digicom system email');
-		$recipients 	= $emailinfo->get('recipients', '');
-		$heading 			= $emailinfo->get('heading', 'Digicom system email');//jform[email_settings][heading]
-
-		$orderTable 			= JTable::getInstance( "Order" ,"Table");
+		$orderTable 	= JTable::getInstance( "Order" ,"Table");
 		$orderTable->load( $orderid );
 
-		$properties = $orderTable->getProperties(1);
+		$properties 	= $orderTable->getProperties(1);
 		$order = JArrayHelper::toObject($properties, 'JObject');
 
 		// Replace all variables in template
 		$uri 			= JURI::getInstance();
 		// site name n url
-		$sitename = (trim( $configs->get('store_name','DigiCom Store') ) != '') ? $configs->get('store_name','DigiCom Store') : $jconfig->get( 'sitename' );
-		$siteurl 	= (trim( $configs->get('store_url','') ) != '') ? $configs->get('store_url','') : $uri->base();
+		$sitename 		= (trim( $configs->get('store_name','DigiCom Store') ) != '') ? $configs->get('store_name','DigiCom Store') : $jconfig->get( 'sitename' );
+		$siteurl 		= (trim( $configs->get('store_url','') ) != '') ? $configs->get('store_url','') : $uri->base();
 
-		//echo $type;die;
-		$email_settings 		= $configs->get('email_settings');
+		$email_type 	= $emailinfo->get('email_type', 'html');
+		$Subject	 	= $emailinfo->get('Subject', JText::sprintf('COM_DIGICOM_SYSTEM_EMAIL_SUBJECT', $sitename, ucfirst(str_replace("_", " ", $type))));
+		$recipients 	= $emailinfo->get('recipients', $jconfig->get('mailfrom'));
+		$heading 		= $emailinfo->get('heading', JText::sprintf('COM_DIGICOM_SYSTEM_EMAIL_SUBJECT', $sitename, ucfirst(str_replace("_", " ", $type))));//jform[email_settings][heading]
+
+		$email_settings 	= $configs->get('email_settings');
 		$email_header_image = $email_settings->email_header_image;//jform[email_settings][email_header_image]
-		$email_footer = $email_settings->email_footer;
+		$email_footer 		= $email_settings->email_footer;
 
 		//prepare styles
 		$basecolor 		= $email_settings->email_base_color; //
@@ -203,10 +207,10 @@ class DigiComSiteHelperEmail {
 		$message = str_replace( "[SITE_TITLE]", $sitename, $message );
 		$message = str_replace( "[ORDER_NUMBER]", $orderid, $message );
 
-		$message 			= str_replace( "[BASE_COLOR]", $basecolor, $message );
-		$message 			= str_replace( "[BASE_BG_COLOR]", $basebgcolor, $message );
-		$message 			= str_replace( "[TMPL_COLOR]", $tmplcolor, $message );
-		$message 			= str_replace( "[TMPL_BG_COLOR]", $tmplbgcolor, $message );
+		$message = str_replace( "[BASE_COLOR]", $basecolor, $message );
+		$message = str_replace( "[BASE_BG_COLOR]", $basebgcolor, $message );
+		$message = str_replace( "[TMPL_COLOR]", $tmplcolor, $message );
+		$message = str_replace( "[TMPL_BG_COLOR]", $tmplbgcolor, $message );
 		$message = str_replace("[EMAIL_TYPE]", $emailType, $message);
 		
 		//subject
@@ -246,35 +250,36 @@ class DigiComSiteHelperEmail {
 		}
 		else
 		{
-			$adminName2 = $configs->get('store_name','DigiCom Store');
+			$adminName2 = $configs->get('store_name',$sitename .' Store');
 		}
 
 		$adminEmail2 = $jmailfrom;
 
 		// now override the value with digicom config
-    if(!empty($email_settings->from_name)){
-        $adminName2 = $email_settings->from_name;
-    }
-    if(!empty($email_settings->from_email)){
-        $adminEmail2 = $email_settings->from_email;
-    }
+	    if(!empty($email_settings->from_name)){
+	        $adminName2 = $email_settings->from_name;
+	    }
+	    // if(!empty($email_settings->from_email)){
+	    //     $adminEmail2 = $email_settings->from_email;
+	    // }
 
 		$mailSender = JFactory::getMailer();
 		$mailSender->isHTML( true );
 		$mailSender->Encoding = 'base64';
 		$mailSender->addRecipient( $my->email );
 		$mailSender->setSender( array($adminEmail2, $adminName2) );
+
 		$mailSender->setSubject( $subject );
 		$mailSender->setBody( $message );
 
 		$info = array(
-			'orderid'	 	=> $orderid,
-			'amount' 		=> $amount,
+			'orderid'	=> $orderid,
+			'amount' 	=> $amount,
 			'customer' 	=> $customer,
-			'type' 			=> $type,
-			'status' 		=> $status
+			'type' 		=> $type,
+			'status' 	=> $status
 		);
-
+		print_r($message);die;
 		$message = $type.' email for order#'.$orderid.', status: '.$status;
 
 		if ( $mailSender->Send() !== true ) {
@@ -284,7 +289,8 @@ class DigiComSiteHelperEmail {
 		}
 
 		// Send email to admin if its enabled on email common settings
-		if ( $email_settings->sendmailtoadmin)
+		$sendAdminEmail = (isset($email_settings->sendmailtoadmin) ? $email_settings->sendmailtoadmin : 1);
+		if ( $sendAdminEmail )
 		{
 			$admin_name = 'Master';
 			$payment_method = $order->processor;
