@@ -279,7 +279,7 @@ class DigiComSiteHelperEmail {
 			'type' 		=> $type,
 			'status' 	=> $status
 		);
-		print_r($message);die;
+		// print_r($message);die;
 		$message = $type.' email for order#'.$orderid.', status: '.$status;
 
 		if ( $mailSender->Send() !== true ) {
