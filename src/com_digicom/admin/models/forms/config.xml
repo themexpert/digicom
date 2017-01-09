@@ -573,13 +573,13 @@
 					label="COM_DIGICOM_SETTINGS_EMAIL_SUBJECT_LABEL"
 					description="COM_DIGICOM_SETTINGS_EMAIL_SUBJECT_DESC"
 				>
-					<option value="[{site_title}] New customer order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_SUBJECT_DEFAULT</option>
+					<option value="[site_title] New customer order ([order_number]) - [order_date]">COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_SUBJECT_DEFAULT</option>
 				</field>
 				<field name="heading" type="text"
 					label="COM_DIGICOM_SETTINGS_EMAIL_HEADING_LABEL"
 					description="COM_DIGICOM_SETTINGS_EMAIL_HEADING_DESC"
 				>
-					<option value="[{site_title}] New customer order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_SUBJECT_DEFAULT</option>
+					<option value="[site_title] New customer order ([order_number]) - [order_date]">COM_DIGICOM_SETTINGS_EMAIL_NEW_ORDER_SUBJECT_DEFAULT</option>
 				</field>
 
 				<field name="email_type" type="list" class="chosen"
@@ -651,13 +651,13 @@
 					label="COM_DIGICOM_SETTINGS_EMAIL_SUBJECT_LABEL"
 					description="COM_DIGICOM_SETTINGS_EMAIL_SUBJECT_DESC"
 				>
-					<option value="[{site_title}] Process Order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_PROCESS_ORDER_SUBJECT_DEFAULT</option>
+					<option value="[site_title] Process Order ([order_number]) - [order_date]">COM_DIGICOM_SETTINGS_EMAIL_PROCESS_ORDER_SUBJECT_DEFAULT</option>
 				</field>
 				<field name="heading" type="text"
 					label="COM_DIGICOM_SETTINGS_EMAIL_HEADING_LABEL"
 					description="COM_DIGICOM_SETTINGS_EMAIL_HEADING_DESC"
 				>
-					<option value="[{site_title}] Process order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_PROCESS_ORDER_SUBJECT_DEFAULT</option>
+					<option value="[site_title] Process order ([order_number]) - [order_date]">COM_DIGICOM_SETTINGS_EMAIL_PROCESS_ORDER_SUBJECT_DEFAULT</option>
 				</field>
 
 				<field name="email_type" type="list" class="chosen"
@@ -729,13 +729,13 @@
 					label="COM_DIGICOM_SETTINGS_EMAIL_SUBJECT_LABEL"
 					description="COM_DIGICOM_SETTINGS_EMAIL_SUBJECT_DESC"
 				>
-					<option value="[{site_title}] Complete order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_COMPLETE_ORDER_SUBJECT_DEFAULT</option>
+					<option value="[site_title] Complete order ([order_number]) - [order_date]">COM_DIGICOM_SETTINGS_EMAIL_COMPLETE_ORDER_SUBJECT_DEFAULT</option>
 				</field>
 				<field name="heading" type="text"
 					label="COM_DIGICOM_SETTINGS_EMAIL_HEADING_LABEL"
 					description="COM_DIGICOM_SETTINGS_EMAIL_HEADING_DESC"
 				>
-					<option value="[{site_title}] Complete order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_COMPLETE_ORDER_SUBJECT_DEFAULT</option>
+					<option value="[site_title] Complete order ([order_number]) - [order_date]">COM_DIGICOM_SETTINGS_EMAIL_COMPLETE_ORDER_SUBJECT_DEFAULT</option>
 				</field>
 
 				<field name="email_type" type="list" class="chosen"
@@ -807,13 +807,13 @@
 					label="COM_DIGICOM_SETTINGS_EMAIL_SUBJECT_LABEL"
 					description="COM_DIGICOM_SETTINGS_EMAIL_SUBJECT_DESC"
 				>
-					<option value="[{site_title}] Cancel order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_CANCEL_ORDER_SUBJECT_DEFAULT</option>
+					<option value="[site_title] Cancel order ([order_number]) - [order_date]">COM_DIGICOM_SETTINGS_EMAIL_CANCEL_ORDER_SUBJECT_DEFAULT</option>
 				</field>
 				<field name="heading" type="text"
 					label="COM_DIGICOM_SETTINGS_EMAIL_HEADING_LABEL"
 					description="COM_DIGICOM_SETTINGS_EMAIL_HEADING_DESC"
 				>
-					<option value="[{site_title}] Cancel order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_CANCEL_ORDER_SUBJECT_DEFAULT</option>
+					<option value="[site_title] Cancel order ([order_number]) - [order_date]">COM_DIGICOM_SETTINGS_EMAIL_CANCEL_ORDER_SUBJECT_DEFAULT</option>
 				</field>
 
 				<field name="email_type" type="list" class="chosen"
@@ -885,13 +885,13 @@
 					label="COM_DIGICOM_SETTINGS_EMAIL_SUBJECT_LABEL"
 					description="COM_DIGICOM_SETTINGS_EMAIL_SUBJECT_DESC"
 				>
-					<option value="[{site_title}] Cancel order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_REFUND_ORDER_SUBJECT_DEFAULT</option>
+					<option value="[site_title] Cancel order ([order_number]) - [order_date]">COM_DIGICOM_SETTINGS_EMAIL_REFUND_ORDER_SUBJECT_DEFAULT</option>
 				</field>
 				<field name="heading" type="text"
 					label="COM_DIGICOM_SETTINGS_EMAIL_HEADING_LABEL"
 					description="COM_DIGICOM_SETTINGS_EMAIL_HEADING_DESC"
 				>
-					<option value="[{site_title}] Cancel order ({order_number}) - {order_date}">COM_DIGICOM_SETTINGS_EMAIL_REFUND_ORDER_SUBJECT_DEFAULT</option>
+					<option value="[site_title] Cancel order ([order_number]) - [order_date]">COM_DIGICOM_SETTINGS_EMAIL_REFUND_ORDER_SUBJECT_DEFAULT</option>
 				</field>
 
 				<field name="email_type" type="list" class="chosen"
