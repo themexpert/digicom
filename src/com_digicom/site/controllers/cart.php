@@ -78,71 +78,58 @@ class DigiComControllerCart extends JControllerLegacy
 	*/
 	function add()
 	{
-		$db = JFactory::getDBO();
-		$pid = JFactory::getApplication()->input->get('pid',0);
+		$app 		= JFactory::getApplication();
+		$configs 	= $this->_config;
+		$cid 		= $app->input->get('cid', 0);
+		$res 		= $this->_model->addToCart();
+		$afteradd 	= $configs->get('afteradditem', 0); // 0=> to cart; 1=>popup
 
-		//check if this product is unpublished
-		$sql = "select count(*)
-				from #__digicom_products
-				where `id`=".intval($pid)." and `published`=1 and `publish_up` <= ".time()." and (`publish_down` >= ".time()." OR `publish_down` = 0)";
-		$db->setQuery($sql);
-		$db->query();
-		$result = $db->loadResult();
-
-		//check if this product is unpublished
-		$cid = JFactory::getApplication()->input->get('cid',0);
-		$res = $this->_model->addToCart();
-		$configs = $this->_config;
-		$afteradditem = $configs->get('afteradditem',0);
-		$from = JFactory::getApplication()->input->get('from','');
-
-		if($from == "ajax"){
-			$renew = JRequest::getVar("renew", "");
-			//$this->showCart();
-			$url = JRoute::_(JRoute::_("index.php?option=com_digicom&view=cart&layout=cart_popup&tmpl=component"), false);
-			//echo $url;die;
-			$this->setRedirect($url);
-			return true;
+		if($res < 0) 
+		{
+			// Product not found; -1
+			$msg = JText::_("COM_DIGICOM_CART_WRONG_PID_OR_ACCESS_LABEL");
+			$link = "index.php?option=com_digicom&view=category&id=" . $cid;
+			$this->setRedirect(JRoute::_($link, false), $msg);
 		}
-		global $Itemid;
-		$cart_itemid = DigiComSiteHelperDigiCom::getCartItemid();
+		elseif($res == 0)
+		{
+			// Handle error, log must be added from model
+			$msg = JText::_("COM_DIGICOM_CART_ERROR_UPDATING_CART_LABEL");
+			$link = "index.php?option=com_digicom&view=category&id=" . $cid;
+			$this->setRedirect(JRoute::_($link, false), $msg);
+		}
 
-		if(JRequest::getVar('status', '-1') == 'change'){
+		// if added through content plugin 
+		// or
+		// forced to go to cart
+		$fromplugin = $app->input->get("from_add_plugin", 0);
+		$gotocart 	= $app->input->get("gotocart", 0);
+		if($fromplugin or $gotocart)
+		{
+			$afteradd = 0; // to cart
+		}
+
+		// Act for ajax or cart popup work
+		$from 		= $app->input->get('from', '');
+		if($from == "ajax")
+		{
+			$afteradd = 2; // popup
+		}
+
+		if(!$afteradd)
+		{
+			// Take to cart
 			$url = JRoute::_("index.php?option=com_digicom&view=cart", false);
 			$this->setRedirect($url);
 		}
-		else{
-			if($res < 0) {
-				$msg = JText::_("COM_DIGICOM_CART_WRONG_PID_OR_ACCESS_LABEL");
-				$link = "index.php?option=com_digicom&view=category&id=" . $cid;
-				$this->setRedirect(JRoute::_($link, false), $msg);
-			}
-			elseif($res == 0){
-				$msg = JText::_("COM_DIGICOM_CART_ERROR_UPDATING_CART_LABEL");
-				$link = "index.php?option=com_digicom&view=category&id=" . $cid;
-				$this->setRedirect(JRoute::_($link, false), $msg);
-			}
-
-			$from_add_plugin = JRequest::getVar("from_add_plugin", "0");
-			if($from_add_plugin == 1){
-				$afteradditem = 0;
-			}
-
-			$type_afteradd = $afteradditem;
-			$gotocart = JRequest::getVar("gotocart", "");
-			if($gotocart != ""){
-				$type_afteradd = 0;
-			}
-
-			if($type_afteradd == 0){// Take to cart
-				$url = JRoute::_("index.php?option=com_digicom&view=cart", false);
-				$this->setRedirect($url);
-			}else{//Show cart in pop up
-				$task = JRequest::getVar("task", "", "get");
-				$url = JRoute::_("index.php?option=com_digicom&view=cart", false);
-				$this->setRedirect($url);
-			}
+		else
+		{
+			//Show cart in pop up
+			$url = "index.php?option=com_digicom&view=cart&layout=cart_popup&tmpl=component";
+			$this->setRedirect(JRoute::_($url, false));
 		}
+
+		return true;
 	}
 
 	/**
