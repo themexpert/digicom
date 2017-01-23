@@ -156,10 +156,17 @@ class DigiComModelCart extends JModelItem
 
 				$cid = $db->insertid(); //cart id of the item inserted
 				
+				$dispatcher->trigger('onDigicomAfterAddCartItem', array('com_digicom.cart', &$pid));
+
 				// DigiComSiteHelperLog::setLog('add2cart', 'cart addToCart', $pid, $productname . ' Has been added to cart', null,1);	
 			}
 		}
 
+		// trigger renew event
+		if($renew){
+			$dispatcher->trigger('onDigicomRenewRequest', array('com_digicom.cart', &$pid));
+		}
+		
 		return $cid;
 	}
 
