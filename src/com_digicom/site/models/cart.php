@@ -64,45 +64,36 @@ class DigiComModelCart extends JModelItem
 	 */
 	function addToCart()
 	{
-		$user			= JFactory::getUser();
-		$db				= JFactory::getDbo();
-		$customer		= $this->customer;
+		$dispatcher	= JEventDispatcher::getInstance();
+		$app 		= JFactory::getApplication();
+		$user		= JFactory::getUser();
+		$db			= JFactory::getDbo();
+		$customer	= $this->customer;
 
-		$sid			= $customer->_sid; //digicom session id
-		$uid			= $customer->_user->id; //joomla user id
-		$pid			= JFactory::getApplication()->input->get('pid',0);
-		$cid			= JFactory::getApplication()->input->get('cid',0);
+		$sid		= $customer->_sid; //digicom session id
+		$uid		= $customer->_user->id; //joomla user id
+		$pid		= $app->input->get('pid', 0);
+		$cid		= $app->input->get('cid', 0);
+		$qty 		= $app->input->get( 'qty', 1, 'request' ); //product quantity
+		$renew 		= $app->input->get("renew", 0);
+		
 
 		// check if product id less then 1, then its too bad, return -1
-		if($pid < 1){
+		if($pid < 1)
+		{
 			return (-1);
 		}
 
-		// now get the product with access label
-		$query = $db->getQuery(true);
-		$query->select(array('name', 'access'))
-			  ->from($db->quoteName('#__digicom_products'))
-			  ->where($db->quoteName('id') . " = " . $pid);
-
-		$groups = implode(',', $user->getAuthorisedViewLevels());
-		$query->where($db->quoteName('access').' IN (' . $groups . ')');
-
-		$db->setQuery( $query );
-		$res = $db->loadObject();
-
-		$productname 	= $res->name;
-		
-		$access 		= $res->access;
-
-		// if product name is empty, return -1
-		if(strlen($productname) < 1){
-			return -1;
+		$product  	= $this->getProduct($pid);
+		if(!$product)
+		{
+			return (-1);
 		}
 
-		// now we have passed basic check, move on ...
-		$qty = JRequest::getVar( 'qty', 1, 'request' ); //product quantity
+		$productname 	= $product->name;
+		$access 		= $product->access;
 
-		$db->clear();
+		// now we have passed basic check, move on ...
 		$query = $db->getQuery(true);
 		$query->select(array('cid','item_id','quantity'))
 			  ->from($db->quoteName('#__digicom_cart'))
@@ -111,14 +102,16 @@ class DigiComModelCart extends JModelItem
 		$db->setQuery($query);
 		$data = $db->loadObject();
 
-		if($data){
+		if($data)
+		{
 			//we already have this item in the cart
-			$item_id = $data->item_id; //lets just check if item is in the cart
-			$item_qty = $data->quantity;
-			$cid = $data->cid;
+			$item_id 	= $data->item_id; //lets just check if item is in the cart
+			$item_qty 	= $data->quantity;
+			$cid 		= $data->cid;
 
 			//lets update if not same quantity
-			if($item_qty != $qty){
+			if($item_qty != $qty)
+			{
 				$db->clear();
 				$query = $db->getQuery(true);
 				// Fields to update.
@@ -133,15 +126,14 @@ class DigiComModelCart extends JModelItem
 				);
 
 				$query->update($db->quoteName('#__digicom_cart'))->set($fields)->where($conditions);
-
-				//$sql = "update #__digicom_cart set quantity =quantity+".$qty." where sid='".intval($sid)."' AND item_id='".intval($pid)."'";
 				$db->setQuery($query);
 				$db->execute();
-
 			}
 		}
 
-		if(!isset($item_id)){
+		if(!isset($item_id))
+		{
+			// Prepare the insert query.
 			$db->clear();
 			$query = $db->getQuery(true);
 
@@ -151,25 +143,66 @@ class DigiComModelCart extends JModelItem
 			// Insert values.
 			$values = array($db->quote(intval($qty)),$db->quote(intval($pid)), $db->quote(intval($sid)), $db->quote(intval($uid)));
 
-			// Prepare the insert query.
+			
 			$query
 			    ->insert($db->quoteName('#__digicom_cart'))
 			    ->columns($db->quoteName($columns))
 			    ->values(implode(',', $values));
 
 			//no such item in cart- inserting new row
-			//$sql = "insert into #__digicom_cart (quantity, item_id, sid, userid)"
-			//	. " values ('".$qty."', '".intval($pid)."', '".intval($sid)."', '".intval($uid)."')";
 			$db->setQuery($query);
 
 			if($db->execute()){
-				// DigiComSiteHelperLog::setLog('add2cart', 'cart addToCart', $pid, $productname . ' Has been added to cart', null,1);
-			}
 
-			$cid = $db->insertid(); //cart id of the item inserted
+				$cid = $db->insertid(); //cart id of the item inserted
+				
+				// DigiComSiteHelperLog::setLog('add2cart', 'cart addToCart', $pid, $productname . ' Has been added to cart', null,1);	
+			}
 		}
 
 		return $cid;
+	}
+
+	/**
+	* Method getProduct
+	* @param $id
+	* @return object
+	*/
+	public function getProduct($id)
+	{
+		// now get the product with access label
+		$db				= JFactory::getDbo();
+		$user			= JFactory::getUser();
+
+		$query = $db->getQuery(true);
+		$query->select(array('name', 'access'))
+			  ->from($db->quoteName('#__digicom_products'))
+			  ->where($db->quoteName('id') . " = " . $pid);
+
+		// Check access
+		$groups = implode(',', $user->getAuthorisedViewLevels());
+		$query->where($db->quoteName('access').' IN (' . $groups . ')');
+
+		// Check Publishdown
+		if ((!$user->authorise('core.edit.state', 'com_digicom')) && (!$user->authorise('core.edit', 'com_digicom')))
+		{
+			// Filter by start and end dates.
+			$nullDate = $db->quote($db->getNullDate());
+			$date = JFactory::getDate();
+
+			$nowDate = $db->quote($date->toSql());
+
+			$query->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')')
+				->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
+			
+
+			// Check status
+			$query->where('(a.published = ' . (int) $published . ')');
+		}
+
+
+		$db->setQuery( $query );
+		return $db->loadObject();
 	}
 
 	function getCartItems($customer, $configs)
