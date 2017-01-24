@@ -84,6 +84,7 @@ class DigiComModelCart extends JModelItem
 			return (-1);
 		}
 
+		// TODO: fix access checking
 		$product  	= $this->getProduct($pid);
 		if(!$product)
 		{
@@ -91,7 +92,7 @@ class DigiComModelCart extends JModelItem
 		}
 
 		$productname 	= $product->name;
-		$access 		= $product->access;
+		// $access 		= $product->access;
 
 		// now we have passed basic check, move on ...
 		$query = $db->getQuery(true);
@@ -182,13 +183,13 @@ class DigiComModelCart extends JModelItem
 		$user			= JFactory::getUser();
 
 		$query = $db->getQuery(true);
-		$query->select(array('name', 'access'))
+		$query->select('name')
 			  ->from($db->quoteName('#__digicom_products'))
-			  ->where($db->quoteName('id') . " = " . $pid);
+			  ->where($db->quoteName('id') . " = " . $id);
 
 		// Check access
-		$groups = implode(',', $user->getAuthorisedViewLevels());
-		$query->where($db->quoteName('access').' IN (' . $groups . ')');
+		// $groups = implode(',', $user->getAuthorisedViewLevels());
+		// $query->where($db->quoteName('access').' IN (' . $groups . ')');
 
 		// Check Publishdown
 		if ((!$user->authorise('core.edit.state', 'com_digicom')) && (!$user->authorise('core.edit', 'com_digicom')))
@@ -199,15 +200,15 @@ class DigiComModelCart extends JModelItem
 
 			$nowDate = $db->quote($date->toSql());
 
-			$query->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')')
-				->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
+			$query->where('(publish_up = ' . $nullDate . ' OR publish_up <= ' . $nowDate . ')')
+				->where('(publish_down = ' . $nullDate . ' OR publish_down >= ' . $nowDate . ')');
 			
 
 			// Check status
-			$query->where('(a.published = ' . (int) $published . ')');
+			$query->where('(published = 1)');
 		}
 
-
+		// print_r($query->__toString());die;
 		$db->setQuery( $query );
 		return $db->loadObject();
 	}
