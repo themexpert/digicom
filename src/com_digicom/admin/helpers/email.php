@@ -184,8 +184,14 @@ class DigiComHelperEmail {
         $message = str_replace( "[PRODUCTS]", $product_list, $message );
         
         $message = str_replace( "{site_title}", $sitename, $message );
+        $message = str_replace( "[site_title]", $sitename, $message );
+        $message = str_replace( "[SITE_TITLE]", $sitename, $message );
         $message = str_replace( "{order_number}", $orderid, $message );
+        $message = str_replace( "[order_number]", $orderid, $message );
+        $message = str_replace( "[ORDER_NUMBER]", $orderid, $message );
         $message = str_replace( "{order_date}", date( $configs->get('time_format','d-m-Y'), $timestamp ), $message );
+        $message = str_replace( "[order_date]", date( $configs->get('time_format','d-m-Y'), $timestamp ), $message );
+        $message = str_replace( "[ORDER_DATE]", date( $configs->get('time_format','d-m-Y'), $timestamp ), $message );
         $message = str_replace( "[BASE_COLOR]", $basecolor, $message );
         $message = str_replace( "[BASE_BG_COLOR]", $basebgcolor, $message );
         $message = str_replace( "[TMPL_COLOR]", $tmplcolor, $message );
@@ -209,11 +215,17 @@ class DigiComHelperEmail {
         $subject = str_replace( "[ORDER_STATUS]", $status, $subject );
 
         $subject = str_replace( "{site_title}", $sitename, $subject );
+        $subject = str_replace( "[site_title]", $sitename, $subject );
+        $subject = str_replace( "[SITE_TITLE]", $sitename, $subject );
         $subject = str_replace( "{order_number}", $orderid, $subject );
+        $subject = str_replace( "[order_number]", $orderid, $subject );
+        $subject = str_replace( "[ORDER_NUMBER]", $orderid, $subject );
         $subject = str_replace( "{order_date}", date( $configs->get('time_format','d-m-Y'), $timestamp ), $subject );
+        $subject = str_replace( "[order_date]", date( $configs->get('time_format','d-m-Y'), $timestamp ), $subject );
+        $subject = str_replace( "[ORDER_DATE]", date( $configs->get('time_format','d-m-Y'), $timestamp ), $subject );
 
         $subject = str_replace( "[PRODUCTS]", $product_list, $subject );
-
+        
         //replace styles
         $basecolor = $email_settings->email_base_color; //
         $basebgcolor = $email_settings->email_bg_color; //
