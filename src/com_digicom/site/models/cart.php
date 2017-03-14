@@ -257,19 +257,21 @@ class DigiComModelCart extends JModelItem
 			$item->currency = $configs->get('currency','USD');
 			
 			// price : main price for product
-			$item->price = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); 
+			// $item->price = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); 
 			
 			// subtotal: total amount to be paid for all quantity but without discount
 			$item->subtotal = $item->price * $item->quantity; 
 			
 			// subtotal_formated: Price of single product with discount
 			$subtotal_formated = ($item->price - $item->discount);
-			$item->subtotal_formated = DigiComSiteHelperPrice::format_price( $subtotal_formated, $item->currency, false, $configs ); 
+			// $item->subtotal_formated = DigiComSiteHelperPrice::format_price( $subtotal_formated, $item->currency, false, $configs ); 
+			$item->subtotal_formated = $subtotal_formated; 
 			
 			// price_formated: final price for the item with all quantity with all discount
 			$total_discount = ($item->discount * $item->quantity);
 			$price_formated = ($item->subtotal * ($total_discount ? $total_discount : 1)); 
-			$item->price_formated = DigiComSiteHelperPrice::format_price( $price_formated, $item->currency, false, $configs ); 
+			// $item->price_formated = DigiComSiteHelperPrice::format_price( $price_formated, $item->currency, false, $configs ); 
+			$item->price_formated = $price_formated; 
 
 		}
 		
