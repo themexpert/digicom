@@ -64,14 +64,16 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 					<div class="well clearfix" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
 						<div class="row">
 							<div class="col-md-12">
+								<?php if($configs->get('catalogue', 0)): ?>
 								<p class="dc-product-price text-center">
 									<meta itemprop="priceCurrency" content="<?php echo $configs->get('currency','USD');?>" />
 									<strong itemprop="price" content="<?php echo $this->item->price; ?>">
 										<?php echo $price; ?>
 									</strong>
 								</p>
+								<?php endif; ?>
 
-								<?php if($configs->get('enable_taxes','0') && $configs->get('display_tax_with_price','0')):?>
+								<?php if($configs->get('enable_taxes', 0) && $configs->get('display_tax_with_price','0')):?>
 									<div class="dc-product-tax text-info text-center">
 										<?php echo JLayoutHelper::render('tax.price', array('config' => $configs, 'item' => $this->item)); ?>
 									</div>
