@@ -41,7 +41,7 @@ class plgContentDigiCom extends JPlugin{
 
 		if (!in_array($context, $allowed_contexts))
 		{
-			return true;
+			// return true;
 		}
 
 		// Simple performance check to determine whether bot should process further
@@ -55,19 +55,19 @@ class plgContentDigiCom extends JPlugin{
 
 		// Expression to search for(digicom id)
 		$regex = '/{digicom\s*.*?}/i';
-		// find all instances of mambot and put in $matches
+		// find all instances of content and put in $matches
 		preg_match_all($regex, $article->text, $matches_v);// $value->introtext
-		//if we have mambot on txt replace them
+		//if we have content on txt replace them
 		if(!empty($matches_v)){
 			$configs = $this->getConfigs();
 
-			foreach($matches_v[0] as $row_v => $mambots_v){
+			foreach($matches_v[0] as $row_v => $item){
 
-				$mambots_v = str_replace("{", "", $mambots_v);
-				$mambots_v = str_replace("}", "", $mambots_v);
-				$search = explode(" ", $mambots_v);
+				$item = str_replace("{", "", $item);
+				$item = str_replace("}", "", $item);
+				$search = explode(" ", $item);
 
-				//an array with parameter of mambot
+				//an array with parameter of content
 				//Array ( [0] => DigiCom [1] => id=1 [2] => align=right [3] => quantity=yes )
 				foreach($search as $s_row => $s_value){
 					$final = explode("=",$s_value);
@@ -76,73 +76,32 @@ class plgContentDigiCom extends JPlugin{
 					}
 				}
 
-				if(!isset($replace['cid'])){
-					//perform replace
-					if(isset($replace['id'])){
-						//select product from digicom_product with id = $replace['id']
-						$productid = $replace['id'];
-						$query = 'SELECT * FROM #__digicom_products WHERE id = "'.$productid.'" and hide_public="0"';
-						$db->setQuery($query);
-						$product = $db->loadAssoc();
-					}
-
-					$html = '';
-
-					if(!empty($product)){
-						$onsubmit = "";
-
-						$produsid = $replace['id'];
-						$categorieid = $product['catid'];
-						$link = JURI::root().'index.php';
-
-						$html = '<form id="prform" name="prform" method="post" action="'.$link.'"'.$onsubmit.'>';
-						if(isset($replace['align'])){
-							$align = " align='".$replace['align']."' ";
-						} else {
-							$align = "";
-						}
-
-						if(isset($replace['quantity']) && $replace['quantity'] == 'yes'){
-							$html .= JText::_('Amount')."&nbsp;<select name=\"qty\">";
-							for($jj = 1; $jj < 26; $jj++ ){
-								$html .=  "<option value=\"".$jj."\">".$jj."</option>";
-							}
-							$html .= "</select>";
-						}
-						else{
-							$html .= "<input name=\"qty\" type=\"hidden\" value=\"1\">";
-						}
-
-						if(isset($replace['close'])){
-							$html .= "<input name=\"close\" type=\"hidden\" id=\"close\" value=\"".$replace['close']."\">";
-						}
-
-						$plan_id 	= isset($replace['plan_id']) ? $replace['plan_id'] : '';
-						$show_price = isset($replace['show_price']) ? $replace['show_price']:1;
-
-						if ($show_price) { // display price
-							$html .= "<h3>".DigiComSiteHelperPrice::format_price($product['price'],$configs->get('currency','USD'), true, $configs)."</h3>";
-						}
-						$html .= "
-							<input name=\"pid\" type=\"hidden\" id=\"product_id\" value=\"".$replace['id']."\">
-							<input name=\"cid\" type=\"hidden\" value=\"".$categorieid."\">
-
-							<input type=\"submit\" name=\"Button\" class=\"btn btn-foo btn-lg\" value=\"".JText::_('PLG_CONTENT_DIGICOM_ADD_TO_CART_BTN_LBL')."\">
-
-							<input type=\"hidden\" name=\"view\" value=\"cart\"/>
-							<input type=\"hidden\" name=\"task\" value=\"cart.add\"/>
-							<input type=\"hidden\" name=\"option\" value=\"com_digicom\"/>
-							<input type=\"hidden\" name=\"from_add_plugin\" value=\"1\"/>
-						";
-
-						$html .= "</form>";
-					}
-				} else {
-					$html = $this->getProductsForm( $replace['cid'], $replace );
+				//perform replace
+				if(isset($replace['id'])){
+					//select product from digicom_product with id = $replace['id']
+					$productid = $replace['id'];
+					$query = 'SELECT * FROM #__digicom_products WHERE id = "'.$productid.'" and hide_public="0"';
+					$db->setQuery($query);
+					$product = $db->loadAssoc();
 				}
+
+				$html = '';
+
+				if(!empty($product))
+				{	
+					$info = array(
+						'params' 	=> $this->params,
+						'product' 	=> $product,
+						'configs' 	=> $configs
+					);
+
+					$html = $this->buildLayout($info);
+				}
+				// $html = $this->getProductsForm( $replace['cid'], $replace );
+	
 				// We should replace only first occurrence in order to allow positions with the same name to regenerate their content:
-				$mambotsfull = '{'. $mambots_v . '}';
-				$article->text = preg_replace("|$mambotsfull|", $html, $article->text, 1);
+				$text = '{'. $item . '}';
+				$article->text = preg_replace("|$text|", $html, $article->text, 1);
 
 			}//end foreach
 		}
@@ -325,6 +284,55 @@ class plgContentDigiCom extends JPlugin{
 		}
 	}
 
+	/*
+	* method buildLayoutPath
+	* @layout = ask for tmpl file name, default is default, but can be used others name
+	* return propur file to take htmls
+	*/
+	function buildLayoutPath($layout)
+	{
+		if(empty($layout)) $layout = "default";
+
+		$app = JFactory::getApplication();
+
+		// core path
+		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/' . $layout . '.php';
+
+		// override path from site active template
+		$override	= JPATH_BASE .'/templates/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout . '.php';
+
+		if(JFile::exists($override))
+		{
+			$file = $override;
+		}
+		else
+		{
+	  		$file =  $core_file;
+		}
+
+		return $file;
+
+	}
+
+	/*
+	* method buildLayout
+	* @vars = object with product, order, user info
+	* @layout = tmpl name
+	* Builds the layout to be shown, along with hidden fields.
+	* @return html
+	*/
+
+	function buildLayout($vars, $layout = 'default' )
+	{
+
+		//Load the layout & push variables
+		ob_start();
+		$layout = $this->buildLayoutPath($layout);
+		include($layout);
+		$html = ob_get_contents();
+		ob_end_clean();
+		return $html;
+	}
 
 	public function getConfigs(){
 		if( !$this->configs ) {
@@ -334,75 +342,5 @@ class plgContentDigiCom extends JPlugin{
 		return $this->configs;
 	}
 
-	public function getProductsForm( $catid, $replace ) {
-		$db 		= JFactory::getDbo();
-		$configs 	= $this->getConfigs();
-
-		$sql = 'SELECT
-					`p`.*
-				FROM
-					`#__digicom_products` AS `p`
-				WHERE
-					p.access = 1 and p.published = 1 AND
-					`p`.`catid`='.$catid.'
-				ORDER BY `p`.`name`';
-		//echo $sql;die;
-		$db->setQuery( $sql );
-		$items = $db->loadObjectList();
-		$productfields = array();
-		if(!count($items)) return false;
-
-		$html = '<ul class="list-unstyled unstyled">';
-		foreach($items as $item){
-			$html .= '<li class="col-md-4 span4">';
-
-			$productid = $item->id;
-			$onsubmit = "";
-
-			$html .= '
-				<div class="thumbnail">
-					<div class="caption">
-						<h3>'.JHTML::_('string.truncate', ($item->name), 18).'</h3>
-						<p data-toggle="tooltip" title="'.htmlentities($item->description).'">
-							'.JHTML::_('string.truncate', ($item->description), 28).'
-						</p>
-			';
-
-			$link = JUri::root()."index.php";
-			$html .= "<form id=\"prform".$item->id."\" name=\"prform\" method=\"post\" action=\"$link\"".$onsubmit.">";
-			if(isset($replace['align'])){
-				$align = " align='".$replace['align']."' ";
-			} else {
-				$align = "";
-			}
-
-			$html .= "<input name=\"qty\" type=\"hidden\" value=\"1\">";
-
-			$html .= "
-				<input name=\"pid\" type=\"hidden\" id=\"product_id\" value=\"".$item->id."\">
-				<input name=\"cid\" type=\"hidden\" value=\"".$catid."\">
-				<input type=\"hidden\" name=\"view\" value=\"cart\"/>
-				<input type=\"hidden\" name=\"task\" value=\"cart.add\"/>
-				<input type=\"hidden\" name=\"option\" value=\"com_digicom\"/>
-				<input type=\"hidden\" name=\"from_add_plugin\" value=\"1\"/>
-			";
-
-			$html .= '
-					<button type="submit" role="button" name="Button" class="btn btn-default btn-block">
-			';
-			if ( $item->price ) {
-				$html .= DigiComSiteHelperPrice::format_price($item->price,$configs->get('currency'), true, $configs).' | ';
-			}
-			$html .= '
-						'.JText::_("PLG_CONTENT_DIGICOM_ADD_TO_CART_BTN_LBL").'</button>
-					</div>
-				</div>
-			';
-			$html .= "</form>";
-			$html .='</li>';
-		}
-
-		$html .='</ul>';
-		return $html;
-	}
+	
 }

@@ -14,6 +14,7 @@
 
 	<files>
 		<filename plugin="digicom">digicom.php</filename>
+		<folder>digicom</folder>
 	</files>
 
 	<languages folder="language">
@@ -26,10 +27,10 @@
 
 			<fieldset name="basic">
 
-				<field name="orient" type="radio" default="0" description="Plugin output layout." label="Orientation">
+				<!-- <field name="orient" type="radio" default="0" description="Plugin output layout." label="Orientation">
 					<option value="0">Horizontal</option>
 					<option value="1">Vertical</option>
-				</field>
+				</field> -->
 
 			</fieldset>
 
