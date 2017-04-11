@@ -62,7 +62,7 @@ class PlgButtonDigiCom extends JPlugin
 		$button->class = 'btn';
 		$button->link = $link;
 		$button->text = JText::_('PLG_EDITORS-XTD_DIGICOM_DIGICOM_TITLE');
-		$button->name = 'product';
+		$button->name = 'copy';
 		$button->options = "{handler: 'iframe', size: {x: 800, y: 500}}";
 
 		return $button;
