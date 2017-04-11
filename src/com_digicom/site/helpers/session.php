@@ -195,9 +195,11 @@ class DigiComSiteHelperSession
 			$table->load(array('email'=>$this->_user->email));
 
 			// update customer info if re-registered as customer
-			if($table->id != $this->_user->id)
+			if($table->id != $this->_user->id && )
 			{
-				$query = "UPDATE `#__digicom_customers` SET `id`=".$this->_user->id." WHERE `email`='" . $this->_user->email."'";
+				// there id didnt change, email has changed
+				// $query = "UPDATE `#__digicom_customers` SET `id`=".$this->_user->id." WHERE `email`='" . $this->_user->email."'";
+				$query = "UPDATE `#__digicom_customers` SET `email`=".$this->_user->email." WHERE `id`='" . $this->_user->id."'";
 				$db->setQuery( $query );
 				$db->execute();
 
@@ -206,8 +208,6 @@ class DigiComSiteHelperSession
 				$table = JTable::getInstance('Customer','Table');
 				$table->load(array('email'=>$this->_user->email));
 			}
-
-
 
 			if($my->id && (empty($table->name) or empty($table->email))){
 				$table->name = $my->name;
