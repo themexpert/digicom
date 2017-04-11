@@ -494,12 +494,17 @@ class DigiComModelCart extends JModelItem
 		$payprocess['value'] = ($total * $tax_amount)/100;
 
 		if(!isset($payprocess['value'])) $payprocess['value'] = 0;
-		$sum_tax = $total + $payprocess['value'];
 
 		$payprocess['promo_error'] = (!$user->id && isset($promo->orders) && count($promo->orders) ? JText::_("DIGI_PROMO_LOGIN") : '');
 		//$payprocess['total'] = $total;
 
-		$payprocess['taxed'] = $payprocess['shipping'] + $sum_tax;
+		$price_with_tax = $configs->get('price_with_tax', 0);
+		if($price_with_tax){
+			$payprocess['taxed'] = $total + $payprocess['shipping'];
+		}else{
+			$payprocess['taxed'] = $total + $payprocess['value'] + $payprocess['shipping'];
+		}
+
 		$payprocess['discount_calculated'] = (isset($payprocess['discount_calculated']) ? $payprocess['discount_calculated'] : 0);
 		//$payprocess['taxed'] = DigiComSiteHelperPrice::format_price( $payprocess['taxed'], $payprocess['currency'], false, $configs ); //sprintf($price_format, $payprocess['taxed']);//." ".$payprocess['currency'];
 		$payprocess['type'] = 'TAX';
