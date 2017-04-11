@@ -74,30 +74,32 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 					
 					<?php if(!$configs->get('catalogue', 0) && $this->item->params->get('show_price', 1)): ?>
 					<div class="well clearfix" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-						<div class="row">
-							<div class="col-md-12">
-									
-								<p class="dc-product-price text-center">
-									<meta itemprop="priceCurrency" content="<?php echo $configs->get('currency','USD');?>" />
-									<strong itemprop="price" content="<?php echo $this->item->price; ?>">
-										<?php echo $price; ?>
-									</strong>
-								</p>								
-
-								<?php if($configs->get('enable_taxes', 0) && $configs->get('display_tax_with_price','0')):?>
-									<div class="dc-product-tax text-info text-center">
-										<?php echo JLayoutHelper::render('tax.price', array('config' => $configs, 'item' => $this->item)); ?>
-									</div>
-								<?php endif; ?>
-
-								<?php if ($this->configs->get('show_validity',1) == 1) : ?>
+						<div class="container-fluid">
+							<div class="row">
 								<div class="col-md-12">
-									<div class="dc-product-validity text-muted text-center">
-										<?php echo JText::_('COM_DIGICOM_PRODUCT_VALIDITY'); ?> : <?php echo DigiComSiteHelperPrice::getProductValidityPeriod($this->item); ?>
-									</div>
-								</div>
-								<?php endif; ?>
+										
+									<p class="dc-product-price text-center">
+										<meta itemprop="priceCurrency" content="<?php echo $configs->get('currency','USD');?>" />
+										<strong itemprop="price" content="<?php echo $this->item->price; ?>">
+											<?php echo $price; ?>
+										</strong>
+									</p>								
 
+									<?php if($configs->get('enable_taxes', 0) && $configs->get('display_tax_with_price','0')):?>
+										<div class="dc-product-tax text-info text-center">
+											<?php echo JLayoutHelper::render('tax.price', array('config' => $configs, 'item' => $this->item)); ?>
+										</div>
+									<?php endif; ?>
+
+									<?php if ($this->configs->get('show_validity',1) == 1) : ?>
+									<div class="col-md-12">
+										<div class="dc-product-validity text-muted text-center">
+											<?php echo JText::_('COM_DIGICOM_PRODUCT_VALIDITY'); ?> : <?php echo DigiComSiteHelperPrice::getProductValidityPeriod($this->item); ?>
+										</div>
+									</div>
+									<?php endif; ?>
+
+								</div>
 							</div>
 						</div>
 					</div>
