@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 ?>
+<?php if(!empty($this->item->bundle_source) && $this->item->params->get('show_bundles', 1)): ?>
 <div class="dc-bundle-products">
 
 	<h3><?php echo JText::_('COM_DIGICOM_PRODUCT_BUNDLE_ITEMS_TITLE');?></h3>
@@ -26,3 +27,4 @@ defined('_JEXEC') or die;
 	</ul>
 
 </div>
+<?php endif; ?>
