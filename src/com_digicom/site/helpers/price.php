@@ -55,7 +55,7 @@ class DigiComSiteHelperPrice {
 
 		if(!$tax_enable)
 		{
-			return '';
+			return 0;
 		}
 		elseif ($rateonly)
 		{
