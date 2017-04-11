@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 ?>
-<?php if ($this->configs->get('catalogue',0) == '0' and !$this->item->hide_public) : ?>
+<?php if (!$this->configs->get('catalogue', 0) and !$this->item->hide_public) : ?>
 	<div class="dc-addtocart-bar">
 		<form name="prod" class="form" id="product-form" action="<?php echo JRoute::_('index.php?option=com_digicom&view=cart');?>" method="post" style="width:100%;">
 			<div class="form-group<?php echo ($configs->get('show_quantity',0) == 1 ? " with-qnty " : ' '); ?>no-padding no-margin">
