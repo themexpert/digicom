@@ -41,7 +41,7 @@ class plgContentDigiCom extends JPlugin{
 
 		if (!in_array($context, $allowed_contexts))
 		{
-			// return true;
+			return true;
 		}
 
 		// Simple performance check to determine whether bot should process further
