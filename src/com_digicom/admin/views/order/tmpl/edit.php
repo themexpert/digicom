@@ -256,6 +256,16 @@ $input->set('layout', 'dgform');
 	<input type="hidden" name="jform[id]" value="<?php echo $order->id; ?>" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>
+<script type="text/javascript">
+	jQuery( "input[name='jform[status]']" ).on( "click", function(){
+		var checked = jQuery("input[name='jform[status]']:checked").val();
+		if(checked == 'Paid'){
+			jQuery('input#jform_amount_paid').attr('disabled', true).addClass('disabled');
+		}else{
+			jQuery('input#jform_amount_paid').removeAttr('disabled').removeClass('disabled');
+		}
+	} );
+</script>
 </div>
 <?php
 	echo JHtml::_(
