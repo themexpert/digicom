@@ -54,6 +54,11 @@ if($this->innertab == 'sales_by_product'){
 <div class="well well-small">
   
       <ul class="nav nav-pills">
+        <li<?php echo ($this->range == 'last_year' ? ' class="active"' : '');?>>
+          <a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report='.$this->innertab.'&range=last_year');?>" class="current">
+            <?php echo JText::_('Last Year');?>
+          </a>
+        </li>
         <li<?php echo ($this->range == 'year' ? ' class="active"' : '');?>>
           <a href="<?php echo JRoute::_('index.php?option=com_digicom&view=reports&tab=sales&report='.$this->innertab.'&range=year');?>" class="current">
             <?php echo JText::_('Year');?>

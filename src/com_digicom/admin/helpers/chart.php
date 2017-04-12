@@ -188,7 +188,6 @@ class DigiComHelperChart {
 		$startdate = date($month."-1 00:00:00");
 		$start_date_int = strtotime($startdate);
 		$enddate = date('Y-m-d 23:59:59', strtotime($startdate . ' + 1 month'));
-		//echo $enddate;die;
 		$end_date_int = strtotime($enddate);
 
 		// set make active query
@@ -228,6 +227,15 @@ class DigiComHelperChart {
 					$days = $days . $prefix . '"' . DigiComHelperChart::addOrdinalNumberSuffix($date->format('d')) . ' '.$date->format('M').'"';
 					$prefix = ', ';
 				}
+
+				break;
+			case "last_year":
+				//all months of last year
+				for ($m=1; $m<=12; $m++) {
+				    $month = date('F', mktime(0,0,0,$m, 1, date('Y')));
+				    $days = $days . $prefix . '"' . $month .'"';
+					$prefix = ', ';
+			    }
 
 				break;
 			case "year":
@@ -317,6 +325,17 @@ class DigiComHelperChart {
 			    }
 
 				break;
+			case "last_year":
+				//all months of last year
+				$lastyear = date("Y", strtotime("-1 year"));
+				for ($m=1; $m<=12; $m++) {
+				    $month = date($lastyear.'-m', mktime(0,0,0,$m, 1, date('Y')));
+					$dayPrice = ceil(DigiComHelperChart::getAmountByMonth($month,$byproduct));
+					$price = $price . $prefix . $dayPrice;
+					$prefix = ', ';
+			    }
+
+				break;
 			case "last_month":
 				$lastday = new DateTime('last day of last month');
 				$lastdate = $lastday->format('j');
@@ -394,6 +413,12 @@ class DigiComHelperChart {
 			case "year":
 				$startdate 	= date("Y-1-1 00:00:00");
 				$enddate 		= date("Y-m-d 23:59:59");
+
+				break;
+			case "last_year":
+				$lastyear = date("Y", strtotime("-1 year"));
+				$startdate 	= date($lastyear."-1-1 00:00:00");
+				$enddate 		= date($lastyear."-m-d 23:59:59");
 
 				break;
 			case "last_month":
