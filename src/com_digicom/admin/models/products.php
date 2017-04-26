@@ -376,7 +376,8 @@ class DigiComModelProducts extends JModelList
 		{
 			foreach($items as $key=>$item)
 			{
-					// Convert the images field to an array.
+				// Convert the images field to an array.
+				try {
 					$registry = new Registry;
 					$registry->loadString($item->images);
 					$item->images = $registry->toArray();
@@ -386,6 +387,10 @@ class DigiComModelProducts extends JModelList
 					}else{
 						$item->image_intro	=	$item->images;
 					}
+					
+				} catch (Exception $e) {
+					$item->images = ['image_intro'=> '', 'image_full'=> ''];
+				}
 			}
 		}
 
