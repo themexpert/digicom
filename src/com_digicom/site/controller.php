@@ -88,18 +88,33 @@ class DigiComController extends JControllerLegacy
 	*/
 	function cron()
 	{
+		$dispatcher = JDispatcher::getInstance();
 		try
 		{
-		  $db 	= JFactory::getDbo();
+		  	$db 	= JFactory::getDbo();
 			$query 	= $db->getQuery(true);
-			$query->update($db->quoteName('#__digicom_licenses'));
-			$query->set($db->quoteName('active') . ' = ' . $db->quote('0'));
+			$query->select('*');
+			$query->from($db->quoteName('#__digicom_licenses'));
+			$query->where($db->quoteName('active') . ' = ' . $db->quote('1'));
 			$query->where('DATEDIFF('.$db->quoteName('expires').', now()) <= ' .$db->quote('-1'));
-			//echo $query->__tostring();die;
 			$db->setQuery($query);
-			$db->execute();
+			$expiredList = $db->loadAssocList();
 
-			$dispatcher = JDispatcher::getInstance();
+			if(count($expiredList)){
+				$licenseids = array_column($expiredList, 'id');
+				$query 	= $db->getQuery(true);
+				$query->update($db->quoteName('#__digicom_licenses'));
+				$query->set($db->quoteName('active') . ' = ' . $db->quote('0'));
+				$query->where($db->quoteName('id') . ' in (' . implode(',', $licenseids) . ')');
+
+				$db->setQuery($query);
+				$db->execute();
+				
+				// $query->where('DATEDIFF('.$db->quoteName('expires').', now()) <= ' .$db->quote('-1'));
+				// echo $query->__tostring();die;
+				$dispatcher->trigger('onDigicomOnCronLicenseExpire',array($expiredList));
+			}
+
 			$dispatcher->trigger('onDigicomOnCronJobOperation',array());
 
 			echo JText::_('COM_DIGICOM_LICENSE_CHECK_SUCCESSFUL');
