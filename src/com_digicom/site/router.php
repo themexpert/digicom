@@ -34,6 +34,7 @@ class DigiComRouter extends JComponentRouterBase
 	 */
 	public function build(&$query)
 	{
+		$menu = JMenu::getInstance('site');
 		// print_r($query);die;
 		$segments = array();
 		//as query view is required to perform operation, so if we dont have them then return;
@@ -53,26 +54,27 @@ class DigiComRouter extends JComponentRouterBase
 		$advanced = $params->get('sef_advanced_link', 1);
 
 		// We need a menu item.  Either the one specified in the query, or the current active one if none specified
+		
 		if (empty($query['Itemid']))
 		{
 			// there are no menu Itemid found, lets dive into menu finder
-			$menu = JMenu::getInstance('site');
 			$menuItem = $menu->getItems('link', 'index.php?option=com_digicom&view='.$view, true);
 			//print_r($menuItem);die;
 			if(count($menuItem)){
 				$query['Itemid'] = $menuItem->id;
 				$menuItemGiven = true;
 			}else{
-				$menuItem = $this->menu->getActive();
+				$menuItem = $menu->getActive();
 				if(!$menuItem){
-					$menuItem = $this->menu->getDefault();
+					$menuItem = $menu->getDefault();
 				}
 				$menuItemGiven = false;
 			}
 		}
 		else
 		{
-			$menuItem = $this->menu->getItem($query['Itemid']);
+			// $menuItem = $menu->getItem($query['Itemid']);
+			$menuItem = $menu->getItem($query['Itemid']);
 			$menuItemGiven = true;
 		}
 
@@ -101,9 +103,9 @@ class DigiComRouter extends JComponentRouterBase
 				$query['Itemid'] = $menuItem->id;
 				$menuItemGiven = true;
 			}elseif(!(isset($query['id']) && ($query['view'] == 'product' or $query['view'] == 'category')) ){
-				$menuItem = $this->menu->getActive();
+				$menuItem = $menu->getActive();
 				if(!$menuItem){
-					$menuItem = $this->menu->getDefault();
+					$menuItem = $menu->getDefault();
 				}
 				$menuItemGiven = false;
 			}
@@ -149,9 +151,9 @@ class DigiComRouter extends JComponentRouterBase
 					$query['Itemid'] = $menuItem->id;
 					$menuItemGiven = true;
 				}else{
-					$menuItem = $this->menu->getActive();
+					$menuItem = $menu->getActive();
 					if(!$menuItem){
-						$menuItem = $this->menu->getDefault();
+						$menuItem = $menu->getDefault();
 					}
 					$menuItemGiven = false;
 				}
@@ -189,9 +191,9 @@ class DigiComRouter extends JComponentRouterBase
 					$query['Itemid'] = $menuItem->id;
 					$menuItemGiven = true;
 				}else{
-					$menuItem = $this->menu->getActive();
+					$menuItem = $menu->getActive();
 					if(!$menuItem){
-						$menuItem = $this->menu->getDefault();
+						$menuItem = $menu->getDefault();
 					}
 					$menuItemGiven = false;
 				}
@@ -310,9 +312,9 @@ class DigiComRouter extends JComponentRouterBase
 
 				if(!$menuItemGiven)
 				{
-					$menuItem = $this->menu->getActive();
+					$menuItem = $menu->getActive();
 					if(!$menuItem){
-						$menuItem = $this->menu->getDefault();
+						$menuItem = $menu->getDefault();
 					}
 					$query['Itemid'] = $menuItem->id;
 					$menuItemGiven = true;
@@ -455,6 +457,7 @@ class DigiComRouter extends JComponentRouterBase
 	 */
 	public function parse(&$segments)
 	{
+		$menu = JMenu::getInstance('site');
 		$total = count($segments);
 		$vars = array();
 
@@ -464,9 +467,9 @@ class DigiComRouter extends JComponentRouterBase
 		}
 
 		// Get the active menu item.
-		$item = $this->menu->getActive();
+		$item = $menu->getActive();
 		if(!$item){
-			$item = $this->menu->getDefault();
+			$item = $menu->getDefault();
 		}
 		$params = JComponentHelper::getParams('com_digicom');
 		$advanced = $params->get('sef_advanced_link', 1);
