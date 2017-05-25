@@ -319,6 +319,9 @@ class DigiComSiteHelperEmail {
 
 
 			$recipients =  $adminEmail2 . (!empty($recipients) ? ', '.$recipients : '');
+			$recipients = str_replace(", ", ",", $recipients);
+			$recipients = explode(",", $recipients);
+			
 			$mailSender = JFactory::getMailer();
 			$mailSender->isHTML( true );
 			$mailSender->Encoding = 'base64';
