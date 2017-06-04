@@ -48,8 +48,8 @@ header.header {display: none;}
       color: #fff;
       text-shadow: none;
       border: 0; border-radius: 0;
-      padding: 0 15px;
-      line-height: 40px;
+      padding: 0 15px !important;
+      line-height: 40px !important;
 
       &:hover,
       &:focus{
@@ -75,7 +75,10 @@ header.header {display: none;}
       
     }
     [class^="icon-"], [class*=" icon-"]{
-      vertical-align: middle; margin-right: 0;
+      vertical-align: middle; 
+      margin-right: 0;
+      background: none !important;
+      border: none !important;
     }
     .btn-mini .caret,
     .btn-small .caret {margin-top: 19px;}

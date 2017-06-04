@@ -360,8 +360,8 @@ body.com_digicom .subhead .btn-toolbar .btn {
   text-shadow: none;
   border: 0;
   border-radius: 0;
-  padding: 0 15px;
-  line-height: 40px;
+  padding: 0 15px !important;
+  line-height: 40px !important;
 }
 body.com_digicom .subhead .btn-toolbar .btn:hover,
 body.com_digicom .subhead .btn-toolbar .btn:focus {
@@ -388,6 +388,8 @@ body.com_digicom .subhead .btn-toolbar [class^="icon-"],
 body.com_digicom .subhead .btn-toolbar [class*=" icon-"] {
   vertical-align: middle;
   margin-right: 0;
+  background: none !important;
+  border: none !important;
 }
 body.com_digicom .subhead .btn-toolbar .btn-mini .caret,
 body.com_digicom .subhead .btn-toolbar .btn-small .caret {
