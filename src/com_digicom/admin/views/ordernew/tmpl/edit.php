@@ -139,139 +139,142 @@ JHTML::_('behavior.tooltip');
 		}
 	}
 </script>
-<?php if (!empty( $this->sidebar)) : ?>
-<div id="j-sidebar-container" class="">
-	<?php echo $this->sidebar; ?>
-</div>
-<div id="j-main-container" class="">
-<?php else : ?>
-<div id="j-main-container" class="">
-<?php endif;?>
+<div id="digicom" class="dc digicom">
+<form id="adminForm" action="index.php" method="post" name="adminForm" class="form-horizontal">
+	<?php if (!empty( $this->sidebar)) : ?>
+	<div id="j-sidebar-container" class="">
+		<?php echo $this->sidebar; ?>
+	</div>
+	<div id="j-main-container" class="">
+	<?php else : ?>
+	<div id="j-main-container" class="">
+	<?php endif;?>
 
-	<div id="returnJSON"></div>
-	<fieldset class="adminform">
-		<legend><?php echo JText::_( 'New Order' ); ?></legend>
+		<div id="returnJSON"></div>
+		<fieldset class="adminform">
+			<legend><?php echo JText::_( 'New Order' ); ?></legend>
 
-		<p class="alert alert-info"> <?php echo JText::_("COM_DIGICOM_ORDER_CREATE_NEW_ORDER_HEADER_NOTICE"); ?> </p>
+			<p class="alert alert-info"> <?php echo JText::_("COM_DIGICOM_ORDER_CREATE_NEW_ORDER_HEADER_NOTICE"); ?> </p>
 
-		<form id="adminForm" action="index.php" method="post" name="adminForm" class="form-horizontal">
-			<div class="order-details">
+			
+				<div class="order-details">
 
-				<h3><?php echo JText::_( 'COM_DIGICOM_ORDER_DETAILS_HEADER_TITLE' ); ?></h3>
+					<h3><?php echo JText::_( 'COM_DIGICOM_ORDER_DETAILS_HEADER_TITLE' ); ?></h3>
 
-				<?php echo $this->form->renderField('userid'); ?>
+					<?php echo $this->form->renderField('userid'); ?>
 
-			  	<?php echo $this->form->renderField('status'); ?>
+				  	<?php echo $this->form->renderField('status'); ?>
 
-			  	<?php echo $this->form->renderField('order_date'); ?>
+				  	<?php echo $this->form->renderField('order_date'); ?>
 
-			  	<?php echo $this->form->renderField('processor'); ?>
+				  	<?php echo $this->form->renderField('processor'); ?>
 
-			</div>
-
-			<div class="product-details">
-
-				<h3><?php echo JText::_( 'COM_DIGICOM_ORDER_CREATE_NEW_PRODUCT_DETAILS_TITLE' ); ?></h3>
-
-				<table id="productincludes" class="table table-striped table-hover" id="productList">
-					<thead>
-						<tr>
-							<td><?php echo JText::_('COM_DIGICOM_PRODUCT'); ?></td>
-							<td width="100px"><?php echo JText::_('COM_DIGICOM_PRICE'); ?></td>
-							<td width="1%"><?php echo JText::_('COM_DIGICOM_ACTION'); ?></td>
-						</tr>
-					</thead>
-					<tbody id="productincludes_items">
-
-					</tbody>
-				</table>
-
-				<div>
-					<a class="btn btn-success modal" title="Products" href="<?php echo $link; ?>"
-					rel="{handler: 'iframe', size: {x: 800, y: 500}}">
-						<i class="icon-file-add"></i>
-						<?php echo JText::_('COM_DIGICOM_ADD_PRODUCT'); ?>
-					</a>
 				</div>
 
-				<div class="promo-subtotal clearfix">
-					<div class="promos">
-					    <?php echo $this->form->renderField('promocode'); ?>
-			  	</div>
+				<div class="product-details">
 
-			  	<div class="subtotal">
-				   <div class="control-group">
-						<div class="control-label">
-							<label id="jform_discount-lbl" for="jform_discount" class="hasTooltip" title="<?php echo JText::_( 'COM_DIGICOM_ORDER_SUBTOTAL_TIP' ); ?>">
-								<?php echo JText::_( 'COM_DIGICOM_SUBTOTAL' ); ?>
-							</label>
-						</div>
-						<div class="controls">
-							<span id="amount">00.00 <?php echo $configs->get('currency','USD'); ?></span>
-						</div>
+					<h3><?php echo JText::_( 'COM_DIGICOM_ORDER_CREATE_NEW_PRODUCT_DETAILS_TITLE' ); ?></h3>
+
+					<table id="productincludes" class="table table-striped table-hover" id="productList">
+						<thead>
+							<tr>
+								<td><?php echo JText::_('COM_DIGICOM_PRODUCT'); ?></td>
+								<td width="100px"><?php echo JText::_('COM_DIGICOM_PRICE'); ?></td>
+								<td width="1%"><?php echo JText::_('COM_DIGICOM_ACTION'); ?></td>
+							</tr>
+						</thead>
+						<tbody id="productincludes_items">
+
+						</tbody>
+					</table>
+
+					<div>
+						<a class="btn btn-success modal" title="Products" href="<?php echo $link; ?>"
+						rel="{handler: 'iframe', size: {x: 800, y: 500}}">
+							<i class="icon-file-add"></i>
+							<?php echo JText::_('COM_DIGICOM_ADD_PRODUCT'); ?>
+						</a>
 					</div>
-			  	</div>
+
+					<div class="promo-subtotal clearfix">
+						<div class="promos">
+						    <?php echo $this->form->renderField('promocode'); ?>
+				  		</div>
+
+					  	<div class="subtotal">
+						   <div class="control-group">
+								<div class="control-label">
+									<label id="jform_discount-lbl" for="jform_discount" class="hasTooltip" title="<?php echo JText::_( 'COM_DIGICOM_ORDER_SUBTOTAL_TIP' ); ?>">
+										<?php echo JText::_( 'COM_DIGICOM_SUBTOTAL' ); ?>
+									</label>
+								</div>
+								<div class="controls">
+									<span id="amount">00.00 <?php echo $configs->get('currency','USD'); ?></span>
+								</div>
+							</div>
+					  	</div>
+					</div>
+
 				</div>
 
-			</div>
+				<div class="grand-total clearfix">
+				  	<div class="control-group">
+					    <label class="control-label" for="discount_sign"><?php echo JText::_( 'COM_DIGICOM_DISCOUNT' ); ?></label>
+					    <div class="controls">
+							<span id="discount_sign">00.00 <?php echo $configs->get('currency','USD'); ?></span>
+					    </div>
+				  	</div>
 
-			<div class="grand-total clearfix">
-			  	<div class="control-group">
-				    <label class="control-label" for="discount_sign"><?php echo JText::_( 'COM_DIGICOM_DISCOUNT' ); ?></label>
-				    <div class="controls">
-						<span id="discount_sign">00.00 <?php echo $configs->get('currency','USD'); ?></span>
-				    </div>
-			  	</div>
+				  	<div class="control-group">
+					    <label class="control-label" for="tax"><?php echo JText::_( 'COM_DIGICOM_TAX' ); ?></label>
+					    <div class="controls">
+					      	<span id="tax">00.00 <?php echo $configs->get('currency','USD'); ?></span>
+					    </div>
+				  	</div>
 
-			  	<div class="control-group">
-				    <label class="control-label" for="tax"><?php echo JText::_( 'COM_DIGICOM_TAX' ); ?></label>
-				    <div class="controls">
-				      	<span id="tax">00.00 <?php echo $configs->get('currency','USD'); ?></span>
-				    </div>
-			  	</div>
+				  	<div class="control-group">
+					   <label id="jform_discount-lbl" for="amount_value" class="hasTooltip control-label" title="<?php echo JText::_( 'COM_DIGICOM_ORDER_TOTAL_TIP' ); ?>">
+							<?php echo JText::_( 'COM_DIGICOM_TOTAL' ); ?>
+						</label>
+					    <div class="controls">
+							<span id="total" class="hide">00.00 <?php echo $configs->get('currency','USD'); ?></span>
+							<input id="amount_value" name="jform[amount]" type="text" value=""/>
+					    </div>
+				  	</div>
 
-			  	<div class="control-group">
-				   <label id="jform_discount-lbl" for="amount_value" class="hasTooltip control-label" title="<?php echo JText::_( 'COM_DIGICOM_ORDER_TOTAL_TIP' ); ?>">
-						<?php echo JText::_( 'COM_DIGICOM_TOTAL' ); ?>
-					</label>
-				    <div class="controls">
-						<span id="total" class="hide">00.00 <?php echo $configs->get('currency','USD'); ?></span>
-						<input id="amount_value" name="jform[amount]" type="text" value=""/>
-				    </div>
-			  	</div>
+				  	<div class="control-group">
+					    <label id="jform_discount-lbl" for="amount_paid" class="hasTooltip control-label" title="<?php echo JText::_( 'COM_DIGICOM_ORDER_AMOUNT_PAID_TIP' ); ?>">
+							<?php echo JText::_( 'COM_DIGICOM_AMOUNT_PAID' ); ?>
+						</label>
 
-			  	<div class="control-group">
-				    <label id="jform_discount-lbl" for="amount_paid" class="hasTooltip control-label" title="<?php echo JText::_( 'COM_DIGICOM_ORDER_AMOUNT_PAID_TIP' ); ?>">
-						<?php echo JText::_( 'COM_DIGICOM_AMOUNT_PAID' ); ?>
-					</label>
+					    <div class="controls">
+					      	<span id="currency_amount_paid" class="hide"></span>
+					      	<input id="amount_paid" name="jform[amount_paid]" type="text" value="0"/>
+					    </div>
+				  	</div>
 
-				    <div class="controls">
-				      	<span id="currency_amount_paid" class="hide"></span>
-				      	<input id="amount_paid" name="jform[amount_paid]" type="text" value="0"/>
-				    </div>
-			  	</div>
-
-			</div>
+				</div>
 
 
 
 
-	  		<div id="from_ajax_div" style="display:none;"></div>
+		  		<div id="from_ajax_div" style="display:none;"></div>
 
-				<input type="hidden" name="option" value="com_digicom"/>
-				<input type="hidden" name="view" value="ordernew"/>
-				<input type="hidden" name="jform[price]" id="price_value" value="0"/>
-				<input type="hidden" name="jform[tax]" id="tax_value" value="0"/>
-				<input type="hidden" name="jform[shipping]" value="0"/>
-				<input type="hidden" name="jform[discount]" id="discount" value="0"/>
-				<input type="hidden" name="jform[currency]" id="currency_value" value=""/>
-				<input type="hidden" name="task" value=""/>
-				<?php echo JHtml::_('form.token'); ?>
-		</form>
+					<input type="hidden" name="option" value="com_digicom"/>
+					<input type="hidden" name="view" value="ordernew"/>
+					<input type="hidden" name="jform[price]" id="price_value" value="0"/>
+					<input type="hidden" name="jform[tax]" id="tax_value" value="0"/>
+					<input type="hidden" name="jform[shipping]" value="0"/>
+					<input type="hidden" name="jform[discount]" id="discount" value="0"/>
+					<input type="hidden" name="jform[currency]" id="currency_value" value=""/>
+					<input type="hidden" name="task" value=""/>
+					<?php echo JHtml::_('form.token'); ?>
+			</form>
 
-	</fieldset>
+		</fieldset>
 
-<div>
+	<div>
+</form>
 	<?php
 		echo JHtml::_(
 			'bootstrap.renderModal',
@@ -286,4 +289,5 @@ JHTML::_('behavior.tooltip');
 	?>
 <div class="dg-footer">
 	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>
 </div>

@@ -73,6 +73,7 @@ Joomla.submitbutton = function(task)
 	}
 }
 </script>
+<div id="digicom" class="dc digicom">
 <form action="<?php echo JRoute::_('index.php?option=com_digicom&view=discount&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 
 	<?php if (!empty( $this->sidebar)) : ?>
@@ -216,4 +217,5 @@ Joomla.submitbutton = function(task)
 ?>
 <div class="dg-footer">
 	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>
 </div>

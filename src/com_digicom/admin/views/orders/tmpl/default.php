@@ -58,7 +58,8 @@ Joomla.submitbutton = function (pressbutton) {
 	Joomla.submitform(pressbutton);
 }
 </script>
-
+<div id="digicom" class="dc digicom">
+<form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&view=orders'); ?>" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
 <?php if (!empty( $this->sidebar)) : ?>
 <div id="j-sidebar-container" class="">
 	<?php echo $this->sidebar; ?>
@@ -72,9 +73,7 @@ Joomla.submitbutton = function (pressbutton) {
 		<span class="icon-support"></span><?php echo JText::_("COM_DIGICOM_ORDERS_HEADER_NOTICE"); ?>
 	</div>
 
-	<form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&view=orders'); ?>" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
-
-    <?php
+	<?php
 		// Search tools bar
 		echo JLayoutHelper::render('searchtools.orders', array('view' => $this));
 		?>
@@ -241,7 +240,7 @@ Joomla.submitbutton = function (pressbutton) {
 		<input type="hidden" name="view" value="orders" />
 		<?php echo JHtml::_('form.token'); ?>
 
-	</form>
+	
 </div>
 <?php
 	echo JHtml::_(
@@ -255,6 +254,8 @@ Joomla.submitbutton = function (pressbutton) {
 		)
 	);
 ?>
+</form>
 <div class="dg-footer">
 	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>
 </div>

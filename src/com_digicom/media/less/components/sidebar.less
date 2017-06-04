@@ -4,12 +4,13 @@
 #j-sidebar-container {
   background: @sidebar-background;
   margin-left: 0;
-  width: 200px;
+  width: 238px;
+  float: left;
   color: @sidebar-text-color;
   // position: fixed;
-  top: 68px;
-  bottom: 28px;
-  left: 0;
+  // top: 68px;
+  // bottom: 28px;
+  // left: 0;
   overflow: hidden;
   border: 0;
   -webkit-backface-visibility: hidden;
@@ -82,6 +83,7 @@
 &.layout-dgform {
   #j-sidebar-container{
     width: @sidebar-collapse-width;
+    position: static;
     #sidebar {
       .sidebar-nav{
         #submenu.nav-list {
@@ -103,7 +105,10 @@
 
   }
 
-  #j-main-container { margin-left: @sidebar-collapse-width; }
+  #j-main-container { 
+    margin-left: 0; 
+    // margin-left: @sidebar-collapse-width; 
+  }
   div#system-debug,
   div#system-message-container {margin-left: 53px;}
 

@@ -20,7 +20,7 @@ $input = $app->input;
 $input->set('layout', 'dgtabs');
 ?>
 <div id="digicom" class="dc digicom">
-<form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=about'); ?>" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
+<form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=about'); ?>" method="post" name="adminForm" id="adminForm" autocomplete="off" class="form-validate form-horizontal">
 	<?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="">
 		<?php echo $this->sidebar; ?>
@@ -54,4 +54,7 @@ $input->set('layout', 'dgtabs');
 
 	</div>
 </form>
+<div class="dg-footer">
+	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>
 </div>

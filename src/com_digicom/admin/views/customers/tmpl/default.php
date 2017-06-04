@@ -18,6 +18,9 @@ $k = 0;
 $n = count ($this->Items);
 
 ?>
+<div id="digicom" class="dc digicom">
+<form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&view=customers');?>" name="adminForm" method="post">
+
 <?php if (!empty( $this->sidebar)) : ?>
 <div id="j-sidebar-container" class="">
 	<?php echo $this->sidebar; ?>
@@ -26,8 +29,7 @@ $n = count ($this->Items);
 <?php else : ?>
 <div id="j-main-container" class="">
 <?php endif;?>
-	<form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&view=customers');?>" name="adminForm" method="post">
-
+	
 		<div class="dg-alert dg-alert-with-icon">
 			<span class="icon-support"></span>
 			<?php echo JText::_("COM_DIGICOM_CUSTOMERS_HEADER_NOTICE"); ?>
@@ -121,8 +123,8 @@ $n = count ($this->Items);
 		<input type="hidden" name="view" value="customers" />
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />
-	</form>
-</div>
+	</div>
+</form>
 <?php
 	echo JHtml::_(
 		'bootstrap.renderModal',
@@ -137,4 +139,5 @@ $n = count ($this->Items);
 ?>
 <div class="dg-footer">
 	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>
 </div>

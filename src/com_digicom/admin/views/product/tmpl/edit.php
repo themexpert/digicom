@@ -52,9 +52,9 @@ $input->set('layout', 'dgform');
 				}
 			}
 		}
-		if (task == 'product.cancel' || document.formvalidator.isValid(document.id('item-form')))
+		if (task == 'product.cancel' || document.formvalidator.isValid(document.id('adminForm')))
 		{
-			Joomla.submitform(task, document.getElementById('item-form'));
+			Joomla.submitform(task, document.getElementById('adminForm'));
 		}
 	}
 
@@ -75,8 +75,8 @@ window.onload = function() {
     });
 };
 </script>
-
-<form action="<?php echo JRoute::_('index.php?option=com_digicom&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+<div id="digicom" class="dc digicom">
+<form action="<?php echo JRoute::_('index.php?option=com_digicom&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 <?php if (!empty( $this->sidebar)) : ?>
 		<div id="j-sidebar-container" class="">
 			<?php echo $this->sidebar; ?>
@@ -182,4 +182,5 @@ window.onload = function() {
 ?>
 <div class="dg-footer">
 	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>
 </div>

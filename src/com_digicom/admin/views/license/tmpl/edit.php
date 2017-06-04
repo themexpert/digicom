@@ -18,7 +18,7 @@ $document = JFactory::getDocument();
 $input = $app->input;
 $input->set('layout', 'dgform');
 ?>
-
+<div id="digicom" class="dc digicom">
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <?php if (!empty( $this->sidebar)) : ?>
 		<div id="j-sidebar-container" class="">
@@ -67,4 +67,5 @@ $input->set('layout', 'dgform');
 ?>
 <div class="dg-footer">
 	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>
 </div>

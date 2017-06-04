@@ -22,6 +22,8 @@ if($canDo->get('core.create') && $canDo->get('core.delete'))
 }
 $tmpl = JFactory::getApplication()->input->get('tmpl','');
 ?>
+<div id="digicom" class="dc digicom">
+<form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&view=filemanager'); ?>" method="post" name="adminForm" autocomplete="off" class="form-horizontal">
 <?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="">
 		<?php echo $this->sidebar; ?>
@@ -72,7 +74,8 @@ $tmpl = JFactory::getApplication()->input->get('tmpl','');
 					</form>
 
 	</div>
-
-		<div class="dg-footer">
-			<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
-		</div>
+	</form>
+	<div class="dg-footer">
+		<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+	</div>
+</div>

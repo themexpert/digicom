@@ -17,6 +17,7 @@ $canDo 		= JHelperContent::getActions('com_digicom', 'component');
 $document 	= JFactory::getDocument();
 $configs 	= $this->params->params;
 ?>
+<div id="digicom" class="dc digicom">
 <form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&view=discounts'); ?>" method="post" name="adminForm" autocomplete="off" class="form-horizontal">
 	<?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="">
@@ -221,4 +222,5 @@ $configs 	= $this->params->params;
 ?>
 <div class="dg-footer">
 	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>
 </div>

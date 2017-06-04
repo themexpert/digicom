@@ -26,7 +26,8 @@ $app = JFactory::getApplication();
 $input = $app->input;
 $input->set('layout', 'dgform');
 ?>
-
+<div id="digicom" class="dc digicom">
+<form id="adminForm" action="index.php?option=com_digicom&view=order&id=<?php echo $order->id; ?>" name="adminForm" method="post">
 <?php if (!empty( $this->sidebar)) : ?>
 <div id="j-sidebar-container" class="">
 	<?php echo $this->sidebar; ?>
@@ -35,7 +36,7 @@ $input->set('layout', 'dgform');
 <?php else : ?>
 <div id="j-main-container" class="">
 <?php endif;?>
-<form id="adminForm" action="index.php?option=com_digicom&view=order&id=<?php echo $order->id; ?>" name="adminForm" method="post">
+
 
 <div id="contentpane">
 
@@ -255,7 +256,7 @@ $input->set('layout', 'dgform');
 	<input type="hidden" name="view" value="order" />
 	<input type="hidden" name="jform[id]" value="<?php echo $order->id; ?>" />
 	<?php echo JHtml::_('form.token'); ?>
-</form>
+
 <script type="text/javascript">
 	jQuery( "input[name='jform[status]']" ).on( "click", function(){
 		var checked = jQuery("input[name='jform[status]']:checked").val();
@@ -279,6 +280,8 @@ $input->set('layout', 'dgform');
 		)
 	);
 ?>
+</form>
 <div class="dg-footer">
 	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>
 </div>

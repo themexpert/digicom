@@ -190,6 +190,16 @@ body.com_digicom {
   /* Form elements Styling */
   /* Table Styles */
 }
+body.com_digicom .digicom-task {
+  display: flex;
+}
+body.com_digicom .digicom-task #adminForm {
+  display: block;
+}
+body.com_digicom #adminForm {
+  display: flex;
+  flex-direction: row;
+}
 body.com_digicom .chzn-container-single .chzn-single {
   padding: 0 0 0 0.875rem;
   height: 1.8rem;
@@ -425,11 +435,8 @@ body.com_digicom #digicom {
 body.com_digicom #j-sidebar-container {
   background: #253238;
   margin-left: 0;
-  width: 200px;
+  width: 238px;
   color: #c9d1dd;
-  top: 68px;
-  bottom: 28px;
-  left: 0;
   overflow: hidden;
   border: 0;
   -webkit-backface-visibility: hidden;
@@ -504,6 +511,7 @@ body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li.activ
 body.com_digicom.sidebar-collapse #j-sidebar-container,
 body.com_digicom.layout-dgform #j-sidebar-container {
   width: 38px;
+  position: static;
 }
 body.com_digicom.sidebar-collapse #j-sidebar-container #sidebar .sidebar-nav #submenu.nav-list > li,
 body.com_digicom.layout-dgform #j-sidebar-container #sidebar .sidebar-nav #submenu.nav-list > li {
@@ -522,7 +530,7 @@ body.com_digicom.layout-dgform #j-sidebar-container #sidebar .sidebar-nav #subme
 }
 body.com_digicom.sidebar-collapse #j-main-container,
 body.com_digicom.layout-dgform #j-main-container {
-  margin-left: 38px;
+  margin-left: 0;
 }
 body.com_digicom.sidebar-collapse div#system-debug,
 body.com_digicom.layout-dgform div#system-debug,
@@ -700,12 +708,13 @@ body.com_digicom .j-toggle-sidebar-header {
   display: none;
 }
 body.com_digicom #j-main-container {
-  background-color: #fff;
+  background-color: #f9f9fb;
   padding: 20px;
-  width: auto;
-  margin-left: 200px;
+  width: 100%;
+  margin-left: 0px;
   box-sizing: border-box;
   margin-right: 0;
+  float: left;
 }
 body.com_digicom #j-sidebar-container,
 body.com_digicom #j-main-container {
@@ -1228,7 +1237,7 @@ body.view-configs .form-horizontal .controls {
 .dg-footer {
   text-align: right;
   padding: 20px 25px 40px;
-  background-color: #f9f9fb;
+  background-color: #fff;
 }
 body.com_digicom form {
   margin: 0px;
@@ -1264,4 +1273,7 @@ body.com_digicom .nomargin {
 }
 body.com_digicom .nopadding {
   padding: 0px;
+}
+body.com_digicom .reportsWrapper .field-calendar {
+  display: inline-block;
 }

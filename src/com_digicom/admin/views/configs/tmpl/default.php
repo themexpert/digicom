@@ -25,14 +25,15 @@ $input->set('layout', 'dgform');
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
 	{
-		if (document.formvalidator.isValid(document.id('component-form')))
+		if (document.formvalidator.isValid(document.id('adminForm')))
 		{
-			Joomla.submitform(task, document.getElementById('component-form'));
+			Joomla.submitform(task, document.getElementById('adminForm'));
 		}
 	}
 </script>
+<div id="digicom" class="dc digicom">
 
-<form action="<?php echo JRoute::_('index.php?option=com_digicom&view=configs'); ?>" id="component-form" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal digicom-config">
+<form action="<?php echo JRoute::_('index.php?option=com_digicom&view=configs'); ?>" id="adminForm" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal digicom-config">
 	<?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container">
 		<?php echo $this->sidebar; ?>
@@ -239,13 +240,13 @@ $input->set('layout', 'dgform');
 				</div>
 			</div>
 		</div>
-	</div>
-	<div>
-		<input type="hidden" name="id" value="<?php echo $this->component->id; ?>" />
-		<input type="hidden" name="option" value="<?php echo $this->component->option; ?>" />
-		<input type="hidden" name="view" value="configs" />
-		<input type="hidden" name="task" value="" />
-		<?php echo JHtml::_('form.token'); ?>
+		<div>
+			<input type="hidden" name="id" value="<?php echo $this->component->id; ?>" />
+			<input type="hidden" name="option" value="<?php echo $this->component->option; ?>" />
+			<input type="hidden" name="view" value="configs" />
+			<input type="hidden" name="task" value="" />
+			<?php echo JHtml::_('form.token'); ?>
+		</div>
 	</div>
 </form>
 <?php
@@ -265,4 +266,5 @@ $input->set('layout', 'dgform');
 </script>
 <div class="dg-footer">
 	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>
 </div>

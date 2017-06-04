@@ -56,6 +56,7 @@ JFactory::getDocument()->addScriptDeclaration('
 	};
 ');
 ?>
+<div id="digicom" class="dc digicom">
 <form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&view=products'); ?>" method="post" name="adminForm" autocomplete="off" class="form-horizontal">
 	<?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="">
@@ -284,4 +285,5 @@ JFactory::getDocument()->addScriptDeclaration('
 
 <div class="dg-footer">
 	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>
 </div>

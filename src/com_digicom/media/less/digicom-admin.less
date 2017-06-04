@@ -177,6 +177,16 @@ body.com_digicom {
 	background: @body-background;
 	.transition(all 0.3s ease-in-out);
 
+	.digicom-task{
+		display: flex;
+		#adminForm{
+			display: block;
+		}
+	}
+	#adminForm{
+	    display: flex;
+        flex-direction: row;	
+	}
 	// Chosen dropdown
 	@import "components/chosen.less";
 	/* Button classes */
@@ -245,12 +255,13 @@ body.com_digicom {
 	.j-toggle-sidebar-header {display: none;}
 
 	#j-main-container {
-		background-color: #fff;
+		background-color: @body-background;
 		padding: 20px;
-		width: auto;
-		margin-left: 200px;
+		width: 100%;
+		margin-left: 0px;
 		box-sizing: border-box;
 		margin-right: 0;
+	    float: left;
 	}
 
 	#j-sidebar-container,
@@ -787,7 +798,7 @@ body.view-configs{
 .dg-footer{ 
 	text-align: right; 
 	padding: 20px 25px 40px; 
-	background-color: #f9f9fb;
+	background-color: #fff;
 }
 
 body.com_digicom{
@@ -833,5 +844,10 @@ body.com_digicom{
 	}
 	.nopadding{
 		padding: 0px;
+	}
+	.reportsWrapper{
+		.field-calendar{
+			display: inline-block;
+		}
 	}
 }

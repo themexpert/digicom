@@ -26,17 +26,17 @@ $input->set('layout', 'dgform');
 JFactory::getDocument()->addScriptDeclaration('
 	Joomla.submitbutton = function(task)
 	{
-		if (task == "category.cancel" || document.formvalidator.isValid(document.getElementById("item-form")))
+		if (task == "category.cancel" || document.formvalidator.isValid(document.getElementById("adminForm")))
 		{
 			' . $this->form->getField("description")->save() . '
-			Joomla.submitform(task, document.getElementById("item-form"));
+			Joomla.submitform(task, document.getElementById("adminForm"));
 		}
 	};
 ');
 
 ?>
 <div id="digicom" class="dc digicom">
-<form action="<?php echo JRoute::_('index.php?option=com_digicom&extension=' . $input->getCmd('extension', 'com_digicom') . '&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+<form action="<?php echo JRoute::_('index.php?option=com_digicom&extension=' . $input->getCmd('extension', 'com_digicom') . '&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 <?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="">
 		<?php echo $this->sidebar; ?>

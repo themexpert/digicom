@@ -17,6 +17,7 @@ $configs = $this->configs;
 $document = JFactory::getDocument();
 $document->addScript( JURI::root(true)."/media/com_digicom/js/chart.min.js");
 ?>
+<div id="digicom" class="dc digicom">
 <form action="<?php echo JRoute::_('index.php?option=com_digicom'); ?>" class="clearfix" method="post" name="adminForm" id="adminForm">
 <?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="">
@@ -217,4 +218,5 @@ $document->addScript( JURI::root(true)."/media/com_digicom/js/chart.min.js");
 ?>
 <div class="dg-footer">
 	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>
 </div>
