@@ -1277,3 +1277,7 @@ body.com_digicom .nopadding {
 body.com_digicom .reportsWrapper .field-calendar {
   display: inline-block;
 }
+body.com_digicom #digicom_reports {
+  display: flex;
+  flex-oriantation: row;
+}
