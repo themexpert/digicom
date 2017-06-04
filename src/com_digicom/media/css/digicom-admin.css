@@ -261,17 +261,21 @@ body.com_digicom .btn {
 }
 body.com_digicom .btn-primary {
   background: #1976d2;
+  color: #fff;
 }
 body.com_digicom .btn-success {
   background: #4CAF50;
+  color: #fff;
 }
 body.com_digicom .btn-warning {
   background: #FBC02D;
   border-color: #aaa;
+  color: #fff;
 }
 body.com_digicom .btn-danger {
   background: #d32f2f;
   border-color: #888;
+  color: #fff;
 }
 body.com_digicom .digi-micro-btn {
   background: #fefefe;
