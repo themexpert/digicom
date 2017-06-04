@@ -31,7 +31,7 @@ if ($saveOrder)
 	JHtml::_('sortablelist.sortable', 'categoryList', 'adminForm', strtolower($listDirn), $saveOrderingUrl, false, true);
 }
 ?>
-
+<div id="digicom" class="dc digicom">
 <form action="<?php echo JRoute::_('index.php?option=com_digicom&view=categories'); ?>" method="post" name="adminForm" id="adminForm">
 	<div id="j-sidebar-container">
 		<?php echo $this->sidebar; ?>
@@ -197,4 +197,5 @@ if ($saveOrder)
 </form>
 <div class="dg-footer">
 	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>
 </div>

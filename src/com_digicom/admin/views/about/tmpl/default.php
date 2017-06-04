@@ -19,7 +19,7 @@ $app = JFactory::getApplication();
 $input = $app->input;
 $input->set('layout', 'dgtabs');
 ?>
-
+<div id="digicom" class="dc digicom">
 <form action="<?php echo JRoute::_('index.php?option=com_digicom&controller=about'); ?>" method="post" name="adminForm" autocomplete="off" class="form-validate form-horizontal">
 	<?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="">
@@ -54,3 +54,4 @@ $input->set('layout', 'dgtabs');
 
 	</div>
 </form>
+</div>

@@ -35,7 +35,7 @@ JFactory::getDocument()->addScriptDeclaration('
 ');
 
 ?>
-
+<div id="digicom" class="dc digicom">
 <form action="<?php echo JRoute::_('index.php?option=com_digicom&extension=' . $input->getCmd('extension', 'com_digicom') . '&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 <?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="">
@@ -87,4 +87,5 @@ JFactory::getDocument()->addScriptDeclaration('
 </form>
 <div class="dg-footer">
 	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
+</div>
 </div>
