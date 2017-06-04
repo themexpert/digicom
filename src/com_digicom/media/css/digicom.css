@@ -45,7 +45,6 @@
   text-decoration: underline;
 }
 .dc a:focus {
-  outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
@@ -751,7 +750,6 @@ a.dc .bg-danger:focus {
 .dc input[type="file"]:focus,
 .dc input[type="radio"]:focus,
 .dc input[type="checkbox"]:focus {
-  outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
@@ -1242,7 +1240,6 @@ select[multiple].dc .input-lg {
 .dc .btn.focus,
 .dc .btn:active.focus,
 .dc .btn.active.focus {
-  outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }

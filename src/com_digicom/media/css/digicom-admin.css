@@ -151,6 +151,12 @@ ul.usergroups li {
 .js-stools {
   margin-bottom: 10px;
 }
+.js-stools .clearfix:after {
+  clear: none;
+}
+.js-stools.clearfix:after {
+  clear: none;
+}
 .dg-alert {
   background: #fff;
   border: 1px solid #ddd;
@@ -309,13 +315,15 @@ body.com_digicom .subhead {
 }
 body.com_digicom .subhead .btn-toolbar {
   text-align: right;
-  margin: 0;
+  margin: 0 !important;
 }
 body.com_digicom .subhead .btn-toolbar .btn-wrapper {
   margin: 0;
+  line-height: 40px;
 }
 body.com_digicom .subhead .btn-toolbar #toolbar-settings {
   float: right;
+  line-height: 40px;
 }
 body.com_digicom .subhead .btn-toolbar #toolbar-title {
   float: left;
@@ -332,6 +340,9 @@ body.com_digicom .subhead .btn-toolbar #toolbar-title h3 {
 body.com_digicom .subhead .btn-toolbar #toolbar-title h3 [class^="icon-"],
 body.com_digicom .subhead .btn-toolbar #toolbar-title h3 [class*=" icon-"] {
   margin-right: 15px;
+  background: transparent;
+  border: none;
+  margin-left: 0px;
 }
 body.com_digicom .subhead .btn-toolbar .btn {
   background: transparent;
@@ -408,12 +419,14 @@ body.com_digicom .subhead .btn-toolbar #toolbar-video {
 body.com_digicom .subhead #toolbar .btn-success {
   width: auto;
 }
+body.com_digicom #digicom {
+  background: #253238;
+}
 body.com_digicom #j-sidebar-container {
   background: #253238;
   margin-left: 0;
   width: 200px;
   color: #c9d1dd;
-  position: fixed;
   top: 68px;
   bottom: 28px;
   left: 0;
@@ -422,6 +435,7 @@ body.com_digicom #j-sidebar-container {
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
   backface-visibility: hidden;
+  float: left;
 }
 body.com_digicom #j-sidebar-container #sidebar {
   padding: 15px 0;
@@ -686,6 +700,7 @@ body.com_digicom .j-toggle-sidebar-header {
   display: none;
 }
 body.com_digicom #j-main-container {
+  background-color: #fff;
   padding: 20px;
   width: auto;
   margin-left: 200px;
@@ -806,6 +821,7 @@ body.layout-dgform #j-main-container .form-inline .controls {
   position: fixed;
   top: 0;
   bottom: 0;
+  overflow: auto;
   right: -200px;
   z-index: 9999;
   width: 200px;
@@ -850,6 +866,10 @@ body.sidebar-right-collapse {
   -ms-transform: translate(-200px, 0);
   -o-transform: translate(-200px, 0);
   transform: translate(-200px, 0);
+}
+body.sidebar-right-collapse #digicom {
+  overflow: hidden;
+  opacity: 0.5;
 }
 /* elFinder File manager style */
 #elfinder .elfinder-workzone {
@@ -1207,8 +1227,11 @@ body.view-configs .form-horizontal .controls {
 }
 .dg-footer {
   text-align: right;
-  margin-bottom: 40px;
-  margin-right: 25px;
+  padding: 20px 25px 40px;
+  background-color: #f9f9fb;
+}
+body.com_digicom form {
+  margin: 0px;
 }
 body.com_digicom .digicom-product-title .control-group {
   margin-bottom: 2px;

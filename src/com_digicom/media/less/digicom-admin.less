@@ -159,7 +159,15 @@ ul.usergroups li {
 	margin-top: 18px;
 }
 // Search tools
-.js-stools{ margin-bottom: 10px; }
+.js-stools{ 
+	margin-bottom: 10px; 
+	.clearfix:after{
+		clear: none;
+	}
+	&.clearfix:after{
+		clear: none;
+	}
+}
 
 @import "components/alert.less";
 
@@ -237,6 +245,7 @@ body.com_digicom {
 	.j-toggle-sidebar-header {display: none;}
 
 	#j-main-container {
+		background-color: #fff;
 		padding: 20px;
 		width: auto;
 		margin-left: 200px;
@@ -316,8 +325,8 @@ body.layout-dgform {
 			height: 0px;
 		}
 		#j-sidebar-container{
-      position: absolute;
-	    top: 75px;
+	      position: absolute;
+		  top: 75px;
 		}
 		#j-main-container{
 			width: 100%;
@@ -371,6 +380,7 @@ body.layout-dgform {
 	position: fixed;
 	top: 0;
 	bottom: 0;
+    overflow: auto;
 	right: -200px;
 	z-index: 9999;
 	width: 200px;
@@ -410,6 +420,11 @@ body.layout-dgform {
 
 body.sidebar-right-collapse {
 	.translate(-200px,0);
+
+	#digicom{
+	    overflow: hidden;
+	    opacity: 0.5;
+	}
 }
 
 /* elFinder File manager style */
@@ -769,10 +784,16 @@ body.view-configs{
 	}
 	.form-horizontal .controls{margin-left: 0; }
 }
-.dg-footer{ text-align: right; margin-bottom: 40px; margin-right: 25px; }
+.dg-footer{ 
+	text-align: right; 
+	padding: 20px 25px 40px; 
+	background-color: #f9f9fb;
+}
 
 body.com_digicom{
-
+	form{
+		margin: 0px;
+	}
 	.digicom-product-title{
 	 	.control-group{margin-bottom: 2px;}
 	 	.form-inline{ margin-bottom: 15px; }

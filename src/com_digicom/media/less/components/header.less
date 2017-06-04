@@ -14,9 +14,15 @@ header.header {display: none;}
 
   .btn-toolbar {
     text-align: right;
-    margin: 0;
-    .btn-wrapper {margin: 0;}
-    #toolbar-settings {float: right;}
+    margin: 0 !important;
+    .btn-wrapper {
+      margin: 0;
+      line-height: 40px;
+    }
+    #toolbar-settings {
+      float: right;
+      line-height: 40px;
+    }
     #toolbar-title {
       float: left;
       margin-left: 0;
@@ -27,8 +33,14 @@ header.header {display: none;}
         line-height: 40px;
         color: #fff;
         text-shadow: none;
+        
         [class^="icon-"],
-        [class*=" icon-"] {margin-right: 15px;}
+        [class*=" icon-"] {
+          margin-right: 15px;
+          background: transparent;
+          border: none;
+          margin-left: 0px;
+        }
       }
     }
     .btn{

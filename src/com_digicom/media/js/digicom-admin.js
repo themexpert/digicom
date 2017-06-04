@@ -302,19 +302,45 @@ jQuery(document).ready(function() {
     }
 
   });
+  function toggleSidebaOptions(e, cloeOnly){
+    console.log(cloeOnly);
+    e.preventDefault();
+    if(jQuery('body').hasClass('sidebar-right-collapse')){
+      jQuery("body").removeClass("sidebar-right-collapse");
+      jQuery("#digicom").css('height', 'auto');
+    }
+    else if(cloeOnly == 'yes'){
+      return true;
+    } 
+    else
+    {
 
-	jQuery("#toggle_settings").toggle(function (e) {
-		e.preventDefault();
-		jQuery("body").addClass("sidebar-right-collapse");
-	}, function () {
-		jQuery("body").removeClass("sidebar-right-collapse");
-	});
+      jQuery("body").addClass("sidebar-right-collapse");
+      jQuery("#digicom").css('height', jQuery('body').height()-jQuery('status').height()-jQuery('.subhead-collapse').height());
+    }
+  }
 
-	jQuery('body').click(function(){
+  jQuery("#toggle_settings").click(function (e) {
+    toggleSidebaOptions(e, 'no');
+  });
+ //  jQuery("#toggle_settings").toggle(function (e) {
+	// 	e.preventDefault();
+	// 	jQuery("body").addClass("sidebar-right-collapse");
+ //    jQuery("#digicom").css('height', jQuery('body').height());
+ //  }, function () {
+ //    jQuery("body").removeClass("sidebar-right-collapse");
+ //    jQuery("#digicom").css('height', 'auto');
+	// });
+
+	jQuery('#digicom').click(function(e){
 		if(jQuery('body').hasClass('sidebar-right-collapse')){
-			jQuery('body').removeClass('sidebar-right-collapse');
-		}
+		// 	// jQuery('body').removeClass('sidebar-right-collapse');
+		//   jQuery("#toggle_settings").toggle();
+      toggleSidebaOptions(e, 'yes');
+    }
 	});
+  jQuery('#j-main-container').css('min-height', jQuery('#j-sidebar-container').height());
+  
 
   /* Toggle toolbar button*/
   var btnSelector = jQuery('#toolbar-publish,#toolbar-unpublish,#toolbar-trash,#toolbar-delete,#toolbar-edit');
