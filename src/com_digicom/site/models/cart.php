@@ -541,7 +541,10 @@ class DigiComModelCart extends JModelItem
 	function get_promo( $customer, $checkvalid = 1 )
 	{
 		if($this->promo_data) return $this->promo_data;
+
 		$db = JFactory::getDbo();
+		$dispatcher = JDispatcher::getInstance();
+
 		$app = JFactory::getApplication();
 		$session = JFactory::getSession();
 		$sid = $customer->_sid;
@@ -573,12 +576,9 @@ class DigiComModelCart extends JModelItem
 			return $this->promo_data = $promo_data;
 		}
 
-		// $promo->error = "";
-		// if ( $promodata[0] == "promoerror" ){
-		// 	$promo->error = $promodata[1];
-		// }
-		//
-		//print_r($promo_data);die;
+		// lets trigger the event
+		$dispatcher->trigger('onDigicomPrepareDiscountValue', array($promo_data, $customer));
+
 		//code exists and we're about to validate it
 		if ( $promo_data->id > 0 && $checkvalid == 1 )
 		{
