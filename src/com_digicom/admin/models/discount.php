@@ -198,7 +198,10 @@ class DigiComModelDiscount extends JModelAdmin
 		if(!isset($data['validforrenewal'])){
 			$data['validforrenewal'] = 0;
 		}
-		
+		if(!isset($data['validfornew']) and !isset($data['validforrenewal'])){
+			$data['validfornew'] = 1;
+		}
+
 		if(parent::save($data)){
 			
 			//hook the files here
