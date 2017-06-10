@@ -37,14 +37,14 @@ class DigiComSiteHelperLog {
         $result = $dispatcher->trigger('onDigicomBeforeLog', 
             array('com_digicom.log', &$type, &$hook, &$callbackid, &$message, &$info, &$status, &$refid)
         );
-
+        
         if ( 
             (
                 !$config->get('enable_log', false)
                 and
                 (
-                    !isset($result[0]) 
-                    or
+                    isset($result[0]) 
+                    and
                     in_array(false, $result) 
                 )
             )
