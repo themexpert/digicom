@@ -105,28 +105,16 @@ Joomla.submitbutton = function(task)
 					<!--<h3><?php echo JText::_('COM_DIGICOM_DISCOUNT_TAB_TITLE_DISCOUNT_CODE_SETTINGS');?></h3>-->
 					<div class="form-horizontal">
 
-						<?php echo $this->form->getControlGroup('title'); ?>
+					<?php 
+					$fieldSets = $this->form->getFieldsets();
+					foreach ($fieldSets as $name => $fieldSet) :
 
-						<?php echo $this->form->getControlGroup('code'); ?>
-
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $this->form->getLabel('amount'); ?>
-							</div>
-							<div class="controls">
-								<?php echo $this->form->getInput('amount'); ?>
-								<?php echo $this->form->getInput('promotype'); ?>
-							</div>
-						</div>
-
-						<?php echo $this->form->getControlGroup('codelimit'); ?>
-
-						<?php echo $this->form->getControlGroup('codestart'); ?>
-
-						<?php echo $this->form->getControlGroup('codeend'); ?>
-
-						<?php echo $this->form->getControlGroup('published'); ?>
-
+						foreach ($this->form->getFieldset($name) as $field):
+							if($field->fieldname == 'discount_enable_range' or $field->fieldname == 'products') continue;
+							echo $field->getControlGroup();
+						endforeach;
+					endforeach; 
+					 ?>
 
 					</div>
 
@@ -191,11 +179,8 @@ Joomla.submitbutton = function(task)
 		echo JHtml::_('bootstrap.endTabSet');
 		?>
 	</div>
-	<div class="validity">
-		<?php echo $this->form->getInput('validfornew'); ?>
-		<?php echo $this->form->getInput('validforrenewal'); ?>
-	</div>
-	<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
+	
+    <input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="view" value="discount" />
 	<input type="hidden" name="option" value="com_digicom" />

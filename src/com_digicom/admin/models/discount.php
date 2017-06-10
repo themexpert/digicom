@@ -190,8 +190,7 @@ class DigiComModelDiscount extends JModelAdmin
 	 * @since	3.1
 	 */
 	public function save($data)
-	{
-		
+	{		
 		$app = JFactory::getApplication();
 		if(!isset($data['validfornew'])){
 			$data['validfornew'] = 0;
@@ -199,7 +198,7 @@ class DigiComModelDiscount extends JModelAdmin
 		if(!isset($data['validforrenewal'])){
 			$data['validforrenewal'] = 0;
 		}
-
+		
 		if(parent::save($data)){
 			
 			//hook the files here
