@@ -340,7 +340,7 @@ class DigiComModelCart extends JModelItem
 		// Promo code
 		//--------------------------------------------------------
 		$promo = $this->get_promo( $cust_info );
-		//print_r($promo->id);die;
+		// print_r($promo);die;
 		$promovalue = 0;
 		$addPromo = false;
 		$ontotal = false;
@@ -573,6 +573,11 @@ class DigiComModelCart extends JModelItem
 		}else{
 			$promo_data = $this->getTable( "Discount" );
 			$promo_data->error = '';
+
+			// prepare table to fresh info
+			$properties = $promo_data->getProperties(1);
+			$promo_data = JArrayHelper::toObject($properties, 'JObject');
+
 			return $this->promo_data = $promo_data;
 		}
 
@@ -669,31 +674,27 @@ class DigiComModelCart extends JModelItem
 		if(empty($processor)){
 			$processor = $session->get('processor','offline');
 		}
-
 		$promocode = $input->get( 'promocode', '' );
 		if($promocode){
 			$name = 'promocode'.$customer->_sid;
 			$session->set($name, true);
 		}
-
-		$sql = "
-		update #__digicom_session set 
-			processor='" . $processor . "',
-			cart_details='promocode=" . $promocode . "'
-		where id='" . intval($sid) . "'";
-		$db->setQuery( $sql );
-		$db->execute();
+		
+		// Create and populate an object.
+		$object = new stdClass();
+		$object->id 			= $sid;
+		$object->processor 		= $processor;
+		$object->cart_details 	= "promocode=" . $promocode;
+				 
+		// Insert the object into the session object table.
+		$result = JFactory::getDbo()->updateObject('#__digicom_session', $object, 'id');
+		
 
 		// $sql = "update #__digicom_session set shipping_details='' where sid='" . intval($sid) . "'";
-	 // 	$db->setQuery( $sql );
-	 // 	$db->execute();
-	 	// if(!empty($promocode)){
-		// $sql = "update #__digicom_session set cart_details='promocode=" . $promocode . "' where sid='" . $sid . "'";
-	 // 	$db->setQuery( $sql );
-	 // 	$db->execute();
-	 	// }
-		// die;
-		return true;
+		// 	$db->setQuery( $sql );
+		// 	$db->execute();
+		
+		return $result;
 
 	}
 
