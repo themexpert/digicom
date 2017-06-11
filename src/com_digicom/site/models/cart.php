@@ -582,14 +582,16 @@ class DigiComModelCart extends JModelItem
 		}
 
 		// lets trigger the event
-		$dispatcher->trigger('onDigicomPrepareDiscountValue', array($promo_data, $customer));
+		$dispatcher->trigger('onDigicomPrepareDiscountValue', array('com_digicom.cart', &$promo_data, &$customer));
 
 		//code exists and we're about to validate it
 		if ( $promo_data->id > 0 && $checkvalid == 1 )
 		{
+			// chekc if we need to update promo info if fails
+			$update = true;
 
 			$today = date('Y-m-d 00:00:00');
-			$tomorrow = date('Y-m-d  00:00:00',strtotime($today . "+1 days"));
+			$tomorrow = date('Y-m-d  00:00:00', strtotime($today . "+1 days"));
 
 			$now = strtotime($today);
 			$tomorrow = strtotime($tomorrow);
@@ -604,6 +606,9 @@ class DigiComModelCart extends JModelItem
 
 			if ( ($timestart <= $now) && ($timeend >= $now || $timeend == $nullDate ) && ($limit == 0 || $used < $limit) && $published == "1")
 			{
+				// we got correct promo, no need to update
+				$update = false;
+
 				//add this code to user's cart
 				$promoerror = '';
 				$name = 'promocode'.$customer->_sid;
@@ -629,28 +634,27 @@ class DigiComModelCart extends JModelItem
 			{
 				$promoerror = JText::_( "COM_DIGICOM_DISCOUNT_CODE_EXPIRED_DATE" );
 				$sql = "update #__digicom_session set cart_details='promoerror=" . $promoerror . "' where id='" . intval($sid) . "'";
-				// $app->enqueueMessage($promoerror,'warning');
 			}
 			else
 			{
 				// seems its not yet published
 				$promoerror = JText::_( "COM_DIGICOM_DISCOUNT_CODE_NOT_FOR_APPLY" );
 				$sql = "update #__digicom_session set cart_details='promoerror=" . $promoerror . "' where id='" . intval($sid) . "'";
-				// $app->enqueueMessage($promoerror,'warning');
 			}
 
 			$promo_data->error = $promoerror;
-			$db->setQuery( $sql );
-			$db->execute();
+			if($update){
+				$db->setQuery( $sql );
+				$db->execute();				
+			}
 
 			if ( !empty($promoerror) ) {
 				//promo code is invalid
-				JFactory::getApplication()->enqueueMessage(JText::_($promoerror),'warning');
-				//$session->set('promocode','');
+				JFactory::getApplication()->enqueueMessage(JText::_($promoerror), 'warning');
 			}
 
 		}else{
-				JFactory::getApplication()->enqueueMessage(JText::_('COM_DIGICOM_DISCOUNT_CODE_WRONG'),'warning');
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_DIGICOM_DISCOUNT_CODE_WRONG'), 'warning');
 		}
 
 		// prepare table to fresh info
@@ -693,7 +697,7 @@ class DigiComModelCart extends JModelItem
 		// $sql = "update #__digicom_session set shipping_details='' where sid='" . intval($sid) . "'";
 		// 	$db->setQuery( $sql );
 		// 	$db->execute();
-		
+
 		return $result;
 
 	}
