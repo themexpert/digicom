@@ -143,9 +143,9 @@ class DigiComControllerCart extends JControllerLegacy
 		$session = JFactory::getSession();
 		$processor	= JRequest::getVar("processor", '');
 		if(!isset($processor) or !$processor){
-			$processor = $session->get('processor','offline');
+			$processor = $session->get('processor', 'offline');
 		}else{
-			$session->set('processor',$processor);
+			$session->set('processor', $processor);
 		}
 
 		$this->_model->updateCart($this->_customer, $this->_config);
