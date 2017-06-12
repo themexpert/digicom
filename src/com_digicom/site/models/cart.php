@@ -757,8 +757,8 @@ class DigiComModelCart extends JModelItem
 
 	function addFreeProduct($items, $customer, $tax){
 		$config			= JFactory::getConfig();
-		$tzoffset		= $config->get('offset');//$now = time();
-		$now 				= date('Y-m-d H:i:s', time() + $tzoffset);
+		$tzoffset		= (int) $config->get('offset'); //$now = time();
+		$now 			= date('Y-m-d H:i:s', time() + $tzoffset);
 
 		$orderid = $this->addOrder($items, $tax, $customer, $now, 'free');
 		$this->addOrderDetails($items, $orderid, $now, $customer);
@@ -781,10 +781,9 @@ class DigiComModelCart extends JModelItem
 	function addOrderInfo($items, $customer, $tax, $status,$prosessor)
 	{
 		$config = JFactory::getConfig();
-		$tzoffset = $config->get('offset');
-		//$now = time();
+		$tzoffset = (int) $config->get('offset');
 		$now = date('Y-m-d H:i:s', time() + $tzoffset);
-
+		
 		$orderid = $this->addOrder($items, $tax, $customer, $now, $prosessor,$status);
 		$this->addOrderDetails($items, $orderid, $now, $customer,$status);
 
@@ -1040,7 +1039,7 @@ class DigiComModelCart extends JModelItem
 
 		//triggere email
 		$config = JFactory::getConfig();
-		$tzoffset = $config->get('offset');
+		$tzoffset = (int) $config->get('offset');
 		$now = date('Y-m-d H:i:s', time() + $tzoffset);
 		DigiComSiteHelperEmail::dispatchMail( $order_id, $orderTable->amount_paid, $orderTable->number_of_products, $now, $items, $customer , $type, $status);
 
@@ -1101,7 +1100,7 @@ class DigiComModelCart extends JModelItem
 
 		//triggere email
 		$config = JFactory::getConfig();
-		$tzoffset = $config->get('offset');
+		$tzoffset = (int) $config->get('offset');
 		$now = date('Y-m-d H:i:s', time() + $tzoffset);
 
 		$total = $tax['taxed'];
@@ -1149,7 +1148,7 @@ class DigiComModelCart extends JModelItem
 
 		//triggere email
 		$config = JFactory::getConfig();
-		$tzoffset = $config->get('offset');
+		$tzoffset = (int) $config->get('offset');
 		$now = date('Y-m-d H:i:s', time() + $tzoffset);
 
 		$total = $tax['taxed'];
