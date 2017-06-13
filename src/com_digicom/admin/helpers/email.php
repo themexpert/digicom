@@ -41,14 +41,17 @@ class DigiComHelperEmail {
         $my = $cust_info;
 
         $email_settings = $configs->get('email_settings');
-        $email_header_image = $email_settings->email_header_image;//jform[email_settings][email_header_image]
+        $emailSettings = new Registry;
+        $emailSettings->loadObject($email_settings);
+        // print_r($emailSettings);die;
+        $email_header_image = $emailSettings->get('email_header_image');//jform[emailSettings][email_header_image]
         if(!empty($email_header_image)){
             $email_header_image = '<img src="'.JRoute::_(JURI::root().$email_header_image).'" />';
         }
         $phone = $configs->get('phone');
         $address 		= $configs->get('address');
 
-        $email_footer = $email_settings->email_footer;
+        $email_footer = $emailSettings->get('email_footer');
 
         $configinfo = $configs->get($type,'new_order');
         $emailinfo      = new Registry;
@@ -141,6 +144,12 @@ class DigiComHelperEmail {
 
         // prepare the emailbody
         //-----------------------------------------------------------
+        //replace styles
+        $basecolor = $emailSettings->get('email_base_color'); //
+        $basebgcolor = $emailSettings->get('email_bg_color'); //
+        $tmplcolor = $emailSettings->get('email_body_color'); //
+        $tmplbgcolor = $emailSettings->get('email_body_bg_color'); //
+
         // accecable variables from email template:
         // $items = products object
         // $promo = promo object
@@ -226,13 +235,6 @@ class DigiComHelperEmail {
 
         $subject = str_replace( "[PRODUCTS]", $product_list, $subject );
         
-        //replace styles
-        $basecolor = $email_settings->email_base_color; //
-        $basebgcolor = $email_settings->email_bg_color; //
-        $tmplcolor = $email_settings->email_body_color; //
-        $tmplbgcolor = $email_settings->email_body_bg_color; //
-       
-
         $subject = html_entity_decode( $subject, ENT_QUOTES );
         $message = html_entity_decode( $message, ENT_QUOTES );
         // echo $message;die;
@@ -257,15 +259,10 @@ class DigiComHelperEmail {
         }
 
         // now override the value with digicom config
-        if(!empty($email_settings->from_name))
+        if(!empty($emailSettings->get('from_name')))
         {
-            $adminName2 = $email_settings->from_name;
+            $adminName2 = $emailSettings->get('from_name');
         }
-
-        // if(!empty($email_settings->from_email))
-        // {
-        //     $adminEmail2 = $email_settings->from_email;
-        // }
 
         $mailSender = JFactory::getMailer();
         $mailSender->IsHTML( true );
