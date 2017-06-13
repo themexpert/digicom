@@ -143,7 +143,7 @@ class DigiComSiteHelperLicense {
 		return $db->loadObject();
 	}
 
-	public static function getProductsByUser($userid, $paid = true ,$current = true){
+	public static function getProductsByUser($userid, $paid = true , $current = true){
 		// Create a new query object.
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
