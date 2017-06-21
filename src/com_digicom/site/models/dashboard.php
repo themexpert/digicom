@@ -120,7 +120,8 @@ class DigiComModelDashboard extends JModelList
 		}
 		else
 		{
-			$limit = $this->state->params->get('maximum', 20);
+			// $limit = $this->state->params->get('maximum', 20);
+			$limit = 200;
 		}
 
 		$this->setState('list.limit', $limit);
