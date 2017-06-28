@@ -36,6 +36,27 @@ class plgDigiCom_PayPaypalHelper
 	}
 
 	/*
+ 	* According to https://www.paypal-knowledge.com/infocenter/index?page=content&id=FAQ1914&expand=true&locale=en_US		
+ 	* we are supposed to use www.paypal.com before June 30th, 2017.		
+ 	* As of October 20th, 2016 PayPal recommends using the ipnpb.paypal.com domain name
+ 	* @see 	https://www.paypal.com/au/webapps/mpp/ipn-verification-https			 
+ 	* @see  https://developer.paypal.com/docs/classic/ipn/integration-guide/IPNImplementation/#specs
+ 	* @see  https://github.com/paypal/ipn-code-samples/blob/master/php/PaypalIPN.php
+ 	*/
+	public static function buildIPNPaymentUrl($secure_post = true, $sandbox = false )
+	{
+		$url = $sandbox? 'www.ipnpb.sandbox.paypal.com' : 'www.ipnpb.paypal.com';
+		if ( $secure_post ){
+			$url = 'https://' . $url . '/cgi-bin/webscr';
+		}else{
+			$url = 'http://' . $url . '/cgi-bin/webscr';
+		}
+
+		return $url;
+	}
+	
+
+	/*
 	* method Storelog
 	* from onDigicom_PayStorelog
 	* used to store log for plugin debug payment
@@ -74,7 +95,7 @@ class plgDigiCom_PayPaypalHelper
 	{
 		// parse the paypal URL
 		if(!$paypal_url){
-			$paypal_url	=plgDigiCom_PayPaypalHelper::buildPaymentSubmitUrl();
+			$paypal_url	=plgDigiCom_PayPaypalHelper::buildIPNPaymentUrl();
 		}
 		$url_parsed = parse_url($paypal_url);
 
