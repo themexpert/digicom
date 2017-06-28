@@ -127,6 +127,7 @@ class plgDigiCom_PayPaypalHelper
 			fputs($fp, "Host: $url_parsed[host]\r\n");
 			fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n");
 			fputs($fp, "Content-length: ".strlen($post_string)."\r\n");
+			fputs($fp, "User-Agent: Digicom\r\n");
 			fputs($fp, "Connection: close\r\n\r\n");
 			fputs($fp, $post_string . "\r\n\r\n");
 
