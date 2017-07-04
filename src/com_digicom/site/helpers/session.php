@@ -85,13 +85,27 @@ class DigiComSiteHelperSession
 					'url'	=> $actual_link
 				);
 				$keyinfo = json_encode($info);
-				// we dont have session id, userid
-				$sql = "INSERT INTO #__digicom_session 
-					(`sid`, `uid`,`create_time`, `cart_details`, `transaction_details`, `shipping_details`, `key`)
-					VALUES ('".$sessionid."','".$my->id."',now(), '', '', '', '".$keyinfo."')";
 
-				$db->setQuery($sql);
-				$db->execute();
+				// Create and populate an object.
+				$object = new stdClass();
+				$object->sid = $sessionid;
+				$object->uid = $my->id;
+				$object->create_time = date("Y-m-d H:i:s");
+				$object->cart_details = '';
+				$object->transaction_details = '';
+				$object->shipping_details = '';
+				$object->key = $db->quote($keyinfo);
+
+				// Insert the object into the user profile table.
+				$db->insertObject('#__digicom_session', $object);
+				
+				// we dont have session id, userid
+				// $sql = "INSERT INTO #__digicom_session 
+					// (`sid`, `uid`,`create_time`, `cart_details`, `transaction_details`, `shipping_details`, `key`)
+					// VALUES ('".$sessionid."','".$my->id."',now(), '', '', '', '".$keyinfo."')";
+
+				// $db->setQuery($sql);
+				// $db->execute();
 				$sid = $db->insertId();
 				$reg->set($digicomid, $sid);
 			}
@@ -124,12 +138,26 @@ class DigiComSiteHelperSession
 					);
 					$keyinfo = json_encode($info);
 					// we dont have session id, userid
-					$sql = "INSERT INTO #__digicom_session 
-						(`sid`, `uid`,`create_time`, `cart_details`, `transaction_details`, `shipping_details`, `key`)
-						VALUES ('".$sessionid."','".$my->id."',now(), '', '', '', '".$keyinfo."')";
+					// $sql = "INSERT INTO #__digicom_session 
+					// 	(`sid`, `uid`,`create_time`, `cart_details`, `transaction_details`, `shipping_details`, `key`)
+					// 	VALUES ('".$sessionid."','".$my->id."',now(), '', '', '', '".$keyinfo."')";
 
-					$db->setQuery($sql);
-					$db->execute();
+					// $db->setQuery($sql);
+					// $db->execute();
+
+					// Create and populate an object.
+					$object = new stdClass();
+					$object->sid = $sessionid;
+					$object->uid = $my->id;
+					$object->create_time = date("Y-m-d H:i:s");
+					$object->cart_details = '';
+					$object->transaction_details = '';
+					$object->shipping_details = '';
+					$object->key = $db->quote($keyinfo);
+
+					// Insert the object into the user profile table.
+					$db->insertObject('#__digicom_session', $object);
+
 					$sid = $db->insertId();
 					// $sid = $sessionid;
 					$reg->set($digicomid, $sid);
