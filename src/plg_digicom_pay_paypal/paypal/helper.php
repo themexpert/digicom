@@ -8,6 +8,8 @@
  */
 
 defined('_JEXEC') or die;
+jimport('joomla.html.html');
+jimport('joomla.plugin.helper');
 
 class plgDigiCom_PayPaypalHelper
 {
@@ -66,22 +68,26 @@ class plgDigiCom_PayPaypalHelper
 	public static function Storelog($name,$data)
 	{
 		$my = JFactory::getUser();
-		jimport('joomla.log.log');
-		JLog::addLogger(
-			 array(
-						// Sets file name
-						'text_file' => 'com_digicom.paypal.errors.php'
-			 ),
-			 // Sets messages of all log levels to be sent to the file
-			 JLog::ALL,
-			 // The log category/categories which should be recorded in this file
-			 // In this case, it's just the one category from our extension, still
-			 // we need to put it inside an array
-			 array('com_digicom.paypal')
-		 );
-		 $msg = 'StoreLog >>  user:'.$my->name.'('.$my->id.'), desc: ' . json_encode($data['raw_data']);
-		 JLog::add($msg, JLog::WARNING, 'com_digicom.paypal');
+		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
 
+		jimport('joomla.error.log');
+		JLog::addLogger(
+			array(
+					// Sets file name
+					'text_file' => 'com_digicom.paypal.errors.log'
+			),
+			// Sets messages of all log levels to be sent to the file
+			JLog::ALL,
+			// The log category/categories which should be recorded in this file
+			// In this case, it's just the one category from our extension, still
+			// we need to put it inside an array
+			array('com_digicom.paypal')
+		);
+		
+		$logEntry       = new JLogEntry('Transaction added', JLog::WARNING, 'com_digicom.paypal');
+		$logEntry->user = $my->name . '(' . $my->id . ')';
+		$logEntry->desc = json_encode($data['raw_data']);
+		JLog::add($logEntry);
 	}
 
 	/*
