@@ -47,10 +47,13 @@
 
 				<field name="plugin_hidname" type="hidden" default="paypal" />
 
-				<field name="log_write" type="radio" default="0" label="PLG_PAYPAL_WRITE_LOG"	description="PLG_PAYPAL_WRITE_LOG_DESC">
-							<option value="0">PLG_PAYPAL_NO</option>
-							<option value="1">PLG_PAYPAL_YES</option>
-						</field>
+				<field name="log_write" type="radio" default="0" label="PLG_PAYPAL_WRITE_LOG"
+					description="PLG_PAYPAL_WRITE_LOG_DESC"
+					class="btn-group"
+				>
+					<option value="0">JYES</option>
+					<option value="1">JNO</option>
+				</field>
 
 			</fieldset>
 
