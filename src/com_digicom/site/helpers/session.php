@@ -227,7 +227,8 @@ class DigiComSiteHelperSession
 			{
 				// there id didnt change, email has changed
 				// $query = "UPDATE `#__digicom_customers` SET `id`=".$this->_user->id." WHERE `email`='" . $this->_user->email."'";
-				$query = "UPDATE `#__digicom_customers` SET `email`='".$this->_user->email."' WHERE `id`='" . $this->_user->id."'";
+				// $query = "UPDATE `#__digicom_customers` SET `email`='".$this->_user->email."' WHERE `id`='" . $this->_user->id."'";
+				$query = "UPDATE `#__digicom_customers` SET `id`='".$this->_user->id."' WHERE `id`='" . $table->id."'";
 				$db->setQuery( $query );
 				$db->execute();
 
