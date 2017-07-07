@@ -523,9 +523,10 @@ class DigiComControllerCart extends JControllerLegacy
 			return false;
 		}
 
-		$rawDataPost 			= $input->post->getArray();
-		$rawDataGet 			= $input->get->getArray();
-		$post = array_merge($rawDataGet, $rawDataPost);
+		$post 			= $input->post->getArray();
+		// $rawDataPost 			= $input->post->getArray();
+		// $rawDataGet 			= $input->get->getArray();
+		// $post = array_merge($rawDataGet, $rawDataPost);
 
 		// after recieved payment request, get the status info
 		$dispatcher = JDispatcher::getInstance();
