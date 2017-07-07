@@ -61,11 +61,11 @@ class DigiComHelperDigiCom extends JHelperContent{
 			$vName == 'orders'
 		);
 
-		// JHtmlSidebar::addEntry(
-		// 	JText::_('COM_DIGICOM_SIDEBAR_MENU_LICENSES'),
-		// 	'index.php?option=com_digicom&view=licenses',
-		// 	$vName == 'licenses'
-		// );
+		JHtmlSidebar::addEntry(
+			JText::_('COM_DIGICOM_SIDEBAR_MENU_LICENSES'),
+			'index.php?option=com_digicom&view=licenses',
+			$vName == 'licenses'
+		);
 		
 		JHtmlSidebar::addEntry(
 			JText::_('COM_DIGICOM_SIDEBAR_MENU_DISCOUNTS'),
