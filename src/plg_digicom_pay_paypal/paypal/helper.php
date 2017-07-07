@@ -47,7 +47,7 @@ class plgDigiCom_PayPaypalHelper
  	*/
 	public static function buildIPNPaymentUrl($secure_post = true, $sandbox = false )
 	{
-		$url = $sandbox? 'www.ipnpb.sandbox.paypal.com' : 'www.ipnpb.paypal.com';
+		$url = $sandbox? 'ipnpb.sandbox.paypal.com' : 'ipnpb.paypal.com';
 		if ( $secure_post ){
 			$url = 'https://' . $url . '/cgi-bin/webscr';
 		}else{
@@ -68,100 +68,34 @@ class plgDigiCom_PayPaypalHelper
 	public static function Storelog($name, $data)
 	{
 		$my = JFactory::getUser();
-		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
-
+		
 		jimport('joomla.error.log');
 		JLog::addLogger(
 			array(
 					// Sets file name
-					'text_file' => 'com_digicom.paypal.errors.log'
+					'text_file' => 'com_digicom.paypal.errors.php'
 			),
 			// Sets messages of all log levels to be sent to the file
-			JLog::ALL,
+			JLog::INFO,
 			// The log category/categories which should be recorded in this file
 			// In this case, it's just the one category from our extension, still
 			// we need to put it inside an array
 			array('com_digicom.paypal')
 		);
-		
-		$logEntry       = new JLogEntry('Transaction added', JLog::WARNING, 'com_digicom.paypal');
-		$logEntry->user = $my->name . '(' . $my->id . ')';
-		$logEntry->desc = json_encode($data['raw_data']);
+
+		$message = 'Transaction added for ' . $my->name . '(' . $my->id . ')' . '. RawData: ' . json_encode($data['raw_data']);
+		$logEntry       = new JLogEntry($message , JLog::INFO, 'com_digicom.paypal');
+
 		JLog::add($logEntry);
 	}
 
-	/*
-	* method validateIPN
-	* from onDigicom_PayProcesspayment
-	* used to validate the data recieved from payment is untouched
-	* @data : the necessary info recieved from form about payment
-	* @return null
-	*/
-	public static function validateIPN_x( $data, $paypal_url = '')
-	{
-		// parse the paypal URL
-		if(!$paypal_url){
-			$paypal_url	=plgDigiCom_PayPaypalHelper::buildIPNPaymentUrl();
-		}
-		$url_parsed = parse_url($paypal_url);
-
-		// generate the post string from the _POST vars as-well-as load the
-		// _POST vars into an arry so we can play with them from the calling
-		// script.
-		// append ipn command
-		// open the connection to paypal
-		$fp = fsockopen($url_parsed["host"],"80",$err_num,$err_str,30);
-		// $fp = fsockopen ($this->paypal_url, 80, $errno, $errstr, 30);
-
-		if(!$fp) {
-			// could not open the connection.  If loggin is on, the error message
-			// will be in the log.
-			self::$last_error = 'fsockopen error no. '.$err_num.': '.$err_str;
-			plgDigiCom_PayPaypalHelper::log_ipn_results(false);
-			return false;
-		} else {
-
-			$post_string = '';
-			foreach ($data as $field=>$value) {
-				self::$ipn_data["$field"] = $value;
-				$post_string .= $field.'='.urlencode(stripslashes($value)).'&';
-			}
-			$post_string.="cmd=_notify-validate";
-
-			// Post the data back to paypal
-			fputs($fp, "POST $url_parsed[path] HTTP/1.1\r\n");
-			fputs($fp, "Host: $url_parsed[host]\r\n");
-			fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n");
-			fputs($fp, "Content-length: ".strlen($post_string)."\r\n");
-			fputs($fp, "User-Agent: Digicom\r\n");
-			fputs($fp, "Connection: close\r\n\r\n");
-			fputs($fp, $post_string . "\r\n\r\n");
-
-			// loop through the response from the server and append to variable
-			while(!feof($fp)) {
-				self::$ipn_response .= fgets($fp, 1024);
-			}
-			fclose($fp); // close connection
-		}
-		if (preg_match("/verified/",$post_string)) {
-			// Valid IPN transaction.
-			plgDigiCom_PayPaypalHelper::log_ipn_results(true);
-			return true;
-		} else {
-			// Invalid IPN transaction.  Check the log for details.
-			self::$last_error = 'IPN Validation Failed.';
-			plgDigiCom_PayPaypalHelper::log_ipn_results(false);
-			return false;
-		}
-
-	}
 
 	/**
 	 * ValidateIPN - Validate the payment detail. (We are thankful to Akeeba Subscriptions Team,
 	 * while modifing the plugin according to paypal security update. https://github.com/paypal/TLS-update#php
 	 * Security update links: https://devblog.paypal.com/upcoming-security-changes-notice/
 	 * https://developer.paypal.com/docs/classic/ipn/ht_ipn/
-	 *
+	 * 
 	 * @param   string  $data           data
 	 * @param   string  $componentName  Component Name
 	 *
@@ -169,26 +103,35 @@ class plgDigiCom_PayPaypalHelper
 	 *
 	 * @return   string  data
 	 */
-	public function validateIPN($data, $componentName = 'digicom')
+	public function validateIPN($data, $sandbox = false, $params, $componentName = 'digicom')
 	{
-		$url              = plgDigiCom_PayPaypalHelper::buildIPNPaymentUrl();
+
+		$url              = plgDigiCom_PayPaypalHelper::buildIPNPaymentUrl(true, $sandbox);
 		$newData = array(
 			'cmd'	=> '_notify-validate'
 		);
 		$newData = array_merge($newData, $data);
 
 		$options = array(
+			CURLOPT_SSLVERSION     => 6,
 			CURLOPT_SSL_VERIFYPEER => true,
 			CURLOPT_SSL_VERIFYHOST => 2,
 			CURLOPT_VERBOSE        => false,
 			CURLOPT_HEADER         => false,
 			CURLINFO_HEADER_OUT    => false,
 			CURLOPT_RETURNTRANSFER => true,
+			// CURLOPT_CAINFO         => JPATH_LIBRARIES . '/fof/download/adapter/cacert.pem',
 			CURLOPT_CAINFO         => dirname(__FILE__) . '/cacert.pem',
-			CURLOPT_HTTPHEADER     => array('Connection: Close'),
+			CURLOPT_HTTPHEADER     => array('User-Agent: Digicom','Connection: Close'),
 			CURLOPT_POST           => true,
 			CURLOPT_POSTFIELDS     => $newData,
 			CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CONNECTTIMEOUT  => 30,
+			CURLOPT_FORBID_REUSE    => true,
+			// Force the use of TLS (therefore SSLv3 is not used, mitigating POODLE; see https://github.com/paypal/merchant-sdk-php)
+			CURLOPT_SSL_CIPHER_LIST => 'TLSv1',
+			// This forces the use of TLS 1.x
+			CURLOPT_SSLVERSION      => CURL_SSLVERSION_TLSv1,
 
 		);
 
@@ -232,7 +175,7 @@ class plgDigiCom_PayPaypalHelper
 
 		curl_close($ch);
 		$status = false;
-
+		
 		if (($errNo > 0) && !empty($error))
 		{
 			$data['ipncheck_failure_got_error'] = "Could not open SSL connection to $hostname:443, cURL error $errNo: $error";
@@ -247,55 +190,26 @@ class plgDigiCom_PayPaypalHelper
 			$status = false;
 		}
 
-		if (stristr($response, "VERIFIED"))
+		// now verify response 
+		if (strcmp ($response, "VERIFIED") == 0)
 		{
+			// The IPN is verified, process it
 			$status = true;
 		}
-		elseif (stristr($response, "INVALID"))
+		else if (strcmp ($response, "INVALID") == 0)
 		{
-			$data['akeebasubs_ipncheck_failure'] = 'PayPal claims the IPN data is INVALID – Possible fraud!';
-
+			// IPN invalid, log for manual investigation
 			$status = false;
 		}
+		
+		$data['CURL_response'] = $response;
+		$data['digicom_status'] = $status;
 
 		$logData = array();
 		$logData["JT_CLIENT"] = $componentNamel;
 		$logData["raw_data"] = $data;
-		self::Storelog("paypal", $logData);
 		
-		return $status;
+		return [$status, $logData];
 	}
 
-	/*
-	 * method to log the result
-	 * @success : responce
-	 * */
-	public static function log_ipn_results($success) {
-		if (!self::$ipn_log) return;
-		// Timestamp
-		$text = '['.date('m/d/Y g:i A').'] - ';
-		// Success or failure being logged?
-		if ($success){
-			$text .= "SUCCESS!\n";
-		}else{
-			$text .= 'FAIL: '.self::$last_error."\n";
-		}
-
-		// Log the POST variables
-		$text .= "IPN POST Vars from Paypal:\n";
-		foreach (self::$ipn_data as $key=>$value) {
-			$text .= "$key=$value, ";
-		}
-
-		// Log the response from the paypal server
-		$text .= "\nIPN Response from Paypal Server:\n ".self::$ipn_response;
-
-		// Write to log
-		//$fp=fopen(self::$ipn_log_file,'a');
-		//fwrite($fp, $text . "\n\n");
-		//fclose($fp);  // close file
-
-		plgDigiCom_PayPaypalHelper::Storelog('paypal', $text . "\n\n");
-
-	}
 }

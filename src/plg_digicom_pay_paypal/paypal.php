@@ -204,18 +204,21 @@ class  plgDigiCom_PayPaypal extends JPlugin
 		$processor = JFactory::getApplication()->input->get('processor','');
 		if($processor != $this->_name) return;
 
-		$jinput    = JFactory::getApplication()->input;
-		$componentName = $jinput->get("option", "cpg_");
+		$sandbox 		= $this->params->get('sandbox', 0);
+		$response 		= plgDigiCom_PayPaypalHelper::validateIPN($data, $sandbox, $this->params);
+		$verify 		= $response[0];
 
-		$verify 		= plgDigiCom_PayPaypalHelper::validateIPN($data);
-
-		if (!$verify or !isset( $data['txn_type'] ) or  $data['txn_type'] != 'web_accept')
+		if (!$verify)
 		{
-			$info = array('raw_data'	=>	$data);
-			$this->onDigicom_PayStorelog($this->_name, $info);
+			plgDigiCom_PayPaypalHelper::Storelog($this->_name, $response[1]);
 
 			return false;
 		}
+		else
+		{
+			$this->onDigicom_PayStorelog($this->_name, $response[1]);		
+		}
+
 
 		$payment_status = $this->translateResponse( $data );
 
@@ -266,7 +269,7 @@ class  plgDigiCom_PayPaypal extends JPlugin
 
 		$log_write = $this->params->get('log_write', '0');
 
-		if ($log_write == 1)
+		if ($log_write)
 		{
 			plgDigiCom_PayPaypalHelper::Storelog($this->_name, $data);
 		}
