@@ -40,6 +40,9 @@ $buy_image = $this->params->get('buy_image', 'https://www.paypalobjects.com/webs
 		<input type="hidden" name="currency_code" value="<?php echo $vars->currency_code ?>" />
 		<input type="hidden" name="no_note" value="1" />
 
+		<input type="hidden" name="rm" value="2" />
+		<input type="hidden" name="lc" value="<?php echo !empty($vars->country_code)?$vars->country_code:''; ?>" />
+		
 		<!--//_cart when manual calc and multiple items-->
 		<input type="hidden" name="cmd" value="_xclick" />
 

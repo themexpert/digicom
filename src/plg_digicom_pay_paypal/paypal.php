@@ -43,8 +43,19 @@ class  plgDigiCom_PayPaypal extends JPlugin
 			'Pending' 	=> 'P',
 			'Failed' 		=> 'P',
 			'Denied' 		=> 'P',
-			'Refunded'	=> 'RF'
+			'Refunded'	=> 'RF',
+			'Canceled_Reversal'	=> 'CRV',
+			'Reversed'	=> 'RV'
 		);
+		// $this->responseStatus = array(
+		// 	'Completed' => 'C',
+		// 	'Pending' => 'P',
+		// 	'Failed' => 'E',
+		// 	'Denied' => 'D',
+		// 	'Refunded' => 'RF',
+		// 	'Canceled_Reversal' => 'CRV',
+		// 	'Reversed' => 'RV'
+		// );
 	}
 
 	/*
@@ -120,11 +131,15 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	* method onDigicom_PayGetInfo
 	* can be used Build List of Payment Gateway in the respective Components
 	* for payment process its not used
+	* @return   mixed  return plugin config object
 	*/
 	function onDigicom_PayGetInfo($config)
 	{
 
-		if(!in_array($this->_name,$config)) return;
+		if (!in_array($this->_name, $config))
+		{
+			return;
+		}
 
 		$obj 				= new stdClass;
 		$obj->name 	=	$this->params->get( 'plugin_name' );
@@ -141,22 +156,42 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	*/
 	function onDigicom_PayGetHTML($vars, $pg_plugin)
 	{
-		if($pg_plugin != $this->_name) return;
-		$params 					= $this->params;
-		$secure_post 			= $params->get('secure_post');
-		$sandbox 					= $params->get('sandbox');
-		$vars->sandbox 		= $sandbox;
-		$vars->action_url = plgDigiCom_PayPaypalHelper::buildPaymentSubmitUrl($secure_post , $sandbox);
+		if($pg_plugin != $this->_name) 
+		{
+			return;
+		}
+
+		$secure_post 			= $this->params->get('secure_post');
+		$sandbox 				= $this->params->get('sandbox');
+		$vars->sandbox 			= $sandbox;
+		$vars->action_url 		= plgDigiCom_PayPaypalHelper::buildPaymentSubmitUrl($secure_post , $sandbox);
+
+		// If component does not provide cmd
+		if (empty($vars->cmd))
+		{
+			$vars->cmd = '_xclick';
+		}
 
 		//Take this receiver email address from plugin if component not provided it
 		if(empty($vars->business)) $vars->business = $this->params->get('business');
 
-		$html = $this->buildLayout($vars);
+
+		// @ get recurring layout Amol
+		if (property_exists($vars, 'is_recurring') && $vars->is_recurring == 1)
+		{
+			// new since 1.3.9
+			$html = $this->buildLayout($vars, 'recurring');
+		}
+		else
+		{
+			$html = $this->buildLayout($vars);
+		}
+		
 		return $html;
 
 	}
 
-
+	
 	/*
 	* method onDigicom_PayProcesspayment
 	* used when we recieve payment from site or thurd party
@@ -169,27 +204,34 @@ class  plgDigiCom_PayPaypal extends JPlugin
 		$processor = JFactory::getApplication()->input->get('processor','');
 		if($processor != $this->_name) return;
 
-		$verify 		= plgDigiCom_PayPaypalHelper::validateIPN($data);
+		$sandbox 		= $this->params->get('sandbox', 0);
+		$response 		= plgDigiCom_PayPaypalHelper::validateIPN($data, $sandbox, $this->params);
+		$verify 		= $response[0];
 
-		if (!$verify or !isset( $data['txn_type'] ) or  $data['txn_type'] != 'web_accept')
+		if (!$verify)
 		{
-			$info = array('raw_data'	=>	$data);
-			$this->onDigicom_PayStorelog($this->_name, $info);
+			plgDigiCom_PayPaypalHelper::Storelog($this->_name, $response[1]);
 
 			return false;
 		}
+		else
+		{
+			$this->onDigicom_PayStorelog($this->_name, $response[1]);		
+		}
+
 
 		$payment_status = $this->translateResponse( $data );
 
 		$result = array(
-			'order_id'				=> $data['custom'],
+			'order_id'			=> $data['custom'],
 			'transaction_id'	=> $data['txn_id'],
-			'buyer_email'			=> $data['payer_email'],
-			'status'					=> $payment_status,
-			'txn_type'				=> $data['txn_type'],
+			'subscriber_id' 	=> $data['subscr_id'],
+			'buyer_email'		=> $data['payer_email'],
+			'status'			=> $payment_status,
+			'txn_type'			=> $data['txn_type'],
 			'total_paid_amt'	=> $data['mc_gross'],
-			'raw_data'				=> $data,
-			'processor'				=> 'paypal'
+			'raw_data'			=> $data,
+			'processor'			=> 'paypal'
 		);
 
 		return $result;
@@ -203,12 +245,16 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	*/
 	function translateResponse($data)
 	{
-			$payment_status = $data['payment_status'];
+		$payment_status = $data['payment_status'];
 
-			if(array_key_exists($payment_status, $this->responseStatus))
-			{
-				return $this->responseStatus[$payment_status];
-			}
+		if(array_key_exists($payment_status, $this->responseStatus))
+		{
+			return $this->responseStatus[$payment_status];
+		}
+		else
+		{
+			return "P";
+		}
 	}
 
 	/*
@@ -220,7 +266,13 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	function onDigicom_PayStorelog($name, $data)
 	{
 		if($name != $this->_name) return;
-		plgDigiCom_PayPaypalHelper::Storelog($this->_name,$data);
+
+		$log_write = $this->params->get('log_write', '0');
+
+		if ($log_write)
+		{
+			plgDigiCom_PayPaypalHelper::Storelog($this->_name, $data);
+		}
 	}
 
 	/*

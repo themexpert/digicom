@@ -72,7 +72,7 @@ abstract class ModDigiComMenuHelper {
 			3 => JText::_('MOD_DIGICOM_MENU_FILE_MANAGER'),
 			4 => JText::_('MOD_DIGICOM_MENU_CUSTOMERS'),
 			5 => JText::_('MOD_DIGICOM_MENU_ORDERS'),
-			// 6 => JText::_('MOD_DIGICOM_MENU_LICENSES'),
+			6 => JText::_('MOD_DIGICOM_MENU_LICENSES'),
 			6 => JText::_('MOD_DIGICOM_MENU_DISCOUNTS'),
 			7 => JText::_('MOD_DIGICOM_MENU_REPORTS'),
 			8 => JText::_('MOD_DIGICOM_MENU_SETTINGS')
@@ -87,7 +87,7 @@ abstract class ModDigiComMenuHelper {
 			3 => 'index.php?option=com_digicom&view=filemanager',
 			4 => 'index.php?option=com_digicom&view=customers',
 			5 => 'index.php?option=com_digicom&view=orders',
-			// 6 => 'index.php?option=com_digicom&view=licenses',
+			6 => 'index.php?option=com_digicom&view=licenses',
 			6 => 'index.php?option=com_digicom&view=discounts',
 			7 => 'index.php?option=com_digicom&view=reports',
 			8 => 'index.php?option=com_digicom&view=configs'

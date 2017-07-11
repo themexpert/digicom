@@ -524,6 +524,10 @@ class DigiComControllerCart extends JControllerLegacy
 		}
 
 		$post 			= $input->post->getArray();
+		// $rawDataPost 			= $input->post->getArray();
+		// $rawDataGet 			= $input->get->getArray();
+		// $post = array_merge($rawDataGet, $rawDataPost);
+
 		// after recieved payment request, get the status info
 		$dispatcher = JDispatcher::getInstance();
 		
@@ -533,12 +537,12 @@ class DigiComControllerCart extends JControllerLegacy
 		$data = $dispatcher->trigger('onDigicom_PayProcesspayment', array($post));
 		$data = $data[0];
 		$order_id 	= $input->get('order_id', '', 'int');
-		$sid 				= $input->get('sid', '', 'int');
+		$sid 		= $input->get('sid', '', 'int');
 
 		if(empty($sid)){
 			$sid = $input->get('user_id','');
 		}
-		// print_r($data);die;
+		
 		if(!$order_id)
 		{
 			if(isset($data['order_id'])){
