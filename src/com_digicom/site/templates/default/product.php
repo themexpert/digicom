@@ -41,7 +41,7 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 	<article class="container-fluid">
 		<div class="row">
 			<div class="col-md-<?php echo ($this->item->params->get('show_sidebar', 1) ? 8 : 12); ?>">
-				<?php if(!$this->item->params->get('show_image', 1)): ?>
+				<?php if($this->item->params->get('show_image', 1)): ?>
 					<?php if(!empty($images->image_full)): ?>
 					<div class="dc-item-in">
 							<figure>
@@ -93,7 +93,7 @@ $link = JRoute::_(DigiComSiteHelperRoute::getProductRoute($this->item->id, $this
 										</div>
 									<?php endif; ?>
 
-									<?php if ($this->configs->get('show_validity',1) == 1) : ?>
+									<?php if ($this->configs->get('show_validity', 1) == 1) : ?>
 									<div class="col-md-12">
 										<div class="dc-product-validity text-muted text-center">
 											<?php echo JText::_('COM_DIGICOM_PRODUCT_VALIDITY'); ?> : <?php echo DigiComSiteHelperPrice::getProductValidityPeriod($this->item); ?>

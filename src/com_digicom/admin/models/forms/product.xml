@@ -21,7 +21,7 @@
 		<field name="price_type" type="list" label="COM_DIGICOM_PRODUCT_PRICE_TYPE" description="COM_DIGICOM_PRODUCT_FIELD_PRICE_TYPE_DESC"
 		class="span4 input-xlarge input-large-text advancedSelect"
 		onchange="changeValidity(this);"
-		required="true" default="3">
+		required="true" default="0">
 			<option value="0">COM_DIGICOM_FOREVER_PRICE</option>
 			<option value="1">COM_DIGICOM_FIXED_PRICE</option>
 			<option value="2" disabled="disabled">COM_DIGICOM_RECURRING_PRICE</option>
