@@ -116,17 +116,17 @@ class DigiComControllerCart extends JControllerLegacy
 			$afteradd = 2; // popup
 		}
 
-		if(!$afteradd)
-		{
-			// Take to cart
-			$url = JRoute::_("index.php?option=com_digicom&view=cart", false);
-			$this->setRedirect($url);
-		}
-		else
+		if($afteradd == 1)
 		{
 			//Show cart in pop up
 			$url = "index.php?option=com_digicom&view=cart&layout=cart_popup&tmpl=component";
 			$this->setRedirect(JRoute::_($url, false));
+		}
+		else
+		{
+			// Take to cart
+			$url = JRoute::_("index.php?option=com_digicom&view=cart", false);
+			$this->setRedirect($url);
 		}
 
 		return true;
