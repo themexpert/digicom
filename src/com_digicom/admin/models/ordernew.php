@@ -194,8 +194,8 @@ class DigiComModelOrderNew extends JModelAdmin
 		$table = $this->getTable('Customer');
 		$table->loadCustommer($userid);
 
+		$user = JFactory::getUser($userid);
 		if(empty($table->id) or $table->id < 0){
-			$user = JFactory::getUser($userid);
 
 			$cust = new stdClass();
 			$cust->id = $user->id;
@@ -204,7 +204,10 @@ class DigiComModelOrderNew extends JModelAdmin
 			$table->bind($cust);
 			$table->create();
 		}
-		//print_r($table);die;
+
+		$customerTable = $table->getProperties(1);
+		$customerTable = JArrayHelper::toObject($customerTable, 'JObject');
+		
 		// prepare the data
 		$status = $data['status'];
 		if($status == 'Paid'){
@@ -234,8 +237,8 @@ class DigiComModelOrderNew extends JModelAdmin
 				'orderid' => $recordId,
 				'status' => $status,
 				'now_paid' => $data['amount_paid'],
-				'customer' => $cust->name ,
-				'username' => JFactory::getUser()->username
+				'customer' => $user->name ,
+				'username' => $user->username
 			);
 
 			DigiComSiteHelperLog::setLog('purchase', 'admin ordernew save', $recordId, 'Admin created order#'.$recordId.', status: '.$status.', paid: '.$data['amount_paid'], json_encode($info),$status);
@@ -251,10 +254,24 @@ class DigiComModelOrderNew extends JModelAdmin
 
 			DigiComHelperEmail::sendApprovedEmail($recordId, $type, $data['status'], $data['amount_paid']);
 
+			// now prepare data to trigger event
 			$items = $this->getOrderItems($recordId);
+
+			$customer = new stdClass;
+			$customer->_user = $user;
+			$customer->_sid = 0;
+			$customer->_customer = $customerTable;
+
+			JModelLegacy::addIncludePath(JPATH_COMPONENT_SITE . '/models');
+			$cart = $this->getInstance( "Cart", "DigiComModel" );
+			$configs = JComponentHelper::getComponent('com_digicom')->params;
+			$tax 			= $cart->calc_price($items, $customer, $configs);
+
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('onDigicomAfterPlaceOrder', array($recordId, $items, $tax, $customer));
+
 			if($data['status'] == 'Active'){
 
-				$dispatcher = JDispatcher::getInstance();
 				$dispatcher->trigger('onDigicomAfterPaymentComplete', array($recordId, $info, $data['processor'], $items, $data['userid']));
 
 			}
@@ -337,6 +354,7 @@ class DigiComModelOrderNew extends JModelAdmin
 		for ( $i = 0; $i < count( $items ); $i++ )
 		{
 			$item = &$items[$i];
+			$item->item_id = $item->id;
 			$item->discount = 0;
 			$item->currency = $configs->get('currency','USD');
 			$item->price = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
