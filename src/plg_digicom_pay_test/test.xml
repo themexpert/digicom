@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="digicom_pay" method="upgrade">
+
+	<name>Test Payment - DigiCom Pay Plugin</name>
+	<author>ThemeXpert</author>
+	<creationDate>##DIGICOM_CREATIONDATE##</creationDate>
+	<copyright>themexpert.com. All Rights Reserved.</copyright>
+	<authorEmail>extensions@themexpert.com</authorEmail>
+	<authorUrl>http://www.themexpert.com</authorUrl>
+	<license>GNU/GPLv3</license>
+	<version>##DIGICOM_VERSION##</version>
+	<description>Test Payment - DigiCom Pay Plugin by themexpert.com. </description>
+
+	<files>
+		<filename plugin="test">test.php</filename>
+		<folder>test</folder>
+	</files>
+
+	<languages folder="language">
+			<language tag="en-GB">en-GB/en-GB.plg_digicom_pay_test.ini</language>
+  </languages>
+
+	<config name="params">
+
+		<fields name="params">
+
+			<fieldset name="basic">
+
+				<field name="plugin_name" type="text" default="Test Payment" label="PLG_DIGICOM_PAY_TEST_PLUGIN_NAME" description="" />
+			</fieldset>
+
+			<fieldset name="style" label="PLG_DIGICOM_PAY_TEST_STYLE_LABEL">
+
+				<field type="text" name="title" label="PLG_DIGICOM_PAY_TEST_TITLE_LABEL" default="Test" />
+
+				<field type="textarea" name="description" label="PLG_DIGICOM_PAY_TEST_DESCRIPTION_LABEL" default="" />
+
+				<field type="media" name="preview_image" label="PLG_DIGICOM_PAY_TEST_PREVIEW_IMAGE_LABEL" default="" />
+
+				<field type="media" name="buy_image" label="PLG_DIGICOM_PAY_TEST_BUY_IMAGE_LABEL" default="" />
+				
+			</fieldset>
+
+		</fields>
+
+	</config>
+
+</extension>
