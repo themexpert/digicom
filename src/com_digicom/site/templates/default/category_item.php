@@ -33,9 +33,11 @@ if($this->item->price > 0){
 
 	<figure>
 		<?php if(!empty($images->image_intro)): ?>
+			<?php if($this->item->params->get('show_image', 1)): ?>
 			<a itemprop="url" href="<?php echo $link;?>">
 				<img itemprop="image" src="<?php echo JURI::root().$images->image_intro; ?>" alt="<?php echo $this->item->name; ?> Image" >
 			</a>
+			<?php endif; ?>
 		<?php endif; ?>
 
 		<figcaption class="caption">
