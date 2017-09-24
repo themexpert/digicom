@@ -34,7 +34,8 @@ function jSelectProduct(id, title, catid, object, link, lang,price)
 	var tag = '<tr id=\"productincludes_item_' + id + '\"><td><input type=\"hidden\" id=\"product_include_id'+id+'\" name=\"jform[bundle_product][]\" value=\"'+id+'\" /> <a target=\"_blank\"' + hreflang + ' href=\"' + link + '\">' + title + '</a></td><td>'+ price +'</td><td><a href=\#\" onclick=\"jRemveProduct('+ id +');\"><i class=\"icon-remove\"></i></a></td></tr>';
 	//jInsertEditorText(tag, '" . 'productincludes_items' . "');
 	jQuery('#productincludes_items').append(tag);
-	jModalClose();
+	// jModalClose();
+	jQuery('#productselectorModal').modal('toggle');
 }
 function jRemveProduct(id){
 	event.preventDefault();
@@ -116,13 +117,33 @@ $bundle_source = $form_data->get('bundle_source');
 		
 
 		<div style="margin:15px;padding:10px;">
-			<a class="btn btn-small modal-button" title="Products" href="<?php echo $link; ?>" rel="{handler: 'iframe', size: {x: 800, y: 500}}">
+			<a href="#productselectorModal" role="button" class="btn btn-link" data-toggle="modal" 
+				title="<?php echo JText::_('COM_DIGICOM_PRODUCT_BUNDLE_ADD_PRODUCT'); ?>" 
+				id="productselectorModalLink"
+			>
 				<i class="icon-file-add"></i> 
 				<?php echo JText::_('COM_DIGICOM_PRODUCT_BUNDLE_ADD_PRODUCT'); ?>
 			</a>
-
 		</div>
 		
 	</div>
 
 </fieldset>
+<?php echo JHtml::_(
+	'bootstrap.renderModal',
+	'productselectorModal',
+	array(
+		'title'       => JText::_('COM_DIGICOM_PRODUCT_BUNDLE_ADD_PRODUCT'),
+		'backdrop'    => 'static',
+		'keyboard'    => false,
+		'closeButton' => true,
+		'url'         => $link,
+		'height'      => '400px',
+		'width'       => '800px',
+		'bodyHeight'  => '70',
+		'modalWidth'  => '80',
+		'footer'      => '<a type="button" class="btn" data-dismiss="modal" aria-hidden="true"'
+				. ' onclick="jQuery(\'#productselectorModal iframe\').contents().find(\'#closeBtn\').click();">'
+				. JText::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</a>',
+	)
+); ?>
