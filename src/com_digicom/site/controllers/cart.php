@@ -113,7 +113,7 @@ class DigiComControllerCart extends JControllerLegacy
 		$from 		= $app->input->get('from', '');
 		if($from == "ajax")
 		{
-			$afteradd = 2; // popup
+			$afteradd = 1; // popup there is no 2
 		}
 
 		if($afteradd == 1)
