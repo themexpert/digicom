@@ -1,0 +1,26 @@
+.page-header{
+  .nav-tabs{ 
+    border-bottom: 0; 
+    margin-bottom: -20px;
+    margin-top: 20px;
+  }
+}
+.nav-tabs{
+  > li > a {
+    color: lighten(@brand-secondary, 10%);
+    font-size: 15px;
+    font-weight: bold;
+  }
+  > li:hover > a{ 
+    background: transparent; border: 1px solid transparent; 
+    color: @brand-primary;
+  }
+  >li.active>a, 
+  >li.active>a:focus, 
+  >li.active>a:hover{
+    background: transparent;
+    border: 0;
+    color: @brand-primary;
+    border-bottom: 2px solid @brand-primary;
+  }
+}

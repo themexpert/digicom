@@ -1,0 +1,88 @@
+textarea, 
+input[type="text"], 
+input[type="password"], 
+input[type="datetime"], 
+input[type="datetime-local"], 
+input[type="date"], 
+input[type="month"], 
+input[type="time"], 
+input[type="week"], 
+input[type="number"], 
+input[type="email"], 
+input[type="url"], 
+input[type="search"], 
+input[type="tel"], 
+input[type="color"], 
+.uneditable-input{
+  .form-control();
+  border-color: @border-color;
+
+  &:focus{
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25) !important;
+  }
+}
+textarea{ height: auto; }
+// Form gorup
+.input-append, 
+.input-prepend{
+  display: inline-table;
+  
+  .add-on,
+  .btn{ display: table-cell; }
+
+  input[type="text"]{ 
+    .border-radius(0);
+    border-right: 0;
+    height: 35px;
+  }
+  .btn{ border-top-left-radius: 0; border-bottom-left-radius: 0; }
+
+  .add-on:first-child{ border-right: 0; }
+
+  // Media specific button
+  .field-media-preview{
+    line-height: 33px;
+    height: 33px;
+    padding: 0 10px;
+    text-align: center;
+    [class^="icon-"], [class*=" icon-"]{ margin: 0; }
+  }
+  .add-on.button-select{
+    .border-radius(0);
+    background: @brand-primary; color: #fff;
+  }
+}
+// Button Group
+.btn-group-vertical>.btn:not(:first-child):not(:last-child), 
+.btn-group>.btn-group:not(:first-child):not(:last-child)>.btn, 
+.btn-group>.btn:not(:first-child):not(:last-child):not(.dropdown-toggle){ 
+  border-radius: auto; 
+  border: 1px solid #ddd;
+}
+.btn-group{
+  .btn{
+    padding: 6px 15px;
+  }
+  >.btn-success{
+   border-top-right-radius: 0;
+   border-bottom-right-radius: 0; 
+  }
+}
+// Chosen
+.chzn-container-single.chzn-container-single-nosearch{
+  .chzn-single,
+  .chzn-drop,
+  .chzn-single div{ 
+    border-color: lighten(@brand-primary, 10%);
+    text-decoration: none; 
+  }
+  .chzn-single{ 
+    line-height: 30px; 
+    color: #222;
+    div{ background: #fff; }
+  }
+
+  .chzn-results li{ line-height: 25px; }
+  .chzn-results > li.result-selected,
+  .chzn-results > li:hover{ background: lighten(@brand-primary, 10%); color: #fff; }
+}

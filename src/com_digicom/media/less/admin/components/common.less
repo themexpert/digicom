@@ -1,0 +1,58 @@
+// Applided on #cf 
+.display(flex);
+min-height: 620px;
+
+.tx-sidebar{ 
+  min-width: @sidebar-width;
+  padding: 20px;
+  background: @sidebar-bg;
+  border-right: 1px solid @border-color;
+  .nav-list{
+    padding: 0;
+    > li > a{ margin-left: 0; margin-right: 0; color: #333; margin-bottom: 10px; }
+    > li > a > i{ margin-right: 8px; }
+    > li.active > a,
+    > li.active > a:hover{ 
+      background: transparent; background: @brand-primary; color: #fff; .border-radius(4px);
+    }
+    > li > a:hover{ background: transparent; color: @brand-primary; }
+  }
+}
+.tx-main{ 
+  .flex(1);
+  background: @body-bg;
+}
+.page-header{
+  background: @page-header-bg;
+  border-bottom: 1px solid @border-color;
+  padding: @page-padding;
+}
+.page-content{ padding: @page-padding; }
+// Utility
+.text-uppercase{ text-transform: uppercase; }
+// Margin Small
+.mt-s{ margin-top: 10px; }
+.mr-s{ margin-right: 10px; }
+.mb-s{ margin-bottom: 10px; }
+.ml-s{ margin-left: 10px; }
+// Margin Medium
+.mt-m{ margin-top: 20px; }
+.mr-m{ margin-right: 20px; }
+.mb-m{ margin-bottom: 20px; }
+.ml-m{ margin-left: 20px; }
+
+// Floats
+// -------------------------
+
+.clearfix {
+  .clearfix();
+}
+.center-block {
+  .center-block();
+}
+.pull-right {
+  float: right !important;
+}
+.pull-left {
+  float: left !important;
+}

@@ -1,0 +1,112 @@
+@nodePath : "../../../../../node_modules";
+@bootstrap : "@{nodePath}/bootstrap/less";
+@cf-selector: ~"#digicom";
+// Include Lesshat -------------
+@import "@{nodePath}/lesshat/lesshat";
+//------------------------------
+
+// Bootstrap Common
+// -------------------------------------
+// Core variables and mixins
+@import "@{bootstrap}/variables";
+@import "@{bootstrap}/mixins";
+// Reset and dependencies
+// @import "@{bootstrap}/normalize";
+// -------------------------------------
+
+//Project variables
+@import "variables";
+@import "mixins";
+@import "icons/style";
+
+// Take over Joomla style
+body.com_digicom{
+  .subhead-collapse{ margin-bottom: 0; }
+  .container-main{ padding: 0; }
+  #system-message-container{
+      float: none; width: 100%; padding: 0;
+      .alert{ margin: 0 ; padding-left: 39px; border-radius: 0; border: 0; }
+  }
+}
+// Disable Sidebar nav text on edit mode
+body.com_digicom.layout-edit{
+  #cf{
+    .tx-sidebar{
+      min-width: 50px;
+      padding: 20px 10px;
+      .nav-list{
+        > li > a{
+          > span{ display: none; }
+          i{ margin: 0; }
+        }
+      }
+    }
+  }
+}
+
+@{cf-selector}{
+  // Bootstrap CSS
+  @import "@{bootstrap}/scaffolding";
+  @import "@{bootstrap}/grid";
+  @import "@{bootstrap}/tables";
+  @import "@{bootstrap}/forms";
+  @import "@{bootstrap}/buttons";
+  // Components
+  @import "@{bootstrap}/component-animations";
+  @import "@{bootstrap}/button-groups";
+  @import "@{bootstrap}/input-groups";
+  @import "@{bootstrap}/navs";
+  @import "@{bootstrap}/navbar";
+  @import "@{bootstrap}/labels";
+  @import "@{bootstrap}/badges";
+  @import "@{bootstrap}/thumbnails";
+  @import "@{bootstrap}/alerts";
+  @import "@{bootstrap}/media";
+  @import "@{bootstrap}/list-group";
+  @import "@{bootstrap}/panels";
+  @import "@{bootstrap}/responsive-embed";
+  @import "@{bootstrap}/wells";
+  @import "@{bootstrap}/close";
+  // Utility classes
+  // @import "@{bootstrap}/utilities.less";
+  // -----------------------------------
+  @import "components/common";
+  @import "components/btn";
+  @import "components/modal";  
+  @import "components/switch";  
+  @import "components/panels";  
+  @import "components/tabs";  
+  @import "components/forms";  
+  @import "components/navbar";  
+
+  
+  .request-block{
+    margin-top: 40px; padding: 30px;
+    background: #fff;
+    border: 1px solid #ddd;
+  }
+  
+  .tx-action-btns{ width: 20%; padding-left: 40px; vertical-align: middle; }
+  // Events
+  &.events{
+    .table{
+      background: #fff;
+      .box-shadow(0 0 10px #ddd);
+      td { vertical-align: middle; }
+    }
+  }
+}
+
+// Dealing with iframe
+// body.contentpane.component{
+//   padding: 0px;
+//   #general h3,
+//   #general .info-labels,
+//   #general .info-labels + div,
+//   #general .info-labels + div + hr,
+//   .nav.nav-tabs{ display: none; }
+  
+//   .span3 > .form-vertical > .control-group + .control-group,
+//   .form-vertical + .form-vertical{ display: none; }
+
+// }

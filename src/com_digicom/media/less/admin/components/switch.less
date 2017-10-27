@@ -1,0 +1,79 @@
+/* Switch
+========================================================================== */
+.switch,
+.switch * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -ms-user-select: none;
+  height: 30px;
+  position: relative;
+}
+
+.switch label { cursor: pointer; top: 0; left: 0; }
+
+.switch label input[type=checkbox] {
+  opacity: 0; width: 0; height: 0;
+
+  &:checked + .lever {
+    background-color: #40D874;
+    .box-shadow(0 0 3px #1ca74b inset);
+
+    &:after {
+      background-color: #fff;
+      left: 30px;
+    }
+  }
+}
+
+.switch label .lever {
+  content: "";
+  display: inline-block;
+  position: relative;
+  width: 60px;
+  height: 30px;
+  background-color: #505B64;
+  border-radius: 2px;
+  margin-right: 10px;
+  transition: background 0.3s ease;
+  vertical-align: middle;
+  margin: 0;
+
+  &:after {
+    content: "";
+    position: absolute;
+    display: inline-block;
+    width: 25px;
+    height: 20px;
+    background-color: #fff;
+    border-radius: 2px;
+    left: 5px;
+    top: 5px;
+    z-index: 2;
+    .box-shadow(0 1px 3px rgba(0,0,0,.2));
+    transition: left 0.3s ease, background .3s ease, box-shadow 0.1s ease;
+  }
+}
+
+// Switch active style
+input[type=checkbox]:checked:not(:disabled) ~ .lever:active::after,
+input[type=checkbox]:checked:not(:disabled).tabbed:focus ~ .lever::after {
+  // box-shadow: 0 1px 3px 1px rgba(0,0,0,.4), 0 0 0 15px transparentize($switch-bg-color, .9);
+}
+.switch{
+  .label{
+    position: absolute;
+    top: 50%;
+    width: 50%;
+    z-index: 1;
+    .translateY(-50%);
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    height: auto;
+    color: #fff;
+  }
+  .label-no{ right: 2.5px; color: #cdcfd2; }
+  .label-yes{ left: 2.5px; }
+}

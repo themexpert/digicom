@@ -1,0 +1,29 @@
+@width : 768px;
+.modal{
+  width: @width;
+  margin-left: calc(-@width/2);
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+}
+.modal-header{
+  background: @brand-primary;
+  color: #fff;
+  .close{
+    margin-right: -20px;
+    line-height: 40px;
+  }
+  h3{ 
+    color: #fff;
+  }
+}
+.modal-body{
+  padding: 20px;
+  box-sizing: border-box;
+}
+.modal-footer{
+  box-shadow: none;
+  border: 0;
+  border-radius: 0;
+  .btn{ background: #fff; color: @brand-primary; }
+}
