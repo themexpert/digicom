@@ -195,14 +195,14 @@ body.com_digicom #system-message-container .alert {
   border-radius: 0;
   border: 0;
 }
-body.com_digicom.layout-edit #cf .tx-sidebar {
+body.com_digicom.layout-edit #digicom .tx-sidebar {
   min-width: 50px;
   padding: 20px 10px;
 }
-body.com_digicom.layout-edit #cf .tx-sidebar .nav-list > li > a > span {
+body.com_digicom.layout-edit #digicom .tx-sidebar .nav-list > li > a > span {
   display: none;
 }
-body.com_digicom.layout-edit #cf .tx-sidebar .nav-list > li > a i {
+body.com_digicom.layout-edit #digicom .tx-sidebar .nav-list > li > a i {
   margin: 0;
 }
 #digicom {

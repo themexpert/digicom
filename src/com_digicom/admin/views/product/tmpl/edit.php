@@ -20,7 +20,15 @@ JHtml::_('formbehavior.chosen');
 
 $app = JFactory::getApplication();
 $input = $app->input;
-$input->set('layout', 'dgform');
+$input->set('layout', 'edit');
+
+// Get product type
+$product_type = $this->item->product_type;
+if(empty($product_type)){
+	$product_type = $this->form->getData()->get('product_type');
+}
+// New/edit 
+$isNew		= ($this->item->id == 0);
 ?>
 <script type="text/javascript">
 
@@ -75,98 +83,109 @@ window.onload = function() {
     });
 };
 </script>
-<div id="digicom" class="dc digicom">
+
 <form action="<?php echo JRoute::_('index.php?option=com_digicom&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
-<?php if (!empty( $this->sidebar)) : ?>
-		<div id="j-sidebar-container" class="">
+	<div id="digicom" class="dc digicom">
+		<div class="tx-sidebar">
 			<?php echo $this->sidebar; ?>
 		</div>
-		<div id="j-main-container" class="">
-	<?php else : ?>
-		<div id="j-main-container" class="">
-	<?php endif;?>
-
-
-	<div class="">
-		<div class="row-fluid">
-			<div class="span9">
-				<?php echo JHtml::_('bootstrap.startTabSet', 'digicomTab', array('active' => 'general')); ?>
-
-				<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'general', JText::_('COM_DIGICOM_PRODUCT_GENERAL_SETTINGS', true)); ?>
-
-				<?php echo JLayoutHelper::render('edit.title_alias_price', $this); ?>
-
-				<div class="product-short-desc control-group">
-					<?php echo $this->form->getLabel('introtext'); ?>
-					<?php echo $this->form->getInput('introtext'); ?>
-				</div>
-
-				<div class="product-full-desc control-group ">
-					<?php echo $this->form->getLabel('fulltext'); ?>
-					<?php echo $this->form->getInput('fulltext'); ?>
-				</div>
-				<?php echo JHtml::_('bootstrap.endTab'); ?>
-				<?php // Do not show the publishing options if the edit form is configured not to. ?>
-
-				<?php
-				$product_type = $this->item->product_type;
-				if(empty($product_type)){
-					$product_type = $this->form->getData()->get('product_type');
-				}
-
-				if($product_type == 'reguler'): ?>
-
-					<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'files', JText::_('COM_DIGICOM_PRODUCT_REGULAR_FILES_SELECTION', true)); ?>
-						<?php echo JLayoutHelper::render('edit.files', $this); ?>
-					<?php echo JHtml::_('bootstrap.endTab'); ?>
-
-				<?php else: ?>
-
-					<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'bundle', JText::_('COM_DIGICOM_PRODUCT_BUNDLE_FILES_SELECTION', true)); ?>
-						<?php echo JLayoutHelper::render('edit.bundle', $this); ?>
-					<?php echo JHtml::_('bootstrap.endTab'); ?>
-
+		<div class="tx-main">
+			<div class="page-header">
+				<?php if($isNew):?>
+					<h1><?php echo JText::_('COM_DIGICOM_MANAGER_PRODUCT_NEW_TITLE'); ?></h1>
+				<?php else:?>
+					<h1><?php echo JText::_('COM_DIGICOM_MANAGER_PRODUCT_EDIT_TITLE'); ?></h1>
 				<?php endif; ?>
-
-				<?php echo $this->loadTemplate('params'); ?>
-
-				<?php echo JHtml::_('bootstrap.endTabSet'); ?>
-
-			</div>
-
-			<div class="span3">
-
-				<?php echo JHtml::_('bootstrap.startTabSet', 'digicomTabImages', array('active' => 'thumb-image')); ?>
-
-				<?php echo JHtml::_('bootstrap.addTab', 'digicomTabImages', 'thumb-image', JText::_('Thumbnail', true)); ?>
-					<div class="product-image">
-							<?php echo $this->form->getControlGroup('image_intro'); ?>
+				<ul class="nav nav-tabs" role="tablist">
+			    <li class="active"><a href="#general" data-toggle="tab"><?php echo JText::_('COM_DIGICOM_PRODUCT_GENERAL_SETTINGS', true); ?></a></li>
+			    <li><a href="#files" data-toggle="tab">Files</a></li>
+			  </ul>
+			</div> <!-- .page-header end -->
+			<div class="page-content">
+				<div class="tab-content">
+					<div class="tab-pane active" id="general">
+						<div class="row">
+							<div class="col-md-8">
+								<div class="panel panel-default">
+									<div class="panel-heading">Basic</div>
+									<div class="panel-body">
+										<?php echo JLayoutHelper::render('edit.title_alias_price', $this); ?>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">Content</div>
+									<div class="panel-body">
+										<div class="product-short-desc control-group">
+											<?php echo $this->form->getLabel('introtext'); ?>
+											<?php echo $this->form->getInput('introtext'); ?>
+										</div>
+										<div class="product-full-desc control-group ">
+											<?php echo $this->form->getLabel('fulltext'); ?>
+											<?php echo $this->form->getInput('fulltext'); ?>
+										</div>
+									</div>
+								</div>
+							</div> <!-- general > main -->
+							<div class="col-md-4">
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										Product Images
+										<ul class="nav nav-tabs" role="tablist">
+									    <li class="active"><a href="#intro-image" data-toggle="tab"><?php echo JText::_('Thumbnail', true); ?></a></li>
+									    <li><a href="#full-image" data-toggle="tab"><?php echo JText::_('Full Image', true); ?></a></li>
+									  </ul>
+									</div> <!-- panel heading -->
+									<div class="panel-body">
+										<div class="tab-content">
+											<div class="tab-pane active" id="intro-image">
+												<div class="product-image">
+														<?php echo $this->form->getControlGroup('image_intro'); ?>
+												</div>
+											</div> <!-- #intro-image -->
+											<div class="tab-pane" id="full-image">
+												<div class="product-image">
+														<?php echo $this->form->getControlGroup('image_full'); ?>
+												</div>
+											</div> <!-- #full-image -->
+										</div>
+									</div> <!-- panel-body -->
+								</div> <!-- sidebar > image panel -->
+								<div class="panel panel-default">
+									<div class="panel-heading">Publishing Options</div>
+									<div class="panel-body">
+										<?php echo JLayoutHelper::render('sidebars.sidebar', $this); ?>
+									</div>
+								</div>
+							</div> <!-- general > sidebar -->
+						</div>
+					</div> <!-- general tab-pane -->
+					<div class="tab-pane" id="files">
+						<?php if($product_type == 'reguler') : ?>
+						<div class="panel panel-default">
+							<div class="panel-heading"><?php echo JText::_('COM_DIGICOM_PRODUCT_REGULAR_FILES_SELECTION', true);?></div>
+							<div class="panel-body"><?php echo JLayoutHelper::render('edit.files', $this); ?></div>
+						</div> <!-- .panel regular files -->
+						<?php else: ?>
+						<div class="panel panel-default">
+							<div class="panel-heading"><?php echo JText::_('COM_DIGICOM_PRODUCT_BUNDLE_FILES_SELECTION', true);?></div>
+							<div class="panel-body"><?php echo JLayoutHelper::render('edit.bundle', $this); ?></div>
+						</div> <!-- .panel regular files -->
+						<?php endif; ?>
+						<!-- Params -->
+						<?php echo $this->loadTemplate('params'); ?>
 					</div>
-				<?php echo JHtml::_('bootstrap.endTab'); ?>
-
-				<?php echo JHtml::_('bootstrap.addTab', 'digicomTabImages', 'full-image', JText::_('Full Image', true)); ?>
-					<div class="product-image">
-							<?php echo $this->form->getControlGroup('image_full'); ?>
-					</div>
-				<?php echo JHtml::_('bootstrap.endTab'); ?>
-
-				<?php echo JHtml::_('bootstrap.endTabSet'); ?>
-
-				<?php echo JLayoutHelper::render('sidebars.sidebar', $this); ?>
-
-			</div>
-		</div>
-
-		<input type="hidden" name="option" value="com_digicom" />
-		<input type="hidden" name="task" value="" />
-		<input type="hidden" name="jform[product_type]" value="<?php echo $product_type; ?>" />
-		<input type="hidden" name="view" value="product" />
-		<input type="hidden" name="state_filter" value="<?php echo JRequest::getVar("state_filter", "-1"); ?>" />
-		<input type="hidden" name="return" value="<?php echo $input->getCmd('return'); ?>" />
-		<?php echo JHtml::_('form.token'); ?>
-
-	</div>
-</div>
+				</div>
+			</div> <!-- .page-content end -->
+		</div> <!-- .tx-main -->
+	</div> <!-- #digicom -->
+	
+	<input type="hidden" name="option" value="com_digicom" />
+	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="jform[product_type]" value="<?php echo $product_type; ?>" />
+	<input type="hidden" name="view" value="product" />
+	<input type="hidden" name="state_filter" value="<?php echo JRequest::getVar("state_filter", "-1"); ?>" />
+	<input type="hidden" name="return" value="<?php echo $input->getCmd('return'); ?>" />
+	<?php echo JHtml::_('form.token'); ?>
 </form>
 <?php
 	echo JHtml::_(
@@ -180,7 +199,3 @@ window.onload = function() {
 		)
 	);
 ?>
-<div class="dg-footer">
-	<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
-</div>
-</div>

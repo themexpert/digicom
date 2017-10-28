@@ -68,17 +68,10 @@ class DigiComViewProduct extends JViewLegacy
 		// Since we don't track these assets at the item level, use the category id.
 		$canDo		= JHelperContent::getActions('com_digicom', 'category', $this->item->catid);
 
-		$text = ($isNew ? JText::_('COM_DIGICOM_MANAGER_PRODUCT_NEW_TITLE') : JText::_('COM_DIGICOM_MANAGER_PRODUCT_EDIT_TITLE') );
-
 		JToolbarHelper::title(JText::_('COM_DIGICOM_MANAGER_PRODUCT_TITLE_SITE'), 'link products');
 
 		$bar = JToolBar::getInstance('toolbar');
 		$layout = new JLayoutFile('toolbar.title');
-		$title=array(
-				'title' => $text,
-				'class' => 'product'
-			);
-		$bar->appendButton('Custom', $layout->render($title), 'title');
 
 		if(!$isNew){
 			$layout = new JLayoutFile('toolbar.links');
