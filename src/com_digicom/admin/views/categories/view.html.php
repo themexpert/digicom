@@ -152,11 +152,6 @@ class DigiComViewCategories extends JViewLegacy
 		}
 
 		$layout = new JLayoutFile('toolbar.title');
-		$title = array(
-			'title' => $ptitle,
-			'class' => 'product'
-		);
-		$bar->appendButton('Custom', $layout->render($title), 'title');
 
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
