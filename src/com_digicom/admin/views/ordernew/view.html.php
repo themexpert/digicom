@@ -22,29 +22,18 @@ class DigiComViewOrderNew extends JViewLegacy
 
 	function display( $tpl = null )
 	{
-
-
 		$this->state	= $this->get('State');
 		$this->item		= $this->get('Item');
 		$this->form		= $this->get('Form');
 		$this->configs 	= $this->get('configs');
 		$this->promocode 	= $this->get('promocode');
 
-
 		JToolBarHelper::title( JText::_( 'COM_DIGICOM_ORDER_CREATE_NEW_ORDER_TOOLBAR_TITLE_SITE' ), 'generic.png' );
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout
-		$layout = new JLayoutFile('toolbar.title');
-		$title=array(
-			'title' => JText::_( 'COM_DIGICOM_ORDER_CREATE_NEW_ORDER_TOOLBAR_TITLE' ),
-			'class' => 'title'
-		);
-		$bar->appendButton('Custom', $layout->render($title), 'title');
+	
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
-
-		$layout = new JLayoutFile('toolbar.video');
-		$bar->appendButton('Custom', $layout->render(array()), 'video');
 
 		JToolBarHelper::save('ordernew.save');
 		JToolBarHelper::cancel('order.cancel');

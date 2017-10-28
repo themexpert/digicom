@@ -4344,6 +4344,11 @@ button#digicom .close {
 #digicom .btn-danger:hover {
   background: #dc3545;
 }
+#digicom .btn.modal {
+  width: auto;
+  margin: 10px 0;
+  border-radius: 4px;
+}
 #digicom .modal {
   width: 768px;
   margin-left: calc(-384px);
