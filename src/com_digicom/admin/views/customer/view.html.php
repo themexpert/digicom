@@ -26,24 +26,15 @@ class DigiComViewCustomer extends JViewLegacy {
 
 		$bar = JToolBar::getInstance('toolbar');
 		$layout = new JLayoutFile('toolbar.title');
-		$title 	= array(
-								'title' => $text . " <small>[ " . $customer->name . " ]</small>",
-								'class' => 'title'
-							);
-		$bar->appendButton('Custom', $layout->render($title), 'title');
 
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
-
-		$layout = new JLayoutFile('toolbar.video');
-		$bar->appendButton('Custom', $layout->render(array()), 'video');
 
 		JToolBarHelper::apply('customer.apply');
 		JToolBarHelper::save('customer.save');
 
 		JToolBarHelper::divider();
 		JToolBarHelper::cancel ('customer.cancel');
-
 
 		$this->assign("cust", $customer);
 		$this->assign("user", $user);
