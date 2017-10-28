@@ -153,7 +153,7 @@ JHTML::_('behavior.tooltip');
 					<div class="col-md-5">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<?php echo JText::_( 'COM_DIGICOM_ORDER_DETAILS_HEADER_TITLE' ); ?>
+								<?php echo JText::_( 'COM_DIGICOM_ORDER_OPTIONS' ); ?>
 							</div> <!-- .panel-heading -->
 							<div class="panel-body">
 								<?php echo $this->form->renderField('userid'); ?>
