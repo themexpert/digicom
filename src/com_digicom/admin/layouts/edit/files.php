@@ -23,9 +23,9 @@ $fileSampleRow .= '</div>';
 $fileSampleRow .= '</td>';
 $fileSampleRow .= '<td><input type="text" name="jform[file][{{row-count-placeholder}}][name]" id="files_row_count_placeholder_id_name" placeholder="File Name"/></td>';
 $fileSampleRow .= '<td>';
-$fileSampleRow .= '<div class="input-prepend input-append" style="display: block;">';
-$fileSampleRow .= '<input type="text" name="jform[file][{{row-count-placeholder}}][url]" id="files_row_count_placeholder_id_url" placeholder="Upload or enter the file URL" class="span8"/>';
-$fileSampleRow .= '<a class="files_uploader_modal btn modal" title="Select" href="javascript:;" onclick="openModal(this);">Select</a>';
+$fileSampleRow .= '<div class="input-group">';
+$fileSampleRow .= '<input type="text" name="jform[file][{{row-count-placeholder}}][url]" id="files_row_count_placeholder_id_url" placeholder="Upload or enter the file URL" class="form-control"/>';
+$fileSampleRow .= '<span class="input-group-btn"><a class="files_uploader_modal btn btn-primary" title="Select File" href="javascript:;" onclick="openModal(this);">Select File</a></span>';
 $fileSampleRow .= '</div>';
 $fileSampleRow .= '</td>';
 $fileSampleRow .= '<td style="vertical-align: middle;">';
@@ -37,9 +37,7 @@ $fileSampleRow .= '</tr>';
 $document->addScriptDeclaration("var fileSampleRow = '" . $fileSampleRow . "';");
 ?>
 <fieldset class="adminform">
-	<legend><?php echo JText::_('COM_DIGICOM_PRODUCT_SINGLE_FILES');?></legend>
 	<div id="digicom_item_files_items" class="repeat">
-
 		<table class="table table-striped wrapper" id="filesitemList">
 			<thead>
 				<tr>
@@ -82,15 +80,12 @@ $document->addScriptDeclaration("var fileSampleRow = '" . $fileSampleRow . "';")
 							name="jform[file][<?php echo $key; ?>][name]" placeholder="File Name" value="<?php echo (isset($value->name) ? $value->name : ''); ?>" />
 						</td>
 						<td>
-							<div class="input-prepend input-append" style="display: block;">
-								<input type="text" name="jform[file][<?php echo $key; ?>][url]" id="files_<?php echo $key; ?>_url" placeholder="Upload or enter the file URL" class="span8"
+							<div class="input-group">
+								<input type="text" name="jform[file][<?php echo $key; ?>][url]" id="files_<?php echo $key; ?>_url" placeholder="Upload or enter the file URL" class="form-control"
 								value="<?php echo (isset($value->url) ? $value->url : ''); ?>" />
-
-								<a class="files_uploader_modal btn modal" title="Select"
-									href="javascript:;" onclick="openModal(this);">
-
-									Select
-								</a>
+								<span class="input-group-btn">
+									<a class="files_uploader_modal btn btn-primary" title="Select" href="javascript:;" onclick="openModal(this);">Select File</a>
+								</span>
 							</div>
 						</td>
 						<td style="vertical-align: middle;">

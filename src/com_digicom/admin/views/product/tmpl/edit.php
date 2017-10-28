@@ -163,7 +163,7 @@ window.onload = function() {
 						<?php if($product_type == 'reguler') : ?>
 						<div class="panel panel-default">
 							<div class="panel-heading"><?php echo JText::_('COM_DIGICOM_PRODUCT_REGULAR_FILES_SELECTION', true);?></div>
-							<div class="panel-body"><?php echo JLayoutHelper::render('edit.files', $this); ?></div>
+							<?php echo JLayoutHelper::render('edit.files', $this); ?>
 						</div> <!-- .panel regular files -->
 						<?php else: ?>
 						<div class="panel panel-default">
