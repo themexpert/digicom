@@ -13,21 +13,10 @@ JHtmlBehavior::core();
 ?>
 
 <div id="j-toggle-sidebar-wrapper">
-	<div id="j-toggle-button-wrapper" class="j-toggle-button-wrapper">
-		<?php echo JLayoutHelper::render('joomla.sidebars.toggle'); ?>
-	</div>
-	<div id="j-toggle-sidebar-header" class="j-toggle-sidebar-header">
-		<?php echo JText::_('JTOGGLE_SIDEBAR_LABEL');?>
-	</div>
 	<div id="sidebar" class="sidebar">
 		<div class="sidebar-nav">
 			<?php if ($displayData->displayMenu) : ?>
 			<ul id="submenu" class="nav nav-list">
-				<li>
-					<a class="dglogo" href="index.php?option=com_digicom">
-						<?php echo JText::_('COM_DIGICOM');?>
-					</a>
-				</li>
 				<?php
 				$total = count($displayData->list);
 				$i = 1;

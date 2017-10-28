@@ -107,13 +107,13 @@ window.onload = function() {
 						<div class="row">
 							<div class="col-md-8">
 								<div class="panel panel-default">
-									<div class="panel-heading">Basic</div>
+									<div class="panel-heading">Product Info</div>
 									<div class="panel-body">
 										<?php echo JLayoutHelper::render('edit.title_alias_price', $this); ?>
 									</div>
 								</div>
 								<div class="panel panel-default">
-									<div class="panel-heading">Content</div>
+									<div class="panel-heading">Product Descriptoin</div>
 									<div class="panel-body">
 										<div class="product-short-desc control-group">
 											<?php echo $this->form->getLabel('introtext'); ?>
