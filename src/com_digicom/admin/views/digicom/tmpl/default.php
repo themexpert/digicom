@@ -84,15 +84,14 @@ $monthlyPrice = DigiComHelperChart::getMonthLabelPrice($monthlyDay);
 									var data = {
 										labels: [<?php echo $monthlyDay; ?>],
 										datasets: [
-
 											{
 												label: "Monthly Report",
-												fillColor: "#e6f3f9",
-												strokeColor: "#1562AD",
-												pointColor: "#1562AD",
-												pointStrokeColor: "#1562AD",
-												pointHighlightFill: "#e6f3f9",
-												pointHighlightStroke: "#1562AD",
+												fillColor: "#e3f0ff",
+												strokeColor: "#007bff",
+												pointColor: "#007bff",
+												pointStrokeColor: "#007bff",
+												pointHighlightFill: "#e3f0ff",
+												pointHighlightStroke: "#007bff",
 												data: [<?php echo $monthlyPrice; ?>]
 											}
 										]
@@ -115,7 +114,6 @@ $monthlyPrice = DigiComHelperChart::getMonthLabelPrice($monthlyDay);
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								<?php echo JText::_('COM_DIGICOM_REPORTS_LATEST_ORDERS'); ?>
-								<div class="pull-right"><a href="index.php?option=com_digicom&view=orders"><?php echo JText::_('COM_DIGICOM_ALL_ORDERS'); ?></a></div>
 							</div>
 							<table class="table table-striped">
 								<thead>
@@ -145,7 +143,7 @@ $monthlyPrice = DigiComHelperChart::getMonthLabelPrice($monthlyDay);
 												</a>
 											</strong>
 										</td>
-										<td><span class="small pull-right"><?php echo DigiComHelperDigiCom::format_price($order->amount, $order->currency, true, $configs); ?></span></td>
+										<td><span class="label label-success"><?php echo DigiComHelperDigiCom::format_price($order->amount, $order->currency, true, $configs); ?></span></td>
 										<td><span class="small"><?php echo $order->order_date; ?></span></td>
 									</tr>
 								<?php endforeach; ?>
@@ -157,12 +155,11 @@ $monthlyPrice = DigiComHelperChart::getMonthLabelPrice($monthlyDay);
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								 <?php echo JText::_('COM_DIGICOM_REPORTS_MOST_SOLD_PRODUCTS'); ?>
-								 <div class="pull-right"><a href="<?php echo JRoute::_('index.php?option=com_digicom&view=products');?>"><?php echo JText::_('COM_DIGICOM_RECENT_PRODUCTS'); ?></a></div>
 							</div>
 							<table class="table table-striped" style="text-align: center;">
 								<thead>
 								<tr>
-									<th width="15%"><?php echo JText::_('COM_DIGICOM_NAME'); ?></th>
+									<th><?php echo JText::_('COM_DIGICOM_NAME'); ?></th>
 									<th><?php echo JText::_('COM_DIGICOM_PRODUCTS_TYPE'); ?></th>
 									<th><?php echo JText::_('COM_DIGICOM_PRICE'); ?></th>
 									<th><?php echo JText::_('COM_DIGICOM_TOTAL_SOLD'); ?></th>
@@ -172,9 +169,9 @@ $monthlyPrice = DigiComHelperChart::getMonthLabelPrice($monthlyDay);
 								<?php foreach($this->most_sold AS $product) : ?>
 								<tr>
 									<td><a href="<?php echo JRoute::_('index.php?option=com_digicom&task=product.edit&id='.$product->productid);?>"><?php echo $product->name;?></a></td>
-									<td><span class="label label-ds"><?php echo ($product->package_type =='reguler' ? ucfirst($product->package_type) : JText::sprintf('COM_DIGICOM_BUNDLE',ucfirst($product->package_type)));?></span></td>
+									<td><?php echo ($product->package_type =='reguler' ? ucfirst($product->package_type) : JText::sprintf('COM_DIGICOM_BUNDLE',ucfirst($product->package_type)));?></td>
 									<td><?php echo DigiComHelperDigiCom::format_price($product->price, $configs->get('currency','USD'), true, $configs);?></td>
-									<td><?php echo $product->total;?></td>
+									<td><span class="label label-primary"><?php echo $product->total;?></span></td>
 								</tr>
 								<?php endforeach; ?>
 								</tbody>

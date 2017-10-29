@@ -32,8 +32,8 @@ class digicomViewdigicom extends JViewLegacy {
 
 	function display ($tpl =  null ) {
 
-		$this->latest_orders = DigiComHelperDigiCom::getOrders(5);
-		$this->most_sold = DigiComHelperDigiCom::getMostSoldProducts(5);
+		$this->latest_orders = DigiComHelperDigiCom::getOrders(10);
+		$this->most_sold = DigiComHelperDigiCom::getMostSoldProducts(10);
 
 		$this->totalOrder = $this->get('reportTotal');
 		$this->reportOrders = $this->get('reportOrders');
@@ -61,23 +61,10 @@ class digicomViewdigicom extends JViewLegacy {
 
 		$bar = JToolBar::getInstance('toolbar');
 
-		$layout = new JLayoutFile('toolbar.title');
-		$title = array(
-			'title' => JText::_( 'COM_DIGICOM_DASHBOARD_TOOLBAR_TITLE' ),
-			'class' => 'product'
-		);
-		$bar->appendButton('Custom', $layout->render($title), 'title');
-
 		if ($canDo->get('core.create')){
 			$layout = new JLayoutFile('toolbar.products');
 			$bar->appendButton('Custom', $layout->render(array()), 'products');
 		}
-
-		$layout = new JLayoutFile('toolbar.settings');
-		$bar->appendButton('Custom', $layout->render(array()), 'settings');
-
-		$layout = new JLayoutFile('toolbar.video');
-		$bar->appendButton('Custom', $layout->render(array()), 'video');
 
 	}
 
