@@ -22,60 +22,57 @@ if($canDo->get('core.create') && $canDo->get('core.delete'))
 }
 $tmpl = JFactory::getApplication()->input->get('tmpl','');
 ?>
-<div id="digicom" class="dc digicom">
-<form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&view=filemanager'); ?>" method="post" name="adminForm" autocomplete="off" class="form-horizontal">
-<?php if (!empty( $this->sidebar)) : ?>
-	<div id="j-sidebar-container" class="">
-		<?php echo $this->sidebar; ?>
-	</div>
-	<div id="j-main-container" class="">
-<?php else : ?>
-	<div id="j-main-container" class="">
-<?php endif;?>
-		<?php if($tmpl != 'component') :?>
-		<div class="dg-alert dg-alert-with-icon">
-			<span class="icon-info"></span><span class="text-warning"><?php echo JText::_("COM_DIGICOM_FILE_MANAGER_NOTICE_CREATE_INDEX_HTML"); ?></span>
-		</div>
-		<div class="dg-alert dg-alert-with-icon">
-			<span class="icon-flag"></span><?php echo JText::sprintf("COM_DIGICOM_FILE_MANAGER_HEADER_NOTICE",ini_get('upload_max_filesize')); ?>
-		</div>
-	<?php endif; ?>
-					<?php if($showManager){?>
-					<script type="text/javascript">
-						jQuery(document).ready(function() {
-							var basePath = '<?php echo JURI::root(true); ?>';
-							var elf = jQuery('#elfinder').elfinder({
-								url : '<?php echo JURI::base(true); ?>/index.php?option=com_digicom&view=filemanager&task=filemanager.connector&no_html=1',
-								<?php if($this->mimes): ?>
-								onlyMimes: [<?php echo $this->mimes; ?>],
-								<?php endif; ?>
-								<?php if($this->fieldID): ?>
-								getFileCallback : function(path) {
-									value = path.replace(basePath, '');
-									parent.elFinderUpdate('<?php echo $this->fieldID; ?>', value);
-								}
-								<?php else: ?>
-								height: 600
-								<?php endif; ?>
-							}).elfinder('instance');
-						});
-					</script>
-					<?php } ?>
-					<form action="<?php echo JRoute::_('index.php?option=com_digicom&view=filemanager&no_html=1'); ?>" method="post" class="clearfix" name="adminForm" id="adminForm">
 
-			<div id="">
+<form id="adminForm" action="<?php echo JRoute::_('index.php?option=com_digicom&view=filemanager'); ?>" method="post" name="adminForm" autocomplete="off">
+	<div id="digicom" class="dc digicom">
+		<div class="tx-sidebar"><?php echo $this->sidebar; ?></div> <!-- .tx-sidebar -->
+		<div class="tx-main">
+			<div class="page-header">
+				<h1>File Manager</h1>
+				<p>Manage all your store files from here.</p>
+			</div> <!-- .page-header -->
+			<div class="page-content">
+				<?php if($tmpl != 'component') :?>
+				<div class="alert alert-info">
+					<?php echo JText::_("COM_DIGICOM_FILE_MANAGER_NOTICE_CREATE_INDEX_HTML"); ?>
+				</div>
+				<div class="alert">
+					<?php echo JText::sprintf("COM_DIGICOM_FILE_MANAGER_HEADER_NOTICE",ini_get('upload_max_filesize')); ?>
+				</div>
+				<?php endif; ?>
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<?php if($showManager){?>
+						<script type="text/javascript">
+							jQuery(document).ready(function() {
+								var basePath = '<?php echo JURI::root(true); ?>';
+								var elf = jQuery('#elfinder').elfinder({
+									url : '<?php echo JURI::base(true); ?>/index.php?option=com_digicom&view=filemanager&task=filemanager.connector&no_html=1',
+									<?php if($this->mimes): ?>
+									onlyMimes: [<?php echo $this->mimes; ?>],
+									<?php endif; ?>
+									<?php if($this->fieldID): ?>
+									getFileCallback : function(path) {
+										value = path.replace(basePath, '');
+										parent.elFinderUpdate('<?php echo $this->fieldID; ?>', value);
+									}
+									<?php else: ?>
+									height: 600
+									<?php endif; ?>
+								}).elfinder('instance');
+							});
+						</script>
+						<?php } ?>
+						<form action="<?php echo JRoute::_('index.php?option=com_digicom&view=filemanager&no_html=1'); ?>" method="post" class="clearfix" name="adminForm" id="adminForm">
 							<!--// Start Elfinder-->
 							<div id="elfinder"></div>
-
 							<input type="hidden" name="task" value="" />
 							<input type="hidden" name="boxchecked" value="0" />
 							<?php echo JHtml::_('form.token'); ?>
-						</div>
-					</form>
-
+						</form>
+					</div>
+				</div>
+			</div> <!-- .page-content -->
+		</div> <!-- .tx-main -->
 	</div>
-	</form>
-	<div class="dg-footer">
-		<?php echo JText::_('COM_DIGICOM_CREDITS'); ?>
-	</div>
-</div>
+</form>

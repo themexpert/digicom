@@ -27,9 +27,9 @@ JHtmlBehavior::core();
 					}
 
 					if (isset ($item[2]) && $item[2] == 1) : ?>
-						<li class="active hasTooltip" data-original-title="<?php echo $item[0]; ?>" data-placement="right">
+						<li class="active">
 					<?php else : ?>
-						<li class="hasTooltip" title="<?php echo $item[0]; ?>" data-placement="right">
+						<li>
 					<?php endif;
 					if ($displayData->hide) : ?>
 						<a class="nolink"><?php echo $item[0]; ?></a>
@@ -40,12 +40,11 @@ JHtmlBehavior::core();
 							<?php echo $item[0]; ?>
 						<?php endif;
 					endif; ?>
-					</li>
+						</li>
 					<?php
 					$i++;
 				endforeach;
 				?>
-
 			</ul>
 			<?php endif; ?>
 			<?php if ($displayData->displayMenu && $displayData->displayFilters) : ?>
