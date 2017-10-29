@@ -16,7 +16,6 @@ JHtml::_('formbehavior.chosen', 'select');
 $app = JFactory::getApplication();
 $document = JFactory::getDocument();
 $input = $app->input;
-$input->set('layout', 'dgform');
 ?>
 <div id="digicom" class="dc digicom">
 <form action="index.php" method="post" name="adminForm" id="adminForm">

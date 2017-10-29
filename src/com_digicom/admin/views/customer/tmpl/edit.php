@@ -20,7 +20,6 @@ $app = JFactory::getApplication();
 $input = $app->input;
 
 $document = JFactory::getDocument();
-$input->set('layout', 'edit');
 $total_orders = count($cust->orders);
 ?>
 

@@ -33,9 +33,6 @@ class DigiComViewOrder extends JViewLegacy
 		JToolBarHelper::title( JText::_( 'COM_DIGICOM_ORDER_DETAILS_TOOLBAR_TITLE_SITE' ), 'generic.png' );
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout
-		$layout = new JLayoutFile('toolbar.settings');
-		$bar->appendButton('Custom', $layout->render(array()), 'settings');
-
 		JToolBarHelper::apply('order.apply');
 		JToolBarHelper::save('order.save');
 		JToolBarHelper::Cancel('order.cancel');

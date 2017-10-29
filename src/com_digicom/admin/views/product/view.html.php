@@ -120,10 +120,5 @@ class DigiComViewProduct extends JViewLegacy
 			JToolbarHelper::cancel('product.cancel', 'JTOOLBAR_CLOSE');
 		}
 
-		JToolbarHelper::divider();
-
-		$layout = new JLayoutFile('toolbar.video');
-		$bar->appendButton('Custom', $layout->render(array()), 'video');
-
 	}
 }

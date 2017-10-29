@@ -24,7 +24,6 @@
 	$date = $order->order_date;
 	$app = JFactory::getApplication();
 	$input = $app->input;
-	$input->set('layout', 'edit');
 ?>
 
 <form id="adminForm" action="index.php?option=com_digicom&view=order&id=<?php echo $order->id; ?>" name="adminForm" method="post">

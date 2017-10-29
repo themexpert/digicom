@@ -50,9 +50,6 @@ class DigiComViewOrders extends JViewLegacy
 		// Instantiate a new JLayoutFile instance and render the layout
 		$layout = new JLayoutFile('toolbar.title');
 
-		$layout = new JLayoutFile('toolbar.settings');
-		$bar->appendButton('Custom', $layout->render(array()), 'settings');
-
 		if ($canDo->get('core.create')){
 			JToolBarHelper::addNew('ordernew.add');
 			JToolBarHelper::divider();

@@ -21,8 +21,6 @@ $input = $app->input;
 
 $assoc = JLanguageAssociations::isEnabled();
 
-$input->set('layout', 'dgform');
-
 JFactory::getDocument()->addScriptDeclaration('
 	Joomla.submitbutton = function(task)
 	{

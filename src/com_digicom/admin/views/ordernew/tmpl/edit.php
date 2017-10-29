@@ -17,7 +17,6 @@ $document = JFactory::getDocument();
 $doc = JFactory::getDocument();
 $app = JFactory::getApplication();
 $input = $app->input;
-$input->set('layout', 'edit');
 
 $link = 'index.php?option=com_digicom&amp;view=products&amp;layout=modal&amp;tmpl=component&amp;' . JSession::getFormToken() . '=1';
 $js = "

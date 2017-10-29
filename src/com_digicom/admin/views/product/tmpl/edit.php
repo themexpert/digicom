@@ -20,7 +20,6 @@ JHtml::_('formbehavior.chosen');
 
 $app = JFactory::getApplication();
 $input = $app->input;
-$input->set('layout', 'edit');
 
 // Get product type
 $product_type = $this->item->product_type;

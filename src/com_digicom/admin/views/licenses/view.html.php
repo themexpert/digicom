@@ -40,29 +40,5 @@ class DigiComViewLicenses extends JViewLegacy
 		$canDo = JHelperContent::getActions('com_digicom', 'component');
 
 		$bar = JToolBar::getInstance('toolbar');
-		// Instantiate a new JLayoutFile instance and render the layout
-
-		$layout = new JLayoutFile('toolbar.settings');
-		$bar->appendButton('Custom', $layout->render(array()), 'settings');
-		
-		// $layout = new JLayoutFile('toolbar.video');
-		// $bar->appendButton('Custom', $layout->render(array()), 'video');
-
-		// if ($canDo->get('core.create'))
-		// {
-		// 	JToolBarHelper::addNew('license.add');
-		// 	JToolBarHelper::divider();
-		// }
-		// if ($canDo->get('core.edit.state'))
-		// {
-		// 	JToolBarHelper::publishList('discounts.publish');
-		// 	JToolBarHelper::unpublishList('discounts.unpublish');
-		// }
-		// if ($canDo->get('core.edit.delete'))
-		// {
-		// 	JToolBarHelper::deleteList(JText::_('COM_DIGICOM_DISCOUNTS_DELETE_CONFIRMATION'),'discounts.delete');
-		// 	JToolBarHelper::divider();
-		// }
-
 	}
 }
