@@ -41,16 +41,10 @@ class DigiComViewLicenses extends JViewLegacy
 
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout
-		$layout = new JLayoutFile('toolbar.title');
-		$title=array(
-			'title' => JText::_( 'COM_DIGICOM_LICENSES_TOOLBAR_TITLE' ),
-			'class' => 'title'
-		);
-		$bar->appendButton('Custom', $layout->render($title), 'title');
 
 		$layout = new JLayoutFile('toolbar.settings');
 		$bar->appendButton('Custom', $layout->render(array()), 'settings');
-
+		
 		// $layout = new JLayoutFile('toolbar.video');
 		// $bar->appendButton('Custom', $layout->render(array()), 'video');
 
