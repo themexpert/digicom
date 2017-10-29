@@ -18,8 +18,6 @@ class DigiComViewConfigs extends JViewLegacy
 		if($layout == 'templatepreview'){
 			parent::display($tpl);
 		}
-
-
 		$form = null;
 		$component = null;
 
@@ -71,16 +69,7 @@ class DigiComViewConfigs extends JViewLegacy
 
 		$bar = JToolBar::getInstance('toolbar');
 		// Instantiate a new JLayoutFile instance and render the layout
-		$layout = new JLayoutFile('toolbar.title');
-		$title=array(
-			'title' => JText::_( 'COM_DIGICOM_SETTINGS_TOOLBAR_TITLE' ),
-			'class' => 'title'
-		);
-		$bar->appendButton('Custom', $layout->render($title), 'title');
-
-		$layout = new JLayoutFile('toolbar.settings');
-		$bar->appendButton('Custom', $layout->render(array()), 'settings');
-
+		
 		JToolBarHelper::save('configs.save');
 		JToolBarHelper::apply('configs.apply');
 		JToolBarHelper::divider();
