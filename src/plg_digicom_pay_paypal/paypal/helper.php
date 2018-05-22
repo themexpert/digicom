@@ -198,8 +198,22 @@ class plgDigiCom_PayPaypalHelper
 		}
 		else if (strcmp ($response, "INVALID") == 0)
 		{
-			// IPN invalid, log for manual investigation
-			$status = false;
+			if($params->get('bypass_validation', false))
+			{
+				// 7'th march 2018
+				// tmp solution
+				if($data['payment_status'] == 'Completed'){
+					$status = true;
+				}else{
+					$status = false;				
+				}
+
+			}
+			else
+			{
+				// IPN invalid, log for manual investigation
+				$status = false; // commented for now
+			}
 		}
 		
 		$data['CURL_response'] = $response;

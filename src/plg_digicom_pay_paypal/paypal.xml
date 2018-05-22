@@ -51,8 +51,16 @@
 					description="PLG_PAYPAL_WRITE_LOG_DESC"
 					class="btn-group"
 				>
-					<option value="0">JYES</option>
-					<option value="1">JNO</option>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+
+				<field name="bypass_validation" type="radio" default="0" label="PLG_PAYPAL_BYPASS_VALIDATION_TITLE"
+					description="PLG_PAYPAL_BYPASS_VALIDATION_DESC"
+					class="btn-group"
+				>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
 				</field>
 
 			</fieldset>
