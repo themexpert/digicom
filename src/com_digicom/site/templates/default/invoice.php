@@ -155,7 +155,7 @@ $k = 0;
 									</td>
 
 									<td>
-									 	<?php echo ucfirst( $prod->package_type ); ?>
+										 <td><?php echo JText::_('COM_DIGICOM_PRODUCT_TYPE_'.strtoupper($prod->package_type)); ?></td>
 									</td>
 
 									<td style="text-align: right;">
