@@ -75,7 +75,10 @@ class Com_DigiComInstallerScript
 			self::removeTemplateScript();
 
 		}
-		self::updateDB();
+		if ( $type == 'update' ) {
+			self::updateDB();
+		}
+		
 		return;
 	}
 

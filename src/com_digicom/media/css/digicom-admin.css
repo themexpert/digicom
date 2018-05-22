@@ -230,13 +230,6 @@ body.com_digicom .chzn-container .chzn-results li.highlighted {
   background: #1976d2;
   color: #fff;
 }
-body.com_digicom .chzn-container-multi .chzn-choices {
-  background: #fff;
-  border-color: #dfdfdf;
-}
-body.com_digicom .chzn-container-multi .chzn-choices li.search-choice {
-  background: #fff;
-}
 body.com_digicom .chzn-container-active .chzn-choices {
   border: 1px solid #1976d2;
 }
@@ -731,14 +724,11 @@ body.com_digicom #j-main-container {
 }
 body.com_digicom #system-message-container.j-toggle-main,
 body.com_digicom #j-main-container.j-toggle-main,
-body.com_digicom #system-debug.j-toggle-main {
-  float: none;
-}
-body.com_digicom div#system-debug,
 body.com_digicom div#system-message-container {
   margin: 0px 15px 0px 215px;
 }
-body.com_digicom div#system-debug > div,
+body.com_digicom #system-message-container.j-toggle-main > div,
+body.com_digicom #j-main-container.j-toggle-main > div,
 body.com_digicom div#system-message-container > div {
   margin: 20px 0 0;
 }
