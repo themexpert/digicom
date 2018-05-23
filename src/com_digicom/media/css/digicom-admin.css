@@ -514,6 +514,7 @@ body.com_digicom.sidebar-collapse #j-sidebar-container,
 body.com_digicom.layout-dgform #j-sidebar-container {
   width: 38px;
   position: static;
+  margin: 0px;
 }
 body.com_digicom.sidebar-collapse #j-sidebar-container #sidebar .sidebar-nav #submenu.nav-list > li,
 body.com_digicom.layout-dgform #j-sidebar-container #sidebar .sidebar-nav #submenu.nav-list > li {
@@ -538,7 +539,15 @@ body.com_digicom.sidebar-collapse div#system-debug,
 body.com_digicom.layout-dgform div#system-debug,
 body.com_digicom.sidebar-collapse div#system-message-container,
 body.com_digicom.layout-dgform div#system-message-container {
-  margin-left: 53px;
+  margin: -20px 0 0 0;
+  width: 100%;
+  padding: 0px;
+}
+body.com_digicom.sidebar-collapse div#system-debug > div,
+body.com_digicom.layout-dgform div#system-debug > div,
+body.com_digicom.sidebar-collapse div#system-message-container > div,
+body.com_digicom.layout-dgform div#system-message-container > div {
+  border-radius: 0px;
 }
 body.com_digicom .control-group {
   margin-bottom: 10px;
@@ -726,12 +735,20 @@ body.com_digicom #j-main-container {
   transition: all 0.3s ease-in-out;
 }
 body.com_digicom #system-message-container.j-toggle-main,
-body.com_digicom div#system-message-container {
-  margin: 0px 15px 0px 215px;
+body.com_digicom #j-main-container.j-toggle-main,
+body.com_digicom #system-debug.j-toggle-main {
+  float: none;
 }
-body.com_digicom #system-message-container.j-toggle-main > div,
+body.com_digicom div#system-debug,
+body.com_digicom div#system-message-container {
+  margin: 0;
+  width: 100%;
+  padding: 0px;
+}
+body.com_digicom div#system-debug > div,
 body.com_digicom div#system-message-container > div {
-  margin: 20px 0 0;
+  margin: 0;
+  border-radius: 0px;
 }
 body.com_digicom.layout-dgform #j-toggle-sidebar-wrapper {
   opacity: 0.3;

@@ -87,6 +87,7 @@
   #j-sidebar-container{
     width: @sidebar-collapse-width;
     position: static;
+    margin: 0px;
     #sidebar {
       .sidebar-nav{
         #submenu.nav-list {
@@ -113,6 +114,15 @@
     // margin-left: @sidebar-collapse-width; 
   }
   div#system-debug,
-  div#system-message-container {margin-left: 53px;}
+  div#system-message-container {
+    // margin-left: 53px;
+    margin: -20px 0 0 0;
+    width: 100%;
+    padding: 0px;
+
+    > div{
+			border-radius: 0px;
+    }
+  }
 
 }

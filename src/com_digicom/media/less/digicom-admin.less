@@ -274,16 +274,21 @@ body.com_digicom {
 	}
 
 	#system-message-container.j-toggle-main,
-	// #j-main-container.j-toggle-main,
-	// #system-debug.j-toggle-main {float: none;}
+	#j-main-container.j-toggle-main,
+	#system-debug.j-toggle-main {float: none;}
 
-	// div#system-debug,
+	div#system-debug,
 	div#system-message-container {
-		margin: 0px 15px 0px 215px;
+		// margin: 0px 15px 0px 215px;
+		margin: 0;
+		width: 100%;
+		padding: 0px;
 
-		> div {margin: 20px 0 0;}
+		> div {
+			margin: 0;
+			border-radius: 0px;
+		}
 	}
-
 
 	&.layout-dgform {
 		#j-toggle-sidebar-wrapper
