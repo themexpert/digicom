@@ -449,6 +449,8 @@ body.com_digicom #j-sidebar-container #sidebar {
 body.com_digicom #j-sidebar-container #sidebar #submenu {
   width: 200px;
   box-sizing: border-box;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a {
   padding: 5px 12px;
@@ -456,6 +458,7 @@ body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a {
   font-size: 14px;
   line-height: 24px;
   text-shadow: none;
+  margin: 0px;
 }
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a > span + span {
   display: inline-block;
@@ -723,12 +726,10 @@ body.com_digicom #j-main-container {
   transition: all 0.3s ease-in-out;
 }
 body.com_digicom #system-message-container.j-toggle-main,
-body.com_digicom #j-main-container.j-toggle-main,
 body.com_digicom div#system-message-container {
   margin: 0px 15px 0px 215px;
 }
 body.com_digicom #system-message-container.j-toggle-main > div,
-body.com_digicom #j-main-container.j-toggle-main > div,
 body.com_digicom div#system-message-container > div {
   margin: 20px 0 0;
 }
