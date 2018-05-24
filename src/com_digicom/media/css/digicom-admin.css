@@ -539,7 +539,7 @@ body.com_digicom.sidebar-collapse div#system-debug,
 body.com_digicom.layout-dgform div#system-debug,
 body.com_digicom.sidebar-collapse div#system-message-container,
 body.com_digicom.layout-dgform div#system-message-container {
-  margin: -20px 0 0 0;
+  margin: 0;
   width: 100%;
   padding: 0px;
 }
@@ -547,6 +547,7 @@ body.com_digicom.sidebar-collapse div#system-debug > div,
 body.com_digicom.layout-dgform div#system-debug > div,
 body.com_digicom.sidebar-collapse div#system-message-container > div,
 body.com_digicom.layout-dgform div#system-message-container > div {
+  margin: 0px;
   border-radius: 0px;
 }
 body.com_digicom .control-group {

@@ -69,20 +69,32 @@ $input->set('layout', 'dgform');
 								<?php
 								foreach ($this->form->getFieldset($name) as $field) :
 								?>
-									<div class="control-group">
-										<?php
-										if($field->getAttribute('type') == 'spacer') :?>
-											<?php echo '<h3>'.JText::_($field->getAttribute('label')).'</h3>'; ?>
-										<?php else: ?>
-											<div class="control-label">
-												<?php echo $field->label; ?>
-											</div>
-											<div class="controls">
-												<?php echo $field->input; ?>
-											</div>
-										<?php endif; ?>
-
-									</div>
+									<?php
+										$dataShowOn = '';
+										$groupClass = $field->type === 'Spacer' ? ' field-spacer' : '';
+									?>
+									<?php if ($field->showon) : ?>
+										<?php JHtml::_('jquery.framework'); ?>
+										<?php JHtml::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true)); ?>
+										<?php $dataShowOn = ' data-showon=\'' . json_encode(JFormHelper::parseShowOnConditions($field->showon, $field->formControl, $field->group)) . '\''; ?>
+									<?php endif; ?>
+									<?php if ($field->hidden) : ?>
+										<?php echo $field->input; ?>
+									<?php else : ?>
+										<div class="control-group<?php echo $groupClass; ?>"<?php echo $dataShowOn; ?>>
+											<?php
+											if($field->getAttribute('type') == 'spacer') :?>
+												<?php echo '<h3>'.JText::_($field->getAttribute('label')).'</h3>'; ?>
+											<?php else: ?>
+												<div class="control-label">
+													<?php echo $field->label; ?>
+												</div>
+												<div class="controls">
+													<?php echo $field->input; ?>
+												</div>
+											<?php endif; ?>
+										</div>
+									<?php endif; ?>
 								<?php endforeach; ?>
 							<?php else: ?>
 

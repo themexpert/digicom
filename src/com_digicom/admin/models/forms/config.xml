@@ -105,7 +105,8 @@
 
 		</fieldset>
 
-		<fieldset name="REGISTRATION">
+		<fieldset name="REGISTRATION"
+		addfieldpath="/administrator/components/com_content/models/fields">
 			<field
 				name="registration_spacer"
 				type="spacer"
@@ -176,6 +177,14 @@
 				description="COM_DIGICOM_SETTINGS_GENERAL_TOP_COUNTRIES_DESC"
 			/> -->
 
+			
+			<field
+				name="checkout_spacer"
+				type="spacer"
+				class="title"
+				label="COM_DIGICOM_SETTINGS_GENERAL_CHECKOUT_OPTIONS_FIELD_LABEL"
+			/>
+
 			<field
 				name="askterms"
 				type="radio"
@@ -186,17 +195,42 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 			</field>
-			<field
-				name="termsid"
-				type="sql"
-				default="10"
+			
+			<field 
+				name="termsid" 
+				type="modal_article"
 				label="COM_DIGICOM_SETTINGS_GENERAL_TERMS_CONDITION_ID"
 				description="COM_DIGICOM_TERMSID_TIP"
-				query="SELECT id, title FROM #__content"
-				key_field="id"
-				class="chosen"
-				value_field="title">
+				select="true"
+				new="true"
+				edit="true"
+				clear="true"
+				showon="askterms:1"
+			/>
+
+			<field
+				name="askprivacy"
+				type="radio"
+				class="btn-group"
+				label="COM_DIGICOM_SETTINGS_GENERAL_ASK_FOR_PRIVACY"
+				default="0"
+				description="COM_DIGICOM_SETTINGS_GENERAL_ASK_FOR_PRIVACY_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 			</field>
+
+			<field 
+				name="privacyid" 
+				type="modal_article"
+				label="COM_DIGICOM_SETTINGS_GENERAL_PRIVACY_ID"
+				description="COM_DIGICOM_SETTINGS_GENERAL_PRIVACY_ID_DESC"
+				select="true"
+				new="true"
+				edit="true"
+				clear="true"
+				showon="askprivacy:1"
+			/>
+			
 
 		</fieldset>
 		<fieldset name="CURRENCY"
