@@ -59,4 +59,42 @@ if($this->configs->get('askterms',0) == '1' && ($this->configs->get('termsid',0)
   echo JLayoutHelper::render('bt3.modal.main', $layoutData);
 
 endif;
+
+if($this->configs->get('askprivacy', 0) == '1' && ($this->configs->get('privacyid', 0) > 0)):
+
+  $db = JFactory::getDbo();
+  $sql = "select `title`, `alias`, `catid`, `introtext` from `#__content` where `id`=".intval($this->configs->get('privacyid'));
+  $db->setQuery($sql);
+  $db->query();
+
+  $result = $db->loadObject();
+  $privacy_title = $result->title;
+  $privacy_content = $result->introtext;
+
+  $layoutData = array(
+    'selector' => 'privacyShowModal',
+    'params'   => array(
+                    'title' => $privacy_title,
+                    'height' => 'auto',
+                    'width' => '1280',
+                    'footer' => '<button data-digicom-id="action-agree-privacy" class="action-agree btn btn-success" data-dismiss="modal" aria-hidden="true">' . JText::_("COM_DIGICOM_CART_AGREE_PRIVACY_BUTTON") . '</button> <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>'
+
+                  ),
+    'body'     => $terms_content
+  );
+  echo JLayoutHelper::render('bt3.modal.main', $layoutData);
+
+  $layoutData = array(
+    'selector' => 'privacyAlertModal',
+    'params'   => array(
+                    'title' => JText::_("COM_DIGICOM_WARNING"),
+                    'height' => '400px',
+                    'width' => '1280',
+                    'footer' => '<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>'
+                  ),
+    'body'     => JText::_("COM_DIGICOM_CART_ACCEPT_PRIVACY_AGREEMENT_REQUIRED_NOTICE")
+  );
+  echo JLayoutHelper::render('bt3.modal.main', $layoutData);
+
+endif;
 ?>

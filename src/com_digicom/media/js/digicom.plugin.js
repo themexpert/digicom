@@ -33,9 +33,16 @@ if (typeof jQuery === 'undefined') {
 
 			// on click show terms, show
 			Digicom.dataSet('showterms').click(function(e) {
-         e.preventDefault();
-         $('#termsShowModal').digicomodal('show');
+				e.preventDefault();
+				$('#termsShowModal').digicomodal('show');
 			});
+
+			// on click show privacy, show
+			Digicom.dataSet('showprivacy').click(function(e) {
+				e.preventDefault();
+				$('#privacyShowModal').digicomodal('show');
+			});
+
 
 			// on click show terms, show
 			Digicom.taskSet('loading').click(function() {
@@ -46,6 +53,10 @@ if (typeof jQuery === 'undefined') {
 			// on click agree, make the agreeterms accepet
 			Digicom.dataSet('action-agree').click(function() {
 			    $('input[name="agreeterms"]').attr('checked', 'checked');
+			});
+			// on click agree, make the privacy accept accepet
+			Digicom.dataSet('action-agree-privacy').click(function() {
+			    $('input[name="agreeprivacy"]').attr('checked', 'checked');
 			});
 
 			$(document).on("click", "input:radio[id^='jform_person']", function (event) {
@@ -293,13 +304,25 @@ if (typeof jQuery === 'undefined') {
 		{
 			// data-digicom-id
 			var agreeterms = true;
+			var agreeprivacy = true;
 			var processor = '';
+			
 			// check agree terms
 			if ( Digicom.dataSet('agreeterms').length ) {
 				agreeterms = Digicom.dataSet('agreeterms').prop( "checked" );
 			}
+			// check agree privacy
+			if ( Digicom.dataSet('agreeprivacy').length ) {
+				agreeprivacy = Digicom.dataSet('agreeprivacy').prop( "checked" );
+			}
+
 			if(!agreeterms){
 				$('#termsAlertModal').digicomodal('show');
+				return false;
+			}
+
+			if(!agreeprivacy){
+				$('#privacyAlertModal').digicomodal('show');
 				return false;
 			}
 
