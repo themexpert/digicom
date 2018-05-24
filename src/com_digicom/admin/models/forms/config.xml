@@ -81,6 +81,7 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 			</field>
+
 			<field
 				name="digicom_credit"
 				type="radio"
@@ -91,6 +92,7 @@
 					<option value="0">JHIDE</option>
 					<option value="1">JSHOW</option>
 			</field>
+
 			<field
 				name="enable_log"
 				type="radio"
@@ -101,7 +103,17 @@
 					<option value="0">JHIDE</option>
 					<option value="1">JSHOW</option>
 			</field>
-			
+
+			<field
+				name="show_mydata"
+				type="radio"
+				class="btn-group"
+				label="COM_DIGICOM_SETTINGS_GENERAL_SHOW_MYDATA_LABEL"
+				default="0"
+				description="COM_DIGICOM_SETTINGS_GENERAL_SHOW_MYDATA_DESC">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+			</field>
 
 		</fieldset>
 

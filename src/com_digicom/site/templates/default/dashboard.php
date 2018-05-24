@@ -28,6 +28,10 @@ $configs 		= $this->configs;
 	<div class="row">
 		<div class="col-md-7">
 			<p><?php echo JText::_('COM_DIGICOM_DASHBOARD_HEADER_INTRO'); ?></p>
+			<?php if($configs->get('show_mydata')): ?>
+				<?php $link = JRoute::_('index.php?option=com_digicom&view=mydata'); ?>
+				<p class="alert alert-info"><?php echo JText::sprintf('COM_DIGICOM_DASHBOARD_SHOW_MYDATA_LINK', $link); ?></p>
+			<?php endif;?>
 		</div>
 		<div class="col-md-5">
 			<div class="customer-info">
