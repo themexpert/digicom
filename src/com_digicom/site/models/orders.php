@@ -35,6 +35,9 @@ class DigiComModelOrders extends JModelList
 		$search = $app->input->get('search', '');
 		$this->setState('filter.search', $search);
 
+		$user = JFactory::getUser();
+		$this->setState('filter.userid', $user->id);
+
 		$params = $app->getParams();
 		$this->setState('params', $params);
 
@@ -49,15 +52,23 @@ class DigiComModelOrders extends JModelList
 	 */
 	protected function getListQuery()
 	{
-		$custommer = new DigiComSiteHelperSession();
-		$input = JFactory::getApplication()->input;
-		$search = $this->getState('filter.search');
+		// Create a new query object.
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
 
-		$sql = "SELECT o.*"
-				." FROM #__digicom_orders o, #__digicom_orders_details od"
-				." WHERE ".($search ? 'o.id = "'.$search.'" and ' : '')."o.userid=".$custommer->_customer->id." group by o.id order by o.id desc";
+		// Select the required fields from the table.
+		$query->select('a.*')
+			  ->from('#__digicom_orders as a')
+			  ->where('a.userid = ' . $db->quote($this->getState('filter.userid')));
 
-		return $sql;
+		// Filter by search
+		if ($this->getState('filter.search'))
+		{
+			$query->where('a.id = ' . $db->quote($this->getState('filter.search')));
+		}
+
+		// echo $query->__toString();die;
+		return $query;
 	}
 	
 }
