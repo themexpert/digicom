@@ -134,7 +134,7 @@ class DigiComSiteHelperLog {
     /*
     * method getLogs
     */
-    public static function getLogs($userid = null)
+    public static function getLogs($id = null)
     {
         $id = ($id ? $id : JFactory::getUser()->id); 
         $db = JFactory::getDBO();
