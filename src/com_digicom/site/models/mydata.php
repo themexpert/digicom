@@ -64,13 +64,8 @@ class DigiComModelMyData extends JModelList
                 $item->customer = new DigiComSiteHelperSession();
                 $item->license = DigiComSiteHelperLicense::getLicenses();
                 $item->logs = DigiComSiteHelperLog::getLogs();
-
-                // log
-                // orders
-                //     orderdetails
-                // states
-                // cart
-                // event
+                $item->orders = $this->getOrders();
+                                
                 $this->_item[$pk] = $item;
             }
 			catch (Exception $e)
@@ -93,6 +88,43 @@ class DigiComModelMyData extends JModelList
 		}
 
 		return $this->_item[$pk];
-	}
+    }
+    
+    function getOrders(){
+
+        // Get an instance of the generic articles model
+        $model = JModelLegacy::getInstance('Orders', 'DigicomModel', array('ignore_request' => true));
+        // Set application parameters in model
+		$app       = JFactory::getApplication();
+		$appParams = $app->getParams();
+		$model->setState('params', $appParams);
+
+		// Set the filters based on the module params
+		$model->setState('filter.userid', JFactory::getuser()->id);
+		$model->setState('list.start', 0);
+        $model->setState('list.limit', 999999999);
+        
+        $items = $model->getItems();
+
+        foreach($items as $key=>$item)
+        {
+            $db = JFactory::getDBO();
+            $query = $db->getQuery(true);
+            $query->select($db->quoteName('p').'.*')
+                    ->select($db->quoteName('od.quantity'))
+                    ->select($db->quoteName('od.package_type'))
+                    ->select($db->quoteName('od.price', 'price'))
+                    ->select($db->quoteName('od.amount_paid', 'amount_paid'))
+                    ->select($db->quoteName('od.userid'))
+                    ->from($db->quoteName('#__digicom_products','p'))
+                    ->from($db->quoteName('#__digicom_orders_details','od'))
+                    ->where($db->quoteName('p.id').'='.$db->quoteName('od.productid'))
+                    ->where($db->quoteName('od.orderid').'='.$db->quote($item->id));
+				$db->setQuery($query);
+				$item->details = $db->loadObjectList();
+        }
+
+        return $items;
+    }
 	
 }
