@@ -114,7 +114,7 @@ class DigiComSiteHelperLog {
     public static function getLog($callback, $callbackid, $status = 'Active', $type = 'payment')
     {
 
-      $db = JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = $db->getQuery(true);
         $query->select('*')
               ->from($db->quoteName('#__digicom_log'))
@@ -128,6 +128,25 @@ class DigiComSiteHelperLog {
         $db->setQuery($query);
 
         return $db->loadObject();
+
+    }
+
+    /*
+    * method getLogs
+    */
+    public static function getLogs($userid = null)
+    {
+        $id = ($id ? $id : JFactory::getUser()->id); 
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(true);
+        $query->select('*')
+              ->from($db->quoteName('#__digicom_log'))
+                ->where($db->quoteName('userid') . ' = '. $db->quote($id))
+                ->order($db->quoteName('id') . ' DESC');
+        // Reset the query using our newly populated query object.
+        $db->setQuery($query);
+
+        return $db->loadObjectList();
 
     }
 
