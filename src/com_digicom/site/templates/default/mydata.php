@@ -12,9 +12,7 @@ defined('_JEXEC') or die;
 <div id="digicom" class="dc dc-thankyou text-center">
 	
 	<?php echo $this->item->event->beforeMydata; ?>
-    <code style="display: block;">
-	<?php echo print_r($this->item); ?>
-    </code>
+    <code style="display: block;text-align: justify;"><?php echo print_r($this->item); ?></code>
 	<?php echo $this->item->event->afterMydata; ?>
 	
 </div>

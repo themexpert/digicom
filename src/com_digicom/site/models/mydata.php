@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 
 class DigiComModelMyData extends JModelList
 {
+    protected $_item = null;
     /**
 	 * Method to auto-populate the model state.
 	 *
@@ -42,31 +43,56 @@ class DigiComModelMyData extends JModelList
 	 *
 	 * @since   1.6
 	 */
-	function getItem()
+	function getItem($pk = null)
 	{
-		// $custommer = new DigiComSiteHelperSession();
-		// $input = JFactory::getApplication()->input;
-		// $search = $this->getState('filter.search');
+        $user	= JFactory::getUser();
 
-		// $sql = "SELECT o.*"
-		// 		." FROM #__digicom_orders o, #__digicom_orders_details od"
-		// 		." WHERE ".($search ? 'o.id = "'.$search.'" and ' : '')."o.userid=".$custommer->_customer->id." group by o.id order by o.id desc";
+        $pk = $user->id; //(!empty($pk)) ? $pk : (int) $this->getState('mydata.id');
 
-        // item
-        // customers
-        // license
-        // log
-        // orders
-        //     orderdetails
-        // sessions
-        // states
-        // cart
-        // event
-        // return $sql;
-        
-        $result = new stdClass();
-        $result->id = 1;
-        return $result;
+		if ($this->_item === null)
+		{
+			$this->_item = array();
+		}
+
+		if (!isset($this->_item[$pk]))
+		{
+			try
+			{
+                $item = new \stdClass();
+                $item->id = $user->id;
+                $item->user = $user;
+                $item->customer = new DigiComSiteHelperSession();
+                $item->license = DigiComSiteHelperLicense::getLicenses();
+                $item->logs = DigiComSiteHelperLog::getLogs();
+
+                // log
+                // orders
+                //     orderdetails
+                // states
+                // cart
+                // event
+                $this->_item[$pk] = $item;
+            }
+			catch (Exception $e)
+			{
+				if ($e->getCode() == 404)
+				{
+					// Need to go thru the error handler to allow Redirect to work.
+					JError::raiseError(404, $e->getMessage());
+				}
+				else
+				{
+                                        
+                    $result = new \stdClass();
+                    $result->id = 1;
+
+					$this->setError($e);
+                    $this->_item[$pk] = $result;
+				}
+			}
+		}
+
+		return $this->_item[$pk];
 	}
 	
 }
