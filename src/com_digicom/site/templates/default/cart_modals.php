@@ -80,7 +80,7 @@ if($this->configs->get('askprivacy', 0) == '1' && ($this->configs->get('privacyi
                     'footer' => '<button data-digicom-id="action-agree-privacy" class="action-agree btn btn-success" data-dismiss="modal" aria-hidden="true">' . JText::_("COM_DIGICOM_CART_AGREE_PRIVACY_BUTTON") . '</button> <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>'
 
                   ),
-    'body'     => $terms_content
+    'body'     => $privacy_content
   );
   echo JLayoutHelper::render('bt3.modal.main', $layoutData);
 
