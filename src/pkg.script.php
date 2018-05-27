@@ -27,10 +27,11 @@ class pkg_DigiComInstallerScript
 	 *
 	 * @since   3.4
 	 */
-	public function postflight($parent)
+	public function postflight( $type, $parent )
 	{
-		
-		self::enablePlugins();
+		if ( $type == 'install' ) {
+			self::enablePlugins();
+		}
 	}
 	
 	/**
