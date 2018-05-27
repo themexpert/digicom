@@ -24,14 +24,9 @@ echo JLayoutHelper::render('bt3.modal.main', $layoutData);
 
 if($this->configs->get('askterms',0) == '1' && ($this->configs->get('termsid',0) > 0)):
 
-  $db = JFactory::getDbo();
-  $sql = "select `title`, `alias`, `catid`, `introtext` from `#__content` where `id`=".intval($this->configs->get('termsid'));
-  $db->setQuery($sql);
-  $db->query();
-
-  $result = $db->loadObject();
-  $terms_title = $result->title;
-  $terms_content = $result->introtext;
+  $result = DigiComSiteHelperDigicom::getJoomlaArticle($this->configs->get('termsid',0));
+  $terms_title    = $result->title;
+  $terms_content  = $result->text;
 
   $layoutData = array(
     'selector' => 'termsShowModal',
@@ -62,14 +57,9 @@ endif;
 
 if($this->configs->get('askprivacy', 0) == '1' && ($this->configs->get('privacyid', 0) > 0)):
 
-  $db = JFactory::getDbo();
-  $sql = "select `title`, `alias`, `catid`, `introtext` from `#__content` where `id`=".intval($this->configs->get('privacyid'));
-  $db->setQuery($sql);
-  $db->query();
-
-  $result = $db->loadObject();
+  $result = DigiComSiteHelperDigicom::getJoomlaArticle($this->configs->get('privacyid',0));
   $privacy_title = $result->title;
-  $privacy_content = $result->introtext;
+  $privacy_content = $result->text;
 
   $layoutData = array(
     'selector' => 'privacyShowModal',

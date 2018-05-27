@@ -500,4 +500,36 @@ class DigiComSiteHelperDigicom {
 		return 'https://www.google.com/calendar/render?action=TEMPLATE&text='.$text.'&dates='.$start.'/'.$end.'&location='.$location.'&details='.$details;
 	}
 
+	public static function getJoomlaArticle($id) {
+
+	    JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_content/models', 'ContentModel');
+
+	    // Get an instance of the generic articles model
+	    $model = JModelLegacy::getInstance( 'Article', 'ContentModel', [ 'ignore_request' => true ] );
+	    $model->setState( 'filter.published', 1 );
+
+	    // Access filter
+	    $params = JComponentHelper::getParams( 'com_content' );
+	    $access = ! $params->get( 'show_noauth' );
+	    $model->setState( 'filter.access', $access );
+
+	    // Load the parameters.
+	    $app = JFactory::getApplication('site');
+	    if(!$app->isAdmin()){
+	        $params = $app->getParams();
+	    }
+	    $model->setState('params', $params);
+
+	    // Retrieve Content
+	    $item = $model->getItem($id);
+	    $item->text = $item->introtext . ' ' . $item->fulltext;
+		// Process the content plugins.
+		JPluginHelper::importPlugin('content');
+		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher->trigger('onContentPrepare', array ('com_content.article', &$item, &$item->params, $offset = 0));
+	    
+		
+	    return $item;
+  	}  
+  	
 }
