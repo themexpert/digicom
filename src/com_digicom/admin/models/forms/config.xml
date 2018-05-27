@@ -104,17 +104,6 @@
 					<option value="1">JSHOW</option>
 			</field>
 
-			<field
-				name="show_mydata"
-				type="radio"
-				class="btn-group"
-				label="COM_DIGICOM_SETTINGS_GENERAL_SHOW_MYDATA_LABEL"
-				default="0"
-				description="COM_DIGICOM_SETTINGS_GENERAL_SHOW_MYDATA_DESC">
-					<option value="0">JHIDE</option>
-					<option value="1">JSHOW</option>
-			</field>
-
 		</fieldset>
 
 		<fieldset name="REGISTRATION"
