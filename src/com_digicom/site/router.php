@@ -170,13 +170,29 @@ class DigiComRouter extends JComponentRouterBase
 			}
 
 		}
-		elseif ($view == 'dashboard' or $view == 'downloads' or $view == 'profile' or $view == 'login' or $view == 'register' or $view == 'billing' or $view == 'thankyou')
+		elseif ($view == 'dashboard' or $view == 'downloads' or $view == 'download' or $view == 'profile' or $view == 'login' or $view == 'register' or $view == 'billing' or $view == 'thankyou')
 		{
+			// now check if its downloads details view
+			if($view == 'download'){
+				// check for downloads menu
+				$menuItem = $menu->getItems('link', 'index.php?option=com_digicom&view=downloads', true);
+				// print_r($menuItem);die;
+				if(count($menuItem)){
+					$query['Itemid'] = $menuItem->id;
+					$menuItemGiven = true;
+
+					$segments[] = $query['id'];
+					unset($query['id']);
+				}
+			}
+
 			if (!$menuItemGiven)
 			{
 				$segments[] = $view;
 			}
+
 			unset($query['view']);
+
 		}elseif ($view == 'checkout')	{
 			if (!$menuItemGiven)
 			{
@@ -512,12 +528,21 @@ class DigiComRouter extends JComponentRouterBase
 		switch($tmpview){
 			case "profile":
 			case "dashboard":
-			case "downloads":
 			case "checkout":
 			case "register":
 			case "billing":
 			case "thankyou":
 				$vars['view'] = $item->query['view'];
+
+				return $vars;
+				break;
+			case "download":
+			case "downloads":
+				$vars['view'] = $item->query['view'];
+				if(isset($segments[0])  && is_numeric($segments[0])){
+					$vars['view'] = 'download';
+					$vars['id'] = $segments[0];
+				}
 
 				return $vars;
 				break;

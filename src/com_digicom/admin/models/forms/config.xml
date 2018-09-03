@@ -416,6 +416,24 @@
 
 		<fieldset name="THEME" addfieldpath="/administrator/components/com_digicom/models/fields">
 			<field
+				name="downloads"
+				type="spacer"
+				class="title"
+				label="COM_DIGICOM_SETTINGS_GENERAL_DOWNLOADS_FIELD_LABEL"
+				/>
+
+			<field
+				name="download_page"
+				type="radio"
+				class="btn-group"
+				label="COM_DIGICOM_SETTINGS_GENERAL_DOWNLOAD_PAGE_LABEL"
+				default="0"
+				description="COM_DIGICOM_SETTINGS_GENERAL_DOWNLOAD_PAGE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+			</field>
+			
+			<field
 				name="buyprocess_spacer"
 				type="spacer"
 				class="title"
