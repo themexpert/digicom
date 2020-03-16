@@ -301,7 +301,8 @@ class DigicomModelProfile extends JModelForm
 	 */
 	public function save($data)
 	{
-		$userId = (!empty($data['id'])) ? $data['id'] : (int) $this->getState('user.id');
+		$userId = (int) $this->getState('user.id');
+		$userId = !empty($userId) ? $userId : (int) JFactory::getUser()->get('id');
 
 		$user = new JUser($userId);
 
