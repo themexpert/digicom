@@ -144,6 +144,13 @@ class DigiComModelDownloads extends JModelList
 				$params->loadString($active->params);
 			}
 		}
+
+		// trigger events
+		$dispatcher	= JEventDispatcher::getInstance();
+		JPluginHelper::importPlugin('digicom');
+		$dispatcher->trigger('onDigicomDownloadItems', array ('com_digicom.downloads', &$items));
+
+
 		//products
 		if ($items)
 		{

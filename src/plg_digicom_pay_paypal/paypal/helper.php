@@ -113,21 +113,18 @@ class plgDigiCom_PayPaypalHelper
 		$newData = array_merge($newData, $data);
 
 		$options = array(
-			CURLOPT_SSLVERSION     => 6,
 			CURLOPT_SSL_VERIFYPEER => true,
 			CURLOPT_SSL_VERIFYHOST => 2,
 			CURLOPT_VERBOSE        => false,
 			CURLOPT_HEADER         => false,
 			CURLINFO_HEADER_OUT    => false,
 			CURLOPT_RETURNTRANSFER => true,
-			// CURLOPT_CAINFO         => JPATH_LIBRARIES . '/fof/download/adapter/cacert.pem',
 			CURLOPT_CAINFO         => dirname(__FILE__) . '/cacert.pem',
 			CURLOPT_HTTPHEADER     => array('User-Agent: Digicom','Connection: Close'),
 			CURLOPT_POST           => true,
 			CURLOPT_POSTFIELDS     => $newData,
 			CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
 			CURLOPT_CONNECTTIMEOUT  => 30,
-			CURLOPT_FORBID_REUSE    => true,
 			// Force the use of TLS (therefore SSLv3 is not used, mitigating POODLE; see https://github.com/paypal/merchant-sdk-php)
 			CURLOPT_SSL_CIPHER_LIST => 'TLSv1',
 			// This forces the use of TLS 1.x
@@ -222,6 +219,8 @@ class plgDigiCom_PayPaypalHelper
 		$logData = array();
 		$logData["JT_CLIENT"] = $componentNamel;
 		$logData["raw_data"] = $data;
+
+		self::Storelog("paypal", $logData);
 		
 		return [$status, $logData];
 	}
