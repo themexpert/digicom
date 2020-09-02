@@ -189,13 +189,19 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	* used when we recieve payment from site or thurd party
 	* @data : the necessary info recieved from form about payment
 	* @return payment process final status
+	* @URL : https://developer.paypal.com/docs/api-basics/notifications/ipn/ht-ipn/
+	* IPN: index.php?option=com_digicom&task=cart.processPayment&processor=paypal&webhook=true
 	*/
 	function onDigicom_PayProcesspayment($data)
 	{
+		// for paypal, prepare data as paypal docs
+		$data = plgDigiCom_PayPaypalHelper::preparePostData();
+		
 		$app = JFactory::getApplication();
 		$processor = JFactory::getApplication()->input->get('processor','');
 		if($processor != $this->_name) return;
-
+		if(!$data) return;
+		
 		if ($app->input->get('webhook', '', 'string') == 'true') {
             return $this->onDigicom_PayProcesspaymentHandleWebhook($data);
         }

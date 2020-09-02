@@ -507,7 +507,6 @@ class DigiComControllerCart extends JControllerLegacy
 	*/
 	function processPayment()
 	{
-
 		$session 	= JFactory::getSession();
 	 	$app			= JFactory::getApplication();
 		$input 		= $app->input;
@@ -523,7 +522,7 @@ class DigiComControllerCart extends JControllerLegacy
 			return false;
 		}
 
-		$post 			= $input->post->getArray();
+		$post = $input->post->getArray();
 		// $rawDataPost 			= $input->post->getArray();
 		// $rawDataGet 			= $input->get->getArray();
 		// $post = array_merge($rawDataGet, $rawDataPost);
@@ -535,7 +534,8 @@ class DigiComControllerCart extends JControllerLegacy
 		if( !count($post) ) $post = @file_get_contents('php://input');		
 
 		$data = $dispatcher->trigger('onDigicom_PayProcesspayment', array($post));
-		$data = $data[0];
+		$data = reset($data);
+		
 		$order_id 	= $input->get('order_id', '', 'int');
 		$sid 		= $input->get('sid', '', 'int');
 
