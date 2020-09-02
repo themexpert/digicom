@@ -48,12 +48,10 @@ function jRemveProduct(id){
 $document->addScriptDeclaration($js);
 $js = "
 jQuery(function ($) {
-	jQuery('#jform_bundle_source_option_select .btn').click(function(){
-		var bundle_source = jQuery('input[type=radio]:checked').val();
-		//alert(bundle_source);
-		//var bundle_source = jQuery('input.jform_bundle_source:checked').val();
-		jQuery('.bundle_source_option').hide('slide');
-		jQuery('#bundle_source_'+bundle_source+'_option').show('slide');
+	jQuery('input[name=\"jform[bundle_source]\"]').on('change', function(){
+		var bundle_source = jQuery('#jform_bundle_source_option_select input:checked').val();
+		jQuery(`.bundle_source_option:not(#bundle_source_` + bundle_source + `_option)`).hide();
+		jQuery(`#bundle_source_` + bundle_source + `_option`).show();
 	});
 });
 ";
