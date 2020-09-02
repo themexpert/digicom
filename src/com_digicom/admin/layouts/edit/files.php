@@ -115,3 +115,8 @@ $document->addScriptDeclaration("var fileSampleRow = '" . $fileSampleRow . "';")
 		</table>
 	</div>
 </fieldset>
+
+<?php
+$dispatcher = JDispatcher::getInstance();
+$results = $dispatcher->trigger( 'onDigicomAdminAfterProductFiles', array());
+?>
