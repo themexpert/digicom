@@ -53,11 +53,11 @@ JFactory::getDocument()->addScriptDeclaration('
 						title="<?php echo JText::_('COM_DIGICOM_SEARCH'); ?>" 
 						placeholder="<?php echo JText::_('COM_DIGICOM_SEARCH_ORDER_LABEL'); ?>" 
 						class="input-group-input" 
-						style="float: left;padding: 5px 10px;box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);border: none;"
+						style="float: left;padding: 8px 10px 9px;border: 1px solid #ddd;border-radius: 4px 0 0 4px;margin-right: -1px;"
 					/>
-					<input type="button" onclick="document.adminForm.submit();" class="btn btn-large" value="submit">
-					<input type="button" onclick="document.getElementById('search').value = '';document.adminForm.submit();" class="btn btn-large" value="Clear">
-					<input type="button" onclick="jQuery('#hints').slideToggle();" class="btn btn-large" value="Hints">
+					<input type="button" onclick="document.adminForm.submit();" class="btn btn-default btn-large" value="submit">
+					<input type="button" onclick="document.getElementById('search').value = '';document.adminForm.submit();" class="btn btn-default btn-large" value="Clear">
+					<input type="button" onclick="jQuery('#hints').slideToggle();" class="btn btn-default btn-large" value="Hints">
 				</div>
 			<?php endif; ?>
 

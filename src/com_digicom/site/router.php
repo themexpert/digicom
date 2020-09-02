@@ -59,8 +59,8 @@ class DigiComRouter extends JComponentRouterBase
 		{
 			// there are no menu Itemid found, lets dive into menu finder
 			$menuItem = $menu->getItems('link', 'index.php?option=com_digicom&view='.$view, true);
-			//print_r($menuItem);die;
-			if(!is_null($menuItem) && count($menuItem)){
+			$total = count((array)$menuItem);
+			if($total){
 				$query['Itemid'] = $menuItem->id;
 				$menuItemGiven = true;
 			}else{
@@ -91,11 +91,14 @@ class DigiComRouter extends JComponentRouterBase
 			&&
 			$menuItem->query['view'] != $query['view']
 		){
+
 			// there are no exact menu Itemid found, lets dive into menu finder
 			$checkmenu = JMenu::getInstance('site');
-			$checkmenuItem = $checkmenu->getItem('link', 'index.php?option=com_digicom&view='.$view, true);
+			$checkmenuItem = $checkmenu->getItems('link', 'index.php?option=com_digicom&view='.$view, true);
 
-			if(!is_null($checkmenuItem)){
+
+			$total = count((array)$checkmenuItem);
+			if($total){
 				$menu = $checkmenu;
 				$menuItem = $checkmenuItem;
 				$query['Itemid'] = $menuItem->id;
@@ -144,7 +147,8 @@ class DigiComRouter extends JComponentRouterBase
 				$menu = JMenu::getInstance('site');
 				$menuItem = $menu->getItems('link', 'index.php?option=com_digicom&view=orders', true);
 
-				if(!is_null($menuItem)){
+				$total = count((array)$menuItem);
+				if($total){
 					$query['Itemid'] = $menuItem->id;
 					$menuItemGiven = true;
 				}else{
@@ -167,21 +171,19 @@ class DigiComRouter extends JComponentRouterBase
 			}
 
 		}
-		elseif ($view == 'dashboard' or $view == 'downloads' or $view == 'download' or $view == 'profile' or $view == 'login' or $view == 'register' or $view == 'billing' or $view == 'thankyou')
+		elseif ($view == 'dashboard' or $view == 'downloads' or $view == 'download' or $view == 'profile' or $view == 'login' or $view == 'register' or $view == 'billing' or $view == 'thankyou' or $view == 'manager')
 		{
 			// now check if its downloads details view
-			if($view == 'download' or $view == 'downloads'){
+			if($view == 'download'){
 				// check for downloads menu
 				$menuItem = $menu->getItems('link', 'index.php?option=com_digicom&view=downloads', true);
-				
-				if(!is_null($menuItem)) {
+				$total = count((array)$menuItem);
+				if($total){
 					$query['Itemid'] = $menuItem->id;
 					$menuItemGiven = true;
 
-					if($view == 'download'){
-						$segments[] = $query['id'];
-						unset($query['id']);
-					}
+					$segments[] = $query['id'];
+					unset($query['id']);
 				}
 			}
 
@@ -201,8 +203,8 @@ class DigiComRouter extends JComponentRouterBase
 				$menu = JMenu::getInstance('site');
 				$menuItem = $menu->getItems('link', 'index.php?option=com_digicom&view=cart', true);
 
-				//print_r($menuItem);die;
-				if(!is_null($menuItem)){
+				$total = count((array)$menuItem);
+				if($total){
 					$query['Itemid'] = $menuItem->id;
 					$menuItemGiven = true;
 				}else{
@@ -219,25 +221,14 @@ class DigiComRouter extends JComponentRouterBase
 			}
 			unset($query['view']);
 
-		}
-		elseif($view == 'cart')
+		}elseif($view == 'cart')
 		{
-			$menu = JMenu::getInstance('site');
-			$menuItem = $menu->getItems('link', 'index.php?option=com_digicom&view=cart', true);
-
 			if (!$menuItemGiven)
 			{
-				if(!is_null($menuItem)){
-					$query['Itemid'] = $menuItem->id;
-					$menuItemGiven = true;
-					unset($query['view']);
-				}else{
-					$segments[] = $view;
-				}
-			}else{
-				unset($query['view']);
+				$segments[] = $view;
 			}
 
+			unset($query['view']);
 		}
 		// echo $view;die;
 		// Handle product or category
@@ -321,15 +312,14 @@ class DigiComRouter extends JComponentRouterBase
 				$menuItem = $menu->getItems('link', 'index.php?option=com_digicom&view=category&id='.$catid, true);
 
 				//print_r($menuItem);die;
-				if(!is_null($menuItem) && count($menuItem))
-				{
+				$total = count((array)$menuItem);
+				if($total){
 					$query['Itemid'] = $menuItem->id;
 					$menuItemGiven = true;
 				}else{
 					$menuItem = $menu->getItems('link', 'index.php?option=com_digicom&view=category&id=0', true);
-					//print_r($menuItem);die;
-					if(!is_null($menuItem) && count($menuItem))
-					{
+					$total = count((array)$menuItem);
+					if($total){
 						$query['Itemid'] = $menuItem->id;
 						$menuItemGiven = true;
 					}
@@ -377,7 +367,7 @@ class DigiComRouter extends JComponentRouterBase
 			// print_r($array);die;
 			$array = array_reverse($array);
 
-			if (!$advanced && !is_null($array))
+			if (!$advanced && count($array))
 			{
 				$array[0] = (int) $catid . ':' . $array[0];
 			}
@@ -462,7 +452,7 @@ class DigiComRouter extends JComponentRouterBase
 			}
 		}
 
-		$total = !is_null($segments) ? count($segments) : 0;
+		$total = count($segments);
 
 		for ($i = 0; $i < $total; $i++)
 		{
@@ -484,7 +474,7 @@ class DigiComRouter extends JComponentRouterBase
 	public function parse(&$segments)
 	{
 		$menu = JMenu::getInstance('site');
-		$total = !is_null($segments) ? count($segments) : 0;
+		$total = count($segments);
 		$vars = array();
 
 		for ($i = 0; $i < $total; $i++)
@@ -502,7 +492,7 @@ class DigiComRouter extends JComponentRouterBase
 		$db = JFactory::getDbo();
 
 		// Count route segments
-		$count = !is_null($segments) ? count($segments) : 0;
+		$count = count($segments);
 		// we have menu item, Check again if its com_digicom
 		
 		/*
@@ -542,6 +532,7 @@ class DigiComRouter extends JComponentRouterBase
 			case "register":
 			case "billing":
 			case "thankyou":
+			case "manager":
 				$vars['view'] = $item->query['view'];
 
 				return $vars;
@@ -736,17 +727,7 @@ class DigiComRouter extends JComponentRouterBase
 				}
 
 				$vars['id'] = $cid;
-
-//				if ($item->query['view'] == 'archive' && $count != 1)
-//				{
-//					$vars['year'] = $count >= 2 ? $segments[$count - 2] : null;
-//					$vars['month'] = $segments[$count - 1];
-//					$vars['view'] = 'archive';
-//				}
-//				else
-//				{
-					$vars['view'] = 'product';
-				//}
+				$vars['view'] = 'product';
 			}
 
 			$found = 0;
