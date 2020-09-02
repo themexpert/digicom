@@ -216,7 +216,7 @@ class DigiComModelCart extends JModelItem
 	{
 		$dispatcher	= JEventDispatcher::getInstance();
 
-		if(count($this->_items)){
+		if(!is_null($this->_items)){
 			return $this->_items;
 		}
 

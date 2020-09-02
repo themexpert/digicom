@@ -152,7 +152,7 @@ $n 					= count ($this->order->products);
 					</div>
 					<?php endif; ?>
 				</td>
-				<td><?php echo ucfirst( $product->package_type ); ?></td>
+				<td><?php echo JText::_('COM_DIGICOM_PRODUCT_TYPE_'.strtoupper($product->package_type)); ?></td>
 				<td>
 					<?php echo $product->quantity; ?>
 				</td>

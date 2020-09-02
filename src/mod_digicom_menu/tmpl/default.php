@@ -23,7 +23,7 @@ defined('_JEXEC') or die;
 
 		<?php if (!$hideMainmenu) : ?>
 			<?php 
-			if (count($menuItems->submenu) > 0) : 
+			if ( isset($menuItems->submenu) && $menuItems->submenu != null && !is_null($menuItems->submenu) > 0) : 
 				$menuItems  = $menuItems->submenu;
 				$dispatcher = JDispatcher::getInstance();
 				$dispatcher->trigger( 'onDigicomAfterAdminModMenuItem', array(&$menuItems));

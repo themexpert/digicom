@@ -26,6 +26,8 @@
 
 			<fieldset name="basic">
 
+				<field name="ipn_notice" type="spacer" label="PLG_DIGICOM_PAY_PAYPAL_IPN_NOTICE" />
+
 				<field name="business" type="text" default="" label="PAYPAL_EMAIL" description="PAYPAL_EMAIL_DESC"/>
 
 				<field name="sandbox" type="radio" class="btn-group" default="0" label="PAYPAL_SANDBOX" description="PAYPAL_SANDBOX_DESC">
@@ -51,8 +53,16 @@
 					description="PLG_PAYPAL_WRITE_LOG_DESC"
 					class="btn-group"
 				>
-					<option value="0">JYES</option>
-					<option value="1">JNO</option>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+
+				<field name="bypass_validation" type="radio" default="0" label="PLG_PAYPAL_BYPASS_VALIDATION_TITLE"
+					description="PLG_PAYPAL_BYPASS_VALIDATION_DESC"
+					class="btn-group"
+				>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
 				</field>
 
 			</fieldset>

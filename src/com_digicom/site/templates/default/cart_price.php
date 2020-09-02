@@ -41,6 +41,15 @@ defined('_JEXEC') or die;
             <a href="#" data-digicom-id="showterms"><?php echo JText::_("COM_DIGICOM_CART_AGREE_TERMS"); ?></a>
           </div>
         <?php endif;?>
+
+        <?php if($this->configs->get('askprivacy',0) == '1' && ($this->configs->get('privacyid') > 0)):?>
+          <div class="dc-accept-terms">
+            <?php $agreeprivacy = JFactory::getApplication()->input->get("agreeprivacy", ""); ?>
+            <input type="checkbox" name="agreeprivacy" data-digicom-id="agreeprivacy"<?php echo ($agreeprivacy? ' checked="checked"' : ''); ?> style="margin-top: 0;"/>
+
+            <a href="#" data-digicom-id="showprivacy"><?php echo JText::_("COM_DIGICOM_CART_AGREE_PRIVACY"); ?></a>
+          </div>
+        <?php endif;?>
       </td>
       <td>
           <div class="text-right">

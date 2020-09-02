@@ -47,15 +47,6 @@ class  plgDigiCom_PayPaypal extends JPlugin
 			'Canceled_Reversal'	=> 'CRV',
 			'Reversed'	=> 'RV'
 		);
-		// $this->responseStatus = array(
-		// 	'Completed' => 'C',
-		// 	'Pending' => 'P',
-		// 	'Failed' => 'E',
-		// 	'Denied' => 'D',
-		// 	'Refunded' => 'RF',
-		// 	'Canceled_Reversal' => 'CRV',
-		// 	'Reversed' => 'RV'
-		// );
 	}
 
 	/*
@@ -141,9 +132,10 @@ class  plgDigiCom_PayPaypal extends JPlugin
 			return;
 		}
 
-		$obj 				= new stdClass;
-		$obj->name 	=	$this->params->get( 'plugin_name' );
-		$obj->id		= $this->_name;
+		$obj		= new stdClass;
+		$obj->name 	= $this->params->get( 'plugin_name' );
+		$obj->id	= $this->_name;
+
 		return $obj;
 	}
 
@@ -197,12 +189,22 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	* used when we recieve payment from site or thurd party
 	* @data : the necessary info recieved from form about payment
 	* @return payment process final status
+	* @URL : https://developer.paypal.com/docs/api-basics/notifications/ipn/ht-ipn/
+	* IPN: index.php?option=com_digicom&task=cart.processPayment&processor=paypal&webhook=true
 	*/
 	function onDigicom_PayProcesspayment($data)
 	{
-
+		// for paypal, prepare data as paypal docs
+		$data = plgDigiCom_PayPaypalHelper::preparePostData();
+		
+		$app = JFactory::getApplication();
 		$processor = JFactory::getApplication()->input->get('processor','');
 		if($processor != $this->_name) return;
+		if(!$data) return;
+		
+		if ($app->input->get('webhook', '', 'string') == 'true') {
+            return $this->onDigicom_PayProcesspaymentHandleWebhook($data);
+        }
 
 		$sandbox 		= $this->params->get('sandbox', 0);
 		$response 		= plgDigiCom_PayPaypalHelper::validateIPN($data, $sandbox, $this->params);
@@ -211,17 +213,16 @@ class  plgDigiCom_PayPaypal extends JPlugin
 		if (!$verify)
 		{
 			plgDigiCom_PayPaypalHelper::Storelog($this->_name, $response[1]);
-
 			return false;
 		}
 		else
 		{
-			$this->onDigicom_PayStorelog($this->_name, $response[1]);		
+			$info = array('raw_data' => $response);
+			$this->onDigicom_PayStorelog($this->_name, $info);
 		}
 
-
-		$payment_status = $this->translateResponse( $data );
-
+		$raw_data = $response[1]['raw_data'];
+		$payment_status = $this->translateResponse( $raw_data );
 		$result = array(
 			'order_id'			=> $data['custom'],
 			'transaction_id'	=> $data['txn_id'],
@@ -230,12 +231,51 @@ class  plgDigiCom_PayPaypal extends JPlugin
 			'status'			=> $payment_status,
 			'txn_type'			=> $data['txn_type'],
 			'total_paid_amt'	=> $data['mc_gross'],
-			'raw_data'			=> $data,
+			'raw_data'			=> $raw_data,
 			'processor'			=> 'paypal'
 		);
 
+		$this->onDigicom_PayStorelog($this->_name, raw_data);
+		
 		return $result;
 	}
+
+	function onDigicom_PayProcesspaymentHandleWebhook($data)
+	{
+		$sandbox 		= $this->params->get('sandbox', 0);
+		$response 		= plgDigiCom_PayPaypalHelper::validateIPN($data, $sandbox, $this->params);
+		$verify 		= $response[0];
+
+		if (!$verify)
+		{
+			plgDigiCom_PayPaypalHelper::Storelog($this->_name, $response[1]);
+			return false;
+		}
+		else
+		{
+			$info = array('raw_data' => $response);
+			$this->onDigicom_PayStorelog($this->_name, $info);
+		}
+
+		$raw_data = $response[1]['raw_data'];
+		$payment_status = $this->translateResponse( $raw_data );
+		$result = array(
+			'order_id'			=> $data['custom'],
+			'transaction_id'	=> $data['txn_id'],
+			'subscriber_id' 	=> $data['subscr_id'],
+			'buyer_email'		=> $data['payer_email'],
+			'status'			=> $payment_status,
+			'txn_type'			=> $data['txn_type'],
+			'total_paid_amt'	=> $data['mc_gross'],
+			'raw_data'			=> $raw_data,
+			'processor'			=> 'paypal'
+		);
+
+		$this->onDigicom_PayStorelog($this->_name, raw_data);
+		
+		return $result;
+	}
+	
 
 	/*
 	* method translateResponse
@@ -245,16 +285,19 @@ class  plgDigiCom_PayPaypal extends JPlugin
 	*/
 	function translateResponse($data)
 	{
+		$response = "P";
 		$payment_status = $data['payment_status'];
 
 		if(array_key_exists($payment_status, $this->responseStatus))
 		{
-			return $this->responseStatus[$payment_status];
+			$response = $this->responseStatus[$payment_status];
 		}
-		else
-		{
-			return "P";
+		
+		if($payment_status != 'Completed' && $data['CURL_response'] == 'VERIFIED' && $data['digicom_status'] == 1){
+			$response = $this->responseStatus['Completed'];
 		}
+
+		return $response;
 	}
 
 	/*

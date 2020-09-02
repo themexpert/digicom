@@ -144,6 +144,13 @@ class DigiComModelDownloads extends JModelList
 				$params->loadString($active->params);
 			}
 		}
+
+		// trigger events
+		$dispatcher	= JEventDispatcher::getInstance();
+		JPluginHelper::importPlugin('digicom');
+		$dispatcher->trigger('onDigicomDownloadItems', array ('com_digicom.downloads', &$items));
+
+
 		//products
 		if ($items)
 		{
@@ -215,62 +222,69 @@ class DigiComModelDownloads extends JModelList
 					}
 				}
 			}
-
+			
 			//print_r($items);die;
-			$productAdded = array();
-			foreach($items as $key=>$product){
+			// check and add products files
+			$configs = JComponentHelper::getComponent('com_digicom')->params;
+			$pagination = $configs->get('download_pagination', 0);
+			if(!$pagination){
 
-				$query = $db->getQuery(true);
-				$query->select($db->quoteName(array('id', 'name', 'url', 'hits')));
-				$query->from($db->quoteName('#__digicom_products_files'));
-				$query->where($db->quoteName('product_id') . ' = '. $db->quote($product->productid));
-				$query->order('ordering ASC');
-				// Reset the query using our newly populated query object.
-				$db->setQuery($query);
-				$files = $db->loadObjectList();
+				$productAdded = array();
 
-				if(count($files) >0){
-					foreach($files as $key2=>$item){
-						$downloadid = array(
-							'fileid' => $item->id
-						);
-						$downloadcode = json_encode($downloadid);
-						$item->downloadid = base64_encode($downloadcode);
+				foreach($items as $key=>$product){
 
-						$parsed = parse_url($item->url);
-						if (empty($parsed['scheme'])) {
-							$fileLink = JPATH_BASE.DIRECTORY_SEPARATOR.$item->url;
-						}else{
-							$fileLink = $item->url;
-						}
-						if (JFile::exists($fileLink)) {
-							$filesize = filesize ($fileLink);
-							$item->filesize = DigiComSiteHelperDigiCom::FileSizeConvert($filesize);
-							$item->filemtime = date("d F Y", filemtime($fileLink));
-						}else{
+					$query = $db->getQuery(true);
+					$query->select($db->quoteName(array('id', 'name', 'url', 'hits')));
+					$query->from($db->quoteName('#__digicom_products_files'));
+					$query->where($db->quoteName('product_id') . ' = '. $db->quote($product->productid));
+					$query->order('ordering ASC');
+					// Reset the query using our newly populated query object.
+					$db->setQuery($query);
+					$files = $db->loadObjectList();
 
-							$parsed = parse_url($fileLink);
-							if (empty($parsed['scheme'])){
-								$item->filesize = JText::_('COM_DIGICOM_FILE_DOESNT_EXIST');
-								$item->filemtime = JText::_('COM_DIGICOM_FILE_DOESNT_EXIST');
+					if(count($files) >0){
+						foreach($files as $key2=>$item){
+							$downloadid = array(
+								'fileid' => $item->id
+							);
+							$downloadcode = json_encode($downloadid);
+							$item->downloadid = base64_encode($downloadcode);
+
+							$parsed = parse_url($item->url);
+							if (empty($parsed['scheme'])) {
+								$fileLink = JPATH_BASE.DIRECTORY_SEPARATOR.$item->url;
 							}else{
-								$item->filesize = '';
-								$item->filemtime = '';
+								$fileLink = $item->url;
 							}
+							if (JFile::exists($fileLink)) {
+								$filesize = filesize ($fileLink);
+								$item->filesize = DigiComSiteHelperDigiCom::FileSizeConvert($filesize);
+								$item->filemtime = date("d F Y", filemtime($fileLink));
+							}else{
+
+								$parsed = parse_url($fileLink);
+								if (empty($parsed['scheme'])){
+									$item->filesize = JText::_('COM_DIGICOM_FILE_DOESNT_EXIST');
+									$item->filemtime = JText::_('COM_DIGICOM_FILE_DOESNT_EXIST');
+								}else{
+									$item->filesize = '';
+									$item->filemtime = '';
+								}
+							}
+
 						}
 
+						$product->files = $files;
+						if(isset($productAdded[$product->productid])) unset($items[$key]);
+						$productAdded[$product->productid] = true;
+
+					}else{
+						unset($items[$key]);
 					}
 
-					$product->files = $files;
-					if(isset($productAdded[$product->productid])) unset($items[$key]);
-					$productAdded[$product->productid] = true;
 
-				}else{
-					unset($items[$key]);
 				}
-
-
-			}
+			} // end if pagination
 
 			$itemsArray = array();
 			$catkey = array();

@@ -29,9 +29,7 @@
 
 		<field name="expiration_length" type="text" label="COM_DIGICOM_PRODUCT_EXPIRATION_LENGTH" description="COM_DIGICOM_PRODUCT_FIELD_EXPIRATION_LENGTH_DESC" class="form-control" size="10" disabled="disabled"/>
 
-		<field name="expiration_type" type="list" label="COM_DIGICOM_PRODUCT_EXPIRATION_TYPE" description="COM_DIGICOM_PRODUCT_FIELD_EXPIRATION_TYPE_DESC"
-			class="" disabled="disabled"
-		default="3">
+		<field name="expiration_type" type="list" label="COM_DIGICOM_PRODUCT_EXPIRATION_TYPE" description="COM_DIGICOM_PRODUCT_FIELD_EXPIRATION_TYPE_DESC" class="" disabled="disabled" default="3">
 			<option value="day">COM_DIGICOM_DAYS</option>
 			<option value="month">COM_DIGICOM_MONTHS</option>
 			<option value="year">COM_DIGICOM_YEARS</option>

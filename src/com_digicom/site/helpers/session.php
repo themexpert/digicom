@@ -218,21 +218,54 @@ class DigiComSiteHelperSession
 		// set the customer info
 		if ($this->_user->id > 0)
 		{
-
 			$table = JTable::getInstance('Customer','Table');
 			$table->load(array('email'=>$this->_user->email));
-
-			// update customer info if re-registered as customer
-			if($table->id != $this->_user->id)
+			if(!$table->id)
 			{
-				// there id didnt change, email has changed
-				// $query = "UPDATE `#__digicom_customers` SET `id`=".$this->_user->id." WHERE `email`='" . $this->_user->email."'";
-				// $query = "UPDATE `#__digicom_customers` SET `email`='".$this->_user->email."' WHERE `id`='" . $this->_user->id."'";
-				$query = "UPDATE `#__digicom_customers` SET `id`='".$this->_user->id."' WHERE `id`='" . $table->id."'";
+				// user has changed his email, lets update as i'm already logged in
+				$table->load(array('id'=>$this->_user->id));
+				// now update
+				$query = "UPDATE `#__digicom_customers` SET `email`='".$this->_user->email."' WHERE `id`='" . $table->id."'";
+				
 				$db->setQuery( $query );
 				$db->execute();
+			}
+			// update customer info if re-registered as customer
+			elseif($table->id != $this->_user->id)
+			{
+			    // now we have duplicate info fix it.
+				// 1. first update original users id
+				// our id 642
+				$anotherUserId = $table->id; // 646 - that user has been removed.
+				$ourOriginalId = $this->_user->id; //644
 
-				$dispatcher->trigger('onDigicomSessionOnChangeCustomerID',array('com_digicom.session', $table->id, $this->_user->id));
+				// now update digicom user with there original id. 
+				// so check if ourOriginalId is free or not? if free then go, if not update that first.
+				$tmptable = JTable::getInstance('Customer','Table');
+				$tmptable->load(array('id'=> $ourOriginalId));
+				if($tmptable->id and $tmptable->email){
+					//not free
+					// $anotherUser = JFactory::getUser($tmptable->email);
+					JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/tables', 'Table');
+
+					$query = "select * from `#__users` WHERE `email`='" . $tmptable->email."'";
+					$db->setQuery( $query );
+					$anotherUser = $db->loadObject();
+                    
+					// now update
+					$query = "UPDATE `#__digicom_customers` SET `id`='".$anotherUser->id."' WHERE `id`='" . $tmptable->id."'";
+					
+					$db->setQuery( $query );
+					$db->execute();
+				}
+
+			
+				// now update users id
+				$query = "UPDATE `#__digicom_customers` SET `id`='".$ourOriginalId."' WHERE `id`='" . $table->id."'";
+				$db->setQuery( $query );
+				$db->execute();
+				
+				$dispatcher->trigger('onDigicomSessionOnChangeCustomerID', array('com_digicom.session', $table->id, $this->_user->id));
 
 				$table = JTable::getInstance('Customer','Table');
 				$table->load(array('email'=>$this->_user->email));

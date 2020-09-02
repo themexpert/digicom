@@ -189,4 +189,18 @@ class DigiComSiteHelperLicense {
 	    return false;
 	}
 
+	public static function getLicenses($id = NULL)
+	{
+		$id = ($id ? $id : JFactory::getuser()->id);
+
+	    $db = JFactory::getDBO();
+	    $query = $db->getQuery(true);
+	    $query
+	        ->select('*')
+	        ->from($db->quoteName('#__digicom_licenses'))
+	        ->where($db->quoteName('userid').' = '.$db->quote($id));
+	    $db->setQuery($query);
+	    return $db->loadObjectList();
+	}
+
 }
