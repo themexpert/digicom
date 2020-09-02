@@ -181,7 +181,7 @@ class DigiComModelOrders extends JModelList
 			elseif (stripos($search, 'user:') === 0)
 			{
 				$search = $db->quote('%' . $db->escape(substr($search, 5), true) . '%');
-				$query->where('(ju.username LIKE ' . $search . ' OR c.name LIKE ' . $search . ')');
+				$query->where('(ju.username LIKE ' . $search . ' OR c.name LIKE ' . $search . ' OR ju.name LIKE ' . $search . ')');
 			}
 			elseif (stripos($search, 'email:') === 0)
 			{
