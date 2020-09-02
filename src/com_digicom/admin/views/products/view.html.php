@@ -22,6 +22,12 @@ class DigiComViewProducts extends JViewLegacy
 	function display( $tpl = null )
 	{
 
+		if (!JFactory::getUser()->authorise('core.products', 'com_digicom'))
+		{
+			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+		}
+
+
 		if ($this->getLayout() !== 'modal')
 		{
 			DigiComHelperDigiCom::addSubmenu('products');
@@ -87,14 +93,13 @@ class DigiComViewProducts extends JViewLegacy
 		// Get the toolbar object instance
 		$bar = JToolBar::getInstance('toolbar');
 		JToolbarHelper::title(JText::_('COM_DIGICOM_PRODUCTS_TOOLBAR_TITLE_SITE'), 'stack product');
-
+		
 		if ($canDo->get('core.create') || (count($user->getAuthorisedCategories('com_digicom', 'core.create'))) > 0 )
 		{
 			//JToolbarHelper::addNew('product.add');
 			$layout = new JLayoutFile('toolbar.products');
 			$bar->appendButton('Custom', $layout->render(array()), 'products');
 		}
-
 
 		if ($canDo->get('core.edit.state'))
 		{
@@ -114,7 +119,7 @@ class DigiComViewProducts extends JViewLegacy
 		{
 			JToolbarHelper::trash('products.trash');
 		}
-
+		
 		// Instantiate a new JLayoutFile instance and render the layout
 		$layout = new JLayoutFile('toolbar.title');
 		$title=array(

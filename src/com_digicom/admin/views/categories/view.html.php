@@ -33,6 +33,11 @@ class DigiComViewCategories extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
+		if (!JFactory::getUser()->authorise('core.categories', 'com_digicom'))
+		{
+			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+		}
+		
 		$this->state         = $this->get('State');
 		$this->items         = $this->get('Items');
 		$this->pagination    = $this->get('Pagination');
