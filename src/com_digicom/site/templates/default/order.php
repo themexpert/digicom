@@ -171,6 +171,14 @@ $n 					= count ($this->order->products);
 		<i class="glyphicon glyphicon-printer"></i> <?php echo JText::_('COM_DIGICOM_ORDER_PRINT'); ?>
 	</a>
 
+	<?php 
+	if (JFactory::getUser()->authorise('core.manage', 'com_digicom'))
+	{
+		// Load item template
+		echo $this->loadTemplate('logs');
+	}
+	?>
+
 	<?php DigiComSiteHelperDigicom::loadModules('digicom_footer','xhtml'); ?>
 
 	<?php echo DigiComSiteHelperDigiCom::powered_by(); ?>

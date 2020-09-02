@@ -26,4 +26,40 @@ class DigiComModelCheckout extends JModelItem
 		return $this->orders[$order_id];
 	}
 
+	public function getOrderItems(){
+		$input = JFactory::getApplication()->input; 
+		$order_id = $input->get('id','0');
+
+		$db 	= JFactory::getDbo();
+		$sql 	= 'SELECT `p`.*, `od`.quantity FROM
+					`#__digicom_products` AS `p`
+						INNER JOIN
+					`#__digicom_orders_details` AS `od` ON (`od`.`productid` = `p`.`id`)
+				WHERE `orderid` ='.$order_id;
+
+		$db->setQuery($sql);
+		$items = $db->loadObjectList();
+		// print_r($items);die;
+
+		$configs = $this->getConfigs();
+		//change the price of items if needed
+		for ( $i = 0; $i < count( $items ); $i++ )
+		{
+			$item = &$items[$i];
+			$item->discount = 0;
+			$item->currency = $configs->get('currency','USD');
+			$item->price = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
+			$item->price_formated = $item->price;
+			$item->subtotal = $item->price * $item->quantity;
+		}
+
+		return $items ;
+	
+	}
+
+	function getConfigs() {
+		$comInfo = JComponentHelper::getComponent('com_digicom');
+		return $comInfo->params;
+	}
+
 }
