@@ -216,6 +216,9 @@ $input->set('layout', 'dgform');
 							<th>
 								<?php echo JText::_( 'COM_DIGICOM_IP' ); ?>
 							</th>
+							<th style="max-width:300px;overflow: scroll;">
+								<?php echo JText::_( 'COM_DIGICOM_PARAMS' ); ?>
+							</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -238,6 +241,14 @@ $input->set('layout', 'dgform');
 							</td>
 							<td>
 								<?php echo $log->ip;?>
+							</td>
+							<td style="max-width:300px;overflow: scroll;">
+								<a href="#!" class="btn" onclick="jQuery('#log-<?php echo $log->id;?>').toggle();">Show Logs</a>
+							</td>
+						</tr>
+						<tr id="log-<?php echo $log->id;?>" style="display:none;">
+							<td colspan="7">
+								<pre><?php print_r (json_decode($log->params, true));?></pre>
 							</td>
 						</tr>
 						<?php endforeach;?>
