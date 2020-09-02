@@ -37,7 +37,10 @@ class DigiComViewOrder extends JViewLegacy {
 		}
 		elseif($this->order->userid != $this->customer->_customer->id)
 		{
-			return JError::raiseError(203, JText::_('COM_DIGICOM_ORDER_NOT_OWN'));
+			if (!JFactory::getUser()->authorise('core.manage', 'com_digicom'))
+			{
+				return JError::raiseError(203, JText::_('COM_DIGICOM_ORDER_NOT_OWN'));
+			}
 		}
 
 		$layout = $input->get('layout','order');

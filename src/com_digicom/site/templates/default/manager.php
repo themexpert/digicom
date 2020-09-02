@@ -15,7 +15,7 @@ $dispatcher	= JDispatcher::getInstance();
 $input 		= $app->input;
 $configs 	= $this->configs;
 
-$n = count ($this->orders);
+$n = !is_null($this->orders) ? count($this->orders) : 0;
 $k = 0;
 
 JFactory::getDocument()->addScriptDeclaration('
@@ -109,7 +109,7 @@ JFactory::getDocument()->addScriptDeclaration('
 		<tbody>
 		<?php
 		$i = 0;
-		if(count($n) > 0){
+		if($n > 0){
 			foreach($this->orders as $key=>$order){
 				// print_r($order);die;
 				$id = $order->id;

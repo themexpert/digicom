@@ -115,7 +115,7 @@ class DigiComSiteHelperPrice {
 		}
 
 		if( ! empty( $country ) ) {
-			$tax_rates   = $configs->get('tax_rates',array());
+			$tax_rates   = $configs->get('tax_rates', '');
 			$json = json_decode($tax_rates, true);
 			if(is_array($json)){
 				$tax_rates = self::group_by_key($json);

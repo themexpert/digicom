@@ -29,7 +29,7 @@ class DigiComSiteHelperLog {
      * @info = log details or extra info encoded by json formet
      * setLog($type, $hook, $message, $info, $status = 'complete');
      * */
-    public static function setLog($type, $hook, $callbackid, $message, $info, $status = 'complete', $refid = 0)
+    public static function setLog($type, $hook, $callbackid = '', $message = '', $info = '', $status = 'complete', $refid = 0)
     {
         $dispatcher = JDispatcher::getInstance();
         $config = JComponentHelper::getParams('com_digicom');
