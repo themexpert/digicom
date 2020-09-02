@@ -213,6 +213,7 @@ JFactory::getDocument()->addScriptDeclaration('
 								</span>
 								<div class="small">
 									<?php echo JText::_('JCATEGORY') . ": " . $this->escape($item->category_title); ?>
+									<a target="_blank" href="<?php echo JUri::root() . 'index.php?option=com_digicom&view=product&id='.$item->id.'&preview=1'; ?> ">Preview</a>
 								</div>
 							</div>
 						</td>
