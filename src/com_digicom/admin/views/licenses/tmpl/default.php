@@ -31,7 +31,10 @@ $configs 	= $this->params->params;
 		<div class="dg-alert dg-alert-with-icon">
 			<span class="icon-support"></span>
 			<?php echo JText::_("COM_DIGICOM_LICENSES_HEADER_NOTICE"); ?>
+			<a href="#" onclick="jQuery('#hints_wrapper').slideToggle();">Show Hints</a>
 		</div>
+		<p id="hints_wrapper" class="dg-alert dg-alert-with-icon hide"><span class="icon-help"></span><?php echo JText::_("COM_DIGICOM_LICENSE_SEARCH_NOTICE"); ?></p>
+		
 		<br>
 		<div class="js-stools">
 			<div class="clearfix">
