@@ -149,6 +149,7 @@ ul.usergroups li {
   margin-top: 18px;
 }
 .js-stools {
+  height: 30px;
   margin-bottom: 10px;
 }
 .js-stools .clearfix:after {

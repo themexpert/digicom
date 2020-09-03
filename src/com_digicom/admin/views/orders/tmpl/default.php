@@ -79,7 +79,7 @@ Joomla.submitbutton = function (pressbutton) {
 		// Search tools bar
 		echo JLayoutHelper::render('searchtools.orders', array('view' => $this));
 		?>
-
+	<div class="panel">
 		<table class="adminlist table table-striped">
 			<thead>
 				<tr>
@@ -233,6 +233,7 @@ Joomla.submitbutton = function (pressbutton) {
       ?>
     <?php endif; ?>
 		</table>
+	</div>
     <div class="pagination-centered">
       <?php echo $this->pagination->getListFooter(); ?>
     </div>

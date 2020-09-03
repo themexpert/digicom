@@ -93,17 +93,19 @@ window.onload = function() {
 				<?php echo JHtml::_('bootstrap.startTabSet', 'digicomTab', array('active' => 'general')); ?>
 
 				<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'general', JText::_('COM_DIGICOM_PRODUCT_GENERAL_SETTINGS', true)); ?>
+				<div class="panel panel-box">
+					
+					<?php echo JLayoutHelper::render('edit.title_alias_price', $this); ?>
 
-				<?php echo JLayoutHelper::render('edit.title_alias_price', $this); ?>
+					<div class="product-short-desc control-group">
+						<?php echo $this->form->getLabel('introtext'); ?>
+						<?php echo $this->form->getInput('introtext'); ?>
+					</div>
 
-				<div class="product-short-desc control-group">
-					<?php echo $this->form->getLabel('introtext'); ?>
-					<?php echo $this->form->getInput('introtext'); ?>
-				</div>
-
-				<div class="product-full-desc control-group ">
-					<?php echo $this->form->getLabel('fulltext'); ?>
-					<?php echo $this->form->getInput('fulltext'); ?>
+					<div class="product-full-desc control-group ">
+						<?php echo $this->form->getLabel('fulltext'); ?>
+						<?php echo $this->form->getInput('fulltext'); ?>
+					</div>
 				</div>
 				<?php echo JHtml::_('bootstrap.endTab'); ?>
 				<?php // Do not show the publishing options if the edit form is configured not to. ?>
@@ -135,8 +137,16 @@ window.onload = function() {
 			</div>
 
 			<div class="span3">
-
-				<?php echo JHtml::_('bootstrap.startTabSet', 'digicomTabImages', array('active' => 'thumb-image')); ?>
+				<div class="well">
+					<div class="product-image">
+						<?php echo $this->form->getControlGroup('image_intro'); ?>
+					</div>
+					<hr>
+					<div class="product-image">
+						<?php echo $this->form->getControlGroup('image_full'); ?>
+					</div>
+				</div>
+				<!-- <?php echo JHtml::_('bootstrap.startTabSet', 'digicomTabImages', array('active' => 'thumb-image')); ?>
 
 				<?php echo JHtml::_('bootstrap.addTab', 'digicomTabImages', 'thumb-image', JText::_('Thumbnail', true)); ?>
 					<div class="product-image">
@@ -150,7 +160,7 @@ window.onload = function() {
 					</div>
 				<?php echo JHtml::_('bootstrap.endTab'); ?>
 
-				<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+				<?php echo JHtml::_('bootstrap.endTabSet'); ?> -->
 
 				<?php echo JLayoutHelper::render('sidebars.sidebar', $this); ?>
 

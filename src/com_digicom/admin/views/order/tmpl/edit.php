@@ -48,213 +48,216 @@ $input->set('layout', 'dgform');
 			<?php echo JText::sprintf('COM_DIGICOM_ORDER_DETAILS_HEADER_NOTICE',$order->id,$date,$order->status); ?>
 		</p>
 
-		<table class="adminlist table table-striped">
-			<thead>
-				<tr>
-					<th class="sectiontableheader">#</th>
-					<th class="sectiontableheader"  >
-						<?php echo JText::_('COM_DIGICOM_PRODUCT');?>
-					</th>
+		<div class="panel-box">
+			<table class="adminlist table table-striped">
+				<thead>
+					<tr>
+						<th class="sectiontableheader">#</th>
+						<th class="sectiontableheader"  >
+							<?php echo JText::_('COM_DIGICOM_PRODUCT');?>
+						</th>
 
-					<th class="sectiontableheader"  >
-						<?php echo JText::_('COM_DIGICOM_ORDER_DETAILS_TOTAL_PRODUCT');?>
-					</th>
+						<th class="sectiontableheader"  >
+							<?php echo JText::_('COM_DIGICOM_ORDER_DETAILS_TOTAL_PRODUCT');?>
+						</th>
 
-					<th class="sectiontableheader"  >
-						<?php echo JText::_('COM_DIGICOM_PRICE');?>
-					</th>
+						<th class="sectiontableheader"  >
+							<?php echo JText::_('COM_DIGICOM_PRICE');?>
+						</th>
 
-				</tr>
-			</thead>
+					</tr>
+				</thead>
 
-				<tbody>
+					<tbody>
 
-				<?php
-				$oll_courses_total = 0;
-				//for ($i = 0; $i < $n; $i++):
-				$i = 0;
-				foreach ($order->products as $key=>$prod):
-					if(!isset($prod->id)) break;
-					//print_r($prod);die;
-					$id = $order->id;
+					<?php
+					$oll_courses_total = 0;
+					//for ($i = 0; $i < $n; $i++):
+					$i = 0;
+					foreach ($order->products as $key=>$prod):
+						if(!isset($prod->id)) break;
+						//print_r($prod);die;
+						$id = $order->id;
 
-					if (!isset($prod->currency)) {
-						$prod->currency = $configs->get('currency','USD');
-					}
+						if (!isset($prod->currency)) {
+							$prod->currency = $configs->get('currency','USD');
+						}
 
-					$licenseid = $prod->id;
-					//print_r($prod);die;
-					$refund = DigiComHelperDigiCom::getRefunds($order->id, $prod->id);
-					$chargeback = DigiComHelperDigiCom::getChargebacks($order->id, $prod->id);
-					$cancelled = DigiComHelperDigiCom::isProductDeleted($prod->id);?>
-					<tr class="row<?php echo $k;?> sectiontableentry<?php echo ($i%2 + 1);?>">
-						<td style="<?php echo $cancelled == 3 ? 'text-decoration: line-through;' : '';?>"><?php echo $i+1; ?></td>
-						<td style="<?php echo $cancelled == 3 ? 'text-decoration: line-through;' : '';?>">
-							<?php echo $prod->name;?>
+						$licenseid = $prod->id;
+						//print_r($prod);die;
+						$refund = DigiComHelperDigiCom::getRefunds($order->id, $prod->id);
+						$chargeback = DigiComHelperDigiCom::getChargebacks($order->id, $prod->id);
+						$cancelled = DigiComHelperDigiCom::isProductDeleted($prod->id);?>
+						<tr class="row<?php echo $k;?> sectiontableentry<?php echo ($i%2 + 1);?>">
+							<td style="<?php echo $cancelled == 3 ? 'text-decoration: line-through;' : '';?>"><?php echo $i+1; ?></td>
+							<td style="<?php echo $cancelled == 3 ? 'text-decoration: line-through;' : '';?>">
+								<?php echo $prod->name;?>
+							</td>
+							<td style="<?php echo $cancelled == 3 ? 'text-decoration: line-through;' : '';?>">
+								<?php echo $prod->quantity;?>
+							</td>
+							<td style="<?php echo $cancelled == 3 ? 'text-decoration: line-through;' : '';?>"><?php
+								$price = $prod->amount_paid - $refund - $chargeback;
+								echo DigiComHelperDigiCom::format_price($prod->price, $prod->currency, true, $configs);
+								$oll_courses_total += $price;
+								if ($refund > 0)
+								{
+									echo '&nbsp;<span style="color:#ff0000;"><em>('.JText::_("LICENSE_REFUND")." - ".DigiComHelperDigiCom::format_price($refund, $prod->currency, true, $configs).')</em></span>';
+								}
+								if ($chargeback > 0)
+								{
+									echo '&nbsp;<span style="color:#ff0000;"><em>('.JText::_("LICENSE_CHARGEBACK")." - ".DigiComHelperDigiCom::format_price($chargeback, $prod->currency, true, $configs).')</em></span>';
+								} ?>
+							</td>
+
+						</tr><?php
+						$k = 1 - $k;
+						$i++;
+					endforeach; ?>
+
+					<tr style="border-style:none;"><td style="border-style:none;" colspan="4"><hr /></td></tr>
+
+					<tr><td colspan="2" ></td>
+						<td style="font-weight:bold"><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></td>
+						<td>
+							<?php
+								echo DigiComHelperDigiCom::format_price($order->price, $order->currency, true, $configs);
+							?>
 						</td>
-						<td style="<?php echo $cancelled == 3 ? 'text-decoration: line-through;' : '';?>">
-							<?php echo $prod->quantity;?>
+					</tr>
+
+					<tr>
+						<td colspan="2"></td>
+						<td><strong><?php echo JText::_("COM_DIGICOM_DISCOUNT");?></strong> (<?php echo $order->promocode; ?>)</td>
+						<td><?php echo DigiComHelperDigiCom::format_price($order->discount, $order->currency, true, $configs);?></td>
+					</tr>
+					<tr>
+						<td colspan="2"></td>
+						<td><strong><?php echo JText::_("COM_DIGICOM_TAX");?></strong></td>
+						<td><?php echo DigiComHelperDigiCom::format_price($order->tax, $order->currency, true, $configs);?></td>
+					</tr>
+					<?php if ($refunds > 0):?>
+					<tr>
+						<td colspan="2"></td>
+						<td style="font-weight:bold;color:#ff0000;"><?php echo JText::_("LICENSE_REFUNDS");?></td>
+						<td style="color:#ff0000;"><?php echo DigiComHelperDigiCom::format_price($refunds, $order->currency, true, $configs); ?></td>
+					</tr>
+					<?php endif;?>
+					<?php if ($chargebacks > 0):?>
+					<tr>
+						<td colspan="2"></td>
+						<td style="font-weight:bold;color:#ff0000;"><?php echo JText::_("LICENSE_CHARGEBACKS");?></td>
+						<td style="color:#ff0000;"><?php echo DigiComHelperDigiCom::format_price($chargebacks, $order->currency, true, $configs); ?></td>
+					</tr>
+					<?php endif;?>
+					<?php if ($deleted > 0):?>
+					<tr>
+						<td colspan="2"></td>
+						<td style="font-weight:bold;color:#ff0000;"><?php echo JText::_("DELETED_LICENSES");?></td>
+						<td style="color:#ff0000;"><?php echo DigiComHelperDigiCom::format_price($deleted, $order->currency, true, $configs); ?></td>
+					</tr>
+					<?php endif;?>
+					<tr><td colspan="2"></td>
+							<td style="font-weight:bold"><?php echo JText::_("COM_DIGICOM_TOTAL");?></td>
+						<td>
+							<?php
+								$value = $order->amount;
+								echo DigiComHelperDigiCom::format_price($value, $order->currency, true, $configs);
+							?>
 						</td>
-						<td style="<?php echo $cancelled == 3 ? 'text-decoration: line-through;' : '';?>"><?php
-							$price = $prod->amount_paid - $refund - $chargeback;
-							echo DigiComHelperDigiCom::format_price($prod->price, $prod->currency, true, $configs);
-							$oll_courses_total += $price;
-							if ($refund > 0)
-							{
-								echo '&nbsp;<span style="color:#ff0000;"><em>('.JText::_("LICENSE_REFUND")." - ".DigiComHelperDigiCom::format_price($refund, $prod->currency, true, $configs).')</em></span>';
-							}
-							if ($chargeback > 0)
-							{
-								echo '&nbsp;<span style="color:#ff0000;"><em>('.JText::_("LICENSE_CHARGEBACK")." - ".DigiComHelperDigiCom::format_price($chargeback, $prod->currency, true, $configs).')</em></span>';
-							} ?>
+					</tr>
+					<tr><td colspan="2"></td>
+							<td style="font-weight:bold"><?php echo JText::_("COM_DIGICOM_AMOUNT_PAID");?></td>
+						<td>
+							<?php
+								$value = $order->amount_paid;
+								$value = $value - $refunds - $chargebacks;
+								echo DigiComHelperDigiCom::format_price($value, $order->currency, true, $configs);
+							?>
 						</td>
+					</tr>
 
-					</tr><?php
-					$k = 1 - $k;
-					$i++;
-				endforeach; ?>
+					<tr style="border-style:none;"><td style="border-style:none;" colspan="4"><hr /></td></tr>
 
-				<tr style="border-style:none;"><td style="border-style:none;" colspan="4"><hr /></td></tr>
+					<tr>
+						<td colspan="2" width="50%"><?php echo $this->form->getLabel('status'); ?></td>
+						<td colspan="2"><?php echo $this->form->getInput('status'); ?></td>
+					</tr>
+					<tr>
+						<td colspan="2" width="50%"><?php echo $this->form->getLabel('amount_paid'); ?></td>
+						<td colspan="2"><?php echo $this->form->getInput('amount_paid'); ?></td>
+					</tr>
 
-				<tr><td colspan="2" ></td>
-					<td style="font-weight:bold"><?php echo JText::_("COM_DIGICOM_SUBTOTAL");?></td>
-					<td>
-						<?php
-							echo DigiComHelperDigiCom::format_price($order->price, $order->currency, true, $configs);
-						?>
-					</td>
-				</tr>
-
-				<tr>
-					<td colspan="2"></td>
-					<td><strong><?php echo JText::_("COM_DIGICOM_DISCOUNT");?></strong> (<?php echo $order->promocode; ?>)</td>
-					<td><?php echo DigiComHelperDigiCom::format_price($order->discount, $order->currency, true, $configs);?></td>
-				</tr>
-				<tr>
-					<td colspan="2"></td>
-					<td><strong><?php echo JText::_("COM_DIGICOM_TAX");?></strong></td>
-					<td><?php echo DigiComHelperDigiCom::format_price($order->tax, $order->currency, true, $configs);?></td>
-				</tr>
-				<?php if ($refunds > 0):?>
-				<tr>
-					<td colspan="2"></td>
-					<td style="font-weight:bold;color:#ff0000;"><?php echo JText::_("LICENSE_REFUNDS");?></td>
-					<td style="color:#ff0000;"><?php echo DigiComHelperDigiCom::format_price($refunds, $order->currency, true, $configs); ?></td>
-				</tr>
-				<?php endif;?>
-				<?php if ($chargebacks > 0):?>
-				<tr>
-					<td colspan="2"></td>
-					<td style="font-weight:bold;color:#ff0000;"><?php echo JText::_("LICENSE_CHARGEBACKS");?></td>
-					<td style="color:#ff0000;"><?php echo DigiComHelperDigiCom::format_price($chargebacks, $order->currency, true, $configs); ?></td>
-				</tr>
-				<?php endif;?>
-				<?php if ($deleted > 0):?>
-				<tr>
-					<td colspan="2"></td>
-					<td style="font-weight:bold;color:#ff0000;"><?php echo JText::_("DELETED_LICENSES");?></td>
-					<td style="color:#ff0000;"><?php echo DigiComHelperDigiCom::format_price($deleted, $order->currency, true, $configs); ?></td>
-				</tr>
-				<?php endif;?>
-				<tr><td colspan="2"></td>
-						<td style="font-weight:bold"><?php echo JText::_("COM_DIGICOM_TOTAL");?></td>
-					<td>
-						<?php
-							$value = $order->amount;
-							echo DigiComHelperDigiCom::format_price($value, $order->currency, true, $configs);
-						?>
-					</td>
-				</tr>
-				<tr><td colspan="2"></td>
-						<td style="font-weight:bold"><?php echo JText::_("COM_DIGICOM_AMOUNT_PAID");?></td>
-					<td>
-						<?php
-							$value = $order->amount_paid;
-							$value = $value - $refunds - $chargebacks;
-							echo DigiComHelperDigiCom::format_price($value, $order->currency, true, $configs);
-						?>
-					</td>
-				</tr>
-
-				<tr style="border-style:none;"><td style="border-style:none;" colspan="4"><hr /></td></tr>
-
-				<tr>
-					<td colspan="2" width="50%"><?php echo $this->form->getLabel('status'); ?></td>
-					<td colspan="2"><?php echo $this->form->getInput('status'); ?></td>
-				</tr>
-				<tr>
-					<td colspan="2" width="50%"><?php echo $this->form->getLabel('amount_paid'); ?></td>
-					<td colspan="2"><?php echo $this->form->getInput('amount_paid'); ?></td>
-				</tr>
-
-				</tbody>
+					</tbody>
 
 
-			</table>
+				</table>
+			</div>
 			<?php echo JHtml::_('bootstrap.endTab'); ?>
 
 			<?php echo JHtml::_('bootstrap.addTab', 'digicomTab', 'log', JText::_('COM_DIGICOM_ORDER_DETAILS_LOG_TITLE', true)); ?>
+				<div class="panel-box">
+					<table class="adminlist table table-striped">
+						<thead>
+							<tr>
+								<th>
+									<?php echo JText::_( 'COM_DIGICOM_ID' ); ?>
+								</th>
+								<th>
+									<?php echo JText::_( 'COM_DIGICOM_PRODUCTS_TYPE' ); ?>
+								</th>
+								<th>
+									<?php echo JText::_( 'COM_DIGICOM_MESSAGE' ); ?>
+								</th>
+								<th>
+									<?php echo JText::_( 'COM_DIGICOM_STATUS' ); ?>
+								</th>
+								<th>
+									<?php echo JText::_( 'JDATE' ); ?>
+								</th>
+								<th>
+									<?php echo JText::_( 'COM_DIGICOM_IP' ); ?>
+								</th>
+								<th style="max-width:300px;overflow: scroll;">
+									<?php echo JText::_( 'COM_DIGICOM_PARAMS' ); ?>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach($order->logs as $key=>$log): ?>
+							<tr>
+								<td>
+									<?php echo $log->id;?>
+								</td>
+								<td>
+									<?php echo $log->type;?>
+								</td>
+								<td>
+									<?php echo $log->message;?>
+								</td>
+								<td>
+									<?php echo $log->status;?>
+								</td>
+								<td>
+									<?php echo $log->created;?>
+								</td>
+								<td>
+									<?php echo $log->ip;?>
+								</td>
+								<td style="max-width:300px;overflow: scroll;">
+									<a href="#!" class="btn" onclick="jQuery('#log-<?php echo $log->id;?>').toggle();">Show Logs</a>
+								</td>
+							</tr>
+							<tr id="log-<?php echo $log->id;?>" style="display:none;">
+								<td colspan="7">
+									<pre><?php print_r (json_decode($log->params, true));?></pre>
+								</td>
+							</tr>
+							<?php endforeach;?>
+						</tbody>
 
-				<table class="adminlist table table-striped">
-					<thead>
-						<tr>
-							<th>
-								<?php echo JText::_( 'COM_DIGICOM_ID' ); ?>
-							</th>
-							<th>
-								<?php echo JText::_( 'COM_DIGICOM_PRODUCTS_TYPE' ); ?>
-							</th>
-							<th>
-								<?php echo JText::_( 'COM_DIGICOM_MESSAGE' ); ?>
-							</th>
-							<th>
-								<?php echo JText::_( 'COM_DIGICOM_STATUS' ); ?>
-							</th>
-							<th>
-								<?php echo JText::_( 'JDATE' ); ?>
-							</th>
-							<th>
-								<?php echo JText::_( 'COM_DIGICOM_IP' ); ?>
-							</th>
-							<th style="max-width:300px;overflow: scroll;">
-								<?php echo JText::_( 'COM_DIGICOM_PARAMS' ); ?>
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php foreach($order->logs as $key=>$log): ?>
-						<tr>
-							<td>
-								<?php echo $log->id;?>
-							</td>
-							<td>
-								<?php echo $log->type;?>
-							</td>
-							<td>
-								<?php echo $log->message;?>
-							</td>
-							<td>
-								<?php echo $log->status;?>
-							</td>
-							<td>
-								<?php echo $log->created;?>
-							</td>
-							<td>
-								<?php echo $log->ip;?>
-							</td>
-							<td style="max-width:300px;overflow: scroll;">
-								<a href="#!" class="btn" onclick="jQuery('#log-<?php echo $log->id;?>').toggle();">Show Logs</a>
-							</td>
-						</tr>
-						<tr id="log-<?php echo $log->id;?>" style="display:none;">
-							<td colspan="7">
-								<pre><?php print_r (json_decode($log->params, true));?></pre>
-							</td>
-						</tr>
-						<?php endforeach;?>
-					</tbody>
-
-				</table>
+					</table>
+				</div>
 			<?php echo JHtml::_('bootstrap.endTab'); ?>
 
 		<?php echo JHtml::_('bootstrap.endTabSet'); ?>

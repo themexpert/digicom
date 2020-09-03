@@ -80,7 +80,7 @@ JFactory::getDocument()->addScriptDeclaration('
 		echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 		?>
 
-		<div id="editcell" >
+		<div id="editcell" class="panel">
 
 			<table class="adminlist table table-striped table-hover table-responsive" id="productList">
 
@@ -254,10 +254,12 @@ JFactory::getDocument()->addScriptDeclaration('
 					<?php endforeach; ?>
 				</tbody>
 			</table>
-			<div class="pagination-centered">
+			
+		</div>
+
+		<div class="pagination-centered">
 				<?php echo $this->pagination->getListFooter(); ?>
 			</div>
-		</div>
 	</div>
 
 	<input type="hidden" name="option" value="com_digicom" />

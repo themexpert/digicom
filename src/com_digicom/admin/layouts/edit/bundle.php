@@ -63,18 +63,17 @@ $form_data = $form->getData();
 $bundle_source = $form_data->get('bundle_source');
 ?>
 
-<fieldset class="adminform">
 
-	<legend><?php echo JText::_('COM_DIGICOM_PRODUCT_BUNDLE_FILES');?></legend>
+<fieldset class="adminform panel-box">
+
+	<h3><?php echo JText::_('COM_DIGICOM_PRODUCT_BUNDLE_FILES');?></h3>
 	<div class="alert alert-info">
 		<?php echo JText::_("COM_DIGICOM_PRODUCT_BUNDLE_HEADER_NOTICE"); ?>
 	</div>
 	
 	<?php echo $form->renderField('bundle_source'); ?>
+	<br>
 
-
-	<hr>
-	
 	<div class="bundle_source_option <?php echo ($bundle_source == 'category' ? '' : ' hide');?>" id="bundle_source_category_option">
 		<?php echo $form->renderField('bundle_category'); ?>
 	</div>

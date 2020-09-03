@@ -64,7 +64,7 @@ $configs 	= $this->params->params;
 			<?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
 		</div>
 		<?php else: ?>
-		<div id="editcell" >
+		<div id="editcell" class="panel">
 			<table class="adminlist table">
 				<thead>
 
@@ -197,10 +197,11 @@ $configs 	= $this->params->params;
 
 			</table>
 
-			<div class="pagination-centered">
+			
+		</div>
+		<div class="pagination-centered">
 				<?php echo $this->pagination->getListFooter(); ?>
 			</div>
-		</div>
 	<?php endif; ?>
 		<input type="hidden" name="option" value="com_digicom" />
 		<input type="hidden" name="task" value="" />
