@@ -99,7 +99,8 @@ class DigiComViewCategory extends JViewCategory
 		$this->category->event->afterDisplayContent = trim(implode("\n", $results));
 
 		// Compute the product slugs and prepare introtext (runs content plugins).
-		if(count($this->items))
+		$total = !is_null($this->items) ? count($this->items) : 0;
+		if($total)
 		{
 			foreach ($this->items as $item)
 			{
