@@ -26,6 +26,8 @@
 
 			<fieldset name="basic">
 
+				<field name="ipn_notice" type="spacer" label="PLG_DIGICOM_PAY_PAYPAL_IPN_NOTICE" />
+
 				<field name="business" type="text" default="" label="PAYPAL_EMAIL" description="PAYPAL_EMAIL_DESC"/>
 
 				<field name="sandbox" type="radio" class="btn-group" default="0" label="PAYPAL_SANDBOX" description="PAYPAL_SANDBOX_DESC">

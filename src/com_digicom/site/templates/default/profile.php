@@ -31,7 +31,9 @@ JHtml::_('formbehavior.chosen', 'select');
 				<?php endif;?>
 				<?php foreach ($fields as $field) :// Iterate through the fields in the set and display them.?>
 					<?php if ($field->hidden):// If the field is hidden, just display the input.?>
-						<?php echo $field->input;?>
+						<?php if ($field->name != "jform[id]"): ?>
+							<?php echo $field->input ;?>
+						<?php endif ?>
 					<?php else: ?>
 						<div class="control-group group-<?php echo $field->class;?>">
 							<div class="control-label">

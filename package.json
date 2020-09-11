@@ -1,6 +1,6 @@
 {
   "name": "pkg_digicom",
-  "version": "1.3.11",
+  "version": "1.4.0-beta1",
   "creationDate": "25-12-2018",
   "description": "DigiCom is next generation ecommerce extension for selling digital product with Joomla!",
   "author": "ThemeXpert <info@themexpert.com>",
@@ -37,7 +37,7 @@
     "gulp-zip": "3.0.2",
     "joomla-gulp": "1.1.1",
     "less": "^2.7.2",
-    "require-dir": "0.3.0"
+    "require-dir": "^0.3.2"
   },
   "dependencies": {
     "orchestrator": "0.3.7"
