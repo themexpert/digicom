@@ -41,5 +41,8 @@
   },
   "dependencies": {
     "orchestrator": "0.3.7"
+  },
+  "resolutions": {
+    "graceful-fs": "^4.2.4"
   }
 }

@@ -1,347 +1,351 @@
 <?php
 /**
- * @package		DigiCom
- * @author 		ThemeXpert http://www.themexpert.com
- * @copyright	Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
- * @license 	GNU General Public License version 3 or later; see LICENSE.txt
- * @since 		1.0.0
+ * @package        DigiCom
+ * @author         ThemeXpert http://www.themexpert.com
+ * @copyright      Copyright (c) 2010-2015 ThemeXpert. All rights reserved.
+ * @license        GNU General Public License version 3 or later; see LICENSE.txt
+ * @since          1.0.0
  */
 
 defined('_JEXEC') or die;
 
-require_once(dirname(__FILE__) . '/paypal/helper.php');
+require_once(dirname(__FILE__).'/paypal/helper.php');
 
 class  plgDigiCom_PayPaypal extends JPlugin
 {
-	/**
-	 * Load the language file on instantiation. Note this is only available in Joomla 3.1 and higher.
-	 * If you want to support 3.0 series you must override the constructor
-	 *
-	 * @var    boolean
-	 * @since  3.1
-	 */
-	protected $autoloadLanguage = true;
+    /**
+     * Load the language file on instantiation. Note this is only available in Joomla 3.1 and higher.
+     * If you want to support 3.0 series you must override the constructor
+     *
+     * @var    boolean
+     * @since  3.1
+     */
+    protected $autoloadLanguage = true;
 
-	/*
-	* initialized response status for quickr use
-	*/
-	protected $responseStatus;
+    /*
+    * initialized response status for quickr use
+    */
+    protected $responseStatus;
 
-	/*
-	* construct method
-	* default joomla plugin params
-	* initialize responseStatus for payment use
-	*/
+    /*
+    * construct method
+    * default joomla plugin params
+    * initialize responseStatus for payment use
+    */
 
-	function __construct($subject, $config)
-	{
-		parent::__construct($subject, $config);
+    function __construct($subject, $config)
+    {
+        parent::__construct($subject, $config);
 
-		//Define Payment Status codes in API  And Respective Alias in Framework
-		$this->responseStatus= array (
-			'Completed' => 'A',
-			'Pending' 	=> 'P',
-			'Failed' 		=> 'P',
-			'Denied' 		=> 'P',
-			'Refunded'	=> 'RF',
-			'Canceled_Reversal'	=> 'CRV',
-			'Reversed'	=> 'RV'
-		);
-	}
+        //Define Payment Status codes in API  And Respective Alias in Framework
+        $this->responseStatus = array(
+            'Completed'         => 'A',
+            'Pending'           => 'P',
+            'Failed'            => 'P',
+            'Denied'            => 'P',
+            'Refunded'          => 'RF',
+            'Canceled_Reversal' => 'CRV',
+            'Reversed'          => 'RV'
+        );
+    }
 
-	/*
-	* method : onDigicomSidebarMenuItem
-	* its been used to set a short edit menu link to digicom
-	* right sidebar
-	* return links to edit
-	*/
-	public function onDigicomSidebarMenuItem()
-	{
-		$pluginid = $this->getPluginId('paypal','digicom_pay','plugin');
-		$params 	= $this->params;
-		$link 		= JRoute::_("index.php?option=com_plugins&client_id=0&task=plugin.edit&extension_id=".$pluginid);
+    /*
+    * method : onDigicomSidebarMenuItem
+    * its been used to set a short edit menu link to digicom
+    * right sidebar
+    * return links to edit
+    */
+    public function onDigicomSidebarMenuItem()
+    {
+        $pluginid = $this->getPluginId('paypal', 'digicom_pay', 'plugin');
+        $params   = $this->params;
+        $link     = JRoute::_("index.php?option=com_plugins&client_id=0&task=plugin.edit&extension_id=".$pluginid);
 
-		return '<a target="_blank" href="' . $link . '" title="'.JText::_("PLG_DIGICOM_PAY_PAYPAL").'" id="plugin-'.$pluginid.'">' . JText::_("PLG_DIGICOM_PAY_PAYPAL_NICKNAME") . '</a>';
+        return '<a target="_blank" href="'.$link.'" title="'.JText::_("PLG_DIGICOM_PAY_PAYPAL").'" id="plugin-'.$pluginid.'">'.JText::_("PLG_DIGICOM_PAY_PAYPAL_NICKNAME").'</a>';
 
-	}
+    }
 
-	/*
-	* method buildLayoutPath
-	* @layout = ask for tmpl file name, default is default, but can be used others name
-	* return propur file to take htmls
-	*/
-	function buildLayoutPath($layout)
-	{
-		if(empty($layout)) $layout = "default";
+    /*
+    * method buildLayoutPath
+    * @layout = ask for tmpl file name, default is default, but can be used others name
+    * return propur file to take htmls
+    */
+    function buildLayoutPath($layout)
+    {
+        if (empty($layout)) {
+            $layout = "default";
+        }
 
-		// bootstrap2 check
-		$bootstrap2 	= $this->params->get( 'bootstrap2' , 0);
-		if($bootstrap2){
-			$layout = "bootstrap2";
-		}
-		$app = JFactory::getApplication();
+        // bootstrap2 check
+        $bootstrap2 = $this->params->get('bootstrap2', 0);
+        if ($bootstrap2) {
+            $layout = "bootstrap2";
+        }
+        $app = JFactory::getApplication();
 
-		// core path
-		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/' . $layout . '.php';
+        // core path
+        $core_file = dirname(__FILE__).'/'.$this->_name.'/tmpl/'.$layout.'.php';
 
-		// override path from site active template
-		$override	= JPATH_BASE .'/templates/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout . '.php';
+        // override path from site active template
+        $override = JPATH_BASE.'/templates/'.$app->getTemplate().'/html/plugins/'.$this->_type.'/'.$this->_name.'/'.$layout.'.php';
 
-		if(JFile::exists($override))
-		{
-			$file = $override;
-		}
-		else
-		{
-  		$file =  $core_file;
-		}
+        if (JFile::exists($override)) {
+            $file = $override;
+        } else {
+            $file = $core_file;
+        }
 
-		return $file;
+        return $file;
 
-	}
+    }
 
-	/*
-	* method buildLayout
-	* @vars = object with product, order, user info
-	* @layout = tmpl name
-	* Builds the layout to be shown, along with hidden fields.
-	* @return html
-	*/
-	function buildLayout($vars, $layout = 'default' )
-	{
-		// Load the layout & push variables
-		ob_start();
-		$layout = $this->buildLayoutPath($layout);
-		include($layout);
-		$html = ob_get_contents();
-		ob_end_clean();
-		return $html;
-	}
+    /*
+    * method buildLayout
+    * @vars = object with product, order, user info
+    * @layout = tmpl name
+    * Builds the layout to be shown, along with hidden fields.
+    * @return html
+    */
+    function buildLayout($vars, $layout = 'default')
+    {
+        // Load the layout & push variables
+        ob_start();
+        $layout = $this->buildLayoutPath($layout);
+        include($layout);
+        $html = ob_get_contents();
+        ob_end_clean();
 
-	/*
-	* method onDigicom_PayGetInfo
-	* can be used Build List of Payment Gateway in the respective Components
-	* for payment process its not used
-	* @return   mixed  return plugin config object
-	*/
-	function onDigicom_PayGetInfo($config)
-	{
+        return $html;
+    }
 
-		if (!in_array($this->_name, $config))
-		{
-			return;
-		}
+    /*
+    * method onDigicom_PayGetInfo
+    * can be used Build List of Payment Gateway in the respective Components
+    * for payment process its not used
+    * @return   mixed  return plugin config object
+    */
+    function onDigicom_PayGetInfo($config)
+    {
 
-		$obj		= new stdClass;
-		$obj->name 	= $this->params->get( 'plugin_name' );
-		$obj->id	= $this->_name;
+        if ( ! in_array($this->_name, $config)) {
+            return;
+        }
 
-		return $obj;
-	}
+        $obj       = new stdClass;
+        $obj->name = $this->params->get('plugin_name');
+        $obj->id   = $this->_name;
 
-	/*
-	* method onDigicom_PayGetHTML
-	* on transection process this function is being used to get html from component
-	* @dependent : self::buildLayout()
-	* @return html for view
-	* @vars : passed from component, all info regarding payment n order
-	*/
-	function onDigicom_PayGetHTML($vars, $pg_plugin)
-	{
-		if($pg_plugin != $this->_name) 
-		{
-			return;
-		}
+        return $obj;
+    }
 
-		$secure_post 			= $this->params->get('secure_post');
-		$sandbox 				= $this->params->get('sandbox');
-		$vars->sandbox 			= $sandbox;
-		$vars->action_url 		= plgDigiCom_PayPaypalHelper::buildPaymentSubmitUrl($secure_post , $sandbox);
+    /*
+    * method onDigicom_PayGetHTML
+    * on transection process this function is being used to get html from component
+    * @dependent : self::buildLayout()
+    * @return html for view
+    * @vars : passed from component, all info regarding payment n order
+    */
+    function onDigicom_PayGetHTML($vars, $pg_plugin)
+    {
+        if ($pg_plugin != $this->_name) {
+            return;
+        }
 
-		// If component does not provide cmd
-		if (empty($vars->cmd))
-		{
-			$vars->cmd = '_xclick';
-		}
+        $secure_post      = $this->params->get('secure_post');
+        $sandbox          = $this->params->get('sandbox');
+        $vars->sandbox    = $sandbox;
+        $vars->action_url = plgDigiCom_PayPaypalHelper::buildPaymentSubmitUrl($secure_post, $sandbox);
 
-		//Take this receiver email address from plugin if component not provided it
-		if(empty($vars->business)) $vars->business = $this->params->get('business');
+        // If component does not provide cmd
+        if (empty($vars->cmd)) {
+            $vars->cmd = '_xclick';
+        }
+
+        //Take this receiver email address from plugin if component not provided it
+        if (empty($vars->business)) {
+            $vars->business = $this->params->get('business');
+        }
 
 
-		// @ get recurring layout Amol
-		if (property_exists($vars, 'is_recurring') && $vars->is_recurring == 1)
-		{
-			// new since 1.3.9
-			$html = $this->buildLayout($vars, 'recurring');
-		}
-		else
-		{
-			$html = $this->buildLayout($vars);
-		}
-		
-		return $html;
+        // @ get recurring layout Amol
+        if (property_exists($vars, 'is_recurring') && $vars->is_recurring == 1) {
+            // new since 1.3.9
+            $html = $this->buildLayout($vars, 'recurring');
+        } else {
+            $html = $this->buildLayout($vars);
+        }
 
-	}
+        return $html;
 
-	
-	/*
-	* method onDigicom_PayProcesspayment
-	* used when we recieve payment from site or thurd party
-	* @data : the necessary info recieved from form about payment
-	* @return payment process final status
-	* @URL : https://developer.paypal.com/docs/api-basics/notifications/ipn/ht-ipn/
-	* IPN: index.php?option=com_digicom&task=cart.processPayment&processor=paypal&webhook=true
-	*/
-	function onDigicom_PayProcesspayment($data)
-	{
-		// for paypal, prepare data as paypal docs
-		$data = plgDigiCom_PayPaypalHelper::preparePostData();
-		
-		$app = JFactory::getApplication();
-		$processor = JFactory::getApplication()->input->get('processor','');
-		if($processor != $this->_name) return;
-		if(!$data) return;
-		
-		if ($app->input->get('webhook', '', 'string') == 'true') {
+    }
+
+
+    /*
+    * method onDigicom_PayProcesspayment
+    * used when we recieve payment from site or thurd party
+    * @data : the necessary info recieved from form about payment
+    * @return payment process final status
+    * @URL : https://developer.paypal.com/docs/api-basics/notifications/ipn/ht-ipn/
+    * IPN: index.php?option=com_digicom&task=cart.processPayment&processor=paypal&webhook=true
+    */
+    function onDigicom_PayProcesspayment($data)
+    {
+        // for paypal, prepare data as paypal docs
+        $data = plgDigiCom_PayPaypalHelper::preparePostData();
+
+        $app       = JFactory::getApplication();
+        $processor = JFactory::getApplication()->input->get('processor', '');
+        if ($processor != $this->_name) {
+            return;
+        }
+        if ( ! $data) {
+            return;
+        }
+
+        // log whatever we have.
+        $info1 = array('step' => 1, 'data' => $data);
+        $this->onDigicom_PayStorelog($this->_name, $info1);
+
+        if ($app->input->get('webhook', '', 'string') == 'true') {
             return $this->onDigicom_PayProcesspaymentHandleWebhook($data);
         }
 
-		$sandbox 		= $this->params->get('sandbox', 0);
-		$response 		= plgDigiCom_PayPaypalHelper::validateIPN($data, $sandbox, $this->params);
-		$verify 		= $response[0];
+        $sandbox  = $this->params->get('sandbox', 0);
+        $response = plgDigiCom_PayPaypalHelper::validateIPN($data, $sandbox, $this->params);
+        $verify   = $response[0];
 
-		if (!$verify)
-		{
-			plgDigiCom_PayPaypalHelper::Storelog($this->_name, $response[1]);
-			return false;
-		}
-		else
-		{
-			$info = array('raw_data' => $response);
-			$this->onDigicom_PayStorelog($this->_name, $info);
-		}
+        if ( ! $verify) {
+            $response = ['step' => 2, 'data' => $response, 'raw_payment_status' => $data['payment_status']];
+            $this->onDigicom_PayStorelog($this->_name, $response);
+        } else {
+            $info = array('step' => 3, 'status' => 'verified', 'raw_data' => $response, 'raw_payment_status' => $data['payment_status']);
+            $this->onDigicom_PayStorelog($this->_name, $info);
 
-		$raw_data = $response[1]['raw_data'];
-		$payment_status = $this->translateResponse( $raw_data );
-		$result = array(
-			'order_id'			=> $data['custom'],
-			'transaction_id'	=> $data['txn_id'],
-			'subscriber_id' 	=> $data['subscr_id'],
-			'buyer_email'		=> $data['payer_email'],
-			'status'			=> $payment_status,
-			'txn_type'			=> $data['txn_type'],
-			'total_paid_amt'	=> $data['mc_gross'],
-			'raw_data'			=> $raw_data,
-			'processor'			=> 'paypal'
-		);
+        }
 
-		$this->onDigicom_PayStorelog($this->_name, raw_data);
-		
-		return $result;
-	}
+        $raw_data       = $response[1]['raw_data'];
+        $payment_status = $this->translateResponse($raw_data);
+        $result         = array(
+            'order_id'       => $data['custom'],
+            'transaction_id' => $data['txn_id'],
+            'subscriber_id'  => $data['subscr_id'],
+            'buyer_email'    => $data['payer_email'],
+            'status'         => $payment_status,
+            'txn_type'       => $data['txn_type'],
+            'total_paid_amt' => $data['mc_gross'],
+            'raw_data'       => $raw_data,
+            'processor'      => 'paypal'
+        );
 
-	function onDigicom_PayProcesspaymentHandleWebhook($data)
-	{
-		$sandbox 		= $this->params->get('sandbox', 0);
-		$response 		= plgDigiCom_PayPaypalHelper::validateIPN($data, $sandbox, $this->params);
-		$verify 		= $response[0];
+        $info2 = ['step' => 4, 'final_payment_status' => $payment_status, 'prepared_result' => $result, 'data' => $raw_data];
+        $this->onDigicom_PayStorelog($this->_name, $info2);
 
-		if (!$verify)
-		{
-			plgDigiCom_PayPaypalHelper::Storelog($this->_name, $response[1]);
-			return false;
-		}
-		else
-		{
-			$info = array('raw_data' => $response);
-			$this->onDigicom_PayStorelog($this->_name, $info);
-		}
+        return $result;
+    }
 
-		$raw_data = $response[1]['raw_data'];
-		$payment_status = $this->translateResponse( $raw_data );
-		$result = array(
-			'order_id'			=> $data['custom'],
-			'transaction_id'	=> $data['txn_id'],
-			'subscriber_id' 	=> $data['subscr_id'],
-			'buyer_email'		=> $data['payer_email'],
-			'status'			=> $payment_status,
-			'txn_type'			=> $data['txn_type'],
-			'total_paid_amt'	=> $data['mc_gross'],
-			'raw_data'			=> $raw_data,
-			'processor'			=> 'paypal'
-		);
+    function onDigicom_PayProcesspaymentHandleWebhook($data)
+    {
+        $sandbox  = $this->params->get('sandbox', 0);
+        $response = plgDigiCom_PayPaypalHelper::validateIPN($data, $sandbox, $this->params);
+        $verify   = $response[0];
 
-		$this->onDigicom_PayStorelog($this->_name, raw_data);
-		
-		return $result;
-	}
-	
+        if ( ! $verify) {
+            $response = ['step' => 5, 'data' => $response];
+            $this->onDigicom_PayStorelog($this->_name, $response);
 
-	/*
-	* method translateResponse
-	* used to set proper sesponce for order status
-	* @invoice_status : payment status recieved from payment site: processor
-	* @return order status
-	*/
-	function translateResponse($data)
-	{
-		$response = "P";
-		$payment_status = $data['payment_status'];
+            return false;
+        } else {
+            $info = array('step' => 6, 'raw_data' => $response);
+            $this->onDigicom_PayStorelog($this->_name, $info);
+        }
 
-		if(array_key_exists($payment_status, $this->responseStatus))
-		{
-			$response = $this->responseStatus[$payment_status];
-		}
-		
-		if($payment_status != 'Completed' && $data['CURL_response'] == 'VERIFIED' && $data['digicom_status'] == 1){
-			$response = $this->responseStatus['Completed'];
-		}
+        $raw_data       = $response[1]['raw_data'];
+        $payment_status = $this->translateResponse($raw_data);
+        $result         = array(
+            'order_id'       => $data['custom'],
+            'transaction_id' => $data['txn_id'],
+            'subscriber_id'  => $data['subscr_id'],
+            'buyer_email'    => $data['payer_email'],
+            'status'         => $payment_status,
+            'txn_type'       => $data['txn_type'],
+            'total_paid_amt' => $data['mc_gross'],
+            'raw_data'       => $raw_data,
+            'processor'      => 'paypal'
+        );
 
-		return $response;
-	}
+        $info2 = ['step' => 7, 'data' => $raw_data];
+        $this->onDigicom_PayStorelog($this->_name, $info2);
 
-	/*
-	* method onDigicom_PayStorelog
-	* used to store log for plugin debug payment
-	* @data : the necessary info recieved from form about payment
-	* @return null
-	*/
-	function onDigicom_PayStorelog($name, $data)
-	{
-		if($name != $this->_name) return;
+        return $result;
+    }
 
-		$log_write = $this->params->get('log_write', '0');
 
-		if ($log_write)
-		{
-			plgDigiCom_PayPaypalHelper::Storelog($this->_name, $data);
-		}
-	}
+    /*
+    * method translateResponse
+    * used to set proper sesponce for order status
+    * @invoice_status : payment status recieved from payment site: processor
+    * @return order status
+    */
+    function translateResponse($data)
+    {
+        $response       = "P";
+        $payment_status = $data['payment_status'];
 
-	/*
-	* method getPluginId
-	* used to get plugin for use
-	* @element : joomla plugin element name
-	* @folder : joomla plugin folder name
-	* @type : joomla plugin type
-	* @return extension_id
-	*/
-	function getPluginId($element,$folder, $type)
-	{
-	    $db = JFactory::getDBO();
-	    $query = $db->getQuery(true);
-	    $query
-	        ->select($db->quoteName('a.extension_id'))
-	        ->from($db->quoteName('#__extensions', 'a'))
-	        ->where($db->quoteName('a.element').' = '.$db->quote($element))
-	        ->where($db->quoteName('a.folder').' = '.$db->quote($folder))
-	        ->where($db->quoteName('a.type').' = '.$db->quote($type));
+        if (array_key_exists($payment_status, $this->responseStatus)) {
+            $response = $this->responseStatus[$payment_status];
+        }
 
-	    $db->setQuery($query);
-	    $db->execute();
-	    if($db->getNumRows()){
-	        return $db->loadResult();
-	    }
-	    return false;
-	}
+        if ($payment_status != 'Completed' && $data['CURL_response'] == 'VERIFIED' && $data['digicom_status'] == 1) {
+            $response = $this->responseStatus['Completed'];
+        }
+
+        return $response;
+    }
+
+    /*
+    * method onDigicom_PayStorelog
+    * used to store log for plugin debug payment
+    * @data : the necessary info recieved from form about payment
+    * @return null
+    */
+    function onDigicom_PayStorelog($name, $data)
+    {
+        if ($name != $this->_name) {
+            return;
+        }
+
+        $log_write = $this->params->get('log_write', '0');
+
+        if ($log_write) {
+            plgDigiCom_PayPaypalHelper::Storelog($this->_name, $data);
+        }
+    }
+
+    /*
+    * method getPluginId
+    * used to get plugin for use
+    * @element : joomla plugin element name
+    * @folder : joomla plugin folder name
+    * @type : joomla plugin type
+    * @return extension_id
+    */
+    function getPluginId($element, $folder, $type)
+    {
+        $db    = JFactory::getDBO();
+        $query = $db->getQuery(true);
+        $query
+            ->select($db->quoteName('a.extension_id'))
+            ->from($db->quoteName('#__extensions', 'a'))
+            ->where($db->quoteName('a.element').' = '.$db->quote($element))
+            ->where($db->quoteName('a.folder').' = '.$db->quote($folder))
+            ->where($db->quoteName('a.type').' = '.$db->quote($type));
+
+        $db->setQuery($query);
+        $db->execute();
+        if ($db->getNumRows()) {
+            return $db->loadResult();
+        }
+
+        return false;
+    }
 }
