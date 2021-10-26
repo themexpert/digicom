@@ -122,21 +122,23 @@ class DigiComSiteHelperDigicom {
 
 		if (isset( $customer->_customer ) ) {
 			$customer = $customer->_customer;
-		}else{
-			$customer = $customer;
 		}
 
 		$userid = $customer->id;
 		$table = JTable::getInstance('Customer', 'Table');
-		$table->loadCustommer($userid);
-
+		$table->load($userid);
 		if(empty($table->id) or $table->id < 0){
-			$cust = new stdClass();
-			$cust->id = $user->id;
-			$cust->name = $customer->name;
-			$cust->email =  $user->email;
-			$table->bind($cust);
-			$table->store();
+			$object = new stdClass();
+            $object->id = $user->id;
+            $object->name = $customer->name;
+            $object->email =  $user->email;
+			// $table->bind($cust);
+			// $table->store();
+
+            $db = JFactory::getDBO();
+            $db->insertObject('#__digicom_customers', $object);
+            $id = $db->insertId();
+            $table->load($id);
 		}
 
 		if (
