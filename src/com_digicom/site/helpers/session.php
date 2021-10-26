@@ -216,10 +216,21 @@ class DigiComSiteHelperSession
                     $db->setQuery($query);
                     $db->execute();
                 } else {
-                    $table->id = $this->_user->id;
-                    $table->name  = $my->name;
-                    $table->email = $my->email;
-                    $table->store();
+
+                    // $table->id = $this->_user->id;
+                    // $table->name  = $my->name;
+                    // $table->email = $my->email;
+                    // $table->store();
+
+                    $data = new stdClass();
+                    $data->id = $this->_user->id;
+                    $data->name  = $my->name;
+                    $data->email = $my->email;
+
+                    $db = JFactory::getDBO();
+                    $db->insertObject('#__digicom_customers', $data);
+                    $id = $db->insertId();
+                    $table->load($id);
                 }
             } // update customer info if re-registered as customer
             elseif ($table->id != $this->_user->id) {
