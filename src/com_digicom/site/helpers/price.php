@@ -16,7 +16,7 @@ class DigiComSiteHelperPrice {
 	/**
 	* price formet helper
 	*/
-	public static function format_price( $amount, $ccode, $add_sym = false, $configs )
+	public static function format_price( $amount, $ccode, bool $add_sym = false, $configs )
 	{
 
 		$currency_use = $configs->get('currency_use','symbol');
