@@ -370,7 +370,7 @@ class DigiComViewCategory extends JViewCategory
 		$children = array($category->id => $children);
 
 		// Escape strings for HTML output
-		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
+		$this->pageclass_sfx = htmlspecialchars((string)$params->get('pageclass_sfx'));
 
 		$maxLevel         = $params->get('maxLevel', -1);
 		$this->maxLevel   = &$maxLevel;
