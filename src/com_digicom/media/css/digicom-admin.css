@@ -149,6 +149,7 @@ ul.usergroups li {
   margin-top: 18px;
 }
 .js-stools {
+  height: 30px;
   margin-bottom: 10px;
 }
 .js-stools .clearfix:after {
@@ -202,8 +203,8 @@ body.com_digicom #adminForm {
 }
 body.com_digicom .chzn-container-single .chzn-single {
   padding: 0 0 0 0.875rem;
-  height: 1.8rem;
-  line-height: 1.8rem;
+  height: 2rem;
+  line-height: 2rem;
   border: 1px solid #dfdfdf;
   border-radius: 3px;
   background: #ffffff;
@@ -429,13 +430,14 @@ body.com_digicom .subhead #toolbar .btn-success {
   width: auto;
 }
 body.com_digicom #digicom {
-  background: #253238;
+  background: #f9f9fb;
 }
 body.com_digicom #j-sidebar-container {
-  background: #253238;
+  background: #ffffff;
+  border-right: 1px solid #eaeaea;
   margin-left: 0;
-  width: 238px;
-  color: #c9d1dd;
+  width: 280px;
+  color: #333333;
   overflow: hidden;
   border: 0;
   -webkit-backface-visibility: hidden;
@@ -447,14 +449,14 @@ body.com_digicom #j-sidebar-container #sidebar {
   padding: 15px 0;
 }
 body.com_digicom #j-sidebar-container #sidebar #submenu {
-  width: 200px;
+  width: 220px;
   box-sizing: border-box;
   padding-left: 0px;
   padding-right: 0px;
 }
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a {
-  padding: 5px 12px;
-  color: #c9d1dd;
+  padding: 8px 12px;
+  color: #333333;
   font-size: 14px;
   line-height: 24px;
   text-shadow: none;
@@ -464,29 +466,28 @@ body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a >
   display: inline-block;
 }
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a.dglogo {
-  background: url(../images/dglogo-white-176x48.png) no-repeat 16px 0;
+  background: url(../images/dglogo-250x68.png) no-repeat 16px 0;
   background-size: 80%;
   font-size: 0;
   text-indent: -9999px;
   height: 43px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 2px 1px rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid #f6f7f9;
   margin-bottom: 5px;
 }
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a:hover,
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a:focus {
   background-color: inherit;
-  color: #fefefe;
+  color: #1976d2;
 }
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a:hover [class^="icon-"],
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a:focus [class^="icon-"],
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a:hover [class*=" icon-"],
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li > a:focus [class*=" icon-"] {
-  color: #fefefe;
+  color: #1976d2;
 }
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list [class^="icon-"],
 body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list [class*=" icon-"] {
-  color: #c9d1dd;
+  color: #333333;
   margin-right: 15px;
   width: auto;
   height: auto;
@@ -505,10 +506,10 @@ body.com_digicom #j-sidebar-container #sidebar .sidebar-nav .nav-list > li.activ
   display: block;
   position: absolute;
   right: 0px;
-  top: 7px;
+  top: 0px;
   border-style: solid;
-  border-width: 10px;
-  border-color: transparent #f5f5f5 transparent transparent;
+  border-width: 20px;
+  border-color: transparent #fff transparent transparent;
 }
 body.com_digicom.sidebar-collapse #j-sidebar-container,
 body.com_digicom.layout-dgform #j-sidebar-container {
@@ -522,18 +523,18 @@ body.com_digicom.layout-dgform #j-sidebar-container #sidebar .sidebar-nav #subme
 }
 body.com_digicom.sidebar-collapse #j-sidebar-container #sidebar .sidebar-nav #submenu.nav-list > li > a.dglogo,
 body.com_digicom.layout-dgform #j-sidebar-container #sidebar .sidebar-nav #submenu.nav-list > li > a.dglogo {
-  background: url(../images/dglogo-white-36x36.png) no-repeat 6px 0px;
-  background-size: 50%;
+  background-size: 120px auto;
+  background-position: 5px 0px;
   height: 28px;
-  width: 30px;
 }
 body.com_digicom.sidebar-collapse #j-sidebar-container #sidebar .sidebar-nav #submenu.nav-list > li > a > span + span,
 body.com_digicom.layout-dgform #j-sidebar-container #sidebar .sidebar-nav #submenu.nav-list > li > a > span + span {
   display: none;
 }
-body.com_digicom.sidebar-collapse #j-main-container,
-body.com_digicom.layout-dgform #j-main-container {
-  margin-left: 0;
+body.com_digicom.sidebar-collapse #j-sidebar-container #sidebar .sidebar-nav #submenu.nav-list > li.active > a:after,
+body.com_digicom.layout-dgform #j-sidebar-container #sidebar .sidebar-nav #submenu.nav-list > li.active > a:after {
+  top: 10px;
+  border-width: 10px;
 }
 body.com_digicom.sidebar-collapse div#system-debug,
 body.com_digicom.layout-dgform div#system-debug,
@@ -712,6 +713,26 @@ body.com_digicom .tabs-left .nav-tabs > li:hover a {
   background: #eee;
   border: 0;
 }
+body.com_digicom #digicom .panel {
+  box-shadow: rgba(102, 119, 136, 0.03) 0px 6px 8px, rgba(102, 119, 136, 0.3) 0px 1px 2px;
+  background: #ffffff;
+  border-width: 0px;
+  border-style: initial;
+  border-color: initial;
+  border-image: initial;
+}
+body.com_digicom #digicom .panel > .panel-heading {
+  font-size: 15px;
+  font-weight: bold;
+  padding: 15px;
+}
+body.com_digicom #digicom .panel .panel-heading,
+body.com_digicom #digicom .panel-default .panel-footer {
+  color: #667788;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px;
+  background: #f6f7f9;
+  border-color: #eaeaea;
+}
 body.com_digicom .container-main {
   padding: 0;
 }
@@ -723,10 +744,14 @@ body.com_digicom #j-main-container {
   background-color: #f9f9fb;
   padding: 20px;
   width: 100%;
-  margin-left: 0px;
   box-sizing: border-box;
-  margin-right: 0;
   float: left;
+  color: #667788;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px;
+  background: #f6f7f9;
+  border-color: #eaeaea;
+  box-shadow: rgba(102, 119, 136, 0.03) 0px 6px 8px, rgba(102, 119, 136, 0.3) 0px 1px 2px;
+  margin: 20px;
 }
 body.com_digicom #j-sidebar-container,
 body.com_digicom #j-main-container {
@@ -810,9 +835,6 @@ body.layout-dgform #j-main-container .form-inline .controls {
   body.com_digicom #j-sidebar-container {
     display: none;
   }
-  body.com_digicom.sidebar-collapse #j-main-container {
-    margin-left: 0px;
-  }
   body.com_digicom header.header {
     display: block;
   }
@@ -840,7 +862,7 @@ body.layout-dgform #j-main-container .form-inline .controls {
 /* Sidebar right styling */
 #toggle_settings_wrap {
   background: rgba(25, 118, 210, 0.9);
-  color: #c9d1dd;
+  color: #333333;
   padding: 20px;
   position: fixed;
   top: 0;

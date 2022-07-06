@@ -15,12 +15,12 @@
 @secondary-blue : #489be0;
 @dark-blue : #1E4973;
 
-@gray : #f9f9fb ;
+@gray : #f9f9fb ; 
 
 @body-background: @gray;
-@sidebar-background: #253238;
+@sidebar-background: rgb(255, 255, 255);
 @sidebar-active-background: @primary-blue;
-@sidebar-text-color: #c9d1dd;
+@sidebar-text-color: rgb(51, 51, 51);
 @sidebar-active-text-color: #fefefe;
 @sidebar-collapse-width: 38px;
 
@@ -158,8 +158,9 @@ ul.usergroups li {
 	margin-right: 52px;
 	margin-top: 18px;
 }
-// Search tools
+// Search tools.
 .js-stools{ 
+	height: 30px;
 	margin-bottom: 10px; 
 	.clearfix:after{
 		clear: none;
@@ -251,6 +252,7 @@ body.com_digicom {
 	@import "components/sidebar.less";
 	@import "components/form.less";
 	@import "components/tabs.less";
+	@import "components/options.less";
 
 	.container-main { padding: 0; }
 
@@ -262,10 +264,17 @@ body.com_digicom {
 		background-color: @body-background;
 		padding: 20px;
 		width: 100%;
-		margin-left: 0px;
+		// margin-left: 0px;
 		box-sizing: border-box;
-		margin-right: 0;
+		// margin-right: 0;
 	    float: left;
+
+	    color: rgb(102, 119, 136);
+	    text-shadow: rgba(255, 255, 255, 0.5) 0px 1px;
+	    background: rgb(246, 247, 249);
+	    border-color: rgb(234, 234, 234);
+	    box-shadow: rgba(102, 119, 136, 0.03) 0px 6px 8px, rgba(102, 119, 136, 0.3) 0px 1px 2px;
+	 	margin: 20px;
 	}
 
 	#j-sidebar-container,
@@ -363,7 +372,7 @@ body.layout-dgform {
 			display: none;
 		}
 		&.sidebar-collapse #j-main-container{
-	    margin-left: 0px;
+	    // margin-left: 0px;
 		}
 		header.header{
 			display: block;

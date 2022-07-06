@@ -15,6 +15,11 @@ class DigiComViewCustomer extends JViewLegacy {
 
 	function display ($tpl =  null )
 	{
+		if (!JFactory::getUser()->authorise('core.customers', 'com_digicom'))
+		{
+			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+		}
+		
 		$db = JFactory::getDBO();
 		$customer = $this->get('customer');
 		//print_r($customer);die;

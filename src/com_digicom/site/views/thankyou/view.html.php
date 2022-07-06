@@ -17,10 +17,16 @@ class DigiComViewThankYou extends JViewLegacy
 
 	function display($tpl = null)
 	{
-		$app 			= JFactory::getApplication();
+		$app 		= JFactory::getApplication();
 		$session 	= JFactory::getSession();
-		$digicom_session = $session->get('com_digicom', array());
 		$this->state	= $this->get('State');
+		$digicom_session = $session->get('com_digicom');
+		
+		if(!$digicom_session && $app->input->get('order_id')){
+			$session->set('com_digicom', array('action' => 'payment_complete', 'id' => $app->input->get('order_id')));						
+			$digicom_session = $session->get('com_digicom');
+		}
+		
 		
 		if(isset($digicom_session['action']) && $digicom_session['action'] == 'payment_complete' && $digicom_session['id'])
 		{

@@ -35,8 +35,9 @@ class DigiComViewConfigs extends JViewLegacy
 
 			return false;
 		}
-
+		
 		// Bind the form to the data.
+
 		if ($form && $component->params)
 		{
 			$form->bind($component->params);

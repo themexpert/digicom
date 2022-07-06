@@ -16,7 +16,7 @@ class DigiComSiteHelperPrice {
 	/**
 	* price formet helper
 	*/
-	public static function format_price( $amount, $ccode, $add_sym = false, $configs )
+	public static function format_price( $amount, $ccode, bool $add_sym = false, $configs )
 	{
 
 		$currency_use = $configs->get('currency_use','symbol');
@@ -115,7 +115,7 @@ class DigiComSiteHelperPrice {
 		}
 
 		if( ! empty( $country ) ) {
-			$tax_rates   = $configs->get('tax_rates',array());
+			$tax_rates   = $configs->get('tax_rates', '');
 			$json = json_decode($tax_rates, true);
 			if(is_array($json)){
 				$tax_rates = self::group_by_key($json);

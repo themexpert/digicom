@@ -31,7 +31,10 @@ $configs 	= $this->params->params;
 		<div class="dg-alert dg-alert-with-icon">
 			<span class="icon-support"></span>
 			<?php echo JText::_("COM_DIGICOM_LICENSES_HEADER_NOTICE"); ?>
+			<a href="#" onclick="jQuery('#hints_wrapper').slideToggle();">Show Hints</a>
 		</div>
+		<p id="hints_wrapper" class="dg-alert dg-alert-with-icon hide"><span class="icon-help"></span><?php echo JText::_("COM_DIGICOM_LICENSE_SEARCH_NOTICE"); ?></p>
+		
 		<br>
 		<div class="js-stools">
 			<div class="clearfix">
@@ -61,7 +64,7 @@ $configs 	= $this->params->params;
 			<?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
 		</div>
 		<?php else: ?>
-		<div id="editcell" >
+		<div id="editcell" class="panel">
 			<table class="adminlist table">
 				<thead>
 
@@ -194,10 +197,11 @@ $configs 	= $this->params->params;
 
 			</table>
 
-			<div class="pagination-centered">
+			
+		</div>
+		<div class="pagination-centered">
 				<?php echo $this->pagination->getListFooter(); ?>
 			</div>
-		</div>
 	<?php endif; ?>
 		<input type="hidden" name="option" value="com_digicom" />
 		<input type="hidden" name="task" value="" />

@@ -1,10 +1,12 @@
 #digicom{
-  background: @sidebar-background;
+  background: @body-background;
 }
 #j-sidebar-container {
   background: @sidebar-background;
+  border-right: 1px solid rgb(234, 234, 234);
+
   margin-left: 0;
-  width: 238px;
+  width: 280px;
   float: left;
   color: @sidebar-text-color;
   // position: fixed;
@@ -19,16 +21,15 @@
   float: left;
   #sidebar {
     padding: 15px 0;
-
     #submenu {
-      width: 200px;
+      width: 220px;
       box-sizing: border-box;
       padding-left: 0px;
       padding-right: 0px;
     }
     .sidebar-nav .nav-list {
       > li > a {
-        padding: 5px 12px;
+        padding: 8px 12px;
         color: @sidebar-text-color;
         font-size: 14px;
         line-height: 24px;
@@ -37,20 +38,19 @@
         > span + span {display: inline-block;}
 
         &.dglogo {
-          background: url(../images/dglogo-white-176x48.png) no-repeat 16px 0;
+          background: url(../images/dglogo-250x68.png) no-repeat 16px 0;
           background-size: 80%;
           font-size: 0;
           text-indent: -9999px;
           height: 43px;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-          box-shadow: 0 2px 1px rgba(0, 0, 0, 0.15);
+          border-bottom: 1px solid rgb(246, 247, 249);
           margin-bottom: 5px;
         }
 
         &:hover,&:focus {
           background-color: inherit;
-          color: @sidebar-active-text-color;
-          [class^="icon-"], [class*=" icon-"] {color: @sidebar-active-text-color;}
+          color: @primary-blue;
+          [class^="icon-"], [class*=" icon-"] {color: @primary-blue;}
         }
       }
       [class^="icon-"], [class*=" icon-"] {
@@ -71,10 +71,10 @@
           display: block;
           position: absolute;
           right: 0px;
-          top: 7px;
+          top: 0px;
           border-style: solid;
-          border-width: 10px;
-          border-color: transparent #f5f5f5 transparent transparent;
+          border-width: 20px;
+          border-color: transparent #fff transparent transparent;
         }
       }
     }
@@ -94,13 +94,21 @@
           > li {
             width: @sidebar-collapse-width;
             > a.dglogo {
-               background: url(../images/dglogo-white-36x36.png) no-repeat 6px 0px;
-               background-size: 50%;
+              background-size: 120px auto;
+              background-position: 5px 0px;
+               // background: url(../images/dglogo-white-36x36.png) no-repeat 6px 0px;
+               // background-size: 50%;
                height: 28px;
-               width: 30px;
+               // width: 30px;
             }
             > a > span + span {
               display: none;
+            }
+            &.active > a{
+              &:after {
+                top: 10px;
+                border-width: 10px;
+              }
             }
           }
         }
@@ -110,7 +118,7 @@
   }
 
   #j-main-container { 
-    margin-left: 0; 
+    // margin-left: 0; 
     // margin-left: @sidebar-collapse-width; 
   }
   div#system-debug,

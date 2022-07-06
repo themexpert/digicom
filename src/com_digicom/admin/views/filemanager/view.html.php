@@ -14,6 +14,11 @@ jimport ("joomla.application.component.view");
 class DigiComViewFileManager extends JViewLegacy {
 
 	function display($tpl =  null){
+		if (!JFactory::getUser()->authorise('core.filemanager', 'com_digicom'))
+		{
+			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+		}
+		
 		JToolBarHelper::title(JText::_('COM_DIGICOM_FILE_MANAGER_TOOLBAR_TITLE_SITE'), 'generic.png');
 
 		$bar = JToolBar::getInstance('toolbar');

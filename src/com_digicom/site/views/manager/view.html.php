@@ -9,43 +9,33 @@
 
 defined('_JEXEC') or die;
 
-class DigiComViewOrder extends JViewLegacy {
+class DigiComViewManager extends JViewLegacy {
 
-	protected $order;
 	protected $state;
 	protected $params;
-	protected $configs;
-	protected $customer;
+	protected $orders;
 
 	function display($tpl = null)
 	{
+		if (!JFactory::getUser()->authorise('core.manage', 'com_digicom'))
+		{
+			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$app 			= JFactory::getApplication();
-		$input 		= $app->input;
+		$input 			= $app->input;
+		$customer 		= new DigiComSiteHelperSession();
 
-		$this->order = $this->get("Item");
-		$this->state = $this->get("State");
-		$this->params = $this->state->get('params');
-		$this->configs = JComponentHelper::getComponent('com_digicom')->params;
-		$this->customer = new DigiComSiteHelperSession();
+		$this->orders 		= $this->get('Items');
+		
+		$this->pagination	= $this->get('pagination');
+		$this->state			= $this->get('State');
+		$this->params 		= $this->state->get('params');
+		$this->configs 		= JComponentHelper::getComponent('com_digicom')->params;
 
-		$item 	= $app->getMenu()->getItems('link', 'index.php?option=com_digicom&view=orders', true);
-		$this->Itemid = isset($item->id) ? '&Itemid=' . $item->id : '';
 
-		if($this->order->id < 1)
-		{
-			return JError::raiseError(404, JText::_('COM_DIGICOM_ORDER_NOT_FOUND'));
-		}
-		elseif($this->order->userid != $this->customer->_customer->id)
-		{
-			if (!JFactory::getUser()->authorise('core.manage', 'com_digicom'))
-			{
-				return JError::raiseError(203, JText::_('COM_DIGICOM_ORDER_NOT_OWN'));
-			}
-		}
-
-		$layout = $input->get('layout','order');
 		$template = new DigiComSiteHelperTemplate($this);
-		$template->rander($layout);
+		$template->rander('manager');
 
 		$this->_prepareDocument();
 		parent::display($tpl);
@@ -58,7 +48,7 @@ class DigiComViewOrder extends JViewLegacy {
 	 */
 	protected function _prepareDocument()
 	{
-		$app		= JFactory::getApplication();
+		$app			= JFactory::getApplication();
 		$menus		= $app->getMenu();
 		$pathway	= $app->getPathway();
 		$title		= null;
@@ -67,7 +57,16 @@ class DigiComViewOrder extends JViewLegacy {
 		// we need to get it from the menu item itself
 		$menu = $menus->getActive();
 
-		$title = JText::sprintf('COM_DIGICOM_ORDER_PAGE_TITLE',$this->order->id);
+		if ($menu)
+		{
+			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
+		}
+		else
+		{
+			$this->params->def('page_heading', JText::_('COM_DIGICOM_MANAGER_PAGE_TITLE'));
+		}
+
+		$title = $this->params->get('page_title', '');
 
 		// Check for empty title and add site name if param is set
 		if (empty($title))

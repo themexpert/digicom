@@ -216,7 +216,7 @@ class DigiComModelCart extends JModelItem
 	{
 		$dispatcher	= JEventDispatcher::getInstance();
 
-		if(!is_null($this->_items)){
+		if(!is_null($this->_items) && count($this->_items)){
 			return $this->_items;
 		}
 
@@ -858,9 +858,10 @@ class DigiComModelCart extends JModelItem
 
 	function proccessSuccess($post, $pay_plugin, $order_id, $sid, $data, $items)
 	{
-		$app 			= JFactory::getApplication();
+		$app 		= JFactory::getApplication();
 		$session 	= JFactory::getSession();
 		$customer = $this->loadCustomer($sid);
+		
 		if(!$customer)
 		{
 			$order 	= $this->getOrder($order_id);
@@ -935,11 +936,12 @@ class DigiComModelCart extends JModelItem
 
 			// redirect after payment complete
 			$afterpurchase = $configs->get('afterpurchase', 2);
+			
 			switch ($afterpurchase) {
 				case '2':
 					if('Active' == $status){
-						$session->set('com_digicom', array('action' => 'payment_complete', 'id' => $order_id));
-						$link 	= JRoute::_('index.php?option=com_digicom&view=thankyou', false);					
+						$session->set('com_digicom', array('action' => 'payment_complete', 'id' => $order_id));						
+						$link 	= JRoute::_('index.php?option=com_digicom&view=thankyou&order_id='.$order_id, false);					
 					}else{
 						$app->enqueueMessage($msg, 'message');
 						$link 	= JRoute::_('index.php?option=com_digicom&view=order&id='.$order_id, false);
@@ -958,7 +960,7 @@ class DigiComModelCart extends JModelItem
 
 		}
 		
-		$app->redirect($link);
+		$app->redirect($link, 200);
 		return true;
 	}
 

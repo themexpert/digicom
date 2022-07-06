@@ -81,6 +81,8 @@ class DigiComModelOrder extends JModelItem
 				// print_r($prods);die;
 				$data->products = $prods;
 
+				$data->logs 			= $this->getLogs($data->id);
+
 				$this->_item[$pk] = $data;
 			}
 			catch (Exception $e)
@@ -100,6 +102,47 @@ class DigiComModelOrder extends JModelItem
 
 		return $this->_item[$pk];
 
+	}
+
+	public function getOrderItems( $order_id ){
+
+		$configs = $this->getConfigs();
+		$customer = new DigiComSiteHelperSession();
+		$db 	= JFactory::getDbo();
+		$sql 	= 'SELECT `p`.*, `od`.quantity FROM
+					`#__digicom_products` AS `p`
+						INNER JOIN
+					`#__digicom_orders_details` AS `od` ON (`od`.`productid` = `p`.`id`)
+				WHERE `orderid` ='.$order_id;
+
+		$db->setQuery($sql);
+		$items = $db->loadObjectList();
+
+		//change the price of items if needed
+		for ( $i = 0; $i < count( $items ); $i++ )
+		{
+			$item = &$items[$i];
+			$item->discount = 0;
+			$item->currency = $configs->get('currency','USD');
+			$item->price = DigiComSiteHelperPrice::format_price( $item->price, $item->currency, false, $configs ); //sprintf( $price_format, $item->product_price );
+			$item->subtotal = $item->price * $item->quantity;
+		}
+
+		return $items ;
+
+	}
+
+	public function getLogs($order)
+	{
+		$db = JFactory::getDBO();
+		$sql = "SELECT * FROM #__digicom_log WHERE callbackid='". $order ."'";
+		$db->setQuery($sql);
+		return $db->loadObjectList();
+	}
+
+	function getConfigs() {
+		$comInfo = JComponentHelper::getComponent('com_digicom');
+		return $comInfo->params;
 	}
 
 }

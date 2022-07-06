@@ -37,6 +37,11 @@ class DigiComViewReports extends JViewLegacy {
 
 	function display ($tpl =  null )
 	{
+		if (!JFactory::getUser()->authorise('core.reports', 'com_digicom'))
+		{
+			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+		}
+		
 
 		$this->latest_orders = DigiComHelperDigiCom::getOrders(5);
 		$this->most_sold = DigiComHelperDigiCom::getMostSoldProducts(5);

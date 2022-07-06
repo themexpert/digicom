@@ -71,13 +71,15 @@ Joomla.submitbutton = function (pressbutton) {
 
 	<div class="dg-alert dg-alert-with-icon">
 		<span class="icon-support"></span><?php echo JText::_("COM_DIGICOM_ORDERS_HEADER_NOTICE"); ?>
+		<a href="#" onclick="jQuery('#hints_wrapper').slideToggle();">Show Hints</a>
 	</div>
+	<p id="hints_wrapper" class="dg-alert dg-alert-with-icon hide"><span class="icon-help"></span><?php echo JText::_("COM_DIGICOM_ORDERS_SEARCH_NOTICE"); ?></p>
 
 	<?php
 		// Search tools bar
 		echo JLayoutHelper::render('searchtools.orders', array('view' => $this));
 		?>
-
+	<div class="panel">
 		<table class="adminlist table table-striped">
 			<thead>
 				<tr>
@@ -132,6 +134,7 @@ Joomla.submitbutton = function (pressbutton) {
 					$published = JHTML::_( 'grid.published', $order, $i );
 					$orderstatuslink = JRoute::_( "index.php?option=com_digicom&view=orders&task=orders.cycleStatus&id=" . $id );
 					$userlink = "index.php?option=com_users&view=users&filter_search=".$order->email;
+					if(!$order->name) $order->name = $order->userid;
 
 				?>
 					<tr class="row<?php echo $i; ?>">
@@ -230,6 +233,7 @@ Joomla.submitbutton = function (pressbutton) {
       ?>
     <?php endif; ?>
 		</table>
+	</div>
     <div class="pagination-centered">
       <?php echo $this->pagination->getListFooter(); ?>
     </div>

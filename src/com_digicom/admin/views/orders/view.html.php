@@ -16,6 +16,11 @@ class DigiComViewOrders extends JViewLegacy
 
 	function display( $tpl = null )
 	{
+		if (!JFactory::getUser()->authorise('core.orders', 'com_digicom'))
+		{
+			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+		}
+		
 		$this->app = JFactory::getApplication();
 		$document = JFactory::getDocument();
 

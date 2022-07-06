@@ -54,7 +54,7 @@ $n = count ($this->Items);
 			</div>
 		</div>
 
-		<div id="editcell" >
+		<div id="editcell" class="panel">
 
 			<table class="adminlist table">
 				<thead>
@@ -113,11 +113,12 @@ $n = count ($this->Items);
 				<?php endif; ?>
 				</tbody>
 			</table>
-			<div class="pagination-centered">
+			
+		</div>
+
+		<div class="pagination-centered">
 				<?php echo $this->pagination->getListFooter(); ?>
 			</div>
-
-		</div>
 
 		<input type="hidden" name="option" value="com_digicom" />
 		<input type="hidden" name="view" value="customers" />

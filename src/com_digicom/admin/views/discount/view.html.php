@@ -19,7 +19,10 @@ class DigiComViewDiscount extends JViewLegacy
 
 	function display( $tpl = null )
 	{
-
+		if (!JFactory::getUser()->authorise('core.discounts', 'com_digicom'))
+		{
+			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+		}
 
 		$this->state	= $this->get('State');
 		$this->item		= $this->get('Item');

@@ -51,9 +51,14 @@ class DigiComControllerDownloads extends JControllerLegacy
 		}
 
 		$fileInfo = $model->getfileinfo();
-
-		$access = DigiComSiteHelperDigiCom::checkUserAccessToFile($fileInfo, $customer->_user->id);
-		$result = $dispatcher->trigger('onDigicomDownloadCheckAccess',array('com_digicom.download', $fileInfo, $customer->_user));
+		
+		if(!isset($fileInfo->product_id) or !$fileInfo->product_id){
+			$access = false;
+			$result = [false];
+		}else{
+			$access = DigiComSiteHelperDigiCom::checkUserAccessToFile($fileInfo, $customer->_user->id);
+			$result = $dispatcher->trigger('onDigicomDownloadCheckAccess',array('com_digicom.download', $fileInfo, $customer->_user));
+		}
 
 		if(
 			(
@@ -79,7 +84,6 @@ class DigiComControllerDownloads extends JControllerLegacy
 			JFactory::getApplication()->close();
 		}
 		
-
 		if(empty($fileInfo->url)){
 			$itemid = JFactory::getApplication()->input->get('itemid',0);
 			$msg = JText::sprintf('COM_DIGICOM_DOWNLOADS_FILE_DONT_EXIST_DETAILS',$fileInfo->name);

@@ -507,6 +507,7 @@ class DigiComControllerCart extends JControllerLegacy
 	*/
 	function processPayment()
 	{
+
 		$session 	= JFactory::getSession();
 	 	$app			= JFactory::getApplication();
 		$input 		= $app->input;
@@ -518,11 +519,11 @@ class DigiComControllerCart extends JControllerLegacy
 
 		if($processor == '')
 		{
-			$app->redirect(JRoute::_('index.php?option=com_digicom&view=orders', false),JText::_('COM_DIGICOM_PAYMENT_NO_PROCESSOR_SELECTED'));
+			$app->redirect(JRoute::_('index.php?option=com_digicom&view=orders', false), JText::_('COM_DIGICOM_PAYMENT_NO_PROCESSOR_SELECTED'));
 			return false;
 		}
 
-		$post = $input->post->getArray();
+		$post 			= $input->post->getArray();
 		// $rawDataPost 			= $input->post->getArray();
 		// $rawDataGet 			= $input->get->getArray();
 		// $post = array_merge($rawDataGet, $rawDataPost);
@@ -534,8 +535,7 @@ class DigiComControllerCart extends JControllerLegacy
 		if( !count($post) ) $post = @file_get_contents('php://input');		
 
 		$data = $dispatcher->trigger('onDigicom_PayProcesspayment', array($post));
-		$data = reset($data);
-		
+		$data = $data[0];
 		$order_id 	= $input->get('order_id', '', 'int');
 		$sid 		= $input->get('sid', '', 'int');
 
@@ -552,13 +552,29 @@ class DigiComControllerCart extends JControllerLegacy
 			}
 		}
 
-		$param = array();
-		$param['params'] = JPluginHelper::getPlugin('digicom_pay', $processor)->params;
-		// $param['handle'] = &$this;
-
 		$configs 	= $this->_config;
 		$cart 		= $this->_model;
 		$items 		= $cart->getOrderItems($order_id);
+
+		/*
+		* new security layer
+		* since 25th dec 2019
+		* make sure order exist
+		*/
+		$orderTable = $cart->getTable('Order');
+		$orderTable->load($order_id);
+		if(!$orderTable->id){
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_DIGICOM_PAYMENT_NO_ORDER_PASSED'), 'error');
+			$app->redirect('index.php');
+			return;
+		}
+
+		/************************************/
+
+
+		$param = array();
+		$param['params'] = JPluginHelper::getPlugin('digicom_pay', $processor)->params;
+		// $param['handle'] = &$this;
 
 		$products = array();
 		if(isset($items) && count($items) > 0){

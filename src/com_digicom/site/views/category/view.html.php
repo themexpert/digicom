@@ -99,7 +99,8 @@ class DigiComViewCategory extends JViewCategory
 		$this->category->event->afterDisplayContent = trim(implode("\n", $results));
 
 		// Compute the product slugs and prepare introtext (runs content plugins).
-		if(count($this->items))
+		$total = !is_null($this->items) ? count($this->items) : 0;
+		if($total)
 		{
 			foreach ($this->items as $item)
 			{
@@ -369,7 +370,7 @@ class DigiComViewCategory extends JViewCategory
 		$children = array($category->id => $children);
 
 		// Escape strings for HTML output
-		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
+		$this->pageclass_sfx = htmlspecialchars((string)$params->get('pageclass_sfx'));
 
 		$maxLevel         = $params->get('maxLevel', -1);
 		$this->maxLevel   = &$maxLevel;

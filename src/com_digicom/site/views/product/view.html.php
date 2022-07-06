@@ -148,7 +148,7 @@ class DigiComViewProduct extends JViewLegacy
 		}
 
 		// Escape strings for HTML output
-		$this->pageclass_sfx = htmlspecialchars($this->item->params->get('pageclass_sfx'));
+		$this->pageclass_sfx = htmlspecialchars((string)$this->item->params->get('pageclass_sfx'));
 
 		$this->_prepareDocument();
 		$this->category->params = $this->category->getParams();

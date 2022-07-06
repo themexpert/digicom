@@ -123,7 +123,7 @@ class DigiComModelDownloads extends JModelList
 	 */
 	public function getItems()
 	{
-		$db = $this->getDbo();
+        $db = $this->getDbo();
 		// Invoke the parent getItems method to get the main list
 		$items = parent::getItems();
 
@@ -144,13 +144,12 @@ class DigiComModelDownloads extends JModelList
 				$params->loadString($active->params);
 			}
 		}
-
-		// trigger events
-		$dispatcher	= JEventDispatcher::getInstance();
-		JPluginHelper::importPlugin('digicom');
-		$dispatcher->trigger('onDigicomDownloadItems', array ('com_digicom.downloads', &$items));
-
-
+        
+        // trigger events
+        $dispatcher = JEventDispatcher::getInstance();
+        JPluginHelper::importPlugin('digicom');
+        $dispatcher->trigger('onDigicomDownloadItems', array ('com_digicom.downloads', &$items));
+        
 		//products
 		if ($items)
 		{
@@ -226,7 +225,7 @@ class DigiComModelDownloads extends JModelList
 			//print_r($items);die;
 			// check and add products files
 			$configs = JComponentHelper::getComponent('com_digicom')->params;
-			$pagination = $configs->get('download_pagination', 0);
+			$pagination = $configs->get('download_page', 0);
 			if(!$pagination){
 
 				$productAdded = array();
@@ -393,7 +392,7 @@ class DigiComModelDownloads extends JModelList
 
 		$jinput = JFactory::getApplication()->input;
 		$fileid = $jinput->get('downloadid', '0');
-		
+				
 		if($fileid == '0')
 		{
 			$fileid = $jinput->get('token', '0');

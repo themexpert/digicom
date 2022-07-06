@@ -50,8 +50,20 @@ class DigiComViewCheckout extends JViewLegacy
 		if(!isset($order->id) or $order->id <= 0){
 			$app->redirect(JRoute::_('index.php?option=com_digicom&view=cart'));
 		}
+		if(empty($order->params))
+		{
+			$orderItems = $this->get('OrderItems');
+			// print_r($orderItems);die;
+			$params = new stdClass;
+			$params->order_id = $order->id;
+			$params->order_amount = $order->amount;
+			$params->products = $orderItems;
+		}
+		else
+		{
+			$params 	= json_decode($order->params);//print_r($params);die;
+		}
 
-		$params 	= json_decode($order->params);//print_r($params);die;
 		$items 		= $params->products;//print_r($items);die;
 
 		$vars 						= new stdClass();

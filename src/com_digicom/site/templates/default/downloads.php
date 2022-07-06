@@ -33,7 +33,7 @@ $active = 'cat-'.$firstkey['catid'];
 
 		    <?php 
 		    $configs = JComponentHelper::getComponent('com_digicom')->params;
-			$pagination = $configs->get('download_pagination', 0);
+			$pagination = $configs->get('download_page', 0);
 			
 			$this->itemList = $items;
 

@@ -122,13 +122,17 @@ class DigiComModelLicenses extends JModelList {
 		);
 		$query->from($db->quoteName('#__digicom_licenses', 'a'));
 
-		// Join over the users
+		// Join over the customers
 		$query->select($db->quoteName('dc.name', 'client'))
 			->join('LEFT', $db->quoteName('#__digicom_customers', 'dc') . ' ON dc.id = a.userid');
 		
-		// Join over the users
+		// Join over the products
 		$query->select($db->quoteName('dp.name', 'productname'))
 			->join('LEFT', $db->quoteName('#__digicom_products', 'dp') . ' ON dp.id = a.productid');
+
+		// Join over the users
+		$query->select('ju.username')
+			->join('LEFT', '#__users AS ju ON ju.id=a.userid');
 		
 		// Filter by published state
 		$published = $this->getState('filter.published');
@@ -155,17 +159,24 @@ class DigiComModelLicenses extends JModelList {
 
 		if (!empty($search))
 		{
-			if (stripos($search, 'user:') === 0)
+			if (stripos($search, 'id:') === 0){
+				$query->where('dc.id = ' . (int) substr($search, 3));
+			}
+			elseif (stripos($search, 'user:') === 0)
 			{
+				$search = $db->quote('%' . $db->escape(substr($search, 5), true) . '%');
 				$query->where(
-					$db->quoteName('dc.id') . ' = ' . (int) substr($search, 5)
-					. ' OR ' .
 					$db->quoteName('dc.name') . ' like "%' . substr($search, 5) . '%"'
+					. ' OR ' .
+					$db->quoteName('ju.username') . ' like "%' . substr($search, 5) . '%"'
+					. ' OR ' .
+					$db->quoteName('ju.name') . ' like "%' . substr($search, 5) . '%"'
 				);
 			}
-			elseif (stripos($search, 'id:') === 0)
+			elseif (stripos($search, 'email:') === 0)
 			{
-				$query->where($db->quoteName('a.id') . ' = ' . (int) substr($search, 3));
+				$search = $db->quote('%' . $db->escape(substr($search, 6), true) . '%');
+				$query->where('(dc.email LIKE ' . $search . ')');
 			}
 			else
 			{
