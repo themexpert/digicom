@@ -25,8 +25,16 @@ class plgDigiCom_PayPaypalHelper
     * @secure_post = if you want https
     * @sandbox = if you use sandbox or demo or dev mode
     */
-    public static function buildPaymentSubmitUrl($secure_post = true, $sandbox = false)
+    public static function buildPaymentSubmitUrl($secure_post, $sandbox)
     {
+        if(empty($secure_post)){
+            $secure_post = true;
+        }
+
+        if(empty($sandbox)){
+            $sandbox = false;
+        }
+
         $url = $sandbox ? 'www.sandbox.paypal.com' : 'www.paypal.com';
         if ($secure_post) {
             $url = 'https://'.$url.'/cgi-bin/webscr';
@@ -106,8 +114,13 @@ class plgDigiCom_PayPaypalHelper
      *
      * @since   1.0.0
      */
-    public static function validateIPN($data, $sandbox = false, $params, $componentName = 'digicom')
+    public static function validateIPN($data, $sandbox, $params, $componentName = 'digicom')
     {
+        if(empty($sandbox)){
+            $sandbox = false;
+        }
+
+
         $url    = plgDigiCom_PayPaypalHelper::buildIPNPaymentUrl(true, $sandbox);
 
         // STEP 1: read POST data
@@ -216,8 +229,12 @@ class plgDigiCom_PayPaypalHelper
      *
      * @since   1.0.0
      */
-    public function validateIPN_x($data, $sandbox = false, $params, $componentName = 'digicom')
+    public function validateIPN_x($data, $sandbox, $params, $componentName = 'digicom')
     {
+        if(empty($sandbox)){
+            $sandbox = false;
+        }
+
         $version    = new \JVersion;
         $httpOption = new \Joomla\Registry\Registry;
         $status     = true;

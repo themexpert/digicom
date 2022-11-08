@@ -59,8 +59,9 @@ class DigiComRouter extends JComponentRouterBase
 		{
 			// there are no menu Itemid found, lets dive into menu finder
 			$menuItem = $menu->getItems('link', 'index.php?option=com_digicom&view='.$view, true);
-			//print_r($menuItem);die;
-			if(!is_null($menuItem) && count($menuItem)){
+			// dd($menuItem);
+
+			if(!is_null($menuItem)){
 				$query['Itemid'] = $menuItem->id;
 				$menuItemGiven = true;
 			}else{

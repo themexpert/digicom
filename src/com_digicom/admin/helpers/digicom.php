@@ -110,8 +110,12 @@ class DigiComHelperDigiCom extends JHelperContent{
 
 	}
 
-	public static function format_price ($amount, $ccode, $add_sym = true, $configs, $decial = null)
+	public static function format_price ($amount, $ccode, $add_sym, $configs, $decial = null)
 	{
+		if(empty($add_sym)){
+			$add_sym = true;
+		}
+
 		if($decial === NULL){
 			$decial = $configs->get('decimaldigits','2');
 		}

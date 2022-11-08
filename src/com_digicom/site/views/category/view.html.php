@@ -99,7 +99,7 @@ class DigiComViewCategory extends JViewCategory
 		$this->category->event->afterDisplayContent = trim(implode("\n", $results));
 
 		// Compute the product slugs and prepare introtext (runs content plugins).
-		if(count($this->items))
+		if(!empty($this->items) && count($this->items))
 		{
 			foreach ($this->items as $item)
 			{
@@ -267,12 +267,13 @@ class DigiComViewCategory extends JViewCategory
 			$path = array(array('title' => $this->category->title, 'link' => ''));
 			$category = $this->category->getParent();
 			if(!empty($category)){
-				while (($menu->query['option'] != 'com_digicom' || $menu->query['view'] == 'product' || $id != $category->id) && $category->id > 1)
+
+
+				while (($menu->query['option'] != 'com_digicom' || $menu->query['view'] == 'product' || !empty($category->id) && $id != $category->id) && $category->id > 1)
 				{
 					$path[] = array('title' => $category->title, 'link' => DigiComSiteHelperRoute::getCategoryRoute($category->id));
 					$category = $category->getParent();
 				}
-
 			}
 
 			$path = array_reverse($path);

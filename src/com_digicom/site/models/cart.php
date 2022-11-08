@@ -972,7 +972,10 @@ class DigiComModelCart extends JModelItem
 		$type = 'process_order';
 		if($status != 'Refund')
 		{
-			$orderTable->amount_paid = $orderTable->amount_paid + $data['total_paid_amt'];
+			if((float)$data['total_paid_amt']>0){
+				$orderTable->amount_paid = (float)$orderTable->amount_paid + (float)$data['total_paid_amt'];
+			}
+			$orderTable->amount_paid = (float)$orderTable->amount_paid;
 		}
 		else{
 			// as refund, check if has refund amout else all
@@ -1114,8 +1117,15 @@ class DigiComModelCart extends JModelItem
 
 	}
 
-	function getFinalize( $sid, $msg = '', $orderid = 0 , $type, $status)
+	function getFinalize( $sid, $msg, $orderid, $type, $status)
 	{
+		if(empty($orderid)){
+			$orderid = 0;
+		}
+
+		if(empty($msg)){
+			$msg = "";
+		}
 		global $Itemid;
 
 		$conf = $this->getInstance( "config", "digicomModel" );
