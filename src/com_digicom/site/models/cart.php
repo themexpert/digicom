@@ -972,10 +972,10 @@ class DigiComModelCart extends JModelItem
 		$type = 'process_order';
 		if($status != 'Refund')
 		{
-			if((int)$data['total_paid_amt']>0){
-				$orderTable->amount_paid = (int)$orderTable->amount_paid + (int)$data['total_paid_amt'];
+			if((float)$data['total_paid_amt']>0){
+				$orderTable->amount_paid = (float)$orderTable->amount_paid + (float)$data['total_paid_amt'];
 			}
-			$orderTable->amount_paid = (int)$orderTable->amount_paid;
+			$orderTable->amount_paid = (float)$orderTable->amount_paid;
 		}
 		else{
 			// as refund, check if has refund amout else all
